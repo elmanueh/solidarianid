@@ -6,6 +6,9 @@ Repositorio del equipo 3 para la realización de nuestra propuesta de solución 
 
 ### Requisitos funcionales frontend
 
+> [!NOTE]
+> Este apartado solo contienen los requisitos funcionales de la aplicación de administración
+
 - [ ] Arquitectura MVC Web sobre la plataforma NestJS e integrado con el backend desarrollado. Es un requisito utilizar, al menos una vez en alguna vista, las tecnologías (se valorará el uso significativo de las distintas tecnologías):
 
 - [ ] a) CSS Flexbox, Grid y Media Queries en el diseño de las páginas web;
@@ -42,6 +45,9 @@ Repositorio del equipo 3 para la realización de nuestra propuesta de solución 
 - [ ] El menú y el contenido de las páginas deberá definirse para dispositivos móviles y adaptarse a tamaños de pantalla de escritorio siguiendo el principio de diseño mobile-first recomendado por Tailwind.
 
 ### Requisitos funcionales backend
+
+> [!NOTE]
+> Este apartado contiene los requisitos funcionales de la aplicación backend (aplica a la aplicación general y aplicación de administración)
 
 - [ ] Deberán aplicarse los principios de la arquitectura limpia/hexagonal + DDD.
 

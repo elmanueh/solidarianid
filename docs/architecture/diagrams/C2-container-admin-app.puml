@@ -8,7 +8,7 @@
 !include $ICONURL/font-awesome-5/cog.puml
 !include $ICONURL/font-awesome-5/eye.puml
 !include $ICONURL/devicons2/apachekafka_original.puml
-!include $ICONURL/devicons2/postgresql.puml
+!include $ICONURL/devicons2/mongodb.puml
 !include $ICONURL/devicons2/handlebars_original.puml
 !include $ICONURL/devicons2/nestjs_original.puml
 
@@ -19,7 +19,7 @@ title Container Diagram - Aplicación de Administración (Monolito MVC)
 Person(admin, "Administrador", "Personal autorizado de SolidarianID", $sprite="user_shield")
 ContainerQueue(kafkaBroker, "Apache Kafka", "Broker de mensajería", $sprite="apachekafka_original")
 System_Ext(authProvider, "OAuth2/JWT Provider", "Servicio de autenticación")
-ContainerDb(database, "Base de Datos", "PostgreSQL/MongoDB (TBD)", "Almacena usuarios, causas, comunidades, eventos, SDGs", $sprite="postgresql", $tags="database")
+ContainerDb(database, "Base de Datos", "MongoDB (TBD)", "Almacena administradores, usuarios, causas, comunidades, eventos, SDGs", $sprite="mongodb", $tags="database")
 
 System_Boundary(adminAppBoundary, "Aplicación de Administración - Monolito NestJS") {
     Container(webController, "Controllers (MVC)", "NestJS Controllers", "Gestiona peticiones HTTP y renderiza vistas Handlebars", $sprite="nestjs_original", $tags="controller")
@@ -28,7 +28,7 @@ System_Boundary(adminAppBoundary, "Aplicación de Administración - Monolito Nes
     Container(viewEngine, "View", "Express Handlebars", "Motor de plantillas para renderizado server-side de vistas HTML dinámicas", $sprite="handlebars_original")
     
     Container(kafkaConsumer, "Kafka Consumer", "NestJS Component", "Consume eventos del topic de Kafka desde la aplicación principal", $sprite="nestjs_original", $tags="kafka")
-    Container(dataAccess, "Repositories (Data Access)", "TypeORM/Mongoose", "Capa de acceso a datos con patrón Repository", $sprite="database", $tags="repository")
+    Container(dataAccess, "Repositories (Data Access)", "TypeORM/Mongoose", "Capa de acceso a datos con patrón Repmongodb.pumlository", $sprite="database", $tags="repository")
 }
 
 AddElementTag("controller", $bgColor="#D4AF37", $fontColor="#FFFFFF")

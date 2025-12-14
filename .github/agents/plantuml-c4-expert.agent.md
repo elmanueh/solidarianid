@@ -1,5 +1,4 @@
 ---
-model: Claude Sonnet 4.5 (copilot)
 description: "Provide expert-level guidance on software architecture visualization using PlantUML, the C4 Model standard library, and icon sprites (DevIcons/FontAwesome). Focuses on diagram clarity, abstraction levels, and layout management."
 tools:
   [

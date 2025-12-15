@@ -20,7 +20,12 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
-    "paths": {},
+    "paths": {
+      "@app/ddd": ["libs/ddd/src"],
+      "@app/ddd/*": ["libs/ddd/src/*"],
+      "@app/utils": ["libs/utils/src"],
+      "@app/utils/*": ["libs/utils/src/*"]
+    },
     "baseUrl": "./"
   }
 }

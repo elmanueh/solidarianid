@@ -1,6 +1,6 @@
 import { DomainEvent } from './domain-event';
 import { Entity } from './entity';
-import { UniqueEntityID } from './unique-entity-id';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
 export abstract class AggregateRoot<T> extends Entity<T> {
   private domainEvents: DomainEvent[] = [];

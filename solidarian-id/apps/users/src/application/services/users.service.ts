@@ -1,8 +1,58 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import {
+  UserServicePort,
+  RegisterUserCommand,
+} from '@app/users/domain/ports/in/users.service.port';
+import { User } from '@app/users/domain/model/user';
+import { Username } from '@app/value-objects/model/username';
+import { MobilePhone } from '@app/value-objects/model/mobile-phone';
+import { Password } from '@app/value-objects/model/password';
 
 @Injectable()
-export class UsersService {
-  getHello(): string {
-    return 'Hello World!';
+export class UsersService extends UserServicePort {
+  async registerUser(command: RegisterUserCommand): Promise<string> {
+    // 1. Hashear password con bcrypt
+    const hashedPassword = await bcrypt.hash(command.password, 10);
+
+    // 2. Crear Value Objects
+    const usernameResult = Username.create(command.username);
+    const phoneResult = MobilePhone.create(command.mobilePhone);
+    const passwordResult = Password.create(hashedPassword);
+
+    // 3. Validar Either's
+    if (usernameResult.isLeft()) {
+      throw new BadRequestException('Invalid username');
+    }
+    if (phoneResult.isLeft()) {
+      throw new BadRequestException('Invalid mobile phone');
+    }
+    if (passwordResult.isLeft()) {
+      throw new BadRequestException('Invalid password');
+    }
+
+    // 4. Crear User
+    const userResult = User.create({
+      username: usernameResult.value,
+      mobilePhone: phoneResult.value,
+      hashedPassword: passwordResult.value,
+    });
+
+    if (userResult.isLeft()) {
+      throw new BadRequestException('Invalid user data');
+    }
+
+    const user = userResult.value;
+
+    // 5. Log temporal (sin BD por ahora)
+    console.log('=== USER REGISTERED ===');
+    console.log('ID:', user.id.value);
+    console.log('Username:', user.username.value);
+    console.log('Mobile Phone:', user.mobilePhone.value);
+    console.log('Hashed Password:', user.password.value);
+    console.log('=======================');
+
+    // 6. Retornar ID del usuario creado
+    return user.id.value;
   }
 }

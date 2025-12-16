@@ -21,10 +21,27 @@
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@app/ddd": ["libs/ddd/src"],
-      "@app/ddd/*": ["libs/ddd/src/*"],
-      "@app/utils": ["libs/utils/src"],
-      "@app/utils/*": ["libs/utils/src/*"]
+      "@app/ddd": [
+        "libs/ddd/src"
+      ],
+      "@app/ddd/*": [
+        "libs/ddd/src/*"
+      ],
+      "@app/users": [
+        "apps/users/src"
+      ],
+      "@app/utils": [
+        "libs/utils/src"
+      ],
+      "@app/utils/*": [
+        "libs/utils/src/*"
+      ],
+      "@app/value-objects": [
+        "libs/value-objects/src"
+      ],
+      "@app/value-objects/*": [
+        "libs/value-objects/src/*"
+      ]
     },
     "baseUrl": "./"
   }

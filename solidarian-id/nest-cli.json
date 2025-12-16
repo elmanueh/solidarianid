@@ -54,6 +54,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/utils/tsconfig.lib.json"
       }
+    },
+    "value-objects": {
+      "type": "library",
+      "root": "libs/value-objects",
+      "entryFile": "index",
+      "sourceRoot": "libs/value-objects/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/value-objects/tsconfig.lib.json"
+      }
     }
   }
 }

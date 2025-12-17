@@ -37,6 +37,15 @@
         "tsConfigPath": "libs/ddd/tsconfig.lib.json"
       }
     },
+    "design-tokens": {
+      "type": "library",
+      "root": "libs/design-tokens",
+      "entryFile": "index",
+      "sourceRoot": "libs/design-tokens/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/design-tokens/tsconfig.lib.json"
+      }
+    },
     "users": {
       "type": "application",
       "root": "apps/users",

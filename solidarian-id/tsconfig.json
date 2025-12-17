@@ -28,7 +28,9 @@
       "@app/utils": ["libs/utils/src"],
       "@app/utils/*": ["libs/utils/src/*"],
       "@app/value-objects": ["libs/value-objects/src"],
-      "@app/value-objects/*": ["libs/value-objects/src/*"]
+      "@app/value-objects/*": ["libs/value-objects/src/*"],
+      "@frontend/design-tokens": ["libs/design-tokens/src"],
+      "@frontend/design-tokens/*": ["libs/design-tokens/src/*"]
     },
     "baseUrl": "./"
   }

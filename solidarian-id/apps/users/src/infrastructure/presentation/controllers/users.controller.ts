@@ -11,7 +11,7 @@ import {
   UserServicePort,
   RegisterUserCommand,
 } from '@app/users/domain/ports/in/users.service.port';
-import { RegisterUserDto } from '@app/users/application/dtos/register-user.dto';
+import { RegisterUserDto } from '@app/users/infrastructure/presentation/dtos/register-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -27,6 +27,8 @@ export class UsersController {
       username: dto.username,
       mobilePhone: dto.mobilePhone,
       password: dto.password,
+      city: dto.city,
+      countryCode: dto.countryCode,
     };
 
     const userId = await this.usersService.registerUser(command);

@@ -5,11 +5,13 @@ import { Username } from '@app/value-objects/model/username';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { Password } from '@app/value-objects/model/password';
 import { InvalidUserError } from '../errors/invalid-user-error';
+import { UserLocation } from '@app/value-objects/model/user-location';
 
 export interface UserProps {
   username: Username;
   mobilePhone: MobilePhone;
   hashedPassword: Password;
+  location: UserLocation;
 }
 
 export class User extends Entity<UserProps> {
@@ -27,6 +29,10 @@ export class User extends Entity<UserProps> {
 
   get password(): Password {
     return this.props.hashedPassword;
+  }
+
+  get location(): UserLocation {
+    return this.props.location;
   }
 
   public static create(

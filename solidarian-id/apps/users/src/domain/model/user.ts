@@ -10,7 +10,7 @@ import { UserLocation } from '@app/value-objects/model/user-location';
 export interface UserProps {
   username: Username;
   mobilePhone: MobilePhone;
-  hashedPassword: Password;
+  password: Password;
   location: UserLocation;
 }
 
@@ -28,7 +28,7 @@ export class User extends Entity<UserProps> {
   }
 
   get password(): Password {
-    return this.props.hashedPassword;
+    return this.props.password;
   }
 
   get location(): UserLocation {

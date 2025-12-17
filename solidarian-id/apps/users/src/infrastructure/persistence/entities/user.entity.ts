@@ -13,4 +13,10 @@ export class UserEntity {
 
   @Column({ name: 'HashedPassword', length: 255 })
   hashedPassword: string;
+
+  @Column({ name: 'City', length: 25 })
+  city: string;
+
+  @Column({ name: 'CountryCode', length: 2 })
+  countryCode: string;
 }

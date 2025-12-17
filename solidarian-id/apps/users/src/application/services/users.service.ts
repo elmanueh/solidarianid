@@ -1,5 +1,4 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import {
   UserServicePort,
   RegisterUserCommand,
@@ -10,10 +9,14 @@ import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { Password } from '@app/value-objects/model/password';
 import { UserLocation } from '@app/value-objects/model/user-location';
 import { PasswordHasherPort } from '@app/utils/password-hasher/password-hasher.port';
+import { UsersRepositoryPort } from '@app/users/domain/ports/out/users.repository.port';
 
 @Injectable()
 export class UsersService extends UserServicePort {
-  constructor(private readonly hasher: PasswordHasherPort) {
+  constructor(
+    private readonly hasher: PasswordHasherPort,
+    private readonly usersRepository: UsersRepositoryPort,
+  ) {
     super();
   }
 
@@ -48,7 +51,7 @@ export class UsersService extends UserServicePort {
     const userResult = User.create({
       username: usernameResult.value,
       mobilePhone: phoneResult.value,
-      hashedPassword: passwordResult.value,
+      password: passwordResult.value,
       location: locationResult.value,
     });
 
@@ -57,6 +60,9 @@ export class UsersService extends UserServicePort {
     }
 
     const user = userResult.value;
+
+    // 5. Persistir en BD
+    await this.usersRepository.save(user);
 
     // 5. Log temporal (sin BD por ahora)
     console.log('=== USER REGISTERED ===');

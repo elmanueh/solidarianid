@@ -1,6 +1,6 @@
 import { Repository } from '@app/ddd/repository';
-import { Community } from 'apps/communities/src/domain/model/aggregates/community';
+import { CommunitySummary } from 'apps/communities/src/domain/model/entities/community-summary';
 
-export abstract class CommunitiesRepository extends Repository<Community> {
-  abstract getAllCommunitiesSummary(): Promise<Community[]>;
+export abstract class CommunitiesRepository extends Repository<CommunitySummary> {
+  abstract getAllCommunitiesSummary(): Promise<CommunitySummary[]>;
 }

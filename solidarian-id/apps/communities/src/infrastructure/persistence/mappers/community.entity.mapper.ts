@@ -1,0 +1,17 @@
+import { UniqueEntityID } from '@app/ddd/unique-entity-id';
+import { CommunitySummary } from 'apps/communities/src/domain/model/entities/community-summary';
+import { CommunityEntity } from 'apps/communities/src/infrastructure/persistence/entities/community.entity';
+
+export class CommunityEntityMapper {
+  static toCommunitySummaryDomain(
+    community: CommunityEntity,
+  ): CommunitySummary {
+    return CommunitySummary.create(
+      {
+        name: community.name,
+        description: community.description,
+      },
+      UniqueEntityID.create(community.id),
+    );
+  }
+}

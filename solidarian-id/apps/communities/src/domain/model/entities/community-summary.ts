@@ -1,13 +1,12 @@
-import { AggregateRoot } from "@app/ddd/aggregate-root";
-import { UniqueEntityID } from "@app/ddd/unique-entity-id";
+import { Entity } from '@app/ddd/entity';
+import { UniqueEntityID } from '@app/ddd/unique-entity-id';
 
-interface CommunityProps {
+interface CommunitySummaryProps {
   name: string;
   description: string;
 }
 
-export class Community extends AggregateRoot<CommunityProps> {
-
+export class CommunitySummary extends Entity<CommunitySummaryProps> {
   get name(): string {
     return this.props.name;
   }
@@ -16,7 +15,7 @@ export class Community extends AggregateRoot<CommunityProps> {
     return this.props.description;
   }
 
-  private constructor(props: CommunityProps, id?: UniqueEntityID) {
+  private constructor(props: CommunitySummaryProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
@@ -26,9 +25,8 @@ export class Community extends AggregateRoot<CommunityProps> {
       description: string;
     },
     id?: UniqueEntityID,
-  ): Community {
-
-    return new Community(
+  ): CommunitySummary {
+    return new CommunitySummary(
       {
         name: props.name,
         description: props.description,

@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { CommunitySummaryDto } from 'apps/communities/src/application/dto/out/community.summay.dto';
-import { CommunityMapper } from 'apps/communities/src/application/mappers/community.mapper';
-import { CommunitiesService } from 'apps/communities/src/domain/ports/communities.service';
+import { CommunitySummaryDto } from 'apps/communities/src/infrastructure/presentation/dto/out/community.summay.dto';
+import { CommunityMapper } from 'apps/communities/src/infrastructure/presentation/mappers/community.mapper';
+import { CommunitiesService } from 'apps/communities/src/domain/services/communities.service';
 
 @Controller('communities')
 export class CommunitiesController {
@@ -11,7 +11,7 @@ export class CommunitiesController {
   async getPublicCommunities(): Promise<CommunitySummaryDto[]> {
     const communities = await this.communitiesService.getCommunities();
     const communityDtos = communities.map((community) =>
-      CommunityMapper.toCommunityDto(community),
+      CommunityMapper.toCommunitySummaryDto(community),
     );
     return communityDtos;
   }

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CommunitiesController } from './infrastructure/controllers/communities.controller';
+import { CommunitiesController } from './infrastructure/presentation/controllers/communities.controller';
 import { CommunitiesServiceImpl } from './application/services/communities.service.impl';
-import { CommunitiesService } from 'apps/communities/src/domain/ports/communities.service';
+import { CommunitiesService } from 'apps/communities/src/domain/services/communities.service';
 import { CommunitiesRepository } from 'apps/communities/src/domain/ports/communities.repository';
-import { CommunitiesRepositoryImpl } from 'apps/communities/src/infrastructure/repository/community.repository';
+import { CommunitiesRepositoryAdapter } from 'apps/communities/src/infrastructure/persistence/repositories/community.repository.adapter';
 
 @Module({
   imports: [],
@@ -15,7 +15,7 @@ import { CommunitiesRepositoryImpl } from 'apps/communities/src/infrastructure/r
     },
     {
       provide: CommunitiesRepository,
-      useClass: CommunitiesRepositoryImpl,
+      useClass: CommunitiesRepositoryAdapter,
     },
   ],
 })

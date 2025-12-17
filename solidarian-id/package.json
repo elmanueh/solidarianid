@@ -24,11 +24,15 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/typeorm": "^11.0.0",
     "@tailwindcss/cli": "^4.1.18",
+    "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "shallow-equal-object": "^1.1.1",
+    "sqlite3": "^5.1.7",
     "tailwindcss": "^4.1.18",
+    "typeorm": "^0.3.28",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
@@ -77,6 +81,7 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
+      "^apps/(.*)$": "<rootDir>/apps/$1",
       "^@app/ddd(|/.*)$": "<rootDir>/libs/ddd/src/$1",
       "^@app/utils(|/.*)$": "<rootDir>/libs/utils/src/$1",
       "^@frontend/design-tokens(|/.*)$": "<rootDir>/libs/design-tokens/src/$1"

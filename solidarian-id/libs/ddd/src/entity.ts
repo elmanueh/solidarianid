@@ -1,4 +1,4 @@
-import { UniqueEntityID } from './unique-entity-id';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
 export abstract class Entity<T> {
   readonly id: UniqueEntityID;
@@ -6,7 +6,15 @@ export abstract class Entity<T> {
   protected readonly props: T;
 
   protected constructor(props: T, id?: UniqueEntityID) {
-    this.id = id ?? UniqueEntityID.create();
+    if (id) {
+      this.id = id;
+    } else {
+      const idResult = UniqueEntityID.create();
+      if (idResult.isLeft()) {
+        throw idResult.value;
+      }
+      this.id = idResult.value;
+    }
     this.props = props;
   }
 

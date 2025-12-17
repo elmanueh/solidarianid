@@ -10,6 +10,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+.github/prompts/
 solidarian-id/package-lock.json
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
@@ -46,7 +47,6 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-.github/prompts/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/

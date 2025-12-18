@@ -1,3 +1,236 @@
-/*Componentes reutilizables de CSS para la aplicación Solidarian ID*/
+/*Componentes reutilizables de CSS para la aplicación  D*/
 @layer components {
+  /*** Auth Component Styles (login y registro)***/
+
+  .auth-container {
+    @apply flex items-center justify-center min-h-screen px-4 py-6;
+    @apply sm:px-6 sm:py-8 md:px-8 lg:py-12;
+    background: linear-gradient(
+      to bottom right,
+      var(--color-black-haze-50),
+      var(--color-athens-gray-100)
+    );
+  }
+
+  .auth-card {
+    @apply w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl;
+    @apply rounded-xl shadow-lg;
+    @apply p-5 sm:p-6 md:p-8 lg:p-10;
+    background-color: #ffffff;
+    border: 1px solid var(--color-iron-200);
+  }
+
+  .auth-header {
+    @apply text-center mb-2 sm:mb-8;
+  }
+
+  .auth-logo {
+    @apply mx-auto mb-4 w-16 h-16;
+  }
+
+  .auth-title {
+    @apply text-xl sm:text-2xl md:text-3xl font-bold mb-2;
+    color: var(--color-black-haze-950);
+  }
+
+  .auth-subtitle {
+    @apply text-sm sm:text-base;
+    color: var(--color-pale-sky-500);
+  }
+  .auth-footer {
+    @apply text-center mt-5 pt-5 sm:mt-6 sm:pt-6;
+    @apply text-sm sm:text-base;
+    border-top: 1px solid var(--color-iron-200);
+    color: var(--color-pale-sky-500);
+  }
+
+  .auth-footer-link {
+    @apply font-medium underline rounded;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    color: var(--color-ocean-blue-600);
+    &:hover {
+      color: var(--color-ocean-blue-700);
+    }
+    &:focus {
+      --tw-ring-color: var(--color-ocean-blue-500);
+    }
+  }
+
+  .form-group {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .form-label {
+    @apply font-medium;
+    color: var(--color-black-haze-800);
+  }
+
+  .form-label-required {
+    @apply ml-0.5;
+    color: var(--color-dark-wine-500);
+  }
+
+  .input-wrapper {
+    @apply relative flex items-center;
+  }
+
+  .input-icon {
+    @apply absolute left-3 text-lg pointer-events-none;
+    color: var(--color-pale-sky-400);
+  }
+
+  .input-icon-status {
+    @apply absolute right-3 text-lg hidden;
+  }
+
+  .form-input {
+    @apply w-full py-3 text-sm rounded-lg;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2;
+    background-color: var(--color-black-haze-50);
+    border: 1px solid var(--color-iron-200);
+    color: var(--color-black-haze-900);
+    &::placeholder {
+      color: var(--color-pale-sky-400);
+    }
+    &:hover {
+      border-color: var(--color-iron-300);
+    }
+    &:focus {
+      border-color: var(--color-ocean-blue-500);
+      background-color: #ffffff;
+      --tw-ring-color: var(--color-ocean-blue-200);
+    }
+  }
+
+  .form-input-with-icon {
+    @apply pl-10 pr-10;
+  }
+
+  .form-input-with-toggle {
+    @apply pl-10 pr-20;
+  }
+
+  .form-input-error {
+    border-color: var(--color-dark-wine-500);
+    &:focus {
+      border-color: var(--color-dark-wine-500);
+      --tw-ring-color: var(--color-dark-wine-200);
+    }
+  }
+
+  .form-input-success {
+    border-color: var(--color-sage-green-500);
+    &:focus {
+      border-color: var(--color-sage-green-500);
+      --tw-ring-color: var(--color-sage-green-200);
+    }
+  }
+
+  .form-help {
+    @apply text-xs;
+    color: var(--color-pale-sky-500);
+  }
+
+  .form-error {
+    @apply text-xs items-center gap-1 hidden;
+    color: var(--color-dark-wine-600);
+  }
+
+  .form-error-visible {
+    @apply flex;
+  }
+
+  .password-toggle {
+    @apply absolute right-8 p-1.5 rounded;
+    @apply transition-colors duration-200;
+    @apply border-none cursor-pointer;
+    @apply focus:outline-none focus:ring-2;
+    color: var(--color-pale-sky-500);
+    background-color: transparent;
+    &:hover {
+      color: var(--color-pale-sky-700);
+      background-color: var(--color-iron-100);
+    }
+    &:focus {
+      --tw-ring-color: var(--color-ocean-blue-500);
+    }
+  }
+
+  .alert {
+    @apply flex items-start gap-3 p-4 rounded-lg mb-4;
+  }
+
+  .alert-error {
+    background-color: var(--color-dark-wine-50);
+    border: 1px solid var(--color-dark-wine-200);
+    color: var(--color-dark-wine-700);
+  }
+
+  .alert-success {
+    background-color: var(--color-sage-green-50);
+    border: 1px solid var(--color-sage-green-200);
+    color: var(--color-sage-green-700);
+  }
+
+  .alert-warning {
+    background-color: var(--color-harvest-orange-50);
+    border: 1px solid var(--color-harvest-orange-200);
+    color: var(--color-harvest-orange-700);
+  }
+
+  .alert-icon {
+    @apply text-xl shrink-0 mt-0.5;
+  }
+
+  .alert-message {
+    @apply text-sm;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply font-medium rounded-lg cursor-pointer;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    background-color: var(--color-ocean-blue-600);
+    color: #ffffff;
+    &:hover {
+      background-color: var(--color-ocean-blue-700);
+    }
+    &:active {
+      background-color: var(--color-ocean-blue-800);
+    }
+    &:focus {
+      --tw-ring-color: var(--color-ocean-blue-500);
+    }
+  }
+
+  .btn-lg {
+    @apply w-full px-5 py-2.5 sm:px-6 sm:py-3;
+    @apply text-sm sm:text-base;
+  }
+
+  .btn-md {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .auth-form {
+    @apply space-y-4 sm:space-y-5;
+  }
+
+  .auth-form-actions {
+    @apply pt-3 sm:pt-4;
+  }
 }

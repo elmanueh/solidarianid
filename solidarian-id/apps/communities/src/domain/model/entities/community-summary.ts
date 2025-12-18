@@ -1,5 +1,5 @@
 import { Entity } from '@app/ddd/entity';
-import { UniqueEntityID } from '@app/ddd/unique-entity-id';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
 interface CommunitySummaryProps {
   name: string;

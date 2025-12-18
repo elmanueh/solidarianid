@@ -6,12 +6,15 @@ export class CommunityEntityMapper {
   static toCommunitySummaryDomain(
     community: CommunityEntity,
   ): CommunitySummary {
+    const idOrError = UniqueEntityID.create(community.id);
+
+    if (idOrError.isLeft()) {
+      throw idOrError.value;
+    }
+
     return CommunitySummary.create(
-      {
-        name: community.name,
-        description: community.description,
-      },
-      UniqueEntityID.create(community.id) as UniqueEntityID,
+      { name: community.name, description: community.description },
+      idOrError.value,
     );
   }
 }

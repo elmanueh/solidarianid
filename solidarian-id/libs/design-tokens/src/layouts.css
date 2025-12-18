@@ -1,30 +1,65 @@
+/* Elementos reutilizables en los layout de la aplicación Solidarian ID */
 @layer components {
+  /* Footer */
   .footer {
-    background-color: var(--color-gray-100);
+    @apply border-t border-t-gray-300 p-2 pt-6;
   }
   .footer-top {
     display: grid;
-    grid-template-columns: auto auto auto auto;
-    margin-bottom: calc(var(--spacing) * 4);
+    grid-template-columns: 1fr;
     text-align: center;
   }
+
   .footer-top h3 {
-    font-size: var(--text-xl);
-    margin-bottom: calc(var(--spacing) * 2);
-    font-weight: bold;
+    @apply mb-6 uppercase;
   }
 
-  .footer-top a {
-    @apply mb-2;
+  .footer-top-section {
+    @apply flex flex-col;
+  }
+
+  .footer-top li {
+    @apply mb-4;
   }
 
   .footer-top a span {
-    @apply cursor-pointer p-1 rounded-md;
+    @apply cursor-pointer p-2 rounded-md hover:bg-gray-200;
   }
 
   .footer-bottom {
     display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     justify-content: space-between;
-    margin: calc(var(--spacing) * 2);
+    margin: calc(var(--spacing) * 3);
   }
+
+  .footer-social-icons {
+    @apply flex gap-2;
+  }
+
+  .footer-social-icons span {
+    @apply cursor-pointer p-3 hover:brightness-130;
+  }
+
+  /* Footer media queries */
+  @media (min-width: 390px) {
+    .footer-top section {
+      @apply mb-6;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .footer-top {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-top {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Header */
 }

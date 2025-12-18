@@ -52,9 +52,17 @@ Se hará uso de la página https://yesicon.app/ para buscar iconos que se adapte
 - Asegurar que todos los elementos interactivos sean accesibles mediante teclado. Esto se logra utilizando atributos como `tabindex` y asegurando que los elementos tengan un enfoque visible.
 - Proporcionar texto alternativo para todas las imágenes y elementos multimedia utilizando el atributo `alt`.
 - Asegurar que los formularios tengan etiquetas asociadas correctamente utilizando la etiqueta `<label>`.
-- Utilizar roles ARIA y atributos para mejorar la accesibilidad de los componentes personalizados.
+- Utilizar roles ARIA (apartado siguiente) y atributos para mejorar la accesibilidad de los componentes personalizados.
 - Texto normal >= 4.5:1 de contraste con el fondo.
 - Texto grande >= 3:1
+
+## ¿Cuando uso un ROLE ARIA?
+
+- Cuando un elemento no es semántico por sí mismo (por ejemplo, un `<div>` o `<span>` que actúa como botón).
+- Inputs sin <label> visible
+- Regiones cuando hay varias iguales en la misma página (ejemplo: varios menús, varias barras de navegación, etc.)
+- No se pone en elementos decorativos o semanticos (ejemplo: un `<button>` no necesita role="button")
+- No se usa para describir estilos visuales (ejemplo: no se pone role="bold" o role="red")
 
 ## ¿Como compruebo que un componente es válido?
 

@@ -1,0 +1,30 @@
+@layer components {
+  .footer {
+    background-color: var(--color-gray-100);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    margin-bottom: calc(var(--spacing) * 4);
+    text-align: center;
+  }
+  .footer-top h3 {
+    font-size: var(--text-xl);
+    margin-bottom: calc(var(--spacing) * 2);
+    font-weight: bold;
+  }
+
+  .footer-top a {
+    @apply mb-2;
+  }
+
+  .footer-top a span {
+    @apply cursor-pointer p-1 rounded-md;
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    margin: calc(var(--spacing) * 2);
+  }
+}

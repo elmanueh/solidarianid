@@ -38,6 +38,14 @@ https://coolors.co/308dc0-e67c27-78a33c-d3be89-7a2626
 
 ## Tipografía
 
+## Iconos
+
+Se hará uso de la página https://yesicon.app/ para buscar iconos que se adapten al diseño. En caso de no encontrar un icono adecuado, se podrá crear uno personalizado siguiendo las siguientes pautas:
+
+- Mantener un estilo consistente con los iconos existentes en cuanto a grosor de línea, tamaño y forma.
+- Utilizar SVG para la creación de iconos personalizados, asegurando que sean escalables y de alta calidad.
+- Si el icono empleado no existe en la librería, se depositará en la carpeta /icons en formato texto-largoxalto.[extensión]. Ejemplo: search-24x24.svg
+
 ## Accesibilidad
 
 - Usar siempre etiquetas semánticas de HTML5.
@@ -52,5 +60,17 @@ https://coolors.co/308dc0-e67c27-78a33c-d3be89-7a2626
 
 - No tiene código HEX hardcodeado. [x]
 - El contraste AA o AAA ha sido verificado en todo (texto, focus, inputs) [x]
-- Los estados no solo dependen de un color [x]
- 
+- Los estados no solo dependen de un color (estado + icono) [x]
+- Todos los elementos tienen etiquetas semánticas o roles ARIA [x]
+- Los elementos usados pasan las normas mencionadas en https://www.w3.org/WAI/standards-guidelines/act/rules/ [x]
+
+## Herramientas recomendadas
+
+- Extensión de Chrome Accessibility Insights:
+  https://chromewebstore.google.com/detail/accessibility-insights-fo/pbjjkligggfmakdaogkfomddhfmpjeni
+- Herramienta de contraste de WebAIM:
+  https://webaim.org/resources/contrastchecker/
+- Evaluador de accesibilidad Silktide:
+  https://silktide.com/toolbar/
+- Guía para desarrollar bien con accesibilidad:
+  https://developer.mozilla.org/es/docs/Learn_web_development/Core/Accessibility

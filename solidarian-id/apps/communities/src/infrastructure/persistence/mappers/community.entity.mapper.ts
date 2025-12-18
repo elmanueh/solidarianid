@@ -1,4 +1,4 @@
-import { UniqueEntityID } from '@app/ddd/unique-entity-id';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { CommunitySummary } from 'apps/communities/src/domain/model/entities/community-summary';
 import { CommunityEntity } from 'apps/communities/src/infrastructure/persistence/entities/community.entity';
 
@@ -11,7 +11,7 @@ export class CommunityEntityMapper {
         name: community.name,
         description: community.description,
       },
-      UniqueEntityID.create(community.id),
+      UniqueEntityID.create(community.id) as UniqueEntityID,
     );
   }
 }

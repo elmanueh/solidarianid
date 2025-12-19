@@ -1,13 +1,13 @@
 import { Either, left, right } from '@app/ddd/either';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { RepositoryTypeORM } from '@app/ddd/repository/repository-typeorm';
 import { Repository as TypeOrmRepository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Community } from 'apps/communities/src/domain/model/entities/community';
-import { CommunitiesRepositoryPort as CommunitiesRepositoryPort } from 'apps/communities/src/domain/ports/communities.repository.port';
 import { CommunityEntity } from 'apps/communities/src/infrastructure/persistence/entities/community.entity';
 import { CommunityMapper } from 'apps/communities/src/infrastructure/persistence/mappers/community.mapper';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { CommunitiesRepositoryPort } from 'apps/communities/src/domain/ports/communities.repository.port';
 
 @Injectable()
 export class CommunitiesRepositoryAdapter
@@ -23,7 +23,7 @@ export class CommunitiesRepositoryAdapter
   }
 
   async getAllCommunitiesSummary(): Promise<
-    Either<RepositoryException, Community[]>
+    Either<ValidationError, Community[]>
   > {
     const communities = await this.communityRepository.find({
       select: ['id', 'name', 'description'],

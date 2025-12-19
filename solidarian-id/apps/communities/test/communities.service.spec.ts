@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { right } from '@app/ddd/either';
 import { CommunitiesServiceImpl } from '../src/application/services/communities.service.impl';
 import { CommunitiesRepositoryPort } from '../src/domain/ports/communities.repository.port';
 
@@ -22,24 +23,18 @@ describe('CommunitiesServiceImpl', () => {
   });
 
   it('returns empty array when repository returns []', async () => {
-    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce({
-      isLeft: () => false,
-      value: [],
-    });
-    await expect(service.getCommunities()).resolves.toEqual([]);
+    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce(right([]));
+    await expect(service.getCommunities()).resolves.toEqual(right([]));
     expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
   });
 
   it('returns summaries when repository returns data', async () => {
     const data = [
-      { id: '1', name: 'Com1', description: 'desc1' },
-      { id: '2', name: 'Com2', description: 'desc2' },
+      { id: '1', name: 'Comunidad 1', description: 'Esta es la comunidad 1' },
+      { id: '2', name: 'Comunidad 2', description: 'Esta es la comunidad 2' },
     ];
-    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce({
-      isLeft: () => false,
-      value: data,
-    });
-    await expect(service.getCommunities()).resolves.toEqual(data);
+    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce(right(data));
+    await expect(service.getCommunities()).resolves.toEqual(right(data));
     expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
   });
 });

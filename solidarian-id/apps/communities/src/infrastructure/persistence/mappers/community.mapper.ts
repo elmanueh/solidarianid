@@ -1,6 +1,6 @@
 import { Either, left, right } from '@app/ddd/either';
 import { Mapper } from '@app/ddd/repository/mapper';
-import { InvalidUniqueEntityIDError } from '@app/value-objects/errors/validation/unique-entity-id-validation-error';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Injectable } from '@nestjs/common';
 import { Community } from 'apps/communities/src/domain/model/entities/community';
@@ -17,9 +17,7 @@ export class CommunityMapper implements Mapper<Community, CommunityEntity> {
     return entity;
   }
 
-  fromPersistence(
-    entity: CommunityEntity,
-  ): Either<InvalidUniqueEntityIDError, Community> {
+  fromPersistence(entity: CommunityEntity): Either<ValidationError, Community> {
     const id = UniqueEntityID.create(entity.id);
 
     if (id.isLeft()) {
@@ -31,9 +29,13 @@ export class CommunityMapper implements Mapper<Community, CommunityEntity> {
         name: entity.name,
         description: entity.description,
       },
-      id.value,
+      id.value.value,
     );
 
-    return right(model);
+    if (model.isLeft()) {
+      return left(model.value);
+    }
+
+    return right(model.value);
   }
 }

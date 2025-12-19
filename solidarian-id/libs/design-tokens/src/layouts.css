@@ -2,7 +2,7 @@
 @layer components {
   /* Footer */
   .footer {
-    @apply border-t border-t-gray-300 p-2 pt-6;
+    @apply border-t p-2 pt-6;
     background-color: var(--color-ocean-blue-900);
     color: white;
   }
@@ -66,5 +66,37 @@
     }
   }
 
-  /* Header */
+  /* dashboard */
+  .dashboard {
+    @apply grid grid-cols-[14rem_1fr] min-h-screen;
+  }
+
+  .aside {
+    background-color: var(--color-ocean-blue-500);
+    @apply text-white flex flex-col;
+  }
+
+  .aside-menu {
+    @apply flex flex-col gap-4 m-6 text-xl;
+  }
+
+  .aside-menu a {
+    @apply flex px-3 py-2 rounded-md hover:bg-white/10;
+  }
+
+  .aside-menu a.active {
+    @apply bg-white/20 font-semibold;
+  }
+
+  .aside-menu-item {
+    @apply flex items-center gap-2;
+  }
+
+  .aside-logo-container {
+    @apply flex flex-col items-center gap-2 mb-6 mt-8 font-bold text-2xl;
+  }
+
+  .aside-logout {
+    @apply cursor-pointer text-start mt-auto p-6 rounded-md hover:bg-white/10 text-xl flex items-center gap-2;
+  }
 }

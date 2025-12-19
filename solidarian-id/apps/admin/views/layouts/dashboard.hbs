@@ -10,12 +10,13 @@
       media='screen'
       href='/css/main.css'
     />
+    <script src="/js/aside.js"></script>
   </head>
-  <body class="min-h-screen flex flex-col">
-    {{>header}}
-    <main class="flex-1">
+  <body>
+    <div class="dashboard">
+      {{>aside}}
       {{{body}}}
-    </main>
+    </div>
     {{>footer}}
   </body>
 </html>

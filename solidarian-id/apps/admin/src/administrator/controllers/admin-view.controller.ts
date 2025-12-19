@@ -23,4 +23,13 @@ export class AdminViewController {
       layout: 'dashboard',
     };
   }
+
+  @Get('/reports')
+  @Render('pages/reports')
+  reports() {
+    return {
+      title: 'Reportes',
+      layout: 'dashboard',
+    };
+  }
 }

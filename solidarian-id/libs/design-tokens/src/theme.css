@@ -1,8 +1,8 @@
 @theme {
   /* Fuentes */
-  --font-sans: system-ui;
+  --font-sans: 'Inter', sans-serif;
 
-  /* Colores primarios */
+  /* Colores */
   --color-ocean-blue-50: #ebf5fa;
   --color-ocean-blue-100: #d6eaf5;
   --color-ocean-blue-200: #add5eb;

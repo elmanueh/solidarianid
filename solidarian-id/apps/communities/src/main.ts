@@ -1,13 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { CommunitiesModule } from './communities.module';
-import { AppDataSource } from 'apps/communities/src/infrastructure/persistence/data-source';
+import { AppModule } from 'apps/communities/src/app.module';
 
 async function bootstrap() {
-  if (!AppDataSource.isInitialized) {
-    await AppDataSource.initialize();
-  }
-
-  const app = await NestFactory.create(CommunitiesModule);
+  const app = await NestFactory.create(AppModule);
   await app.listen(process.env.port ?? 3000);
 }
-bootstrap();
+
+void bootstrap();

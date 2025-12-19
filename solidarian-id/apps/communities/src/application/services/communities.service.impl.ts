@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommunitySummary } from 'apps/communities/src/domain/model/entities/community-summary';
+import { Community } from 'apps/communities/src/domain/model/entities/community';
 import { CommunitiesRepository } from 'apps/communities/src/domain/ports/communities.repository';
 import { CommunitiesService } from 'apps/communities/src/domain/services/communities.service';
 
@@ -9,7 +9,13 @@ export class CommunitiesServiceImpl extends CommunitiesService {
     super();
   }
 
-  getCommunities(): Promise<CommunitySummary[]> {
-    return this.communityRepository.getAllCommunitiesSummary();
+  async getCommunities(): Promise<Community[]> {
+    const result = await this.communityRepository.getAllCommunitiesSummary();
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return result.value;
   }
 }

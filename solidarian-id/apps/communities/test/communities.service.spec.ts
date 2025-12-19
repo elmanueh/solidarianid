@@ -22,7 +22,10 @@ describe('CommunitiesServiceImpl', () => {
   });
 
   it('returns empty array when repository returns []', async () => {
-    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce([]);
+    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce({
+      isLeft: () => false,
+      value: [],
+    });
     await expect(service.getCommunities()).resolves.toEqual([]);
     expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
   });
@@ -32,7 +35,10 @@ describe('CommunitiesServiceImpl', () => {
       { id: '1', name: 'Com1', description: 'desc1' },
       { id: '2', name: 'Com2', description: 'desc2' },
     ];
-    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce(data);
+    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce({
+      isLeft: () => false,
+      value: data,
+    });
     await expect(service.getCommunities()).resolves.toEqual(data);
     expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
   });

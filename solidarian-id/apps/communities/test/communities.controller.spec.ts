@@ -23,7 +23,10 @@ describe('CommunitiesController', () => {
   });
 
   it('returns [] when repository returns empty array', async () => {
-    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce([]);
+    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce({
+      isLeft: () => false,
+      value: [],
+    });
     await expect(controller.getPublicCommunities()).resolves.toEqual([]);
     expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
   });
@@ -37,7 +40,10 @@ describe('CommunitiesController', () => {
       { id: '1', name: 'Com1', description: 'desc1' },
       { id: '2', name: 'Com2', description: 'desc2' },
     ];
-    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce(domainData);
+    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce({
+      isLeft: () => false,
+      value: domainData,
+    });
     await expect(controller.getPublicCommunities()).resolves.toEqual(
       expectedDtos,
     );

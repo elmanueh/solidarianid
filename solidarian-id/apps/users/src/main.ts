@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-import { UsersModule } from './users.module';
+import { AppModule } from '@app/users/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(UsersModule);
+  const app = await NestFactory.create(AppModule);
 
   // Habilitar validación global de DTOs
   app.useGlobalPipes(
@@ -16,4 +16,5 @@ async function bootstrap() {
 
   await app.listen(process.env.port ?? 3000);
 }
-bootstrap();
+
+void bootstrap();

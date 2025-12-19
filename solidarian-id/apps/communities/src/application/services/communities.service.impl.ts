@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Community } from 'apps/communities/src/domain/model/entities/community';
-import { CommunitiesRepository } from 'apps/communities/src/domain/ports/communities.repository';
+import { CommunitiesRepositoryPort } from 'apps/communities/src/domain/ports/communities.repository.port';
 import { CommunitiesService } from 'apps/communities/src/domain/services/communities.service';
 
 @Injectable()
 export class CommunitiesServiceImpl extends CommunitiesService {
-  constructor(private readonly communityRepository: CommunitiesRepository) {
+  constructor(private readonly communityRepository: CommunitiesRepositoryPort) {
     super();
   }
 

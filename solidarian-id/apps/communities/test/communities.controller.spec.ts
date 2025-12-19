@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CommunitiesController } from '../src/infrastructure/presentation/controllers/communities.controller';
 import { CommunitiesServiceImpl } from '../src/application/services/communities.service.impl';
-import { CommunitiesRepository } from '../src/domain/ports/communities.repository';
+import { CommunitiesRepositoryPort } from '../src/domain/ports/communities.repository.port';
 import { CommunitiesService } from '../src/domain/services/communities.service';
 
 describe('CommunitiesController', () => {
@@ -15,7 +15,7 @@ describe('CommunitiesController', () => {
       controllers: [CommunitiesController],
       providers: [
         { provide: CommunitiesService, useClass: CommunitiesServiceImpl },
-        { provide: CommunitiesRepository, useValue: mockRepo },
+        { provide: CommunitiesRepositoryPort, useValue: mockRepo },
       ],
     }).compile();
 

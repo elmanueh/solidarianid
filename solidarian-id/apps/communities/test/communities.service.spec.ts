@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CommunitiesServiceImpl } from '../src/application/services/communities.service.impl';
-import { CommunitiesRepository } from '../src/domain/ports/communities.repository';
+import { CommunitiesRepositoryPort } from '../src/domain/ports/communities.repository.port';
 
 describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;
@@ -14,7 +14,7 @@ describe('CommunitiesServiceImpl', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CommunitiesServiceImpl,
-        { provide: CommunitiesRepository, useValue: mockRepo },
+        { provide: CommunitiesRepositoryPort, useValue: mockRepo },
       ],
     }).compile();
 

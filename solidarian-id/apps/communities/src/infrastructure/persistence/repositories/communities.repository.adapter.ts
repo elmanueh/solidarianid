@@ -5,12 +5,12 @@ import { Repository as TypeOrmRepository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Community } from 'apps/communities/src/domain/model/entities/community';
-import { CommunitiesRepository as CommunitiesRepositoryPort } from 'apps/communities/src/domain/ports/communities.repository';
+import { CommunitiesRepositoryPort as CommunitiesRepositoryPort } from 'apps/communities/src/domain/ports/communities.repository.port';
 import { CommunityEntity } from 'apps/communities/src/infrastructure/persistence/entities/community.entity';
 import { CommunityMapper } from 'apps/communities/src/infrastructure/persistence/mappers/community.mapper';
 
 @Injectable()
-export class CommunitiesRepositoryTypeORM
+export class CommunitiesRepositoryAdapter
   extends RepositoryTypeORM<Community, CommunityEntity>
   implements CommunitiesRepositoryPort
 {

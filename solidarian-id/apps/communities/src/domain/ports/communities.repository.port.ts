@@ -3,7 +3,7 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 import { Repository } from '@app/ddd/repository/repository';
 import { Community } from 'apps/communities/src/domain/model/entities/community';
 
-export abstract class CommunitiesRepository extends Repository<Community> {
+export abstract class CommunitiesRepositoryPort extends Repository<Community> {
   abstract getAllCommunitiesSummary(): Promise<
     Either<RepositoryException, Community[]>
   >;

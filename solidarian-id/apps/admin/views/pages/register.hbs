@@ -1,0 +1,243 @@
+<section class='auth-container' aria-labelledby='register-title'>
+
+  <div
+    id='form-announcer'
+    class='sr-only'
+    aria-live='assertive'
+    aria-atomic='true'
+  ></div>
+
+  <div class='auth-card'>
+    <header class='auth-header'>
+      <img
+        src='/icons/solidarian-128x128.png'
+        alt='SolidarianID Logo'
+        class='auth-logo'
+      />
+      <h1 id='register-title' class='auth-title'>
+        Registro de Administrador
+      </h1>
+      <p class='auth-subtitle'>
+        Empieza a gestionar SolidarianID
+      </p>
+    </header>
+    {{#if error}}
+      <div class='alert alert-error' role='alert' aria-live='polite'>
+        <span
+          class='alert-icon icon-[lucide--alert-circle]'
+          aria-hidden='true'
+        ></span>
+        <p class='alert-message'>{{error}}</p>
+      </div>
+    {{/if}}
+
+    <form
+      id='register-form'
+      class='auth-form'
+      method='POST'
+      action='/register'
+      novalidate
+    >
+      <div class='form-group'>
+        <label for='firstName' class='form-label'>
+          Nombre
+          <span class='form-label-required' aria-label='obligatorio'>*</span>
+        </label>
+        <div class='input-wrapper'>
+          <span
+            class='input-icon icon-[lucide--user]'
+            aria-hidden='true'
+          ></span>
+          <input
+            type='text'
+            id='firstName'
+            name='firstName'
+            class='form-input form-input-with-icon'
+            placeholder='Ej: María'
+            required
+            autocomplete='given-name'
+            aria-describedby='firstName-help firstName-error'
+            aria-required='true'
+          />
+          <span class='input-icon-status' aria-hidden='true'></span>
+        </div>
+        <span id='firstName-help' class='form-help'>Solo letras y espacios
+          permitidos</span>
+        <span id='firstName-error' class='form-error' role='alert'></span>
+      </div>
+
+      <div class='form-group'>
+        <label for='lastName' class='form-label'>
+          Apellidos
+          <span class='form-label-required' aria-label='obligatorio'>*</span>
+        </label>
+        <div class='input-wrapper'>
+          <span
+            class='input-icon icon-[lucide--users]'
+            aria-hidden='true'
+          ></span>
+          <input
+            type='text'
+            id='lastName'
+            name='lastName'
+            class='form-input form-input-with-icon'
+            placeholder='Ej: García López'
+            required
+            autocomplete='family-name'
+            aria-describedby='lastName-help lastName-error'
+            aria-required='true'
+          />
+          <span class='input-icon-status' aria-hidden='true'></span>
+        </div>
+        <span id='lastName-help' class='form-help'>Solo letras y espacios
+          permitidos</span>
+        <span id='lastName-error' class='form-error' role='alert'></span>
+      </div>
+
+      <div class='form-group'>
+        <label for='email' class='form-label'>
+          Correo electrónico
+          <span class='form-label-required' aria-label='obligatorio'>*</span>
+        </label>
+        <div class='input-wrapper'>
+          <span
+            class='input-icon icon-[lucide--mail]'
+            aria-hidden='true'
+          ></span>
+          <input
+            type='email'
+            id='email'
+            name='email'
+            class='form-input form-input-with-icon'
+            placeholder='Ej: admin@solidarianid.org'
+            required
+            autocomplete='email'
+            aria-describedby='email-error'
+            aria-required='true'
+          />
+          <span class='input-icon-status' aria-hidden='true'></span>
+        </div>
+        <span id='email-error' class='form-error' role='alert'></span>
+      </div>
+
+      <div class='form-group'>
+        <label for='phone' class='form-label'>
+          Teléfono
+          <span class='form-label-required' aria-label='obligatorio'>*</span>
+        </label>
+        <div class='input-wrapper'>
+          <span
+            class='input-icon icon-[lucide--phone]'
+            aria-hidden='true'
+          ></span>
+          <input
+            type='tel'
+            id='phone'
+            name='phone'
+            class='form-input form-input-with-icon'
+            placeholder='Ej: 612345678'
+            required
+            autocomplete='tel'
+            aria-describedby='phone-help phone-error'
+            aria-required='true'
+          />
+          <span class='input-icon-status' aria-hidden='true'></span>
+        </div>
+        <span id='phone-help' class='form-help'>Formato: 612345678 o
+          +34612345678</span>
+        <span id='phone-error' class='form-error' role='alert'></span>
+      </div>
+
+      <div class='form-group'>
+        <label for='password' class='form-label'>
+          Contraseña
+          <span class='form-label-required' aria-label='obligatorio'>*</span>
+        </label>
+        <div class='input-wrapper'>
+          <span
+            class='input-icon icon-[lucide--lock]'
+            aria-hidden='true'
+          ></span>
+          <input
+            type='password'
+            id='password'
+            name='password'
+            class='form-input form-input-with-toggle'
+            placeholder='Mínimo 8 caracteres'
+            required
+            autocomplete='new-password'
+            aria-describedby='password-help password-error'
+            aria-required='true'
+          />
+          <button
+            type='button'
+            class='password-toggle'
+            aria-label='Mostrar contraseña'
+            aria-controls='password'
+            aria-pressed='false'
+          >
+            <span class='icon-[lucide--eye]' aria-hidden='true'></span>
+          </button>
+          <span class='input-icon-status' aria-hidden='true'></span>
+        </div>
+        <span id='password-help' class='form-help'>
+          Mínimo 8 caracteres, una mayúscula, una minúscula y un número
+        </span>
+        <span id='password-error' class='form-error' role='alert'></span>
+      </div>
+
+      <div class='form-group'>
+        <label for='confirmPassword' class='form-label'>
+          Confirmar contraseña
+          <span class='form-label-required' aria-label='obligatorio'>*</span>
+        </label>
+        <div class='input-wrapper'>
+          <span
+            class='input-icon icon-[lucide--lock-keyhole]'
+            aria-hidden='true'
+          ></span>
+          <input
+            type='password'
+            id='confirmPassword'
+            name='confirmPassword'
+            class='form-input form-input-with-toggle'
+            placeholder='Repite tu contraseña'
+            required
+            autocomplete='new-password'
+            aria-describedby='confirmPassword-error'
+            aria-required='true'
+          />
+          <button
+            type='button'
+            class='password-toggle'
+            aria-label='Mostrar contraseña'
+            aria-controls='confirmPassword'
+            aria-pressed='false'
+          >
+            <span class='icon-[lucide--eye]' aria-hidden='true'></span>
+          </button>
+          <span class='input-icon-status' aria-hidden='true'></span>
+        </div>
+        <span id='confirmPassword-error' class='form-error' role='alert'></span>
+      </div>
+
+      <div class='auth-form-actions'>
+        <button type='submit' class='btn btn-primary btn-lg'>
+          <span class='icon-[lucide--user-plus]' aria-hidden='true'></span>
+          <span>Crear cuenta de administrador</span>
+        </button>
+      </div>
+    </form>
+
+    <footer class='auth-footer'>
+      <p>
+        ¿Ya tienes una cuenta?
+        <a href='/login' class='auth-footer-link'>
+          Inicia sesión aquí
+        </a>
+      </p>
+    </footer>
+  </div>
+</section>
+
+<script defer src='/js/register-validation.js'></script>

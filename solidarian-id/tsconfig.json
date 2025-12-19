@@ -20,6 +20,7 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
+    "allowJs": true,
     "paths": {
       "@app/ddd": ["libs/ddd/src"],
       "@app/ddd/*": ["libs/ddd/src/*"],

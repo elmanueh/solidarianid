@@ -3,6 +3,8 @@
   /* Footer */
   .footer {
     @apply border-t border-t-gray-300 p-2 pt-6;
+    background-color: var(--color-ocean-blue-900);
+    color: white;
   }
   .footer-top {
     display: grid;
@@ -23,7 +25,10 @@
   }
 
   .footer-top a span {
-    @apply cursor-pointer p-2 rounded-md hover:bg-gray-200;
+    @apply cursor-pointer p-2 rounded-md;
+    &:hover {
+      background-color: var(--color-ocean-blue-800);
+    }
   }
 
   .footer-bottom {

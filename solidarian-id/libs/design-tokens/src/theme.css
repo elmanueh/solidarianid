@@ -1,6 +1,9 @@
 @theme {
   /* Fuentes */
-  --font-sans: system-ui /* Colores */ --color-ocean-blue-50: #ebf5fa;
+  --font-sans: system-ui;
+
+  /* Colores primarios */
+  --color-ocean-blue-50: #ebf5fa;
   --color-ocean-blue-100: #d6eaf5;
   --color-ocean-blue-200: #add5eb;
   --color-ocean-blue-300: #85c0e0;

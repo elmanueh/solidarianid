@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { CommunitySummaryDto } from 'apps/communities/src/infrastructure/presentation/dto/out/community.summay.dto';
 import { CommunityMapper } from 'apps/communities/src/infrastructure/presentation/mappers/community.mapper';
 import { CommunitiesService } from 'apps/communities/src/domain/services/communities.service';
+import { CommunitySummaryDto } from 'apps/communities/src/infrastructure/presentation/dto/output/community-summary.dto';
 
 @Controller('communities')
 export class CommunitiesController {

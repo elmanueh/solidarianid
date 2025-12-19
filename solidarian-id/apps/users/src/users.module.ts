@@ -1,27 +1,33 @@
 import { Module } from '@nestjs/common';
 import { UsersController } from './infrastructure/presentation/controllers/users.controller';
 import { UsersService } from './application/services/users.service';
-import { UserServicePort } from './domain/ports/in/users.service.port';
-import { UsersRepositoryPort } from './domain/ports/out/users.repository.port';
-import { TypeOrmUsersRepository } from './infrastructure/persistence/repositories/typeorm-users.repository';
-import { PasswordHasherPort } from '@app/utils/password-hasher/password-hasher.port';
-import { PasswordHasher } from '@app/utils/password-hasher/password-hasher';
+import { UsersRepositoryPort } from './domain/ports/output/users.repository.port';
+import { UsersServicePort } from './domain/ports/input/users.service.port';
+import { UsersRepositoryTypeORM } from './infrastructure/persistence/repositories/users-typeorm.repository';
+import { UserMapper } from './infrastructure/persistence/mappers/user.mapper';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './infrastructure/persistence/entities/user.entity';
 
 @Module({
-  imports: [],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'solidarianid.db',
+      entities: [UserEntity],
+      synchronize: true,
+    }),
+    TypeOrmModule.forFeature([UserEntity]),
+  ],
   controllers: [UsersController],
   providers: [
+    UserMapper,
     {
-      provide: UserServicePort,
+      provide: UsersServicePort,
       useClass: UsersService,
     },
     {
-      provide: PasswordHasherPort,
-      useClass: PasswordHasher,
-    },
-    {
       provide: UsersRepositoryPort,
-      useClass: TypeOrmUsersRepository,
+      useClass: UsersRepositoryTypeORM,
     },
   ],
 })

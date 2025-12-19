@@ -6,7 +6,7 @@ import {
   IsISO31661Alpha2,
 } from 'class-validator';
 
-export class RegisterUserDto {
+export class RegisterUserDtoRequest {
   @IsString()
   @IsNotEmpty()
   @MinLength(10)

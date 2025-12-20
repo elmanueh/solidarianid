@@ -3,6 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { join } from 'path';
 import { engine } from 'express-handlebars';
+import { HttpExceptionFilter } from './administrator/controllers/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -23,6 +24,9 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, 'public'));
 
   app.set('view cache', false);
+
+  // Configurar filtro global de excepciones HTTP
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(3000);
 }

@@ -1,0 +1,28 @@
+<main class='error-page'>
+  <div class='error-content' role='alert' aria-live='assertive'>
+    <h1 class='error-code' tabindex='-1'>Error {{statusCode}}</h1>
+    <h2 class='error-title'>{{errorTitle}}</h2>
+    <p class='error-message'>{{message}}</p>
+    <span
+      class='icon-[si--error-duotone] text-[200px] text-ocean-blue-500'
+      role='img'
+      aria-hidden='true'
+    ></span>
+    <div class='error-actions'>
+      <button
+        id='btnDashboard'
+        class='btn btn-primary btn-lg'
+        aria-describedby='error-description'
+      >
+        <span aria-hidden='true'>←</span>
+        Volver al Dashboard
+      </button>
+      {{#if showHomeLink}}
+        <button type='button' id='btnHome' class='btn btn-secondary btn-lg'>
+          Ir al Inicio
+        </button>
+      {{/if}}
+    </div>
+  </div>
+</main>
+<script src='/js/error.js'></script>

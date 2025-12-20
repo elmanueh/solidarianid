@@ -41,12 +41,8 @@ export class Community extends AggregateRoot<CommunityProps> {
     const description = Description.create(props.description);
     const uniqueId = id ? UniqueEntityID.create(id) : undefined;
 
-    if (name.isLeft()) {
-      return left(name.value);
-    }
-    if (description.isLeft()) {
-      return left(description.value);
-    }
+    if (name.isLeft()) return left(name.value);
+    if (description.isLeft()) return left(description.value);
     if (uniqueId != undefined && uniqueId.isLeft()) return left(uniqueId.value);
 
     const communityProps: CommunityProps = {

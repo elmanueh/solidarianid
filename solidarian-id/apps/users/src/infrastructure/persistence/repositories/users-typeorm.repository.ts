@@ -7,6 +7,7 @@ import { RepositoryTypeORM } from '@app/ddd/repository/repository-typeorm';
 import { Repository as TypeOrmRepository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
+import { Username } from '@app/value-objects/model/username';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryError } from '@app/users/domain/errors/repository-error';
 
@@ -30,6 +31,31 @@ export class UsersRepositoryTypeORM
       // Realizar la consulta a la base de datos
       const count = await this.usersRepository.count({
         where: { mobilePhone: mobilePhone.value },
+      });
+
+      // Devolver true si existe, false si no
+      return right(count > 0);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Unknown error checking mobile phone';
+
+      return left(
+        new RepositoryError(
+          `Failed to check if mobile phone exists: ${errorMessage}`,
+        ),
+      );
+    }
+  }
+
+  async existsByUsername(
+    username: Username,
+  ): Promise<Either<RepositoryError, boolean>> {
+    try {
+      // Realizar la consulta a la base de datos
+      const count = await this.usersRepository.count({
+        where: { username: username.value },
       });
 
       // Devolver true si existe, false si no

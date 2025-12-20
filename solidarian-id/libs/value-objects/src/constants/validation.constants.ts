@@ -10,7 +10,6 @@ export const USERNAME_REGEX = /^[a-zA-Z0-9]+$/;
 
 // ==================== MOBILE PHONE VALIDATION ====================
 export const MOBILE_PHONE_REGEX = /^\+\d{1,3}\d{9}$/;
-
 // ==================== USER LOCATION VALIDATION ====================
 export const CITY_MIN_LENGTH = 1;
 export const CITY_MAX_LENGTH = 25;

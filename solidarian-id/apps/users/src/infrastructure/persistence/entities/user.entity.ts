@@ -5,16 +5,19 @@ export class UserEntity {
   @PrimaryColumn('uuid', { name: 'Id' })
   id: string;
 
-  @Column({ name: 'MobilePhone', unique: true })
+  @Column({
+    name: 'MobilePhone',
+    unique: true,
+  })
   mobilePhone: string;
 
-  @Column({ name: 'Username' })
+  @Column({ name: 'Username', unique: true })
   username: string;
 
   @Column({ name: 'HashedPassword', length: 255 })
   hashedPassword: string;
 
-  @Column({ name: 'City', length: 25 })
+  @Column({ name: 'City' })
   city: string;
 
   @Column({ name: 'CountryCode', length: 2 })

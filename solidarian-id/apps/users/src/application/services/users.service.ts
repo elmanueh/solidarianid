@@ -21,36 +21,49 @@ export class UsersService extends UsersServicePort {
   async registerUser(
     command: RegisterUserCommand,
   ): Promise<Either<EvalError, string>> {
-    // 1. Crear Value Object de mobile phone
+    // 1. Crear Value Object de mobile phone y de username que deben ser unicos
     const phoneResult = MobilePhone.create(command.mobilePhone);
     if (phoneResult.isLeft()) {
       return left(phoneResult.value);
     }
+    const usernameResult = Username.create(command.username);
+    if (usernameResult.isLeft()) {
+      return left(usernameResult.value);
+    }
 
     // 2. Comprobar si el numero de telefono ya existe
-    const userExists = await this.usersRepository.existsByMobilePhone(
+    const userPhoneExists = await this.usersRepository.existsByMobilePhone(
       phoneResult.value,
     );
-    if (userExists.isLeft()) return left(userExists.value);
+    if (userPhoneExists.isLeft()) return left(userPhoneExists.value);
 
-    if (userExists.value)
+    if (userPhoneExists.value)
       return left(
         new MobilePhoneAlreadyTakenError(
           'The provided mobile phone is already signed up in SolidarianID.',
         ),
       );
 
+    // 2bis. Comprobar si el nombre de usuario existe
+    const userNameExists = await this.usersRepository.existsByUsername(
+      usernameResult.value,
+    );
+    if (userNameExists.isLeft()) return left(userNameExists.value);
+
+    if (userNameExists.value)
+      return left(
+        new MobilePhoneAlreadyTakenError(
+          'The provided user name is already signed up in SolidarianID.',
+        ),
+      );
+
     const passwordResult = await Password.create(command.password);
-    const usernameResult = Username.create(command.username);
     const locationResult = UserLocation.create(
       command.city,
       command.countryCode,
     );
 
     // 3. Validar Either's
-    if (usernameResult.isLeft()) {
-      return left(usernameResult.value);
-    }
 
     if (passwordResult.isLeft()) {
       return left(passwordResult.value);

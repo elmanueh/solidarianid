@@ -50,6 +50,7 @@ export class UsersController {
       res
         .status(HttpStatus.CONFLICT)
         .send({ message: userResult.value.message });
+      return;
     }
 
     // Retornar 201 Created con Location header

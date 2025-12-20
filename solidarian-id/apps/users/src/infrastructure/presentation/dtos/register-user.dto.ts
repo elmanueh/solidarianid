@@ -1,4 +1,11 @@
 import {
+  CITY_MAX_LENGTH,
+  CITY_MIN_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+} from '@app/value-objects/constants/validation.constants';
+import {
   IsString,
   IsNotEmpty,
   MinLength,
@@ -9,7 +16,7 @@ import {
 export class RegisterUserDtoRequest {
   @IsString()
   @IsNotEmpty()
-  @MinLength(10)
+  @Length(USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH)
   username: string;
 
   @IsString()
@@ -18,12 +25,12 @@ export class RegisterUserDtoRequest {
 
   @IsString()
   @IsNotEmpty()
-  @MinLength(12)
+  @MinLength(PASSWORD_MIN_LENGTH)
   password: string;
 
   @IsString()
   @IsNotEmpty()
-  @Length(1, 150)
+  @Length(CITY_MIN_LENGTH, CITY_MAX_LENGTH)
   city: string;
 
   @IsISO31661Alpha2()

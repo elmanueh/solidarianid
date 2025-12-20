@@ -1,6 +1,6 @@
 import { Either } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
-import { InvalidUniqueEntityIDError } from '@app/value-objects/errors/validation/unique-entity-id-validation-error';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 
 /**
  * Maps between domain models and persistence entities.
@@ -23,5 +23,5 @@ export abstract class Mapper<TDomain extends Entity<any>, TPersistence> {
    */
   abstract fromPersistence(
     entity: TPersistence,
-  ): Either<InvalidUniqueEntityIDError, TDomain>;
+  ): Either<ValidationError, TDomain>;
 }

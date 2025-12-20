@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CommunitiesController } from '../src/infrastructure/presentation/controllers/communities.controller';
 import { CommunitiesService } from '../src/domain/services/communities.service';
-import { right } from '@app/ddd/either';
+import { right, left } from '@app/ddd/either';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 
 describe('CommunitiesController', () => {
   let controller: CommunitiesController;
@@ -37,6 +38,13 @@ describe('CommunitiesController', () => {
     await expect(controller.getPublicCommunities()).resolves.toEqual(
       expectedDtos,
     );
+    expect(mockService.getCommunities).toHaveBeenCalledTimes(1);
+  });
+
+  it('throws ValidationError when service returns left(ValidationError)', async () => {
+    const err = new ValidationError('invalid data');
+    mockService.getCommunities.mockResolvedValueOnce(left(err));
+    await expect(controller.getPublicCommunities()).rejects.toThrow(err);
     expect(mockService.getCommunities).toHaveBeenCalledTimes(1);
   });
 });

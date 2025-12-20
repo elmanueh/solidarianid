@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { right } from '@app/ddd/either';
+import { right, left } from '@app/ddd/either';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { CommunitiesServiceImpl } from '../src/application/services/communities.service.impl';
 import { CommunitiesRepositoryPort } from '../src/domain/ports/communities.repository.port';
 
@@ -35,6 +36,13 @@ describe('CommunitiesServiceImpl', () => {
     ];
     mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce(right(data));
     await expect(service.getCommunities()).resolves.toEqual(right(data));
+    expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
+  });
+
+  it('propagates ValidationError from repository', async () => {
+    const err = new ValidationError('invalid repo data');
+    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce(left(err));
+    await expect(service.getCommunities()).resolves.toEqual(left(err));
     expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
   });
 });

@@ -39,11 +39,11 @@ export class Community extends AggregateRoot<CommunityProps> {
   ): Either<ValidationError, Community> {
     const name = Name.create(props.name);
     const description = Description.create(props.description);
-    const uniqueId = id ? UniqueEntityID.create(id) : undefined;
+    const uniqueId = UniqueEntityID.create(id);
 
     if (name.isLeft()) return left(name.value);
     if (description.isLeft()) return left(description.value);
-    if (uniqueId != undefined && uniqueId.isLeft()) return left(uniqueId.value);
+    if (uniqueId.isLeft()) return left(uniqueId.value);
 
     const communityProps: CommunityProps = {
       name: name.value,

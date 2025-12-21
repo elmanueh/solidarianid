@@ -208,6 +208,21 @@
     }
   }
 
+  .btn-secondary {
+    background-color: var(--color-soft-fawn-400);
+    color: white;
+    border: 1px solid var(--color-soft-fawn-600);
+    &:hover {
+      background-color: var(--color-soft-fawn-200);
+    }
+    &:active {
+      background-color: var(--color-soft-fawn-300);
+    }
+    &:focus {
+      --tw-ring-color: var(--color-soft-fawn-400);
+    }
+  }
+
   .btn-lg {
     @apply w-full px-5 py-2.5 sm:px-6 sm:py-3;
     @apply text-sm sm:text-base;
@@ -233,4 +248,34 @@
   .auth-form-actions {
     @apply pt-3 sm:pt-4;
   }
+}
+
+/* Error Page Styles */
+
+.error-page {
+  @apply flex items-center justify-center min-h-[75vh] px-4 py-6;
+}
+
+.error-content {
+  @apply flex flex-col items-center gap-3;
+}
+
+.error-code {
+  @apply text-[4rem] md:text-[6rem] font-bold text-ocean-blue-500 m-0 leading-none;
+}
+
+.error-title {
+  @apply text-2xl md:text-3xl font-semibold m-0;
+}
+
+.error-message {
+  @apply text-base md:text-lg text-soft-fawn-800 m-0 leading-none;
+}
+
+.error-actions {
+  @apply flex gap-3 content-center flex-col w-full md:flex-row md:w-auto;
+}
+
+.error-actions .btn {
+  @apply px-8 py-3 min-w-60;
 }

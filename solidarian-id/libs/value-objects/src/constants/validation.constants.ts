@@ -24,3 +24,11 @@ export const PASSWORD_COMPLEXITY_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
 
 // ==================== EMAIL VALIDATION ====================
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// ==================== NAME VALIDATION ====================
+export const NAME_MIN_LENGTH = 5;
+export const NAME_MAX_LENGTH = 20;
+
+// ==================== DESCRIPTION VALIDATION ====================
+export const DESCRIPTION_MIN_LENGTH = 15;
+export const DESCRIPTION_MAX_LENGTH = 200;

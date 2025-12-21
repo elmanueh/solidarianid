@@ -13,7 +13,7 @@
   }
 
   .footer-top h3 {
-    @apply mb-6 uppercase;
+    @apply mb-6 uppercase underline;
   }
 
   .footer-top-section {

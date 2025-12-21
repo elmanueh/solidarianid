@@ -25,6 +25,16 @@ export default tseslint.config(
     },
   },
   {
+    files: ['apps/admin/public/js/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+      // These files are plain browser scripts
+      sourceType: 'script',
+    },
+  },
+  {
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',

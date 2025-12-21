@@ -21,6 +21,8 @@ import {
   ApiConflictResponse,
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { DomainError } from '@app/ddd/domain-error';
 
 @Controller('users')
 @ApiTags('Users')
@@ -56,9 +58,23 @@ export class UsersController {
 
     const userResult = await this.usersService.registerUser(command);
     if (userResult.isLeft()) {
+      const error = userResult.value;
+
+      // Diferenciar entre errores de validación (400) y conflictos (409)
+      if (error instanceof ValidationError) {
+        res.status(HttpStatus.BAD_REQUEST).send({ message: error.message });
+        return;
+      }
+
+      if (error instanceof DomainError) {
+        res.status(HttpStatus.CONFLICT).send({ message: error.message });
+        return;
+      }
+
+      // Error genérico
       res
-        .status(HttpStatus.CONFLICT)
-        .send({ message: userResult.value.message });
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .send({ message: 'An unexpected error occurred' });
       return;
     }
 

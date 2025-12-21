@@ -1,6 +1,7 @@
 import {
   CITY_MAX_LENGTH,
   CITY_MIN_LENGTH,
+  MOBILE_PHONE_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
@@ -11,7 +12,7 @@ import {
   MinLength,
   Length,
   IsISO31661Alpha2,
-  IsPhoneNumber,
+  MaxLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -32,7 +33,8 @@ export class RegisterUserDtoRequest {
     description: 'Mobile phone number of the user in E.164 format',
     example: '+34612345678',
   })
-  @IsPhoneNumber()
+  @IsString()
+  @MaxLength(MOBILE_PHONE_MAX_LENGTH)
   @IsNotEmpty()
   mobilePhone: string;
 

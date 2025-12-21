@@ -1,9 +1,28 @@
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import type { OpenAPIObject } from '@nestjs/swagger';
+import { dump } from 'js-yaml';
+import { writeFileSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import { UsersModule } from './users.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(UsersModule);
+  const configService = app.get(ConfigService);
+
+  // Generar documentación Swagger
+  const config = new DocumentBuilder()
+    .setTitle('SolidarianID: Users Microservice')
+    .setDescription('The SolidarianID`s Users Microservice API documentation')
+    .setVersion('0.1')
+    .build();
+  const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/users/docs', app, document);
+
+  // Generar el YAML con la documentación Swagger
+  const yamlString: string = dump(document);
+  writeFileSync('./users-swagger.yaml', yamlString, 'utf8');
 
   // Habilitar validación global de DTOs
   app.useGlobalPipes(
@@ -14,6 +33,9 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(process.env.port ?? 3000);
+  const port = configService.get<number>('PORT') ?? 3000;
+  console.log(`Server running on port ${port}`);
+  await app.listen(port);
 }
-bootstrap();
+
+void bootstrap();

@@ -11,13 +11,15 @@ import {
   UsersServicePort,
   RegisterUserCommand,
 } from '@app/users/domain/ports/input/users.service.port';
-import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.dto';
+import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
 import {
   ApiOperation,
   ApiBody,
   ApiTags,
   ApiCreatedResponse,
   ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
 
 @Controller('users')
@@ -27,12 +29,19 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Registrarse en la plataforma' })
+  @ApiOperation({ summary: 'Creating an account for SolidarianID' })
   @ApiBody({ type: RegisterUserDtoRequest })
   @ApiCreatedResponse({
-    description: 'Usuario creado exitosamente',
+    description: 'User created successfully',
   })
-  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiConflictResponse({
+    description:
+      'Either the username or the phone number (or both) were registered previously',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid request payload' })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
   async register(
     @Body() dto: RegisterUserDtoRequest,
     @Res() res: Response,

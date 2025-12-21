@@ -5,7 +5,9 @@ import { ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
 import { App } from 'supertest/types';
+import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@app/users/users.module';
+import { DatabaseTestModule } from '../database-test.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 
 describe('UsersController (e2e)', () => {
@@ -13,7 +15,11 @@ describe('UsersController (e2e)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [UsersModule],
+      imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
+        DatabaseTestModule,
+        UsersModule,
+      ],
     }).compile();
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(

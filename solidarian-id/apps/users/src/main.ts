@@ -5,11 +5,11 @@ import type { OpenAPIObject } from '@nestjs/swagger';
 import { dump } from 'js-yaml';
 import { writeFileSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
-import { UsersModule } from './users.module';
+import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(UsersModule);
+  const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
   // Generar documentación Swagger

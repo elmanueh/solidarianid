@@ -3,7 +3,7 @@ import { Either } from '@app/ddd/either';
 export abstract class UsersServicePort {
   abstract registerUser(
     command: RegisterUserCommand,
-  ): Promise<Either<EvalError, string>>;
+  ): Promise<Either<Error, string>>;
 }
 
 export interface RegisterUserCommand {

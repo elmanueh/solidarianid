@@ -6,6 +6,7 @@ import { dump } from 'js-yaml';
 import { writeFileSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import { UsersModule } from './users.module';
+import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(UsersModule);
@@ -32,7 +33,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
+  // Habilitar filtro global de excepciones
+  app.useGlobalFilters(new GlobalExceptionFilter());
   const port = configService.get<number>('PORT') ?? 3000;
   console.log(`Server running on port ${port}`);
   await app.listen(port);

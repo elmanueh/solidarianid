@@ -10,7 +10,7 @@ import { Password } from '@app/value-objects/model/password';
 import { UserLocation } from '@app/value-objects/model/user-location';
 import { UsersRepositoryPort } from '@app/users/domain/ports/output/users.repository.port';
 import { Either, right, left } from '@app/ddd/either';
-import { MobilePhoneAlreadyTakenError } from '@app/users/domain/errors/phone-alreadytaken-error';
+import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 
 @Injectable()
 export class UsersService extends UsersServicePort {
@@ -20,8 +20,8 @@ export class UsersService extends UsersServicePort {
 
   async registerUser(
     command: RegisterUserCommand,
-  ): Promise<Either<EvalError, string>> {
-    // 1. Crear Value Object de mobile phone y de username que deben ser unicos
+  ): Promise<Either<Error, string>> {
+    // 1. Crear Value Objects para validar errores de formato lo primero.
     const phoneResult = MobilePhone.create(command.mobilePhone);
     if (phoneResult.isLeft()) {
       return left(phoneResult.value);
@@ -29,6 +29,19 @@ export class UsersService extends UsersServicePort {
     const usernameResult = Username.create(command.username);
     if (usernameResult.isLeft()) {
       return left(usernameResult.value);
+    }
+
+    const passwordResult = await Password.create(command.password);
+    if (passwordResult.isLeft()) {
+      return left(passwordResult.value);
+    }
+
+    const locationResult = UserLocation.create(
+      command.city,
+      command.countryCode,
+    );
+    if (locationResult.isLeft()) {
+      return left(locationResult.value);
     }
 
     // 2. Comprobar si el numero de telefono ya existe
@@ -39,7 +52,7 @@ export class UsersService extends UsersServicePort {
 
     if (userPhoneExists.value)
       return left(
-        new MobilePhoneAlreadyTakenError(
+        new UserConflictError(
           'The provided mobile phone is already signed up in SolidarianID.',
         ),
       );
@@ -52,28 +65,12 @@ export class UsersService extends UsersServicePort {
 
     if (userNameExists.value)
       return left(
-        new MobilePhoneAlreadyTakenError(
+        new UserConflictError(
           'The provided user name is already signed up in SolidarianID.',
         ),
       );
 
-    const passwordResult = await Password.create(command.password);
-    const locationResult = UserLocation.create(
-      command.city,
-      command.countryCode,
-    );
-
-    // 3. Validar Either's
-
-    if (passwordResult.isLeft()) {
-      return left(passwordResult.value);
-    }
-
-    if (locationResult.isLeft()) {
-      return left(locationResult.value);
-    }
-
-    // 4. Crear User
+    // 3. Crear User
     const user = User.create({
       username: usernameResult.value,
       mobilePhone: phoneResult.value,
@@ -82,7 +79,9 @@ export class UsersService extends UsersServicePort {
     });
 
     // 5. Persistir en BD
-    await this.usersRepository.save(user);
+    const res = await this.usersRepository.save(user);
+
+    if (res.isLeft()) return left(res.value);
 
     // 6. Retornar ID del usuario creado
     return right(user.id.value);

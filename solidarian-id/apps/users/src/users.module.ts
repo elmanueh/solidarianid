@@ -18,7 +18,7 @@ import { UserEntity } from './infrastructure/persistence/entities/user.entity';
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'sqlite.db',
+      database: ':memory:',
       entities: [UserEntity],
       synchronize: true,
     }),

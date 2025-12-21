@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { Username } from '@app/value-objects/model/username';
 import { Either, left, right } from '@app/ddd/either';
-import { RepositoryError } from '@app/users/domain/errors/repository-error';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 
 @Injectable()
 export class UsersRepositoryTypeORM
@@ -26,7 +26,7 @@ export class UsersRepositoryTypeORM
 
   async existsByMobilePhone(
     mobilePhone: MobilePhone,
-  ): Promise<Either<RepositoryError, boolean>> {
+  ): Promise<Either<RepositoryException, boolean>> {
     try {
       // Realizar la consulta a la base de datos
       const count = await this.usersRepository.count({
@@ -42,7 +42,7 @@ export class UsersRepositoryTypeORM
           : 'Unknown error checking mobile phone';
 
       return left(
-        new RepositoryError(
+        new RepositoryException(
           `Failed to check if mobile phone exists: ${errorMessage}`,
         ),
       );
@@ -51,7 +51,7 @@ export class UsersRepositoryTypeORM
 
   async existsByUsername(
     username: Username,
-  ): Promise<Either<RepositoryError, boolean>> {
+  ): Promise<Either<RepositoryException, boolean>> {
     try {
       // Realizar la consulta a la base de datos
       const count = await this.usersRepository.count({
@@ -67,7 +67,7 @@ export class UsersRepositoryTypeORM
           : 'Unknown error checking mobile phone';
 
       return left(
-        new RepositoryError(
+        new RepositoryException(
           `Failed to check if mobile phone exists: ${errorMessage}`,
         ),
       );

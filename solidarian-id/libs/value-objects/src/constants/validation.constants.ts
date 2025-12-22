@@ -15,7 +15,8 @@ export const FULLNAME_MAX_LENGTH = 50;
 export const FULLNAME_REGEX = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑàèìòùÀÈÌÒÙçÇ\s]+$/;
 
 // ==================== MOBILE PHONE VALIDATION ====================
-export const MOBILE_PHONE_REGEX = /^\+\d{1,3}\d{9}$/;
+export const MOBILE_PHONE_REGEX = /^\+[1-9]\d{1,14}$/;
+export const MOBILE_PHONE_MAX_LENGTH = 16;
 
 // ==================== USER LOCATION VALIDATION ====================
 export const CITY_MIN_LENGTH = 1;

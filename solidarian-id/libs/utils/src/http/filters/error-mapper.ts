@@ -6,6 +6,7 @@ import {
   ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { ConflictError } from '@app/ddd/errors/conflict-error';
 
 export class ErrorMapper {
   static toHttp(error: Error) {
@@ -17,7 +18,8 @@ export class ErrorMapper {
       return new BadRequestException(error.message);
     }
 
-    if (error.name === 'DomainConflictError') {
+    if (error instanceof ConflictError) {
+      console.log('Conflict error');
       return new ConflictException(error.message);
     }
 

@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { join } from 'path';
+import { join } from 'node:path';
 import { engine } from 'express-handlebars';
 import { HttpExceptionFilter } from './administrator/controllers/filters/http-exception.filter';
 import { ValidationExceptionFilter } from './administrator/controllers/filters/validation-exception.filter';
@@ -61,4 +61,5 @@ async function bootstrap() {
 
   await app.listen(3000);
 }
-bootstrap();
+
+void bootstrap();

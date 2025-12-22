@@ -4,7 +4,7 @@ import {
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-import { ErrorMapper } from 'apps/communities/src/infrastructure/presentation/filters/error-mapper';
+import { ErrorMapper } from './error-mapper';
 import { Request, Response } from 'express';
 
 @Catch()

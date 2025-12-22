@@ -19,7 +19,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/admin/test/jest-e2e.json"
+    "test:e2e:admin": "jest --config ./apps/admin/test/jest-e2e.json",
+    "test:e2e:users": "jest --config ./apps/users/test/jest-e2e.json",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
   },
   "dependencies": {
     "@iconify/tailwind": "^1.2.0",
@@ -27,13 +30,16 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.2.3",
     "@nestjs/typeorm": "^11.0.0",
     "@tailwindcss/cli": "^4.1.18",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "express-handlebars": "^8.0.2",
+    "fs": "^0.0.1-security",
     "hbs": "^4.2.0",
+    "js-yaml": "^4.1.1",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
@@ -55,6 +61,7 @@
     "@types/express": "^5.0.0",
     "@types/hbs": "^4.0.5",
     "@types/jest": "^30.0.0",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",
@@ -86,6 +93,9 @@
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(uuid)/)"
+    ],
     "roots": [
       "<rootDir>/apps/",
       "<rootDir>/libs/"
@@ -93,6 +103,8 @@
     "moduleNameMapper": {
       "^apps/(.*)$": "<rootDir>/apps/$1",
       "^@app/ddd(|/.*)$": "<rootDir>/libs/ddd/src/$1",
+      "^@app/users(|/.*)$": "<rootDir>/apps/users/src/$1",
+      "^@app/communities(|/.*)$": "<rootDir>/apps/communities/src/$1",
       "^@app/utils(|/.*)$": "<rootDir>/libs/utils/src/$1",
       "^@app/value-objects(|/.*)$": "<rootDir>/libs/value-objects/src/$1",
       "^@frontend/design-tokens(|/.*)$": "<rootDir>/libs/design-tokens/src/$1"

@@ -1,16 +1,25 @@
 import { Module } from '@nestjs/common';
 import { UsersController } from './infrastructure/presentation/controllers/users.controller';
 import { UsersService } from './application/services/users.service';
-import { UserServicePort } from './domain/ports/in/users.service.port';
+import { UsersRepositoryPort } from './domain/ports/output/users.repository.port';
+import { UsersServicePort } from './domain/ports/input/users.service.port';
+import { UsersRepositoryTypeORM } from './infrastructure/persistence/repositories/users-typeorm.repository';
+import { UserMapper } from './infrastructure/persistence/mappers/user.mapper';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './infrastructure/persistence/entities/user.entity';
 
 @Module({
-  imports: [],
+  imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [UsersController],
   providers: [
-    // Service con token de puerto (para inyectar en controller)
+    UserMapper,
     {
-      provide: UserServicePort,
+      provide: UsersServicePort,
       useClass: UsersService,
+    },
+    {
+      provide: UsersRepositoryPort,
+      useClass: UsersRepositoryTypeORM,
     },
   ],
 })

@@ -5,11 +5,11 @@ import {
   PASSWORD_MIN_LENGTH,
   PASSWORD_COMPLEXITY_REGEX,
 } from '@app/value-objects/constants/validation.constants';
+import { PasswordHasherUtil } from '@app/utils/security/password-hasher.util';
+
 export interface PasswordProps {
   value: string;
 }
-
-export type HasherFunction = (text: string) => Promise<string>;
 
 export class Password extends ValueObject<PasswordProps> {
   private constructor(plainPassword: string) {
@@ -30,7 +30,6 @@ export class Password extends ValueObject<PasswordProps> {
 
   public static async create(
     plainText: string,
-    hasher: HasherFunction,
   ): Promise<Either<PasswordTooWeakError, Password>> {
     // 1. Validación de Longitud (Mínimo 12)
     if (!plainText || plainText.length < PASSWORD_MIN_LENGTH) {
@@ -56,7 +55,7 @@ export class Password extends ValueObject<PasswordProps> {
     }
 
     // 3. Generación del Hash
-    const hash = await hasher(plainText);
+    const hash = await PasswordHasherUtil.hash(plainText);
 
     return right(new Password(hash));
   }

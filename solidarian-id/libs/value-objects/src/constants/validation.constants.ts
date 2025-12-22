@@ -8,6 +8,12 @@ export const USERNAME_MIN_LENGTH = 2;
 export const USERNAME_MAX_LENGTH = 16;
 export const USERNAME_REGEX = /^[a-zA-Z0-9]+$/;
 
+// ==================== FULLNAME VALIDATION ====================
+
+export const FULLNAME_MIN_LENGTH = 3;
+export const FULLNAME_MAX_LENGTH = 50;
+export const FULLNAME_REGEX = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑàèìòùÀÈÌÒÙçÇ\s]+$/;
+
 // ==================== MOBILE PHONE VALIDATION ====================
 export const MOBILE_PHONE_REGEX = /^\+\d{1,3}\d{9}$/;
 

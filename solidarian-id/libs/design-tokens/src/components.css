@@ -88,7 +88,7 @@
     @apply transition-all duration-200;
     @apply focus:outline-none focus:ring-2;
     background-color: var(--color-black-haze-50);
-    border: 1px solid var(--color-iron-300);
+    border: 2px solid var(--color-iron-500);
     color: var(--color-black-haze-900);
     &::placeholder {
       color: var(--color-pale-sky-400);

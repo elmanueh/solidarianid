@@ -143,8 +143,8 @@
           />
           <span class='input-icon-status' aria-hidden='true'></span>
         </div>
-        <span id='phone-help' class='form-help'>Formato: 612345678 o
-          +34612345678</span>
+        <span id='phone-help' class='form-help'>Formato internacional (ej:
+          +34612345678)</span>
         <span id='phone-error' class='form-error' role='alert'></span>
       </div>
 
@@ -163,7 +163,7 @@
             id='password'
             name='password'
             class='form-input form-input-with-toggle'
-            placeholder='Mínimo 8 caracteres'
+            placeholder='Mínimo 12 caracteres'
             required
             autocomplete='new-password'
             aria-describedby='password-help password-error'
@@ -181,7 +181,8 @@
           <span class='input-icon-status' aria-hidden='true'></span>
         </div>
         <span id='password-help' class='form-help'>
-          Mínimo 8 caracteres, una mayúscula, una minúscula y un número
+          Mínimo 12 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 carácter
+          especial
         </span>
         <span id='password-error' class='form-error' role='alert'></span>
       </div>
@@ -228,16 +229,5 @@
         </button>
       </div>
     </form>
-
-    <footer class='auth-footer'>
-      <p>
-        ¿Ya tienes una cuenta?
-        <a href='/login' class='auth-footer-link'>
-          Inicia sesión aquí
-        </a>
-      </p>
-    </footer>
   </div>
 </section>
-
-<script defer src='/js/register-validation.js'></script>

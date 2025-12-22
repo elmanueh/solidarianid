@@ -1,4 +1,5 @@
 import { Controller, Get, Render } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * Controlador de vistas para autenticación (MVC)
@@ -6,11 +7,15 @@ import { Controller, Get, Render } from '@nestjs/common';
  */
 @Controller()
 export class AuthViewController {
+  constructor(private readonly configService: ConfigService) {}
+
   @Get('/login')
   @Render('pages/login')
   login() {
     return {
       title: 'Login',
+      isLoginPage: true,
+      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
   }
 
@@ -19,6 +24,8 @@ export class AuthViewController {
   register() {
     return {
       title: 'Register',
+      isRegisterPage: true,
+      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
   }
 }

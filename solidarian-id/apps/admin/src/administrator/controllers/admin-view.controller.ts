@@ -1,4 +1,16 @@
 import { Controller, Get, Render } from '@nestjs/common';
+import {
+  fakeDashboardData,
+  DashboardSummary,
+  fakeDashboardSummary,
+} from '../model/data/fakeMetrics';
+import {
+  createInteractiveNationalitiesDoughnut,
+  createOdsByCauseBar,
+  createTopCommunitiesPie,
+  createMonthlyJoinsLine,
+} from 'apps/admin/src/utils/chart-builder';
+import { odsNames } from 'apps/admin/src/utils/data-utils';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -8,10 +20,29 @@ import { Controller, Get, Render } from '@nestjs/common';
 export class AdminViewController {
   @Get('/dashboard')
   @Render('pages/metrics')
-  dashboard() {
+  dashboard(): {
+    title: string;
+    layout: string;
+    dataSummary: DashboardSummary;
+    charts: string;
+  } {
+    const dataSummary = fakeDashboardSummary;
+    const dataChart = fakeDashboardData;
+
+    const charts = {
+      ods: createOdsByCauseBar(dataChart.odsByCause),
+      nationalities: createInteractiveNationalitiesDoughnut(
+        dataChart.interactiveNationalities,
+      ),
+      topCommunities: createTopCommunitiesPie(dataChart.topCommunitiesByUsers),
+      joins: createMonthlyJoinsLine(dataChart.monthlyJoinsForCommunity),
+    };
+
     return {
       title: 'Dashboard',
       layout: 'dashboard',
+      dataSummary,
+      charts: JSON.stringify(charts),
     };
   }
 

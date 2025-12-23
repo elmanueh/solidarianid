@@ -10,7 +10,7 @@ export class AuthViewController {
   @Render('pages/login')
   login() {
     return {
-      title: 'Login',
+      title: 'Inicio de sesión',
     };
   }
 
@@ -18,7 +18,7 @@ export class AuthViewController {
   @Render('pages/register')
   register() {
     return {
-      title: 'Register',
+      title: 'Registro de usuario',
     };
   }
 }

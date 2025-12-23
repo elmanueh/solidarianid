@@ -22,7 +22,8 @@
     "test:e2e:admin": "jest --config ./apps/admin/test/jest-e2e.json",
     "test:e2e:users": "jest --config ./apps/users/test/jest-e2e.json",
     "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down"
+    "docker:down": "docker-compose down",
+    "build:charts": "esbuild libs/charts/src/plugins/plugins.ts --bundle --outfile=apps/admin/public/js/lib/charts.js --format=iife --global-name=ChartsLib"
   },
   "dependencies": {
     "@iconify/tailwind": "^1.2.0",
@@ -34,6 +35,8 @@
     "@nestjs/typeorm": "^11.0.0",
     "@tailwindcss/cli": "^4.1.18",
     "bcrypt": "^6.0.0",
+    "chart.js": "^4.5.1",
+    "chartjs": "^0.3.24",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "express-handlebars": "^8.0.2",
@@ -64,6 +67,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
+    "esbuild": "^0.27.2",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
@@ -101,13 +105,15 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^apps/(.*)$": "<rootDir>/apps/$1",
+      "^@app/communities(|/.*)$": "<rootDir>/apps/communities/src/$1",
       "^@app/ddd(|/.*)$": "<rootDir>/libs/ddd/src/$1",
       "^@app/users(|/.*)$": "<rootDir>/apps/users/src/$1",
-      "^@app/communities(|/.*)$": "<rootDir>/apps/communities/src/$1",
       "^@app/utils(|/.*)$": "<rootDir>/libs/utils/src/$1",
       "^@app/value-objects(|/.*)$": "<rootDir>/libs/value-objects/src/$1",
-      "^@frontend/design-tokens(|/.*)$": "<rootDir>/libs/design-tokens/src/$1"
-    }
+      "^@frontend/design-tokens(|/.*)$": "<rootDir>/libs/design-tokens/src/$1",
+      "^apps/(.*)$": "<rootDir>/apps/$1",
+      "^charts/charts(|/.*)$": "<rootDir>/libs/charts/src/$1"
+    },
+    "type": "module"
   }
 }

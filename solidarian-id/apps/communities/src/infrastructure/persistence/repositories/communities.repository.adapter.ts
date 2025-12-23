@@ -3,11 +3,11 @@ import { RepositoryTypeORM } from '@app/ddd/repository/repository-typeorm';
 import { Repository as TypeOrmRepository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Community } from 'apps/communities/src/domain/model/entities/community';
-import { CommunityEntity } from 'apps/communities/src/infrastructure/persistence/entities/community.entity';
-import { CommunityMapper } from 'apps/communities/src/infrastructure/persistence/mappers/community.mapper';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { CommunitiesRepositoryPort } from 'apps/communities/src/domain/ports/communities.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { Community } from '@app/communities/domain/model/entities/community';
+import { CommunityEntity } from '../entities/community.entity';
+import { CommunityMapper } from '../mappers/community.mapper';
 
 @Injectable()
 export class CommunitiesRepositoryAdapter

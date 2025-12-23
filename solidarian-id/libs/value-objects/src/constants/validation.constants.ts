@@ -18,6 +18,9 @@ export const FULLNAME_REGEX = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑàèìòùÀ�
 export const MOBILE_PHONE_REGEX = /^\+[1-9]\d{1,14}$/;
 export const MOBILE_PHONE_MAX_LENGTH = 16;
 
+// ==================== HASHED PASSWORD VALIDATION ====================
+export const HASH_REGEX = /^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/;
+
 // ==================== USER LOCATION VALIDATION ====================
 export const CITY_MIN_LENGTH = 1;
 export const CITY_MAX_LENGTH = 25;

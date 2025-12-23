@@ -4,14 +4,14 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Email } from '@app/value-objects/model/email';
 import { FullName } from '@app/value-objects/model/fullname';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
-import { PlainPassword } from '@app/value-objects/model/plain-password';
+import { HashedPassword } from '@app/value-objects/model/hashed-password';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
 interface AdministratorProps {
   fullname: FullName;
   email: Email;
   phone: MobilePhone;
-  password: PlainPassword;
+  password: HashedPassword;
 }
 
 export class Administrator extends Entity<AdministratorProps> {
@@ -40,7 +40,7 @@ export class Administrator extends Entity<AdministratorProps> {
       return left(phoneOrError.value);
     }
 
-    const passwordOrError = PlainPassword.create(password);
+    const passwordOrError = HashedPassword.create(password);
     if (passwordOrError.isLeft()) {
       return left(passwordOrError.value);
     }
@@ -82,7 +82,7 @@ export class Administrator extends Entity<AdministratorProps> {
       return left(phoneOrError.value);
     }
 
-    const passwordOrError = PlainPassword.create(password);
+    const passwordOrError = HashedPassword.create(password);
     if (passwordOrError.isLeft()) {
       return left(passwordOrError.value);
     }

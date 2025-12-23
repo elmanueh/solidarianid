@@ -1,0 +1,50 @@
+name: CI - SolidarianID
+
+on:
+  # El CI se ejecutará en cada push o pull request a la rama develop
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: solidarianid
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: solidarian-id
+
+    strategy:
+      matrix:
+        node-version: [24.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1 last version of the action checkout
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f #v6.1.0 last version of the action setup-node
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linter
+        run: npm run lint:ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run unit tests and frontend tests
+        run: npm run test
+
+      - name: Run e2e/backend tests (all test e2e, admin, users, communities)
+        run: npm run test:e2e

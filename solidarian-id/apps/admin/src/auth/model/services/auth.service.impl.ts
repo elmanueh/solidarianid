@@ -60,7 +60,5 @@ export class AuthServiceImpl extends AuthService {
   public async login(
     email: string,
     password: string,
-  ): Promise<Either<AuthError, Administrator>> {
-    const adminOrError = await this.administratorRepository.findByEmail(email);
-  }
+  ): Promise<Either<AuthError, Administrator>> {}
 }

@@ -22,17 +22,19 @@ async function bootstrap() {
     }),
   );
 
-  app.use({
-    secret: process.env.SESSION_SECRET || 'YouHaveToChangeThisSecret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24,
-      secure: false,
-      sameSite: 'lax',
-    },
-  });
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET || 'YouHaveToChangeThisSecret',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+        secure: false,
+        sameSite: 'lax',
+      },
+    }),
+  );
 
   app.setViewEngine('hbs');
   app.setBaseViewsDir(join(__dirname, 'views'));

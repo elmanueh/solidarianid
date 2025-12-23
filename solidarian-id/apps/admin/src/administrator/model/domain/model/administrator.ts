@@ -5,6 +5,7 @@ import { Email } from '@app/value-objects/model/email';
 import { FullName } from '@app/value-objects/model/fullname';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { PlainPassword } from '@app/value-objects/model/plain-password';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
 interface AdministratorProps {
   fullname: FullName;
@@ -14,8 +15,8 @@ interface AdministratorProps {
 }
 
 export class Administrator extends Entity<AdministratorProps> {
-  private constructor(props: AdministratorProps) {
-    super(props);
+  private constructor(props: AdministratorProps, id?: UniqueEntityID) {
+    super(props, id);
   }
 
   public static create(
@@ -50,6 +51,51 @@ export class Administrator extends Entity<AdministratorProps> {
       phone: phoneOrError.value,
       password: passwordOrError.value,
     });
+
+    return right(administrator);
+  }
+
+  public static reconstitute(
+    id: string,
+    fullname: string,
+    email: string,
+    phone: string,
+    password: string,
+  ): Either<ValidationError, Administrator> {
+    const idOrError = UniqueEntityID.create(id);
+    if (idOrError.isLeft()) {
+      return left(idOrError.value);
+    }
+
+    const fullnameOrError = FullName.create(fullname);
+    if (fullnameOrError.isLeft()) {
+      return left(fullnameOrError.value);
+    }
+
+    const emailOrError = Email.create(email);
+    if (emailOrError.isLeft()) {
+      return left(emailOrError.value);
+    }
+
+    const phoneOrError = MobilePhone.create(phone);
+    if (phoneOrError.isLeft()) {
+      return left(phoneOrError.value);
+    }
+
+    const passwordOrError = PlainPassword.create(password);
+    if (passwordOrError.isLeft()) {
+      return left(passwordOrError.value);
+    }
+
+    const administrator = new Administrator(
+      {
+        fullname: fullnameOrError.value,
+        email: emailOrError.value,
+        phone: phoneOrError.value,
+        password: passwordOrError.value,
+      },
+      idOrError.value,
+    );
 
     return right(administrator);
   }

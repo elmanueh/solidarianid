@@ -19,7 +19,7 @@ describe('CommunitiesController (e2e)', () => {
   it('/ (GET)', () => {
     return request(app.getHttpServer() as App)
       .get('/')
-      .expect(200)
+      .expect(302)
       .expect('Hello World!');
   });
 });

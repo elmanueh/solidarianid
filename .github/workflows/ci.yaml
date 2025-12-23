@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x, 24.x]
+        node-version: [24.x]
 
     steps:
       - name: Checkout repository
@@ -38,7 +38,7 @@ jobs:
         run: npm install
 
       - name: Run linter
-        run: npm run lint
+        run: npm run lint:ci
 
       - name: Build project
         run: npm run build

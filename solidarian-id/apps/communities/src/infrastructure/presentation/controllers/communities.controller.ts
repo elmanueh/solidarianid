@@ -1,7 +1,7 @@
+import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { Controller, Get } from '@nestjs/common';
-import { CommunityMapper } from 'apps/communities/src/infrastructure/presentation/mappers/community.mapper';
-import { CommunitiesService } from 'apps/communities/src/domain/services/communities.service';
-import { CommunitySummaryResponseDto } from 'apps/communities/src/infrastructure/presentation/dto/output/community-summary.response.dto';
+import { CommunitySummaryResponseDto } from '../dto/output/community-summary.response.dto';
+import { CommunityMapper } from '../mappers/community.mapper';
 
 @Controller('communities')
 export class CommunitiesController {

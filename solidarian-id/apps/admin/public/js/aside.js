@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const currentPath = window.location.pathname;
   const menuLinks = document.querySelectorAll('.aside-menu a');
+  const itemsAside = document.querySelectorAll('.targeteable');
+
+  accesibilityAside(itemsAside);
 
   menuLinks.forEach((link) => {
     const href = link.getAttribute('href');
@@ -20,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
     aside.classList.toggle('open');
     overlay.classList.toggle('active');
 
+    accesibilityAside(itemsAside);
+
     const isOpen = aside.classList.contains('open');
     hamburgerBtn.setAttribute(
       'aria-label',
@@ -31,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     aside.classList.remove('open');
     overlay.classList.remove('active');
     hamburgerBtn.setAttribute('aria-label', 'Abrir menú');
+    accesibilityAside(itemsAside);
   }
 
   hamburgerBtn.addEventListener('click', toggleMenu);
@@ -50,3 +56,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+function accesibilityAside(itemsAside) {
+  const isDesktop = window.innerWidth >= 768;
+  const isMobileOpen = aside.classList.contains('open');
+
+  itemsAside.forEach((link) => {
+    // Solo accesible si es desktop O si es móvil con menú abierto
+    if (isDesktop || isMobileOpen) {
+      link.removeAttribute('tabindex'); // Comportamiento natural del <a>
+    } else {
+      link.setAttribute('tabindex', '-1'); // Oculto en móvil
+    }
+  });
+}

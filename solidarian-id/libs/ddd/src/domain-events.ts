@@ -13,7 +13,7 @@ export class DomainEvents {
     if (!this.handlers.has(eventName)) {
       this.handlers.set(eventName, []);
     }
-    this.handlers.get(eventName)!.push(handler as any);
+    this.handlers.get(eventName)!.push(handler as (event: DomainEvent) => void);
   }
 
   static dispatch(events: DomainEvent[]) {

@@ -3,20 +3,14 @@
   /*** Auth Component Styles (login y registro)***/
 
   .auth-container {
-    @apply flex items-center justify-center min-h-screen px-4 py-6;
+    @apply flex items-center justify-center min-h-screen px-4 py-6 dark:bg-black-haze-800;
     @apply sm:px-6 sm:py-8 md:px-8 lg:py-12;
-    background: linear-gradient(
-      to bottom right,
-      var(--color-black-haze-50),
-      var(--color-athens-gray-100)
-    );
   }
 
   .auth-card {
-    @apply w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl;
+    @apply w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl dark:bg-black-haze-100;
     @apply rounded-xl shadow-lg;
     @apply p-5 sm:p-6 md:p-8 lg:p-10;
-    background-color: #ffffff;
     border: 1px solid var(--color-iron-200);
   }
 
@@ -35,25 +29,17 @@
 
   .auth-subtitle {
     @apply text-sm sm:text-base;
-    color: var(--color-pale-sky-500);
+    color: var(--color-pale-sky-600);
   }
   .auth-footer {
     @apply text-center mt-5 pt-5 sm:mt-6 sm:pt-6;
-    @apply text-sm sm:text-base;
+    @apply text-sm sm:text-base text-pale-sky-500 dark:text-pale-sky-700;
     border-top: 1px solid var(--color-iron-200);
-    color: var(--color-pale-sky-500);
   }
 
   .auth-footer-link {
     @apply font-medium underline rounded;
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    color: var(--color-ocean-blue-600);
-    &:hover {
-      color: var(--color-ocean-blue-700);
-    }
-    &:focus {
-      --tw-ring-color: var(--color-ocean-blue-500);
-    }
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 text-ocean-blue-600 hover:text-ocean-blue-700 focus:ring-ocean-blue-500 dark:text-ocean-blue-700 dark:hover:text-ocean-blue-500;
   }
 
   .form-group {
@@ -75,8 +61,7 @@
   }
 
   .input-icon {
-    @apply absolute left-3 text-lg pointer-events-none;
-    color: var(--color-pale-sky-400);
+    @apply text-pale-sky-400 absolute left-3 text-lg pointer-events-none dark:text-white;
   }
 
   .input-icon-status {
@@ -86,13 +71,9 @@
   .form-input {
     @apply w-full py-3 text-sm rounded-lg;
     @apply transition-all duration-200;
-    @apply focus:outline-none focus:ring-2;
-    background-color: var(--color-black-haze-50);
-    border: 1px solid var(--color-iron-300);
+    @apply focus:outline-none focus:ring-2 bg-black-haze-50 dark:bg-black-haze-300 dark:placeholder:text-white;
+    border: 2px solid var(--color-iron-600);
     color: var(--color-black-haze-900);
-    &::placeholder {
-      color: var(--color-pale-sky-400);
-    }
     &:hover {
       border-color: var(--color-iron-300);
     }
@@ -128,8 +109,7 @@
   }
 
   .form-help {
-    @apply text-xs;
-    color: var(--color-pale-sky-500);
+    @apply text-xs text-pale-sky-500 dark:text-pale-sky-800;
   }
 
   .form-error {

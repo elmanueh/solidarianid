@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 @plugin "@iconify/tailwind4";
 @plugin "daisyui" {
-  themes: false;
+  themes:
+    light --default,
+    dark --prefersdark;
   exclude: footer, button;
 }
 

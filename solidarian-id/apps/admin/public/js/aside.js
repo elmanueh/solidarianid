@@ -62,11 +62,10 @@ function accesibilityAside(itemsAside) {
   const isMobileOpen = aside.classList.contains('open');
 
   itemsAside.forEach((link) => {
-    // Solo accesible si es desktop O si es móvil con menú abierto
     if (isDesktop || isMobileOpen) {
-      link.removeAttribute('tabindex'); // Comportamiento natural del <a>
+      link.removeAttribute('tabindex');
     } else {
-      link.setAttribute('tabindex', '-1'); // Oculto en móvil
+      link.setAttribute('tabindex', '-1');
     }
   });
 }

@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 @plugin "@iconify/tailwind4";
+@plugin "daisyui" {
+  themes: false;
+  exclude: footer, button;
+}
 
 @import './theme.css';
 @import './components.css';

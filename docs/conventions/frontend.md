@@ -23,6 +23,8 @@ https://coolors.co/308dc0-e67c27-78a33c-d3be89-7a2626
 
 ## Tabla de colores
 
+### Modo claro
+
 | Contexto            | Usar                  | Evitar                                  | Hexadecimal recomendado                 |
 | ------------------- | --------------------- | --------------------------------------- | --------------------------------------- |
 | CTA principal       | Azul UI 600 sólido    | Naranja (parece warning)                | #308DC0                                 |
@@ -35,6 +37,27 @@ https://coolors.co/308dc0-e67c27-78a33c-d3be89-7a2626
 | Texto principal     | Neutros oscuros       | Colores vivos                           | #111827                                 |
 | Texto secundario    | Neutros medios        | Colores vivos                           | #4B5563                                 |
 | Texto muted         | Neutros claros        | Colores vivos                           | #6B7280                                 |
+
+### Modo oscuro
+
+### Modo oscuro
+
+| Contexto            | Usar                     | Evitar                           | Variable CSS recomendada          | Hexadecimal |
+| ------------------- | ------------------------ | -------------------------------- | --------------------------------- | ----------- |
+| CTA principal       | Azul UI 400-500          | Azul muy oscuro (poco contraste) | `--color-ocean-blue-400`          | #5cabd6     |
+| Navegación          | Neutros oscuros + azul   | Fondos claros                    | `--color-black-haze-800`          | #374255     |
+| Success             | Verde 400-500            | Verde muy oscuro                 | `--color-sage-green-400`          | #a1c86a     |
+| Warning             | Naranja 400-500          | Naranja muy oscuro               | `--color-harvest-orange-400`      | #ea9148     |
+| Error/destructivo   | Rojizo 400-500           | Rojizo muy oscuro                | `--color-dark-wine-400`           | #cf6363     |
+| Secciones "humanas" | Beige 700-800 (fondo)    | Beige claro (poco contraste)     | `--color-soft-fawn-700`           | #705c29     |
+| Fondos principales  | Neutros oscuros          | Blancos/grises claros            | `--color-black-haze-800/900`      | #374255     |
+| Fondos secundarios  | Neutros muy oscuros      | Grises medios                    | `--color-black-haze-100/300`      | #eceef2     |
+| Texto principal     | Neutros muy claros/white | Neutros oscuros                  | `white` o `--color-black-haze-50` | #ffffff     |
+| Texto secundario    | Neutros claros           | Colores vivos                    | `--color-pale-sky-700/800`        | N/A         |
+| Texto muted         | Neutros medios-claros    | Textos muy oscuros               | `--color-pale-sky-500`            | N/A         |
+| Inputs              | Fondo gris oscuro        | Fondos negros puros              | `--color-black-haze-300`          | #d4dae3     |
+| Placeholders        | Blanco/gris claro        | Grises muy oscuros               | `white`                           | #ffffff     |
+| Iconos              | Blanco/gris muy claro    | Colores oscuros                  | `white`                           | #ffffff     |
 
 ## Tipografía
 

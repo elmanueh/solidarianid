@@ -1,5 +1,4 @@
 import { Controller } from '@nestjs/common';
-import { AdminService } from '../model/services/admin.service';
 
 /**
  * Controlador API para administración

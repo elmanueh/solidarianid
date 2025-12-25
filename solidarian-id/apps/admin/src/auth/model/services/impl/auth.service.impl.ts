@@ -7,6 +7,7 @@ import { Administrator } from 'apps/admin/src/administrator/model/domain/model/a
 import { AdministratorRepositoryPort } from 'apps/admin/src/administrator/model/domain/ports/output/administrator.repository.port';
 import { AuthService } from 'apps/admin/src/administrator/model/domain/services/auth.service';
 import { PasswordService } from '../password.service';
+import { AdminAuthenticationError } from '@app/admin/administrator/model/domain/errors/admin-authentication.error';
 
 /**
  * Servicio de autenticación
@@ -70,7 +71,9 @@ export class AuthServiceImpl extends AuthService {
     const adminOrError = await this.administratorRepository.findByEmail(email);
 
     if (adminOrError.isLeft()) {
-      return left(new AuthError('Email o contraseña incorrectos'));
+      return left(
+        new AdminAuthenticationError('Email o contraseña incorrectos'),
+      );
     }
 
     const isPasswordValid = await this.passwordService.comparePassword(
@@ -79,7 +82,9 @@ export class AuthServiceImpl extends AuthService {
     );
 
     if (!isPasswordValid) {
-      return left(new AuthError('Email o contraseña incorrectos'));
+      return left(
+        new AdminAuthenticationError('Email o contraseña incorrectos'),
+      );
     }
 
     return right(adminOrError.value);

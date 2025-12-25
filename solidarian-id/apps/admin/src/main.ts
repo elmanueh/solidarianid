@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { AppModule } from './app.module';
 import { join } from 'node:path';
 import { engine } from 'express-handlebars';
-import { HttpExceptionFilter } from './administrator/controllers/filters/http-exception.filter';
+import { AppModule } from '@app/admin/app.module';
+import { HttpExceptionFilter } from '@app/admin/administrator/controllers/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

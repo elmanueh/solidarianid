@@ -1,7 +1,7 @@
+import { AdminApiController } from '@app/admin/administrator/controllers/admin-api.controller';
+import { AdminViewController } from '@app/admin/administrator/controllers/admin-view.controller';
+import { AdminService } from '@app/admin/administrator/model/application/services/admin.service';
 import { Module } from '@nestjs/common';
-import { AdminService } from './model/services/admin.service';
-import { AdminViewController } from './controllers/admin-view.controller';
-import { AdminApiController } from './controllers/admin-api.controller';
 
 @Module({
   imports: [],

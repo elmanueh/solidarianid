@@ -2,14 +2,14 @@
 @layer components {
   /*** Auth Component Styles (login y registro) ***/
   .auth-container {
-    @apply flex items-center justify-center min-h-screen px-4 py-6;
+    @apply flex items-center justify-center min-h-screen px-4 py-6 dark:bg-black-haze-800;
     @apply sm:px-6 sm:py-8 md:px-8 lg:py-12;
     @apply bg-linear-to-br from-black-haze-50 to-athens-gray-100;
     @apply dark:from-black-haze-950 dark:to-athens-gray-950;
   }
 
   .auth-card {
-    @apply w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl;
+    @apply w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl dark:bg-black-haze-100;
     @apply rounded-xl shadow-lg;
     @apply p-5 sm:p-6 md:p-8 lg:p-10;
     @apply bg-white border border-iron-200;

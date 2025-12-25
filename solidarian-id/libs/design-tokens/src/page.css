@@ -1,0 +1,92 @@
+@layer components {
+  /* Error Page Styles */
+
+  .error-page {
+    @apply flex items-center justify-center min-h-[75vh] px-4 py-6;
+  }
+
+  .error-content {
+    @apply flex flex-col items-center gap-3;
+  }
+
+  .error-code {
+    @apply text-[4rem] md:text-[6rem] font-bold text-ocean-blue-500 m-0 leading-none;
+  }
+
+  .error-title {
+    @apply text-2xl md:text-3xl font-semibold m-0;
+  }
+
+  .error-message {
+    @apply text-base md:text-lg text-soft-fawn-800 m-0 leading-none;
+  }
+
+  .error-actions {
+    @apply flex gap-3 content-center flex-col w-full md:flex-row md:w-auto;
+  }
+
+  .error-actions .btn {
+    @apply px-8 py-3 min-w-60;
+  }
+
+  /* Metric Page Styles */
+
+  .metrics {
+    @apply flex flex-col gap-6 p-6 bg-athens-gray-200;
+  }
+
+  .metrics-title {
+    @apply text-4xl mt-6 font-bold bg-white text-athens-gray-800 p-6 rounded-md shadow-md;
+  }
+
+  .metrics-container {
+    @apply flex flex-col gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6;
+  }
+
+  .metrics-analytics {
+    @apply col-span-full sm:col-span-2 lg:col-span-3 xl:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4;
+  }
+
+  .metrics-analytics-graph {
+    @apply w-full h-full bg-white rounded-md p-6;
+  }
+
+  .metrics-summary {
+    @apply flex flex-col gap-4 w-full items-center sm:col-span-2 lg:col-span-1 xl:col-span-1;
+  }
+
+  .metrics-summary-card {
+    @apply cursor-pointer col-span-1 bg-white rounded-lg shadow-md p-6 w-full h-full flex flex-col items-center justify-center;
+
+    &[data-variant='orange'] {
+      @apply bg-harvest-orange-500 hover:bg-harvest-orange-600;
+    }
+
+    &[data-variant='sofa'] {
+      @apply bg-soft-fawn-500 hover:bg-soft-fawn-600;
+    }
+
+    &[data-variant='green'] {
+      @apply bg-sage-green-500 hover:bg-sage-green-600;
+    }
+
+    &[data-variant='red'] {
+      @apply bg-dark-wine-500 hover:bg-dark-wine-600;
+    }
+  }
+
+  .metrics-summary-card-title {
+    @apply text-white text-sm md:text-lg mb-2 font-medium;
+
+    &[data-variant='black'] {
+      @apply text-black;
+    }
+  }
+
+  .metrics-summary-card-value {
+    @apply text-white text-3xl font-bold;
+    &[data-variant='black'] {
+      @apply text-black;
+    }
+  }
+}

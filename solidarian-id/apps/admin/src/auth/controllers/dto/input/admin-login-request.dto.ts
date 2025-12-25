@@ -1,14 +1,14 @@
 import {
-  IsNotEmpty,
-  IsString,
-  IsEmail,
-  MinLength,
-  Matches,
-} from 'class-validator';
-import {
   PASSWORD_MIN_LENGTH,
   PASSWORD_COMPLEXITY_REGEX,
 } from '@app/value-objects/constants/validation.constants';
+import {
+  IsNotEmpty,
+  IsEmail,
+  IsString,
+  MinLength,
+  Matches,
+} from 'class-validator';
 
 export class AdminLoginRequestDto {
   @IsNotEmpty({ message: 'El correo electrónico es obligatorio' })

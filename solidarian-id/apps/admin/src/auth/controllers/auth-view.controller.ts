@@ -21,6 +21,7 @@ export class AuthViewController {
 
   @Get('/register')
   @Render('pages/register')
+  // @UseGuards(AuthGuard) // Descomentar si se desea proteger la ruta de registro
   register() {
     return {
       title: 'Register',

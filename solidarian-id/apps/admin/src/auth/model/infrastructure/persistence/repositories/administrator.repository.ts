@@ -56,39 +56,4 @@ export class AdministratorRepositoryAdapter
       );
     }
   }
-
-  async findByEmailAndPassword(
-    email: string,
-    password: string,
-  ): Promise<Either<RepositoryException, Administrator>> {
-    try {
-      const document = await this.administratorModel.findOne({
-        email,
-        password,
-      });
-      if (!document) {
-        return left(
-          new EntityNotFoundException(
-            'Administrator with provided credentials not found',
-            email,
-          ),
-        );
-      }
-
-      const model = this.administratorEntityMapper.fromPersistence(document);
-      if (model.isLeft()) {
-        return left(
-          new RepositoryException('Failed to map entity from persistence.'),
-        );
-      }
-      return right(model.value);
-    } catch (error) {
-      return left(
-        new RepositoryException(
-          'Failed to find administrator by credentials.',
-          error,
-        ),
-      );
-    }
-  }
 }

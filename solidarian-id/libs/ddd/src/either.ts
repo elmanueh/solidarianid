@@ -1,5 +1,3 @@
-import { EntityNotFoundException } from './repository/exceptions/entity-not-found.exception';
-
 interface EitherProps<L, A> {
   value: L | A;
   isLeft(): boolean;

@@ -6,7 +6,6 @@ import { join } from 'node:path';
 import { engine } from 'express-handlebars';
 import { HttpExceptionFilter } from './administrator/controllers/filters/http-exception.filter';
 import { ValidationExceptionFilter } from './administrator/controllers/filters/validation-exception.filter';
-import * as express from 'express';
 import session from 'express-session';
 
 async function bootstrap() {
@@ -23,6 +22,7 @@ async function bootstrap() {
   );
 
   app.use(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     session({
       secret: process.env.SESSION_SECRET || 'YouHaveToChangeThisSecret',
       resave: false,

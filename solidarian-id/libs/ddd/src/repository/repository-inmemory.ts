@@ -3,7 +3,6 @@ import { Entity } from '@app/ddd/entity';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Repository } from '@app/ddd/repository/repository';
-import { Administrator } from 'apps/admin/src/administrator/model/domain/model/administrator';
 
 export abstract class InMemoryRepository<
   T extends Entity<any>,
@@ -16,7 +15,7 @@ export abstract class InMemoryRepository<
   }
 
   save(model: T): Promise<Either<RepositoryException, void>> {
-    this.items.set(model.id.toString(), model);
+    this.items.set(model.id.value, model);
     return Promise.resolve(right(undefined));
   }
   remove(id: string): Promise<Either<RepositoryException, void>> {

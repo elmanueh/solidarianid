@@ -1,8 +1,9 @@
 import { HydratedDocument } from 'mongoose';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type AdministratorDocument = HydratedDocument<AdministratorEntity>;
 
+@Schema({ collection: 'administrators' })
 export class AdministratorEntity {
   @Prop()
   _id: string;

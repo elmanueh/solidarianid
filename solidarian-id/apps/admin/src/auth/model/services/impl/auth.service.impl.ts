@@ -1,16 +1,12 @@
 import { Either, left, right } from '@app/ddd/either';
-import { InvalidEmailError } from '@app/value-objects/errors/validation/email-validation-error';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { Email } from '@app/value-objects/model/email';
-import { Password } from '@app/value-objects/model/password';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { AdminConflictError } from 'apps/admin/src/administrator/model/domain/errors/admin-conflict.error';
 import { AuthError } from 'apps/admin/src/administrator/model/domain/errors/auth.error';
 import { Administrator } from 'apps/admin/src/administrator/model/domain/model/administrator';
 import { AdministratorRepositoryPort } from 'apps/admin/src/administrator/model/domain/ports/output/administrator.repository.port';
 import { AuthService } from 'apps/admin/src/administrator/model/domain/services/auth.service';
-import { Repository } from 'typeorm';
+import { PasswordService } from '../password.service';
 
 /**
  * Servicio de autenticación
@@ -19,6 +15,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AuthServiceImpl extends AuthService {
   constructor(
+    private readonly passwordService: PasswordService,
     private readonly administratorRepository: AdministratorRepositoryPort,
   ) {
     super();
@@ -39,11 +36,20 @@ export class AuthServiceImpl extends AuthService {
       );
     }
 
+    const passwordHashOrError =
+      await this.passwordService.hashPassword(password);
+
+    if (passwordHashOrError.isLeft()) {
+      return left(passwordHashOrError.value);
+    }
+
+    const hashedPassword = passwordHashOrError.value;
+
     const newAdminOrError = Administrator.create(
       fullname,
       email,
       phone,
-      password,
+      hashedPassword,
     );
 
     if (newAdminOrError.isLeft()) {
@@ -60,5 +66,22 @@ export class AuthServiceImpl extends AuthService {
   public async login(
     email: string,
     password: string,
-  ): Promise<Either<AuthError, Administrator>> {}
+  ): Promise<Either<AuthError, Administrator>> {
+    const adminOrError = await this.administratorRepository.findByEmail(email);
+
+    if (adminOrError.isLeft()) {
+      return left(new AuthError('Email o contraseña incorrectos'));
+    }
+
+    const isPasswordValid = await this.passwordService.comparePassword(
+      password,
+      adminOrError.value.password,
+    );
+
+    if (!isPasswordValid) {
+      return left(new AuthError('Email o contraseña incorrectos'));
+    }
+
+    return right(adminOrError.value);
+  }
 }

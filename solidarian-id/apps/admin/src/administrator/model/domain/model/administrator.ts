@@ -23,7 +23,7 @@ export class Administrator extends Entity<AdministratorProps> {
     fullname: string,
     email: string,
     phone: string,
-    password: string,
+    hashedPassword: string,
   ): Either<ValidationError, Administrator> {
     const fullnameOrError = FullName.create(fullname);
     if (fullnameOrError.isLeft()) {
@@ -40,7 +40,7 @@ export class Administrator extends Entity<AdministratorProps> {
       return left(phoneOrError.value);
     }
 
-    const passwordOrError = HashedPassword.create(password);
+    const passwordOrError = HashedPassword.create(hashedPassword);
     if (passwordOrError.isLeft()) {
       return left(passwordOrError.value);
     }

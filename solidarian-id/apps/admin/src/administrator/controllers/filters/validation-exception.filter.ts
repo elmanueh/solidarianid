@@ -26,7 +26,7 @@ export class ValidationExceptionFilter implements ExceptionFilter {
         return response.status(status).json({
           statusCode: status,
           error: 'Error de validación',
-          message: messages[0],
+          message: messages[0] as string,
           timestamp: new Date().toISOString(),
         });
       }

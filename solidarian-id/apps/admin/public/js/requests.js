@@ -1,3 +1,4 @@
+/* global axios */
 /**
  * Módulo de peticiones HTTP usando Axios
  * Configurado con la URL base desde APP_CONFIG
@@ -56,9 +57,22 @@
     }
   }
 
+  async function sendLogoutRequest() {
+    try {
+      const response = await axiosInstance.post('/api/auth/logout');
+      return { success: true, data: response.data };
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        'Error al cerrar sesión. Intenta de nuevo.';
+      return { success: false, error: message };
+    }
+  }
+
   // Exponer funciones globalmente
   globalThis.AuthAPI = {
     login: sendLoginRequest,
     register: sendRegisterRequest,
+    logout: sendLogoutRequest,
   };
 })();

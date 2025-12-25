@@ -3,9 +3,6 @@ import { Administrator } from 'apps/admin/src/administrator/model/domain/model/a
 import { AdministratorEntity } from '../entities/administrator.entity';
 import { Either, left } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { FullName } from '@app/value-objects/model/fullname';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Email } from '@app/value-objects/model/email';
 
 export class AdministratorEntityMapper extends Mapper<
   Administrator,

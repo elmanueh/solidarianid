@@ -112,7 +112,17 @@
       submitBtn.innerHTML =
         '<span class="icon-[lucide--loader-2] animate-spin" aria-hidden="true"></span><span>Iniciando sesión...</span>';
 
+      let restored = false;
+      const restoreTimeout = setTimeout(() => {
+        if (!restored) {
+          submitBtn.innerHTML = originalBtnText;
+        }
+      }, 1500);
+
       const result = await globalThis.AuthAPI.login(loginData);
+
+      clearTimeout(restoreTimeout);
+      restored = true;
 
       if (result.success) {
         const announcer = document.getElementById('form-announcer');

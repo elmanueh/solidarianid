@@ -22,26 +22,6 @@
       </p>
     </header>
 
-    {{#if error}}
-      <div class='alert alert-error' role='alert' aria-live='polite'>
-        <span
-          class='alert-icon icon-[lucide--alert-circle]'
-          aria-hidden='true'
-        ></span>
-        <p class='alert-message'>{{error}}</p>
-      </div>
-    {{/if}}
-
-    {{#if success}}
-      <div class='alert alert-success' role='alert' aria-live='polite'>
-        <span
-          class='alert-icon icon-[lucide--check-circle]'
-          aria-hidden='true'
-        ></span>
-        <p class='alert-message'>{{success}}</p>
-      </div>
-    {{/if}}
-
     <form id='login-form' class='auth-form' method='POST' action='/login'>
       <div class='form-group'>
         <label for='email' class='form-label'>

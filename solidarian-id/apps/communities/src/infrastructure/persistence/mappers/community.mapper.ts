@@ -2,8 +2,8 @@ import { Either } from '@app/ddd/either';
 import { Mapper } from '@app/ddd/repository/mapper';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
-import { Community } from 'apps/communities/src/domain/model/entities/community';
-import { CommunityEntity } from 'apps/communities/src/infrastructure/persistence/entities/community.entity';
+import { CommunityEntity } from '../entities/community.entity';
+import { Community } from '@app/communities/domain/model/entities/community';
 
 @Injectable()
 export class CommunityMapper implements Mapper<Community, CommunityEntity> {

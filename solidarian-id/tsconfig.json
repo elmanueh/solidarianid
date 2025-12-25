@@ -24,6 +24,10 @@
     "paths": {
       "@app/ddd": ["libs/ddd/src"],
       "@app/ddd/*": ["libs/ddd/src/*"],
+      "@app/admin": ["apps/admin/src"],
+      "@app/admin/*": ["apps/admin/src/*"],
+      "@app/communities": ["apps/communities/src"],
+      "@app/communities/*": ["apps/communities/src/*"],
       "@app/users": ["apps/users/src"],
       "@app/users/*": ["apps/users/src/*"],
       "@app/utils": ["libs/utils/src"],

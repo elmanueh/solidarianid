@@ -363,8 +363,8 @@
 
           if (icon) {
             icon.className = isPassword
-              ? 'icon-[lucide--eye-off]'
-              : 'icon-[lucide--eye]';
+              ? 'icon-[lucide--eye-off] dark:text-white'
+              : 'icon-[lucide--eye] dark:text-white';
           }
         }
       });

@@ -3,21 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuLinks = document.querySelectorAll('.aside-menu a');
   const itemsAside = document.querySelectorAll('.targeteable');
 
-  accesibilityAside(itemsAside);
-
-  menuLinks.forEach((link) => {
-    const href = link.getAttribute('href');
-    const normalizedHref = href.startsWith('/') ? href : `/${href}`;
-
-    if (currentPath.includes(href) || currentPath === normalizedHref) {
-      link.classList.add('active');
-      link.setAttribute('aria-current', 'page');
-    }
-  });
-
   const hamburgerBtn = document.getElementById('hamburger-btn');
   const aside = document.getElementById('aside');
   const overlay = document.getElementById('aside-overlay');
+
+  function accesibilityAside(itemsAside) {
+    const isDesktop = window.innerWidth >= 768;
+    const isMobileOpen = aside.classList.contains('open');
+
+    itemsAside.forEach((link) => {
+      if (isDesktop || isMobileOpen) {
+        link.removeAttribute('tabindex');
+      } else {
+        link.setAttribute('tabindex', '-1');
+      }
+    });
+  }
 
   function toggleMenu() {
     aside.classList.toggle('open');
@@ -39,6 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
     accesibilityAside(itemsAside);
   }
 
+  accesibilityAside(itemsAside);
+
+  menuLinks.forEach((link) => {
+    const href = link.getAttribute('href');
+    const normalizedHref = href.startsWith('/') ? href : `/${href}`;
+
+    if (currentPath.includes(href) || currentPath === normalizedHref) {
+      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
+    }
+  });
+
   hamburgerBtn.addEventListener('click', toggleMenu);
   overlay.addEventListener('click', closeMenu);
 
@@ -56,16 +69,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
-function accesibilityAside(itemsAside) {
-  const isDesktop = window.innerWidth >= 768;
-  const isMobileOpen = aside.classList.contains('open');
-
-  itemsAside.forEach((link) => {
-    if (isDesktop || isMobileOpen) {
-      link.removeAttribute('tabindex');
-    } else {
-      link.setAttribute('tabindex', '-1');
-    }
-  });
-}

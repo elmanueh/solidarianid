@@ -2,12 +2,13 @@ import { Either, left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { AdminConflictError } from 'apps/admin/src/administrator/model/domain/errors/admin-conflict.error';
-import { AuthError } from 'apps/admin/src/administrator/model/domain/errors/auth.error';
 import { Administrator } from 'apps/admin/src/administrator/model/domain/model/administrator';
 import { AdministratorRepositoryPort } from 'apps/admin/src/administrator/model/domain/ports/output/administrator.repository.port';
 import { AuthService } from 'apps/admin/src/administrator/model/domain/services/auth.service';
 import { PasswordService } from '../password.service';
 import { AdminAuthenticationError } from '@app/admin/administrator/model/domain/errors/admin-authentication.error';
+import { AuthError } from '@app/ddd/errors/auth-error';
+import { ConflictError } from '@app/ddd/errors/conflict-error';
 
 /**
  * Servicio de autenticación
@@ -27,7 +28,9 @@ export class AuthServiceImpl extends AuthService {
     email: string,
     phone: string,
     password: string,
-  ): Promise<Either<AuthError | ValidationError, void>> {
+  ): Promise<
+    Either<AuthError | ConflictError | ValidationError, Administrator>
+  > {
     const existingAdministrator =
       await this.administratorRepository.findByEmail(email);
 
@@ -61,7 +64,7 @@ export class AuthServiceImpl extends AuthService {
 
     await this.administratorRepository.save(newAdmin);
 
-    return right(undefined);
+    return right(newAdmin);
   }
 
   public async login(

@@ -1,14 +1,15 @@
-import { Body, Controller, Post, Render, Req, Res } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { AdminRegisterRequestDto } from './dto/input/admin-register-request.dto';
 import { AdminLoginRequestDto } from './dto/input/admin-login-request.dto';
 import { AuthService } from '../../administrator/model/domain/services/auth.service';
 import type { Request, Response } from 'express';
-import { AuthError } from '@app/admin/administrator/model/domain/errors/auth.error';
 import { Administrator } from '@app/admin/administrator/model/domain/model/administrator';
 import { Either } from '@app/ddd/either';
 import { AdministratorDtoMapper } from './mappers/administrator.dto.mapper';
 import { AdministratorResponseDto } from './dto/output/administrator-response.dto';
 import { ConfigService } from '@nestjs/config';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { AuthError } from '@app/ddd/errors/auth-error';
 
 /**
  * Controlador API para autenticación
@@ -22,10 +23,13 @@ export class AuthApiController {
   ) {}
 
   @Post('register')
-  @Render('pages/register')
   // @UseGuards(AuthGuard) // Descomentar si se desea proteger la ruta de registro
-  async register(@Body() registerDto: AdminRegisterRequestDto) {
-    const registerOrError: Either<AuthError, void> =
+  async register(
+    @Req() request: Request,
+    @Res() response: Response,
+    @Body() registerDto: AdminRegisterRequestDto,
+  ): Promise<Response<void>> {
+    const registerOrError: Either<AuthError | ValidationError, Administrator> =
       await this.authService.register(
         registerDto.fullName,
         registerDto.email,
@@ -34,20 +38,15 @@ export class AuthApiController {
       );
 
     if (registerOrError.isLeft()) {
-      return {
-        title: 'Register',
-        isRegisterPage: true,
-        apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
-        errorMessage: registerOrError.value.message,
-      };
+      throw registerOrError.value;
     }
 
-    return {
-      title: 'Login',
-      isLoginPage: true,
-      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
-      successMessage: 'Registro exitoso del nuevo administrador. ',
-    };
+    const locationUrl = `${request.protocol}://${request.get('host')}${request.path}/${registerOrError.value.id.value}`;
+
+    return response
+      .status(201)
+      .location(locationUrl)
+      .json(AdministratorDtoMapper.toDto(registerOrError.value));
   }
 
   @Post('login')
@@ -60,12 +59,7 @@ export class AuthApiController {
       await this.authService.login(loginDto.email, loginDto.password);
 
     if (loginOrError.isLeft()) {
-      return response.render('pages/login', {
-        title: 'Login',
-        isLoginPage: true,
-        apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
-        errorMessage: loginOrError.value.message,
-      });
+      throw loginOrError.value;
     }
 
     const adminDto: AdministratorResponseDto = AdministratorDtoMapper.toDto(
@@ -74,14 +68,14 @@ export class AuthApiController {
 
     request.session.user = adminDto;
 
-    return response.redirect('/dashboard');
+    return response.status(200).json(adminDto);
   }
 
   @Post('logout')
   // @UseGuards(AuthGuard) // Descomentar si se desea proteger la ruta de registro
   logout(@Req() request: Request, @Res() response: Response) {
     request.session.destroy(() => {
-      response.redirect('/login');
+      response.status(204).send();
     });
   }
 }

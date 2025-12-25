@@ -1,7 +1,8 @@
 import { Either } from '@app/ddd/either';
-import { AuthError } from '../errors/auth.error';
 import { Administrator } from '../model/administrator';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { AuthError } from '@app/ddd/errors/auth-error';
+import { ConflictError } from '@app/ddd/errors/conflict-error';
 
 /**
  * Servicio de autenticación
@@ -20,7 +21,9 @@ export abstract class AuthService {
     email: string,
     phone: string,
     password: string,
-  ): Promise<Either<AuthError | ValidationError, void>>;
+  ): Promise<
+    Either<AuthError | ConflictError | ValidationError, Administrator>
+  >;
 
   /**
    * Inicia sesión de un administrador

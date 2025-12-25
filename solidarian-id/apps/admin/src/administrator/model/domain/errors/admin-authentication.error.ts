@@ -1,4 +1,4 @@
-import { AuthError } from './auth.error';
+import { AuthError } from '@app/ddd/errors/auth-error';
 
 export class AdminAuthenticationError extends AuthError {
   constructor(message: string) {

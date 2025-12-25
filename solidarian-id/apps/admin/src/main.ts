@@ -6,6 +6,11 @@ import { join } from 'node:path';
 import { engine } from 'express-handlebars';
 import { HttpExceptionFilter } from './administrator/controllers/filters/http-exception.filter';
 import session from 'express-session';
+import { AuthenticationErrorFilter } from './administrator/controllers/filters/authentication-error.filter';
+import { ConflictErrorFilter } from './administrator/controllers/filters/conflict-error.filter';
+import { InternalServerErrorFilter } from './administrator/controllers/filters/internal-server-error.filter';
+import { NotFoundErrorFilter } from './administrator/controllers/filters/not-found-error.filter';
+import { ValidationErrorFilter } from './administrator/controllers/filters/validation-error.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

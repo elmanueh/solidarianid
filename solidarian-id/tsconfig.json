@@ -21,6 +21,7 @@
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
     "allowJs": true,
+    "types": ["jest", "node"],
     "paths": {
       "@app/ddd": ["libs/ddd/src"],
       "@app/ddd/*": ["libs/ddd/src/*"],
@@ -38,5 +39,14 @@
       "@frontend/design-tokens/*": ["libs/design-tokens/src/*"]
     },
     "baseUrl": "./"
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/cypress.config.ts",
+    "**/cypress.config.js",
+    "**/cypress/**",
+    "**/*.cy.ts",
+    "**/*.cy.js"
+  ]
 }

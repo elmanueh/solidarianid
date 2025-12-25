@@ -76,8 +76,7 @@
   }
 
   .aside {
-    background-color: var(--color-ocean-blue-600);
-    @apply text-white flex flex-col dark:bg-black-haze-800
+    @apply text-white flex flex-col bg-ocean-blue-600 dark:bg-black-haze-800
          fixed
          top-0 left-0 bottom-0
          w-2/3 md:w-auto
@@ -104,7 +103,7 @@
          md:hidden 
          bg-ocean-blue-600 text-white 
          px-4 py-2
-         flex items-center justify-center
+         flex items-center justify-center dark:bg-black-haze-800
          shadow-lg;
   }
 

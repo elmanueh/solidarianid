@@ -10,6 +10,7 @@ import { AdministratorResponseDto } from './dto/output/administrator-response.dt
 import { ConfigService } from '@nestjs/config';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { AuthError } from '@app/ddd/errors/auth-error';
+import { ConflictError } from '@app/ddd/errors/conflict-error';
 
 /**
  * Controlador API para autenticación
@@ -29,13 +30,15 @@ export class AuthApiController {
     @Res() response: Response,
     @Body() registerDto: AdminRegisterRequestDto,
   ): Promise<Response<void>> {
-    const registerOrError: Either<AuthError | ValidationError, Administrator> =
-      await this.authService.register(
-        registerDto.fullName,
-        registerDto.email,
-        registerDto.phone,
-        registerDto.password,
-      );
+    const registerOrError: Either<
+      AuthError | ConflictError | ValidationError,
+      Administrator
+    > = await this.authService.register(
+      registerDto.fullName,
+      registerDto.email,
+      registerDto.phone,
+      registerDto.password,
+    );
 
     if (registerOrError.isLeft()) {
       throw registerOrError.value;

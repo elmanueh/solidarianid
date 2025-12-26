@@ -1,4 +1,3 @@
-import { AdminService } from '@app/admin/administrator/model/application/services/admin.service';
 import { Controller } from '@nestjs/common';
 
 /**
@@ -7,7 +6,5 @@ import { Controller } from '@nestjs/common';
  */
 @Controller('admins')
 export class AdminApiController {
-  constructor(private readonly adminService: AdminService) {}
-
   /* ANTONIO: PETICIONES DEL ADMIN PARA LOS DATOS */
 }

@@ -4,12 +4,12 @@ services:
     container_name: solidarian_postgres_db
     restart: always
     ports:
-      - '${POSTGRES_PORT:-5432}:5432'
+      - "${POSTGRES_PORT:-5432}:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_INITDB_ARGS: '--encoding=UTF8 --lc-collate=C.UTF-8 --lc-ctype=C.UTF-8'
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=C.UTF-8 --lc-ctype=C.UTF-8"
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
 
@@ -18,16 +18,16 @@ services:
     container_name: mongo
     restart: unless-stopped
     ports:
-      - '27017:27017'
+      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DB}
     volumes:
       - ./data/mongodb:/data/db
-      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/mongodb:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      test: ["CMD", "mongosh", "--eval", 'db.adminCommand("ping")']
       interval: 10s
       timeout: 5s
       retries: 5

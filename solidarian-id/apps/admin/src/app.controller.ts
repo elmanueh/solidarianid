@@ -10,7 +10,7 @@ export class AppController {
   @Redirect('/login')
   root() {
     return {
-      title: 'Auth',
+      title: 'Inicio de sesión',
     };
   }
 }

@@ -1,6 +1,6 @@
 import { Either } from '@app/ddd/either';
 
-export abstract class UsersServicePort {
+export abstract class UsersService {
   abstract registerUser(
     command: RegisterUserCommand,
   ): Promise<Either<Error, string>>;

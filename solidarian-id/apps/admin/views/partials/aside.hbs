@@ -1,5 +1,24 @@
-<aside class='aside'>
-  <a href='dashboard' class='aside-logo-container'>
+<div class='hamburger-header'>
+  <button class='hamburger-btn' aria-label='Abrir menú' id='hamburger-btn'>
+    <span
+      class='icon-[material-symbols--menu] hamburger-icon'
+      aria-hidden='true'
+    ></span>
+  </button>
+  <div class='hamburger-header-content'>
+    <img
+      src='icons/solidarian-128x128.png'
+      alt='Logo de Solidarian ID'
+      class='hamburger-btn-logo'
+    />
+    <span class='hamburger-btn-title'>SolidarianID</span>
+  </div>
+</div>
+
+<div class='aside-overlay' id='aside-overlay'></div>
+
+<aside class='aside' id='aside'>
+  <a href='dashboard' class='aside-logo-container targeteable'>
     <img
       src='icons/solidarian-128x128.png'
       alt='Logo de Solidarian ID'
@@ -10,29 +29,48 @@
   <nav aria-label='Navegación lateral' class='flex flex-col h-full'>
     <ul class='aside-menu'>
       <li>
-        <a href='dashboard' class='aside-menu-item'>
+        <a href='dashboard' class='aside-menu-item targeteable'>
           <span
             class='icon-[material-symbols--dashboard]'
+            role='img'
             aria-hidden='true'
           ></span>
           Dashboard
         </a>
       </li>
       <li>
-        <a href='requests' class='aside-menu-item'>
-          <span class='icon-[carbon--request-quote]' aria-hidden='true'></span>
+        <a href='requests' class='aside-menu-item targeteable'>
+          <span
+            class='icon-[carbon--request-quote]'
+            role='img'
+            aria-hidden='true'
+          ></span>
           Solicitudes
         </a>
       </li>
       <li>
-        <a href='reports' class='aside-menu-item'>
-          <span class='icon-[bx--bxs-file-pdf]' aria-hidden='true'></span>
+        <a href='reports' class='aside-menu-item targeteable'>
+          <span
+            class='icon-[bx--bxs-file-pdf]'
+            role='img'
+            aria-hidden='true'
+          ></span>
           Informes
+        </a>
+      </li>
+      <li>
+        <a href='register' class='aside-menu-item targeteable'>
+          <span
+            class='icon-[basil--user-plus-solid]'
+            role='img'
+            aria-hidden='true'
+          ></span>
+          Registro
         </a>
       </li>
     </ul>
 
-    <button class='aside-logout' type='button'>
+    <button class='aside-logout targeteable' type='button' id='logout-btn'>
       <span class='icon-[basil--logout-solid]' aria-hidden='true'></span>
       Cerrar sesión
     </button>

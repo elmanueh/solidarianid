@@ -8,6 +8,29 @@
   ></div>
 
   <div class='auth-card'>
+    <div class='flex justify-start mb-4'>
+      <a
+        href='/dashboard'
+        class='tooltip tooltip-bottom'
+        data-tip='Volver al inicio'
+        aria-label='Volver al dashboard'
+      >
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          class='h-5 w-5'
+          fill='none'
+          viewBox='0 0 24 24'
+          stroke='currentColor'
+        >
+          <path
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            stroke-width='2'
+            d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'
+          />
+        </svg>
+      </a>
+    </div>
     <header class='auth-header'>
       <img
         src='/icons/solidarian-128x128.png'
@@ -21,15 +44,6 @@
         Empieza a gestionar SolidarianID
       </p>
     </header>
-    {{#if error}}
-      <div class='alert alert-error' role='alert' aria-live='polite'>
-        <span
-          class='alert-icon icon-[lucide--alert-circle]'
-          aria-hidden='true'
-        ></span>
-        <p class='alert-message'>{{error}}</p>
-      </div>
-    {{/if}}
 
     <form
       id='register-form'
@@ -143,8 +157,8 @@
           />
           <span class='input-icon-status' aria-hidden='true'></span>
         </div>
-        <span id='phone-help' class='form-help'>Formato: 612345678 o
-          +34612345678</span>
+        <span id='phone-help' class='form-help'>Formato internacional (ej:
+          +34612345678)</span>
         <span id='phone-error' class='form-error' role='alert'></span>
       </div>
 
@@ -163,7 +177,7 @@
             id='password'
             name='password'
             class='form-input form-input-with-toggle'
-            placeholder='Mínimo 8 caracteres'
+            placeholder='Mínimo 12 caracteres'
             required
             autocomplete='new-password'
             aria-describedby='password-help password-error'
@@ -176,12 +190,16 @@
             aria-controls='password'
             aria-pressed='false'
           >
-            <span class='icon-[lucide--eye]' aria-hidden='true'></span>
+            <span
+              class='icon-[lucide--eye] dark:text-white'
+              aria-hidden='true'
+            ></span>
           </button>
           <span class='input-icon-status' aria-hidden='true'></span>
         </div>
         <span id='password-help' class='form-help'>
-          Mínimo 8 caracteres, una mayúscula, una minúscula y un número
+          Mínimo 12 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 carácter
+          especial
         </span>
         <span id='password-error' class='form-error' role='alert'></span>
       </div>
@@ -214,7 +232,10 @@
             aria-controls='confirmPassword'
             aria-pressed='false'
           >
-            <span class='icon-[lucide--eye]' aria-hidden='true'></span>
+            <span
+              class='icon-[lucide--eye] dark:text-white'
+              aria-hidden='true'
+            ></span>
           </button>
           <span class='input-icon-status' aria-hidden='true'></span>
         </div>
@@ -228,16 +249,5 @@
         </button>
       </div>
     </form>
-
-    <footer class='auth-footer'>
-      <p>
-        ¿Ya tienes una cuenta?
-        <a href='/login' class='auth-footer-link'>
-          Inicia sesión aquí
-        </a>
-      </p>
-    </footer>
   </div>
 </section>
-
-<script defer src='/js/register-validation.js'></script>

@@ -1,4 +1,4 @@
-<html>
+<html lang="es">
   <head>
     <meta charset='utf-8' />
     <meta http-equiv='X-UA-Compatible' content='IE=edge' />
@@ -10,7 +10,6 @@
       media='screen'
       href='/css/main.css'
     />
-    <script src="/js/aside.js"></script>
   </head>
   <body>
     <div class="dashboard">
@@ -18,5 +17,13 @@
       {{{body}}}
     </div>
     {{>footer}}
+  <script src="/js/aside.js"></script>
+   <script>
+     globalThis.APP_CONFIG = {
+       apiBaseUrl: '{{apiBaseUrl}}'
+     };
+   </script>
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   <script src='/js/requests.js'></script>
   </body>
 </html>

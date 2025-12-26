@@ -1,11 +1,18 @@
 (function () {
   'use strict';
 
+  const FULLNAME_MIN_LENGTH = 3;
+  const FULLNAME_MAX_LENGTH = 50;
+  const PASSWORD_MIN_LENGTH = 12;
+
   const PATTERNS = {
     name: /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑàèìòùÀÈÌÒÙçÇ\s]+$/,
-    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    phone: /^(\+?34)?[6-9]\d{8}$/,
-    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+
+    phone: /^\+\d{1,3}\d{9}$/,
+
+    password: /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/,
     hasNumbers: /\d/,
     hasSpecialChars: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~0-9]/,
   };
@@ -37,17 +44,17 @@
     phone: {
       required: 'El teléfono es obligatorio',
       invalid:
-        'Introduce un número de teléfono válido (ej: 612345678 o +34612345678)',
-      tooShort: 'El número de teléfono debe tener 9 dígitos',
+        'Introduce un número en formato internacional (ej: +34612345678)',
+      tooShort: 'El número de teléfono debe tener al menos 10 dígitos',
     },
     password: {
       required: 'La contraseña es obligatoria',
-      tooShort: 'La contraseña debe tener al menos 8 caracteres',
+      tooShort: `La contraseña debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres`,
       noUppercase: 'La contraseña debe contener al menos una letra mayúscula',
-      noLowercase: 'La contraseña debe contener al menos una letra minúscula',
+      noSpecialChar:
+        'La contraseña debe contener al menos un carácter especial',
       noNumber: 'La contraseña debe contener al menos un número',
-      invalid:
-        'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número',
+      invalid: `La contraseña debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres, una mayúscula, un número y un carácter especial`,
     },
     confirmPassword: {
       required: 'Debes confirmar tu contraseña',
@@ -61,6 +68,20 @@
 
     if (!trimmedValue) {
       return { isValid: false, message: messages.required };
+    }
+
+    if (trimmedValue.length < FULLNAME_MIN_LENGTH) {
+      return {
+        isValid: false,
+        message: `Debe tener al menos ${FULLNAME_MIN_LENGTH} caracteres`,
+      };
+    }
+
+    if (trimmedValue.length > FULLNAME_MAX_LENGTH) {
+      return {
+        isValid: false,
+        message: `No puede exceder ${FULLNAME_MAX_LENGTH} caracteres`,
+      };
     }
 
     if (PATTERNS.hasNumbers.test(trimmedValue)) {
@@ -102,7 +123,7 @@
     }
 
     const digitsOnly = cleanPhone.replaceAll(/\D/g, '');
-    if (digitsOnly.length < 9) {
+    if (digitsOnly.length < 10) {
       return { isValid: false, message: messages.tooShort };
     }
 
@@ -120,7 +141,7 @@
       return { isValid: false, message: messages.required };
     }
 
-    if (value.length < 8) {
+    if (value.length < PASSWORD_MIN_LENGTH) {
       return { isValid: false, message: messages.tooShort };
     }
 
@@ -128,12 +149,12 @@
       return { isValid: false, message: messages.noUppercase };
     }
 
-    if (!/[a-z]/.test(value)) {
-      return { isValid: false, message: messages.noLowercase };
-    }
-
     if (!/\d/.test(value)) {
       return { isValid: false, message: messages.noNumber };
+    }
+
+    if (!/[\W_]/.test(value)) {
+      return { isValid: false, message: messages.noSpecialChar };
     }
 
     return { isValid: true, message: '' };
@@ -303,7 +324,9 @@
       });
     }
 
-    form.addEventListener('submit', function (event) {
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
       let isFormValid = true;
       let firstInvalidInput = null;
 
@@ -318,8 +341,6 @@
       });
 
       if (!isFormValid) {
-        event.preventDefault();
-
         announceError(
           'Por favor, corrige los errores en el formulario antes de continuar.',
         );
@@ -327,6 +348,33 @@
         if (firstInvalidInput) {
           firstInvalidInput.focus();
         }
+        return;
+      }
+
+      // Preparar datos para enviar
+      const registerData = {
+        fullName: `${document.getElementById('firstName').value.trim()} ${document.getElementById('lastName').value.trim()}`,
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        password: document.getElementById('password').value,
+      };
+
+      // Deshabilitar botón mientras se envía
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        '<span class="icon-[lucide--loader-2] animate-spin" aria-hidden="true"></span><span>Registrando...</span>';
+
+      // Enviar petición usando AuthAPI
+      const result = await globalThis.AuthAPI.register(registerData);
+
+      if (result.success) {
+        globalThis.location.href = '/dashboard';
+      } else {
+        announceError(result.error || 'Error al registrar. Intenta de nuevo.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
       }
     });
   }
@@ -362,8 +410,8 @@
 
           if (icon) {
             icon.className = isPassword
-              ? 'icon-[lucide--eye-off]'
-              : 'icon-[lucide--eye]';
+              ? 'icon-[lucide--eye-off] dark:text-white'
+              : 'icon-[lucide--eye] dark:text-white';
           }
         }
       });

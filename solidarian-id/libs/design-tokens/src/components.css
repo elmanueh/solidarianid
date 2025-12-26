@@ -1,23 +1,19 @@
-/*Componentes reutilizables de CSS para la aplicación  D*/
+/* Componentes reutilizables con Tailwind CSS y soporte para Dark Mode */
 @layer components {
-  /*** Auth Component Styles (login y registro)***/
-
+  /*** Auth Component Styles (login y registro) ***/
   .auth-container {
-    @apply flex items-center justify-center min-h-screen px-4 py-6;
+    @apply flex items-center justify-center min-h-screen px-4 py-6 dark:bg-black-haze-800;
     @apply sm:px-6 sm:py-8 md:px-8 lg:py-12;
-    background: linear-gradient(
-      to bottom right,
-      var(--color-black-haze-50),
-      var(--color-athens-gray-100)
-    );
+    @apply bg-linear-to-br from-black-haze-50 to-athens-gray-100;
+    @apply dark:from-black-haze-950 dark:to-athens-gray-950;
   }
 
   .auth-card {
-    @apply w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl;
+    @apply w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl dark:bg-black-haze-100;
     @apply rounded-xl shadow-lg;
     @apply p-5 sm:p-6 md:p-8 lg:p-10;
-    background-color: #ffffff;
-    border: 1px solid var(--color-iron-200);
+    @apply bg-white border border-iron-200;
+    @apply dark:bg-black-haze-999 dark:border-iron-700;
   }
 
   .auth-header {
@@ -30,30 +26,32 @@
 
   .auth-title {
     @apply text-xl sm:text-2xl md:text-3xl font-bold mb-2;
-    color: var(--color-black-haze-950);
+    @apply text-black-haze-950;
+    @apply dark:text-black-haze-50;
   }
 
   .auth-subtitle {
     @apply text-sm sm:text-base;
-    color: var(--color-pale-sky-500);
+    @apply text-pale-sky-500;
+    @apply dark:text-pale-sky-400;
   }
+
   .auth-footer {
     @apply text-center mt-5 pt-5 sm:mt-6 sm:pt-6;
     @apply text-sm sm:text-base;
-    border-top: 1px solid var(--color-iron-200);
-    color: var(--color-pale-sky-500);
+    @apply border-t border-iron-200;
+    @apply text-pale-sky-500;
+    @apply dark:border-iron-700 dark:text-pale-sky-400;
   }
 
   .auth-footer-link {
     @apply font-medium underline rounded;
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    color: var(--color-ocean-blue-600);
-    &:hover {
-      color: var(--color-ocean-blue-700);
-    }
-    &:focus {
-      --tw-ring-color: var(--color-ocean-blue-500);
-    }
+    @apply text-ocean-blue-600;
+    @apply hover:text-ocean-blue-700;
+    @apply focus:ring-ocean-blue-500;
+    @apply dark:text-ocean-blue-400 dark:hover:text-ocean-blue-300;
+    @apply dark:focus:ring-ocean-blue-400;
   }
 
   .form-group {
@@ -62,12 +60,14 @@
 
   .form-label {
     @apply font-medium;
-    color: var(--color-black-haze-800);
+    @apply text-black-haze-800;
+    @apply dark:text-black-haze-200;
   }
 
   .form-label-required {
     @apply ml-0.5;
-    color: var(--color-dark-wine-500);
+    @apply text-dark-wine-500;
+    @apply dark:text-dark-wine-400;
   }
 
   .input-wrapper {
@@ -76,7 +76,8 @@
 
   .input-icon {
     @apply absolute left-3 text-lg pointer-events-none;
-    color: var(--color-pale-sky-400);
+    @apply text-pale-sky-400;
+    @apply dark:text-pale-sky-500;
   }
 
   .input-icon-status {
@@ -87,20 +88,16 @@
     @apply w-full py-3 text-sm rounded-lg;
     @apply transition-all duration-200;
     @apply focus:outline-none focus:ring-2;
-    background-color: var(--color-black-haze-50);
-    border: 1px solid var(--color-iron-300);
-    color: var(--color-black-haze-900);
-    &::placeholder {
-      color: var(--color-pale-sky-400);
-    }
-    &:hover {
-      border-color: var(--color-iron-300);
-    }
-    &:focus {
-      border-color: var(--color-ocean-blue-500);
-      background-color: #ffffff;
-      --tw-ring-color: var(--color-ocean-blue-200);
-    }
+    @apply bg-black-haze-50 border-2 border-iron-500;
+    @apply text-black-haze-900;
+    @apply placeholder:text-pale-sky-500;
+    @apply hover:border-iron-300;
+    @apply focus:border-ocean-blue-500 focus:bg-white focus:ring-ocean-blue-200;
+    @apply dark:bg-black-haze-800 dark:border-iron-600;
+    @apply dark:text-black-haze-100 dark:placeholder:text-pale-sky-600;
+    @apply dark:hover:border-iron-500;
+    @apply dark:focus:border-ocean-blue-400 dark:focus:bg-black-haze-900;
+    @apply dark:focus:ring-ocean-blue-800;
   }
 
   .form-input-with-icon {
@@ -112,29 +109,29 @@
   }
 
   .form-input-error {
-    border-color: var(--color-dark-wine-500);
-    &:focus {
-      border-color: var(--color-dark-wine-500);
-      --tw-ring-color: var(--color-dark-wine-200);
-    }
+    @apply border-dark-wine-500;
+    @apply focus:border-dark-wine-500 focus:ring-dark-wine-200;
+    @apply dark:border-dark-wine-400;
+    @apply dark:focus:border-dark-wine-400 dark:focus:ring-dark-wine-800;
   }
 
   .form-input-success {
-    border-color: var(--color-sage-green-500);
-    &:focus {
-      border-color: var(--color-sage-green-500);
-      --tw-ring-color: var(--color-sage-green-200);
-    }
+    @apply border-sage-green-500;
+    @apply focus:border-sage-green-500 focus:ring-sage-green-200;
+    @apply dark:border-sage-green-400;
+    @apply dark:focus:border-sage-green-400 dark:focus:ring-sage-green-800;
   }
 
   .form-help {
     @apply text-xs;
-    color: var(--color-pale-sky-500);
+    @apply text-pale-sky-500;
+    @apply dark:text-pale-sky-400;
   }
 
   .form-error {
     @apply text-xs items-center gap-1 hidden;
-    color: var(--color-dark-wine-600);
+    @apply text-dark-wine-600;
+    @apply dark:text-dark-wine-400;
   }
 
   .form-error-visible {
@@ -144,17 +141,14 @@
   .password-toggle {
     @apply absolute right-8 p-1.5 rounded;
     @apply transition-colors duration-200;
-    @apply border-none cursor-pointer;
+    @apply border-none cursor-pointer bg-transparent;
     @apply focus:outline-none focus:ring-2;
-    color: var(--color-pale-sky-500);
-    background-color: transparent;
-    &:hover {
-      color: var(--color-pale-sky-700);
-      background-color: var(--color-iron-100);
-    }
-    &:focus {
-      --tw-ring-color: var(--color-ocean-blue-500);
-    }
+    @apply text-pale-sky-500;
+    @apply hover:text-pale-sky-700 hover:bg-iron-100;
+    @apply focus:ring-ocean-blue-500;
+    @apply dark:text-pale-sky-400;
+    @apply dark:hover:text-pale-sky-200 dark:hover:bg-iron-800;
+    @apply dark:focus:ring-ocean-blue-400;
   }
 
   .alert {
@@ -162,21 +156,24 @@
   }
 
   .alert-error {
-    background-color: var(--color-dark-wine-50);
-    border: 1px solid var(--color-dark-wine-200);
-    color: var(--color-dark-wine-700);
+    @apply bg-dark-wine-50 border border-dark-wine-200;
+    @apply text-dark-wine-700;
+    @apply dark:bg-dark-wine-900 dark:border-dark-wine-700;
+    @apply dark:text-dark-wine-200;
   }
 
   .alert-success {
-    background-color: var(--color-sage-green-50);
-    border: 1px solid var(--color-sage-green-200);
-    color: var(--color-sage-green-700);
+    @apply bg-sage-green-50 border border-sage-green-200;
+    @apply text-sage-green-700;
+    @apply dark:bg-sage-green-900 dark:border-sage-green-700;
+    @apply dark:text-sage-green-200;
   }
 
   .alert-warning {
-    background-color: var(--color-harvest-orange-50);
-    border: 1px solid var(--color-harvest-orange-200);
-    color: var(--color-harvest-orange-700);
+    @apply bg-harvest-orange-50 border border-harvest-orange-200;
+    @apply text-harvest-orange-700;
+    @apply dark:bg-harvest-orange-900 dark:border-harvest-orange-700;
+    @apply dark:text-harvest-orange-200;
   }
 
   .alert-icon {
@@ -195,32 +192,25 @@
   }
 
   .btn-primary {
-    background-color: var(--color-ocean-blue-600);
-    color: #ffffff;
-    &:hover {
-      background-color: var(--color-ocean-blue-700);
-    }
-    &:active {
-      background-color: var(--color-ocean-blue-800);
-    }
-    &:focus {
-      --tw-ring-color: var(--color-ocean-blue-500);
-    }
+    @apply bg-ocean-blue-600 text-white;
+    @apply hover:bg-ocean-blue-700;
+    @apply active:bg-ocean-blue-800;
+    @apply focus:ring-ocean-blue-500;
+    @apply dark:bg-ocean-blue-700 dark:hover:bg-ocean-blue-800;
+    @apply dark:active:bg-ocean-blue-700;
+    @apply dark:focus:ring-ocean-blue-400;
   }
 
   .btn-secondary {
-    background-color: var(--color-soft-fawn-400);
-    color: white;
-    border: 1px solid var(--color-soft-fawn-600);
-    &:hover {
-      background-color: var(--color-soft-fawn-200);
-    }
-    &:active {
-      background-color: var(--color-soft-fawn-300);
-    }
-    &:focus {
-      --tw-ring-color: var(--color-soft-fawn-400);
-    }
+    @apply bg-soft-fawn-400 text-white;
+    @apply border border-soft-fawn-600;
+    @apply hover:bg-soft-fawn-500;
+    @apply active:bg-soft-fawn-600;
+    @apply focus:ring-soft-fawn-400;
+    @apply dark:bg-soft-fawn-600 dark:border-soft-fawn-700;
+    @apply dark:hover:bg-soft-fawn-700;
+    @apply dark:active:bg-soft-fawn-800;
+    @apply dark:focus:ring-soft-fawn-500;
   }
 
   .btn-lg {
@@ -238,7 +228,7 @@
 
   .sr-only {
     @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
-    clip: rect(0, 0, 0, 0);
+    @apply [clip:rect(0,0,0,0)];
   }
 
   .auth-form {
@@ -251,31 +241,38 @@
 }
 
 /* Error Page Styles */
+@layer components {
+  .error-page {
+    @apply flex items-center justify-center min-h-[75vh] px-4 py-6;
+  }
 
-.error-page {
-  @apply flex items-center justify-center min-h-[75vh] px-4 py-6;
-}
+  .error-content {
+    @apply flex flex-col items-center gap-3;
+  }
 
-.error-content {
-  @apply flex flex-col items-center gap-3;
-}
+  .error-code {
+    @apply text-[4rem] md:text-[6rem] font-bold m-0 leading-none;
+    @apply text-ocean-blue-500;
+    @apply dark:text-ocean-blue-400;
+  }
 
-.error-code {
-  @apply text-[4rem] md:text-[6rem] font-bold text-ocean-blue-500 m-0 leading-none;
-}
+  .error-title {
+    @apply text-2xl md:text-3xl font-semibold m-0;
+    @apply text-black-haze-900;
+    @apply dark:text-black-haze-100;
+  }
 
-.error-title {
-  @apply text-2xl md:text-3xl font-semibold m-0;
-}
+  .error-message {
+    @apply text-base md:text-lg m-0 leading-none;
+    @apply text-soft-fawn-800;
+    @apply dark:text-soft-fawn-300;
+  }
 
-.error-message {
-  @apply text-base md:text-lg text-soft-fawn-800 m-0 leading-none;
-}
+  .error-actions {
+    @apply flex gap-3 content-center flex-col w-full md:flex-row md:w-auto;
+  }
 
-.error-actions {
-  @apply flex gap-3 content-center flex-col w-full md:flex-row md:w-auto;
-}
-
-.error-actions .btn {
-  @apply px-8 py-3 min-w-60;
+  .error-actions .btn {
+    @apply px-8 py-3 min-w-60;
+  }
 }

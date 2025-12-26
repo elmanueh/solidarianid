@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { Community } from '@app/communities/domain/model/entities/community';
+import { Community } from '@app/communities/domain/model/aggregates/community';
 import { CommunityEntity } from '../entities/community.entity';
 import { CommunityMapper } from '../mappers/community.mapper';
 

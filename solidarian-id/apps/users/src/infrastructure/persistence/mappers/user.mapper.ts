@@ -19,8 +19,8 @@ export class UserMapper implements Mapper<User, UserEntity> {
     entity.username = user.username.value;
     entity.mobilePhone = user.mobilePhone.value;
     entity.hashedPassword = user.password.value;
-    entity.city = user.location.city;
-    entity.countryCode = user.location.countryCode;
+    entity.city = user.location.city.value;
+    entity.countryCode = user.location.countryCode.value;
     return entity;
   }
 
@@ -29,7 +29,10 @@ export class UserMapper implements Mapper<User, UserEntity> {
     const usernameResult = Username.create(entity.username);
     const mobilePhoneResult = MobilePhone.create(entity.mobilePhone);
     const passwordVO = Password.fromHash(entity.hashedPassword); // Ya está hasheado
-    const locationResult = UserLocation.create(entity.city, entity.countryCode);
+    const locationResult = UserLocation.create({
+      city: entity.city,
+      countryCode: entity.countryCode,
+    });
     const idResult = UniqueEntityID.create(entity.id);
 
     // Validar los Either

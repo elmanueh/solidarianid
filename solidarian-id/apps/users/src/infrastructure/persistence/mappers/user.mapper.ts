@@ -19,8 +19,8 @@ export class UserMapper implements Mapper<User, UserEntity> {
     entity.username = user.username.value;
     entity.mobilePhone = user.mobilePhone.value;
     entity.hashedPassword = user.password.value;
-    entity.city = user.location.city.value;
-    entity.countryCode = user.location.countryCode.value;
+    entity.city = user.location.city;
+    entity.countryCode = user.location.countryCode;
     return entity;
   }
 

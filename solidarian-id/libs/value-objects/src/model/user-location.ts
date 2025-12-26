@@ -20,12 +20,12 @@ export class UserLocation extends ValueObject<UserLocationProps> {
     super(props);
   }
 
-  get city(): City {
-    return this.props.city;
+  get city(): string {
+    return this.props.city.value;
   }
 
-  get countryCode(): CountryCode {
-    return this.props.countryCode;
+  get countryCode(): string {
+    return this.props.countryCode.value;
   }
 
   public equals(other: UserLocation): boolean {

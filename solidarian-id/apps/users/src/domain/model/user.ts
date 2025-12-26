@@ -77,7 +77,10 @@ export class User extends Entity<UserProps> {
       return left(passwordHashOrError.value);
     }
 
-    const locationOrError = UserLocation.create(props.city, props.countryCode);
+    const locationOrError = UserLocation.create({
+      city: props.city,
+      countryCode: props.countryCode,
+    });
     if (locationOrError.isLeft()) {
       return left(locationOrError.value);
     }

@@ -10,9 +10,10 @@ export type RequestDocument = HydratedDocument<CauseRequestEntity>;
   collection: 'requests',
   discriminatorKey: 'type',
   timestamps: true,
+  _id: false,
 })
 export class RequestEntity {
-  @Prop({ unique: true, required: true })
+  @Prop({ required: true })
   _id: string;
 
   @Prop()

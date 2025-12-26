@@ -5,6 +5,7 @@ import { RequestsRepository } from '@app/admin/administrator/model/infrastructur
 import { Either, left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
 @Injectable()
 export class RequestsService extends RequestsServicePort {
@@ -17,6 +18,10 @@ export class RequestsService extends RequestsServicePort {
     status: RequestStatus,
     reason?: string,
   ): Promise<Either<ValidationError, void>> {
+    const uniqueIdOrError = UniqueEntityID.create(id);
+    if (uniqueIdOrError.isLeft()) {
+      return left(new ValidationError('Invalid request ID format'));
+    }
     const requestOrError = await this.requestsRepository.findById(id);
     if (requestOrError.isLeft()) {
       return left(requestOrError.value);
@@ -30,9 +35,12 @@ export class RequestsService extends RequestsServicePort {
     if (status === RequestStatus.APPROVED) {
       request.approve(reason);
     }
-    if (status === RequestStatus.REJECTED) {
-      request.reject(reason!);
+    if (status === RequestStatus.REJECTED && reason) {
+      request.reject(reason);
+    } else if (status === RequestStatus.REJECTED && !reason) {
+      return left(new ValidationError('Rejection reason must be provided'));
     }
+
     await this.requestsRepository.save(request);
     return right(undefined);
   }

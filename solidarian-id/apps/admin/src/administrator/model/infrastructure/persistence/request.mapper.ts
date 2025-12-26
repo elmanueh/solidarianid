@@ -43,11 +43,15 @@ export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
 
       return right(requestCause);
     },
+    // ! QUITAR LA LINEA INFERIOR CUANDO SE IMPLEMENTE
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     [RequestType.COMMUNITY]: (e, id: UniqueEntityID) => {
       return left(
         new ValidationError('Community request mapping not implemented yet'),
       );
     },
+    // ! QUITAR LA LINEA INFERIOR CUANDO SE IMPLEMENTE
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     [RequestType.ACTION]: (e, id: UniqueEntityID) => {
       return left(
         new ValidationError('Action request mapping not implemented yet'),

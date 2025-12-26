@@ -1,50 +1,47 @@
 import { Injectable } from '@nestjs/common';
 import {
-  UsersServicePort,
+  UsersService,
   RegisterUserCommand,
-} from '@app/users/domain/ports/input/users.service.port';
+} from '@app/users/domain/services/users.service';
 import { User } from '@app/users/domain/model/user';
 import { Username } from '@app/value-objects/model/username';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
-import { Password } from '@app/value-objects/model/password';
-import { UserLocation } from '@app/value-objects/model/user-location';
-import { UsersRepositoryPort } from '@app/users/domain/ports/output/users.repository.port';
+import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
 import { Either, right, left } from '@app/ddd/either';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
+import { PasswordManager } from '@app/utils/security/password-manager';
 
 @Injectable()
-export class UsersService extends UsersServicePort {
-  constructor(private readonly usersRepository: UsersRepositoryPort) {
+export class UsersServiceImpl extends UsersService {
+  constructor(
+    private readonly usersRepository: UsersRepositoryPort,
+    private readonly passwordManager: PasswordManager,
+  ) {
     super();
   }
 
   async registerUser(
     command: RegisterUserCommand,
   ): Promise<Either<Error, string>> {
-    // 1. Crear Value Objects para validar errores de formato lo primero.
+    // 1. Hashear la contraseña lo primero de todo para evitar realizar trabajo innecesario
+    const passwordHashingResult =
+      await this.passwordManager.validateAndHashPassword(command.password);
+    if (passwordHashingResult.isLeft()) {
+      return left(passwordHashingResult.value);
+    }
+
+    // 2. Crear Value Objects móvil y username para comprobar unicidad
     const phoneResult = MobilePhone.create(command.mobilePhone);
     if (phoneResult.isLeft()) {
       return left(phoneResult.value);
     }
+
     const usernameResult = Username.create(command.username);
     if (usernameResult.isLeft()) {
       return left(usernameResult.value);
     }
 
-    const passwordResult = await Password.create(command.password);
-    if (passwordResult.isLeft()) {
-      return left(passwordResult.value);
-    }
-
-    const locationResult = UserLocation.create(
-      command.city,
-      command.countryCode,
-    );
-    if (locationResult.isLeft()) {
-      return left(locationResult.value);
-    }
-
-    // 2. Comprobar si el numero de telefono ya existe
+    // 2a. Comprobar si el numero de telefono ya existe
     const userPhoneExists = await this.usersRepository.existsByMobilePhone(
       phoneResult.value,
     );
@@ -57,7 +54,7 @@ export class UsersService extends UsersServicePort {
         ),
       );
 
-    // 2bis. Comprobar si el nombre de usuario existe
+    // 2b. Comprobar si el nombre de usuario existe
     const userNameExists = await this.usersRepository.existsByUsername(
       usernameResult.value,
     );
@@ -70,20 +67,23 @@ export class UsersService extends UsersServicePort {
         ),
       );
 
-    // 3. Crear User
+    // 3. Crear el usuario
     const user = User.create({
-      username: usernameResult.value,
-      mobilePhone: phoneResult.value,
-      password: passwordResult.value,
-      location: locationResult.value,
+      username: command.username,
+      mobilePhone: command.mobilePhone,
+      passwordHash: passwordHashingResult.value,
+      city: command.city,
+      countryCode: command.countryCode,
     });
 
+    if (user.isLeft()) return left(user.value);
+
     // 5. Persistir en BD
-    const res = await this.usersRepository.save(user);
+    const res = await this.usersRepository.save(user.value);
 
     if (res.isLeft()) return left(res.value);
 
     // 6. Retornar ID del usuario creado
-    return right(user.id.value);
+    return right(user.value.id.value);
   }
 }

@@ -3,7 +3,7 @@ import {
   PASSWORD_COMPLEXITY_REGEX,
   PASSWORD_MIN_LENGTH,
 } from '@app/value-objects/constants/validation.constants';
-import { PasswordTooWeakError } from '@app/value-objects/errors/validation/password-validation-error';
+import { PasswordTooWeakError } from '@app/utils/security/password-validation-error';
 
 export abstract class PasswordManager {
   async validateAndHashPassword(

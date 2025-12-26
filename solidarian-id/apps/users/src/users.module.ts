@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { UsersController } from './infrastructure/presentation/controllers/users.controller';
-import { UsersService } from './application/services/users.service';
-import { UsersRepositoryPort } from './domain/ports/output/users.repository.port';
-import { UsersServicePort } from './domain/ports/input/users.service.port';
+import { UsersServiceImpl } from './application/services/users.service.impl';
+import { UsersRepositoryPort } from './domain/ports/users.repository.port';
+import { UsersService } from './domain/services/users.service';
 import { UsersRepositoryTypeORM } from './infrastructure/persistence/repositories/users-typeorm.repository';
 import { UserMapper } from './infrastructure/persistence/mappers/user.mapper';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './infrastructure/persistence/entities/user.entity';
+import { PasswordManager } from '@app/utils/security/password-manager';
+import { PasswordManagerBcrypt } from '@app/utils/security/password-manager-bcrypt';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity])],
@@ -14,12 +16,16 @@ import { UserEntity } from './infrastructure/persistence/entities/user.entity';
   providers: [
     UserMapper,
     {
-      provide: UsersServicePort,
-      useClass: UsersService,
+      provide: UsersService,
+      useClass: UsersServiceImpl,
     },
     {
       provide: UsersRepositoryPort,
       useClass: UsersRepositoryTypeORM,
+    },
+    {
+      provide: PasswordManager,
+      useClass: PasswordManagerBcrypt,
     },
   ],
 })

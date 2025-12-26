@@ -9,8 +9,7 @@ import {
   createOdsByCauseBar,
   createTopCommunitiesPie,
   createMonthlyJoinsLine,
-} from 'apps/admin/src/utils/chart-builder';
-import { odsNames } from 'apps/admin/src/utils/data-utils';
+} from '../../utils/chart-builder';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)

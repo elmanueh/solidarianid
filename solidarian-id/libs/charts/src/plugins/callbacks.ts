@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-implied-eval */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ChartConfiguration } from 'chart.js';
 
 export interface SerializableChartConfig extends ChartConfiguration<

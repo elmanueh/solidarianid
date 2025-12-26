@@ -2,9 +2,7 @@ import { createBarConfig } from '@charts/bar';
 import { createDoughnutConfig } from '@charts/doughnut';
 import { createLineConfig } from '@charts/line';
 import { createPieConfig } from '@charts/pie';
-import { ChartConfiguration } from 'chart.js';
 import { monthNames, odsNames } from './data-utils';
-import { Serializable } from 'child_process';
 import { SerializableChartConfig } from '@charts/plugins/plugins';
 
 export function createTopCommunitiesPie(

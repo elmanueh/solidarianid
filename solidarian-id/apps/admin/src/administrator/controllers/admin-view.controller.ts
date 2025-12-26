@@ -1,4 +1,5 @@
 import { Controller, Get, Render } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -6,12 +7,15 @@ import { Controller, Get, Render } from '@nestjs/common';
  */
 @Controller()
 export class AdminViewController {
+  constructor(private readonly configService: ConfigService) {}
+
   @Get('/dashboard')
   @Render('pages/metrics')
   dashboard() {
     return {
       title: 'Dashboard',
       layout: 'dashboard',
+      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
   }
 
@@ -21,6 +25,7 @@ export class AdminViewController {
     return {
       title: 'Requests',
       layout: 'dashboard',
+      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
   }
 
@@ -30,6 +35,7 @@ export class AdminViewController {
     return {
       title: 'Reportes',
       layout: 'dashboard',
+      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
   }
 }

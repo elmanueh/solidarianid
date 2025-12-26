@@ -68,4 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
       closeMenu();
     }
   });
+
+  const logoutBtn = document.getElementById('logout-btn');
+  logoutBtn.addEventListener('click', async () => {
+    const result = await globalThis.AuthAPI.logout();
+    if (result.success) {
+      globalThis.location.href = '/login';
+    }
+  });
 });

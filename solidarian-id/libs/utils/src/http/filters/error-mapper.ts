@@ -19,7 +19,6 @@ export class ErrorMapper {
     }
 
     if (error instanceof ConflictError) {
-      console.log('Conflict error');
       return new ConflictException(error.message);
     }
 

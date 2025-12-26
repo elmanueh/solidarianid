@@ -1,3 +1,4 @@
+import { MOBILE_PHONE_REGEX } from '@app/value-objects/constants/validation.constants';
 import {
   IsNotEmpty,
   IsString,
@@ -28,7 +29,7 @@ export class AdminRegisterRequestDto {
 
   @IsNotEmpty({ message: 'El teléfono es obligatorio' })
   @IsString({ message: 'El teléfono debe ser un texto' })
-  @Matches(/^\+\d{1,3}\d{9}$/, {
+  @Matches(MOBILE_PHONE_REGEX, {
     message: 'Introduce un número en formato internacional (ej: +34612345678)',
   })
   phone: string;

@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AdminModule } from './administrator/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    MongooseModule.forRoot(process.env.MONGODB_URI || ''),
     AdminModule,
     AuthModule,
   ],

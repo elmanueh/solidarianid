@@ -1,3 +1,103 @@
-<p>
-  Esto es la página de login del panel de administración.</p>
-<p>Registrate <a href='/register'>aquí</a></p>
+<section class='auth-container' aria-labelledby='login-title'>
+
+  <div
+    id='form-announcer'
+    class='sr-only'
+    aria-live='assertive'
+    aria-atomic='true'
+  ></div>
+
+  <div class='auth-card'>
+    <header class='auth-header'>
+      <img
+        src='/icons/solidarian-128x128.png'
+        alt='SolidarianID Logo'
+        class='auth-logo'
+      />
+      <h1 id='login-title' class='auth-title'>
+        Iniciar Sesión
+      </h1>
+      <p class='auth-subtitle'>
+        Accede al panel de administración de SolidarianID
+      </p>
+    </header>
+
+    <form id='login-form' class='auth-form' method='POST' action='/login'>
+      <div class='form-group'>
+        <label for='email' class='form-label'>
+          Correo electrónico
+          <span class='form-label-required' aria-label='obligatorio'>*</span>
+        </label>
+        <div class='input-wrapper'>
+          <span
+            class='input-icon icon-[lucide--mail]'
+            aria-hidden='true'
+          ></span>
+          <input
+            type='email'
+            id='email'
+            name='email'
+            class='form-input form-input-with-icon'
+            placeholder='Ej: admin@solidarianid.org'
+            required
+            pattern='[^\s@]+@[^\s@]+\.[^\s@]+'
+            title='Introduce un correo electrónico válido (ej: usuario@dominio.com)'
+            autocomplete='email'
+            aria-describedby='email-error'
+            aria-required='true'
+          />
+          <span class='input-icon-status' aria-hidden='true'></span>
+        </div>
+        <span id='email-error' class='form-error' role='alert'></span>
+        <span class='form-help'>Introduce tu correo electrónico registrado</span>
+      </div>
+
+      <div class='form-group'>
+        <label for='password' class='form-label'>
+          Contraseña
+          <span class='form-label-required' aria-label='obligatorio'>*</span>
+        </label>
+        <div class='input-wrapper'>
+          <span
+            class='input-icon icon-[lucide--lock]'
+            aria-hidden='true'
+          ></span>
+          <input
+            type='password'
+            id='password'
+            name='password'
+            class='form-input form-input-with-toggle'
+            placeholder='Introduce tu contraseña'
+            required
+            minlength='12'
+            pattern='(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}'
+            title='Mínimo 12 caracteres, una mayúscula, un número y un carácter especial'
+            autocomplete='current-password'
+            aria-describedby='password-error'
+            aria-required='true'
+          />
+          <button
+            type='button'
+            class='password-toggle'
+            aria-label='Mostrar contraseña'
+            aria-controls='password'
+            aria-pressed='false'
+          >
+            <span class='icon-[lucide--eye]' aria-hidden='true'></span>
+          </button>
+          <span class='input-icon-status' aria-hidden='true'></span>
+        </div>
+        <span id='password-error' class='form-error' role='alert'></span>
+        <span class='form-help'>Mínimo 12 caracteres, una mayúscula, un número y
+          un carácter especial</span>
+      </div>
+
+      <div class='auth-form-actions'>
+        <button type='submit' class='btn btn-primary btn-lg'>
+          <span class='icon-[lucide--log-in]' aria-hidden='true'></span>
+          <span>Iniciar sesión</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

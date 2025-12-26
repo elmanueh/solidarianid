@@ -3,7 +3,19 @@
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
+  "testTimeout": 60000,
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "transformIgnorePatterns": ["node_modules/(?!(uuid)/)"],
+  "moduleNameMapper": {
+    "^apps/(.*)$": "<rootDir>/../../../apps/$1",
+    "^@app/ddd(|/.*)$": "<rootDir>/../../../libs/ddd/src/$1",
+    "^@app/admin(|/.*)$": "<rootDir>/../src/$1",
+    "^@app/communities(|/.*)$": "<rootDir>/../../../apps/communities/src/$1",
+    "^@app/users(|/.*)$": "<rootDir>/../../../apps/users/src/$1",
+    "^@app/utils(|/.*)$": "<rootDir>/../../../libs/utils/src/$1",
+    "^@app/value-objects(|/.*)$": "<rootDir>/../../../libs/value-objects/src/$1",
+    "^@frontend/design-tokens(|/.*)$": "<rootDir>/../../../libs/design-tokens/src/$1"
   }
 }

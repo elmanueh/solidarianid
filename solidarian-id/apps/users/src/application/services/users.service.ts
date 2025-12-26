@@ -36,10 +36,10 @@ export class UsersService extends UsersServicePort {
       return left(passwordResult.value);
     }
 
-    const locationResult = UserLocation.create(
-      command.city,
-      command.countryCode,
-    );
+    const locationResult = UserLocation.create({
+      city: command.city,
+      countryCode: command.countryCode,
+    });
     if (locationResult.isLeft()) {
       return left(locationResult.value);
     }

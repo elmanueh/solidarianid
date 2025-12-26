@@ -1,4 +1,4 @@
-import { Community } from 'apps/communities/src/domain/model/entities/community';
+import { Community } from '@app/communities/domain/model/aggregates/community';
 import { CommunitySummaryResponseDto } from 'apps/communities/src/infrastructure/presentation/dto/output/community-summary.response.dto';
 
 export class CommunityMapper {

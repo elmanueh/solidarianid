@@ -2,27 +2,30 @@ import { ValueObject } from '@app/ddd/value-object';
 import { Either, right, left } from '@app/ddd/either';
 import { InvalidCountryCodeError } from '@app/value-objects/errors/validation/country-code-validation-error';
 import { InvalidCityError } from '@app/value-objects/errors/validation/city-validation-error';
-import {
-  CITY_MAX_LENGTH,
-  COUNTRY_CODE_REGEX,
-} from '../constants/validation.constants';
+import { City } from '@app/value-objects/model/city';
+import { CountryCode } from '@app/value-objects/model/country-code';
 
 export interface UserLocationProps {
+  city: City;
+  countryCode: CountryCode;
+}
+
+export interface UserLocationCreationProps {
   city: string;
   countryCode: string;
 }
 
 export class UserLocation extends ValueObject<UserLocationProps> {
-  private constructor(city: string, countryCode: string) {
-    super({ city, countryCode });
+  private constructor(props: UserLocationProps) {
+    super(props);
   }
 
   get city(): string {
-    return this.props.city;
+    return this.props.city.value;
   }
 
   get countryCode(): string {
-    return this.props.countryCode;
+    return this.props.countryCode.value;
   }
 
   public equals(other: UserLocation): boolean {
@@ -30,38 +33,19 @@ export class UserLocation extends ValueObject<UserLocationProps> {
   }
 
   public static create(
-    city: string,
-    countryCode: string,
+    props: UserLocationCreationProps,
   ): Either<InvalidCityError | InvalidCountryCodeError, UserLocation> {
-    // Validar que city no esté vacía
-    if (!city || city.trim().length === 0) {
-      return left(new InvalidCityError('City name cannot be empty.'));
-    }
+    const city = City.create(props.city);
+    const countryCodeResult = CountryCode.create(props.countryCode);
 
-    // Validar longitud máxima de city
-    if (city.length > CITY_MAX_LENGTH) {
-      return left(
-        new InvalidCityError(
-          `City name must not exceed ${CITY_MAX_LENGTH} characters.`,
-        ),
-      );
-    }
+    if (city.isLeft()) return left(city.value);
+    if (countryCodeResult.isLeft()) return left(countryCodeResult.value);
 
-    // Validar que countryCode no esté vacío
-    if (!countryCode || countryCode.trim().length === 0) {
-      return left(new InvalidCountryCodeError('Country code cannot be empty.'));
-    }
+    const userLocationProps: UserLocationProps = {
+      city: city.value,
+      countryCode: countryCodeResult.value,
+    };
 
-    // Validar formato ISO 3166-1 alpha-2 (exactamente 2 letras mayúsculas)
-    // La regex ya valida implícitamente la longitud
-    if (!COUNTRY_CODE_REGEX.test(countryCode)) {
-      return left(
-        new InvalidCountryCodeError(
-          'Country code must be a valid ISO 3166-1 alpha-2 code (e.g., ES, US, MX).',
-        ),
-      );
-    }
-
-    return right(new UserLocation(city, countryCode));
+    return right(new UserLocation(userLocationProps));
   }
 }

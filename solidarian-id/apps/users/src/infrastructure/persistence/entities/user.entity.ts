@@ -14,8 +14,8 @@ export class UserEntity {
   @Column({ name: 'Username', unique: true })
   username: string;
 
-  @Column({ name: 'HashedPassword', length: 255 })
-  hashedPassword: string;
+  @Column({ name: 'PasswordHash' })
+  passwordHash: string;
 
   @Column({ name: 'City' })
   city: string;

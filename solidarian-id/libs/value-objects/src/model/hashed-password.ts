@@ -1,7 +1,7 @@
 import { ValueObject } from '@app/ddd/value-object';
 import { Either, left, right } from '@app/ddd/either';
-import { HASH_REGEX } from '@app/value-objects/constants/validation.constants';
-import { InvalidHashPasswordError } from '../errors/validation/invalid-hash-password-error';
+import { HASHED_PASSWORD_LONGITUDE } from '@app/value-objects/constants/validation.constants';
+import { InvalidHashPasswordError } from '@app/value-objects/errors/validation/invalid-hash-password-error';
 
 export interface HashedPasswordProps {
   value: string;
@@ -24,16 +24,15 @@ export class HashedPassword extends ValueObject<HashedPasswordProps> {
     hash: string,
   ): Either<InvalidHashPasswordError, HashedPassword> {
     if (!hash || hash.trim().length === 0) {
-      return left(new InvalidHashPasswordError('Empty hash'));
+      return left(
+        new InvalidHashPasswordError('A password hash can not be empty'),
+      );
     }
 
-    if (!HASH_REGEX.test(hash)) {
-      return left(new InvalidHashPasswordError('Not a bcrypt hash'));
-    }
-
-    const cost = Number(hash.split('$')[2]);
-    if (Number.isNaN(cost)) {
-      return left(new InvalidHashPasswordError('Invalid bcrypt cost factor'));
+    if (!HASHED_PASSWORD_LONGITUDE.test(hash)) {
+      return left(
+        new InvalidHashPasswordError('Hash does not have a reasonable length'),
+      );
     }
 
     return right(new HashedPassword(hash));

@@ -28,6 +28,7 @@ export const COUNTRY_CODE_REGEX = /^[A-Z]{2}$/; // ISO 3166-1 alpha-2
 export const COUNTRY_CODE_LENGTH = 2;
 
 // ==================== PASSWORD VALIDATION ====================
+export const HASHED_PASSWORD_LONGITUDE = /^.{20,255}$/;
 export const PASSWORD_MIN_LENGTH = 12;
 export const PASSWORD_COMPLEXITY_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
 

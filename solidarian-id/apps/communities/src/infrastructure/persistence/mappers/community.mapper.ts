@@ -3,7 +3,7 @@ import { Mapper } from '@app/ddd/repository/mapper';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { CommunityEntity } from '../entities/community.entity';
-import { Community } from '@app/communities/domain/model/entities/community';
+import { Community } from '@app/communities/domain/model/aggregates/community';
 
 @Injectable()
 export class CommunityMapper implements Mapper<Community, CommunityEntity> {

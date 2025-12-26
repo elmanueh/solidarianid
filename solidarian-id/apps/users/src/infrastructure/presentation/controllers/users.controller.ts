@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import type { Response } from 'express';
 import {
-  UsersServicePort,
+  UsersService,
   RegisterUserCommand,
-} from '@app/users/domain/ports/input/users.service.port';
+} from '@app/users/domain/services/users.service';
 import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
 import {
   ApiOperation,
@@ -25,7 +25,7 @@ import {
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
-  constructor(private readonly usersService: UsersServicePort) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

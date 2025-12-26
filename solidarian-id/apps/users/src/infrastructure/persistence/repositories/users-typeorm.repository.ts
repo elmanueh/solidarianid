@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepositoryPort } from '@app/users/domain/ports/output/users.repository.port';
+import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
 import { User } from '@app/users/domain/model/user';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { UserMapper } from '@app/users/infrastructure/persistence/mappers/user.mapper';

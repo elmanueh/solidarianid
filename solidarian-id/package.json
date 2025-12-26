@@ -124,12 +124,18 @@
     ],
     "moduleNameMapper": {
       "^apps/(.*)$": "<rootDir>/apps/$1",
-      "^@app/ddd(|/.*)$": "<rootDir>/libs/ddd/src/$1",
-      "^@app/users(|/.*)$": "<rootDir>/apps/users/src/$1",
-      "^@app/communities(|/.*)$": "<rootDir>/apps/communities/src/$1",
-      "^@app/utils(|/.*)$": "<rootDir>/libs/utils/src/$1",
-      "^@app/value-objects(|/.*)$": "<rootDir>/libs/value-objects/src/$1",
-      "^@frontend/design-tokens(|/.*)$": "<rootDir>/libs/design-tokens/src/$1"
+      "^@app/ddd/(.*)$": "<rootDir>/libs/ddd/src/$1",
+      "^@app/ddd$": "<rootDir>/libs/ddd/src",
+      "^@app/users/(.*)$": "<rootDir>/apps/users/src/$1",
+      "^@app/users$": "<rootDir>/apps/users/src",
+      "^@app/communities/(.*)$": "<rootDir>/apps/communities/src/$1",
+      "^@app/communities$": "<rootDir>/apps/communities/src",
+      "^@app/utils/(.*)$": "<rootDir>/libs/utils/src/$1",
+      "^@app/utils$": "<rootDir>/libs/utils/src",
+      "^@app/value-objects/(.*)$": "<rootDir>/libs/value-objects/src/$1",
+      "^@app/value-objects$": "<rootDir>/libs/value-objects/src",
+      "^@frontend/design-tokens/(.*)$": "<rootDir>/libs/design-tokens/src/$1",
+      "^@frontend/design-tokens$": "<rootDir>/libs/design-tokens/src"
     }
   }
 }

@@ -41,7 +41,7 @@ export class AuthServiceImpl extends AuthService {
     }
 
     const passwordHashOrError =
-      await this.passwordService.hashPassword(password);
+      await this.passwordService.validateAndHashPassword(password);
 
     if (passwordHashOrError.isLeft()) {
       return left(passwordHashOrError.value);

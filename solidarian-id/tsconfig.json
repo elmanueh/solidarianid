@@ -36,7 +36,8 @@
       "@app/value-objects": ["libs/value-objects/src"],
       "@app/value-objects/*": ["libs/value-objects/src/*"],
       "@frontend/design-tokens": ["libs/design-tokens/src"],
-      "@frontend/design-tokens/*": ["libs/design-tokens/src/*"]
+      "@frontend/design-tokens/*": ["libs/design-tokens/src/*"],
+      "@solidarianid/testing": ["libs/test/src/index.ts"]
     },
     "baseUrl": "./"
   },

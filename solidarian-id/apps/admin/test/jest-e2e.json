@@ -4,6 +4,24 @@
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
-  }
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        "tsconfig": "<rootDir>/../../../tsconfig.spec.json"
+      }
+    ]
+  },
+  "moduleNameMapper": {
+    "^@solidarianid/testing(.*)$": "<rootDir>/../../../libs/test/src$1",
+    "^@app/admin/(.*)$": "<rootDir>/../src/$1",
+    "^@app/users/(.*)$": "<rootDir>/../../../apps/users/src/$1",
+    "^@app/communities/(.*)$": "<rootDir>/../../../apps/communities/src/$1",
+    "^@app/ddd/(.*)$": "<rootDir>/../../../libs/ddd/src/$1",
+    "^@app/value-objects/(.*)$": "<rootDir>/../../../libs/value-objects/src/$1",
+    "^@app/utils/(.*)$": "<rootDir>/../../../libs/utils/src/$1",
+    "^@app/(.*)$": "<rootDir>/../../../libs/$1/src"
+  },
+  "transformIgnorePatterns": ["node_modules/(?!(uuid)/)"],
+  "testTimeout": 60000,
+  "maxWorkers": 1
 }

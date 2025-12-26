@@ -1,7 +1,7 @@
 import { AdministratorRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/administrator.repository.port';
 import { AuthService } from '@app/admin/administrator/model/domain/services/auth.service';
 import { AuthServiceImpl } from '@app/admin/auth/model/services/impl/auth.service.impl';
-import { PasswordService } from '@app/admin/auth/model/services/password.service';
+import { PasswordManager } from '@app/utils/security/password-manager';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Test, TestingModule } from '@nestjs/testing';
 
@@ -31,14 +31,14 @@ describe('AuthServiceImpl', () => {
     };
 
     service = new AuthServiceImpl(
-      mockPasswordService as unknown as PasswordService,
+      mockPasswordService as unknown as PasswordManager,
       mockAdministratorRepository as unknown as AdministratorRepositoryPort,
     );
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthServiceImpl,
-        { provide: PasswordService, useValue: mockPasswordService },
+        { provide: PasswordManager, useValue: mockPasswordService },
         {
           provide: AdministratorRepositoryPort,
           useValue: mockAdministratorRepository,

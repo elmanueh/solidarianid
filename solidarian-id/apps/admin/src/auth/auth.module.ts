@@ -4,8 +4,6 @@ import { AuthViewController } from './controllers/auth-view.controller';
 import { AuthApiController } from './controllers/auth-api.controller';
 import { AuthService } from '../administrator/model/domain/services/auth.service';
 import { AuthServiceImpl } from './model/services/impl/auth.service.impl';
-import { PasswordService } from './model/services/password.service';
-import { PasswordServiceImpl } from './model/services/impl/password.service.impl';
 import { AdministratorRepositoryPort } from '../administrator/model/domain/ports/output/administrator.repository.port';
 import { AdministratorRepositoryAdapter } from './model/infrastructure/persistence/repositories/administrator.repository';
 import {
@@ -13,6 +11,8 @@ import {
   AdministratorSchema,
 } from './model/infrastructure/persistence/entities/administrator.entity';
 import { AdministratorEntityMapper } from './model/infrastructure/persistence/mapper/administrator.entity.mapper';
+import { PasswordManager } from '@app/utils/security/password-manager';
+import { PasswordManagerBcrypt } from '@app/utils/security/password-manager-bcrypt';
 
 @Module({
   imports: [
@@ -27,8 +27,8 @@ import { AdministratorEntityMapper } from './model/infrastructure/persistence/ma
       useClass: AuthServiceImpl,
     },
     {
-      provide: PasswordService,
-      useClass: PasswordServiceImpl,
+      provide: PasswordManager,
+      useClass: PasswordManagerBcrypt,
     },
     {
       provide: AdministratorRepositoryPort,
@@ -36,6 +36,6 @@ import { AdministratorEntityMapper } from './model/infrastructure/persistence/ma
     },
     AdministratorEntityMapper,
   ],
-  exports: [AuthService, PasswordService, AdministratorRepositoryPort],
+  exports: [AuthService, PasswordManager, AdministratorRepositoryPort],
 })
 export class AuthModule {}

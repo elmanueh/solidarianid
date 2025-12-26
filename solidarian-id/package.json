@@ -130,6 +130,8 @@
       "^@app/ddd$": "<rootDir>/libs/ddd/src",
       "^@app/users/(.*)$": "<rootDir>/apps/users/src/$1",
       "^@app/users$": "<rootDir>/apps/users/src",
+      "^@app/admin/(.*)$": "<rootDir>/apps/admin/src/$1",
+      "^@app/admin$": "<rootDir>/apps/admin/src",
       "^@app/communities/(.*)$": "<rootDir>/apps/communities/src/$1",
       "^@app/communities$": "<rootDir>/apps/communities/src",
       "^@app/utils/(.*)$": "<rootDir>/libs/utils/src/$1",

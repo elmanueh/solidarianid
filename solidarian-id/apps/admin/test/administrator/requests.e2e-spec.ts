@@ -1,7 +1,7 @@
 import { INestApplication, DynamicModule } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port.';
+import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { RequestsModule } from '@app/admin/administrator/model/requests.module';
 import {
   MongoDBSeeder,

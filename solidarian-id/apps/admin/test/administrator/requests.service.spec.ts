@@ -4,12 +4,9 @@ import { RequestStatus } from '@app/admin/administrator/model/domain/enums/reque
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
 import { RequestCause } from '@app/admin/administrator/model/domain/models/cause.request';
 import { Request } from '@app/admin/administrator/model/domain/models/request';
-import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port.';
+import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { Description } from '@app/value-objects/model/description';
-import { Duration } from '@app/value-objects/model/duration';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Test, TestingModule } from '@nestjs/testing';
 
 const createMockRequestsRepository =
@@ -20,33 +17,46 @@ const createMockRequestsRepository =
     findAll: jest.fn(),
   });
 
-const createMockRequests = (): Request<any>[] => [
-  RequestCause.create(
+const createMockRequests = (): Request<any>[] => {
+  const request1Result = RequestCause.create(
     {
-      name: 'Request 1',
-      description: Description.create('Description 1').value as Description,
+      name: 'Environmental Conservation Request',
+      description: 'Comprehensive environmental initiative',
       status: RequestStatus.PENDING,
-      duration: Duration.create(
-        new Date(Date.now() + 24 * 60 * 60 * 1000),
-        new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-      ).value as Duration,
+      startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
       ods: [SustainableDevelopmentGoal.NoPoverty],
     },
-    UniqueEntityID.create('2db201c8-5d35-462e-a1d1-985cb677725d')
-      .value as UniqueEntityID,
-  ),
-  RequestCause.create({
-    name: 'Request 2',
-    description: Description.create('Description 2').value as Description,
-    status: RequestStatus.APPROVED,
-    reason: 'Meets all criteria',
-    duration: Duration.create(
-      new Date(Date.now() + 24 * 60 * 60 * 1000),
-      new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-    ).value as Duration,
-    ods: [SustainableDevelopmentGoal.ZeroHunger],
-  }),
-];
+    '2db201c8-5d35-462e-a1d1-985cb677725d',
+  );
+
+  const request2Result = RequestCause.create(
+    {
+      name: 'Hunger Relief Initiative',
+      description: 'Detailed hunger program',
+      status: RequestStatus.APPROVED,
+      reason: 'Meets all criteria and aligns with organizational goals',
+      startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+      ods: [SustainableDevelopmentGoal.ZeroHunger],
+    },
+    '3db201c8-5d35-462e-a1d1-985cb677725e',
+  );
+
+  if (request1Result.isLeft()) {
+    throw new Error(
+      `Failed to create mock request 1: ${request1Result.value.message}`,
+    );
+  }
+
+  if (request2Result.isLeft()) {
+    throw new Error(
+      `Failed to create mock request 2: ${request2Result.value.message}`,
+    );
+  }
+
+  return [request1Result.value, request2Result.value];
+};
 
 describe('RequestsService', () => {
   let service: RequestsServiceImpl;
@@ -185,10 +195,11 @@ describe('RequestsService', () => {
       });
 
       it('should return Left with RequestAlreadyResolvedException when request is not PENDING', async () => {
+        const id = mockRequests[1].id.value;
         mockRepository.findById.mockResolvedValue(right(mockRequests[1]));
 
         const result = await service.updateStatus(
-          requestId,
+          id,
           RequestStatus.REJECTED,
           'Too late',
         );
@@ -196,7 +207,7 @@ describe('RequestsService', () => {
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
           expect(result.value).toBeInstanceOf(RequestAlreadyResolvedError);
-          expect(result.value.message).toContain(requestId);
+          expect(result.value.message).toContain(id);
         }
       });
 

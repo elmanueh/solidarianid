@@ -16,8 +16,8 @@ export class MongoDBSeeder implements IDatabaseSeeder {
         description: 'This is a test request that will be used in E2E tests',
         status: RequestStatus.PENDING,
         type: RequestType.CAUSE,
-        startDate: new Date('2024-02-01T00:00:00.000Z'),
-        endDate: new Date('2024-03-01T00:00:00.000Z'),
+        startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
         ods: [1, 2],
       },
     ];

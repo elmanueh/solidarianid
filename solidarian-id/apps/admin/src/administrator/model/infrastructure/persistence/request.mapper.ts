@@ -3,56 +3,42 @@ import { Request } from '@app/admin/administrator/model/domain/models/request';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
 import { RequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/request.entity';
-import { Either, left, right } from '@app/ddd/either';
+import { Either, left } from '@app/ddd/either';
 import { Mapper } from '@app/ddd/repository/mapper';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { Description } from '@app/value-objects/model/description';
-import { Duration } from '@app/value-objects/model/duration';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Injectable } from '@nestjs/common';
 
 type DomainFactory = (
   e: RequestEntity,
-  id: UniqueEntityID,
 ) => Either<ValidationError, Request<any>>;
 
 @Injectable()
 export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
   private readonly factories: Record<RequestType, DomainFactory> = {
-    [RequestType.CAUSE]: (e: CauseRequestEntity, id: UniqueEntityID) => {
-      const descriptionOrError = Description.create(e.description);
-      if (descriptionOrError.isLeft()) {
-        return left(descriptionOrError.value);
-      }
-      const durationOrError = Duration.create(e.startDate, e.endDate);
-      if (durationOrError.isLeft()) {
-        return left(durationOrError.value);
-      }
-
-      const requestCause = RequestCause.create(
+    [RequestType.CAUSE]: (e: CauseRequestEntity) => {
+      return RequestCause.create(
         {
           name: e.name,
-          description: descriptionOrError.value,
+          description: e.description,
           status: e.status,
           reason: e.reason,
-          duration: durationOrError.value,
+          startDate: e.startDate,
+          endDate: e.endDate,
           ods: e.ods,
         },
-        id,
+        e._id,
       );
-
-      return right(requestCause);
     },
     // ! QUITAR LA LINEA INFERIOR CUANDO SE IMPLEMENTE
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    [RequestType.COMMUNITY]: (e, id: UniqueEntityID) => {
+    [RequestType.COMMUNITY]: (e) => {
       return left(
         new ValidationError('Community request mapping not implemented yet'),
       );
     },
     // ! QUITAR LA LINEA INFERIOR CUANDO SE IMPLEMENTE
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    [RequestType.ACTION]: (e, id: UniqueEntityID) => {
+    [RequestType.ACTION]: (e) => {
       return left(
         new ValidationError('Action request mapping not implemented yet'),
       );
@@ -86,11 +72,6 @@ export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
   fromPersistence(
     entity: RequestEntity,
   ): Either<ValidationError, Request<any>> {
-    const idOrError = UniqueEntityID.create(entity._id);
-    if (idOrError.isLeft()) {
-      return left(idOrError.value);
-    }
-
     const factory = this.factories[entity.type as RequestType];
     if (!factory) {
       return left(
@@ -98,6 +79,6 @@ export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
       );
     }
 
-    return factory(entity, idOrError.value);
+    return factory(entity);
   }
 }

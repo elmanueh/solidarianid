@@ -5,10 +5,11 @@ import {
   RequestSchema,
 } from '@app/admin/administrator/model/infrastructure/persistence/entities/request.entity';
 import { RequestMapper } from '@app/admin/administrator/model/infrastructure/persistence/request.mapper';
-import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port.';
+import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { RequestRepositoryMongoose } from '@app/admin/administrator/model/infrastructure/persistence/request.repository-mongoose';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 
 @Module({
   imports: [
@@ -24,10 +25,10 @@ import { MongooseModule } from '@nestjs/mongoose';
       useClass: RequestRepositoryMongoose,
     },
     {
-      provide: RequestsServiceImpl,
+      provide: RequestsService,
       useClass: RequestsServiceImpl,
     },
   ],
-  exports: [RequestsRepositoryPort, RequestsServiceImpl],
+  exports: [RequestsService],
 })
 export class RequestsModule {}

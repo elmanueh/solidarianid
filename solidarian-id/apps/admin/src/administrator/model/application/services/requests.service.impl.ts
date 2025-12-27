@@ -1,7 +1,5 @@
-import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
-
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port.';
+import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { Either, left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
@@ -19,28 +17,31 @@ export class RequestsServiceImpl extends RequestsService {
     status: RequestStatus,
     reason?: string,
   ): Promise<Either<ValidationError, void>> {
-    const uniqueIdOrError = UniqueEntityID.create(id);
-    if (uniqueIdOrError.isLeft()) {
-      return left(new ValidationError('Invalid request ID format'));
+    const idOrError = UniqueEntityID.create(id);
+    if (idOrError.isLeft()) {
+      return left(idOrError.value);
     }
+
     const requestOrError = await this.requestsRepository.findById(id);
     if (requestOrError.isLeft()) {
       return left(requestOrError.value);
     }
 
     const request = requestOrError.value;
-    if (request.status !== RequestStatus.PENDING) {
-      return left(new RequestAlreadyResolvedError(id));
-    }
 
-    if (status === RequestStatus.APPROVED) {
-      request.approve(reason);
-    }
-    if (status === RequestStatus.REJECTED && reason) {
-      request.reject(reason);
-    } else if (status === RequestStatus.REJECTED && !reason) {
-      return left(new ValidationError('Rejection reason must be provided'));
-    }
+    const applyStatus = (): Either<ValidationError, void> => {
+      switch (status) {
+        case RequestStatus.APPROVED:
+          return request.approve(reason);
+        case RequestStatus.REJECTED:
+          return request.reject(reason!);
+        default:
+          return left(new ValidationError('Invalid status provided'));
+      }
+    };
+
+    const statusResult = applyStatus();
+    if (statusResult.isLeft()) return left(statusResult.value);
 
     await this.requestsRepository.save(request);
     return right(undefined);

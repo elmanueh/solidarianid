@@ -1,0 +1,197 @@
+### Variables
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+### Setup: Create an existing user for update tests
+# @name createUser
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "username": "newUser2Fodate",
+  "mobilePhone": "+12345637890",
+  "password": "ExistingP@ssw0rd!",
+  "city": "Madrid",
+  "countryCode": "ES"
+}
+
+###
+# Location es relativo: /users/<uuid>
+@existingUserLocation = {{createUser.response.headers.Location}}
+@existingUserUrl = {{baseUrl}}{{existingUserLocation}}
+
+### (opcional) Sanity check
+# GET {{existingUserUrl}}
+
+### Test 1: Update all fields successfully
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "username": "updatedUsername",
+  "mobilePhone": "+34600111222",
+  "city": "Barcelona",
+  "countryCode": "ES"
+}
+
+### Test 2: Update only username
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "username": "newUsername123"
+}
+
+### Test 3: Update only mobile phone
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "mobilePhone": "+34677889900"
+}
+
+### Test 4: Update only location (city and countryCode together)
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "city": "Valencia",
+  "countryCode": "ES"
+}
+
+### Test 5: Update only city (should not update location)
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "city": "Sevilla"
+}
+
+### Test 6: Update only countryCode (should not update location)
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "countryCode": "FR"
+}
+
+### Test 7: Update username and mobile phone
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "username": "combinedUpdate",
+  "mobilePhone": "+34611222333"
+}
+
+### Test 8: Validation error - username too short
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "username": "ab"
+}
+
+### Test 9: Validation error - username contains invalid characters
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "username": "invalid@user!"
+}
+
+### Test 10: Validation error - empty username
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "username": ""
+}
+
+### Test 11: Validation error - invalid mobile phone format
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "mobilePhone": "612345678"
+}
+
+### Test 12: Validation error - invalid mobile phone (letters)
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "mobilePhone": "invalid-phone"
+}
+
+### Test 13: Validation error - invalid country code
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "city": "Madrid",
+  "countryCode": "INVALID"
+}
+
+### Test 14: Validation error - country code too long
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "city": "Madrid",
+  "countryCode": "ESP"
+}
+
+### Test 15: Validation error - no fields provided (empty body)
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+}
+
+### Test 16: Error - user not found (invalid UUID)
+PATCH {{baseUrl}}/users/00000000-0000-0000-0000-000000000000
+Content-Type: {{contentType}}
+
+{
+  "username": "updatedUsername"
+}
+
+### Test 17: Update with international phone (US)
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "mobilePhone": "+15551234567",
+  "city": "New York",
+  "countryCode": "US"
+}
+
+### Test 18: Update with international phone (UK)
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "mobilePhone": "+447700900123",
+  "city": "London",
+  "countryCode": "GB"
+}
+
+### Test 19: Extra fields should be ignored (whitelisting)
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "username": "validUsername",
+  "extraField": "should be ignored",
+  "anotherField": 12345,
+  "password": "should not be updated"
+}
+
+### Test 20: Update with maximum length username
+PATCH {{existingUserUrl}}
+Content-Type: {{contentType}}
+
+{
+  "username": "maxLengthUser1234567890"
+}

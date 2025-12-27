@@ -47,6 +47,75 @@ export class User extends Entity<UserProps> {
     return this.props.location.countryCode;
   }
 
+  private set username(username: Username) {
+    this.props.username = username;
+  }
+
+  private set mobilePhone(mobilePhone: MobilePhone) {
+    this.props.mobilePhone = mobilePhone;
+  }
+
+  private set location(location: UserLocation) {
+    this.props.location = location;
+  }
+
+  public updateUserProfile(
+    username?: string,
+    mobilePhone?: string,
+    city?: string,
+    countryCode?: string,
+  ): Either<ValidationError, void> {
+    if (!username && !mobilePhone && !city && !countryCode) {
+      return left(
+        new ValidationError(
+          'At least one field must be provided to update the profile.',
+        ),
+      );
+    }
+
+    if (city && !countryCode) {
+      return left(
+        new ValidationError(
+          'Country code must be provided when updating user location',
+        ),
+      );
+    }
+
+    if (countryCode && !city) {
+      return left(
+        new ValidationError(
+          'City must be provided when updating user location',
+        ),
+      );
+    }
+
+    if (username) {
+      const usernameOrError = Username.create(username);
+      if (usernameOrError.isLeft()) {
+        return left(usernameOrError.value);
+      }
+      this.username = usernameOrError.value;
+    }
+
+    if (mobilePhone) {
+      const mobilePhoneOrError = MobilePhone.create(mobilePhone);
+      if (mobilePhoneOrError.isLeft()) {
+        return left(mobilePhoneOrError.value);
+      }
+      this.mobilePhone = mobilePhoneOrError.value;
+    }
+
+    if (city && countryCode) {
+      const locationOrError = UserLocation.create({ city, countryCode });
+      if (locationOrError.isLeft()) {
+        return left(locationOrError.value);
+      }
+      this.location = locationOrError.value;
+    }
+
+    return right(undefined);
+  }
+
   public static create(
     props: UserCreationProps,
     id?: string,

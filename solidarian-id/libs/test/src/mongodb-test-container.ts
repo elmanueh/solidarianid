@@ -1,6 +1,7 @@
+import { IDatabaseTestContainer } from '@solidarianid/testing';
 import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers';
 
-export class MongoDBTestContainer {
+export class MongoDBTestContainer implements IDatabaseTestContainer {
   private static instance: MongoDBTestContainer;
   private container: StartedTestContainer | null = null;
 
@@ -15,9 +16,7 @@ export class MongoDBTestContainer {
 
   public async start(): Promise<string> {
     if (this.container) {
-      const host = this.container.getHost();
-      const port = this.container.getMappedPort(27017);
-      return `mongodb://test:test@${host}:${port}/?directConnection=true&authSource=admin`;
+      return this.getConnectionString();
     }
 
     const container = await new GenericContainer('mongo:7.0')
@@ -30,13 +29,9 @@ export class MongoDBTestContainer {
       .withStartupTimeout(120000)
       .start();
 
-    const host = container.getHost();
-    const port = container.getMappedPort(27017);
-    const connectionString = `mongodb://test:test@${host}:${port}/?directConnection=true&authSource=admin`;
-
     this.container = container;
 
-    return connectionString;
+    return this.getConnectionString();
   }
 
   public async stop(): Promise<void> {
@@ -55,5 +50,9 @@ export class MongoDBTestContainer {
     const host = this.container.getHost();
     const port = this.container.getMappedPort(27017);
     return `mongodb://test:test@${host}:${port}/?directConnection=true&authSource=admin`;
+  }
+
+  public isRunning(): boolean {
+    return this.container !== null;
   }
 }

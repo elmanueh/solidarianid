@@ -1,8 +1,9 @@
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
+import { IDatabaseSeeder } from '@solidarianid/testing';
 import { Connection } from 'mongoose';
 
-export class DatabaseSeeder {
+export class MongoDBSeeder implements IDatabaseSeeder {
   constructor(private readonly connection: Connection) {}
 
   async seedRequests(): Promise<void> {

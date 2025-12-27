@@ -1,12 +1,12 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, DynamicModule } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestsRepository } from '@app/admin/administrator/model/infrastructure/persistence/request.repository';
 import { RequestsModule } from '@app/admin/administrator/model/requests.module';
 import {
+  MongoDBSeeder,
+  MongoDBTestModule,
   TestServerHelper,
-  DatabaseSeeder,
-  DatabaseTestModule,
 } from '@solidarianid/testing';
 
 describe('RequestsController (e2e)', () => {
@@ -14,20 +14,20 @@ describe('RequestsController (e2e)', () => {
   const pendingRequestId = '2db201c8-5d35-462e-a1d1-985cb677725d';
   const nonExistentId = '0b5320ee-07e5-4974-8756-fb58651a6535';
 
-  let server: TestServerHelper;
-  let app: INestApplication;
-  let seeder: DatabaseSeeder;
+  let server!: TestServerHelper;
+  let app!: INestApplication;
+  let seeder!: MongoDBSeeder;
 
   beforeAll(async () => {
-    const databaseModule = await DatabaseTestModule.forRoot();
+    const databaseModule: DynamicModule = await MongoDBTestModule.forRoot();
     server = new TestServerHelper();
     app = await server.create({
       imports: [databaseModule, RequestsModule],
     });
 
-    const connection = app.get<Connection>('Connection');
-    seeder = new DatabaseSeeder(connection);
-    repository = app.get(RequestsRepository);
+    const connection: Connection = app.get<Connection>('Connection');
+    seeder = new MongoDBSeeder(connection);
+    repository = app.get<RequestsRepository>(RequestsRepository);
   });
 
   beforeEach(async () => {

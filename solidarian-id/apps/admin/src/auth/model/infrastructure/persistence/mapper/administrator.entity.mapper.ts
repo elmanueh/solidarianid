@@ -1,7 +1,7 @@
 import { Mapper } from '@app/ddd/repository/mapper';
 import { Either, left } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { Administrator } from '@app/admin/administrator/model/domain/model/administrator';
+import { Administrator } from '@app/admin/administrator/model/domain/models/administrator';
 import { AdministratorEntity } from '@app/admin/auth/model/infrastructure/persistence/entities/administrator.entity';
 
 export class AdministratorEntityMapper extends Mapper<

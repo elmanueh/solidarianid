@@ -1,5 +1,5 @@
 import { UpdateStatusRequestDto } from '@app/admin/administrator/model/application/dtos/update-status.request.dto';
-import { RequestsServicePort } from '@app/admin/administrator/model/domain/interfaces/requests.service.port';
+import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import {
   Controller,
   Patch,
@@ -11,7 +11,7 @@ import {
 
 @Controller('requests')
 export class RequestsController {
-  constructor(private readonly requestsService: RequestsServicePort) {}
+  constructor(private readonly requestsService: RequestsService) {}
 
   @Patch(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

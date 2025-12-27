@@ -1,12 +1,12 @@
-import { RequestsServicePort } from '@app/admin/administrator/model/domain/interfaces/requests.service.port';
+import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { RequestAlreadyResolvedException } from '@app/admin/administrator/model/domain/exceptions/already-resolved.request.exception';
+import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { left, right } from '@app/ddd/either';
 import { RequestsController } from '@app/admin/administrator/controllers/requets.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 
-const createMockRequestsService = (): jest.Mocked<RequestsServicePort> => ({
+const createMockRequestsService = (): jest.Mocked<RequestsService> => ({
   updateStatus: jest.fn(),
 });
 
@@ -24,7 +24,7 @@ const createMockValidationError = (message: string): ValidationError => {
 
 describe('RequestsController', () => {
   let controller: RequestsController;
-  let mockRequestsService: jest.Mocked<RequestsServicePort>;
+  let mockRequestsService: jest.Mocked<RequestsService>;
   const requestId = '2db201c8-5d35-462e-a1d1-985cb677725d';
 
   beforeEach(async () => {
@@ -34,7 +34,7 @@ describe('RequestsController', () => {
       controllers: [RequestsController],
       providers: [
         {
-          provide: RequestsServicePort,
+          provide: RequestsService,
           useValue: mockRequestsService,
         },
       ],
@@ -135,7 +135,7 @@ describe('RequestsController', () => {
         const dto = createMockUpdateStatusDto({
           status: RequestStatus.APPROVED,
         });
-        const exception = new RequestAlreadyResolvedException(requestId);
+        const exception = new RequestAlreadyResolvedError(requestId);
         mockRequestsService.updateStatus.mockResolvedValue(left(exception));
 
         await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(
@@ -218,11 +218,11 @@ describe('RequestsController', () => {
           status: RequestStatus.REJECTED,
           reason: 'Already resolved',
         });
-        const exception = new RequestAlreadyResolvedException(requestId);
+        const exception = new RequestAlreadyResolvedError(requestId);
         mockRequestsService.updateStatus.mockResolvedValue(left(exception));
 
         await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(
-          RequestAlreadyResolvedException,
+          RequestAlreadyResolvedError,
         );
       });
 

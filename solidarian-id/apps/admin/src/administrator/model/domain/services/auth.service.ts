@@ -1,5 +1,5 @@
 import { Either } from '@app/ddd/either';
-import { Administrator } from '../model/administrator';
+import { Administrator } from '../models/administrator';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { AuthError } from '@app/ddd/errors/auth-error';
 import { ConflictError } from '@app/ddd/errors/conflict-error';

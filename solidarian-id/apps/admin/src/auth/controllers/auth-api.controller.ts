@@ -3,7 +3,7 @@ import { AdminRegisterRequestDto } from './dto/input/admin-register-request.dto'
 import { AdminLoginRequestDto } from './dto/input/admin-login-request.dto';
 import { AuthService } from '../../administrator/model/domain/services/auth.service';
 import type { Request, Response } from 'express';
-import { Administrator } from '@app/admin/administrator/model/domain/model/administrator';
+import { Administrator } from '@app/admin/administrator/model/domain/models/administrator';
 import { Either } from '@app/ddd/either';
 import { AdministratorDtoMapper } from './mappers/administrator.dto.mapper';
 import { AdministratorResponseDto } from './dto/output/administrator-response.dto';

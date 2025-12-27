@@ -1,7 +1,7 @@
 import { INestApplication, DynamicModule } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { RequestsRepository } from '@app/admin/administrator/model/infrastructure/persistence/request.repository';
+import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port.';
 import { RequestsModule } from '@app/admin/administrator/model/requests.module';
 import {
   MongoDBSeeder,
@@ -10,7 +10,7 @@ import {
 } from '@solidarianid/testing';
 
 describe('RequestsController (e2e)', () => {
-  let repository: RequestsRepository;
+  let repository: RequestsRepositoryPort;
   const pendingRequestId = '2db201c8-5d35-462e-a1d1-985cb677725d';
   const nonExistentId = '0b5320ee-07e5-4974-8756-fb58651a6535';
 
@@ -27,7 +27,7 @@ describe('RequestsController (e2e)', () => {
 
     const connection: Connection = app.get<Connection>('Connection');
     seeder = new MongoDBSeeder(connection);
-    repository = app.get<RequestsRepository>(RequestsRepository);
+    repository = app.get<RequestsRepositoryPort>(RequestsRepositoryPort);
   });
 
   beforeEach(async () => {

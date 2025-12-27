@@ -1,15 +1,16 @@
-import { RequestAlreadyResolvedException } from '@app/admin/administrator/model/domain/exceptions/already-resolved.request.exception';
-import { RequestsServicePort } from '@app/admin/administrator/model/domain/interfaces/requests.service.port';
+import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
+
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { RequestsRepository } from '@app/admin/administrator/model/infrastructure/persistence/request.repository';
+import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port.';
 import { Either, left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 
 @Injectable()
-export class RequestsService extends RequestsServicePort {
-  constructor(private readonly requestsRepository: RequestsRepository) {
+export class RequestsServiceImpl extends RequestsService {
+  constructor(private readonly requestsRepository: RequestsRepositoryPort) {
     super();
   }
 
@@ -29,7 +30,7 @@ export class RequestsService extends RequestsServicePort {
 
     const request = requestOrError.value;
     if (request.status !== RequestStatus.PENDING) {
-      return left(new RequestAlreadyResolvedException(id));
+      return left(new RequestAlreadyResolvedError(id));
     }
 
     if (status === RequestStatus.APPROVED) {

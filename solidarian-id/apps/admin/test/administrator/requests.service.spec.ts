@@ -1,10 +1,10 @@
-import { RequestsService } from '@app/admin/administrator/model/application/services/requests.service';
+import { RequestsServiceImpl } from '@app/admin/administrator/model/application/services/requests.service.impl';
 import { SustainableDevelopmentGoal } from '@app/admin/administrator/model/domain/enums/ods';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { RequestAlreadyResolvedException } from '@app/admin/administrator/model/domain/exceptions/already-resolved.request.exception';
+import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
 import { RequestCause } from '@app/admin/administrator/model/domain/models/cause.request';
 import { Request } from '@app/admin/administrator/model/domain/models/request';
-import { RequestsRepository } from '@app/admin/administrator/model/infrastructure/persistence/request.repository';
+import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port.';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { Description } from '@app/value-objects/model/description';
@@ -12,12 +12,13 @@ import { Duration } from '@app/value-objects/model/duration';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Test, TestingModule } from '@nestjs/testing';
 
-const createMockRequestsRepository = (): jest.Mocked<RequestsRepository> => ({
-  save: jest.fn(),
-  remove: jest.fn(),
-  findById: jest.fn(),
-  findAll: jest.fn(),
-});
+const createMockRequestsRepository =
+  (): jest.Mocked<RequestsRepositoryPort> => ({
+    save: jest.fn(),
+    remove: jest.fn(),
+    findById: jest.fn(),
+    findAll: jest.fn(),
+  });
 
 const createMockRequests = (): Request<any>[] => [
   RequestCause.create(
@@ -48,8 +49,8 @@ const createMockRequests = (): Request<any>[] => [
 ];
 
 describe('RequestsService', () => {
-  let service: RequestsService;
-  let mockRepository: jest.Mocked<RequestsRepository>;
+  let service: RequestsServiceImpl;
+  let mockRepository: jest.Mocked<RequestsRepositoryPort>;
   let mockRequests: Request<any>[];
   const requestId = '2db201c8-5d35-462e-a1d1-985cb677725d';
 
@@ -59,15 +60,15 @@ describe('RequestsService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        RequestsService,
+        RequestsServiceImpl,
         {
-          provide: RequestsRepository,
+          provide: RequestsRepositoryPort,
           useValue: mockRepository,
         },
       ],
     }).compile();
 
-    service = module.get<RequestsService>(RequestsService);
+    service = module.get<RequestsServiceImpl>(RequestsServiceImpl);
   });
 
   afterEach(() => {
@@ -102,7 +103,7 @@ describe('RequestsService', () => {
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
-          expect(result.value.name).toBe(RequestAlreadyResolvedException.name);
+          expect(result.value.name).toBe(RequestAlreadyResolvedError.name);
         }
       });
 
@@ -147,7 +148,7 @@ describe('RequestsService', () => {
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(RequestAlreadyResolvedException);
+          expect(result.value).toBeInstanceOf(RequestAlreadyResolvedError);
         }
       });
 
@@ -162,7 +163,7 @@ describe('RequestsService', () => {
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(RequestAlreadyResolvedException);
+          expect(result.value).toBeInstanceOf(RequestAlreadyResolvedError);
         }
       });
     });
@@ -194,7 +195,7 @@ describe('RequestsService', () => {
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(RequestAlreadyResolvedException);
+          expect(result.value).toBeInstanceOf(RequestAlreadyResolvedError);
           expect(result.value.message).toContain(requestId);
         }
       });

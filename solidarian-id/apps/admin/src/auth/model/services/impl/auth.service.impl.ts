@@ -6,7 +6,7 @@ import { AuthError } from '@app/ddd/errors/auth-error';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { AdminConflictError } from '@app/admin/administrator/model/domain/errors/admin-conflict.error';
-import { Administrator } from '@app/admin/administrator/model/domain/model/administrator';
+import { Administrator } from '@app/admin/administrator/model/domain/models/administrator';
 import { AdministratorRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/administrator.repository.port';
 import { AuthService } from '@app/admin/administrator/model/domain/services/auth.service';
 

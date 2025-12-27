@@ -2,7 +2,7 @@ import { RequestStatus } from '@app/admin/administrator/model/domain/enums/reque
 import { Either } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 
-export abstract class RequestsServicePort {
+export abstract class RequestsService {
   abstract updateStatus(
     id: string,
     status: RequestStatus,

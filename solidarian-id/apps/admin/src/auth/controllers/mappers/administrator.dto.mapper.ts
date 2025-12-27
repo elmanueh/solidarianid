@@ -1,4 +1,4 @@
-import { Administrator } from 'apps/admin/src/administrator/model/domain/model/administrator';
+import { Administrator } from '@app/admin/administrator/model/domain/models/administrator';
 import { AdministratorResponseDto } from '../dto/output/administrator-response.dto';
 
 export class AdministratorDtoMapper {

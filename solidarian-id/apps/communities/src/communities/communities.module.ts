@@ -2,9 +2,9 @@ import { CommunitiesServiceImpl } from '@app/communities/communities/application
 import { CommunitiesRepositoryPort } from '@app/communities/communities/domain/ports/communities.repository.port';
 import { CommunitiesService } from '@app/communities/communities/domain/services/communities.service';
 import { CommunityEntity } from '@app/communities/communities/infrastructure/persistence/entities/community.entity';
+import { CommunityMapper } from '@app/communities/communities/infrastructure/persistence/mappers/community.mapper';
 import { CommunitiesRepositoryAdapter } from '@app/communities/communities/infrastructure/persistence/repositories/communities.repository.adapter';
 import { CommunitiesController } from '@app/communities/communities/infrastructure/presentation/controllers/communities.controller';
-import { CommunityMapper } from '@app/communities/communities/infrastructure/presentation/mappers/community.mapper';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 

@@ -7,7 +7,7 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { CommunitiesRepositoryPort } from '@app/communities/communities/domain/ports/communities.repository.port';
 import { Community } from '@app/communities/communities/domain/model/aggregates/community';
 import { CommunityEntity } from '../entities/community.entity';
-import { CommunityMapper } from '../mappers/community.mapper';
+import { CommunityMapper } from '@app/communities/communities/infrastructure/persistence/mappers/community.mapper';
 
 @Injectable()
 export class CommunitiesRepositoryAdapter

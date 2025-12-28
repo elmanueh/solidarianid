@@ -6,8 +6,11 @@ import { right, left } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { PasswordManager } from '@app/utils/security/password-manager';
+import { PasswordTooWeakError } from '@app/utils/security/password-validation-error';
 import { User } from '@app/users/domain/model/user';
+import { USERNAME_MAX_LENGTH } from '@app/value-objects/constants/validation.constants';
 
 describe('UsersService (White Box Testing)', () => {
   let service: UsersServiceImpl;
@@ -16,9 +19,11 @@ describe('UsersService (White Box Testing)', () => {
     existsByUsername: jest.Mock;
     save: jest.Mock;
     findById: jest.Mock;
+    findByUsername: jest.Mock;
   };
   let mockPasswordManager: {
     validateAndHashPassword: jest.Mock;
+    comparePassword: jest.Mock;
   };
 
   const validCommand: RegisterUserCommand = {
@@ -38,10 +43,12 @@ describe('UsersService (White Box Testing)', () => {
       existsByUsername: jest.fn(),
       save: jest.fn(),
       findById: jest.fn(),
+      findByUsername: jest.fn(),
     };
 
     mockPasswordManager = {
       validateAndHashPassword: jest.fn(),
+      comparePassword: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -380,488 +387,1168 @@ describe('UsersService (White Box Testing)', () => {
         expect(mockCalls[2]).toBeLessThan(mockCalls[3]);
       });
     });
+  });
 
-    describe('UsersService.updateUserProfile (White Box Testing)', () => {
-      const validUpdateCommand = {
-        username: 'newUsername',
-        mobilePhone: '+34600111222',
-        city: 'Barcelona',
-        countryCode: 'ES',
-      };
+  describe('UsersService.updateUserProfile (White Box Testing)', () => {
+    const validUpdateCommand = {
+      username: 'newUsername',
+      mobilePhone: '+34600111222',
+      city: 'Barcelona',
+      countryCode: 'ES',
+    };
 
-      const EXISTING_USER_ID = '550e8400-e29b-41d4-a716-446655440000';
+    const EXISTING_USER_ID = '550e8400-e29b-41d4-a716-446655440000';
 
-      describe('Caminos Básicos (Complejidad Ciclomática = 4)', () => {
-        describe('Camino 1: findById retorna error', () => {
-          it('should return RepositoryException when user is not found', async () => {
-            const repoError = new RepositoryException('User not found');
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(left(repoError));
+    describe('Caminos Básicos (Complejidad Ciclomática = 4)', () => {
+      describe('Camino 1: findById retorna error', () => {
+        it('should return RepositoryException when user is not found', async () => {
+          const repoError = new RepositoryException('User not found');
+          mockRepo.findById = jest.fn().mockResolvedValueOnce(left(repoError));
 
-            const result = await service.updateUserProfile(
-              EXISTING_USER_ID,
-              validUpdateCommand,
-            );
+          const result = await service.updateUserProfile(
+            EXISTING_USER_ID,
+            validUpdateCommand,
+          );
 
-            expect(
-              result.isLeft() && result.value instanceof RepositoryException,
-            ).toBe(true);
-            expect(mockRepo.save).not.toHaveBeenCalled();
-          });
-        });
-
-        describe('Camino 2: user.updateUserProfile retorna ValidationError', () => {
-          it('should return ValidationError when username format is invalid', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
-
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
-
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-
-            const invalidCommand = {
-              username: 'a', // Too short
-            };
-
-            const result = await service.updateUserProfile(
-              EXISTING_USER_ID,
-              invalidCommand,
-            );
-
-            expect(
-              result.isLeft() && result.value instanceof ValidationError,
-            ).toBe(true);
-            expect(mockRepo.save).not.toHaveBeenCalled();
-          });
-        });
-
-        describe('Camino 3: save retorna error', () => {
-          it('should return RepositoryException when save operation fails', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
-
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
-
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-
-            const saveError = new RepositoryException('Failed to update user');
-            mockRepo.save.mockResolvedValueOnce(left(saveError));
-
-            const result = await service.updateUserProfile(
-              EXISTING_USER_ID,
-              validUpdateCommand,
-            );
-
-            expect(
-              result.isLeft() && result.value instanceof RepositoryException,
-            ).toBe(true);
-          });
-        });
-
-        describe('Camino 4: Actualización exitosa (Happy Path)', () => {
-          it('should return Right(void) when profile is updated successfully', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
-
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
-
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-            mockRepo.save.mockResolvedValueOnce(right(undefined));
-
-            const result = await service.updateUserProfile(
-              EXISTING_USER_ID,
-              validUpdateCommand,
-            );
-
-            expect(result.isRight()).toBe(true);
-            expect(mockRepo.save).toHaveBeenCalledTimes(1);
-          });
+          expect(
+            result.isLeft() && result.value instanceof RepositoryException,
+          ).toBe(true);
+          expect(mockRepo.save).not.toHaveBeenCalled();
         });
       });
 
-      describe('Tests de Condiciones', () => {
-        describe('Condición: No se proporciona ningún campo para actualizar', () => {
-          it('should return ValidationError when no fields are provided', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
-
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
-
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-
-            const emptyCommand = {};
-
-            const result = await service.updateUserProfile(
-              EXISTING_USER_ID,
-              emptyCommand,
-            );
-
-            expect(
-              result.isLeft() && result.value instanceof ValidationError,
-            ).toBe(true);
-            expect((result.value as ValidationError).message).toContain(
-              'At least one field must be provided',
-            );
+      describe('Camino 2: user.updateUserProfile retorna ValidationError', () => {
+        it('should return ValidationError when username format is invalid', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
           });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const invalidCommand = {
+            username: 'a', // Too short
+          };
+
+          const result = await service.updateUserProfile(
+            EXISTING_USER_ID,
+            invalidCommand,
+          );
+
+          expect(
+            result.isLeft() && result.value instanceof ValidationError,
+          ).toBe(true);
+          expect(mockRepo.save).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('Camino 3: save retorna error', () => {
+        it('should return RepositoryException when save operation fails', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const saveError = new RepositoryException('Failed to update user');
+          mockRepo.save.mockResolvedValueOnce(left(saveError));
+
+          const result = await service.updateUserProfile(
+            EXISTING_USER_ID,
+            validUpdateCommand,
+          );
+
+          expect(
+            result.isLeft() && result.value instanceof RepositoryException,
+          ).toBe(true);
+        });
+      });
+
+      describe('Camino 4: Actualización exitosa (Happy Path)', () => {
+        it('should return Right(void) when profile is updated successfully', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+          mockRepo.save.mockResolvedValueOnce(right(undefined));
+
+          const result = await service.updateUserProfile(
+            EXISTING_USER_ID,
+            validUpdateCommand,
+          );
+
+          expect(result.isRight()).toBe(true);
+          expect(mockRepo.save).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
+
+    describe('Tests de Condiciones', () => {
+      describe('Condición: No se proporciona ningún campo para actualizar', () => {
+        it('should return ValidationError when no fields are provided', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const emptyCommand = {};
+
+          const result = await service.updateUserProfile(
+            EXISTING_USER_ID,
+            emptyCommand,
+          );
+
+          expect(
+            result.isLeft() && result.value instanceof ValidationError,
+          ).toBe(true);
+          expect((result.value as ValidationError).message).toContain(
+            'At least one field must be provided',
+          );
+        });
+      });
+
+      describe('Condición: username es válido', () => {
+        it('should update username when valid username is provided', async () => {
+          const existingUserOrError = User.create({
+            username: 'oldUsername',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+          mockRepo.save.mockResolvedValueOnce(right(undefined));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            username: 'newValidUsername',
+          });
+
+          expect(result.isRight()).toBe(true);
+          expect(existingUser.username).toBe('newValidUsername');
+        });
+      });
+
+      describe('Condición: username es inválido', () => {
+        it('should return ValidationError when username is too short', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            username: 'a', // Too short
+          });
+
+          expect(
+            result.isLeft() && result.value instanceof ValidationError,
+          ).toBe(true);
         });
 
-        describe('Condición: username es válido', () => {
-          it('should update username when valid username is provided', async () => {
-            const existingUserOrError = User.create({
-              username: 'oldUsername',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
-
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
-
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-            mockRepo.save.mockResolvedValueOnce(right(undefined));
-
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              username: 'newValidUsername',
-            });
-
-            expect(result.isRight()).toBe(true);
-            expect(existingUser.username).toBe('newValidUsername');
+        it('should return ValidationError when username contains invalid characters', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
           });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            username: 'invalid@user!',
+          });
+
+          expect(
+            result.isLeft() && result.value instanceof ValidationError,
+          ).toBe(true);
+        });
+      });
+
+      describe('Condición: mobilePhone es válido', () => {
+        it('should update mobilePhone when valid phone is provided', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+          mockRepo.save.mockResolvedValueOnce(right(undefined));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            mobilePhone: '+34600111222',
+          });
+
+          expect(result.isRight()).toBe(true);
+          expect(existingUser.mobilePhone).toBe('+34600111222');
+        });
+      });
+
+      describe('Condición: mobilePhone es inválido', () => {
+        it('should return ValidationError when mobilePhone format is invalid', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            mobilePhone: 'invalid-phone',
+          });
+
+          expect(
+            result.isLeft() && result.value instanceof ValidationError,
+          ).toBe(true);
+        });
+      });
+
+      describe('Condición: city Y countryCode son válidos', () => {
+        it('should update location when both city and countryCode are provided', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+          mockRepo.save.mockResolvedValueOnce(right(undefined));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            city: 'Valencia',
+            countryCode: 'ES',
+          });
+
+          expect(result.isRight()).toBe(true);
+          expect(existingUser.city).toBe('Valencia');
+          expect(existingUser.countryCode).toBe('ES');
+        });
+      });
+
+      describe('Condición: Solo city (sin countryCode)', () => {
+        it('should not update location when only city is provided', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            city: 'Valencia',
+          });
+
+          expect(result.isLeft()).toBe(true);
+          expect(result.value).toBeInstanceOf(ValidationError);
+          expect((result.value as ValidationError).message).toContain(
+            'Country code must be provided when updating user location',
+          );
+          expect(mockRepo.save).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('Condición: solo countryCode (sin city)', () => {
+        it('should not update location when only countryCode is provided', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            countryCode: 'FR',
+          });
+
+          expect(result.isLeft()).toBe(true);
+          expect(result.value).toBeInstanceOf(ValidationError);
+          expect((result.value as ValidationError).message).toContain(
+            'City must be provided when updating user location',
+          );
+          expect(mockRepo.save).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('Condición: city sin countryCode', () => {
+        it('should return ValidationError when city is provided without countryCode', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            city: 'Valencia',
+          });
+
+          expect(result.isLeft()).toBe(true);
+          expect(result.value).toBeInstanceOf(ValidationError);
+          expect((result.value as ValidationError).message).toContain(
+            'Country code must be provided',
+          );
+        });
+      });
+
+      describe('Condición: countryCode sin city', () => {
+        it('should return ValidationError when countryCode is provided without city', async () => {
+          const existingUserOrError = User.create({
+            username: 'existingUser',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            countryCode: 'FR',
+          });
+
+          expect(result.isLeft()).toBe(true);
+          expect(result.value).toBeInstanceOf(ValidationError);
+          expect((result.value as ValidationError).message).toContain(
+            'City must be provided',
+          );
+        });
+      });
+
+      describe('Condición: Actualización combinada de múltiples campos', () => {
+        it('should update all fields when all are provided and valid', async () => {
+          const existingUserOrError = User.create({
+            username: 'oldUsername',
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockRepo.findById = jest
+            .fn()
+            .mockResolvedValueOnce(right(existingUser));
+          mockRepo.save.mockResolvedValueOnce(right(undefined));
+
+          const result = await service.updateUserProfile(EXISTING_USER_ID, {
+            username: 'newUsername',
+            mobilePhone: '+34600111222',
+            city: 'Barcelona',
+            countryCode: 'ES',
+          });
+
+          expect(result.isRight()).toBe(true);
+          expect(existingUser.username).toBe('newUsername');
+          expect(existingUser.mobilePhone).toBe('+34600111222');
+          expect(existingUser.city).toBe('Barcelona');
+        });
+      });
+    });
+  });
+
+  describe('UsersService.loginUser (White Box Testing)', () => {
+    const VALID_USERNAME = 'johnDoe';
+    const VALID_PASSWORD = 'SecureP*ssw0rd123';
+
+    describe('Basic Path Testing (Cyclomatic Complexity = 5)', () => {
+      describe('Path 1: Username validation fails', () => {
+        it('should return ValidationError when username is too short', async () => {
+          // Arrange
+          const invalidUsername = 'a';
+
+          // Act
+          const result = await service.loginUser(
+            invalidUsername,
+            VALID_PASSWORD,
+          );
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof ValidationError,
+          ).toBe(true);
         });
 
-        describe('Condición: username es inválido', () => {
-          it('should return ValidationError when username is too short', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
+        it('should return ValidationError when username is empty', async () => {
+          // Arrange
+          const emptyUsername = '';
 
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
+          // Act
+          const result = await service.loginUser(emptyUsername, VALID_PASSWORD);
 
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              username: 'a', // Too short
-            });
-
-            expect(
-              result.isLeft() && result.value instanceof ValidationError,
-            ).toBe(true);
-          });
-
-          it('should return ValidationError when username contains invalid characters', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
-
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
-
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              username: 'invalid@user!',
-            });
-
-            expect(
-              result.isLeft() && result.value instanceof ValidationError,
-            ).toBe(true);
-          });
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof ValidationError,
+          ).toBe(true);
         });
 
-        describe('Condición: mobilePhone es válido', () => {
-          it('should update mobilePhone when valid phone is provided', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
+        it('should not call passwordManager when username validation fails', async () => {
+          // Arrange
+          const invalidUsername = 'a';
 
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
+          // Act
+          await service.loginUser(invalidUsername, VALID_PASSWORD);
 
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-            mockRepo.save.mockResolvedValueOnce(right(undefined));
+          // Assert
+          expect(
+            mockPasswordManager.validateAndHashPassword,
+          ).not.toHaveBeenCalled();
+        });
+      });
 
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              mobilePhone: '+34600111222',
-            });
+      describe('Path 2: Password validation fails', () => {
+        it('should return PasswordTooWeakError when password is too weak', async () => {
+          // Arrange
+          const weakPassword = '123';
+          const passwordError = new PasswordTooWeakError(
+            'Password is too weak',
+          );
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            left(passwordError),
+          );
 
-            expect(result.isRight()).toBe(true);
-            expect(existingUser.mobilePhone).toBe('+34600111222');
-          });
+          // Act
+          const result = await service.loginUser(VALID_USERNAME, weakPassword);
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof PasswordTooWeakError,
+          ).toBe(true);
         });
 
-        describe('Condición: mobilePhone es inválido', () => {
-          it('should return ValidationError when mobilePhone format is invalid', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
+        it('should not call repository when password validation fails', async () => {
+          // Arrange
+          const weakPassword = '123';
+          const passwordError = new PasswordTooWeakError(
+            'Password is too weak',
+          );
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            left(passwordError),
+          );
 
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
+          // Act
+          await service.loginUser(VALID_USERNAME, weakPassword);
 
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
+          // Assert
+          expect(mockRepo.findByUsername).not.toHaveBeenCalled();
+        });
+      });
 
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              mobilePhone: 'invalid-phone',
-            });
+      describe('Path 3: Repository error on findByUsername', () => {
+        it('should return RepositoryException when findByUsername fails', async () => {
+          // Arrange
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const repoError = new RepositoryException(
+            'Database connection error',
+          );
+          mockRepo.findByUsername.mockResolvedValueOnce(left(repoError));
 
-            expect(
-              result.isLeft() && result.value instanceof ValidationError,
-            ).toBe(true);
-          });
+          // Act
+          const result = await service.loginUser(
+            VALID_USERNAME,
+            VALID_PASSWORD,
+          );
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof RepositoryException,
+          ).toBe(true);
         });
 
-        describe('Condición: city Y countryCode son válidos', () => {
-          it('should update location when both city and countryCode are provided', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
+        it('should not call comparePassword when repository fails', async () => {
+          // Arrange
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const repoError = new RepositoryException('Database timeout');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(repoError));
+          const compareSpy = jest.spyOn(mockPasswordManager, 'comparePassword');
 
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
+          // Act
+          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
 
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-            mockRepo.save.mockResolvedValueOnce(right(undefined));
+          // Assert
+          expect(compareSpy).not.toHaveBeenCalled();
+        });
+      });
 
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              city: 'Valencia',
-              countryCode: 'ES',
-            });
+      describe('Path 4: User not found (userOrError.value is null)', () => {
+        it('should return EntityNotFoundException when user does not exist', async () => {
+          // Arrange
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const notFoundError = new EntityNotFoundException('User', 'username');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
 
-            expect(result.isRight()).toBe(true);
-            expect(existingUser.city).toBe('Valencia');
-            expect(existingUser.countryCode).toBe('ES');
-          });
+          // Act
+          const result = await service.loginUser(
+            VALID_USERNAME,
+            VALID_PASSWORD,
+          );
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof EntityNotFoundException,
+          ).toBe(true);
         });
 
-        describe('Condición: Solo city (sin countryCode)', () => {
-          it('should not update location when only city is provided', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
+        it('should not call comparePassword when user is not found', async () => {
+          // Arrange
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const notFoundError = new EntityNotFoundException('User', 'username');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+          const compareSpy = jest.spyOn(mockPasswordManager, 'comparePassword');
 
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
+          // Act
+          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
 
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
+          // Assert
+          expect(compareSpy).not.toHaveBeenCalled();
+        });
+      });
 
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              city: 'Valencia',
-            });
-
-            expect(result.isLeft()).toBe(true);
-            expect(result.value).toBeInstanceOf(ValidationError);
-            expect((result.value as ValidationError).message).toContain(
-              'Country code must be provided when updating user location',
-            );
-            expect(mockRepo.save).not.toHaveBeenCalled();
+      describe('Path 5: User found and password compared (Happy Path)', () => {
+        it('should return true when credentials are correct', async () => {
+          // Arrange
+          const existingUserOrError = User.create({
+            username: VALID_USERNAME,
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
           });
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          mockRepo.findByUsername.mockResolvedValueOnce(right(existingUser));
+          mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
+
+          // Act
+          const result = await service.loginUser(
+            VALID_USERNAME,
+            VALID_PASSWORD,
+          );
+
+          // Assert
+          expect(result.isRight() && result.value === true).toBe(true);
         });
 
-        describe('Condición: solo countryCode (sin city)', () => {
-          it('should not update location when only countryCode is provided', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
-
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
-
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              countryCode: 'FR',
-            });
-
-            expect(result.isLeft()).toBe(true);
-            expect(result.value).toBeInstanceOf(ValidationError);
-            expect((result.value as ValidationError).message).toContain(
-              'City must be provided when updating user location',
-            );
-            expect(mockRepo.save).not.toHaveBeenCalled();
+        it('should return false when password does not match', async () => {
+          // Arrange
+          const existingUserOrError = User.create({
+            username: VALID_USERNAME,
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
           });
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          mockRepo.findByUsername.mockResolvedValueOnce(right(existingUser));
+          mockPasswordManager.comparePassword.mockResolvedValueOnce(false);
+
+          // Act
+          const result = await service.loginUser(
+            VALID_USERNAME,
+            'WrongPassword123!',
+          );
+
+          // Assert
+          expect(result.isRight() && result.value === false).toBe(true);
         });
 
-        describe('Condición: city sin countryCode', () => {
-          it('should return ValidationError when city is provided without countryCode', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
-
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              city: 'Valencia',
-            });
-
-            expect(result.isLeft()).toBe(true);
-            expect(result.value).toBeInstanceOf(ValidationError);
-            expect((result.value as ValidationError).message).toContain(
-              'Country code must be provided',
-            );
+        it('should call comparePassword with correct arguments when user exists', async () => {
+          // Arrange
+          const existingUserOrError = User.create({
+            username: VALID_USERNAME,
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
           });
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+          const existingUser = existingUserOrError.value;
+
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          mockRepo.findByUsername.mockResolvedValueOnce(right(existingUser));
+          mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
+
+          // Act
+          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+
+          // Assert
+          expect(mockPasswordManager.comparePassword).toHaveBeenCalledWith(
+            VALID_PASSWORD,
+            VALID_HASH,
+          );
+        });
+      });
+    });
+
+    describe('Condition Testing', () => {
+      describe('Condition: usernameOrError.isLeft() = true', () => {
+        it('should return error when username contains invalid characters', async () => {
+          // Arrange
+          const invalidUsername = 'user@invalid!';
+
+          // Act
+          const result = await service.loginUser(
+            invalidUsername,
+            VALID_PASSWORD,
+          );
+
+          // Assert
+          expect(result.isLeft()).toBe(true);
         });
 
-        describe('Condición: countryCode sin city', () => {
-          it('should return ValidationError when countryCode is provided without city', async () => {
-            const existingUserOrError = User.create({
-              username: 'existingUser',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
+        it('should return error when username exceeds maximum length', async () => {
+          // Arrange
+          const longUsername = 'a'.repeat(51);
 
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
+          // Act
+          const result = await service.loginUser(longUsername, VALID_PASSWORD);
 
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              countryCode: 'FR',
-            });
+          // Assert
+          expect(result.isLeft()).toBe(true);
+        });
+      });
 
-            expect(result.isLeft()).toBe(true);
-            expect(result.value).toBeInstanceOf(ValidationError);
-            expect((result.value as ValidationError).message).toContain(
-              'City must be provided',
-            );
+      describe('Condition: usernameOrError.isLeft() = false', () => {
+        it('should proceed to password validation when username is valid', async () => {
+          // Arrange
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const notFoundError = new EntityNotFoundException('User', 'username');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+
+          // Act
+          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+
+          // Assert
+          expect(
+            mockPasswordManager.validateAndHashPassword,
+          ).toHaveBeenCalledWith(VALID_PASSWORD);
+        });
+      });
+
+      describe('Condition: passwordHashingOrError.isLeft() = true', () => {
+        it('should return error when password is empty', async () => {
+          // Arrange
+          const emptyPassword = '';
+          const passwordError = new PasswordTooWeakError(
+            'La contraseña no puede estar vacía',
+          );
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            left(passwordError),
+          );
+
+          // Act
+          const result = await service.loginUser(VALID_USERNAME, emptyPassword);
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof PasswordTooWeakError,
+          ).toBe(true);
+        });
+      });
+
+      describe('Condition: passwordHashingOrError.isLeft() = false', () => {
+        it('should proceed to repository query when password is valid', async () => {
+          // Arrange
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const notFoundError = new EntityNotFoundException('User', 'username');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+
+          // Act
+          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+
+          // Assert
+          expect(mockRepo.findByUsername).toHaveBeenCalledWith(
+            expect.objectContaining({ value: VALID_USERNAME }),
+          );
+        });
+      });
+
+      describe('Condition: userOrError.isLeft() = true', () => {
+        it('should return error when repository throws exception', async () => {
+          // Arrange
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const repoError = new RepositoryException('Network error');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(repoError));
+
+          // Act
+          const result = await service.loginUser(
+            VALID_USERNAME,
+            VALID_PASSWORD,
+          );
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof RepositoryException,
+          ).toBe(true);
+        });
+      });
+
+      describe('Condition: userOrError.isLeft() = false', () => {
+        it('should proceed to password comparison when repository succeeds', async () => {
+          // Arrange
+          const existingUserOrError = User.create({
+            username: VALID_USERNAME,
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
           });
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          mockRepo.findByUsername.mockResolvedValueOnce(
+            right(existingUserOrError.value),
+          );
+          mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
+
+          // Act
+          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+
+          // Assert
+          expect(mockPasswordManager.comparePassword).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('Condition: userOrError.value = null (user not found)', () => {
+        it('should return EntityNotFoundException when user does not exist in database', async () => {
+          // Arrange
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const notFoundError = new EntityNotFoundException('User', 'username');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+
+          // Act
+          const result = await service.loginUser(
+            VALID_USERNAME,
+            VALID_PASSWORD,
+          );
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof EntityNotFoundException,
+          ).toBe(true);
+        });
+      });
+
+      describe('Condition: userOrError.value = User instance', () => {
+        it('should call comparePassword when user exists', async () => {
+          // Arrange
+          const existingUserOrError = User.create({
+            username: VALID_USERNAME,
+            mobilePhone: '+34612345678',
+            passwordHash: VALID_HASH,
+            city: 'Madrid',
+            countryCode: 'ES',
+          });
+          if (existingUserOrError.isLeft())
+            throw new Error('Test setup failed');
+
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          mockRepo.findByUsername.mockResolvedValueOnce(
+            right(existingUserOrError.value),
+          );
+          mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
+
+          // Act
+          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+
+          // Assert
+          expect(mockPasswordManager.comparePassword).toHaveBeenCalledWith(
+            VALID_PASSWORD,
+            existingUserOrError.value.passwordHash,
+          );
+        });
+      });
+    });
+
+    describe('Edge Cases', () => {
+      describe('Null and undefined inputs', () => {
+        it('should handle null username gracefully', async () => {
+          // Arrange & Act
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          const result = await service.loginUser(null as any, VALID_PASSWORD);
+
+          // Assert
+          expect(result.isLeft()).toBe(true);
         });
 
-        describe('Condición: Actualización combinada de múltiples campos', () => {
-          it('should update all fields when all are provided and valid', async () => {
-            const existingUserOrError = User.create({
-              username: 'oldUsername',
-              mobilePhone: '+34612345678',
-              passwordHash: VALID_HASH,
-              city: 'Madrid',
-              countryCode: 'ES',
-            });
+        it('should handle undefined username gracefully', async () => {
+          // Arrange & Act
+          const result = await service.loginUser(
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            undefined as any,
+            VALID_PASSWORD,
+          );
 
-            if (existingUserOrError.isLeft())
-              throw new Error('Test setup failed');
-            const existingUser = existingUserOrError.value;
-
-            mockRepo.findById = jest
-              .fn()
-              .mockResolvedValueOnce(right(existingUser));
-            mockRepo.save.mockResolvedValueOnce(right(undefined));
-
-            const result = await service.updateUserProfile(EXISTING_USER_ID, {
-              username: 'newUsername',
-              mobilePhone: '+34600111222',
-              city: 'Barcelona',
-              countryCode: 'ES',
-            });
-
-            expect(result.isRight()).toBe(true);
-            expect(existingUser.username).toBe('newUsername');
-            expect(existingUser.mobilePhone).toBe('+34600111222');
-            expect(existingUser.city).toBe('Barcelona');
-          });
+          // Assert
+          expect(result.isLeft()).toBe(true);
         });
+
+        it('should handle null password gracefully', async () => {
+          // Arrange
+          const passwordError = new PasswordTooWeakError(
+            'La contraseña no puede estar vacía',
+          );
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            left(passwordError),
+          );
+
+          // Act
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          const result = await service.loginUser(VALID_USERNAME, null as any);
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof PasswordTooWeakError,
+          ).toBe(true);
+        });
+
+        it('should handle undefined password gracefully', async () => {
+          // Arrange
+          const passwordError = new PasswordTooWeakError(
+            'La contraseña no puede estar vacía',
+          );
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            left(passwordError),
+          );
+
+          // Act
+          const result = await service.loginUser(
+            VALID_USERNAME,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            undefined as any,
+          );
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof PasswordTooWeakError,
+          ).toBe(true);
+        });
+      });
+
+      describe('Boundary values', () => {
+        it('should handle minimum valid username length', async () => {
+          // Arrange
+          const minUsername = 'abc';
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const notFoundError = new EntityNotFoundException('User', 'username');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+
+          // Act
+          const result = await service.loginUser(minUsername, VALID_PASSWORD);
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof EntityNotFoundException,
+          ).toBe(true);
+        });
+
+        it('should handle maximum valid username length', async () => {
+          // Arrange
+          const maxUsername = 'a'.repeat(USERNAME_MAX_LENGTH);
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const notFoundError = new EntityNotFoundException('User', 'username');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+
+          // Act
+          const result = await service.loginUser(maxUsername, VALID_PASSWORD);
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof EntityNotFoundException,
+          ).toBe(true);
+        });
+      });
+
+      describe('Special characters in inputs', () => {
+        it('should reject username with special characters', async () => {
+          // Arrange
+          const specialCharUsername = 'user@name!';
+
+          // Act
+          const result = await service.loginUser(
+            specialCharUsername,
+            VALID_PASSWORD,
+          );
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof ValidationError,
+          ).toBe(true);
+        });
+
+        it('should accept username with allowed special characters', async () => {
+          // Arrange
+          const validUsernameWithUnderscore = 'user_name';
+          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+            right(VALID_HASH),
+          );
+          const notFoundError = new EntityNotFoundException('User', 'username');
+          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+
+          // Act
+          const result = await service.loginUser(
+            validUsernameWithUnderscore,
+            VALID_PASSWORD,
+          );
+
+          // Assert
+          expect(
+            result.isLeft() && result.value instanceof EntityNotFoundException,
+          ).toBe(true);
+        });
+      });
+    });
+
+    describe('Mock Verification', () => {
+      it('should call validateAndHashPassword exactly once in happy path', async () => {
+        // Arrange
+        const existingUserOrError = User.create({
+          username: VALID_USERNAME,
+          mobilePhone: '+34612345678',
+          passwordHash: VALID_HASH,
+          city: 'Madrid',
+          countryCode: 'ES',
+        });
+        if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
+
+        mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+          right(VALID_HASH),
+        );
+        mockRepo.findByUsername.mockResolvedValueOnce(
+          right(existingUserOrError.value),
+        );
+        mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
+
+        // Act
+        await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+
+        // Assert
+        expect(
+          mockPasswordManager.validateAndHashPassword,
+        ).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call findByUsername exactly once in happy path', async () => {
+        // Arrange
+        const existingUserOrError = User.create({
+          username: VALID_USERNAME,
+          mobilePhone: '+34612345678',
+          passwordHash: VALID_HASH,
+          city: 'Madrid',
+          countryCode: 'ES',
+        });
+        if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
+
+        mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+          right(VALID_HASH),
+        );
+        mockRepo.findByUsername.mockResolvedValueOnce(
+          right(existingUserOrError.value),
+        );
+        mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
+
+        // Act
+        await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+
+        // Assert
+        expect(mockRepo.findByUsername).toHaveBeenCalledTimes(1);
+      });
+
+      it('should execute steps in correct order for successful login', async () => {
+        // Arrange
+        const existingUserOrError = User.create({
+          username: VALID_USERNAME,
+          mobilePhone: '+34612345678',
+          passwordHash: VALID_HASH,
+          city: 'Madrid',
+          countryCode: 'ES',
+        });
+        if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
+
+        mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(
+          right(VALID_HASH),
+        );
+        mockRepo.findByUsername.mockResolvedValueOnce(
+          right(existingUserOrError.value),
+        );
+        mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
+
+        // Act
+        await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+
+        // Assert
+        const mockCalls = [
+          mockPasswordManager.validateAndHashPassword.mock
+            .invocationCallOrder[0],
+          mockRepo.findByUsername.mock.invocationCallOrder[0],
+          mockPasswordManager.comparePassword.mock.invocationCallOrder[0],
+        ];
+
+        expect(mockCalls[0]).toBeLessThan(mockCalls[1]);
+        expect(mockCalls[1]).toBeLessThan(mockCalls[2]);
       });
     });
   });

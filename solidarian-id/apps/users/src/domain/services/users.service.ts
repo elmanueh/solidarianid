@@ -15,6 +15,16 @@ export abstract class UsersService {
   ): Promise<Either<Error, string>>;
 
   /**
+   * Inicia sesión de un usuario con su nombre de usuario y contraseña.
+   * @param username
+   * @param password
+   */
+  abstract loginUser(
+    username: string,
+    password: string,
+  ): Promise<Either<Error, boolean>>;
+
+  /**
    * Actualiza el perfil de un usuario existente.
    * @param userId
    * @param updateUserProfileCommand

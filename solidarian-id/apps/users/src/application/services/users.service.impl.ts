@@ -90,6 +90,32 @@ export class UsersServiceImpl extends UsersService {
     return right(user.value.id.value);
   }
 
+  async loginUser(
+    username: string,
+    password: string,
+  ): Promise<Either<Error, boolean>> {
+    const usernameOrError = Username.create(username);
+    if (usernameOrError.isLeft()) return left(usernameOrError.value);
+
+    const passwordHashingOrError =
+      await this.passwordManager.validateAndHashPassword(password);
+    if (passwordHashingOrError.isLeft())
+      return left(passwordHashingOrError.value);
+
+    const userOrError = await this.usersRepository.findByUsername(
+      usernameOrError.value,
+    );
+
+    if (userOrError.isLeft()) return left(userOrError.value);
+
+    const passwordMatch = await this.passwordManager.comparePassword(
+      password,
+      userOrError.value.passwordHash,
+    );
+
+    return right(passwordMatch);
+  }
+
   async updateUserProfile(
     userId: string,
     updateUserProfileCommand: UpdateUserProfileCommand,

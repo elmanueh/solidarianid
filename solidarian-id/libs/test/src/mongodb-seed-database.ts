@@ -1,15 +1,17 @@
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
+import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
+import { AdministratorEntity } from '@app/admin/auth/model/infrastructure/persistence/entities/administrator.entity';
 import { IDatabaseSeeder } from '@solidarianid/testing';
 import { Connection } from 'mongoose';
 
 export class MongoDBSeeder implements IDatabaseSeeder {
   constructor(private readonly connection: Connection) {}
 
-  async seedRequests(): Promise<void> {
+  async seedRequests(requests: CauseRequestEntity[] = []): Promise<void> {
     const requestsCollection = this.connection.collection('requests');
 
-    const requests = [
+    const defaultRequests: CauseRequestEntity[] = [
       {
         _id: '2db201c8-5d35-462e-a1d1-985cb677725d',
         name: 'Test Request for Approval',
@@ -21,8 +23,26 @@ export class MongoDBSeeder implements IDatabaseSeeder {
         ods: [1, 2],
       },
     ];
+    const allRequests = [...defaultRequests, ...requests];
+    await requestsCollection.insertMany(allRequests as any[]);
+  }
 
-    await requestsCollection.insertMany(requests as any[]);
+  async seedAdministrators(admins: AdministratorEntity[] = []): Promise<void> {
+    const adminsCollection = this.connection.collection('administrators');
+
+    const defaultAdmins: AdministratorEntity[] = [
+      {
+        _id: 'c1ced31c-c321-4249-a86f-5299d5a7d672',
+        fullname: 'Login Test User',
+        email: 'login.test@solidarianid.org',
+        phone: '+34612345100',
+        password:
+          '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
+      },
+    ];
+
+    const allAdmins = [...defaultAdmins, ...admins];
+    await adminsCollection.insertMany(allAdmins as any[]);
   }
 
   async clean(): Promise<void> {
@@ -40,6 +60,6 @@ export class MongoDBSeeder implements IDatabaseSeeder {
   async seedAll(): Promise<void> {
     await this.clean();
     await this.seedRequests();
-    // Add more seed methods as needed
+    await this.seedAdministrators();
   }
 }

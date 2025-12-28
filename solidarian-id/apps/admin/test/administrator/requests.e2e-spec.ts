@@ -5,6 +5,7 @@ import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/po
 import { RequestsModule } from '@app/admin/administrator/model/requests.module';
 import {
   MongoDBSeeder,
+  MongoDBTestContainer,
   MongoDBTestModule,
   TestServerHelper,
 } from '@solidarianid/testing';
@@ -37,6 +38,7 @@ describe('RequestsController (e2e)', () => {
 
   afterAll(async () => {
     await server.close();
+    await MongoDBTestContainer.getInstance().stop();
   });
 
   describe('PATCH /requests/:id', () => {

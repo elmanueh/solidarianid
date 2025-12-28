@@ -4,6 +4,7 @@ import {
   ValidationPipe,
   ModuleMetadata,
 } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 import request from 'supertest';
 
@@ -11,9 +12,26 @@ export class TestServerHelper {
   private app: INestApplication;
   private moduleRef: TestingModule;
 
-  async create(moduleMetadata: ModuleMetadata): Promise<INestApplication> {
-    this.moduleRef = await Test.createTestingModule(moduleMetadata).compile();
+  async create(
+    moduleMetadata: ModuleMetadata,
+    beforeInit?: (app: INestApplication) => void,
+  ): Promise<INestApplication> {
+    const configModule = ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
+    });
+
+    const enhancedMetadata: ModuleMetadata = {
+      ...moduleMetadata,
+      imports: [configModule, ...(moduleMetadata.imports || [])],
+    };
+
+    this.moduleRef = await Test.createTestingModule(enhancedMetadata).compile();
     this.app = this.moduleRef.createNestApplication();
+
+    if (beforeInit) {
+      beforeInit(this.app);
+    }
 
     this.app.useGlobalPipes(
       new ValidationPipe({

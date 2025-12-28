@@ -8,6 +8,8 @@
   },
   "transformIgnorePatterns": ["node_modules/(?!(uuid)/)"],
   "moduleNameMapper": {
+    "^@solidarianid/testing(.*)$": "<rootDir>/../../../libs/test/src$1",
+    "^@app/admin(|/.*)$": "<rootDir>/../../../apps/admin/src/$1",
     "^@app/ddd(|/.*)$": "<rootDir>/../../../libs/ddd/src/$1",
     "^@app/communities(|/.*)$": "<rootDir>/../src/$1",
     "^@app/users(|/.*)$": "<rootDir>/../../../apps/users/src/$1",

@@ -88,8 +88,7 @@ export class UsersRepositoryTypeORM
           new EntityNotFoundException(Username.name, 'User not found'),
         );
       }
-      const user = this.userMapper.fromPersistence(userEntity);
-      return right(user);
+      return this.userMapper.fromPersistence(userEntity);
     } catch (error) {
       const errorMessage =
         error instanceof Error

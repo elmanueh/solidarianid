@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "types": ["jest", "node"],
+    "types": [
+      "jest",
+      "node"
+    ],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
@@ -23,20 +26,54 @@
     "noFallthroughCasesInSwitch": true,
     "allowJs": true,
     "paths": {
-      "@app/ddd": ["libs/ddd/src"],
-      "@app/ddd/*": ["libs/ddd/src/*"],
-      "@app/admin": ["apps/admin/src"],
-      "@app/admin/*": ["apps/admin/src/*"],
-      "@app/communities": ["apps/communities/src"],
-      "@app/communities/*": ["apps/communities/src/*"],
-      "@app/users": ["apps/users/src"],
-      "@app/users/*": ["apps/users/src/*"],
-      "@app/utils": ["libs/utils/src"],
-      "@app/utils/*": ["libs/utils/src/*"],
-      "@app/value-objects": ["libs/value-objects/src"],
-      "@app/value-objects/*": ["libs/value-objects/src/*"],
-      "@frontend/design-tokens": ["libs/design-tokens/src"],
-      "@frontend/design-tokens/*": ["libs/design-tokens/src/*"]
+      "@app/admin": [
+        "apps/admin/src"
+      ],
+      "@app/admin/*": [
+        "apps/admin/src/*"
+      ],
+      "@app/communities": [
+        "apps/communities/src"
+      ],
+      "@app/communities/*": [
+        "apps/communities/src/*"
+      ],
+      "@app/ddd": [
+        "libs/ddd/src"
+      ],
+      "@app/ddd/*": [
+        "libs/ddd/src/*"
+      ],
+      "@app/kafka": [
+        "libs/kafka/src"
+      ],
+      "@app/kafka/*": [
+        "libs/kafka/src/*"
+      ],
+      "@app/users": [
+        "apps/users/src"
+      ],
+      "@app/users/*": [
+        "apps/users/src/*"
+      ],
+      "@app/utils": [
+        "libs/utils/src"
+      ],
+      "@app/utils/*": [
+        "libs/utils/src/*"
+      ],
+      "@app/value-objects": [
+        "libs/value-objects/src"
+      ],
+      "@app/value-objects/*": [
+        "libs/value-objects/src/*"
+      ],
+      "@frontend/design-tokens": [
+        "libs/design-tokens/src"
+      ],
+      "@frontend/design-tokens/*": [
+        "libs/design-tokens/src/*"
+      ]
     },
     "baseUrl": "./"
   },

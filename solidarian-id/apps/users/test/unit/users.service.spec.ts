@@ -8,7 +8,6 @@ import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { PasswordManager } from '@app/utils/security/password-manager';
-import { PasswordTooWeakError } from '@app/utils/security/password-validation-error';
 import { User } from '@app/users/domain/model/user';
 import { USERNAME_MAX_LENGTH } from '@app/value-objects/constants/validation.constants';
 

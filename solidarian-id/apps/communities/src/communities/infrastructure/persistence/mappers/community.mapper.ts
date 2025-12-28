@@ -18,6 +18,8 @@ export class CommunityMapper implements Mapper<Community, CommunityEntity> {
   }
 
   fromPersistence(entity: CommunityEntity): Either<ValidationError, Community> {
+    // Lo pongo para que no de error, pero en realidad el create de comunidad deberia ser de todos
+    // los parámetros ya que sino no se podría recperar correctamente de BD
     const usuarioPrueba = User.create({ username: 'prueba' });
     if (usuarioPrueba.isLeft()) {
       return left(usuarioPrueba.value);

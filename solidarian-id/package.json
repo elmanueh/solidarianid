@@ -39,6 +39,7 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^11.0.4",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.3",
@@ -76,6 +77,7 @@
     "@nestjs/testing": "^11.0.1",
     "@stryker-mutator/core": "^9.4.0",
     "@stryker-mutator/jest-runner": "^9.4.0",
+    "@testcontainers/mongodb": "^11.10.0",
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.2",
@@ -100,46 +102,5 @@
     "ts-loader": "^9.5.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": ".",
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "./coverage",
-    "testEnvironment": "jest-environment-jsdom",
-    "transformIgnorePatterns": [
-      "node_modules/(?!(uuid)/)"
-    ],
-    "roots": [
-      "<rootDir>/apps/",
-      "<rootDir>/libs/"
-    ],
-    "moduleNameMapper": {
-      "^apps/(.*)$": "<rootDir>/apps/$1",
-      "^@app/ddd/(.*)$": "<rootDir>/libs/ddd/src/$1",
-      "^@app/ddd$": "<rootDir>/libs/ddd/src",
-      "^@app/users/(.*)$": "<rootDir>/apps/users/src/$1",
-      "^@app/users$": "<rootDir>/apps/users/src",
-      "^@app/admin/(.*)$": "<rootDir>/apps/admin/src/$1",
-      "^@app/admin$": "<rootDir>/apps/admin/src",
-      "^@app/communities/(.*)$": "<rootDir>/apps/communities/src/$1",
-      "^@app/communities$": "<rootDir>/apps/communities/src",
-      "^@app/utils/(.*)$": "<rootDir>/libs/utils/src/$1",
-      "^@app/utils$": "<rootDir>/libs/utils/src",
-      "^@app/value-objects/(.*)$": "<rootDir>/libs/value-objects/src/$1",
-      "^@app/value-objects$": "<rootDir>/libs/value-objects/src",
-      "^@frontend/design-tokens/(.*)$": "<rootDir>/libs/design-tokens/src/$1",
-      "^@frontend/design-tokens$": "<rootDir>/libs/design-tokens/src"
-    }
   }
 }

@@ -3,7 +3,7 @@ import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-n
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { RepositoryMongoose } from '@app/ddd/repository/repository-mongoose';
 import { Injectable } from '@nestjs/common';
-import { Administrator } from 'apps/admin/src/administrator/model/domain/model/administrator';
+import { Administrator } from '@app/admin/administrator/model/domain/models/administrator';
 import { AdministratorRepositoryPort } from 'apps/admin/src/administrator/model/domain/ports/output/administrator.repository.port';
 import {
   AdministratorDocument,

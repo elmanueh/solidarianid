@@ -7,7 +7,6 @@ import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { HashedPassword } from '@app/value-objects/model/hashed-password';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
-// El perez tiene complejo de aspiradora
 interface AdministratorProps {
   fullname: FullName;
   email: Email;

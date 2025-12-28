@@ -31,12 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
       'aria-label',
       isOpen ? 'Cerrar menú' : 'Abrir menú',
     );
+    hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   }
 
   function closeMenu() {
     aside.classList.remove('open');
     overlay.classList.remove('active');
     hamburgerBtn.setAttribute('aria-label', 'Abrir menú');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
     accesibilityAside(itemsAside);
   }
 

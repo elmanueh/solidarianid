@@ -182,6 +182,7 @@ describe('UsersController (e2e)', () => {
         .expect(HttpStatus.BAD_REQUEST);
     });
   });
+
   describe('/users/:id (PATCH)', () => {
     const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
 
@@ -397,6 +398,77 @@ describe('UsersController (e2e)', () => {
           username: 'updatedUsername',
         })
         .expect(HttpStatus.NOT_FOUND);
+    });
+  });
+
+  describe('/users/login (POST)', () => {
+    const username: string = 'testUsername';
+    const password: string = 'Admin2024!Pass';
+
+    afterAll(async () => {
+      await seeder.clean();
+      await seeder.seedUsers();
+    });
+
+    it('Test 1 - Should return inauthorized if the user not exists', async () => {
+      await server
+        .getRequest()
+        .post('/users/login')
+        .send({
+          username: 'NonExistentUser',
+          password,
+        })
+        .expect(HttpStatus.NOT_FOUND);
+    });
+
+    it('Test 2 - Should login successfully', async () => {
+      await server
+        .getRequest()
+        .post('/users/login')
+        .send({
+          username,
+          password,
+        })
+        .expect(HttpStatus.OK);
+    });
+
+    it('Test 3 - Should return Bad Request for missing password', async () => {
+      await server
+        .getRequest()
+        .post('/users/login')
+        .send({
+          username,
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 4 - Should return Bad Request for missing username', async () => {
+      await server
+        .getRequest()
+        .post('/users/login')
+        .send({
+          password,
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 5 - Should return Bad Request for empty body', async () => {
+      await server
+        .getRequest()
+        .post('/users/login')
+        .send({})
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 6 - Should return Unauthorized for wrong password', async () => {
+      await server
+        .getRequest()
+        .post('/users/login')
+        .send({
+          username,
+          password: 'Wrong@Password123',
+        })
+        .expect(HttpStatus.UNAUTHORIZED);
     });
   });
 });

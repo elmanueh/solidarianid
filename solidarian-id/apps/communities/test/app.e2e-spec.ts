@@ -1,4 +1,4 @@
-import { CommunitiesModule } from '@app/communities/communities.module';
+import { CommunitiesModule } from '@app/communities/communities/communities.module';
 import {
   PostgreSQLTestModule,
   TestServerHelper,

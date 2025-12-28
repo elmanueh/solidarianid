@@ -12,7 +12,6 @@ export default defineConfig([
 
   eslint.configs.recommended,
   eslintPluginPrettierRecommended,
-  eslintPluginCypress.configs.recommended,
 
   {
     languageOptions: {
@@ -58,5 +57,9 @@ export default defineConfig([
     rules: {
       'jest/expect-expect': 'off',
     },
+  },
+  {
+    files: ['**/cypress/**/*.{js,ts}', '**/*.cy.{js,ts}'],
+    ...eslintPluginCypress.configs.recommended,
   },
 ]);

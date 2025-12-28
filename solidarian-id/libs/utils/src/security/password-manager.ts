@@ -9,6 +9,16 @@ export abstract class PasswordManager {
   async validateAndHashPassword(
     plainPassword: string,
   ): Promise<Either<PasswordTooWeakError, string>> {
+    if (
+      plainPassword === null ||
+      plainPassword === undefined ||
+      plainPassword.trim().length === 0
+    ) {
+      return left(
+        new PasswordTooWeakError('La contraseña no puede estar vacía'),
+      );
+    }
+
     if (plainPassword.length < PASSWORD_MIN_LENGTH) {
       return left(
         new PasswordTooWeakError(

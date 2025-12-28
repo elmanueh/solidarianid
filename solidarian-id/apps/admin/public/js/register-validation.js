@@ -221,6 +221,7 @@
       errorElement.textContent = message;
       errorElement.classList.remove('hidden');
       errorElement.classList.add('form-error-visible');
+      errorElement.setAttribute('aria-live', 'assertive');
     }
 
     if (iconStatus) {

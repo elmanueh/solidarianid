@@ -13,7 +13,7 @@ export class AuthViewController {
   @Render('pages/login')
   login() {
     return {
-      title: 'Login',
+      title: 'Inicio de sesión',
       isLoginPage: true,
       apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
@@ -24,7 +24,7 @@ export class AuthViewController {
   // @UseGuards(AuthGuard) // Descomentar si se desea proteger la ruta de registro
   register() {
     return {
-      title: 'Register',
+      title: 'Registro de usuario',
       isRegisterPage: true,
       apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };

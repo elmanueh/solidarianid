@@ -1,4 +1,15 @@
 import { Controller, Get, Render } from '@nestjs/common';
+import {
+  fakeDashboardData,
+  DashboardSummary,
+  fakeDashboardSummary,
+} from '../model/data/fakeMetrics';
+import {
+  createInteractiveNationalitiesDoughnut,
+  createOdsByCauseBar,
+  createTopCommunitiesPie,
+  createMonthlyJoinsLine,
+} from '../../utils/chart-builder';
 import { ConfigService } from '@nestjs/config';
 
 /**
@@ -11,10 +22,30 @@ export class AdminViewController {
 
   @Get('/dashboard')
   @Render('pages/metrics')
-  dashboard() {
+  dashboard(): {
+    title: string;
+    layout: string;
+    dataSummary: DashboardSummary;
+    charts: string;
+    apiBaseUrl?: string;
+  } {
+    const dataSummary = fakeDashboardSummary;
+    const dataChart = fakeDashboardData;
+
+    const charts = {
+      ods: createOdsByCauseBar(dataChart.odsByCause),
+      nationalities: createInteractiveNationalitiesDoughnut(
+        dataChart.interactiveNationalities,
+      ),
+      topCommunities: createTopCommunitiesPie(dataChart.topCommunitiesByUsers),
+      joins: createMonthlyJoinsLine(dataChart.monthlyJoinsForCommunity),
+    };
+
     return {
       title: 'Dashboard',
       layout: 'dashboard',
+      dataSummary,
+      charts: JSON.stringify(charts),
       apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
   }

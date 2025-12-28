@@ -22,7 +22,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         username: 'testUsername',
         mobilePhone: '+34000000000',
         passwordHash:
-          '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', // Hash de "TestPassword@123"
+          '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
         city: 'Madrid',
         countryCode: 'ES',
       },

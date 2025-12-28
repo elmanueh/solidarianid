@@ -89,10 +89,7 @@ export class UsersRepositoryTypeORM
         );
       }
       const user = this.userMapper.fromPersistence(userEntity);
-      if (user.isLeft()) {
-        return left(user.value);
-      }
-      return right(user.value);
+      return right(user);
     } catch (error) {
       const errorMessage =
         error instanceof Error

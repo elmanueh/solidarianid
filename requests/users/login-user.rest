@@ -1,0 +1,77 @@
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+### Variables de prueba
+@existingUsername = FakeUser
+@validPassword = SecureP@ssw0rd
+@nonExistentUser = NonExistentUser
+@wrongPassword = Wrong@Password123
+
+### Create a user for testing login
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "username": "{{existingUsername}}",
+  "mobilePhone": "+34612345678",
+  "password": "{{validPassword}}",
+  "city": "Madrid",
+  "countryCode": "ES"
+}
+
+
+### Test 1 - Should return unauthorized if the user does not exist
+
+POST {{baseUrl}}/users/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "username": "{{nonExistentUser}}",
+  "password": "{{validPassword}}"
+}
+
+### Test 2 - Should login successfully
+
+POST {{baseUrl}}/users/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "username": "{{existingUsername}}",
+  "password": "{{validPassword}}"
+}
+
+### Test 3 - Should return Bad Request for missing password
+
+POST {{baseUrl}}/users/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "username": "{{existingUsername}}"
+}
+
+
+### Test 4 - Should return Bad Request for missing username
+
+POST {{baseUrl}}/users/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "password": "{{validPassword}}"
+}
+
+### Test 5 - Should return Bad Request for empty body
+
+POST {{baseUrl}}/users/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+}
+
+### Test 6 - Should return Unauthorized for wrong password
+POST {{baseUrl}}/users/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "username": "{{existingUsername}}",
+  "password": "{{wrongPassword}}"
+}

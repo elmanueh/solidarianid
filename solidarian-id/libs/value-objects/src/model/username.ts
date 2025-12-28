@@ -28,7 +28,11 @@ export class Username extends ValueObject<UsernameProps> {
     plainUsername: string,
   ): Either<InvalidUsernameError, Username> {
     // Validar que no esté vacío
-    if (!plainUsername || plainUsername.trim().length === 0) {
+    if (
+      plainUsername === null ||
+      plainUsername === undefined ||
+      plainUsername.trim().length === 0
+    ) {
       return left(new InvalidUsernameError('Username cannot be empty.'));
     }
 

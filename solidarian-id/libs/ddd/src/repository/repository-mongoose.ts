@@ -52,14 +52,10 @@ export class RepositoryMongoose<
     try {
       const document = await this.model.findById(id);
       if (!document) {
-        return left(new EntityNotFoundException('Entity not found', id));
+        return left(new EntityNotFoundException(this.model.modelName, id));
       }
 
-      const model = this.mapper.fromPersistence(document);
-      if (model.isLeft()) {
-        return left(model.value);
-      }
-      return right(model.value);
+      return this.mapper.fromPersistence(document);
     } catch (error) {
       return left(new RepositoryException('Failed to find entity.', error));
     }

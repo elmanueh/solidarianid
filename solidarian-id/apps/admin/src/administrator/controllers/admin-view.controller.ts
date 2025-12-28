@@ -10,6 +10,7 @@ import {
   createTopCommunitiesPie,
   createMonthlyJoinsLine,
 } from '../../utils/chart-builder';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -17,6 +18,8 @@ import {
  */
 @Controller()
 export class AdminViewController {
+  constructor(private readonly configService: ConfigService) {}
+
   @Get('/dashboard')
   @Render('pages/metrics')
   dashboard(): {
@@ -24,6 +27,7 @@ export class AdminViewController {
     layout: string;
     dataSummary: DashboardSummary;
     charts: string;
+    apiBaseUrl?: string;
   } {
     const dataSummary = fakeDashboardSummary;
     const dataChart = fakeDashboardData;
@@ -42,6 +46,7 @@ export class AdminViewController {
       layout: 'dashboard',
       dataSummary,
       charts: JSON.stringify(charts),
+      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
   }
 
@@ -51,6 +56,7 @@ export class AdminViewController {
     return {
       title: 'Requests',
       layout: 'dashboard',
+      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
   }
 
@@ -60,6 +66,7 @@ export class AdminViewController {
     return {
       title: 'Reportes',
       layout: 'dashboard',
+      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
     };
   }
 }

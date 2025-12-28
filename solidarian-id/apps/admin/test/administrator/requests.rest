@@ -1,0 +1,130 @@
+@baseUrl = http://localhost:3000
+@requestsEndpoint = {{baseUrl}}/requests
+@contentType = application/json
+@request-id = "518ca02b-7db9-492e-97a4-62ccb20a7dad"
+@non-request-id = "0b5320ee-07e5-4974-8756-fb58651a6535"
+@{{@already-approved-request-id}} = "d4f5e6c7-89ab-4cde-f012-3456789abcde"
+
+### 1. Test approving a pending request with an optional reason
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "approved",
+  "reason": "All requirements have been met. Documentation is complete."
+}
+
+### 2. Test approving a pending request without providing a reason
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "approved"
+}
+
+### 3. Test approving with an empty string as reason
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "approved",
+  "reason": ""
+}
+
+### 4. Test rejecting a pending request with a reason (required for rejection)
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "rejected",
+  "reason": "Missing required documentation. Please provide proof of registration."
+}
+
+### 5. Test rejecting with detailed reasons
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "rejected",
+  "reason": "Multiple issues found:\n1. Incomplete SDG alignment\n2. Missing community validation\n3. Unclear objectives"
+}
+
+### 6. Test rejecting without a reason - this should fail validation
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "rejected"
+}
+
+### 7. Test updating a request that doesn't exist
+PATCH {{requestsEndpoint}}/{{non-request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "approved",
+  "reason": "Attempting to approve non-existent request"
+}
+
+### 8. Test with empty request ID
+PATCH {{requestsEndpoint}}/
+Content-Type: {{contentType}}
+{
+  "status": "approved"
+}
+
+### 9. Test with an invalid status that's not approved or rejected
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "pending",
+  "reason": "Trying to set to pending (should fail)"
+}
+
+### 10. Test with a completely invalid status
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "invalid_status",
+  "reason": "Testing validation"
+}
+
+### 11. Test without providing the required status field
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "reason": "Only providing reason without status"
+}
+
+### 12. Test trying to approve a request that's already been resolved
+PATCH {{requestsEndpoint}}/{{@already-approved-request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "approved",
+  "reason": "Trying to approve again"
+}
+
+### 13.  Test trying to reject a request that's already been approved
+PATCH {{requestsEndpoint}}/{{@already-approved-request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "rejected",
+  "reason": "Trying to reject an approved request"
+}
+
+### 14. Test with special characters, HTML, and Unicode
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "rejected",
+  "reason": "Reason with <special> & \"characters\" and emoji 🚀 and unicode: café"
+}
+
+### 15. Test with a very long reason text
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "rejected",
+  "reason": "This is a very long reason that explains in great detail why this request is being rejected. It includes multiple paragraphs and extensive documentation requirements that were not met by the applicant. The first issue is related to the lack of proper SDG alignment documentation. The second issue involves missing community validation steps. The third issue concerns unclear project objectives and success metrics. Furthermore, the budget breakdown was incomplete, and the timeline was unrealistic. The team composition also lacked the necessary expertise for implementing the proposed charitable cause. Additionally, the sustainability plan was insufficient and did not address long-term maintenance concerns."
+}
+
+### 16. Test with formatted text including newlines and tabs
+PATCH {{requestsEndpoint}}/{{request-id}}
+Content-Type: {{contentType}}
+{
+  "status": "rejected",
+  "reason": "Issues found:\n\t1. Missing documentation\n\t2. Incomplete SDG mapping\n\t3. Budget discrepancies\n\nPlease address these issues and resubmit."
+}

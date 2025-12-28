@@ -11,12 +11,19 @@
       href='/css/main.css'
     />
   </head>
-  <script src="/js/aside.js"></script>
   <body>
     <div class="dashboard">
       {{>aside}}
       {{{body}}}
     </div>
     {{>footer}}
+  <script src="/js/aside.js"></script>
+   <script>
+     globalThis.APP_CONFIG = {
+       apiBaseUrl: '{{apiBaseUrl}}'
+     };
+   </script>
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   <script src='/js/requests.js'></script>
   </body>
 </html>

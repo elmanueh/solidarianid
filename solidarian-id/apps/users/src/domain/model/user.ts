@@ -2,53 +2,169 @@ import { Entity } from '@app/ddd/entity';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Username } from '@app/value-objects/model/username';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
-import { Password } from '@app/value-objects/model/password';
 import { UserLocation } from '@app/value-objects/model/user-location';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Either, left, right } from '@app/ddd/either';
+import { HashedPassword } from '@app/value-objects/model/hashed-password';
 
 export interface UserProps {
   username: Username;
   mobilePhone: MobilePhone;
-  password: Password;
+  passwordHash: HashedPassword;
   location: UserLocation;
 }
+
+export interface UserCreationProps {
+  username: string;
+  mobilePhone: string;
+  passwordHash: string;
+  city: string;
+  countryCode: string;
+}
+
 export class User extends Entity<UserProps> {
   private constructor(props: UserProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
-  get username(): Username {
-    return this.props.username;
+  get username(): string {
+    return this.props.username.value;
   }
 
-  get mobilePhone(): MobilePhone {
-    return this.props.mobilePhone;
+  get mobilePhone(): string {
+    return this.props.mobilePhone.value;
   }
 
-  get password(): Password {
-    return this.props.password;
+  get passwordHash(): string {
+    return this.props.passwordHash.value;
   }
 
-  get location(): UserLocation {
-    return this.props.location;
+  get city(): string {
+    return this.props.location.city;
   }
 
-  set username(value: Username) {
-    this.props.username = value;
+  get countryCode(): string {
+    return this.props.location.countryCode;
   }
 
-  set mobilePhone(value: MobilePhone) {
-    this.props.mobilePhone = value;
+  private set username(username: Username) {
+    this.props.username = username;
   }
 
-  set password(value: Password) {
-    this.props.password = value;
+  private set mobilePhone(mobilePhone: MobilePhone) {
+    this.props.mobilePhone = mobilePhone;
   }
 
-  set location(value: UserLocation) {
-    this.props.location = value;
+  private set location(location: UserLocation) {
+    this.props.location = location;
   }
 
-  public static create(props: UserProps, id?: UniqueEntityID): User {
-    return new User(props, id);
+  public updateUserProfile(
+    username?: string,
+    mobilePhone?: string,
+    city?: string,
+    countryCode?: string,
+  ): Either<ValidationError, void> {
+    if (!username && !mobilePhone && !city && !countryCode) {
+      return left(
+        new ValidationError(
+          'At least one field must be provided to update the profile.',
+        ),
+      );
+    }
+
+    if (city && !countryCode) {
+      return left(
+        new ValidationError(
+          'Country code must be provided when updating user location',
+        ),
+      );
+    }
+
+    if (countryCode && !city) {
+      return left(
+        new ValidationError(
+          'City must be provided when updating user location',
+        ),
+      );
+    }
+
+    if (username) {
+      const usernameOrError = Username.create(username);
+      if (usernameOrError.isLeft()) {
+        return left(usernameOrError.value);
+      }
+      this.username = usernameOrError.value;
+    }
+
+    if (mobilePhone) {
+      const mobilePhoneOrError = MobilePhone.create(mobilePhone);
+      if (mobilePhoneOrError.isLeft()) {
+        return left(mobilePhoneOrError.value);
+      }
+      this.mobilePhone = mobilePhoneOrError.value;
+    }
+
+    if (city && countryCode) {
+      const locationOrError = UserLocation.create({ city, countryCode });
+      if (locationOrError.isLeft()) {
+        return left(locationOrError.value);
+      }
+      this.location = locationOrError.value;
+    }
+
+    return right(undefined);
+  }
+
+  public static create(
+    props: UserCreationProps,
+    id?: string,
+  ): Either<ValidationError, User> {
+    // Create UniqueEntityID if id is provided
+    let entityId: UniqueEntityID | undefined;
+    if (id) {
+      const entityIdOrError = UniqueEntityID.create(id);
+      if (entityIdOrError.isLeft()) {
+        return left(entityIdOrError.value);
+      }
+      entityId = entityIdOrError.value;
+    }
+
+    // Create all value objects from plain props
+    const usernameOrError = Username.create(props.username);
+    if (usernameOrError.isLeft()) {
+      return left(usernameOrError.value);
+    }
+
+    const mobilePhoneOrError = MobilePhone.create(props.mobilePhone);
+    if (mobilePhoneOrError.isLeft()) {
+      return left(mobilePhoneOrError.value);
+    }
+
+    const passwordHashOrError = HashedPassword.create(props.passwordHash);
+    if (passwordHashOrError.isLeft()) {
+      return left(passwordHashOrError.value);
+    }
+
+    const locationOrError = UserLocation.create({
+      city: props.city,
+      countryCode: props.countryCode,
+    });
+    if (locationOrError.isLeft()) {
+      return left(locationOrError.value);
+    }
+
+    // Create and return the User entity
+    const user = new User(
+      {
+        username: usernameOrError.value,
+        mobilePhone: mobilePhoneOrError.value,
+        passwordHash: passwordHashOrError.value,
+        location: locationOrError.value,
+      },
+      entityId,
+    );
+
+    return right(user);
   }
 }

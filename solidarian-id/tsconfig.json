@@ -38,7 +38,8 @@
       "@frontend/design-tokens": ["libs/design-tokens/src"],
       "@frontend/design-tokens/*": ["libs/design-tokens/src/*"],
       "@charts": ["libs/charts/src"],
-      "@charts/*": ["libs/charts/src/*"]
+      "@charts/*": ["libs/charts/src/*"],
+      "@solidarianid/testing": ["libs/test/src/index.ts"]
     },
     "baseUrl": "./"
   },

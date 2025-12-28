@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CommunitiesController } from '../src/infrastructure/presentation/controllers/communities.controller';
-import { CommunitiesService } from '../src/domain/services/communities.service';
+import { CommunitiesController } from '../src/communities/infrastructure/presentation/controllers/communities.controller';
+import { CommunitiesService } from '../src/communities/domain/services/communities.service';
 import { right, left } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 

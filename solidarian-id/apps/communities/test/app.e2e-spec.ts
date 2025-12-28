@@ -5,7 +5,7 @@ import { App } from 'supertest/types';
 import { ConfigModule } from '@nestjs/config';
 import { CommunitiesModule } from '../src/communities.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CommunityEntity } from '../src/infrastructure/persistence/entities/community.entity';
+import { CommunityEntity } from '../src/communities/infrastructure/persistence/entities/community.entity';
 
 describe('CommunitiesController (e2e)', () => {
   let app: INestApplication;

@@ -97,11 +97,6 @@ export class UsersServiceImpl extends UsersService {
     const usernameOrError = Username.create(username);
     if (usernameOrError.isLeft()) return left(usernameOrError.value);
 
-    const passwordHashingOrError =
-      await this.passwordManager.validateAndHashPassword(password);
-    if (passwordHashingOrError.isLeft())
-      return left(passwordHashingOrError.value);
-
     const userOrError = await this.usersRepository.findByUsername(
       usernameOrError.value,
     );

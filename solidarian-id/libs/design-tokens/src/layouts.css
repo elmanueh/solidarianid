@@ -77,14 +77,15 @@
 
   .aside {
     @apply text-white flex flex-col bg-ocean-blue-600 dark:bg-black-haze-800
-         fixed
-         top-0 left-0 bottom-0
-         w-2/3 md:w-auto
-         md:static
-         z-50 
-         -translate-x-full md:translate-x-0
-         transition-transform duration-300
-         shadow-2xl md:shadow-none;
+       fixed
+       top-0 left-0 bottom-0
+       w-2/3 md:w-auto
+       z-50 
+       -translate-x-full md:translate-x-0
+       transition-transform duration-300
+       shadow-2xl md:shadow-none
+
+       md:sticky md:top-0 md:h-screen md:overflow-y-auto;
   }
 
   .aside.open {

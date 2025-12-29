@@ -9,11 +9,16 @@ import {
   PostgreSQLTestModule,
   PostgreSQLTestContainer,
 } from '@solidarianid/testing';
+import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
 
 describe('UsersController (e2e)', () => {
   let server!: TestServerHelper;
   let app: INestApplication;
   let seeder!: PostgreSQLSeeder;
+
+  const mockPublisher = {
+    publish: jest.fn(),
+  };
 
   beforeAll(async () => {
     const databaseModule: DynamicModule = await PostgreSQLTestModule.forRoot([

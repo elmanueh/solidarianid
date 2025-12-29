@@ -9,6 +9,8 @@ const config: Config = {
   // ✅ Mapeo de paths - Debe coincidir con tsconfig.json
   moduleNameMapper: {
     '^@solidarianid/testing(.*)$': '<rootDir>/libs/test/src$1',
+    '^@solidarianid/kafka$': '<rootDir>/libs/kafka/src/index.ts',
+    '^@solidarianid/kafka/(.*)$': '<rootDir>/libs/kafka/src/$1',
     '^@app/admin/(.*)$': '<rootDir>/apps/admin/src/$1',
     '^@app/users/(.*)$': '<rootDir>/apps/users/src/$1',
     '^@app/communities/(.*)$': '<rootDir>/apps/communities/src/$1',

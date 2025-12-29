@@ -9,6 +9,8 @@
   "transformIgnorePatterns": ["node_modules/(?!(uuid)/)"],
   "moduleNameMapper": {
     "^@app/ddd(|/.*)$": "<rootDir>/../../../libs/ddd/src/$1",
+    "^@solidarianid/kafka$": "<rootDir>/../../../libs/kafka/src/index.ts",
+    "^@solidarianid/kafka/(.*)$": "<rootDir>/../../../libs/kafka/src/$1",
     "^@app/users(|/.*)$": "<rootDir>/../src/$1",
     "^@app/utils(|/.*)$": "<rootDir>/../../../libs/utils/src/$1",
     "^@app/value-objects(|/.*)$": "<rootDir>/../../../libs/value-objects/src/$1",

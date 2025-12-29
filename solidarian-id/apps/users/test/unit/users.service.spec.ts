@@ -10,6 +10,7 @@ import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-n
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { User } from '@app/users/domain/model/user';
 import { USERNAME_MAX_LENGTH } from '@app/value-objects/constants/validation.constants';
+import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
 
 describe('UsersService (White Box Testing)', () => {
   let service: UsersServiceImpl;
@@ -23,6 +24,10 @@ describe('UsersService (White Box Testing)', () => {
   let mockPasswordManager: {
     validateAndHashPassword: jest.Mock;
     comparePassword: jest.Mock;
+  };
+
+  let mockKafkaPublisher: {
+    publish: jest.Mock;
   };
 
   const validCommand: RegisterUserCommand = {
@@ -50,11 +55,16 @@ describe('UsersService (White Box Testing)', () => {
       comparePassword: jest.fn(),
     };
 
+    mockKafkaPublisher = {
+      publish: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersServiceImpl,
         { provide: UsersRepositoryPort, useValue: mockRepo },
         { provide: PasswordManager, useValue: mockPasswordManager },
+        { provide: UsersPublisherPort, useValue: mockKafkaPublisher },
       ],
     }).compile();
 

@@ -16,7 +16,10 @@ lerna-debug.log*
 .pnpm-debug.log*
 .github/prompts/
 *package-lock.json
-*reports
+# Ignorar reportes de cobertura y diagnósticos, pero no src/reports
+*.reports
+coverage-reports/
+test-reports/
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

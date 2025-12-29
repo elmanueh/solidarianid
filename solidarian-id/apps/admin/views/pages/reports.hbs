@@ -1,84 +1,86 @@
-<main class='container mx-auto px-4 py-8 max-w-7xl'>
-  <!-- Header -->
-  <header class='text-center mb-8'>
+<main class='min-h-screen bg-gradient-to-br from-black-haze-50 to-athens-gray-100 dark:from-black-haze-950 dark:to-athens-gray-950 px-4 py-8'>
+  <div class='container mx-auto max-w-7xl'>
+    <!-- Header -->
+    <header class='text-center mb-8'>
     <h1 class='text-3xl md:text-4xl font-bold text-black-haze-950 dark:text-black-haze-50 mb-2'>
-      Reportes de Usuarios
-    </h1>
-    <p class='text-pale-sky-500 dark:text-pale-sky-400'>
-      Total de usuarios:
-      <span id='total-users' class='font-semibold text-ocean-blue-600 dark:text-ocean-blue-400'>-</span>
-    </p>
-  </header>
-
-  <!-- Announcer para lectores de pantalla -->
-  <div
-    id='status-announcer'
-    class='sr-only'
-    aria-live='polite'
-    aria-atomic='true'
-  ></div>
-
-  <!-- Lista de usuarios -->
-  <section class='min-h-[400px] mb-8' aria-label='Lista de usuarios'>
-    <div
-      id='users-list'
-      class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
-    >
-      <!-- Tarjetas de usuario se generan dinámicamente con JS -->
-    </div>
-
-    <!-- Loading spinner -->
-    <div
-      id='loading'
-      class='flex flex-col items-center justify-center min-h-[400px] hidden'
-    >
-      <span
-        class='loading loading-spinner loading-lg text-ocean-blue-600'
-      ></span>
-      <p class='mt-4 text-pale-sky-500 dark:text-pale-sky-400'>
-        Cargando usuarios...
-      </p>
-    </div>
-
-    <!-- Empty state -->
-    <div
-      id='empty-state'
-      class='flex flex-col items-center justify-center min-h-[400px] hidden'
-    >
-      <span
-        class='icon-[lucide--user-x] text-6xl text-pale-sky-400 dark:text-pale-sky-600 mb-4'
-      ></span>
+        Reportes de Usuarios
+      </h1>
       <p class='text-pale-sky-500 dark:text-pale-sky-400'>
-        No se encontraron usuarios
+        Total de usuarios:
+        <span id='total-users' class='font-semibold text-ocean-blue-600 dark:text-ocean-blue-400'>-</span>
       </p>
-    </div>
+    </header>
 
-    <!-- Error state -->
+    <!-- Announcer para lectores de pantalla -->
     <div
-      id='error-state'
-      class='flex flex-col items-center justify-center min-h-[400px] hidden'
-    >
-      <span
-        class='icon-[lucide--alert-circle] text-6xl text-dark-wine-500 dark:text-dark-wine-400 mb-4'
-      ></span>
-      <p class='text-pale-sky-600 dark:text-pale-sky-400 mb-4'>
-        Error al cargar los usuarios
-      </p>
-      <button type='button' id='retry-btn' class='btn btn-primary'>
-        <span class='icon-[lucide--refresh-cw]'></span>
-        Reintentar
-      </button>
-    </div>
-  </section>
+      id='status-announcer'
+      class='sr-only'
+      aria-live='polite'
+      aria-atomic='true'
+    ></div>
 
-  <!-- Paginación -->
-  <nav
-    id='pagination'
-    class='flex justify-center gap-2 mb-8'
-    aria-label='Paginación de usuarios'
-  >
-    <!-- Botones de paginación se generan dinámicamente con JS -->
-  </nav>
+    <!-- Lista de usuarios -->
+    <section class='min-h-[400px] mb-8' aria-label='Lista de usuarios'>
+      <div
+        id='users-list'
+        class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
+      >
+        <!-- Tarjetas de usuario se generan dinámicamente con JS -->
+      </div>
+
+      <!-- Loading spinner -->
+      <div
+        id='loading'
+        class='flex flex-col items-center justify-center min-h-[400px] hidden'
+      >
+        <span
+          class='loading loading-spinner loading-lg text-ocean-blue-600'
+        ></span>
+        <p class='mt-4 text-pale-sky-500 dark:text-pale-sky-400'>
+          Cargando usuarios...
+        </p>
+      </div>
+
+      <!-- Empty state -->
+      <div
+        id='empty-state'
+        class='flex flex-col items-center justify-center min-h-[400px] hidden'
+      >
+        <span
+          class='icon-[lucide--user-x] text-6xl text-pale-sky-400 dark:text-pale-sky-600 mb-4'
+        ></span>
+        <p class='text-pale-sky-500 dark:text-pale-sky-400'>
+          No se encontraron usuarios
+        </p>
+      </div>
+
+      <!-- Error state -->
+      <div
+        id='error-state'
+        class='flex flex-col items-center justify-center min-h-[400px] hidden'
+      >
+        <span
+          class='icon-[lucide--alert-circle] text-6xl text-dark-wine-500 dark:text-dark-wine-400 mb-4'
+        ></span>
+        <p class='text-pale-sky-600 dark:text-pale-sky-400 mb-4'>
+          Error al cargar los usuarios
+        </p>
+        <button type='button' id='retry-btn' class='btn btn-primary'>
+          <span class='icon-[lucide--refresh-cw]'></span>
+          Reintentar
+        </button>
+      </div>
+    </section>
+
+    <!-- Paginación -->
+    <nav
+      id='pagination'
+      class='flex justify-center gap-2 mb-8'
+      aria-label='Paginación de usuarios'
+    >
+      <!-- Botones de paginación se generan dinámicamente con JS -->
+    </nav>
+  </div>
 
   <!-- Panel de detalle (drawer lateral) -->
   <div id='user-detail-panel' class='hidden'>

@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "types": ["jest", "node"],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
@@ -22,6 +21,7 @@
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
     "allowJs": true,
+    "types": ["jest", "node"],
     "paths": {
       "@app/admin": ["apps/admin/src"],
       "@app/admin/*": ["apps/admin/src/*"],
@@ -37,7 +37,10 @@
       "@app/value-objects": ["libs/value-objects/src"],
       "@app/value-objects/*": ["libs/value-objects/src/*"],
       "@frontend/design-tokens": ["libs/design-tokens/src"],
-      "@frontend/design-tokens/*": ["libs/design-tokens/src/*"]
+      "@frontend/design-tokens/*": ["libs/design-tokens/src/*"],
+      "@charts": ["libs/charts/src"],
+      "@charts/*": ["libs/charts/src/*"],
+      "@solidarianid/testing": ["libs/test/src/index.ts"]
     },
     "baseUrl": "./"
   },

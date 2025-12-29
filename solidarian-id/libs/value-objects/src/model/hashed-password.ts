@@ -23,7 +23,7 @@ export class HashedPassword extends ValueObject<HashedPasswordProps> {
   public static create(
     hash: string,
   ): Either<InvalidHashPasswordError, HashedPassword> {
-    if (!hash || hash.trim().length === 0) {
+    if (hash === null || hash === undefined || hash.trim().length === 0) {
       return left(
         new InvalidHashPasswordError('A password hash can not be empty'),
       );

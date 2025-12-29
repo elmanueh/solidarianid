@@ -55,6 +55,10 @@ describe('AppController (e2e)', () => {
     await mongoContainer?.stop();
   });
 
+  afterEach(async () => {
+    await app.close();
+  });
+
   it('/ (GET)', () => {
     return request(app.getHttpServer() as Application)
       .get('/')

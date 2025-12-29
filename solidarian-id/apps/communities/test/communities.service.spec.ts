@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { right, left } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { CommunitiesServiceImpl } from '../src/application/services/communities.service.impl';
-import { CommunitiesRepositoryPort } from '../src/domain/ports/communities.repository.port';
+import { CommunitiesServiceImpl } from '../src/communities/application/services/communities.service.impl';
+import { CommunitiesRepositoryPort } from '../src/communities/domain/ports/communities.repository.port';
 
 describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;

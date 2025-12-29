@@ -1,14 +1,14 @@
 import { Either, left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
-import { AdminConflictError } from 'apps/admin/src/administrator/model/domain/errors/admin-conflict.error';
-import { Administrator } from 'apps/admin/src/administrator/model/domain/model/administrator';
-import { AdministratorRepositoryPort } from 'apps/admin/src/administrator/model/domain/ports/output/administrator.repository.port';
-import { AuthService } from 'apps/admin/src/administrator/model/domain/services/auth.service';
 import { AdminAuthenticationError } from '@app/admin/administrator/model/domain/errors/admin-authentication.error';
 import { AuthError } from '@app/ddd/errors/auth-error';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { PasswordManager } from '@app/utils/security/password-manager';
+import { AdminConflictError } from '@app/admin/administrator/model/domain/errors/admin-conflict.error';
+import { Administrator } from '@app/admin/administrator/model/domain/models/administrator';
+import { AdministratorRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/administrator.repository.port';
+import { AuthService } from '@app/admin/administrator/model/domain/services/auth.service';
 
 /**
  * Servicio de autenticación

@@ -1,5 +1,5 @@
 import { Either } from '@app/ddd/either';
-import { Administrator } from '../../model/administrator';
+import { Administrator } from '../../models/administrator';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Repository } from '@app/ddd/repository/repository';
 

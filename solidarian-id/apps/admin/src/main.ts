@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
-import { AppModule } from './app.module';
 import { join } from 'node:path';
 import { engine } from 'express-handlebars';
-import { HttpExceptionFilter } from './administrator/controllers/filters/http-exception.filter';
+import { AppModule } from '@app/admin/app.module';
 import session from 'express-session';
+import { HttpExceptionFilter } from '@app/admin/administrator/controllers/filters/http-exception.filter';
 import { AuthenticationErrorFilter } from './administrator/controllers/filters/authentication-error.filter';
 import { ConflictErrorFilter } from './administrator/controllers/filters/conflict-error.filter';
 import { InternalServerErrorFilter } from './administrator/controllers/filters/internal-server-error.filter';

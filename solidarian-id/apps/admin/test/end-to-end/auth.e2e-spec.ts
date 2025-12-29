@@ -1,5 +1,4 @@
-import { DynamicModule, INestApplication } from '@nestjs/common';
-import session from 'express-session';
+import { INestApplication } from '@nestjs/common';
 import { AuthModule } from '@app/admin/auth/auth.module';
 import { Connection } from 'mongoose';
 import {
@@ -10,7 +9,6 @@ import {
 } from '@solidarianid/testing';
 
 describe('AuthController (e2e)', () => {
-  const testSessionSecret = 'test-secret-key-for-e2e-tests';
   const validRegisterData = {
     fullName: 'Test Administrator',
     email: 'test.admin@solidarianid.org',
@@ -23,28 +21,11 @@ describe('AuthController (e2e)', () => {
   let seeder!: MongoDBSeeder;
 
   beforeAll(async () => {
-    const databaseModule: DynamicModule = await MongoDBTestModule.forRoot();
+    const databaseModule = await MongoDBTestModule.forRoot();
     server = new TestServerHelper();
-    app = await server.create(
-      {
-        imports: [databaseModule, AuthModule],
-      },
-      (app) => {
-        app.use(
-          session({
-            secret: testSessionSecret,
-            resave: false,
-            saveUninitialized: false,
-            cookie: {
-              httpOnly: true,
-              maxAge: 1000 * 60 * 60 * 24,
-              secure: false,
-              sameSite: 'lax',
-            },
-          }),
-        );
-      },
-    );
+    app = await server.create({
+      imports: [databaseModule, AuthModule],
+    });
 
     const connection: Connection = app.get<Connection>('Connection');
     seeder = new MongoDBSeeder(connection);

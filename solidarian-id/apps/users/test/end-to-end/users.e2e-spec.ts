@@ -1,32 +1,29 @@
-import { DynamicModule, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
-import { UsersModule } from '@app/users/users.module';
 import { DataSource } from 'typeorm';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
+import { UsersModule } from '@app/users/users.module';
 import {
   TestServerHelper,
   PostgreSQLSeeder,
-  PostgreSQLTestModule,
   PostgreSQLTestContainer,
+  KafkaTestContainer,
+  PostgreSQLTestModule,
+  KafkaTestModule,
 } from '@solidarianid/testing';
-import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
 
 describe('UsersController (e2e)', () => {
   let server!: TestServerHelper;
   let app: INestApplication;
   let seeder!: PostgreSQLSeeder;
 
-  const mockPublisher = {
-    publish: jest.fn(),
-  };
-
   beforeAll(async () => {
-    const databaseModule: DynamicModule = await PostgreSQLTestModule.forRoot([
-      UserEntity,
-    ]);
+    const messageModule = await KafkaTestModule.forRoot();
+    const databaseModule = await PostgreSQLTestModule.forRoot([UserEntity]);
+
     server = new TestServerHelper();
     app = await server.create({
-      imports: [databaseModule, UsersModule],
+      imports: [messageModule, databaseModule, UsersModule],
     });
 
     const dataSource = app.get<DataSource>('DataSource');
@@ -41,6 +38,7 @@ describe('UsersController (e2e)', () => {
   afterAll(async () => {
     await app.close();
     await PostgreSQLTestContainer.getInstance().stop();
+    await KafkaTestContainer.getInstance().stop();
   });
 
   describe('/users (POST)', () => {

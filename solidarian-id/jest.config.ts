@@ -15,7 +15,7 @@ const baseJestConfig: Config = {
 
   moduleNameMapper: {
     '^@solidarianid/testing(.*)$': '<rootDir>/libs/test/src$1',
-    '^@solidarianid/kafka/(.*)$': '<rootDir>/libs/kafka/src/$1',
+    '^@solidarianid/kafka(.*)$': '<rootDir>/libs/kafka/src/$1',
     '^@app/admin/(.*)$': '<rootDir>/apps/admin/src/$1',
     '^@app/users/(.*)$': '<rootDir>/apps/users/src/$1',
     '^@app/communities/(.*)$': '<rootDir>/apps/communities/src/$1',
@@ -44,7 +44,7 @@ const baseJestConfig: Config = {
   coverageDirectory: './coverage',
   coverageReporters: ['text', 'lcov', 'json'],
 
-  testTimeout: 30000,
+  testTimeout: 60000,
 };
 
 export default baseJestConfig;

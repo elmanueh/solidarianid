@@ -1,9 +1,8 @@
-import { Module, DynamicModule, Global } from '@nestjs/common';
+import { Module, DynamicModule } from '@nestjs/common';
 import { MongooseModule, getConnectionToken } from '@nestjs/mongoose';
 import { MongoDBTestContainer } from '@solidarianid/testing';
 import { Connection } from 'mongoose';
 
-@Global()
 @Module({})
 export class MongoDBTestModule {
   static async forRoot(): Promise<DynamicModule> {

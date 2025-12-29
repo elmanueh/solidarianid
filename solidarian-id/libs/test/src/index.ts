@@ -11,6 +11,9 @@ export * from './mongodb-seed.test-container';
 export * from './postgresql.test-container';
 export * from './postgresql.test-container.module';
 export * from './postgresql-seed.test-container';
+// Kafka Adapter
+export * from './kafka.test-container';
+export * from './kafka.test-container.module';
 
 // Common Utilities
 export * from './helpers/test-server.helper';

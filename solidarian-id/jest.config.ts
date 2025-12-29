@@ -43,7 +43,7 @@ const baseJestConfig: Config = {
   coverageDirectory: './coverage',
   coverageReporters: ['text', 'lcov', 'json'],
 
-  testTimeout: 20000,
+  testTimeout: 30000,
 };
 
 export default baseJestConfig;

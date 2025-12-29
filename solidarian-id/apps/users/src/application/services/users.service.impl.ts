@@ -13,12 +13,15 @@ import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
+import { EventType } from '@solidarianid/kafka';
 
 @Injectable()
 export class UsersServiceImpl extends UsersService {
   constructor(
     private readonly usersRepository: UsersRepositoryPort,
     private readonly passwordManager: PasswordManager,
+    private readonly usersPublisher: UsersPublisherPort,
   ) {
     super();
   }
@@ -85,6 +88,8 @@ export class UsersServiceImpl extends UsersService {
     const res = await this.usersRepository.save(user.value);
 
     if (res.isLeft()) return left(res.value);
+
+    await this.usersPublisher.publish(EventType.USER_CREATED, user.value);
 
     // 6. Retornar ID del usuario creado
     return right(user.value.id.value);

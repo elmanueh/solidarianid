@@ -1,4 +1,63 @@
-<div>
-  Esto es la página de solicitudes. Volver al dashboard
-  <a href='/dashboard'>aquí</a>.
-</div>
+<main class="metrics" aria-labelledby="page-title">
+  <h1 id="page-title" class="metrics-title">Solicitudes pendientes</h1>
+
+  <article class="requests-section" aria-label="Solicitudes">
+    <details class="collapse community-request">
+      <summary class="collapse-title">
+        <section class="name-buttons-request">
+          <span class="font-bold text-md sm:text-lg">
+            Comunidad adopta un negro en africa
+          </span>
+
+          {{> validation-buttons}}
+        </section>
+
+        <section class="text-sm sm:text-md">
+          <span>06/05/2024</span>
+          <br />
+          <br />
+          <p>Descripción de la comunidad 1</p>
+        </section>
+      </summary>
+
+      <article class="collapse-content">
+        <details class="collapse cause-request">
+          <summary class="collapse-title">
+            <section class="name-buttons-request">
+              <span class="font-bold text-sm sm:text-md">
+                Causa de adopta un negro en africa
+              </span>
+
+              {{> validation-buttons}}
+            </section>
+
+            <section class="text-xs sm:text-sm">
+              <span>05/06/2025</span>
+              <br />
+              <br />
+              <p>Descripción de la causa 1</p>
+            </section>
+          </summary>
+
+          <article class="collapse-content">
+            <div class="action-request">
+              <section class="name-buttons-request">
+                <span class="font-bold text-sm sm:text-md">
+                  Acción de adoptar un negro en africa
+                </span>
+                <div class="mr-4">{{> validation-buttons}}</div>
+              </section>
+
+              <section class="text-xs sm:text-sm">
+                <span>05/06/2025</span>
+                <br />
+                <br />
+                <p>Descripción de la acción 1</p>
+              </section>
+            </div>
+          </article>
+        </details>
+      </article>
+    </details>
+  </article>
+</main>

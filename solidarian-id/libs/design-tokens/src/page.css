@@ -32,11 +32,11 @@
   /* Metric Page Styles */
 
   .metrics {
-    @apply flex flex-col gap-6 p-6 bg-athens-gray-200;
+    @apply flex flex-col gap-6 p-6 bg-athens-gray-200 dark:bg-athens-gray-950;
   }
 
   .metrics-title {
-    @apply text-4xl mt-6 font-bold bg-white text-athens-gray-800 p-6 rounded-md shadow-md;
+    @apply text-2xl sm:text-4xl mt-6 font-bold bg-white text-athens-gray-800 p-6 rounded-md shadow-md dark:bg-athens-gray-900 dark:text-athens-gray-100;
   }
 
   .metrics-container {
@@ -48,7 +48,7 @@
   }
 
   .metrics-analytics-graph {
-    @apply w-full h-full bg-white rounded-md p-6;
+    @apply w-full h-full bg-white rounded-md p-6 dark:bg-athens-gray-900;
   }
 
   .metrics-summary {
@@ -56,22 +56,22 @@
   }
 
   .metrics-summary-card {
-    @apply cursor-pointer col-span-1 bg-white rounded-lg shadow-md p-6 w-full h-full flex flex-col items-center justify-center;
+    @apply cursor-pointer col-span-1 bg-white rounded-lg shadow-md p-6 w-full h-full flex flex-col items-center justify-center dark:bg-athens-gray-900;
 
     &[data-variant='orange'] {
-      @apply bg-harvest-orange-500 hover:bg-harvest-orange-600;
+      @apply bg-harvest-orange-500 hover:bg-harvest-orange-600 dark:bg-harvest-orange-700 dark:hover:bg-harvest-orange-800;
     }
 
     &[data-variant='sofa'] {
-      @apply bg-soft-fawn-500 hover:bg-soft-fawn-600;
+      @apply bg-soft-fawn-500 hover:bg-soft-fawn-600 dark:bg-soft-fawn-700 dark:hover:bg-soft-fawn-800;
     }
 
     &[data-variant='green'] {
-      @apply bg-sage-green-500 hover:bg-sage-green-600;
+      @apply bg-sage-green-500 hover:bg-sage-green-600 dark:bg-sage-green-700 dark:hover:bg-sage-green-800;
     }
 
     &[data-variant='red'] {
-      @apply bg-dark-wine-500 hover:bg-dark-wine-600;
+      @apply bg-dark-wine-500 hover:bg-dark-wine-600 dark:bg-dark-wine-700 dark:hover:bg-dark-wine-800;
     }
   }
 
@@ -88,5 +88,25 @@
     &[data-variant='black'] {
       @apply text-black;
     }
+  }
+
+  .requests-section {
+    @apply w-full h-full bg-white rounded-lg p-2 sm:p-4 space-y-2 dark:bg-athens-gray-900;
+  }
+
+  .community-request {
+    @apply border-l-4 sm:border-l-8 border-ocean-blue-500 bg-base-300;
+  }
+
+  .cause-request {
+    @apply border-l-4 sm:border-l-8 border-harvest-orange-500 bg-base-200;
+  }
+
+  .action-request {
+    @apply border-l-4 sm:border-l-8 border-sage-green-500 bg-base-100 p-4 rounded-md;
+  }
+
+  .name-buttons-request {
+    @apply flex justify-between items-start gap-4;
   }
 }

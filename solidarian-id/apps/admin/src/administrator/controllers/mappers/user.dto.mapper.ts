@@ -1,9 +1,10 @@
-import { User } from '@app/admin/administrator/model/domain/model/user';
-import { UserListResponseDto } from '../dto/output/user-list-response.dto';
+import { User } from '@app/admin/administrator/model/domain/models/user';
+import { UserListResponseDto } from '../../model/application/dtos/output/user-list-response.dto';
 import {
   UserDetailResponseDto,
   CommunityDto,
-} from '../dto/output/user-detail-response.dto';
+} from '../../model/application/dtos/output/user-detail-response.dto';
+import type { CommunityMembership } from '@app/admin/administrator/model/domain/value-objects/community-membership';
 
 /**
  * Mapper para convertir entidades User del dominio a DTOs de respuesta
@@ -27,7 +28,7 @@ export class UserDtoMapper {
    */
   static toDetailDto(user: User): UserDetailResponseDto {
     const communities = user.communityMemberships.map(
-      (membership) =>
+      (membership: CommunityMembership) =>
         new CommunityDto(
           membership.communityId,
           membership.communityName,

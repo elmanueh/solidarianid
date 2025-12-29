@@ -1,7 +1,7 @@
 import { Either } from '@app/ddd/either';
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../../domain/services/user.service';
-import { User } from '../../domain/model/user';
+import { User } from '../../domain/models/user';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import {
   UserRepositoryPort,

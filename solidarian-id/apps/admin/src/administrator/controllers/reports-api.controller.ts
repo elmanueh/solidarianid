@@ -2,11 +2,12 @@ import { Controller, Get, Param, Query, Res, HttpStatus } from '@nestjs/common';
 import type { Response } from 'express';
 import { UserService } from '@app/admin/administrator/model/domain/services/user.service';
 import { UserDtoMapper } from './mappers/user.dto.mapper';
-import { PaginatedResponseDto } from './dto/output/paginated-response.dto';
-import { UserListResponseDto } from './dto/output/user-list-response.dto';
-import { UserDetailResponseDto } from './dto/output/user-detail-response.dto';
-import { UserPdfGeneratorPort } from '@app/admin/reports/domain/ports/user-pdf-generator.port';
-import type { UserReportPdfDto } from '@app/admin/reports/infrastructure/pdf/user-report-pdf.dto';
+import { PaginatedResponseDto } from '../model/application/dtos/output/paginated-response.dto';
+import { UserListResponseDto } from '../model/application/dtos/output/user-list-response.dto';
+import { UserDetailResponseDto } from '../model/application/dtos/output/user-detail-response.dto';
+import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
+import type { UserReportPdfDto } from '@app/admin/administrator/model/infrastructure/pdf/user-report-pdf.dto';
+import type { CommunityMembership } from '@app/admin/administrator/model/domain/value-objects/community-membership';
 
 /**
  * Controlador API para reportes
@@ -145,11 +146,13 @@ export class ReportsApiController {
       city: user.city,
       countryCode: user.countryCode,
       countryName: countryNames[user.countryCode] || user.countryCode,
-      communities: user.communityMemberships.map((membership) => ({
-        id: membership.communityId,
-        name: membership.communityName,
-        isAdmin: membership.isAdmin,
-      })),
+      communities: user.communityMemberships.map(
+        (membership: CommunityMembership) => ({
+          id: membership.communityId,
+          name: membership.communityName,
+          isAdmin: membership.isAdmin,
+        }),
+      ),
       generatedAt: new Date(),
     };
 
@@ -168,7 +171,7 @@ export class ReportsApiController {
       pdfStream.pipe(response);
 
       return response;
-    } catch (_error) {
+    } catch {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'Error generating PDF report',

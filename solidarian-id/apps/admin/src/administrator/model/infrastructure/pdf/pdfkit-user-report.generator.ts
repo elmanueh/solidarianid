@@ -4,7 +4,7 @@ import type { UserReportPdfDto } from './user-report-pdf.dto';
 import { join } from 'path';
 import { colors } from '@frontend/design-tokens/colors';
 import { Injectable } from '@nestjs/common';
-import { UserPdfGeneratorPort } from '../../domain/ports/user-pdf-generator.port';
+import { UserPdfGeneratorPort } from '../../domain/ports/output/user-pdf-generator.port';
 
 type PDFDoc = typeof PDFDocument extends new (...args: any[]) => infer R
   ? R

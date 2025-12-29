@@ -1,5 +1,5 @@
 import { Either } from '@app/ddd/either';
-import { User } from '../model/user';
+import { User } from '../models/user';
 import { UserNotFoundError } from '../errors/user-not-found.error';
 import { PaginatedResult } from '../ports/output/user.repository.port';
 

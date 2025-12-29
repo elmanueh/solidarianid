@@ -3,7 +3,7 @@ import {
   UserRepositoryPort,
   PaginatedResult,
 } from '@app/admin/administrator/model/domain/ports/output/user.repository.port';
-import { User } from '@app/admin/administrator/model/domain/model/user';
+import { User } from '@app/admin/administrator/model/domain/models/user';
 import { UserNotFoundError } from '@app/admin/administrator/model/domain/errors/user-not-found.error';
 import { FAKE_USERS, FakeUserData } from './fake-users.data';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';

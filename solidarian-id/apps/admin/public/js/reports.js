@@ -472,9 +472,7 @@
 
     const result = await downloadUserPdf(selectedUserId);
 
-    if (result.success) {
-      showToast('PDF descargado correctamente', 'success');
-    } else {
+    if (!result.success) {
       showToast(result.error, 'error');
     }
 

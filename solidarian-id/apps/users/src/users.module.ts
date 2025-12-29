@@ -9,15 +9,26 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './infrastructure/persistence/entities/user.entity';
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { PasswordManagerBcrypt } from '@app/utils/security/password-manager-bcrypt';
+import { KafkaDynamicModule } from '@solidarianid/kafka';
+import { UsersPublisherPort } from './domain/ports/users.publisher.port';
+import { UsersKafkaPublisherAdapter } from './infrastructure/messaging/producer/user.publisher';
+import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity])],
-  controllers: [UsersController],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity]),
+    KafkaDynamicModule.register('users'),
+  ],
+  controllers: [UsersController, UserConsumerAdapter],
   providers: [
     UserMapper,
     {
       provide: UsersService,
       useClass: UsersServiceImpl,
+    },
+    {
+      provide: UsersPublisherPort,
+      useClass: UsersKafkaPublisherAdapter,
     },
     {
       provide: UsersRepositoryPort,

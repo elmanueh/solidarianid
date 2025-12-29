@@ -7,6 +7,7 @@ import { writeFileSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -35,6 +36,22 @@ async function bootstrap() {
   );
   // Habilitar filtro global de excepciones
   app.useGlobalFilters(new GlobalExceptionFilter());
+
+  app.connectMicroservice({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: 'users',
+        brokers: process.env.KAFKA_BROKERS?.split(',') ?? ['localhost:9092'],
+      },
+      consumer: {
+        groupId: 'users-consumer-group',
+      },
+    },
+  });
+
+  await app.startAllMicroservices();
+
   const port = configService.get<number>('PORT') ?? 3000;
   console.log(`Server running on port ${port}`);
   await app.listen(port);

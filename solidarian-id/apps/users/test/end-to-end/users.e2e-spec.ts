@@ -9,18 +9,28 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@app/users/users.module';
 import { DatabaseTestModule } from '../database-test.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
+import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication<App>;
 
+  const mockPublisher = {
+    publish: jest.fn(),
+  };
+
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+    const builder = Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         DatabaseTestModule,
         UsersModule,
       ],
-    }).compile();
+    });
+
+    // Replace the Kafka publisher port with a mock to avoid real Kafka connections
+    builder.overrideProvider(UsersPublisherPort).useValue(mockPublisher);
+
+    const moduleFixture: TestingModule = await builder.compile();
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(
       new ValidationPipe({

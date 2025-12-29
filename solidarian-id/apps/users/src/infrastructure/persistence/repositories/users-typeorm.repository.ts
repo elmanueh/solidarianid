@@ -10,6 +10,8 @@ import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { Username } from '@app/value-objects/model/username';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 
 @Injectable()
 export class UsersRepositoryTypeORM
@@ -64,11 +66,37 @@ export class UsersRepositoryTypeORM
       const errorMessage =
         error instanceof Error
           ? error.message
-          : 'Unknown error checking mobile phone';
+          : 'Unknown error checking username';
 
       return left(
         new RepositoryException(
-          `Failed to check if mobile phone exists: ${errorMessage}`,
+          `Failed to check if username exists: ${errorMessage}`,
+        ),
+      );
+    }
+  }
+
+  async findByUsername(
+    username: Username,
+  ): Promise<Either<RepositoryException | ValidationError, User>> {
+    try {
+      const userEntity = await this.usersRepository.findOne({
+        where: { username: username.value },
+      });
+      if (!userEntity) {
+        return left(
+          new EntityNotFoundException(Username.name, 'User not found'),
+        );
+      }
+      return this.userMapper.fromPersistence(userEntity);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Unknown error finding user by username';
+      return left(
+        new RepositoryException(
+          `Failed to find user by username: ${errorMessage}`,
         ),
       );
     }

@@ -5,11 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import request from 'supertest';
 import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers';
 import session from 'express-session';
-import { AuthModule } from '../../src/auth/auth.module';
-import { ConflictErrorFilter } from '../../src/administrator/controllers/filters/conflict-error.filter';
-import { AuthenticationErrorFilter } from '../../src/administrator/controllers/filters/authentication-error.filter';
-import { ValidationErrorFilter } from '../../src/administrator/controllers/filters/validation-error.filter';
 import { Application } from 'express';
+import { AuthenticationErrorFilter } from '@app/admin/administrator/controllers/filters/authentication-error.filter';
+import { ConflictErrorFilter } from '@app/admin/administrator/controllers/filters/conflict-error.filter';
+import { ValidationErrorFilter } from '@app/admin/administrator/controllers/filters/validation-error.filter';
+import { AuthModule } from '@app/admin/auth/auth.module';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;

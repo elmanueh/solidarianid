@@ -31,6 +31,15 @@
         ]
       }
     },
+    "charts": {
+      "type": "library",
+      "root": "libs/charts",
+      "entryFile": "index",
+      "sourceRoot": "libs/charts/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/charts/tsconfig.lib.json"
+      }
+    },
     "communities": {
       "type": "application",
       "root": "apps/communities",
@@ -56,6 +65,15 @@
       "sourceRoot": "libs/design-tokens/src",
       "compilerOptions": {
         "tsConfigPath": "libs/design-tokens/tsconfig.lib.json"
+      }
+    },
+    "test": {
+      "type": "library",
+      "root": "libs/test",
+      "entryFile": "index",
+      "sourceRoot": "libs/test/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/test/tsconfig.lib.json"
       }
     },
     "users": {

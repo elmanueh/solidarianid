@@ -22,8 +22,49 @@ paths:
         '500':
           description: Internal server error
       summary: Creating an account for SolidarianID
-      tags:
+      tags: &ref_0
         - Users
+  /users/login:
+    post:
+      operationId: UsersController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserDtoRequest'
+      responses:
+        '200':
+          description: User logged in successfully
+        '400':
+          description: Invalid request payload
+      summary: User login for SolidarianID
+      tags: *ref_0
+  /users/{id}:
+    patch:
+      operationId: UsersController_updateUserProfile
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserProfileDtoRequest'
+      responses:
+        '204':
+          description: User profile updated successfully
+        '400':
+          description: Invalid request payload
+        '500':
+          description: Internal server error
+      summary: Update user profile information
+      tags: *ref_0
 info:
   title: 'SolidarianID: Users Microservice'
   description: The SolidarianID`s Users Microservice API documentation
@@ -68,4 +109,48 @@ components:
         - mobilePhone
         - password
         - city
+        - countryCode
+    LoginUserDtoRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Username for the user´containing only alphanumeric characters
+          example: johnDoe
+          minLength: 2
+          maxLength: 16
+        password:
+          type: string
+          description: >-
+            Password for the user account with at least a symbol, a number, and
+            an uppercase letter
+          example: SecureP@ssw0rd
+          minLength: 12
+      required:
+        - username
+        - password
+    UpdateUserProfileDtoRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Username for the new user´containing only alphanumeric characters
+          example: johnDoe
+          minLength: 2
+          maxLength: 16
+        mobilePhone:
+          type: string
+          description: Mobile phone number of the user in E.164 format
+          example: '+34612345678'
+        city:
+          type: string
+          description: City where the user resides
+          example: Madrid
+          minLength: 1
+          maxLength: 25
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          example: ES
+      required:
         - countryCode

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   UsersService,
   RegisterUserCommand,
+  UpdateUserProfileCommand,
 } from '@app/users/domain/services/users.service';
 import { User } from '@app/users/domain/model/user';
 import { Username } from '@app/value-objects/model/username';
@@ -10,6 +11,8 @@ import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.po
 import { Either, right, left } from '@app/ddd/either';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { PasswordManager } from '@app/utils/security/password-manager';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 
 @Injectable()
 export class UsersServiceImpl extends UsersService {
@@ -85,5 +88,61 @@ export class UsersServiceImpl extends UsersService {
 
     // 6. Retornar ID del usuario creado
     return right(user.value.id.value);
+  }
+
+  async loginUser(
+    username: string,
+    password: string,
+  ): Promise<Either<Error, boolean>> {
+    const usernameOrError = Username.create(username);
+    if (usernameOrError.isLeft()) return left(usernameOrError.value);
+
+    const userOrError = await this.usersRepository.findByUsername(
+      usernameOrError.value,
+    );
+
+    if (userOrError.isLeft()) return left(userOrError.value);
+
+    const passwordMatch = await this.passwordManager.comparePassword(
+      password,
+      userOrError.value.passwordHash,
+    );
+
+    return right(passwordMatch);
+  }
+
+  async updateUserProfile(
+    userId: string,
+    updateUserProfileCommand: UpdateUserProfileCommand,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const { username, mobilePhone, city, countryCode } =
+      updateUserProfileCommand;
+
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    const user = userOrError.value;
+
+    const userUpdateOrError = user.updateUserProfile(
+      username,
+      mobilePhone,
+      city,
+      countryCode,
+    );
+
+    if (userUpdateOrError.isLeft()) {
+      return left(userUpdateOrError.value);
+    }
+
+    const saveResult = await this.usersRepository.save(user);
+
+    if (saveResult.isLeft()) {
+      return left(saveResult.value);
+    }
+
+    return right(undefined);
   }
 }

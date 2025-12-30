@@ -1,7 +1,8 @@
 import { Either } from '@app/ddd/either';
 import { Injectable } from '@nestjs/common';
-import { UserService } from '../../domain/services/user.service';
+import { UsersService } from '../../domain/services/users.service';
 import { User } from '../../domain/models/user';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import {
   UserRepositoryPort,
@@ -13,7 +14,7 @@ import {
  * Orquesta las operaciones del repositorio y aplica lógica de negocio
  */
 @Injectable()
-export class UserServiceImpl extends UserService {
+export class UsersServiceImpl extends UsersService {
   constructor(private readonly userRepository: UserRepositoryPort) {
     super();
   }
@@ -24,14 +25,16 @@ export class UserServiceImpl extends UserService {
   async getPaginatedUsers(
     page: number,
     limit: number,
-  ): Promise<Either<Error, PaginatedResult<User>>> {
-    return await this.userRepository.findAll(page, limit);
+  ): Promise<Either<RepositoryException, PaginatedResult<User>>> {
+    return await this.userRepository.findPaginated(page, limit);
   }
 
   /**
    * Obtiene un usuario específico por su ID
    */
-  async getUserById(id: string): Promise<Either<UserNotFoundError, User>> {
+  async getUserById(
+    id: string,
+  ): Promise<Either<RepositoryException | UserNotFoundError, User>> {
     return await this.userRepository.findById(id);
   }
 

@@ -1,5 +1,5 @@
 import { AdminModule } from '@app/admin/administrator/admin.module';
-import { RequestsModule } from '@app/admin/administrator/model/requests.module';
+import { RequestsModule } from '@app/admin/administrator/requests.module';
 import { AppController } from '@app/admin/app.controller';
 import { AuthModule } from '@app/admin/auth/auth.module';
 import { Module } from '@nestjs/common';

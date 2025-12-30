@@ -10,7 +10,7 @@
   // CONFIGURACIÓN
   // ════════════════════════════════════════════════════════════════
   const config = globalThis.APP_CONFIG || {
-    apiBaseUrl: 'http://localhost:3000',
+    apiBaseUrl: '', // Axios usará el mismo origen automáticamente
   };
   // const USERS_PER_PAGE = 5; // Fijo en el backend
 

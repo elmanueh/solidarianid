@@ -46,7 +46,7 @@ export class AdminViewController {
       layout: 'dashboard',
       dataSummary,
       charts: JSON.stringify(charts),
-      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
+      apiBaseUrl: this.configService.get<string>('API_ADMIN_BASE_URL'),
     };
   }
 
@@ -56,7 +56,7 @@ export class AdminViewController {
     return {
       title: 'Requests',
       layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
+      apiBaseUrl: this.configService.get<string>('API_ADMIN_BASE_URL'),
     };
   }
 
@@ -66,7 +66,7 @@ export class AdminViewController {
     return {
       title: 'Reportes',
       layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
+      apiBaseUrl: this.configService.get<string>('API_ADMIN_BASE_URL'),
     };
   }
 }

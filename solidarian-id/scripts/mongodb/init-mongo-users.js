@@ -1,29 +1,16 @@
-/**
- * Datos mock de usuarios para prototipado
- * Este archivo contiene un conjunto de usuarios falsos para desarrollo sin base de datos
- */
+// Script de inicialización de usuarios para SolidarianID
+// Este script puebla la colección de usuarios con datos de prueba
 
-export interface FakeUserData {
-  id: string;
-  username: string;
-  phone: string;
-  location: {
-    city: string;
-    countryCode: string;
-  };
-  communityMemberships: Array<{
-    communityId: string;
-    communityName: string;
-    isAdmin: boolean;
-  }>;
-}
+// Conexión a la base de datos
+let db = db.getSiblingDB('solidarianid');
 
-/**
- * Array de usuarios fake con datos realistas
- */
-export const FAKE_USERS: FakeUserData[] = [
+// Crear colección de usuarios si no existe
+db.createCollection('users');
+
+// Datos de usuarios iniciales
+const users = [
   {
-    id: '550e8400-e29b-41d4-a716-446655440001',
+    _id: '550e8400-e29b-41d4-a716-446655440001',
     username: 'juanperez',
     phone: '+34612345678',
     location: {
@@ -42,9 +29,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440002',
+    _id: '550e8400-e29b-41d4-a716-446655440002',
     username: 'marialopez',
     phone: '+34623456789',
     location: {
@@ -68,9 +57,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440003',
+    _id: '550e8400-e29b-41d4-a716-446655440003',
     username: 'carlosruiz',
     phone: '+34634567890',
     location: {
@@ -84,9 +75,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440004',
+    _id: '550e8400-e29b-41d4-a716-446655440004',
     username: 'anagonzalez',
     phone: '+34645678901',
     location: {
@@ -94,9 +87,11 @@ export const FAKE_USERS: FakeUserData[] = [
       countryCode: 'ES',
     },
     communityMemberships: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440005',
+    _id: '550e8400-e29b-41d4-a716-446655440005',
     username: 'luisrodriguez',
     phone: '+52155123456',
     location: {
@@ -115,9 +110,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: true,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440006',
+    _id: '550e8400-e29b-41d4-a716-446655440006',
     username: 'lauramartinez',
     phone: '+541143210987',
     location: {
@@ -136,9 +133,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440007',
+    _id: '550e8400-e29b-41d4-a716-446655440007',
     username: 'davidhernandez',
     phone: '+34656789012',
     location: {
@@ -152,9 +151,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440008',
+    _id: '550e8400-e29b-41d4-a716-446655440008',
     username: 'sofiatorres',
     phone: '+573001234567',
     location: {
@@ -178,9 +179,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: true,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440009',
+    _id: '550e8400-e29b-41d4-a716-446655440009',
     username: 'javiermoreno',
     phone: '+34667890123',
     location: {
@@ -188,9 +191,11 @@ export const FAKE_USERS: FakeUserData[] = [
       countryCode: 'ES',
     },
     communityMemberships: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440010',
+    _id: '550e8400-e29b-41d4-a716-446655440010',
     username: 'carmengomez',
     phone: '+34678901234',
     location: {
@@ -209,9 +214,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: true,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440011',
+    _id: '550e8400-e29b-41d4-a716-446655440011',
     username: 'pedroalvarez',
     phone: '+56912345678',
     location: {
@@ -225,9 +232,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440012',
+    _id: '550e8400-e29b-41d4-a716-446655440012',
     username: 'isabelsanchez',
     phone: '+34689012345',
     location: {
@@ -251,9 +260,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440013',
+    _id: '550e8400-e29b-41d4-a716-446655440013',
     username: 'miguelcastro',
     phone: '+34690123456',
     location: {
@@ -261,9 +272,11 @@ export const FAKE_USERS: FakeUserData[] = [
       countryCode: 'ES',
     },
     communityMemberships: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440014',
+    _id: '550e8400-e29b-41d4-a716-446655440014',
     username: 'rosavargas',
     phone: '+51987654321',
     location: {
@@ -282,9 +295,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440015',
+    _id: '550e8400-e29b-41d4-a716-446655440015',
     username: 'antoniofernandez',
     phone: '+34601234567',
     location: {
@@ -303,9 +318,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440016',
+    _id: '550e8400-e29b-41d4-a716-446655440016',
     username: 'beatrizlopez',
     phone: '+34612345670',
     location: {
@@ -319,9 +336,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440017',
+    _id: '550e8400-e29b-41d4-a716-446655440017',
     username: 'franciscojimenez',
     phone: '+593987654321',
     location: {
@@ -340,9 +359,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440018',
+    _id: '550e8400-e29b-41d4-a716-446655440018',
     username: 'elenarodriguez',
     phone: '+34623456780',
     location: {
@@ -350,9 +371,11 @@ export const FAKE_USERS: FakeUserData[] = [
       countryCode: 'ES',
     },
     communityMemberships: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440019',
+    _id: '550e8400-e29b-41d4-a716-446655440019',
     username: 'ramongarcia',
     phone: '+34634567891',
     location: {
@@ -371,9 +394,11 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: '550e8400-e29b-41d4-a716-446655440020',
+    _id: '550e8400-e29b-41d4-a716-446655440020',
     username: 'pilarmartinez',
     phone: '+34645678902',
     location: {
@@ -397,5 +422,40 @@ export const FAKE_USERS: FakeUserData[] = [
         isAdmin: false,
       },
     ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ];
+
+// Insertar usuarios solo si la colección está vacía
+const count = db.users.countDocuments();
+if (count === 0) {
+  db.users.insertMany(users);
+  print('20 usuarios de prueba creados correctamente');
+  print('');
+  print('Resumen de usuarios:');
+  print('=====================================');
+  print('- Total usuarios: 20');
+  print('- Usuarios con comunidades: 16');
+  print('- Usuarios sin comunidades: 4');
+  print('- Distribución por país:');
+  print('  · España (ES): 14 usuarios');
+  print('  · México (MX): 1 usuario');
+  print('  · Argentina (AR): 1 usuario');
+  print('  · Colombia (CO): 1 usuario');
+  print('  · Chile (CL): 1 usuario');
+  print('  · Perú (PE): 1 usuario');
+  print('  · Ecuador (EC): 1 usuario');
+} else {
+  print('La colección ya contiene usuarios. No se insertaron datos.');
+  print(`Total de usuarios existentes: ${count}`);
+}
+
+// Crear índices para mejorar el rendimiento
+db.users.createIndex({ username: 1 }, { unique: true });
+db.users.createIndex({ phone: 1 }, { unique: true });
+db.users.createIndex({ 'location.city': 1 });
+db.users.createIndex({ 'location.countryCode': 1 });
+db.users.createIndex({ 'communityMemberships.communityId': 1 });
+
+print('Inicialización de usuarios completada');

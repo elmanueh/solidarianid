@@ -8,7 +8,7 @@
 
   // Obtener configuración inyectada desde el servidor
   const config = globalThis.APP_CONFIG || {
-    apiBaseUrl: 'http://localhost:3000',
+    apiBaseUrl: '', // Axios usará el mismo origen automáticamente
   };
 
   // Crear instancia configurada de axios

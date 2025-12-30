@@ -19,7 +19,7 @@ export class ReportsViewController {
     return {
       title: 'Reportes de Usuarios',
       layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
+      apiBaseUrl: this.configService.get<string>('API_ADMIN_BASE_URL'),
     };
   }
 }

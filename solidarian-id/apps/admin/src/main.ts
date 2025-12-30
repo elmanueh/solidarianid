@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Transport } from '@nestjs/microservices';
 import { join } from 'node:path';
 import { engine } from 'express-handlebars';
 import { AppModule } from '@app/admin/app.module';
@@ -14,6 +16,7 @@ import { ValidationErrorFilter } from './administrator/controllers/filters/valid
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const configService = app.get(ConfigService);
 
   app.engine(
     'hbs',
@@ -68,7 +71,27 @@ async function bootstrap() {
     new AuthenticationErrorFilter(),
   );
 
-  await app.listen(3000);
+  // Configurar Kafka como microservicio para consumir eventos
+  app.connectMicroservice({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: configService.get<string>('KAFKA_ADMIN_CLIENT_ID') ?? 'admin',
+        brokers: configService.get<string>('KAFKA_BROKERS')?.split(',') ?? [
+          'localhost:9092',
+        ],
+      },
+      consumer: {
+        groupId:
+          configService.get<string>('KAFKA_ADMIN_CONSUMER_GROUP_ID') ??
+          'admin-consumer-group',
+      },
+    },
+  });
+
+  await app.startAllMicroservices();
+
+  await app.listen(configService.get<string>('ADMIN_PORT') || 5000);
 }
 
 void bootstrap();

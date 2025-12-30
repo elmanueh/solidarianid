@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query, Res, HttpStatus } from '@nestjs/common';
 import type { Response } from 'express';
-import { UserService } from '@app/admin/administrator/model/domain/services/user.service';
+import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import { UserDtoMapper } from './mappers/user.dto.mapper';
 import { PaginatedResponseDto } from '../model/application/dtos/output/paginated-response.dto';
 import { UserListResponseDto } from '../model/application/dtos/output/user-list-response.dto';
@@ -14,15 +14,15 @@ import type { CommunityMembership } from '@app/admin/administrator/model/domain/
  * Maneja las peticiones REST del módulo de reportes de usuarios
  *
  * Utiliza inyección de dependencias siguiendo arquitectura hexagonal:
- * - UserService: Para obtener datos de usuarios
+ * - UsersService: Para obtener datos de usuarios
  * - UserPdfGeneratorPort: Para generar PDFs de reportes de usuario
  */
 @Controller('/api/reports')
 export class ReportsApiController {
-  private readonly USERS_PER_PAGE = 5;
+  private readonly USERS_PER_PAGE = 6;
 
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UsersService,
     private readonly pdfGenerator: UserPdfGeneratorPort,
   ) {}
 

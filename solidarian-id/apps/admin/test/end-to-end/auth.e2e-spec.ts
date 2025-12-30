@@ -1,28 +1,14 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-import request from 'supertest';
-import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers';
-import session from 'express-session';
-import { Application } from 'express';
-import { AuthenticationErrorFilter } from '@app/admin/administrator/controllers/filters/authentication-error.filter';
-import { ConflictErrorFilter } from '@app/admin/administrator/controllers/filters/conflict-error.filter';
-import { ValidationErrorFilter } from '@app/admin/administrator/controllers/filters/validation-error.filter';
+import { INestApplication } from '@nestjs/common';
 import { AuthModule } from '@app/admin/auth/auth.module';
+import { Connection } from 'mongoose';
+import {
+  MongoDBSeeder,
+  MongoDBTestContainer,
+  MongoDBTestModule,
+  TestServerHelper,
+} from '@solidarianid/testing';
 
 describe('AuthController (e2e)', () => {
-  let app: INestApplication;
-  let mongoContainer: StartedTestContainer;
-  let mongoUri: string;
-
-  // Test configuration
-  const testMongoUser = 'test';
-  const testMongoPassword = 'test';
-  const testMongoDb = 'solidarianid-test';
-  const testSessionSecret = 'test-secret-key-for-e2e-tests';
-
-  // Valid test data
   const validRegisterData = {
     fullName: 'Test Administrator',
     email: 'test.admin@solidarianid.org',
@@ -30,79 +16,30 @@ describe('AuthController (e2e)', () => {
     password: 'Admin2024!Pass',
   };
 
+  let server!: TestServerHelper;
+  let app!: INestApplication;
+  let seeder!: MongoDBSeeder;
+
   beforeAll(async () => {
-    // Start MongoDB container
-    mongoContainer = await new GenericContainer(
-      'mongo@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d',
-    )
-      .withExposedPorts(27017)
-      .withEnvironment({
-        MONGO_INITDB_ROOT_USERNAME: testMongoUser,
-        MONGO_INITDB_ROOT_PASSWORD: testMongoPassword,
-      })
-      .withWaitStrategy(Wait.forLogMessage('Waiting for connections'))
-      .start();
+    const databaseModule = await MongoDBTestModule.forRoot();
+    server = new TestServerHelper();
+    app = await server.create({
+      imports: [databaseModule, AuthModule],
+    });
 
-    const host = mongoContainer.getHost();
-    const port = mongoContainer.getMappedPort(27017);
-    mongoUri = `mongodb://${testMongoUser}:${testMongoPassword}@${host}:${port}/${testMongoDb}?authSource=admin`;
-
-    // Create testing module
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
-        MongooseModule.forRoot(mongoUri),
-        AuthModule,
-      ],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-
-    // Configure session middleware
-    app.use(
-      session({
-        secret: testSessionSecret,
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-          httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 24,
-          secure: false,
-          sameSite: 'lax',
-        },
-      }),
-    );
-
-    // Configure validation pipe
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        transform: true,
-        transformOptions: {
-          enableImplicitConversion: true,
-        },
-      }),
-    );
-
-    // Configure exception filters
-    app.useGlobalFilters(
-      new ConflictErrorFilter(),
-      new AuthenticationErrorFilter(),
-      new ValidationErrorFilter(),
-    );
-
-    await app.init();
-  }, 60000); // 60s timeout for container startup
+    const connection: Connection = app.get<Connection>('Connection');
+    seeder = new MongoDBSeeder(connection);
+  });
 
   afterAll(async () => {
-    await app?.close();
-    await mongoContainer?.stop();
+    await server.close();
+    await MongoDBTestContainer.getInstance().stop();
   });
 
   describe('POST /api/auth/register', () => {
     it('should register a new administrator successfully', async () => {
-      const response = await request(app.getHttpServer() as Application)
+      const response = await server
+        .getRequest()
         .post('/api/auth/register')
         .send(validRegisterData)
         .expect(201);
@@ -118,7 +55,8 @@ describe('AuthController (e2e)', () => {
 
     it('should return 409 Conflict when email already exists', async () => {
       // First registration
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/register')
         .send({
           ...validRegisterData,
@@ -128,7 +66,8 @@ describe('AuthController (e2e)', () => {
         .expect(201);
 
       // Second registration with same email
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/register')
         .send({
           ...validRegisterData,
@@ -139,7 +78,8 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should return 400 Bad Request when fullName is empty', async () => {
-      const response = await request(app.getHttpServer() as Application)
+      const response = await server
+        .getRequest()
         .post('/api/auth/register')
         .send({
           ...validRegisterData,
@@ -148,11 +88,16 @@ describe('AuthController (e2e)', () => {
         })
         .expect(400);
 
-      expect(response.body).toHaveProperty('message');
+      expect(response.body.error).toHaveProperty('message');
+      expect(Array.isArray(response.body.error.message)).toBe(true);
+      expect(response.body.error.message).toContain(
+        'El nombre completo es obligatorio',
+      );
     });
 
     it('should return 400 Bad Request when email is invalid', async () => {
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/register')
         .send({
           ...validRegisterData,
@@ -162,7 +107,8 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should return 400 Bad Request when phone format is invalid', async () => {
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/register')
         .send({
           ...validRegisterData,
@@ -173,7 +119,8 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should return 400 Bad Request when password is too weak', async () => {
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/register')
         .send({
           ...validRegisterData,
@@ -186,19 +133,13 @@ describe('AuthController (e2e)', () => {
 
   describe('POST /api/auth/login', () => {
     beforeAll(async () => {
-      // Create a user for login tests
-      await request(app.getHttpServer() as Application)
-        .post('/api/auth/register')
-        .send({
-          fullName: 'Login Test User',
-          email: 'login.test@solidarianid.org',
-          phone: '+34612345100',
-          password: 'Admin2024!Pass',
-        });
+      await seeder.clean();
+      await seeder.seedAdministrators();
     });
 
     it('should login successfully with valid credentials', async () => {
-      const response = await request(app.getHttpServer() as Application)
+      const response = await server
+        .getRequest()
         .post('/api/auth/login')
         .send({
           email: 'login.test@solidarianid.org',
@@ -215,7 +156,8 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should return 401 Unauthorized when email does not exist', async () => {
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/login')
         .send({
           email: 'nonexistent@solidarianid.org',
@@ -225,7 +167,8 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should return 401 Unauthorized when password is incorrect', async () => {
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/login')
         .send({
           email: 'login.test@solidarianid.org',
@@ -235,7 +178,8 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should return 400 Bad Request when email is missing', async () => {
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/login')
         .send({
           password: 'Admin2024!Pass',
@@ -244,7 +188,8 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should return 400 Bad Request when password is missing', async () => {
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/login')
         .send({
           email: 'login.test@solidarianid.org',
@@ -256,7 +201,8 @@ describe('AuthController (e2e)', () => {
   describe('POST /api/auth/logout', () => {
     it('should logout successfully and clear session', async () => {
       // First login to get a session
-      const loginResponse = await request(app.getHttpServer() as Application)
+      const loginResponse = await server
+        .getRequest()
         .post('/api/auth/login')
         .send({
           email: 'login.test@solidarianid.org',
@@ -267,16 +213,15 @@ describe('AuthController (e2e)', () => {
       const cookies = loginResponse.headers['set-cookie'];
 
       // Then logout
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/logout')
         .set('Cookie', cookies)
         .expect(204);
     });
 
     it('should return 204 even without active session', async () => {
-      await request(app.getHttpServer() as Application)
-        .post('/api/auth/logout')
-        .expect(204);
+      await server.getRequest().post('/api/auth/logout').expect(204);
     });
   });
 
@@ -285,7 +230,8 @@ describe('AuthController (e2e)', () => {
       const uniqueEmail = `flow.test.${Date.now()}@solidarianid.org`;
 
       // Step 1: Register
-      const registerResponse = await request(app.getHttpServer() as Application)
+      const registerResponse = await server
+        .getRequest()
         .post('/api/auth/register')
         .send({
           fullName: 'Flow Test User',
@@ -302,7 +248,8 @@ describe('AuthController (e2e)', () => {
       expect(registerResponse.body).toHaveProperty('email', uniqueEmail);
 
       // Step 2: Login
-      const loginResponse = await request(app.getHttpServer() as Application)
+      const loginResponse = await server
+        .getRequest()
         .post('/api/auth/login')
         .send({
           email: uniqueEmail,
@@ -315,7 +262,8 @@ describe('AuthController (e2e)', () => {
       expect(cookies).toBeDefined();
 
       // Step 3: Logout
-      await request(app.getHttpServer() as Application)
+      await server
+        .getRequest()
         .post('/api/auth/logout')
         .set('Cookie', cookies)
         .expect(204);

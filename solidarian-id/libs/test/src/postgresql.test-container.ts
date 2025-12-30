@@ -29,6 +29,7 @@ export class PostgreSQLTestContainer implements IDatabaseTestContainer {
       .withWaitStrategy(
         Wait.forLogMessage(
           /.*database system is ready to accept connections.*/i,
+          2,
         ),
       )
       .withStartupTimeout(120000)

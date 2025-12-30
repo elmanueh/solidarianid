@@ -1,4 +1,4 @@
-import { Either, left, right } from '@app/ddd/either';
+import { Either, left } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { RepositoryMongoose } from '@app/ddd/repository/repository-mongoose';
@@ -40,13 +40,7 @@ export class AdministratorRepositoryAdapter
         );
       }
 
-      const model = this.administratorEntityMapper.fromPersistence(document);
-      if (model.isLeft()) {
-        return left(
-          new RepositoryException('Failed to map entity from persistence.'),
-        );
-      }
-      return right(model.value);
+      return this.administratorEntityMapper.fromPersistence(document);
     } catch (error) {
       return left(
         new RepositoryException(

@@ -7,8 +7,8 @@ POST {{baseUrl}}/users
 Content-Type: {{contentType}}
 
 {
-  "username": "johnDoe",
-  "mobilePhone": "+34612345678",
+  "username": "PabloNoEstesSad",
+  "mobilePhone": "+33688345678",
   "password": "SecureP*ssw0rd123",
   "city": "Madrid",
   "countryCode": "ES"

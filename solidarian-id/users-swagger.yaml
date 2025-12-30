@@ -152,5 +152,3 @@ components:
           type: string
           description: ISO 3166-1 alpha-2 country code
           example: ES
-      required:
-        - countryCode

@@ -6,3 +6,6 @@ export * from './publisher/kafka.publisher';
 export * from './publisher/publisher';
 export * from './tokens';
 export * from './mapper';
+export * from './events/generic.event';
+export * from './events/user.event';
+export * from './dtos/user.event.dto';

@@ -1,33 +1,38 @@
 import { Controller } from '@nestjs/common';
 import {
   Ctx,
+  EventPattern,
   KafkaContext,
-  MessagePattern,
   Payload,
 } from '@nestjs/microservices';
-import { Topics } from '@solidarianid/kafka';
+import {
+  EventType,
+  Topics,
+  UserEvent,
+  UserEventDto,
+} from '@solidarianid/kafka';
 
 @Controller()
 export class UserConsumerAdapter {
-  @MessagePattern(Topics.USERS)
-  async handleUserCreated(
-    @Payload() payload: any,
+  @EventPattern(Topics.USERS)
+  async handleUserEvent(
+    @Payload() payload: UserEvent,
     @Ctx() context: KafkaContext,
   ): Promise<void> {
     const { offset } = context.getMessage();
     const topic = context.getTopic();
     const partition = context.getPartition();
     const key = context.getMessage().key?.toString();
-    console.log(
-      `Received message from topic [${topic}] partition [${partition}] offset [${offset}] key [${key}]`,
-      UserConsumerAdapter.name,
-    );
 
+    const data: UserEventDto = payload.data;
+    const eventType: EventType = payload.eventType;
     console.log(
-      `Payload: ${JSON.stringify(payload)}`,
-      UserConsumerAdapter.name,
+      `Received user event with key: ${key}, offset: ${offset}, topic: ${topic}, partition: ${partition}`,
     );
+    console.log('Event Type:', eventType);
+    console.log('Event Data:', data);
 
+    // Process the event (business logic goes here)
     try {
       await context
         .getConsumer()

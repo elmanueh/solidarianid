@@ -7,13 +7,14 @@ import { Either } from '@app/ddd/either';
 
 interface RequestCommunityProps extends RequestProps {
   // TODO
+  prueba?: string;
 }
 
 export class RequestCommunity extends Request<RequestCommunityProps> {
   public approve(reason?: string): Either<RequestAlreadyResolvedError, void> {
-    throw new Error('Method not implemented.');
+    throw new Error('Method not implemented.' + reason);
   }
   public reject(reason: string): Either<RequestAlreadyResolvedError, void> {
-    throw new Error('Method not implemented.');
+    throw new Error('Method not implemented.' + reason);
   }
 }

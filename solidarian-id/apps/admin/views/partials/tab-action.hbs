@@ -1,14 +1,13 @@
+{{#each actions}}
 <article class="request" data-variant="action">
   <section class="name-buttons-request">
-    <span class="font-bold text-md sm:text-lg">
-      Accion de adopta un negro en africa
-    </span>
-
+    <span class="font-bold text-md sm:text-lg">{{this.name}}</span>
     {{> validation-buttons}}
   </section>
 
   <section class="flex flex-col gap-2 text-sm sm:text-md">
-    <span>05/06/2025</span>
-    <p>Descripción de la acción 1</p>
+    <span>{{this.date}}</span>
+    <p>{{this.description}}</p>
   </section>
 </article>
+{{/each}}

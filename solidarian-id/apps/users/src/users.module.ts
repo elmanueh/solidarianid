@@ -13,6 +13,7 @@ import { KafkaDynamicModule } from '@solidarianid/kafka';
 import { UsersPublisherPort } from './domain/ports/users.publisher.port';
 import { UsersKafkaPublisherAdapter } from './infrastructure/messaging/producer/user.publisher';
 import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
+import { UserEventMapper } from './infrastructure/messaging/mappers/user.event.mapper';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.co
   controllers: [UsersController, UserConsumerAdapter],
   providers: [
     UserMapper,
+    UserEventMapper,
     {
       provide: UsersService,
       useClass: UsersServiceImpl,

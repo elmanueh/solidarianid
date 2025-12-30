@@ -5,8 +5,10 @@ import {
   NotFoundException,
   ConflictException,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { AuthError } from '@app/ddd/errors/auth-error';
 
 export class ErrorMapper {
   static toHttp(error: Error) {
@@ -20,6 +22,10 @@ export class ErrorMapper {
 
     if (error instanceof ConflictError) {
       return new ConflictException(error.message);
+    }
+
+    if (error instanceof AuthError) {
+      return new UnauthorizedException(error.message);
     }
 
     return new InternalServerErrorException(error.message);

@@ -28,7 +28,7 @@ export class UpdateUserProfileDtoRequest {
   @IsOptional()
   @IsString()
   @Length(USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH)
-  username: string;
+  username?: string;
 
   @ApiProperty({
     description: 'Mobile phone number of the user in E.164 format',
@@ -41,7 +41,7 @@ export class UpdateUserProfileDtoRequest {
   @Matches(MOBILE_PHONE_REGEX, {
     message: 'Introduce un número en formato internacional (ej: +34612345678)',
   })
-  mobilePhone: string;
+  mobilePhone?: string;
 
   @ApiProperty({
     description: 'City where the user resides',
@@ -50,15 +50,17 @@ export class UpdateUserProfileDtoRequest {
     maxLength: CITY_MAX_LENGTH,
     required: false,
   })
-  @IsOptional()
   @IsString()
-  city: string;
+  @IsOptional()
+  @Length(CITY_MIN_LENGTH, CITY_MAX_LENGTH)
+  city?: string;
 
   @ApiProperty({
     description: 'ISO 3166-1 alpha-2 country code',
     example: 'ES',
+    required: false,
   })
   @IsISO31661Alpha2()
   @IsOptional()
-  countryCode: string;
+  countryCode?: string;
 }

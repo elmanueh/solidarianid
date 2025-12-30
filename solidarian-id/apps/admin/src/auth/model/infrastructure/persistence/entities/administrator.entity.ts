@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type AdministratorDocument = HydratedDocument<AdministratorEntity>;
 
-@Schema({ collection: 'administrators' })
+@Schema({ collection: 'administrators', _id: false })
 export class AdministratorEntity {
   @Prop()
   _id: string;

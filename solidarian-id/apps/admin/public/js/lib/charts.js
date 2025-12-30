@@ -8,19 +8,24 @@ var ChartsLib = (() => {
       __defProp(target, name, { get: all[name], enumerable: true });
   };
   var __copyProps = (to, from, except, desc) => {
-    if (from && typeof from === "object" || typeof from === "function") {
+    if ((from && typeof from === 'object') || typeof from === 'function') {
       for (let key of __getOwnPropNames(from))
         if (!__hasOwnProp.call(to, key) && key !== except)
-          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+          __defProp(to, key, {
+            get: () => from[key],
+            enumerable:
+              !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+          });
     }
     return to;
   };
-  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+  var __toCommonJS = (mod) =>
+    __copyProps(__defProp({}, '__esModule', { value: true }), mod);
 
   // libs/charts/src/plugins/callbacks.ts
   var callbacks_exports = {};
   __export(callbacks_exports, {
-    hydrateCallbacks: () => hydrateCallbacks
+    hydrateCallbacks: () => hydrateCallbacks,
   });
   function hydrateCallbacks(config) {
     config.options = config.options || {};
@@ -28,9 +33,11 @@ var ChartsLib = (() => {
     config.options.plugins.tooltip = config.options.plugins.tooltip || {};
     config.options.plugins.tooltip.callbacks = {};
     for (const [key, funcString] of Object.entries(
-      config._serializedCallbacks?.tooltip || {}
+      config._serializedCallbacks?.tooltip || {},
     )) {
-      config.options.plugins.tooltip.callbacks[key] = new Function("return " + funcString)();
+      config.options.plugins.tooltip.callbacks[key] = new Function(
+        'return ' + funcString,
+      )();
     }
     delete config._serializedCallbacks;
     return config;

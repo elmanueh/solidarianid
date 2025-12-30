@@ -4,16 +4,43 @@ import {
   ValidationPipe,
   ModuleMetadata,
 } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 import request from 'supertest';
+import session from 'express-session';
 
 export class TestServerHelper {
   private app: INestApplication;
   private moduleRef: TestingModule;
 
   async create(moduleMetadata: ModuleMetadata): Promise<INestApplication> {
-    this.moduleRef = await Test.createTestingModule(moduleMetadata).compile();
+    const configModule = ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
+    });
+
+    const enhancedMetadata: ModuleMetadata = {
+      ...moduleMetadata,
+      imports: [configModule, ...(moduleMetadata.imports || [])],
+    };
+
+    const builder = Test.createTestingModule(enhancedMetadata);
+
+    this.moduleRef = await builder.compile();
     this.app = this.moduleRef.createNestApplication();
+    this.app.use(
+      session({
+        secret: 'test-secret-key-for-e2e-tests',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24,
+          secure: false,
+          sameSite: 'lax',
+        },
+      }),
+    );
 
     this.app.useGlobalPipes(
       new ValidationPipe({

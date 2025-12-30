@@ -32,7 +32,7 @@
   /* Metric Page Styles */
 
   .metrics {
-    @apply flex flex-col gap-6 p-6 bg-athens-gray-200 dark:bg-athens-gray-950;
+    @apply flex flex-col gap-3 sm:gap-6 p-3 sm:p-6 bg-athens-gray-200 dark:bg-athens-gray-950;
   }
 
   .metrics-title {
@@ -90,20 +90,24 @@
     }
   }
 
-  .requests-section {
-    @apply w-full h-full bg-white rounded-lg p-2 sm:p-4 space-y-2 dark:bg-athens-gray-900;
+  .request {
+    @apply border-l-4 sm:border-l-8 p-4 rounded-md;
   }
 
-  .community-request {
-    @apply border-l-4 sm:border-l-8 border-ocean-blue-500 bg-base-300;
+  .request[data-variant='community'] {
+    @apply border-ocean-blue-500 bg-base-300;
   }
 
-  .cause-request {
-    @apply border-l-4 sm:border-l-8 border-harvest-orange-500 bg-base-200;
+  .request[data-variant='cause'] {
+    @apply border-harvest-orange-500 bg-base-300;
   }
 
-  .action-request {
-    @apply border-l-4 sm:border-l-8 border-sage-green-500 bg-base-100 p-4 rounded-md;
+  .request[data-variant='cause-nested'] {
+    @apply border-harvest-orange-500 bg-base-100 mt-4;
+  }
+
+  .request[data-variant='action'] {
+    @apply border-sage-green-500 bg-base-300;
   }
 
   .name-buttons-request {

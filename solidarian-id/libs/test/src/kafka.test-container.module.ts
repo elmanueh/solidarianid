@@ -1,26 +1,17 @@
-import { Module, DynamicModule } from '@nestjs/common';
+import { Module, DynamicModule, Global } from '@nestjs/common';
+import { KAFKA_BROKERS } from '@solidarianid/kafka';
 import { KafkaTestContainer } from '@solidarianid/testing';
 
-export const KAFKA_BROKERS = 'KAFKA_BROKERS';
-
+@Global()
 @Module({})
 export class KafkaTestModule {
   static async forRoot(): Promise<DynamicModule> {
     const broker = await KafkaTestContainer.getInstance().start();
-    const brokers = [broker];
 
-    const module = {
-      global: true,
+    return {
       module: KafkaTestModule,
-      providers: [
-        {
-          provide: KAFKA_BROKERS,
-          useValue: brokers,
-        },
-      ],
+      providers: [{ provide: KAFKA_BROKERS, useValue: [broker] }],
       exports: [KAFKA_BROKERS],
     };
-
-    return module;
   }
 }

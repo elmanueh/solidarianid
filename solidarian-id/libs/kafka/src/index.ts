@@ -5,3 +5,4 @@ export * from './kafka.message';
 export * from './events/generic-event';
 export * from './publisher/kafka.publisher';
 export * from './publisher/publisher';
+export * from './tokens';

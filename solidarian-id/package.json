@@ -29,6 +29,7 @@
     "test:e2e:admin": "cross-env NODE_ENV=test jest --config ./apps/admin/jest-e2e.config.ts",
     "test:e2e:users": "cross-env NODE_ENV=test jest --config ./apps/users/jest-e2e.config.ts",
     "test:e2e:communities": "cross-env NODE_ENV=test jest --config ./apps/communities/jest-e2e.config.ts",
+    "test:e2e:coverage": "cross-env NODE_ENV=test jest --config ./apps/communities/jest-e2e.config.ts --coverage && jest --config ./apps/users/jest-e2e.config.ts --coverage && jest --config ./apps/admin/jest-e2e.config.ts --coverage",
     "test:mutation": "npx stryker run",
     "cypress:open": "cypress open --config-file ./apps/admin/test/cypress.config.js",
     "cypress:run": "cypress run --config-file ./apps/admin/test/cypress.config.js",

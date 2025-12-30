@@ -14,34 +14,21 @@ export class KafkaDynamicModule {
         ClientsModule.registerAsync([
           {
             name,
-            inject: ['KAFKA_BROKERS'],
-            useFactory: (injectedBrokers?: string[]) => {
-              const resolvedBrokers: string[] = injectedBrokers?.length
-                ? injectedBrokers
-                : (process.env.KAFKA_BROKERS?.split(',') ?? DEFAULT_BROKERS);
+            useFactory: () => {
+              const brokers =
+                process.env.KAFKA_BROKERS?.split(',') ?? DEFAULT_BROKERS;
 
               return {
                 transport: Transport.KAFKA,
                 options: {
                   client: {
                     clientId: serviceName,
-                    brokers: resolvedBrokers,
-                    connectionTimeout: 5000,
-                    requestTimeout: 30000,
-                    retry: {
-                      initialRetryTime: 1000,
-                      retries: 8,
-                      maxRetryTime: 5000,
-                      factor: 2,
-                    },
+                    brokers: brokers,
                   },
                   producer: {
-                    idempotent: true,
                     maxInFlightRequests: 1,
                   },
-                  consumer: {
-                    groupId: `${serviceName}-consumer-group`,
-                  },
+                  consumer: { groupId: `${serviceName}-consumer-group` },
                 },
               };
             },

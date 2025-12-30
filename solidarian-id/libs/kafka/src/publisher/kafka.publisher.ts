@@ -3,24 +3,31 @@ import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Topics } from '../topics.enum';
 import { ClientKafka } from '@nestjs/microservices';
 import { KafkaMessage } from '../kafka.message';
-import { GenericEvent } from '../events/generic-event';
 import { Entity } from '@app/ddd/entity';
 import { EventType } from '../events.enum';
+import { Mapper } from '../mapper';
 
-export class KafkaPublisher<T extends Entity<any>>
-  extends Publisher<T>
+export class KafkaPublisher<TDomain extends Entity<any>, TDto>
+  extends Publisher<TDomain>
   implements OnModuleDestroy, OnModuleInit
 {
   constructor(
     private readonly publisher: ClientKafka,
+    private readonly mapper: Mapper<TDomain, TDto>,
     private readonly topic: Topics,
   ) {
     super();
     this.topic = topic;
   }
 
-  publish(eventType: EventType, entity: T): Promise<void> {
-    const genericEvent = GenericEvent.create(eventType, entity);
+  publish(eventType: EventType, entity: TDomain): Promise<void> {
+    const dto = this.mapper.toDto(entity);
+
+    const genericEvent = {
+      occurredAt: new Date().toISOString(),
+      eventType,
+      data: dto,
+    };
 
     const message: KafkaMessage = {
       key: entity.id.value,

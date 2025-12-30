@@ -18,7 +18,7 @@ import { UserEventMapper } from './infrastructure/messaging/mappers/user.event.m
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    KafkaDynamicModule.register('users'),
+    KafkaDynamicModule.register(process.env.KAFKA_USERS_CLIENT_ID ?? 'users'),
   ],
   controllers: [UsersController, UserConsumerAdapter],
   providers: [

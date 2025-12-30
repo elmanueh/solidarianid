@@ -3,7 +3,7 @@ import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { KafkaPublisher, Topics } from '@solidarianid/kafka';
-import { UserEventDto } from '../dto/user.event';
+import { UserEventDto } from '../../../../../../libs/kafka/src/dtos/user.event.dto';
 import { UserEventMapper } from '../mappers/user.event.mapper';
 
 @Injectable()

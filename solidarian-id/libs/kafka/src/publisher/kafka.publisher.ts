@@ -6,6 +6,7 @@ import { KafkaMessage } from '../kafka.message';
 import { Entity } from '@app/ddd/entity';
 import { EventType } from '../events.enum';
 import { Mapper } from '../mapper';
+import { GenericEvent } from '../events/generic.event';
 
 export class KafkaPublisher<TDomain extends Entity<any>, TDto>
   extends Publisher<TDomain>
@@ -21,13 +22,12 @@ export class KafkaPublisher<TDomain extends Entity<any>, TDto>
   }
 
   publish(eventType: EventType, entity: TDomain): Promise<void> {
-    const dto = this.mapper.toDto(entity);
+    const dto: TDto = this.mapper.toDto(entity);
 
-    const genericEvent = {
-      occurredAt: new Date().toISOString(),
+    const genericEvent: GenericEvent<TDto> = new GenericEvent<TDto>(
       eventType,
-      data: dto,
-    };
+      dto,
+    );
 
     const message: KafkaMessage = {
       key: entity.id.value,

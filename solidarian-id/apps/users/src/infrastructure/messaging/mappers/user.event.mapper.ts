@@ -1,5 +1,5 @@
 import { User } from '@app/users/domain/model/user';
-import { UserEventDto } from '../dto/user.event';
+import { UserEventDto } from '../../../../../../libs/kafka/src/dtos/user.event.dto';
 import { Injectable } from '@nestjs/common';
 import { Mapper } from '@solidarianid/kafka';
 

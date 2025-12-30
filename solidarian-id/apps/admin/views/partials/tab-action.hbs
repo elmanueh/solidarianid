@@ -1,5 +1,5 @@
 {{#each actions}}
-<article class="request" data-variant="action">
+<article class="request" data-variant="action" data-id="{{this.id}}">
   <section class="name-buttons-request">
     <span class="font-bold text-md sm:text-lg">{{this.name}}</span>
     {{> validation-buttons}}

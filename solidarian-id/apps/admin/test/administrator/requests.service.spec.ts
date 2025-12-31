@@ -2,8 +2,9 @@ import { RequestsServiceImpl } from '@app/admin/administrator/model/application/
 import { SustainableDevelopmentGoal } from '@app/admin/administrator/model/domain/enums/ods';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
-import { RequestCause } from '@app/admin/administrator/model/domain/models/cause.request';
+import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause.request';
 import { Request } from '@app/admin/administrator/model/domain/models/request';
+import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
@@ -18,7 +19,7 @@ const createMockRequestsRepository =
   });
 
 const createMockRequests = (): Request<any>[] => {
-  const request1Result = RequestCause.create(
+  const request1Result = CauseRequest.create(
     {
       name: 'Environmental Conservation Request',
       description: 'Comprehensive environmental initiative',
@@ -30,7 +31,7 @@ const createMockRequests = (): Request<any>[] => {
     '2db201c8-5d35-462e-a1d1-985cb677725d',
   );
 
-  const request2Result = RequestCause.create(
+  const request2Result = CauseRequest.create(
     {
       name: 'Hunger Relief Initiative',
       description: 'Detailed hunger program',
@@ -74,6 +75,10 @@ describe('RequestsService', () => {
         {
           provide: RequestsRepositoryPort,
           useValue: mockRepository,
+        },
+        {
+          provide: RequestsPublisherPort,
+          useValue: { publish: jest.fn() },
         },
       ],
     }).compile();

@@ -9,15 +9,12 @@ import {
 } from '@nestjs/common';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { AuthError } from '@app/ddd/errors/auth-error';
+import { DomainError } from '@app/ddd/errors/domain-error';
 
 export class ErrorMapper {
   static toHttp(error: Error) {
     if (error instanceof EntityNotFoundException) {
       return new NotFoundException(error.message);
-    }
-
-    if (error instanceof ValidationError) {
-      return new BadRequestException(error.message);
     }
 
     if (error instanceof ConflictError) {
@@ -26,6 +23,10 @@ export class ErrorMapper {
 
     if (error instanceof AuthError) {
       return new UnauthorizedException(error.message);
+    }
+
+    if (error instanceof ValidationError || error instanceof DomainError) {
+      return new BadRequestException(error.message);
     }
 
     return new InternalServerErrorException(error.message);

@@ -10,9 +10,16 @@ import { RequestRepositoryMongoose } from '@app/admin/administrator/model/infras
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
+import { KafkaDynamicModule } from '@solidarianid/kafka';
+import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
+import { RequestsKafkaPublisherAdapter } from '@app/admin/administrator/model/infrastructure/messaging/request.publisher';
+import { RequestEventMapper } from '@app/admin/administrator/model/infrastructure/messaging/request.event.mapper';
 
 @Module({
   imports: [
+    KafkaDynamicModule.register(
+      process.env.KAFKA_REQUEST_CLIENT_ID ?? 'requests',
+    ),
     MongooseModule.forFeature([
       { name: RequestEntity.name, schema: RequestSchema },
     ]),
@@ -20,6 +27,7 @@ import { RequestsService } from '@app/admin/administrator/model/domain/services/
   controllers: [RequestsController],
   providers: [
     RequestMapper,
+    RequestEventMapper,
     {
       provide: RequestsRepositoryPort,
       useClass: RequestRepositoryMongoose,
@@ -27,6 +35,10 @@ import { RequestsService } from '@app/admin/administrator/model/domain/services/
     {
       provide: RequestsService,
       useClass: RequestsServiceImpl,
+    },
+    {
+      provide: RequestsPublisherPort,
+      useClass: RequestsKafkaPublisherAdapter,
     },
   ],
   exports: [RequestsService],

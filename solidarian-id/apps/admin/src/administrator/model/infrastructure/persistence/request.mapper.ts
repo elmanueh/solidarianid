@@ -1,4 +1,4 @@
-import { RequestCause } from '@app/admin/administrator/model/domain/models/cause.request';
+import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause.request';
 import { Request } from '@app/admin/administrator/model/domain/models/request';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
@@ -16,7 +16,7 @@ type DomainFactory = (
 export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
   private readonly factories: Record<RequestType, DomainFactory> = {
     [RequestType.CAUSE]: (e: CauseRequestEntity) => {
-      return RequestCause.create(
+      return CauseRequest.create(
         {
           name: e.name,
           description: e.description,
@@ -54,7 +54,7 @@ export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
       reason: model.reason,
     };
 
-    if (model instanceof RequestCause) {
+    if (model instanceof CauseRequest) {
       return {
         ...entity,
         type: RequestType.CAUSE,

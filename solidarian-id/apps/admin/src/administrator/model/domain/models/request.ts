@@ -2,6 +2,7 @@ import { RequestStatus } from '@app/admin/administrator/model/domain/enums/reque
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
 import { Either } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
+import { RequestError } from '@app/value-objects/errors/validation/request-validation.error';
 import { Description } from '@app/value-objects/model/description';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
@@ -9,6 +10,13 @@ export interface RequestProps {
   name: string;
   description: Description;
   status: RequestStatus;
+  reason?: string;
+}
+
+export interface CreateRequestProps {
+  name: string;
+  description: string;
+  status?: RequestStatus;
   reason?: string;
 }
 
@@ -41,5 +49,5 @@ export abstract class Request<T> extends Entity<T & RequestProps> {
   /** Marks the request as rejected and stores the rejection reason. */
   public abstract reject(
     reason: string,
-  ): Either<RequestAlreadyResolvedError, void>;
+  ): Either<RequestAlreadyResolvedError | RequestError, void>;
 }

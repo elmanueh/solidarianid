@@ -5,6 +5,7 @@ import { AuthModule } from '@app/admin/auth/auth.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { KafkaBrokersModule } from 'libs/kafka/src/kafka-config.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     AdminModule,
     AuthModule,
     RequestsModule,
+    KafkaBrokersModule,
   ],
   controllers: [AppController],
   providers: [],

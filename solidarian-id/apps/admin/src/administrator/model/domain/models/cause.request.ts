@@ -10,23 +10,27 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Either, left, right } from '@app/ddd/either';
 import { Description } from '@app/value-objects/model/description';
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
+import { ActionRequest } from '@app/admin/administrator/model/domain/models/action.request';
+import { RequestError } from '@app/value-objects/errors/validation/request-validation.error';
 
-interface RequestCauseProps extends RequestProps {
+interface CauseRequestProps extends RequestProps {
   duration: Duration;
   ods: SustainableDevelopmentGoal[];
+  actions: ActionRequest[];
 }
 
-interface CreateRequestCauseProps {
+interface CreateCauseRequestProps {
   name: string;
   description: string;
   status?: RequestStatus;
   reason?: string;
+
   startDate: Date;
   endDate: Date;
   ods: SustainableDevelopmentGoal[];
 }
 
-export class RequestCause extends Request<RequestCauseProps> {
+export class CauseRequest extends Request<CauseRequestProps> {
   get ods(): SustainableDevelopmentGoal[] {
     return this.props.ods;
   }
@@ -35,14 +39,14 @@ export class RequestCause extends Request<RequestCauseProps> {
     return this.props.duration;
   }
 
-  private constructor(props: RequestCauseProps, id?: UniqueEntityID) {
+  private constructor(props: CauseRequestProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
   public static create(
-    props: CreateRequestCauseProps,
+    props: CreateCauseRequestProps,
     id?: string,
-  ): Either<ValidationError, RequestCause> {
+  ): Either<ValidationError, CauseRequest> {
     const idOrError = UniqueEntityID.create(id);
     if (idOrError.isLeft()) {
       return left(idOrError.value);
@@ -58,7 +62,7 @@ export class RequestCause extends Request<RequestCauseProps> {
       return left(durationOrError.value);
     }
 
-    const request = new RequestCause(
+    const request = new CauseRequest(
       {
         name: props.name,
         description: descriptionOrError.value,
@@ -66,6 +70,7 @@ export class RequestCause extends Request<RequestCauseProps> {
         reason: props.reason,
         duration: durationOrError.value,
         ods: props.ods,
+        actions: [],
       },
       idOrError.value,
     );
@@ -80,21 +85,37 @@ export class RequestCause extends Request<RequestCauseProps> {
 
     this.props.status = RequestStatus.APPROVED;
     if (reason) this.props.reason = reason;
+
+    this.props.actions.forEach((action) =>
+      action.approve('Approved as part of cause request'),
+    );
+
     return right(undefined);
   }
 
   public reject(
     reason: string,
-  ): Either<RequestAlreadyResolvedError | ValidationError, void> {
+  ): Either<RequestAlreadyResolvedError | RequestError, void> {
     if (this.props.status !== RequestStatus.PENDING) {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
 
-    if (!reason)
-      return left(new ValidationError('Rejection reason must be provided'));
+    if (!reason) {
+      return left(new RequestError('Rejection reason must be provided'));
+    }
 
     this.props.status = RequestStatus.REJECTED;
     this.props.reason = reason;
+
+    const res = this.props.actions.map((action) => action.reject(reason));
+    const errors = res.filter(
+      (r) => r.isLeft() && !(r.value instanceof RequestAlreadyResolvedError),
+    );
+
+    if (errors.length > 0) {
+      return left(errors[0].value as RequestError);
+    }
+
     return right(undefined);
   }
 }

@@ -9,3 +9,4 @@ export * from './mapper';
 export * from './events/generic.event';
 export * from './events/user.event';
 export * from './dtos/user.event.dto';
+export * from './dtos/request.event.dto';

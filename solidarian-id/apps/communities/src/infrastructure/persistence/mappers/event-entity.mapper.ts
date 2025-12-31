@@ -2,7 +2,7 @@ import { Mapper } from '@app/ddd/repository/mapper';
 import { Injectable } from '@nestjs/common';
 import { Either, left, sequence } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { EventEntity } from '../entities/evento.entity';
+import { EventEntity } from '../entities/event.entity';
 import { Event } from '@app/communities/domain/model/entities/event';
 import { EventPlace } from '@app/communities/domain/model/value-objects/event-place';
 import { UserEntityMapper } from './user-entity.mapper';

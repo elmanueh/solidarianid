@@ -78,7 +78,7 @@ describe('ActionsController', () => {
             id: { value: '10' },
             name: 'Event1',
             description: 'event desc1',
-            date: new Date('2024-12-01'),
+            initialDate: new Date('2024-12-01'),
             place: {
               direction: '123 Main St',
               city: 'CityA',
@@ -88,7 +88,6 @@ describe('ActionsController', () => {
         ],
         objectives: [
           {
-            id: { value: '10' },
             name: 'Objective1',
             description: 'obj desc1',
             quantity: 100,
@@ -96,7 +95,6 @@ describe('ActionsController', () => {
             unit: 'kg',
           },
           {
-            id: { value: '11' },
             name: 'Objective2',
             description: 'obj desc2',
             quantity: 200,
@@ -115,7 +113,7 @@ describe('ActionsController', () => {
             id: '10',
             name: 'Event1',
             description: 'event desc1',
-            date: new Date('2024-12-01'),
+            initialDate: new Date('2024-12-01'),
             place: {
               direction: '123 Main St',
               city: 'CityA',
@@ -125,7 +123,6 @@ describe('ActionsController', () => {
         ],
         objectives: [
           {
-            id: '10',
             name: 'Objective1',
             description: 'obj desc1',
             quantity: 100,
@@ -133,7 +130,6 @@ describe('ActionsController', () => {
             unit: 'kg',
           },
           {
-            id: '11',
             name: 'Objective2',
             description: 'obj desc2',
             quantity: 200,

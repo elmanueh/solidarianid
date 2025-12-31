@@ -13,7 +13,7 @@ import { ActionEntity } from './infrastructure/persistence/entities/action.entit
 import { CauseEntity } from './infrastructure/persistence/entities/cause.entity';
 import { CommunityUserEntity } from './infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from './infrastructure/persistence/entities/community.entity';
-import { EventEntity } from './infrastructure/persistence/entities/evento.entity';
+import { EventEntity } from './infrastructure/persistence/entities/event.entity';
 import { ObjectiveEntity } from './infrastructure/persistence/entities/objective.entity';
 import { UserEntity } from './infrastructure/persistence/entities/user.entity';
 import { ActionEntityMapper } from './infrastructure/persistence/mappers/action-entity.mapper';

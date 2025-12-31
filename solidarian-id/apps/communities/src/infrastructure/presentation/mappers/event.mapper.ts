@@ -7,7 +7,7 @@ export class EventDomainMapper {
       id: event.id.value,
       name: event.name,
       description: event.description,
-      date: event.date,
+      initialDate: event.initialDate,
       place: {
         direction: event.place.direction,
         city: event.place.city,

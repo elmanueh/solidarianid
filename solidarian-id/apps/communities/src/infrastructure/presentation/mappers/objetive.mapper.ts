@@ -4,7 +4,6 @@ import { ObjetiveSummaryResponseDto } from '../dtos/output/objetive-summary.resp
 export class ObjetiveDomainMapper {
   static toObjetiveSummaryDto(objetive: Objective): ObjetiveSummaryResponseDto {
     return {
-      id: objetive.id.value,
       name: objetive.name,
       description: objetive.description,
       unit: objetive.unit,

@@ -7,7 +7,7 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { CauseEntity } from './cause.entity';
-import { EventEntity } from './evento.entity';
+import { EventEntity } from './event.entity';
 import { ObjectiveEntity } from './objective.entity';
 
 @Entity('action')

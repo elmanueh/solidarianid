@@ -2,7 +2,7 @@ export class EventSummaryResponseDto {
   id: string;
   name: string;
   description: string;
-  date: Date;
+  initialDate: Date;
   place: {
     direction: string;
     city: string;

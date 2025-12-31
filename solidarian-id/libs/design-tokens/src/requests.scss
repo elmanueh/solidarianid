@@ -7,8 +7,6 @@ $gap-spacing: 1rem;
   gap: $gap-spacing;
 }
 
-@layer components {
-  .name-buttons-request {
-    @include alejar-flex;
-  }
+.name-buttons-request {
+  @include alejar-flex;
 }

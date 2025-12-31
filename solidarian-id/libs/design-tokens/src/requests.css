@@ -1,8 +1,6 @@
-@layer components {
-  .name-buttons-request {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+.name-buttons-request {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
 }

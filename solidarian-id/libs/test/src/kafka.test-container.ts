@@ -24,7 +24,6 @@ export class KafkaTestContainer implements IDatabaseTestContainer {
     const container = await new KafkaContainer(image)
       .withWaitStrategy(Wait.forLogMessage(/Kafka Server started/))
       .withStartupTimeout(120000)
-      .withReuse()
       .start();
 
     this.container = container;

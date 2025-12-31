@@ -27,7 +27,6 @@ export class MongoDBTestContainer implements IDatabaseTestContainer {
       })
       .withWaitStrategy(Wait.forLogMessage(/.*Waiting for connections.*/i))
       .withStartupTimeout(120000)
-      .withReuse()
       .start();
 
     this.container = container;

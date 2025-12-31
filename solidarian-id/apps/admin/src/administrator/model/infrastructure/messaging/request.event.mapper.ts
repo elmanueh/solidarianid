@@ -20,7 +20,6 @@ export class RequestEventMapper extends Mapper<Request<any>, RequestEventDto> {
     } else if (request instanceof ActionRequest) {
       dto.type = RequestType.ACTION;
     }
-    dto.type = '';
     dto.status = request.status;
     dto.reason = request.reason;
     return dto;

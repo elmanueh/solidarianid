@@ -23,7 +23,7 @@ export class EventEntity {
   description: string;
 
   @Column({ type: 'timestamptz' })
-  date: Date;
+  initialDate: Date;
 
   @Column(() => EventPlaceEntity)
   place: EventPlaceEntity;
@@ -37,8 +37,8 @@ export class EventEntity {
 
   @ManyToMany(() => UserEntity)
   @JoinTable({
-    name: 'objective_assistants',
-    joinColumn: { name: 'objectiveId', referencedColumnName: 'id' },
+    name: 'events_assistants',
+    joinColumn: { name: 'eventId', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'userId', referencedColumnName: 'id' },
   })
   assistants: UserEntity[];

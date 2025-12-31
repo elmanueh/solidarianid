@@ -15,7 +15,7 @@ export class EventEntityMapper implements Mapper<Event, EventEntity> {
     entity.id = model.id.value;
     entity.name = model.name;
     entity.description = model.description;
-    entity.date = model.date;
+    entity.initialDate = model.initialDate;
     entity.place = {
       direction: model.place.direction,
       city: model.place.city,
@@ -54,7 +54,7 @@ export class EventEntityMapper implements Mapper<Event, EventEntity> {
       {
         name: entity.name,
         description: entity.description,
-        date: new Date(entity.date),
+        initialDate: entity.initialDate,
         place: placeOrError.value,
         actionId: entity.actionId,
         assistants: assistantsOrError.value,

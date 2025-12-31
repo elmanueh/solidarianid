@@ -2,7 +2,7 @@ import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { Either, left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
-import { DurationDays } from '@app/value-objects/model/duration-days';
+import { Duration } from '@app/value-objects/model/duration';
 import { Name } from '@app/value-objects/model/name';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Entity } from '@app/ddd/entity';
@@ -11,8 +11,9 @@ import { Action } from './action';
 export interface CauseProps {
   name: Name;
   description: Description;
-  durationDays: DurationDays;
+  durationDays: Duration;
   ods: SustainableDevelopmentGoal[];
+  initialDate: Date;
   actions: Action[];
   communityId: UniqueEntityID;
 }
@@ -22,6 +23,7 @@ interface CauseCreationProps {
   description: string;
   durationDays: number;
   ods: SustainableDevelopmentGoal[];
+  initialDate: Date;
   actions?: Action[];
   communityId: string;
 }
@@ -45,6 +47,10 @@ export class Cause extends Entity<CauseProps> {
 
   get ods(): SustainableDevelopmentGoal[] {
     return this.props.ods;
+  }
+
+  get initialDate(): Date {
+    return this.props.initialDate;
   }
 
   get actions(): ReadonlyArray<Action> {
@@ -75,7 +81,7 @@ export class Cause extends Entity<CauseProps> {
     const uniqueId = UniqueEntityID.create(id);
     const name = Name.create(props.name);
     const description = Description.create(props.description);
-    const durationDays = DurationDays.create(props.durationDays);
+    const durationDays = Duration.create(props.durationDays);
     const communityId = UniqueEntityID.create(props.communityId);
 
     if (uniqueId.isLeft()) return left(uniqueId.value);
@@ -89,6 +95,7 @@ export class Cause extends Entity<CauseProps> {
       description: description.value,
       durationDays: durationDays.value,
       ods: props.ods,
+      initialDate: props.initialDate,
       actions: props.actions ?? [],
       communityId: communityId.value,
     };

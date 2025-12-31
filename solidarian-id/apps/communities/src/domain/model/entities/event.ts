@@ -10,7 +10,7 @@ import { User } from './user';
 export interface EventProps {
   name: Name;
   description: Description;
-  date: Date;
+  initialDate: Date;
   place: EventPlace;
   actionId: UniqueEntityID;
   assistants: User[];
@@ -19,7 +19,7 @@ export interface EventProps {
 interface EventCreationProps {
   name: string;
   description: string;
-  date: Date;
+  initialDate: Date;
   place: EventPlace;
   actionId: string;
   assistants?: User[];
@@ -38,8 +38,8 @@ export class Event extends Entity<EventProps> {
     return this.props.description.value;
   }
 
-  get date(): Date {
-    return this.props.date;
+  get initialDate(): Date {
+    return this.props.initialDate;
   }
 
   get place(): EventPlace {
@@ -76,7 +76,7 @@ export class Event extends Entity<EventProps> {
     const eventProps: EventProps = {
       name: name.value,
       description: description.value,
-      date: props.date,
+      initialDate: props.initialDate,
       place: props.place,
       actionId: actionId.value,
       assistants: props.assistants || [],

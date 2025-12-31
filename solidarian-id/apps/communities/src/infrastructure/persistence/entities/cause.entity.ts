@@ -20,6 +20,9 @@ export class CauseEntity {
   @Column('text')
   description: string;
 
+  @Column('timestamptz')
+  initialDate: Date;
+
   @Column()
   durationDays: number;
 

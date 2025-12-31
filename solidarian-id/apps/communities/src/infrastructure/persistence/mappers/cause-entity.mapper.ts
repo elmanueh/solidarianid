@@ -16,6 +16,7 @@ export class CauseEntityMapper implements Mapper<Cause, CauseEntity> {
     entity.description = model.description;
     entity.durationDays = model.durationDays;
     entity.ods = model.ods;
+    entity.initialDate = model.initialDate;
     entity.communityId = model.communityId;
 
     entity.actions = model.actions?.map((action) =>
@@ -40,6 +41,7 @@ export class CauseEntityMapper implements Mapper<Cause, CauseEntity> {
         description: entity.description,
         durationDays: entity.durationDays,
         ods: entity.ods,
+        initialDate: entity.initialDate,
         communityId: entity.communityId,
         actions: actionsOrError.value,
       },

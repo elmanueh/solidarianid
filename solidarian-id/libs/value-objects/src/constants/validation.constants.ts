@@ -37,7 +37,7 @@ export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ==================== NAME VALIDATION ====================
 export const NAME_MIN_LENGTH = 5;
-export const NAME_MAX_LENGTH = 20;
+export const NAME_MAX_LENGTH = 50;
 
 // ==================== DESCRIPTION VALIDATION ====================
 export const DESCRIPTION_MIN_LENGTH = 15;

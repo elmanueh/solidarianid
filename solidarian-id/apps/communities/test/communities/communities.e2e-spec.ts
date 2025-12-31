@@ -1,4 +1,3 @@
-import { AppModule } from '@app/communities/app.module';
 import {
   PostgreSQLTestModule,
   TestServerHelper,
@@ -14,10 +13,10 @@ import { UserEntity } from '../../src/infrastructure/persistence/entities/user.e
 import { ObjetiveEntity } from '../../src/infrastructure/persistence/entities/objetive.entity';
 import { EventEntity } from '../../src/infrastructure/persistence/entities/evento.entity';
 import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
+import { CommunitiesModule } from '@app/communities/communities.module';
 
 describe('CommunitiesController (e2e)', () => {
   let server!: TestServerHelper;
-  let dataSource!: DataSource;
   let seeder!: PostgreSQLSeeder;
   let app: INestApplication;
 
@@ -34,15 +33,15 @@ describe('CommunitiesController (e2e)', () => {
 
     server = new TestServerHelper();
     app = await server.create({
-      imports: [databaseModule, AppModule],
+      imports: [databaseModule, CommunitiesModule],
     });
 
-    dataSource = app.get<DataSource>('DataSource');
+    const dataSource = app.get<DataSource>('DataSource');
     seeder = new PostgreSQLSeeder(dataSource);
   });
 
   afterAll(async () => {
-    await app.close();
+    if (app) await app.close();
     await PostgreSQLTestContainer.getInstance().stop();
   });
 

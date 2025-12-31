@@ -42,3 +42,6 @@ export const NAME_MAX_LENGTH = 50;
 // ==================== DESCRIPTION VALIDATION ====================
 export const DESCRIPTION_MIN_LENGTH = 15;
 export const DESCRIPTION_MAX_LENGTH = 200;
+
+// ==================== REASON VALIDATION ====================
+export const REASON_MAX_LENGTH = 200;

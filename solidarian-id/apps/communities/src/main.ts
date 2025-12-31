@@ -7,6 +7,7 @@ import { writeFileSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -37,22 +38,24 @@ async function bootstrap() {
   // Habilitar filtro global de excepciones
   app.useGlobalFilters(new GlobalExceptionFilter());
 
-  /*app.connectMicroservice({
+  app.connectMicroservice({
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId: configService.get<string>('KAFKA_USERS_CLIENT_ID') ?? 'users',
+        clientId:
+          configService.get<string>('KAFKA_COMMUNITIES_CLIENT_ID') ??
+          'communities',
         brokers: configService.get<string>('KAFKA_BROKERS')?.split(',') ?? [
           'localhost:9092',
         ],
       },
       consumer: {
         groupId:
-          configService.get<string>('KAFKA_USERS_CONSUMER_GROUP_ID') ??
-          'users-consumer-group',
+          configService.get<string>('KAFKA_COMMUNITIES_CONSUMER_GROUP_ID') ??
+          'communities-consumer-group',
       },
     },
-  });*/
+  });
 
   //await app.startAllMicroservices();
 

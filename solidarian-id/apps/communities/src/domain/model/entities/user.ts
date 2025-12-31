@@ -6,6 +6,7 @@ import { Username } from '@app/value-objects/model/username';
 
 export interface UserProps {
   username: Username;
+  requests: Request[];
 }
 
 interface UserCreationProps {
@@ -38,6 +39,7 @@ export class User extends Entity<UserProps> {
 
     const userProps: UserProps = {
       username: username.value,
+      requests: [],
     };
 
     return right(new User(userProps, uniqueId.value));

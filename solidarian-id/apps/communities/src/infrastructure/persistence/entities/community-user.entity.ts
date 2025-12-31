@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { CommunityEntity } from './community.entity';
 import { UserEntity } from './user.entity';
+import { MemberType } from '@app/communities/domain/model/enums/member-type';
 
 @Index(['communityId', 'userId', 'role'])
 @Entity('community_user')
@@ -21,8 +22,8 @@ export class CommunityUserEntity {
 
   @Column({
     type: 'enum',
-    enum: ['creator', 'admin', 'member'],
-    default: 'member',
+    enum: [MemberType.CREATOR, MemberType.ADMIN, MemberType.MEMBER],
+    default: MemberType.MEMBER,
   })
   role: string;
 

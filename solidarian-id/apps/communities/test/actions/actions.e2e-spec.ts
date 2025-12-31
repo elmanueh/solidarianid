@@ -14,6 +14,7 @@ import { EventEntity } from '../../src/infrastructure/persistence/entities/event
 import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
 import { CommunitiesModule } from '@app/communities/communities.module';
 import { ActionSummaryResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/action-summary.response.dto';
+import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
 
 describe('ActionsController (e2e)', () => {
   let server!: TestServerHelper;
@@ -29,6 +30,7 @@ describe('ActionsController (e2e)', () => {
       ObjectiveEntity,
       EventEntity,
       CommunityUserEntity,
+      RequestEntity,
     ]);
 
     server = new TestServerHelper();

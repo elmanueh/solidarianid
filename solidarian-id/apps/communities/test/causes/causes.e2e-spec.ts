@@ -15,6 +15,7 @@ import { EventEntity } from '../../src/infrastructure/persistence/entities/event
 import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
 import { CommunitiesModule } from '@app/communities/communities.module';
 import { CauseSummaryResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/cause-summary.response.dto';
+import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
 
 describe('CausesController (e2e)', () => {
   let server!: TestServerHelper;
@@ -30,6 +31,7 @@ describe('CausesController (e2e)', () => {
       ObjectiveEntity,
       EventEntity,
       CommunityUserEntity,
+      RequestEntity,
     ]);
 
     server = new TestServerHelper();

@@ -28,6 +28,7 @@ import { CommunitiesRepositoryTypeORM } from './infrastructure/persistence/repos
 import { ActionsController } from './infrastructure/presentation/controllers/actions.controller';
 import { CausesController } from './infrastructure/presentation/controllers/causes.controller';
 import { CommunitiesController } from './infrastructure/presentation/controllers/communities.controller';
+import { RequestEntity } from './infrastructure/persistence/entities/request.entity';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { CommunitiesController } from './infrastructure/presentation/controllers
       ObjectiveEntity,
       EventEntity,
       CommunityUserEntity,
+      RequestEntity,
     ]),
   ],
   controllers: [CommunitiesController, CausesController, ActionsController],

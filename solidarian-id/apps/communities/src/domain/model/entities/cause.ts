@@ -21,9 +21,9 @@ export interface CauseProps {
 interface CauseCreationProps {
   name: string;
   description: string;
+  initialDate: Date;
   durationDays: number;
   ods: SustainableDevelopmentGoal[];
-  initialDate: Date;
   actions?: Action[];
   communityId: string;
 }

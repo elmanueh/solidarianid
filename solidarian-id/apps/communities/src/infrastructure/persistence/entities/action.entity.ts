@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { CauseEntity } from './cause.entity';
 import { EventEntity } from './evento.entity';
-import { ObjectiveEntity } from './objetive.entity';
+import { ObjectiveEntity } from './objective.entity';
 
 @Entity('action')
 export class ActionEntity {

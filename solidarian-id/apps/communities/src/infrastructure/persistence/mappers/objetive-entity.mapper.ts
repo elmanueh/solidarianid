@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Either, left, sequence } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Objective } from '@app/communities/domain/model/value-objects/objective';
-import { ObjectiveEntity } from '../entities/objetive.entity';
+import { ObjectiveEntity } from '../entities/objective.entity';
 import { UserEntityMapper } from './user-entity.mapper';
 
 @Injectable()
@@ -21,15 +21,16 @@ export class ObjectiveEntityMapper implements Mapper<
     entity.unit = model.unit;
     entity.actionId = model.actionId;
 
-    entity.contributors = model.contributors.map((contributor) =>
-      this.userEntityMapper.toPersistence(contributor),
-    );
+    entity.contributors =
+      model.contributors?.map((contributor) =>
+        this.userEntityMapper.toPersistence(contributor),
+      ) || [];
     return entity;
   }
 
   fromPersistence(entity: ObjectiveEntity): Either<ValidationError, Objective> {
     const contributorsOrError = sequence(
-      entity.contributors.map((contributorEntity) =>
+      entity.contributors?.map((contributorEntity) =>
         this.userEntityMapper.fromPersistence(contributorEntity),
       ),
     );

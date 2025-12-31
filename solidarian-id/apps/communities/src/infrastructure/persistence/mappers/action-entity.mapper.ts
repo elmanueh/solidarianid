@@ -20,13 +20,15 @@ export class ActionEntityMapper implements Mapper<Action, ActionEntity> {
     entity.description = model.description;
     entity.causeId = model.causeId;
 
-    entity.events = model.events?.map((event) =>
-      this.eventEntityMapper.toPersistence(event),
-    );
+    entity.events =
+      model.events?.map((event) =>
+        this.eventEntityMapper.toPersistence(event),
+      ) || [];
 
-    entity.objectives = model.objectives?.map((objective) =>
-      this.objetiveEntityMapper.toPersistence(objective),
-    );
+    entity.objectives =
+      model.objectives?.map((objective) =>
+        this.objetiveEntityMapper.toPersistence(objective),
+      ) || [];
 
     return entity;
   }

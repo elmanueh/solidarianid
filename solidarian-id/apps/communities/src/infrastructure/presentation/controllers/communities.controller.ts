@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import { CommunitySummaryResponseDto } from '../dtos/output/community-summary.response.dto';
 
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
@@ -42,7 +42,7 @@ export class CommunitiesController {
   })
   @ApiNotFoundResponse({ description: 'Community not found' })
   async getCommunityById(
-    @Param('id') id: string,
+    @Param('id', new ParseUUIDPipe()) id: string,
   ): Promise<CommunityDetailResponseDto> {
     const community = await this.communitiesService.getCommunityById(id);
 

@@ -56,7 +56,11 @@ export class RepositoryTypeORM<
       }
       return right(model.value);
     } catch (error) {
-      return left(new RepositoryException('Failed to find entity.', error));
+      return left(
+        new RepositoryException(
+          `Failed to find entity by id ${id}. Error: ${error}`,
+        ),
+      );
     }
   }
 

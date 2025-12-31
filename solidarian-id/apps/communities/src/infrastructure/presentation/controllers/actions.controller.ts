@@ -1,5 +1,5 @@
 import { ActionsService } from '@app/communities/domain/services/actions.service';
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import { ActionSummaryResponseDto } from '../dtos/output/action-summary.response.dto';
 import { ActionDomainMapper } from '../mappers/action.mapper';
 import { Action } from '@app/communities/domain/model/entities/action';
@@ -36,7 +36,7 @@ export class ActionsController {
     type: ActionDetailResponseDto,
   })
   async getActionById(
-    @Param('id') id: string,
+    @Param('id', new ParseUUIDPipe()) id: string,
   ): Promise<ActionDetailResponseDto> {
     const action = await this.actionsService.getActionById(id);
 

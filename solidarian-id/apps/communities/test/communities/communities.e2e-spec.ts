@@ -4,13 +4,13 @@ import {
   PostgreSQLTestContainer,
   PostgreSQLSeeder,
 } from '@solidarianid/testing';
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
 import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
 import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
 import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
-import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objetive.entity';
+import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
 import { EventEntity } from '../../src/infrastructure/persistence/entities/evento.entity';
 import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
 import { CommunitiesModule } from '@app/communities/communities.module';
@@ -43,7 +43,7 @@ describe('CommunitiesController (e2e)', () => {
 
   afterAll(async () => {
     if (app) await app.close();
-    // await PostgreSQLTestContainer.getInstance().stop();
+    await PostgreSQLTestContainer.getInstance().stop();
   });
 
   beforeEach(async () => {
@@ -56,7 +56,7 @@ describe('CommunitiesController (e2e)', () => {
       const response = await server
         .getRequest()
         .get('/communities')
-        .expect(200);
+        .expect(HttpStatus.OK);
 
       expect(response.body).toHaveLength(3);
       expect(response.body[0].name).toBe('Amigos por África');
@@ -68,10 +68,24 @@ describe('CommunitiesController (e2e)', () => {
       const response = await server
         .getRequest()
         .get(`/communities/${COMMUNITY_IDS.AFRICA}`)
-        .expect(200);
+        .expect(HttpStatus.OK);
 
       expect(response.body.name).toBe('Amigos por África');
       expect(response.body.causes).toHaveLength(2);
+    });
+
+    it('should return 400 when invalid UUID is provided', async () => {
+      await server
+        .getRequest()
+        .get('/communities/non-existing-id')
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('should return 404 when community does not exist', async () => {
+      await server
+        .getRequest()
+        .get('/communities/00000000-0000-0000-0000-000000000999')
+        .expect(HttpStatus.NOT_FOUND);
     });
   });
 });

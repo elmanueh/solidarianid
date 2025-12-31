@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import { CauseDomainMapper } from '../mappers/cause.mapper';
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { CauseSummaryResponseDto } from '../dtos/output/cause-summary.response.dto';
@@ -36,7 +36,9 @@ export class CausesController {
     type: CauseDetailResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Cause not found' })
-  async getCauseById(@Param('id') id: string): Promise<CauseDetailResponseDto> {
+  async getCauseById(
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<CauseDetailResponseDto> {
     const cause = await this.causesService.getCauseById(id);
 
     if (cause.isLeft()) {

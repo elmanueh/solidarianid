@@ -23,9 +23,10 @@ export class EventEntityMapper implements Mapper<Event, EventEntity> {
     };
     entity.actionId = model.actionId;
 
-    entity.assistants = model.assistants.map((assistant) =>
-      this.userEntityMapper.toPersistence(assistant),
-    );
+    entity.assistants =
+      model.assistants?.map((assistant) =>
+        this.userEntityMapper.toPersistence(assistant),
+      ) || [];
     return entity;
   }
 
@@ -41,7 +42,7 @@ export class EventEntityMapper implements Mapper<Event, EventEntity> {
     }
 
     const assistantsOrError = sequence(
-      entity.assistants.map((assistantEntity) =>
+      entity.assistants?.map((assistantEntity) =>
         this.userEntityMapper.fromPersistence(assistantEntity),
       ),
     );

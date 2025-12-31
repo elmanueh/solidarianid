@@ -627,7 +627,6 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
   }
 }
 
-// Exportar IDs para usar en tests
 export {
   USER_IDS,
   COMMUNITY_IDS,

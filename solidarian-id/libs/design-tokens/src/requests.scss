@@ -1,0 +1,14 @@
+$gap-spacing: 1rem;
+
+@mixin alejar-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: $gap-spacing;
+}
+
+@layer components {
+  .name-buttons-request {
+    @include alejar-flex;
+  }
+}

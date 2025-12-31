@@ -108,6 +108,15 @@ const EVENT_IDS = {
 // DATOS DE USUARIOS (compartidos entre Users App y Communities App)
 const DEFAULT_USERS_DATA = [
   {
+    id: '4807f235-f4b4-41c0-939c-c97371219551',
+    username: 'testUsername',
+    mobilePhone: '+34000000000',
+    passwordHash:
+      '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
+    city: 'Madrid',
+    countryCode: 'ES',
+  },
+  {
     id: USER_IDS.JUAN,
     username: 'volunteer_juan',
     mobilePhone: '+34611111111',

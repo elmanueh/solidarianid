@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from 'apps/communities/src/database.module';
 import { ActionsService } from './domain/services/actions.service';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
 import { CausesService } from './domain/services/causes.service';
@@ -25,6 +24,12 @@ import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
 import { ActionsRepositoryTypeORM } from './infrastructure/persistence/repositories/actions-typeorm.repository';
 import { UserEntityMapper } from './infrastructure/persistence/mappers/user-entity.mapper';
 import { EventEntityMapper } from './infrastructure/persistence/mappers/event-entity.mapper';
+import { DatabaseModule } from './database.module';
+import { ObjectiveEntityMapper } from './infrastructure/persistence/mappers/objetive-entity.mapper';
+import { UserEntity } from './infrastructure/persistence/entities/user.entity';
+import { ObjetiveEntity } from './infrastructure/persistence/entities/objetive.entity';
+import { EventEntity } from './infrastructure/persistence/entities/evento.entity';
+import { CommunityUserEntity } from './infrastructure/persistence/entities/community-user.entity';
 
 @Module({
   imports: [
@@ -33,7 +38,15 @@ import { EventEntityMapper } from './infrastructure/persistence/mappers/event-en
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     DatabaseModule,
-    TypeOrmModule.forFeature([CommunityEntity, CauseEntity, ActionEntity]),
+    TypeOrmModule.forFeature([
+      CommunityEntity,
+      CauseEntity,
+      ActionEntity,
+      UserEntity,
+      ObjetiveEntity,
+      EventEntity,
+      CommunityUserEntity,
+    ]),
   ],
   providers: [
     // Services
@@ -68,7 +81,7 @@ import { EventEntityMapper } from './infrastructure/persistence/mappers/event-en
     ActionEntityMapper,
     UserEntityMapper,
     EventEntityMapper,
-    EventEntityMapper,
+    ObjectiveEntityMapper,
   ],
   controllers: [CommunitiesController, CausesController, ActionsController],
 })

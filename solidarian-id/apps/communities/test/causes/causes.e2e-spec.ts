@@ -1,7 +1,6 @@
 import {
   PostgreSQLTestModule,
   TestServerHelper,
-  PostgreSQLTestContainer,
   PostgreSQLSeeder,
   CAUSE_IDS,
 } from '@solidarianid/testing';
@@ -43,8 +42,7 @@ describe('CausesController (e2e)', () => {
   });
 
   afterAll(async () => {
-    if (app) await app.close();
-    await PostgreSQLTestContainer.getInstance().stop();
+    await app.close();
   });
 
   beforeEach(async () => {

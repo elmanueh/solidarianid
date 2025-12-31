@@ -3,7 +3,6 @@ import { AuthModule } from '@app/admin/auth/auth.module';
 import { Connection } from 'mongoose';
 import {
   MongoDBSeeder,
-  MongoDBTestContainer,
   MongoDBTestModule,
   TestServerHelper,
 } from '@solidarianid/testing';
@@ -33,7 +32,6 @@ describe('AuthController (e2e)', () => {
 
   afterAll(async () => {
     await server.close();
-    await MongoDBTestContainer.getInstance().stop();
   });
 
   describe('POST /api/auth/register', () => {

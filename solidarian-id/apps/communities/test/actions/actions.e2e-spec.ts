@@ -1,7 +1,6 @@
 import {
   PostgreSQLTestModule,
   TestServerHelper,
-  PostgreSQLTestContainer,
   PostgreSQLSeeder,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
@@ -42,8 +41,7 @@ describe('ActionsController (e2e)', () => {
   });
 
   afterAll(async () => {
-    if (app) await app.close();
-    await PostgreSQLTestContainer.getInstance().stop();
+    await app.close();
   });
 
   beforeEach(async () => {

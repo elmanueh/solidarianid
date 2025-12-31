@@ -14,6 +14,9 @@ const config: Config = {
   testMatch: ['<rootDir>/apps/users/test/**/*.e2e-spec.ts'],
 
   maxWorkers: 1,
+
+  globalSetup: '<rootDir>/libs/test/src/jest.global-setup.ts',
+  globalTeardown: '<rootDir>/libs/test/src/jest.global-teardown.ts',
 };
 
 export default config;

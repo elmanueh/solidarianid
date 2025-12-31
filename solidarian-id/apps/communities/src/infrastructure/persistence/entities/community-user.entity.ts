@@ -10,7 +10,7 @@ import {
 import { CommunityEntity } from './community.entity';
 import { UserEntity } from './user.entity';
 
-@Index(['communityId', 'role'])
+@Index(['communityId', 'userId', 'role'])
 @Entity('community_user')
 export class CommunityUserEntity {
   @PrimaryColumn()

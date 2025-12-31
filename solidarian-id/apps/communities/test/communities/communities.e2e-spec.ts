@@ -10,10 +10,11 @@ import { CommunityEntity } from '../../src/infrastructure/persistence/entities/c
 import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
 import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
 import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
-import { ObjetiveEntity } from '../../src/infrastructure/persistence/entities/objetive.entity';
+import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objetive.entity';
 import { EventEntity } from '../../src/infrastructure/persistence/entities/evento.entity';
 import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
 import { CommunitiesModule } from '@app/communities/communities.module';
+import { COMMUNITY_IDS } from '@solidarianid/testing';
 
 describe('CommunitiesController (e2e)', () => {
   let server!: TestServerHelper;
@@ -26,7 +27,7 @@ describe('CommunitiesController (e2e)', () => {
       CauseEntity,
       ActionEntity,
       UserEntity,
-      ObjetiveEntity,
+      ObjectiveEntity,
       EventEntity,
       CommunityUserEntity,
     ]);
@@ -42,7 +43,7 @@ describe('CommunitiesController (e2e)', () => {
 
   afterAll(async () => {
     if (app) await app.close();
-    await PostgreSQLTestContainer.getInstance().stop();
+    // await PostgreSQLTestContainer.getInstance().stop();
   });
 
   beforeEach(async () => {
@@ -66,7 +67,7 @@ describe('CommunitiesController (e2e)', () => {
     it('should return community detail with causes', async () => {
       const response = await server
         .getRequest()
-        .get('/communities/b1b2c3d4-e5f6-7890-abcd-ef1234567001')
+        .get(`/communities/${COMMUNITY_IDS.AFRICA}`)
         .expect(200);
 
       expect(response.body.name).toBe('Amigos por África');

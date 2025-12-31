@@ -33,6 +33,7 @@ export class PostgreSQLTestContainer implements IDatabaseTestContainer {
         ),
       )
       .withStartupTimeout(120000)
+      .withReuse() // Mantiene el contenedor vivo entre ejecuciones
       .start();
 
     this.container = container;

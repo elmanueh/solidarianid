@@ -4,7 +4,7 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Description } from '@app/value-objects/model/description';
 import { Name } from '@app/value-objects/model/name';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Objective } from './objective';
+import { Objective } from '../value-objects/objective';
 import { Event } from './event';
 
 export interface ActionProps {

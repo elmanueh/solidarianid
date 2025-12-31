@@ -1,4 +1,4 @@
-import { Objective } from '@app/communities/domain/model/entities/objective';
+import { Objective } from '@app/communities/domain/model/value-objects/objective';
 import { ObjetiveSummaryResponseDto } from '../dtos/output/objetive-summary.response.dto';
 
 export class ObjetiveDomainMapper {

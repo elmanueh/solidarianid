@@ -21,6 +21,7 @@ interface CauseSeedData {
   durationDays: number;
   ods: number[];
   communityId: string;
+  initialDate?: Date;
 }
 
 interface ActionSeedData {
@@ -31,7 +32,6 @@ interface ActionSeedData {
 }
 
 interface ObjectiveSeedData {
-  id: string;
   name: string;
   description: string;
   quantity: number;
@@ -44,72 +44,68 @@ interface EventSeedData {
   id: string;
   name: string;
   description: string;
-  date: Date;
+  initialDate: Date;
   placeDirection: string;
   placeCity: string;
   placeCountryCode: string;
   actionId: string;
 }
 
-// ============================================
 // UUIDs CONSTANTES (reutilizables)
-// ============================================
 const USER_IDS = {
-  JUAN: 'a1b2c3d4-e5f6-7890-abcd-ef1234567001',
-  MARIA: 'a1b2c3d4-e5f6-7890-abcd-ef1234567002',
-  PEDRO: 'a1b2c3d4-e5f6-7890-abcd-ef1234567003',
-  ANA: 'a1b2c3d4-e5f6-7890-abcd-ef1234567004',
-  CARLOS: 'a1b2c3d4-e5f6-7890-abcd-ef1234567005',
+  JUAN: 'a1b2c3d4-e5f6-4890-abcd-ef1234567001',
+  MARIA: 'a1b2c3d4-e5f6-4890-abcd-ef1234567002',
+  PEDRO: 'a1b2c3d4-e5f6-4890-abcd-ef1234567003',
+  ANA: 'a1b2c3d4-e5f6-4890-abcd-ef1234567004',
+  CARLOS: 'a1b2c3d4-e5f6-4890-abcd-ef1234567005',
 };
 
 const COMMUNITY_IDS = {
-  AFRICA: 'b1b2c3d4-e5f6-7890-abcd-ef1234567001',
-  MADRID: 'b1b2c3d4-e5f6-7890-abcd-ef1234567002',
-  HUMANITARIA: 'b1b2c3d4-e5f6-7890-abcd-ef1234567003',
+  AFRICA: 'b1b2c3d4-e5f6-4890-abcd-ef1234567001',
+  MADRID: 'b1b2c3d4-e5f6-4890-abcd-ef1234567002',
+  HUMANITARIA: 'b1b2c3d4-e5f6-4890-abcd-ef1234567003',
 };
 
 const CAUSE_IDS = {
-  AGUA_KENIA: 'c1b2c3d4-e5f6-7890-abcd-ef1234567001',
-  ESCUELAS_TANZANIA: 'c1b2c3d4-e5f6-7890-abcd-ef1234567002',
-  BANCO_ALIMENTOS: 'c1b2c3d4-e5f6-7890-abcd-ef1234567003',
-  APOYO_ESCOLAR: 'c1b2c3d4-e5f6-7890-abcd-ef1234567004',
-  EMERGENCIA_VALENCIA: 'c1b2c3d4-e5f6-7890-abcd-ef1234567005',
+  AGUA_KENIA: 'c1b2c3d4-e5f6-4890-abcd-ef1234567001',
+  ESCUELAS_TANZANIA: 'c1b2c3d4-e5f6-4890-abcd-ef1234567002',
+  BANCO_ALIMENTOS: 'c1b2c3d4-e5f6-4890-abcd-ef1234567003',
+  APOYO_ESCOLAR: 'c1b2c3d4-e5f6-4890-abcd-ef1234567004',
+  EMERGENCIA_VALENCIA: 'c1b2c3d4-e5f6-4890-abcd-ef1234567005',
 };
 
 const ACTION_IDS = {
-  POZO_MAKUENI: 'd1b2c3d4-e5f6-7890-abcd-ef1234567001',
-  PURIFICACION_KITUI: 'd1b2c3d4-e5f6-7890-abcd-ef1234567002',
-  ESCUELA_DODOMA: 'd1b2c3d4-e5f6-7890-abcd-ef1234567003',
-  RECOGIDA_NORTE: 'd1b2c3d4-e5f6-7890-abcd-ef1234567004',
-  REPARTO_VALLECAS: 'd1b2c3d4-e5f6-7890-abcd-ef1234567005',
-  CLASES_MATES: 'd1b2c3d4-e5f6-7890-abcd-ef1234567006',
-  LIMPIEZA_PAIPORTA: 'd1b2c3d4-e5f6-7890-abcd-ef1234567007',
-  RECOGIDA_ENSERES: 'd1b2c3d4-e5f6-7890-abcd-ef1234567008',
+  POZO_MAKUENI: 'd1b2c3d4-e5f6-4890-abcd-ef1234567001',
+  PURIFICACION_KITUI: 'd1b2c3d4-e5f6-4890-abcd-ef1234567002',
+  ESCUELA_DODOMA: 'd1b2c3d4-e5f6-4890-abcd-ef1234567003',
+  RECOGIDA_NORTE: 'd1b2c3d4-e5f6-4890-abcd-ef1234567004',
+  REPARTO_VALLECAS: 'd1b2c3d4-e5f6-4890-abcd-ef1234567005',
+  CLASES_MATES: 'd1b2c3d4-e5f6-4890-abcd-ef1234567006',
+  LIMPIEZA_PAIPORTA: 'd1b2c3d4-e5f6-4890-abcd-ef1234567007',
+  RECOGIDA_ENSERES: 'd1b2c3d4-e5f6-4890-abcd-ef1234567008',
 };
 
 const OBJECTIVE_IDS = {
-  OBJ_001: 'e1b2c3d4-e5f6-7890-abcd-ef1234567001',
-  OBJ_002: 'e1b2c3d4-e5f6-7890-abcd-ef1234567002',
-  OBJ_003: 'e1b2c3d4-e5f6-7890-abcd-ef1234567003',
-  OBJ_004: 'e1b2c3d4-e5f6-7890-abcd-ef1234567004',
-  OBJ_005: 'e1b2c3d4-e5f6-7890-abcd-ef1234567005',
-  OBJ_006: 'e1b2c3d4-e5f6-7890-abcd-ef1234567006',
-  OBJ_007: 'e1b2c3d4-e5f6-7890-abcd-ef1234567007',
-  OBJ_008: 'e1b2c3d4-e5f6-7890-abcd-ef1234567008',
-  OBJ_009: 'e1b2c3d4-e5f6-7890-abcd-ef1234567009',
+  OBJ_001: 'e1b2c3d4-e5f6-4890-abcd-ef1234567001',
+  OBJ_002: 'e1b2c3d4-e5f6-4890-abcd-ef1234567002',
+  OBJ_003: 'e1b2c3d4-e5f6-4890-abcd-ef1234567003',
+  OBJ_004: 'e1b2c3d4-e5f6-4890-abcd-ef1234567004',
+  OBJ_005: 'e1b2c3d4-e5f6-4890-abcd-ef1234567005',
+  OBJ_006: 'e1b2c3d4-e5f6-4890-abcd-ef1234567006',
+  OBJ_007: 'e1b2c3d4-e5f6-4890-abcd-ef1234567007',
+  OBJ_008: 'e1b2c3d4-e5f6-4890-abcd-ef1234567008',
+  OBJ_009: 'e1b2c3d4-e5f6-4890-abcd-ef1234567009',
 };
 
 const EVENT_IDS = {
-  EVENT_001: 'f1b2c3d4-e5f6-7890-abcd-ef1234567001',
-  EVENT_002: 'f1b2c3d4-e5f6-7890-abcd-ef1234567002',
-  EVENT_003: 'f1b2c3d4-e5f6-7890-abcd-ef1234567003',
-  EVENT_004: 'f1b2c3d4-e5f6-7890-abcd-ef1234567004',
-  EVENT_005: 'f1b2c3d4-e5f6-7890-abcd-ef1234567005',
+  EVENT_001: 'f1b2c3d4-e5f6-4890-abcd-ef1234567001',
+  EVENT_002: 'f1b2c3d4-e5f6-4890-abcd-ef1234567002',
+  EVENT_003: 'f1b2c3d4-e5f6-4890-abcd-ef1234567003',
+  EVENT_004: 'f1b2c3d4-e5f6-4890-abcd-ef1234567004',
+  EVENT_005: 'f1b2c3d4-e5f6-4890-abcd-ef1234567005',
 };
 
-// ============================================
 // DATOS DE USUARIOS (compartidos entre Users App y Communities App)
-// ============================================
 const DEFAULT_USERS_DATA = [
   {
     id: USER_IDS.JUAN,
@@ -161,9 +157,7 @@ const DEFAULT_USERS_DATA = [
 export class PostgreSQLSeeder implements IDatabaseSeeder {
   constructor(private readonly dataSource: DataSource) {}
 
-  // ============================================
   // USERS APP SEED (tabla tbl_Usuarios)
-  // ============================================
   async seedUsers(users: UserEntity[] = []): Promise<void> {
     const userEntityTarget = this.dataSource.entityMetadatas.find(
       (meta) => meta.tableName === 'tbl_Usuarios',
@@ -178,9 +172,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
     await usersRepository.insert(allUsers);
   }
 
-  // ============================================
   // COMMUNITIES APP SEEDS
-  // ============================================
 
   /**
    * Seed de usuarios para el microservicio de communities
@@ -243,6 +235,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         durationDays: 180,
         ods: [6, 3],
         communityId: COMMUNITY_IDS.AFRICA,
+        initialDate: new Date('2024-06-01'),
       },
       {
         id: CAUSE_IDS.ESCUELAS_TANZANIA,
@@ -251,6 +244,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         durationDays: 365,
         ods: [4, 10],
         communityId: COMMUNITY_IDS.AFRICA,
+        initialDate: new Date('2024-03-15'),
       },
       // Causas de "Voluntarios Sin Fronteras Madrid"
       {
@@ -260,6 +254,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         durationDays: 30,
         ods: [1, 2],
         communityId: COMMUNITY_IDS.MADRID,
+        initialDate: new Date('2025-12-01'),
       },
       {
         id: CAUSE_IDS.APOYO_ESCOLAR,
@@ -268,6 +263,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         durationDays: 270,
         ods: [4, 10],
         communityId: COMMUNITY_IDS.MADRID,
+        initialDate: new Date('2024-09-01'),
       },
       // Causas de "Ayuda Humanitaria España"
       {
@@ -277,6 +273,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         durationDays: 90,
         ods: [11, 13],
         communityId: COMMUNITY_IDS.HUMANITARIA,
+        initialDate: new Date('2024-10-30'),
       },
     ];
 
@@ -352,11 +349,10 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
    * Seed de objetivos (metas cuantificables de las acciones)
    */
   async seedObjectives(objectives: ObjectiveSeedData[] = []): Promise<void> {
-    const repo = this.dataSource.getRepository('ObjetiveEntity');
+    const repo = this.dataSource.getRepository('ObjectiveEntity');
 
     const defaultObjectives: ObjectiveSeedData[] = [
       {
-        id: OBJECTIVE_IDS.OBJ_001,
         name: 'Recaudación económica',
         description: 'Fondos para materiales y mano de obra',
         quantity: 15000,
@@ -365,7 +361,6 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         actionId: ACTION_IDS.POZO_MAKUENI,
       },
       {
-        id: OBJECTIVE_IDS.OBJ_002,
         name: 'Voluntarios técnicos',
         description: 'Ingenieros y técnicos para supervisión',
         quantity: 5,
@@ -374,7 +369,6 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         actionId: ACTION_IDS.POZO_MAKUENI,
       },
       {
-        id: OBJECTIVE_IDS.OBJ_003,
         name: 'Kilos de alimentos',
         description: 'Meta de alimentos no perecederos',
         quantity: 5000,
@@ -383,7 +377,6 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         actionId: ACTION_IDS.RECOGIDA_NORTE,
       },
       {
-        id: OBJECTIVE_IDS.OBJ_004,
         name: 'Voluntarios recogida',
         description: 'Personas para los puntos de recogida',
         quantity: 50,
@@ -392,7 +385,6 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         actionId: ACTION_IDS.RECOGIDA_NORTE,
       },
       {
-        id: OBJECTIVE_IDS.OBJ_005,
         name: 'Familias beneficiadas',
         description: 'Número de familias a las que llegar',
         quantity: 200,
@@ -401,7 +393,6 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         actionId: ACTION_IDS.REPARTO_VALLECAS,
       },
       {
-        id: OBJECTIVE_IDS.OBJ_006,
         name: 'Alumnos atendidos',
         description: 'Niños que reciben clases de refuerzo',
         quantity: 30,
@@ -410,7 +401,6 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         actionId: ACTION_IDS.CLASES_MATES,
       },
       {
-        id: OBJECTIVE_IDS.OBJ_007,
         name: 'Profesores voluntarios',
         description: 'Docentes o estudiantes universitarios',
         quantity: 10,
@@ -419,7 +409,6 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         actionId: ACTION_IDS.CLASES_MATES,
       },
       {
-        id: OBJECTIVE_IDS.OBJ_008,
         name: 'Viviendas limpiadas',
         description: 'Casas completamente desescombradas',
         quantity: 100,
@@ -428,7 +417,6 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         actionId: ACTION_IDS.LIMPIEZA_PAIPORTA,
       },
       {
-        id: OBJECTIVE_IDS.OBJ_009,
         name: 'Voluntarios brigadas',
         description: 'Personas para equipos de limpieza',
         quantity: 200,
@@ -452,7 +440,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         id: EVENT_IDS.EVENT_001,
         name: 'Recogida Alcobendas',
         description: 'Punto de recogida en CC La Vega',
-        date: new Date('2025-12-20T10:00:00Z'),
+        initialDate: new Date('2025-12-20T10:00:00Z'),
         placeDirection: 'CC La Vega, Local 45',
         placeCity: 'Alcobendas',
         placeCountryCode: 'ES',
@@ -462,7 +450,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         id: EVENT_IDS.EVENT_002,
         name: 'Recogida San Sebastián de los Reyes',
         description: 'Punto de recogida en Mercadona',
-        date: new Date('2025-12-21T09:00:00Z'),
+        initialDate: new Date('2025-12-21T09:00:00Z'),
         placeDirection: 'Av. de España, 12',
         placeCity: 'San Sebastián de los Reyes',
         placeCountryCode: 'ES',
@@ -472,7 +460,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         id: EVENT_IDS.EVENT_003,
         name: 'Reparto navideño Vallecas',
         description: 'Distribución de lotes en centro cívico',
-        date: new Date('2025-12-23T11:00:00Z'),
+        initialDate: new Date('2025-12-23T11:00:00Z'),
         placeDirection: 'Centro Cívico Puente de Vallecas',
         placeCity: 'Madrid',
         placeCountryCode: 'ES',
@@ -482,7 +470,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         id: EVENT_IDS.EVENT_004,
         name: 'Formación voluntarios docentes',
         description: 'Sesión de formación para nuevos profesores voluntarios',
-        date: new Date('2025-01-15T17:00:00Z'),
+        initialDate: new Date('2025-01-15T17:00:00Z'),
         placeDirection: 'Calle Gran Vía, 28',
         placeCity: 'Madrid',
         placeCountryCode: 'ES',
@@ -492,7 +480,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         id: EVENT_IDS.EVENT_005,
         name: 'Jornada de limpieza intensiva',
         description: 'Gran jornada con 100 voluntarios',
-        date: new Date('2025-01-10T08:00:00Z'),
+        initialDate: new Date('2025-01-10T08:00:00Z'),
         placeDirection: 'Plaza del Ayuntamiento',
         placeCity: 'Paiporta',
         placeCountryCode: 'ES',
@@ -504,7 +492,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
       id: e.id,
       name: e.name,
       description: e.description,
-      date: e.date,
+      initialDate: e.initialDate,
       actionId: e.actionId,
       place: {
         direction: e.placeDirection,

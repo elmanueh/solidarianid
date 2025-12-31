@@ -10,13 +10,13 @@ import {
 import { ActionEntity } from './action.entity';
 import { UserEntity } from './user.entity';
 
-@Entity('Objetive')
-export class ObjetiveEntity {
+@Entity('objective')
+export class ObjectiveEntity {
   @PrimaryColumn()
-  id: string;
-
-  @Column()
   name: string;
+
+  @PrimaryColumn()
+  actionId: string;
 
   @Column()
   description: string;
@@ -30,9 +30,6 @@ export class ObjetiveEntity {
   @Column()
   currentAmount: number;
 
-  @Column()
-  actionId: string;
-
   @ManyToOne(() => ActionEntity, (action) => action.objectives)
   @JoinColumn({ name: 'actionId' })
   action: ActionEntity;
@@ -40,8 +37,11 @@ export class ObjetiveEntity {
   @ManyToMany(() => UserEntity)
   @JoinTable({
     name: 'objective_contributors',
-    joinColumn: { name: 'objectiveId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'userId', referencedColumnName: 'id' },
+    joinColumns: [
+      { name: 'objectiveName', referencedColumnName: 'name' },
+      { name: 'objectiveActionId', referencedColumnName: 'actionId' },
+    ],
+    inverseJoinColumns: [{ name: 'userId', referencedColumnName: 'id' }],
   })
   contributors: UserEntity[];
 }

@@ -32,23 +32,21 @@ export class ActionEntityMapper implements Mapper<Action, ActionEntity> {
   }
 
   fromPersistence(entity: ActionEntity): Either<ValidationError, Action> {
-    const eventsOrError =
-      sequence(
-        entity.events?.map((eventEntity) =>
-          this.eventEntityMapper.fromPersistence(eventEntity),
-        ),
-      ) || [];
+    const eventsOrError = sequence(
+      entity.events?.map((eventEntity) =>
+        this.eventEntityMapper.fromPersistence(eventEntity),
+      ),
+    );
 
     if (eventsOrError.isLeft()) {
       return left(eventsOrError.value);
     }
 
-    const objectivesOrError =
-      sequence(
-        entity.objectives?.map((objectiveEntity) =>
-          this.objetiveEntityMapper.fromPersistence(objectiveEntity),
-        ),
-      ) || [];
+    const objectivesOrError = sequence(
+      entity.objectives?.map((objectiveEntity) =>
+        this.objetiveEntityMapper.fromPersistence(objectiveEntity),
+      ),
+    );
 
     if (objectivesOrError.isLeft()) {
       return left(objectivesOrError.value);

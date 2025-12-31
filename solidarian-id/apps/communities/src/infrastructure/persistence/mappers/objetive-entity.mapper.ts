@@ -2,19 +2,18 @@ import { Mapper } from '@app/ddd/repository/mapper';
 import { Injectable } from '@nestjs/common';
 import { Either, left, sequence } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { Objective } from '@app/communities/domain/model/entities/objective';
-import { ObjetiveEntity } from '../entities/objetive.entity';
+import { Objective } from '@app/communities/domain/model/value-objects/objective';
+import { ObjectiveEntity } from '../entities/objetive.entity';
 import { UserEntityMapper } from './user-entity.mapper';
 
 @Injectable()
 export class ObjectiveEntityMapper implements Mapper<
   Objective,
-  ObjetiveEntity
+  ObjectiveEntity
 > {
   constructor(private readonly userEntityMapper: UserEntityMapper) {}
-  toPersistence(model: Objective): ObjetiveEntity {
-    const entity = new ObjetiveEntity();
-    entity.id = model.id.value;
+  toPersistence(model: Objective): ObjectiveEntity {
+    const entity = new ObjectiveEntity();
     entity.name = model.name;
     entity.description = model.description;
     entity.quantity = model.quantity;
@@ -28,7 +27,7 @@ export class ObjectiveEntityMapper implements Mapper<
     return entity;
   }
 
-  fromPersistence(entity: ObjetiveEntity): Either<ValidationError, Objective> {
+  fromPersistence(entity: ObjectiveEntity): Either<ValidationError, Objective> {
     const contributorsOrError = sequence(
       entity.contributors.map((contributorEntity) =>
         this.userEntityMapper.fromPersistence(contributorEntity),
@@ -39,17 +38,14 @@ export class ObjectiveEntityMapper implements Mapper<
       return left(contributorsOrError.value);
     }
 
-    return Objective.create(
-      {
-        name: entity.name,
-        description: entity.description,
-        quantity: entity.quantity,
-        unit: entity.unit,
-        actionId: entity.actionId,
-        contributors: contributorsOrError.value,
-        currentAmount: entity.currentAmount,
-      },
-      entity.id,
-    );
+    return Objective.create({
+      name: entity.name,
+      description: entity.description,
+      quantity: entity.quantity,
+      unit: entity.unit,
+      actionId: entity.actionId,
+      contributors: contributorsOrError.value,
+      currentAmount: entity.currentAmount,
+    });
   }
 }

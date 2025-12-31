@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { CauseEntity } from './cause.entity';
 import { EventEntity } from './evento.entity';
-import { ObjetiveEntity } from './objetive.entity';
+import { ObjectiveEntity } from './objetive.entity';
 
 @Entity('action')
 export class ActionEntity {
@@ -28,10 +28,10 @@ export class ActionEntity {
   @JoinColumn({ name: 'causeId' })
   cause: CauseEntity;
 
-  @OneToMany(() => ObjetiveEntity, (objective) => objective.action, {
+  @OneToMany(() => ObjectiveEntity, (objective) => objective.action, {
     cascade: true,
   })
-  objectives: ObjetiveEntity[];
+  objectives: ObjectiveEntity[];
 
   @OneToMany(() => EventEntity, (event) => event.action, {
     cascade: true,

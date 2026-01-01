@@ -8,7 +8,7 @@ import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repos
 import { CauseEntityMapper } from '../mappers/cause-entity.mapper';
 
 @Injectable()
-export class CausesRepositoryTypeORM
+export class CausesRepositoryTypeOrmAdapter
   extends RepositoryTypeORM<Cause, CauseEntity>
   implements CausesRepositoryPort
 {

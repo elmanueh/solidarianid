@@ -8,7 +8,7 @@ import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.rep
 import { ActionEntityMapper } from '../mappers/action-entity.mapper';
 
 @Injectable()
-export class ActionsRepositoryTypeORM
+export class ActionsRepositoryTypeOrmAdapter
   extends RepositoryTypeORM<Action, ActionEntity>
   implements ActionsRepositoryPort
 {

@@ -22,14 +22,24 @@ import { CommunityEntityMapper } from './infrastructure/persistence/mappers/comm
 import { EventEntityMapper } from './infrastructure/persistence/mappers/event-entity.mapper';
 import { ObjectiveEntityMapper } from './infrastructure/persistence/mappers/objetive-entity.mapper';
 import { UserEntityMapper } from './infrastructure/persistence/mappers/user-entity.mapper';
-import { ActionsRepositoryTypeORM } from './infrastructure/persistence/repositories/actions-typeorm.repository';
-import { CausesRepositoryTypeORM } from './infrastructure/persistence/repositories/causes-typeorm.repository';
-import { CommunitiesRepositoryTypeORM } from './infrastructure/persistence/repositories/communities-typeorm.repository';
+import { ActionsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/actions-typeorm.repository';
+import { CausesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/causes-typeorm.repository';
+import { CommunitiesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/communities-typeorm.repository';
 import { ActionsController } from './infrastructure/presentation/controllers/actions.controller';
 import { CausesController } from './infrastructure/presentation/controllers/causes.controller';
 import { CommunitiesController } from './infrastructure/presentation/controllers/communities.controller';
+import { RequestController } from './infrastructure/presentation/controllers/request.controller';
 import { RequestEntity } from './infrastructure/persistence/entities/request.entity';
-import { KafkaDynamicModule } from '@solidarianid/kafka';
+import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
+import { RequestsRepositoryPort } from './domain/ports/requests.repository.port';
+import { RequestsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/requests-typeorm.repository';
+import { RequestsService } from './domain/services/request.service';
+import { RequestsServiceImpl } from './application/services/requests.service.impl';
+import { RequestEntityMapper } from './infrastructure/persistence/mappers/request-entity.mapper';
+import { RequestPublisherPort } from './domain/ports/requests.publisher.port';
+import { RequestKafkaPublisherAdapter } from './infrastructure/messaging/publishers/requests.publisher';
+import { UsersRepositoryPort } from './domain/ports/users.repository.port';
+import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/users-typeorm.repository';
 
 @Module({
   imports: [
@@ -47,7 +57,12 @@ import { KafkaDynamicModule } from '@solidarianid/kafka';
       process.env.KAFKA_COMMUNITIES_CLIENT_ID || 'communities',
     ),
   ],
-  controllers: [CommunitiesController, CausesController, ActionsController],
+  controllers: [
+    CommunitiesController,
+    CausesController,
+    ActionsController,
+    RequestController,
+  ],
   providers: [
     // Services
     {
@@ -62,18 +77,35 @@ import { KafkaDynamicModule } from '@solidarianid/kafka';
       provide: ActionsService,
       useClass: ActionsServiceImpl,
     },
+    {
+      provide: RequestsService,
+      useClass: RequestsServiceImpl,
+    },
     // Repositories
     {
       provide: CommunitiesRepositoryPort,
-      useClass: CommunitiesRepositoryTypeORM,
+      useClass: CommunitiesRepositoryTypeOrmAdapter,
     },
     {
       provide: CausesRepositoryPort,
-      useClass: CausesRepositoryTypeORM,
+      useClass: CausesRepositoryTypeOrmAdapter,
     },
     {
       provide: ActionsRepositoryPort,
-      useClass: ActionsRepositoryTypeORM,
+      useClass: ActionsRepositoryTypeOrmAdapter,
+    },
+    {
+      provide: RequestsRepositoryPort,
+      useClass: RequestsRepositoryTypeOrmAdapter,
+    },
+    {
+      provide: UsersRepositoryPort,
+      useClass: UsersTypeOrmRepositoryAdapter,
+    },
+    // Publishers
+    {
+      provide: RequestPublisherPort,
+      useClass: RequestKafkaPublisherAdapter,
     },
     // Persistence Mappers
     CommunityEntityMapper,
@@ -82,6 +114,10 @@ import { KafkaDynamicModule } from '@solidarianid/kafka';
     UserEntityMapper,
     EventEntityMapper,
     ObjectiveEntityMapper,
+    RequestEntityMapper,
+
+    // Events Mappers
+    RequestEventMapper,
   ],
 })
 export class CommunitiesModule {}

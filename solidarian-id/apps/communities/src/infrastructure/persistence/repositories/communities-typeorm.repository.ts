@@ -8,7 +8,7 @@ import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communi
 import { CommunityEntityMapper } from '../mappers/community-entity.mapper';
 
 @Injectable()
-export class CommunitiesRepositoryTypeORM
+export class CommunitiesRepositoryTypeOrmAdapter
   extends RepositoryTypeORM<Community, CommunityEntity>
   implements CommunitiesRepositoryPort
 {

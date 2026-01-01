@@ -57,7 +57,7 @@ async function bootstrap() {
     },
   });
 
-  //await app.startAllMicroservices();
+  await app.startAllMicroservices();
 
   const port = configService.get<number>('PORT') ?? 3000;
   console.log(`Server running on port ${port}`);

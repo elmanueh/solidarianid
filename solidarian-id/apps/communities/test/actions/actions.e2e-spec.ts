@@ -2,6 +2,7 @@ import {
   PostgreSQLTestModule,
   TestServerHelper,
   PostgreSQLSeeder,
+  KafkaTestModule,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
@@ -22,6 +23,7 @@ describe('ActionsController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
+    const messageModule = await KafkaTestModule.forRoot();
     const databaseModule = await PostgreSQLTestModule.forRoot([
       CommunityEntity,
       CauseEntity,
@@ -35,7 +37,7 @@ describe('ActionsController (e2e)', () => {
 
     server = new TestServerHelper();
     app = await server.create({
-      imports: [databaseModule, CommunitiesModule],
+      imports: [databaseModule, messageModule, CommunitiesModule],
     });
 
     const dataSource = app.get<DataSource>('DataSource');

@@ -29,6 +29,7 @@ import { ActionsController } from './infrastructure/presentation/controllers/act
 import { CausesController } from './infrastructure/presentation/controllers/causes.controller';
 import { CommunitiesController } from './infrastructure/presentation/controllers/communities.controller';
 import { RequestEntity } from './infrastructure/persistence/entities/request.entity';
+import { KafkaDynamicModule } from '@solidarianid/kafka';
 
 @Module({
   imports: [
@@ -42,6 +43,9 @@ import { RequestEntity } from './infrastructure/persistence/entities/request.ent
       CommunityUserEntity,
       RequestEntity,
     ]),
+    KafkaDynamicModule.register(
+      process.env.KAFKA_COMMUNITIES_CLIENT_ID || 'communities',
+    ),
   ],
   controllers: [CommunitiesController, CausesController, ActionsController],
   providers: [

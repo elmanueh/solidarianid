@@ -3,6 +3,8 @@ import {
   TestServerHelper,
   PostgreSQLSeeder,
   KafkaTestModule,
+  KafkaTestContainer,
+  PostgreSQLTestContainer,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
@@ -45,7 +47,9 @@ describe('ActionsController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await app.close();
+    if (app) await app.close();
+    await KafkaTestContainer.getInstance().stop();
+    await PostgreSQLTestContainer.getInstance().stop();
   });
 
   beforeEach(async () => {

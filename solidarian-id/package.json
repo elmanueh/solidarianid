@@ -16,6 +16,7 @@
     "tailwind:dev": "npx @tailwindcss/cli -i .\\libs\\design-tokens\\src\\app.css -o .\\apps\\admin\\public\\css\\main.css --watch",
     "docker:up": "docker-compose up -d",
     "build:charts": "esbuild libs/charts/src/plugins/plugins.ts --bundle --outfile=apps/admin/public/js/lib/charts.js --format=iife --global-name=ChartsLib",
+    "prettier:write": "prettier --write \"{apps,libs}/**/*.{ts,js,json,md}\"",
     "lint": "eslint \"{apps,libs}/**/*.{ts,js}\"",
     "lint:ci": "eslint \"{apps,libs}/**/*.{ts,tsx}\" --max-warnings=0",
     "test": "cross-env NODE_ENV=test jest",

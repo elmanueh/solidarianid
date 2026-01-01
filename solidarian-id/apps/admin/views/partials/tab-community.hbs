@@ -11,17 +11,26 @@
     <p>{{this.description}}</p>
   </section>
 
-  {{#if this.cause_request}}
+  {{#if this.cause_requests}} {{#each this.cause_requests}}
   <article class="request" data-variant="cause-nested">
-    <span class="font-bold text-sm sm:text-md">
-      {{this.cause_request.name}}
-    </span>
+    <span class="font-bold text-sm sm:text-md">{{this.name}}</span>
 
     <section class="flex flex-col gap-2 text-xs sm:text-sm">
-      <span>{{this.cause_request.date}}</span>
-      <p>{{this.cause_request.description}}</p>
+      <span>{{this.date}}</span>
+      <p>{{this.description}}</p>
     </section>
+
+    {{#if this.action_requests}} {{#each this.action_requests}}
+    <article class="request" data-variant="action-nested">
+      <span class="font-bold text-xs">{{this.name}}</span>
+
+      <section class="flex flex-col gap-1 text-xs">
+        <span>{{this.date}}</span>
+        <p>{{this.description}}</p>
+      </section>
+    </article>
+    {{/each}} {{/if}}
   </article>
-  {{/if}}
+  {{/each}} {{/if}}
 </article>
 {{/each}}

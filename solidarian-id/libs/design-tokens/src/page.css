@@ -100,18 +100,34 @@
   }
 
   .request[data-variant='community'] {
-    @apply border-ocean-blue-500 bg-base-200;
+    @apply border-ocean-blue-500;
   }
 
-  .request[data-variant='cause'] {
-    @apply border-harvest-orange-500 bg-base-200;
+  .request[data-variant='cause'],
+  .request[data-variant='cause-nested'] {
+    @apply border-harvest-orange-500;
+  }
+
+  .request[data-variant='action'],
+  .request[data-variant='action-nested'] {
+    @apply border-sage-green-500;
+  }
+
+  .request[data-variant='community'],
+  .request[data-variant='cause'],
+  .request[data-variant='action'] {
+    @apply bg-base-200;
   }
 
   .request[data-variant='cause-nested'] {
-    @apply border-harvest-orange-500 bg-base-300 mt-4;
+    @apply bg-base-300;
   }
 
-  .request[data-variant='action'] {
-    @apply border-sage-green-500 bg-base-200;
+  .request[data-variant='action-nested'] {
+    @apply bg-base-100;
+  }
+
+  .request[data-variant$='-nested'] {
+    @apply mt-4;
   }
 }

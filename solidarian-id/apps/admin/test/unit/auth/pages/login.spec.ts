@@ -10,8 +10,8 @@ import path from 'path';
 describe('Login Page - Form DOM Structure and Validation', () => {
   beforeEach(() => {
     const loginHbsPath = path.resolve(
-      __dirname,
-      '../../../../views/pages/login.hbs',
+      process.cwd(),
+      'apps/admin/views/pages/login.hbs',
     );
     const hbsContent = fs.readFileSync(loginHbsPath, 'utf8');
     document.body.innerHTML = hbsContent;

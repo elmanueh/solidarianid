@@ -8,7 +8,7 @@ export interface CommunityRequest {
   name: string;
   description: string;
 
-  cause_request: CauseRequest;
+  cause_requests: CauseRequest[];
 }
 
 export interface CauseRequest {
@@ -20,6 +20,8 @@ export interface CauseRequest {
 
   name: string;
   description: string;
+
+  action_requests?: ActionRequest[];
 }
 
 export interface ActionRequest {
@@ -44,16 +46,38 @@ export const fakeCommunityRequests: CommunityRequest[] = [
     name: 'Comunidad 1',
     description: 'Descripcion de la comunidad 1.',
 
-    cause_request: {
-      id: '323e4568-e89b-12d3-a456-426655440000',
+    cause_requests: [
+      {
+        id: '323e4568-e89b-12d3-a456-426655440000',
 
-      type: 'CAUSE_REQUEST',
-      date: '05/03/2024',
-      state: 'PENDING',
+        type: 'CAUSE_REQUEST',
+        date: '05/03/2024',
+        state: 'PENDING',
 
-      name: 'Causa 1',
-      description: 'Descripcion de la causa 1.',
-    },
+        name: 'Causa 1',
+        description: 'Descripcion de la causa 1.',
+        action_requests: [
+          {
+            id: '423e4570-e89b-12d3-a456-426655440000',
+            type: 'ACTION_REQUEST',
+            date: '05/03/2024',
+            state: 'PENDING',
+            name: 'Accion 1.1',
+            description: 'Descripcion de la accion 1.1.',
+          },
+        ],
+      },
+      {
+        id: '323e4569-e89b-12d3-a456-426655440000',
+
+        type: 'CAUSE_REQUEST',
+        date: '05/03/2024',
+        state: 'PENDING',
+
+        name: 'Causa 3',
+        description: 'Descripcion de la causa 3.',
+      },
+    ],
   },
 
   {
@@ -66,16 +90,36 @@ export const fakeCommunityRequests: CommunityRequest[] = [
     name: 'Comunidad 2',
     description: 'Descripcion de la comunidad 2.',
 
-    cause_request: {
-      id: '123e4568-e89b-12d3-a456-426655440000',
+    cause_requests: [
+      {
+        id: '123e4568-e89b-12d3-a456-426655440000',
 
-      type: 'CAUSE_REQUEST',
-      date: '05/03/2024',
-      state: 'PENDING',
+        type: 'CAUSE_REQUEST',
+        date: '05/03/2024',
+        state: 'PENDING',
 
-      name: 'Causa 2',
-      description: 'Descripcion de la causa 2.',
-    },
+        name: 'Causa 2',
+        description: 'Descripcion de la causa 2.',
+        action_requests: [
+          {
+            id: '423e4571-e89b-12d3-a456-426655440000',
+            type: 'ACTION_REQUEST',
+            date: '05/03/2024',
+            state: 'PENDING',
+            name: 'Accion 2.1',
+            description: 'Descripcion de la accion 2.1.',
+          },
+          {
+            id: '423e4572-e89b-12d3-a456-426655440000',
+            type: 'ACTION_REQUEST',
+            date: '05/03/2024',
+            state: 'PENDING',
+            name: 'Accion 2.2',
+            description: 'Descripcion de la accion 2.2.',
+          },
+        ],
+      },
+    ],
   },
 ];
 
@@ -89,6 +133,17 @@ export const fakeCauseRequests: CauseRequest[] = [
 
     name: 'Causa 1',
     description: 'Descripcion de la causa 1.',
+
+    action_requests: [
+      {
+        id: '423e4570-e89b-12d3-a456-426655440001',
+        type: 'ACTION_REQUEST',
+        date: '05/03/2024',
+        state: 'PENDING',
+        name: 'Accion 1.1',
+        description: 'Descripcion de la accion 1.1.',
+      },
+    ],
   },
 
   {

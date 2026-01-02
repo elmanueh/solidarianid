@@ -166,10 +166,35 @@ jobs:
           echo "SONAR_PROJECT_KEY=$PROJECT_KEY" >> "$GITHUB_ENV"
           echo "SONAR_PROJECT_NAME=$PROJECT_NAME" >> "$GITHUB_ENV"
 
-      - name: Debug LCOV paths
+      - name: Debug - LCOV + Sonar scope mismatch
         run: |
-          echo "First SF lines:"
-          grep -n "^SF:" -m 10 coverage/lcov.info || true
+          echo "== LCOV exists? =="
+          ls -la coverage/lcov.info || true
+
+          echo "== LCOV SF count =="
+          grep -c "^SF:" coverage/lcov.info || true
+
+          echo "== First 20 SF entries =="
+          grep -n "^SF:" -m 20 coverage/lcov.info || true
+
+          echo "== Build LCOV SF file list (normalized) =="
+          awk -F: '/^SF:/{print $2}' coverage/lcov.info | sed 's|\\|/|g' | sed 's|^\./||' | sort -u > /tmp/lcov_sf.txt
+          echo "LCOV unique files:"; wc -l /tmp/lcov_sf.txt
+
+          echo "== Build Sonar scope file list (apps/**/src/**/*.ts) =="
+          find apps -type f -path "*/src/**/*.ts" | sed 's|^\./||' | sed 's|\\|/|g' | sort -u > /tmp/sonar_scope.txt
+          echo "Sonar scope files:"; wc -l /tmp/sonar_scope.txt
+
+          echo "== Files in Sonar scope BUT NOT in LCOV (likely 0% in Sonar) =="
+          comm -23 /tmp/sonar_scope.txt /tmp/lcov_sf.txt | head -n 200
+
+          echo "== Count missing =="
+          comm -23 /tmp/sonar_scope.txt /tmp/lcov_sf.txt | wc -l
+
+          echo "== Top missing folders (first path segment after apps/<app>/src) =="
+          comm -23 /tmp/sonar_scope.txt /tmp/lcov_sf.txt \
+            | awk -F'/' '{print $4}' \
+            | sort | uniq -c | sort -nr | head -n 30
 
       - name: Run SonarQube Scanner
         uses: SonarSource/sonarqube-scan-action@v2

@@ -32,7 +32,7 @@ jobs:
         node-version: [24.x]
 
     steps:
-      - uses: ./.github/actions/configure
+      - uses: ../.github/actions/configure
         with:
           node-version: ${{ matrix['node-version'] }}
           working-directory: solidarian-id
@@ -74,7 +74,7 @@ jobs:
         node-version: [24.x]
 
     steps:
-      - uses: ./.github/actions/configure
+      - uses: ../.github/actions/configure
         with:
           node-version: ${{ matrix['node-version'] }}
           working-directory: solidarian-id
@@ -94,7 +94,7 @@ jobs:
         node-version: [24.x]
 
     steps:
-      - uses: ./.github/actions/configure
+      - uses: ../.github/actions/configure
         with:
           node-version: ${{ matrix['node-version'] }}
           working-directory: solidarian-id
@@ -144,7 +144,7 @@ jobs:
           - 9000:9000
 
     steps:
-      - uses: ./.github/actions/configure
+      - uses: ../.github/actions/configure
         with:
           node-version: 24.x
           working-directory: solidarian-id

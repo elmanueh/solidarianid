@@ -51,17 +51,7 @@ const baseJestConfig: Config = {
     '!**/models/**',
   ],
 
-  reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: './test-results',
-        outputName: 'junit.xml',
-        suiteName: 'SolidarianID Unit Tests',
-      },
-    ],
-  ],
+  reporters: ['default'],
   collectCoverage: true,
   coverageDirectory: './coverage',
   coverageReporters: ['lcov', 'text', 'json'],

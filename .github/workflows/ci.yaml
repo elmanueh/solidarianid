@@ -181,7 +181,6 @@ jobs:
             -Dsonar.test.inclusions=**/*.spec.ts,**/*.test.ts,**/*.e2e-spec.ts
             -Dsonar.exclusions=**/dist/**,**/node_modules/**,**/coverage/**
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.testExecutionReportPaths=test-results/junit.xml,test-results/e2e/junit-admin.xml,test-results/e2e/junit-users.xml,test-results/e2e/junit-communities.xml
             -Dsonar.qualitygate.wait=true
 
       - name: Setup Java (required by CNES)

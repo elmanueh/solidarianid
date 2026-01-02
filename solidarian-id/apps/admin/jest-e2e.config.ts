@@ -11,17 +11,7 @@ const config: Config = {
 
   testMatch: ['<rootDir>/apps/admin/test/**/*.e2e-spec.ts'],
 
-  reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: './test-results/e2e',
-        outputName: 'junit-admin.xml',
-        suiteName: 'Admin E2E Tests',
-      },
-    ],
-  ],
+  reporters: ['default'],
 
   maxWorkers: 1,
 };

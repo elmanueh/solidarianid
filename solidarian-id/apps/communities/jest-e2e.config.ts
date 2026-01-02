@@ -11,17 +11,7 @@ const config: Config = {
 
   testMatch: ['<rootDir>/apps/communities/test/**/*.e2e-spec.ts'],
 
-  reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: './test-results/e2e',
-        outputName: 'junit-communities.xml',
-        suiteName: 'Communities E2E Tests',
-      },
-    ],
-  ],
+  reporters: ['default'],
 
   maxWorkers: 1,
 };

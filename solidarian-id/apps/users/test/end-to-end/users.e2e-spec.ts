@@ -3,12 +3,7 @@ import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
 import { DataSource } from 'typeorm';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { UsersModule } from '@app/users/users.module';
-import {
-  TestServerHelper,
-  PostgreSQLSeeder,
-  PostgreSQLTestModule,
-  KafkaTestModule,
-} from '@solidarianid/testing';
+import { TestServerHelper, PostgreSQLSeeder, PostgreSQLTestModule, KafkaTestModule } from '@solidarianid/testing';
 
 describe('UsersController (e2e)', () => {
   let server!: TestServerHelper;

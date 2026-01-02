@@ -30,10 +30,7 @@ export class DurationRange extends ValueObject<DurationRangeProps> {
     super(props);
   }
 
-  public static create(
-    startDate: Date,
-    endDate: Date,
-  ): Either<InvalidDurationError, DurationRange> {
+  public static create(startDate: Date, endDate: Date): Either<InvalidDurationError, DurationRange> {
     const now = new Date();
     now.setHours(0, 0, 0, 0);
 
@@ -42,9 +39,7 @@ export class DurationRange extends ValueObject<DurationRangeProps> {
     }
 
     if (endDate <= startDate) {
-      return left(
-        new InvalidDurationError('End date must be after start date'),
-      );
+      return left(new InvalidDurationError('End date must be after start date'));
     }
 
     return right(new DurationRange({ startDate, endDate }));

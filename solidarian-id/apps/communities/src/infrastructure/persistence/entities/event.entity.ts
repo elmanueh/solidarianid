@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
 import { EventPlaceEntity } from './event-place.entity';
 import { ActionEntity } from './action.entity';
 import { UserEntity } from './user.entity';
@@ -31,7 +23,7 @@ export class EventEntity {
   @Column({ nullable: false })
   actionId: string;
 
-  @ManyToOne(() => ActionEntity, (action) => action.events)
+  @ManyToOne(() => ActionEntity, action => action.events)
   @JoinColumn({ name: 'actionId' })
   action: ActionEntity;
 

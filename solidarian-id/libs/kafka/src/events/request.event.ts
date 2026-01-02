@@ -4,10 +4,7 @@ import { ActionRequestEventDto } from '../dtos/requests/request-action.event.dto
 import { CauseRequestEventDto } from '../dtos/requests/request-cause.event.dto';
 import { CommunityRequestEventDto } from '../dtos/requests/request-community.event.dto';
 
-export type RequestEventDto =
-  | CommunityRequestEventDto
-  | CauseRequestEventDto
-  | ActionRequestEventDto;
+export type RequestEventDto = CommunityRequestEventDto | CauseRequestEventDto | ActionRequestEventDto;
 
 /**
  * Domain event for request-related operations.

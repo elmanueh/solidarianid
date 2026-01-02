@@ -24,9 +24,7 @@ export class ActionsController {
       throw actions.value;
     }
 
-    return actions.value.map((action: Action) =>
-      ActionDomainMapper.toActionSummaryDto(action),
-    );
+    return actions.value.map((action: Action) => ActionDomainMapper.toActionSummaryDto(action));
   }
 
   @Get(':id')
@@ -35,9 +33,7 @@ export class ActionsController {
     description: 'Action details',
     type: ActionDetailResponseDto,
   })
-  async getActionById(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<ActionDetailResponseDto> {
+  async getActionById(@Param('id', new ParseUUIDPipe()) id: string): Promise<ActionDetailResponseDto> {
     const action = await this.actionsService.getActionById(id);
 
     if (action.isLeft()) {

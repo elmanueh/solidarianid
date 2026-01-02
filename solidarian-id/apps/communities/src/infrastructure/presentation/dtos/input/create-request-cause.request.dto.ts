@@ -50,8 +50,7 @@ export class CreateCauseRequestDto {
   description: string;
 
   @ApiProperty({
-    description:
-      'Sustainable Development Goals (SDGs) related to this cause. Must include at least one SDG.',
+    description: 'Sustainable Development Goals (SDGs) related to this cause. Must include at least one SDG.',
     example: [SustainableDevelopmentGoal.GenderEquality],
     isArray: true,
     enum: SustainableDevelopmentGoal,

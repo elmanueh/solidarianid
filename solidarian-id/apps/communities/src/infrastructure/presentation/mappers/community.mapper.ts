@@ -4,9 +4,7 @@ import { CommunityDetailResponseDto } from '../dtos/output/community-detail.resp
 import { CauseDomainMapper } from './cause.mapper';
 
 export class CommunityDomainMapper {
-  static toCommunitySummaryDto(
-    community: Community,
-  ): CommunitySummaryResponseDto {
+  static toCommunitySummaryDto(community: Community): CommunitySummaryResponseDto {
     return {
       id: community.id.value,
       name: community.name,
@@ -14,16 +12,12 @@ export class CommunityDomainMapper {
     };
   }
 
-  static toCommunityDetailDto(
-    community: Community,
-  ): CommunityDetailResponseDto {
+  static toCommunityDetailDto(community: Community): CommunityDetailResponseDto {
     return {
       id: community.id.value,
       name: community.name,
       description: community.description,
-      causes: community.causes.map((cause) =>
-        CauseDomainMapper.toCauseSummaryDto(cause),
-      ),
+      causes: community.causes.map(cause => CauseDomainMapper.toCauseSummaryDto(cause)),
     };
   }
 }

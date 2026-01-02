@@ -20,24 +20,16 @@ export class ActionEntityMapper implements Mapper<Action, ActionEntity> {
     entity.description = model.description;
     entity.causeId = model.causeId;
 
-    entity.events =
-      model.events?.map((event) =>
-        this.eventEntityMapper.toPersistence(event),
-      ) || [];
+    entity.events = model.events?.map(event => this.eventEntityMapper.toPersistence(event)) || [];
 
-    entity.objectives =
-      model.objectives?.map((objective) =>
-        this.objetiveEntityMapper.toPersistence(objective),
-      ) || [];
+    entity.objectives = model.objectives?.map(objective => this.objetiveEntityMapper.toPersistence(objective)) || [];
 
     return entity;
   }
 
   fromPersistence(entity: ActionEntity): Either<ValidationError, Action> {
     const eventsOrError = sequence(
-      entity.events?.map((eventEntity) =>
-        this.eventEntityMapper.fromPersistence(eventEntity),
-      ),
+      entity.events?.map(eventEntity => this.eventEntityMapper.fromPersistence(eventEntity)),
     );
 
     if (eventsOrError.isLeft()) {
@@ -45,9 +37,7 @@ export class ActionEntityMapper implements Mapper<Action, ActionEntity> {
     }
 
     const objectivesOrError = sequence(
-      entity.objectives?.map((objectiveEntity) =>
-        this.objetiveEntityMapper.fromPersistence(objectiveEntity),
-      ),
+      entity.objectives?.map(objectiveEntity => this.objetiveEntityMapper.fromPersistence(objectiveEntity)),
     );
 
     if (objectivesOrError.isLeft()) {

@@ -25,7 +25,7 @@ export class RequestEntity {
   })
   type: RequestType;
 
-  @ManyToOne(() => UserEntity, (user) => user.requests)
+  @ManyToOne(() => UserEntity, user => user.requests)
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 }

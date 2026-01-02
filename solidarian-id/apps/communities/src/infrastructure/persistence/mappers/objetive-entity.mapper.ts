@@ -7,10 +7,7 @@ import { ObjectiveEntity } from '../entities/objective.entity';
 import { UserEntityMapper } from './user-entity.mapper';
 
 @Injectable()
-export class ObjectiveEntityMapper implements Mapper<
-  Objective,
-  ObjectiveEntity
-> {
+export class ObjectiveEntityMapper implements Mapper<Objective, ObjectiveEntity> {
   constructor(private readonly userEntityMapper: UserEntityMapper) {}
   toPersistence(model: Objective): ObjectiveEntity {
     const entity = new ObjectiveEntity();
@@ -22,17 +19,13 @@ export class ObjectiveEntityMapper implements Mapper<
     entity.actionId = model.actionId;
 
     entity.contributors =
-      model.contributors?.map((contributor) =>
-        this.userEntityMapper.toPersistence(contributor),
-      ) || [];
+      model.contributors?.map(contributor => this.userEntityMapper.toPersistence(contributor)) || [];
     return entity;
   }
 
   fromPersistence(entity: ObjectiveEntity): Either<ValidationError, Objective> {
     const contributorsOrError = sequence(
-      entity.contributors?.map((contributorEntity) =>
-        this.userEntityMapper.fromPersistence(contributorEntity),
-      ),
+      entity.contributors?.map(contributorEntity => this.userEntityMapper.fromPersistence(contributorEntity)),
     );
 
     if (contributorsOrError.isLeft()) {

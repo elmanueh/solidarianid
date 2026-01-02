@@ -9,10 +9,7 @@ import { ValueObject } from '../value-object';
  * @template TDomain Domain model type
  * @template TPersistence Persistence entity type
  */
-export abstract class Mapper<
-  TDomain extends Entity<any> | ValueObject<any>,
-  TPersistence,
-> {
+export abstract class Mapper<TDomain extends Entity<any> | ValueObject<any>, TPersistence> {
   /**
    * Converts a domain model into its persistence representation.
    *

@@ -42,20 +42,8 @@ export class CauseRequest extends Request<CauseRequestProps> {
     return this.props.durationDays;
   }
 
-  public static create(
-    props: CauseRequestCreationProps,
-    id?: string,
-  ): Either<ValidationError, CauseRequest> {
-    const {
-      name,
-      description,
-      status,
-      user,
-      reason,
-      ods,
-      initialDate,
-      durationDays,
-    } = props;
+  public static create(props: CauseRequestCreationProps, id?: string): Either<ValidationError, CauseRequest> {
+    const { name, description, status, user, reason, ods, initialDate, durationDays } = props;
     const uniqueId = UniqueEntityID.create(id);
     const nameOrError = Name.create(name);
     const descriptionOrError = Description.create(description);

@@ -84,9 +84,7 @@ export class RequestEntityMapper extends Mapper<AnyRequest, RequestEntity> {
         return this.mapToActionRequest(entity, user, status, reason);
 
       default:
-        return left(
-          new ValidationError(`Unknown request type: ${String(entity.type)}`),
-        );
+        return left(new ValidationError(`Unknown request type: ${String(entity.type)}`));
     }
   }
 

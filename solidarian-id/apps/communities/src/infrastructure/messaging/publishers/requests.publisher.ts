@@ -1,13 +1,5 @@
-import {
-  AnyRequest,
-  RequestPublisherPort,
-} from '@app/communities/domain/ports/requests.publisher.port';
-import {
-  KafkaPublisher,
-  Topics,
-  RequestEventDto,
-  RequestEventMapper,
-} from '@solidarianid/kafka';
+import { AnyRequest, RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
+import { KafkaPublisher, Topics, RequestEventDto, RequestEventMapper } from '@solidarianid/kafka';
 import { Injectable, Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 

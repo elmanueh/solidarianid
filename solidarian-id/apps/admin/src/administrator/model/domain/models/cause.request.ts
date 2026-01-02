@@ -47,10 +47,7 @@ export class RequestCause extends Request<RequestCauseProps> {
       return left(descriptionOrError.value);
     }
 
-    const durationOrError = DurationRange.create(
-      props.startDate,
-      props.endDate,
-    );
+    const durationOrError = DurationRange.create(props.startDate, props.endDate);
     if (durationOrError.isLeft()) {
       return left(durationOrError.value);
     }

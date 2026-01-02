@@ -12,12 +12,12 @@ export class UserEntity {
   })
   username: string;
 
-  @OneToMany(() => CommunityUserEntity, (member) => member.user, {
+  @OneToMany(() => CommunityUserEntity, member => member.user, {
     cascade: true,
     orphanedRowAction: 'delete',
   })
   communityMembers: CommunityUserEntity[];
 
-  @OneToMany(() => RequestEntity, (request) => request.user)
+  @OneToMany(() => RequestEntity, request => request.user)
   requests: RequestEntity[];
 }

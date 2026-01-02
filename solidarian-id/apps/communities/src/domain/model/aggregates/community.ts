@@ -75,11 +75,11 @@ export class Community extends AggregateRoot<CommunityProps> {
   }
 
   hasMember(user: User): boolean {
-    return this.props.members.some((m) => m.id.equals(user.id));
+    return this.props.members.some(m => m.id.equals(user.id));
   }
 
   hasAdmin(user: User): boolean {
-    return this.props.admins.some((a) => a.id.equals(user.id));
+    return this.props.admins.some(a => a.id.equals(user.id));
   }
 
   /**

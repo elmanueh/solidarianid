@@ -19,17 +19,12 @@ export class CauseEntityMapper implements Mapper<Cause, CauseEntity> {
     entity.initialDate = model.initialDate;
     entity.communityId = model.communityId;
 
-    entity.actions =
-      model.actions?.map((action) =>
-        this.actionEntityMapper.toPersistence(action),
-      ) || [];
+    entity.actions = model.actions?.map(action => this.actionEntityMapper.toPersistence(action)) || [];
     return entity;
   }
   fromPersistence(entity: CauseEntity): Either<ValidationError, Cause> {
     const actionsOrError = sequence(
-      entity.actions?.map((actionEntity) =>
-        this.actionEntityMapper.fromPersistence(actionEntity),
-      ),
+      entity.actions?.map(actionEntity => this.actionEntityMapper.fromPersistence(actionEntity)),
     );
 
     if (actionsOrError.isLeft()) {

@@ -6,10 +6,7 @@ import { RepositoryTypeORM } from '@app/ddd/repository/repository-typeorm';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RequestEntity } from '../entities/request.entity';
-import {
-  AnyRequest,
-  RequestsRepositoryPort,
-} from '@app/communities/domain/ports/requests.repository.port';
+import { AnyRequest, RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
 import { RequestEntityMapper } from '../mappers/request-entity.mapper';
 import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
 import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
@@ -43,9 +40,7 @@ export class RequestsRepositoryTypeOrmAdapter
   /**
    * Finds a community request by its unique identifier.
    */
-  async findCommunityRequestById(
-    id: string,
-  ): Promise<Either<RepositoryException, CommunityRequest>> {
+  async findCommunityRequestById(id: string): Promise<Either<RepositoryException, CommunityRequest>> {
     try {
       const entity = await this.requestRepository.findOne({
         where: { id, type: RequestType.COMMUNITY },
@@ -59,40 +54,25 @@ export class RequestsRepositoryTypeOrmAdapter
       const domainOrError = this.requestMapper.fromPersistence(entity);
 
       if (domainOrError.isLeft()) {
-        return left(
-          new RepositoryException(
-            `Failed to map CommunityRequest: ${domainOrError.value.message}`,
-          ),
-        );
+        return left(new RepositoryException(`Failed to map CommunityRequest: ${domainOrError.value.message}`));
       }
 
       const domain = domainOrError.value;
 
       if (!(domain instanceof CommunityRequest)) {
-        return left(
-          new RepositoryException(
-            `Expected CommunityRequest but got ${domain.constructor.name}`,
-          ),
-        );
+        return left(new RepositoryException(`Expected CommunityRequest but got ${domain.constructor.name}`));
       }
 
       return right(domain);
     } catch (error) {
-      return left(
-        new RepositoryException(
-          `Failed to find CommunityRequest by id ${id}`,
-          error,
-        ),
-      );
+      return left(new RepositoryException(`Failed to find CommunityRequest by id ${id}`, error));
     }
   }
 
   /**
    * Finds a cause request by its unique identifier.
    */
-  async findCauseRequestById(
-    id: string,
-  ): Promise<Either<RepositoryException, CauseRequest>> {
+  async findCauseRequestById(id: string): Promise<Either<RepositoryException, CauseRequest>> {
     try {
       const entity = await this.requestRepository.findOne({
         where: { id, type: RequestType.CAUSE },
@@ -106,40 +86,25 @@ export class RequestsRepositoryTypeOrmAdapter
       const domainOrError = this.requestMapper.fromPersistence(entity);
 
       if (domainOrError.isLeft()) {
-        return left(
-          new RepositoryException(
-            `Failed to map CauseRequest: ${domainOrError.value.message}`,
-          ),
-        );
+        return left(new RepositoryException(`Failed to map CauseRequest: ${domainOrError.value.message}`));
       }
 
       const domain = domainOrError.value;
 
       if (!(domain instanceof CauseRequest)) {
-        return left(
-          new RepositoryException(
-            `Expected CauseRequest but got ${domain.constructor.name}`,
-          ),
-        );
+        return left(new RepositoryException(`Expected CauseRequest but got ${domain.constructor.name}`));
       }
 
       return right(domain);
     } catch (error) {
-      return left(
-        new RepositoryException(
-          `Failed to find CauseRequest by id ${id}`,
-          error,
-        ),
-      );
+      return left(new RepositoryException(`Failed to find CauseRequest by id ${id}`, error));
     }
   }
 
   /**
    * Finds an action request by its unique identifier.
    */
-  async findActionRequestById(
-    id: string,
-  ): Promise<Either<RepositoryException, ActionRequest>> {
+  async findActionRequestById(id: string): Promise<Either<RepositoryException, ActionRequest>> {
     try {
       const entity = await this.requestRepository.findOne({
         where: { id, type: RequestType.ACTION },
@@ -153,40 +118,25 @@ export class RequestsRepositoryTypeOrmAdapter
       const domainOrError = this.requestMapper.fromPersistence(entity);
 
       if (domainOrError.isLeft()) {
-        return left(
-          new RepositoryException(
-            `Failed to map ActionRequest: ${domainOrError.value.message}`,
-          ),
-        );
+        return left(new RepositoryException(`Failed to map ActionRequest: ${domainOrError.value.message}`));
       }
 
       const domain = domainOrError.value;
 
       if (!(domain instanceof ActionRequest)) {
-        return left(
-          new RepositoryException(
-            `Expected ActionRequest but got ${domain.constructor.name}`,
-          ),
-        );
+        return left(new RepositoryException(`Expected ActionRequest but got ${domain.constructor.name}`));
       }
 
       return right(domain);
     } catch (error) {
-      return left(
-        new RepositoryException(
-          `Failed to find ActionRequest by id ${id}`,
-          error,
-        ),
-      );
+      return left(new RepositoryException(`Failed to find ActionRequest by id ${id}`, error));
     }
   }
 
   /**
    * Finds all requests of a specific type.
    */
-  async findByType(
-    type: RequestType,
-  ): Promise<Either<RepositoryException, AnyRequest[]>> {
+  async findByType(type: RequestType): Promise<Either<RepositoryException, AnyRequest[]>> {
     try {
       const entities = await this.requestRepository.find({
         where: { type },
@@ -199,11 +149,7 @@ export class RequestsRepositoryTypeOrmAdapter
         const domainOrError = this.requestMapper.fromPersistence(entity);
 
         if (domainOrError.isLeft()) {
-          return left(
-            new RepositoryException(
-              `Failed to map request: ${domainOrError.value.message}`,
-            ),
-          );
+          return left(new RepositoryException(`Failed to map request: ${domainOrError.value.message}`));
         }
 
         results.push(domainOrError.value);
@@ -211,21 +157,14 @@ export class RequestsRepositoryTypeOrmAdapter
 
       return right(results);
     } catch (error) {
-      return left(
-        new RepositoryException(
-          `Failed to find requests by type ${type}`,
-          error,
-        ),
-      );
+      return left(new RepositoryException(`Failed to find requests by type ${type}`, error));
     }
   }
 
   /**
    * Finds all pending requests of a specific type.
    */
-  async findPendingRequestsByType(
-    type: RequestType,
-  ): Promise<Either<RepositoryException, AnyRequest[]>> {
+  async findPendingRequestsByType(type: RequestType): Promise<Either<RepositoryException, AnyRequest[]>> {
     try {
       const entities = await this.requestRepository.find({
         where: {
@@ -244,11 +183,7 @@ export class RequestsRepositoryTypeOrmAdapter
         const domainOrError = this.requestMapper.fromPersistence(entity);
 
         if (domainOrError.isLeft()) {
-          return left(
-            new RepositoryException(
-              `Failed to map request: ${domainOrError.value.message}`,
-            ),
-          );
+          return left(new RepositoryException(`Failed to map request: ${domainOrError.value.message}`));
         }
 
         results.push(domainOrError.value);
@@ -256,21 +191,14 @@ export class RequestsRepositoryTypeOrmAdapter
 
       return right(results);
     } catch (error) {
-      return left(
-        new RepositoryException(
-          `Failed to find pending requests by type ${type}`,
-          error,
-        ),
-      );
+      return left(new RepositoryException(`Failed to find pending requests by type ${type}`, error));
     }
   }
 
   /**
    * Finds all requests created by a specific user.
    */
-  async findByUserId(
-    userId: string,
-  ): Promise<Either<RepositoryException, AnyRequest[]>> {
+  async findByUserId(userId: string): Promise<Either<RepositoryException, AnyRequest[]>> {
     try {
       const entities = await this.requestRepository.find({
         where: { user: { id: userId } },
@@ -286,11 +214,7 @@ export class RequestsRepositoryTypeOrmAdapter
         const domainOrError = this.requestMapper.fromPersistence(entity);
 
         if (domainOrError.isLeft()) {
-          return left(
-            new RepositoryException(
-              `Failed to map request: ${domainOrError.value.message}`,
-            ),
-          );
+          return left(new RepositoryException(`Failed to map request: ${domainOrError.value.message}`));
         }
 
         results.push(domainOrError.value);
@@ -298,22 +222,14 @@ export class RequestsRepositoryTypeOrmAdapter
 
       return right(results);
     } catch (error) {
-      return left(
-        new RepositoryException(
-          `Failed to find requests by user id ${userId}`,
-          error,
-        ),
-      );
+      return left(new RepositoryException(`Failed to find requests by user id ${userId}`, error));
     }
   }
 
   /**
    * Finds all requests created by a specific user filtered by type.
    */
-  async findByUserIdAndType(
-    userId: string,
-    type: RequestType,
-  ): Promise<Either<RepositoryException, AnyRequest[]>> {
+  async findByUserIdAndType(userId: string, type: RequestType): Promise<Either<RepositoryException, AnyRequest[]>> {
     try {
       const entities = await this.requestRepository.find({
         where: {
@@ -332,11 +248,7 @@ export class RequestsRepositoryTypeOrmAdapter
         const domainOrError = this.requestMapper.fromPersistence(entity);
 
         if (domainOrError.isLeft()) {
-          return left(
-            new RepositoryException(
-              `Failed to map request: ${domainOrError.value.message}`,
-            ),
-          );
+          return left(new RepositoryException(`Failed to map request: ${domainOrError.value.message}`));
         }
 
         results.push(domainOrError.value);
@@ -344,12 +256,7 @@ export class RequestsRepositoryTypeOrmAdapter
 
       return right(results);
     } catch (error) {
-      return left(
-        new RepositoryException(
-          `Failed to find requests by user id ${userId} and type ${type}`,
-          error,
-        ),
-      );
+      return left(new RepositoryException(`Failed to find requests by user id ${userId} and type ${type}`, error));
     }
   }
 }

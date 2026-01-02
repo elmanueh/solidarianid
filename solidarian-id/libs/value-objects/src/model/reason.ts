@@ -20,19 +20,13 @@ export class Reason extends ValueObject<ReasonProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    plainReason?: string,
-  ): Either<InvalidDescriptionError, Reason> {
+  public static create(plainReason?: string): Either<InvalidDescriptionError, Reason> {
     // Validar longitud máxima
     if (!plainReason || plainReason.trim().length === 0) {
       return right(new Reason(''));
     }
     if (plainReason.length > REASON_MAX_LENGTH) {
-      return left(
-        new InvalidDescriptionError(
-          `Reason must not exceed ${REASON_MAX_LENGTH} characters.`,
-        ),
-      );
+      return left(new InvalidDescriptionError(`Reason must not exceed ${REASON_MAX_LENGTH} characters.`));
     }
 
     return right(new Reason(plainReason));

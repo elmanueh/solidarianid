@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { CommunityEntity } from './community.entity';
 import { ActionEntity } from './action.entity';
 
@@ -32,11 +25,11 @@ export class CauseEntity {
   @Column({ nullable: false })
   communityId: string;
 
-  @ManyToOne(() => CommunityEntity, (community) => community.causes)
+  @ManyToOne(() => CommunityEntity, community => community.causes)
   @JoinColumn({ name: 'communityId' })
   community: CommunityEntity;
 
-  @OneToMany(() => ActionEntity, (action) => action.cause, {
+  @OneToMany(() => ActionEntity, action => action.cause, {
     cascade: true,
   })
   actions: ActionEntity[];

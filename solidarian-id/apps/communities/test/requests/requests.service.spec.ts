@@ -62,14 +62,12 @@ describe('RequestsServiceImpl', () => {
   describe('createCommunityRequest', () => {
     const validCommunityDto: CreateCommunityRequestDto = {
       name: 'Comunidad de Prueba',
-      description:
-        'Esta es una descripción válida para la comunidad de prueba con más de 20 caracteres',
+      description: 'Esta es una descripción válida para la comunidad de prueba con más de 20 caracteres',
       userId: validUserId,
       causeCreationRequests: [
         {
           name: 'Causa de Prueba',
-          description:
-            'Descripción válida de la causa para pruebas con más de 20 caracteres',
+          description: 'Descripción válida de la causa para pruebas con más de 20 caracteres',
           ods: [SustainableDevelopmentGoal.NoPoverty],
           initialDate: '2026-01-15T00:00:00.000Z',
           durationDays: 90,
@@ -91,10 +89,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should return EntityNotFoundException when user does not exist', async () => {
-      const notFoundError = new EntityNotFoundException(
-        'User',
-        'User not found',
-      );
+      const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
       const result = await service.createCommunityRequest(validCommunityDto);
@@ -136,8 +131,7 @@ describe('RequestsServiceImpl', () => {
   describe('createCauseRequest', () => {
     const validCauseDto: CreateCauseRequestDto = {
       name: 'Causa Benéfica de Prueba',
-      description:
-        'Esta es una descripción válida para la causa benéfica con más de 20 caracteres',
+      description: 'Esta es una descripción válida para la causa benéfica con más de 20 caracteres',
       userId: validUserId,
       ods: [SustainableDevelopmentGoal.ZeroHunger],
       initialDate: '2026-02-01T00:00:00.000Z',
@@ -158,10 +152,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should return EntityNotFoundException when user does not exist', async () => {
-      const notFoundError = new EntityNotFoundException(
-        'User',
-        'User not found',
-      );
+      const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
       const result = await service.createCauseRequest(validCauseDto);
@@ -202,14 +193,12 @@ describe('RequestsServiceImpl', () => {
   describe('createActionRequest', () => {
     const validActionDto: CreateActionRequestDto = {
       name: 'Acción Solidaria de Prueba',
-      description:
-        'Esta es una descripción válida para la acción solidaria con más de 20 caracteres',
+      description: 'Esta es una descripción válida para la acción solidaria con más de 20 caracteres',
       userId: validUserId,
       objectives: [
         {
           name: 'Objetivo de Prueba',
-          description:
-            'Descripción del objetivo cuantificable con más de 20 caracteres',
+          description: 'Descripción del objetivo cuantificable con más de 20 caracteres',
           quantity: 100,
           unit: 'kilogramos',
         },
@@ -217,8 +206,7 @@ describe('RequestsServiceImpl', () => {
       events: [
         {
           name: 'Evento de Prueba',
-          description:
-            'Descripción del evento presencial con más de 20 caracteres',
+          description: 'Descripción del evento presencial con más de 20 caracteres',
           initialDate: '2026-03-15T10:00:00.000Z',
           place: {
             direction: 'Calle Mayor 123',
@@ -243,10 +231,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should return EntityNotFoundException when user does not exist', async () => {
-      const notFoundError = new EntityNotFoundException(
-        'User',
-        'User not found',
-      );
+      const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
       const result = await service.createActionRequest(validActionDto);

@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { CauseEntity } from './cause.entity';
 import { EventEntity } from './event.entity';
 import { ObjectiveEntity } from './objective.entity';
@@ -24,16 +17,16 @@ export class ActionEntity {
   @Column({ nullable: false })
   causeId: string;
 
-  @ManyToOne(() => CauseEntity, (cause) => cause.actions)
+  @ManyToOne(() => CauseEntity, cause => cause.actions)
   @JoinColumn({ name: 'causeId' })
   cause: CauseEntity;
 
-  @OneToMany(() => ObjectiveEntity, (objective) => objective.action, {
+  @OneToMany(() => ObjectiveEntity, objective => objective.action, {
     cascade: true,
   })
   objectives: ObjectiveEntity[];
 
-  @OneToMany(() => EventEntity, (event) => event.action, {
+  @OneToMany(() => EventEntity, event => event.action, {
     cascade: true,
   })
   events: EventEntity[];

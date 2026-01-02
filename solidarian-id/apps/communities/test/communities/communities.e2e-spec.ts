@@ -59,10 +59,7 @@ describe('CommunitiesController (e2e)', () => {
 
   describe('/communities (GET)', () => {
     it('should return an array with communities', async () => {
-      const response = await server
-        .getRequest()
-        .get('/communities')
-        .expect(HttpStatus.OK);
+      const response = await server.getRequest().get('/communities').expect(HttpStatus.OK);
 
       expect(response.body).toHaveLength(3);
       expect(response.body[0].name).toBe('Amigos por África');
@@ -71,27 +68,18 @@ describe('CommunitiesController (e2e)', () => {
 
   describe('/communities/:id (GET)', () => {
     it('should return community detail with causes', async () => {
-      const response = await server
-        .getRequest()
-        .get(`/communities/${COMMUNITY_IDS.AFRICA}`)
-        .expect(HttpStatus.OK);
+      const response = await server.getRequest().get(`/communities/${COMMUNITY_IDS.AFRICA}`).expect(HttpStatus.OK);
 
       expect(response.body.name).toBe('Amigos por África');
       expect(response.body.causes).toHaveLength(2);
     });
 
     it('should return 400 when invalid UUID is provided', async () => {
-      await server
-        .getRequest()
-        .get('/communities/non-existing-id')
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().get('/communities/non-existing-id').expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 404 when community does not exist', async () => {
-      await server
-        .getRequest()
-        .get('/communities/00000000-0000-0000-0000-000000000999')
-        .expect(HttpStatus.NOT_FOUND);
+      await server.getRequest().get('/communities/00000000-0000-0000-0000-000000000999').expect(HttpStatus.NOT_FOUND);
     });
   });
 });

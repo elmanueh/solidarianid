@@ -16,14 +16,14 @@ describe('Login Page - Form DOM Structure and Validation', () => {
 
   describe('Form Structure', () => {
     it('should render login form with correct id and method', () => {
-      const form = document.getElementById('login-form');
+      const form = document.getElementById('login-form') as HTMLFormElement;
       expect(form).toBeInTheDocument();
       expect(form).toHaveAttribute('method', 'POST');
       expect(form).toHaveAttribute('action', '/login');
     });
 
     it('should render page title with aria-labelledby', () => {
-      const title = screen.getByRole('heading', { level: 1 });
+      const title = screen.getByRole('heading', { level: 1 }) as unknown as HTMLHeadingElement;
       expect(title).toBeInTheDocument();
       expect(title).toHaveAttribute('id', 'login-title');
       expect(title).toHaveTextContent('Iniciar Sesión');
@@ -51,14 +51,14 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     });
 
     it('should render submit button', () => {
-      const submitButton = document.querySelector('button[type="submit"]');
+      const submitButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
       expect(submitButton).toBeInTheDocument();
       expect(submitButton).toHaveTextContent('Iniciar sesión');
     });
 
     it('should have labels associated with inputs', () => {
-      const emailLabel = document.querySelector('label[for="email"]');
-      const passwordLabel = document.querySelector('label[for="password"]');
+      const emailLabel = document.querySelector('label[for="email"]') as HTMLLabelElement;
+      const passwordLabel = document.querySelector('label[for="password"]') as HTMLLabelElement;
       expect(emailLabel).toBeInTheDocument();
       expect(passwordLabel).toBeInTheDocument();
     });
@@ -79,15 +79,15 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     });
 
     it('inputs should have aria-describedby pointing to error elements', () => {
-      const emailInput = document.getElementById('email');
-      const passwordInput = document.getElementById('password');
+      const emailInput = document.getElementById('email') as HTMLInputElement;
+      const passwordInput = document.getElementById('password') as HTMLInputElement;
       expect(emailInput).toHaveAttribute('aria-describedby', 'email-error');
       expect(passwordInput).toHaveAttribute('aria-describedby', 'password-error');
     });
 
     it('error elements should have role="alert" for accessibility', () => {
-      const emailError = document.getElementById('email-error');
-      const passwordError = document.getElementById('password-error');
+      const emailError = document.getElementById('email-error') as HTMLElement;
+      const passwordError = document.getElementById('password-error') as HTMLElement;
       expect(emailError).toHaveAttribute('role', 'alert');
       expect(passwordError).toHaveAttribute('role', 'alert');
     });
@@ -130,7 +130,7 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     });
 
     it('should display form announcer for screen readers', () => {
-      const announcer = document.getElementById('form-announcer');
+      const announcer = document.getElementById('form-announcer') as HTMLElement;
       expect(announcer).toBeInTheDocument();
       expect(announcer).toHaveAttribute('aria-live', 'assertive');
       expect(announcer).toHaveAttribute('aria-atomic', 'true');
@@ -139,7 +139,7 @@ describe('Login Page - Form DOM Structure and Validation', () => {
 
   describe('Form Styling and Classes', () => {
     it('should apply auth-form class to form element', () => {
-      const form = document.getElementById('login-form');
+      const form = document.getElementById('login-form') as HTMLFormElement;
       expect(form).toHaveClass('auth-form');
     });
 

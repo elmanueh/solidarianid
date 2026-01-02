@@ -8,6 +8,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 const createMockRequestsService = (): jest.Mocked<RequestsService> => ({
   updateStatus: jest.fn(),
+  getPendingCommunityRequests: jest.fn(),
+  getPendingCauseRequests: jest.fn(),
+  getPendingActionRequests: jest.fn(),
 });
 
 const createMockUpdateStatusDto = (props: { status: RequestStatus; reason?: string }) => ({

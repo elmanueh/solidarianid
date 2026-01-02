@@ -8,14 +8,12 @@ interface LineConfigInput {
   tooltipCallbacks?: Record<string, string>;
 }
 
-export function createLineConfig(
-  input: LineConfigInput,
-): SerializableChartConfig {
+export function createLineConfig(input: LineConfigInput): SerializableChartConfig {
   return {
     type: 'line',
     data: {
       labels: input.labels,
-      datasets: input.series.map((s) => ({
+      datasets: input.series.map(s => ({
         label: s.label,
         data: s.values,
         tension: input.tension ?? 0.3,

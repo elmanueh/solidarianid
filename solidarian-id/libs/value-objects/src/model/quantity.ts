@@ -19,15 +19,9 @@ export class Quantity extends ValueObject<QuantityProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    quantity: number,
-  ): Either<InvalidQuantityError, Quantity> {
+  public static create(quantity: number): Either<InvalidQuantityError, Quantity> {
     if (quantity <= 0) {
-      return left(
-        new InvalidQuantityError(
-          'Quantity cannot be less than or equal to zero.',
-        ),
-      );
+      return left(new InvalidQuantityError('Quantity cannot be less than or equal to zero.'));
     }
 
     return right(new Quantity(quantity));

@@ -8,8 +8,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginUserDtoRequest {
   @ApiProperty({
-    description:
-      'Username for the user´containing only alphanumeric characters',
+    description: 'Username for the user´containing only alphanumeric characters',
     example: 'johnDoe',
     minLength: USERNAME_MIN_LENGTH,
     maxLength: USERNAME_MAX_LENGTH,
@@ -20,8 +19,7 @@ export class LoginUserDtoRequest {
   username: string;
 
   @ApiProperty({
-    description:
-      'Password for the user account with at least a symbol, a number, and an uppercase letter',
+    description: 'Password for the user account with at least a symbol, a number, and an uppercase letter',
     example: 'SecureP@ssw0rd',
     minLength: PASSWORD_MIN_LENGTH,
   })

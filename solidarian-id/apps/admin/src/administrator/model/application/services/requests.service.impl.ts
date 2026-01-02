@@ -20,11 +20,7 @@ export class RequestsServiceImpl extends RequestsService {
     super();
   }
 
-  async updateStatus(
-    id: string,
-    status: RequestStatus,
-    reason?: string,
-  ): Promise<Either<ValidationError, void>> {
+  async updateStatus(id: string, status: RequestStatus, reason?: string): Promise<Either<ValidationError, void>> {
     const idOrError = UniqueEntityID.create(id);
     if (idOrError.isLeft()) {
       return left(idOrError.value);
@@ -55,25 +51,15 @@ export class RequestsServiceImpl extends RequestsService {
     return right(undefined);
   }
 
-  getPendingCommunityRequests(): Promise<
-    Either<ValidationError, RequestCommunity[]>
-  > {
-    return Promise.resolve(
-      right(fakeCommunityRequests as unknown as RequestCommunity[]),
-    );
+  getPendingCommunityRequests(): Promise<Either<ValidationError, RequestCommunity[]>> {
+    return Promise.resolve(right(fakeCommunityRequests as unknown as RequestCommunity[]));
   }
 
   getPendingCauseRequests(): Promise<Either<ValidationError, RequestCause[]>> {
-    return Promise.resolve(
-      right(fakeCauseRequests as unknown as RequestCause[]),
-    );
+    return Promise.resolve(right(fakeCauseRequests as unknown as RequestCause[]));
   }
 
-  getPendingActionRequests(): Promise<
-    Either<ValidationError, RequestAction[]>
-  > {
-    return Promise.resolve(
-      right(fakeActionRequests as unknown as RequestAction[]),
-    );
+  getPendingActionRequests(): Promise<Either<ValidationError, RequestAction[]>> {
+    return Promise.resolve(right(fakeActionRequests as unknown as RequestAction[]));
   }
 }

@@ -28,20 +28,14 @@ export class AuthServiceImpl extends AuthService {
     email: string,
     phone: string,
     password: string,
-  ): Promise<
-    Either<AuthError | ConflictError | ValidationError, Administrator>
-  > {
-    const existingAdministrator =
-      await this.administratorRepository.findByEmail(email);
+  ): Promise<Either<AuthError | ConflictError | ValidationError, Administrator>> {
+    const existingAdministrator = await this.administratorRepository.findByEmail(email);
 
     if (existingAdministrator.isRight()) {
-      return left(
-        new AdminConflictError('Administrator with this email already exists'),
-      );
+      return left(new AdminConflictError('Administrator with this email already exists'));
     }
 
-    const passwordHashOrError =
-      await this.passwordService.validateAndHashPassword(password);
+    const passwordHashOrError = await this.passwordService.validateAndHashPassword(password);
 
     if (passwordHashOrError.isLeft()) {
       return left(passwordHashOrError.value);
@@ -49,12 +43,7 @@ export class AuthServiceImpl extends AuthService {
 
     const hashedPassword = passwordHashOrError.value;
 
-    const newAdminOrError = Administrator.create(
-      fullname,
-      email,
-      phone,
-      hashedPassword,
-    );
+    const newAdminOrError = Administrator.create(fullname, email, phone, hashedPassword);
 
     if (newAdminOrError.isLeft()) {
       return left(newAdminOrError.value);
@@ -67,27 +56,17 @@ export class AuthServiceImpl extends AuthService {
     return right(newAdmin);
   }
 
-  public async login(
-    email: string,
-    password: string,
-  ): Promise<Either<AuthError, Administrator>> {
+  public async login(email: string, password: string): Promise<Either<AuthError, Administrator>> {
     const adminOrError = await this.administratorRepository.findByEmail(email);
 
     if (adminOrError.isLeft()) {
-      return left(
-        new AdminAuthenticationError('Email o contraseña incorrectos'),
-      );
+      return left(new AdminAuthenticationError('Email o contraseña incorrectos'));
     }
 
-    const isPasswordValid = await this.passwordService.comparePassword(
-      password,
-      adminOrError.value.password,
-    );
+    const isPasswordValid = await this.passwordService.comparePassword(password, adminOrError.value.password);
 
     if (!isPasswordValid) {
-      return left(
-        new AdminAuthenticationError('Email o contraseña incorrectos'),
-      );
+      return left(new AdminAuthenticationError('Email o contraseña incorrectos'));
     }
 
     return right(adminOrError.value);

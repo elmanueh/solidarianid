@@ -30,15 +30,8 @@ export class AuthApiController {
     @Res() response: Response,
     @Body() registerDto: AdminRegisterRequestDto,
   ): Promise<Response<void>> {
-    const registerOrError: Either<
-      AuthError | ConflictError | ValidationError,
-      Administrator
-    > = await this.authService.register(
-      registerDto.fullName,
-      registerDto.email,
-      registerDto.phone,
-      registerDto.password,
-    );
+    const registerOrError: Either<AuthError | ConflictError | ValidationError, Administrator> =
+      await this.authService.register(registerDto.fullName, registerDto.email, registerDto.phone, registerDto.password);
 
     if (registerOrError.isLeft()) {
       throw registerOrError.value;
@@ -46,28 +39,21 @@ export class AuthApiController {
 
     const locationUrl = `${request.protocol}://${request.get('host')}${request.path}/${registerOrError.value.id.value}`;
 
-    return response
-      .status(201)
-      .location(locationUrl)
-      .json(AdministratorDtoMapper.toDto(registerOrError.value));
+    return response.status(201).location(locationUrl).json(AdministratorDtoMapper.toDto(registerOrError.value));
   }
 
   @Post('login')
-  async login(
-    @Req() request: Request,
-    @Res() response: Response,
-    @Body() loginDto: AdminLoginRequestDto,
-  ) {
-    const loginOrError: Either<AuthError, Administrator> =
-      await this.authService.login(loginDto.email, loginDto.password);
+  async login(@Req() request: Request, @Res() response: Response, @Body() loginDto: AdminLoginRequestDto) {
+    const loginOrError: Either<AuthError, Administrator> = await this.authService.login(
+      loginDto.email,
+      loginDto.password,
+    );
 
     if (loginOrError.isLeft()) {
       throw loginOrError.value;
     }
 
-    const adminDto: AdministratorResponseDto = AdministratorDtoMapper.toDto(
-      loginOrError.value,
-    );
+    const adminDto: AdministratorResponseDto = AdministratorDtoMapper.toDto(loginOrError.value);
 
     request.session.user = adminDto;
 

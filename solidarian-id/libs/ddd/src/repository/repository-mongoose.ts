@@ -6,10 +6,7 @@ import { Mapper } from '@app/ddd/repository/mapper';
 import { Repository } from '@app/ddd/repository/repository';
 import { HydratedDocument, Model } from 'mongoose';
 
-export class RepositoryMongoose<
-  TDomain extends Entity<any>,
-  TPersistence,
-> extends Repository<TDomain> {
+export class RepositoryMongoose<TDomain extends Entity<any>, TPersistence> extends Repository<TDomain> {
   constructor(
     private readonly model: Model<HydratedDocument<TPersistence>>,
     private readonly mapper: Mapper<TDomain, TPersistence>,
@@ -34,9 +31,7 @@ export class RepositoryMongoose<
     try {
       const document = await this.model.findById(id);
       if (!document) {
-        return left(
-          new EntityNotFoundException('Entity not found for removal.', id),
-        );
+        return left(new EntityNotFoundException('Entity not found for removal.', id));
       }
 
       await this.model.findByIdAndDelete(id);
@@ -46,9 +41,7 @@ export class RepositoryMongoose<
     }
   }
 
-  async findById(
-    id: string,
-  ): Promise<Either<RepositoryException | EntityNotFoundException, TDomain>> {
+  async findById(id: string): Promise<Either<RepositoryException | EntityNotFoundException, TDomain>> {
     try {
       const document = await this.model.findById(id);
       if (!document) {
@@ -61,25 +54,23 @@ export class RepositoryMongoose<
     }
   }
 
-  async findAll(): Promise<
-    Either<RepositoryException | EntityNotFoundException, TDomain[]>
-  > {
+  async findAll(): Promise<Either<RepositoryException | EntityNotFoundException, TDomain[]>> {
     try {
       const documents = await this.model.find();
       if (documents.length === 0) {
         return left(new EntityNotFoundException('No entities found', 'all'));
       }
 
-      const models = documents.map((document) => {
+      const models = documents.map(document => {
         return this.mapper.fromPersistence(document);
       });
 
-      if (models.some((m) => m.isLeft())) {
-        const leftModel = models.find((m) => m.isLeft())!;
+      if (models.some(m => m.isLeft())) {
+        const leftModel = models.find(m => m.isLeft())!;
         return left(leftModel.value);
       }
 
-      const domainModels = models.map((m) => m.value as TDomain);
+      const domainModels = models.map(m => m.value as TDomain);
       return right(domainModels);
     } catch (error) {
       return left(new RepositoryException('Failed to find entities.', error));

@@ -20,14 +20,10 @@ export class MobilePhone extends ValueObject<MobilePhoneProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    plainPhone: string,
-  ): Either<InvalidMobilePhoneError, MobilePhone> {
+  public static create(plainPhone: string): Either<InvalidMobilePhoneError, MobilePhone> {
     // Validar que no esté vacío
     if (!plainPhone || plainPhone.trim().length === 0) {
-      return left(
-        new InvalidMobilePhoneError('Mobile phone number cannot be empty.'),
-      );
+      return left(new InvalidMobilePhoneError('Mobile phone number cannot be empty.'));
     }
 
     // Validar formato E.164: +[1-3 dígitos código país][9 dígitos]

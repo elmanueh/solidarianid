@@ -21,7 +21,5 @@ export abstract class Mapper<TDomain extends Entity<any>, TPersistence> {
    *
    * @param entity Persistence model
    */
-  abstract fromPersistence(
-    entity: TPersistence,
-  ): Either<ValidationError, TDomain>;
+  abstract fromPersistence(entity: TPersistence): Either<ValidationError, TDomain>;
 }

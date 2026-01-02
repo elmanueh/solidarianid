@@ -118,9 +118,7 @@
       return { success: true, data: response.data };
     } catch (error) {
       // Los filtros del backend devuelven { statusCode, message, timestamp }
-      const message =
-        error.response?.data?.message ||
-        'Error al iniciar sesión. Intenta de nuevo.';
+      const message = error.response?.data?.message || 'Error al iniciar sesión. Intenta de nuevo.';
       const statusCode = error.response?.status || 500;
 
       // Mostrar toast con el error
@@ -137,16 +135,11 @@
    */
   async function sendRegisterRequest(registerData) {
     try {
-      const response = await axiosInstance.post(
-        '/api/auth/register',
-        registerData,
-      );
+      const response = await axiosInstance.post('/api/auth/register', registerData);
       return { success: true, data: response.data };
     } catch (error) {
       // Los filtros del backend devuelven { statusCode, message, timestamp }
-      const message =
-        error.response?.data?.message ||
-        'Error al registrar. Intenta de nuevo.';
+      const message = error.response?.data?.message || 'Error al registrar. Intenta de nuevo.';
       const statusCode = error.response?.status || 500;
 
       // Mostrar toast con el error
@@ -162,9 +155,7 @@
       return { success: true, data: response.data };
     } catch (error) {
       // Los filtros del backend devuelven { statusCode, message, timestamp }
-      const message =
-        error.response?.data?.message ||
-        'Error al cerrar sesión. Intenta de nuevo.';
+      const message = error.response?.data?.message || 'Error al cerrar sesión. Intenta de nuevo.';
       const statusCode = error.response?.status || 500;
 
       // Mostrar toast con el error

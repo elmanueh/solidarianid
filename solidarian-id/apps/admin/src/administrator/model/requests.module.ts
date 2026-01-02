@@ -12,11 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: RequestEntity.name, schema: RequestSchema },
-    ]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: RequestEntity.name, schema: RequestSchema }])],
   controllers: [RequestsController],
   providers: [
     RequestMapper,

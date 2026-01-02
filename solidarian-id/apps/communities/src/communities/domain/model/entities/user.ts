@@ -26,10 +26,7 @@ export class User extends Entity<UserProps> {
    *
    * @return Either<InvalidUniqueEntityIDError | InvalidUsernameError, User>
    */
-  public static create(
-    props: UserCreationProps,
-    id?: string,
-  ): Either<ValidationError, User> {
+  public static create(props: UserCreationProps, id?: string): Either<ValidationError, User> {
     const uniqueId = UniqueEntityID.create(id);
     const username = Username.create(props.username);
 

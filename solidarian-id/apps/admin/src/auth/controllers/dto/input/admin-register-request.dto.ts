@@ -1,12 +1,5 @@
 import { MOBILE_PHONE_REGEX } from '@app/value-objects/constants/validation.constants';
-import {
-  IsNotEmpty,
-  IsString,
-  IsEmail,
-  MinLength,
-  MaxLength,
-  Matches,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, MinLength, MaxLength, Matches } from 'class-validator';
 
 export class AdminRegisterRequestDto {
   @IsNotEmpty({ message: 'El nombre completo es obligatorio' })
@@ -18,8 +11,7 @@ export class AdminRegisterRequestDto {
     message: 'El nombre completo no puede exceder 50 caracteres',
   })
   @Matches(/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑàèìòùÀÈÌÒÙçÇ\s]+$/, {
-    message:
-      'El nombre completo solo puede contener letras y espacios. No se permiten números ni signos.',
+    message: 'El nombre completo solo puede contener letras y espacios. No se permiten números ni signos.',
   })
   fullName: string;
 
@@ -40,8 +32,7 @@ export class AdminRegisterRequestDto {
     message: 'La contraseña debe tener al menos 12 caracteres',
   })
   @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/, {
-    message:
-      'La contraseña debe tener al menos 12 caracteres, una mayúscula, un número y un carácter especial',
+    message: 'La contraseña debe tener al menos 12 caracteres, una mayúscula, un número y un carácter especial',
   })
   password: string;
 }

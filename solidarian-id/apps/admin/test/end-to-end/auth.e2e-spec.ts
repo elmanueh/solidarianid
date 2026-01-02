@@ -1,12 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { AuthModule } from '@app/admin/auth/auth.module';
 import { Connection } from 'mongoose';
-import {
-  MongoDBSeeder,
-  MongoDBTestContainer,
-  MongoDBTestModule,
-  TestServerHelper,
-} from '@solidarianid/testing';
+import { MongoDBSeeder, MongoDBTestContainer, MongoDBTestModule, TestServerHelper } from '@solidarianid/testing';
 
 describe('AuthController (e2e)', () => {
   const validRegisterData = {
@@ -38,16 +33,9 @@ describe('AuthController (e2e)', () => {
 
   describe('POST /api/auth/register', () => {
     it('should register a new administrator successfully', async () => {
-      const response = await server
-        .getRequest()
-        .post('/api/auth/register')
-        .send(validRegisterData)
-        .expect(201);
+      const response = await server.getRequest().post('/api/auth/register').send(validRegisterData).expect(201);
 
-      expect(response.body).toHaveProperty(
-        'fullName',
-        validRegisterData.fullName,
-      );
+      expect(response.body).toHaveProperty('fullName', validRegisterData.fullName);
       expect(response.body).toHaveProperty('email', validRegisterData.email);
       expect(response.body).toHaveProperty('phone', validRegisterData.phone);
       expect(response.headers).toHaveProperty('location');
@@ -90,9 +78,7 @@ describe('AuthController (e2e)', () => {
 
       expect(response.body.error).toHaveProperty('message');
       expect(Array.isArray(response.body.error.message)).toBe(true);
-      expect(response.body.error.message).toContain(
-        'El nombre completo es obligatorio',
-      );
+      expect(response.body.error.message).toContain('El nombre completo es obligatorio');
     });
 
     it('should return 400 Bad Request when email is invalid', async () => {
@@ -148,10 +134,7 @@ describe('AuthController (e2e)', () => {
         .expect(200);
 
       expect(response.body).toHaveProperty('fullName', 'Login Test User');
-      expect(response.body).toHaveProperty(
-        'email',
-        'login.test@solidarianid.org',
-      );
+      expect(response.body).toHaveProperty('email', 'login.test@solidarianid.org');
       expect(response.headers['set-cookie']).toBeDefined();
     });
 
@@ -213,11 +196,7 @@ describe('AuthController (e2e)', () => {
       const cookies = loginResponse.headers['set-cookie'];
 
       // Then logout
-      await server
-        .getRequest()
-        .post('/api/auth/logout')
-        .set('Cookie', cookies)
-        .expect(204);
+      await server.getRequest().post('/api/auth/logout').set('Cookie', cookies).expect(204);
     });
 
     it('should return 204 even without active session', async () => {
@@ -241,10 +220,7 @@ describe('AuthController (e2e)', () => {
         })
         .expect(201);
 
-      expect(registerResponse.body).toHaveProperty(
-        'fullName',
-        'Flow Test User',
-      );
+      expect(registerResponse.body).toHaveProperty('fullName', 'Flow Test User');
       expect(registerResponse.body).toHaveProperty('email', uniqueEmail);
 
       // Step 2: Login
@@ -262,11 +238,7 @@ describe('AuthController (e2e)', () => {
       expect(cookies).toBeDefined();
 
       // Step 3: Logout
-      await server
-        .getRequest()
-        .post('/api/auth/logout')
-        .set('Cookie', cookies)
-        .expect(204);
+      await server.getRequest().post('/api/auth/logout').set('Cookie', cookies).expect(204);
     });
   });
 });

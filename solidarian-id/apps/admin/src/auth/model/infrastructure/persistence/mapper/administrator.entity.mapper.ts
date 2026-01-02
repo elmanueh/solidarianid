@@ -4,10 +4,7 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Administrator } from '@app/admin/administrator/model/domain/models/administrator';
 import { AdministratorEntity } from '@app/admin/auth/model/infrastructure/persistence/entities/administrator.entity';
 
-export class AdministratorEntityMapper extends Mapper<
-  Administrator,
-  AdministratorEntity
-> {
+export class AdministratorEntityMapper extends Mapper<Administrator, AdministratorEntity> {
   toPersistence(model: Administrator): AdministratorEntity {
     const entity = new AdministratorEntity();
     entity._id = model.id.value;
@@ -17,9 +14,7 @@ export class AdministratorEntityMapper extends Mapper<
     entity.password = model.password;
     return entity;
   }
-  fromPersistence(
-    entity: AdministratorEntity,
-  ): Either<ValidationError, Administrator> {
+  fromPersistence(entity: AdministratorEntity): Either<ValidationError, Administrator> {
     const administratorOrError = Administrator.reconstitute(
       entity._id,
       entity.fullname,

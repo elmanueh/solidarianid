@@ -10,10 +10,7 @@ const createMockRequestsService = (): jest.Mocked<RequestsService> => ({
   updateStatus: jest.fn(),
 });
 
-const createMockUpdateStatusDto = (props: {
-  status: RequestStatus;
-  reason?: string;
-}) => ({
+const createMockUpdateStatusDto = (props: { status: RequestStatus; reason?: string }) => ({
   status: props.status,
   reason: props.reason,
 });
@@ -56,13 +53,9 @@ describe('RequestsController', () => {
           reason: 'Approved successfully',
         });
 
-        mockRequestsService.updateStatus.mockResolvedValue(
-          left(new ValidationError('Invalid status')),
-        );
+        mockRequestsService.updateStatus.mockResolvedValue(left(new ValidationError('Invalid status')));
 
-        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(
-          validationError,
-        );
+        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(validationError);
       });
 
       it('Path 2: should complete successfully when service returns Right (res.isLeft = false)', async () => {
@@ -87,9 +80,7 @@ describe('RequestsController', () => {
         const error = createMockValidationError('Invalid request');
         mockRequestsService.updateStatus.mockResolvedValue(left(error));
 
-        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(
-          error,
-        );
+        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(error);
       });
 
       it('should handle res.isLeft() = false', async () => {
@@ -114,9 +105,7 @@ describe('RequestsController', () => {
         const error = createMockValidationError('Invalid ID');
         mockRequestsService.updateStatus.mockResolvedValue(left(error));
 
-        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(
-          error,
-        );
+        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(error);
       });
 
       it('should handle undefined reason in DTO', async () => {
@@ -138,9 +127,7 @@ describe('RequestsController', () => {
         const exception = new RequestAlreadyResolvedError(requestId);
         mockRequestsService.updateStatus.mockResolvedValue(left(exception));
 
-        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(
-          exception,
-        );
+        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(exception);
       });
 
       it('should handle APPROVED status', async () => {
@@ -204,13 +191,9 @@ describe('RequestsController', () => {
           reason: 'Valid reason',
         });
         const validationError = createMockValidationError('Request not found');
-        mockRequestsService.updateStatus.mockResolvedValue(
-          left(validationError),
-        );
+        mockRequestsService.updateStatus.mockResolvedValue(left(validationError));
 
-        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(
-          ValidationError,
-        );
+        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(ValidationError);
       });
 
       it('should throw RequestAlreadyResolvedException when appropriate', async () => {
@@ -221,9 +204,7 @@ describe('RequestsController', () => {
         const exception = new RequestAlreadyResolvedError(requestId);
         mockRequestsService.updateStatus.mockResolvedValue(left(exception));
 
-        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(
-          RequestAlreadyResolvedError,
-        );
+        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(RequestAlreadyResolvedError);
       });
 
       it('should throw the exact error object returned by service', async () => {
@@ -231,14 +212,10 @@ describe('RequestsController', () => {
           status: RequestStatus.APPROVED,
           reason: 'Some reason',
         });
-        const specificError = createMockValidationError(
-          'Specific error message',
-        );
+        const specificError = createMockValidationError('Specific error message');
         mockRequestsService.updateStatus.mockResolvedValue(left(specificError));
 
-        await expect(controller.changeStatus(requestId, dto)).rejects.toBe(
-          specificError,
-        );
+        await expect(controller.changeStatus(requestId, dto)).rejects.toBe(specificError);
       });
     });
   });

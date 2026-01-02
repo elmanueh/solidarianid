@@ -34,11 +34,7 @@ export class Email extends ValueObject<EmailProps> {
     // Validar formato de email con regex
     // La regex ya valida implícitamente que hay exactamente un @ y el formato correcto
     if (!EMAIL_REGEX.test(plainEmail)) {
-      return left(
-        new InvalidEmailError(
-          'Invalid email format. Must be in the format: user@doma.in',
-        ),
-      );
+      return left(new InvalidEmailError('Invalid email format. Must be in the format: user@doma.in'));
     }
 
     return right(new Email(plainEmail));

@@ -4,7 +4,5 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 import { Repository } from '@app/ddd/repository/repository';
 
 export abstract class AdministratorRepositoryPort extends Repository<Administrator> {
-  abstract findByEmail(
-    email: string,
-  ): Promise<Either<RepositoryException, Administrator>>;
+  abstract findByEmail(email: string): Promise<Either<RepositoryException, Administrator>>;
 }

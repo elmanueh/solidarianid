@@ -6,20 +6,12 @@ import {
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
 } from '@app/value-objects/constants/validation.constants';
-import {
-  IsString,
-  IsNotEmpty,
-  MinLength,
-  Length,
-  IsISO31661Alpha2,
-  MaxLength,
-} from 'class-validator';
+import { IsString, IsNotEmpty, MinLength, Length, IsISO31661Alpha2, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterUserDtoRequest {
   @ApiProperty({
-    description:
-      'Username for the new user´containing only alphanumeric characters',
+    description: 'Username for the new user´containing only alphanumeric characters',
     example: 'johnDoe',
     minLength: USERNAME_MIN_LENGTH,
     maxLength: USERNAME_MAX_LENGTH,
@@ -39,8 +31,7 @@ export class RegisterUserDtoRequest {
   mobilePhone: string;
 
   @ApiProperty({
-    description:
-      'Password for the user account with at least a symbol, a number, and an uppercase letter',
+    description: 'Password for the user account with at least a symbol, a number, and an uppercase letter',
     example: 'SecureP@ssw0rd',
     minLength: PASSWORD_MIN_LENGTH,
   })

@@ -34,12 +34,8 @@ export abstract class Request<T> extends Entity<T & RequestProps> {
   }
 
   /** Marks the request as approved and optionally stores an admin note. */
-  public abstract approve(
-    reason?: string,
-  ): Either<RequestAlreadyResolvedError, void>;
+  public abstract approve(reason?: string): Either<RequestAlreadyResolvedError, void>;
 
   /** Marks the request as rejected and stores the rejection reason. */
-  public abstract reject(
-    reason: string,
-  ): Either<RequestAlreadyResolvedError, void>;
+  public abstract reject(reason: string): Either<RequestAlreadyResolvedError, void>;
 }

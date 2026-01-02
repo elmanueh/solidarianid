@@ -33,7 +33,6 @@ describe('RequestsController (e2e)', () => {
 
   afterAll(async () => {
     await server.close();
-    await MongoDBTestContainer.getInstance().stop();
   });
 
   describe('PATCH /requests/:id', () => {

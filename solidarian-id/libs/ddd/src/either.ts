@@ -45,3 +45,12 @@ export function left<L, A>(l: L): Either<L, A> {
 export function right<L, A>(a: A): Either<L, A> {
   return new Right<L, A>(a);
 }
+
+export function sequence<L, R>(eithers?: Either<L, R>[]): Either<L, R[]> {
+  const results: R[] = [];
+  for (const either of eithers ?? []) {
+    if (either.isLeft()) return left(either.value);
+    results.push(either.value);
+  }
+  return right(results);
+}

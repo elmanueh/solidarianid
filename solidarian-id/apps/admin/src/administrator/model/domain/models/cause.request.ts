@@ -1,7 +1,7 @@
 import { SustainableDevelopmentGoal } from '@app/admin/administrator/model/domain/enums/ods';
 import { Request, RequestProps } from '@app/admin/administrator/model/domain/models/request';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { Duration } from '@app/value-objects/model/duration';
+import { DurationRange } from '@app/value-objects/model/duration-range';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Either, left, right } from '@app/ddd/either';
@@ -9,7 +9,7 @@ import { Description } from '@app/value-objects/model/description';
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
 
 interface RequestCauseProps extends RequestProps {
-  duration: Duration;
+  duration: DurationRange;
   ods: SustainableDevelopmentGoal[];
 }
 
@@ -28,7 +28,7 @@ export class RequestCause extends Request<RequestCauseProps> {
     return this.props.ods;
   }
 
-  get duration(): Duration {
+  get duration(): DurationRange {
     return this.props.duration;
   }
 
@@ -47,7 +47,10 @@ export class RequestCause extends Request<RequestCauseProps> {
       return left(descriptionOrError.value);
     }
 
-    const durationOrError = Duration.create(props.startDate, props.endDate);
+    const durationOrError = DurationRange.create(
+      props.startDate,
+      props.endDate,
+    );
     if (durationOrError.isLeft()) {
       return left(durationOrError.value);
     }

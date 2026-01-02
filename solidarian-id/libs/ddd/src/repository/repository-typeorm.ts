@@ -38,10 +38,14 @@ export class RepositoryTypeORM<
 
   async findById(
     id: string,
+    relations?: string[],
   ): Promise<Either<RepositoryException | EntityNotFoundException, TDomain>> {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const entity = await this.repository.findOneBy({ id } as any);
+      const entity = await this.repository.findOne({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        where: { id } as any,
+        relations,
+      });
       if (!entity) {
         return left(new EntityNotFoundException('Entity', id));
       }
@@ -52,15 +56,19 @@ export class RepositoryTypeORM<
       }
       return right(model.value);
     } catch (error) {
-      return left(new RepositoryException('Failed to find entity.', error));
+      return left(
+        new RepositoryException(
+          `Failed to find entity by id ${id}. Error: ${error}`,
+        ),
+      );
     }
   }
 
-  async findAll(): Promise<
-    Either<RepositoryException | EntityNotFoundException, TDomain[]>
-  > {
+  async findAll(
+    relations?: string[],
+  ): Promise<Either<RepositoryException | EntityNotFoundException, TDomain[]>> {
     try {
-      const entities = await this.repository.find();
+      const entities = await this.repository.find({ relations });
       if (entities.length === 0) {
         return left(new EntityNotFoundException('Entity', 'all'));
       }

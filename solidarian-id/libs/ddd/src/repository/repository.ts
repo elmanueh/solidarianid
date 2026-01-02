@@ -43,9 +43,12 @@ export abstract class Repository<TDomain extends Entity<any>> {
    * Returns {@link RepositoryException} for infrastructure-related failures.
    *
    * @param id Unique identifier of the entity
+   *
+   * @param relations Optional array of relation names to load with the entity
    */
   abstract findById(
     id: string,
+    relations?: string[],
   ): Promise<Either<RepositoryException | EntityNotFoundException, TDomain>>;
 
   /**
@@ -55,9 +58,9 @@ export abstract class Repository<TDomain extends Entity<any>> {
    *
    * Returns {@link RepositoryException} for infrastructure-related failures.
    */
-  abstract findAll(): Promise<
-    Either<RepositoryException | EntityNotFoundException, TDomain[]>
-  >;
+  abstract findAll(
+    relations?: string[],
+  ): Promise<Either<RepositoryException | EntityNotFoundException, TDomain[]>>;
 
   // abstract findAllByLimitAndOffset(limit: number, offset: number): Promise<T[]>;
 }

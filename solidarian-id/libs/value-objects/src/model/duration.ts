@@ -1,52 +1,35 @@
 import { ValueObject } from '@app/ddd/value-object';
 import { Either, right, left } from '@app/ddd/either';
-import { InvalidDurationError } from '@app/value-objects/errors/validation/duration-validation.error';
+import { InvalidDurationDaysError } from '@app/value-objects/errors/validation/duration-days-validation-error';
 
 export interface DurationProps {
-  startDate: Date;
-  endDate: Date;
+  value: number;
 }
 
 export class Duration extends ValueObject<DurationProps> {
-  get startDate(): Date {
-    return this.props.startDate;
+  private constructor(durationDays: number) {
+    super({ value: durationDays });
   }
 
-  get endDate(): Date {
-    return this.props.endDate;
+  get value(): number {
+    return this.props.value;
   }
 
-  public isActive(): boolean {
-    const now = new Date();
-    return now >= this.startDate && now <= this.endDate;
-  }
-
-  public durationInDays(): number {
-    const diffMs = this.endDate.getTime() - this.startDate.getTime();
-    return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  }
-
-  private constructor(props: DurationProps) {
-    super(props);
+  public equals(other: Duration): boolean {
+    return this.value === other.value;
   }
 
   public static create(
-    startDate: Date,
-    endDate: Date,
-  ): Either<InvalidDurationError, Duration> {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-
-    if (startDate < now) {
-      return left(new InvalidDurationError('Start date cannot be in the past'));
-    }
-
-    if (endDate <= startDate) {
+    durationDays: number,
+  ): Either<InvalidDurationDaysError, Duration> {
+    if (!Number.isInteger(durationDays) || durationDays <= 0) {
       return left(
-        new InvalidDurationError('End date must be after start date'),
+        new InvalidDurationDaysError(
+          'Duration days must be a positive integer.',
+        ),
       );
     }
 
-    return right(new Duration({ startDate, endDate }));
+    return right(new Duration(durationDays));
   }
 }

@@ -3,9 +3,9 @@ import { AdminModule } from '@app/admin/administrator/admin.module';
 import { AuthModule } from '@app/admin/auth/auth.module';
 import { AppController } from '@app/admin/app.controller';
 import {
+  MongoDBTestContainer,
   MongoDBTestModule,
   TestServerHelper,
-  MongoDBTestContainer,
 } from '@solidarianid/testing';
 
 describe('AppController (e2e)', () => {
@@ -21,7 +21,7 @@ describe('AppController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await server.close();
+    if (server) await server.close();
     await MongoDBTestContainer.getInstance().stop();
   });
 

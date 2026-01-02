@@ -6,8 +6,6 @@ import { UsersModule } from '@app/users/users.module';
 import {
   TestServerHelper,
   PostgreSQLSeeder,
-  PostgreSQLTestContainer,
-  KafkaTestContainer,
   PostgreSQLTestModule,
   KafkaTestModule,
 } from '@solidarianid/testing';
@@ -37,8 +35,6 @@ describe('UsersController (e2e)', () => {
 
   afterAll(async () => {
     await app.close();
-    await PostgreSQLTestContainer.getInstance().stop();
-    await KafkaTestContainer.getInstance().stop();
   });
 
   describe('/users (POST)', () => {

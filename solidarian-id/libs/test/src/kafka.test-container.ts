@@ -23,6 +23,7 @@ export class KafkaTestContainer implements IDatabaseTestContainer {
     const image = 'confluentinc/cp-kafka:8.1.1';
     const container = await new KafkaContainer(image)
       .withWaitStrategy(Wait.forLogMessage(/Kafka Server started/))
+      .withStartupTimeout(120000)
       .start();
 
     this.container = container;

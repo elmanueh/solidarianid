@@ -52,9 +52,7 @@ export class RequestsServiceImpl extends RequestsService {
 
     await this.repository.save(request);
 
-    const eventType = RequestStatus.APPROVED
-      ? EventType.REQUEST_ACCEPTED
-      : EventType.REQUEST_DECLINED;
+    const eventType = RequestStatus.APPROVED ? EventType.REQUEST_ACCEPTED : EventType.REQUEST_DECLINED;
     await this.publisher.publish(eventType, request);
 
     return right(undefined);

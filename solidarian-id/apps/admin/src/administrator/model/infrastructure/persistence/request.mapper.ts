@@ -8,9 +8,7 @@ import { Mapper } from '@app/ddd/repository/mapper';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 
-type DomainFactory = (
-  e: RequestEntity,
-) => Either<ValidationError, Request<any>>;
+type DomainFactory = (e: RequestEntity) => Either<ValidationError, Request<any>>;
 
 @Injectable()
 export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
@@ -31,17 +29,13 @@ export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
     },
     // ! QUITAR LA LINEA INFERIOR CUANDO SE IMPLEMENTE
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    [RequestType.COMMUNITY]: (e) => {
-      return left(
-        new ValidationError('Community request mapping not implemented yet'),
-      );
+    [RequestType.COMMUNITY]: e => {
+      return left(new ValidationError('Community request mapping not implemented yet'));
     },
     // ! QUITAR LA LINEA INFERIOR CUANDO SE IMPLEMENTE
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    [RequestType.ACTION]: (e) => {
-      return left(
-        new ValidationError('Action request mapping not implemented yet'),
-      );
+    [RequestType.ACTION]: e => {
+      return left(new ValidationError('Action request mapping not implemented yet'));
     },
   };
 
@@ -64,19 +58,13 @@ export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
       } as RequestEntity;
     }
 
-    throw new Error(
-      `Unsupported request type for model: ${model.constructor.name}`,
-    );
+    throw new Error(`Unsupported request type for model: ${model.constructor.name}`);
   }
 
-  fromPersistence(
-    entity: RequestEntity,
-  ): Either<ValidationError, Request<any>> {
+  fromPersistence(entity: RequestEntity): Either<ValidationError, Request<any>> {
     const factory = this.factories[entity.type as RequestType];
     if (!factory) {
-      return left(
-        new ValidationError(`No factory found for request type ${entity.type}`),
-      );
+      return left(new ValidationError(`No factory found for request type ${entity.type}`));
     }
 
     return factory(entity);

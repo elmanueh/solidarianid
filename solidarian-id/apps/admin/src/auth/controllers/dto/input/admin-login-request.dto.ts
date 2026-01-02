@@ -1,14 +1,5 @@
-import {
-  PASSWORD_MIN_LENGTH,
-  PASSWORD_COMPLEXITY_REGEX,
-} from '@app/value-objects/constants/validation.constants';
-import {
-  IsNotEmpty,
-  IsEmail,
-  IsString,
-  MinLength,
-  Matches,
-} from 'class-validator';
+import { PASSWORD_MIN_LENGTH, PASSWORD_COMPLEXITY_REGEX } from '@app/value-objects/constants/validation.constants';
+import { IsNotEmpty, IsEmail, IsString, MinLength, Matches } from 'class-validator';
 
 export class AdminLoginRequestDto {
   @IsNotEmpty({ message: 'El correo electrónico es obligatorio' })
@@ -21,8 +12,7 @@ export class AdminLoginRequestDto {
     message: `La contraseña debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres`,
   })
   @Matches(PASSWORD_COMPLEXITY_REGEX, {
-    message:
-      'La contraseña debe contener al menos una mayúscula, un número y un carácter especial',
+    message: 'La contraseña debe contener al menos una mayúscula, un número y un carácter especial',
   })
   password: string;
 }

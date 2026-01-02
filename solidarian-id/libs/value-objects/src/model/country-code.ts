@@ -20,9 +20,7 @@ export class CountryCode extends ValueObject<CountryCodeProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    countryCode: string,
-  ): Either<InvalidCountryCodeError, CountryCode> {
+  public static create(countryCode: string): Either<InvalidCountryCodeError, CountryCode> {
     // Validar que no esté vacío
     // Validar que countryCode no esté vacío
     if (!countryCode || countryCode.trim().length === 0) {
@@ -33,9 +31,7 @@ export class CountryCode extends ValueObject<CountryCodeProps> {
     // La regex ya valida implícitamente la longitud
     if (!COUNTRY_CODE_REGEX.test(countryCode)) {
       return left(
-        new InvalidCountryCodeError(
-          'Country code must be a valid ISO 3166-1 alpha-2 code (e.g., ES, US, MX).',
-        ),
+        new InvalidCountryCodeError('Country code must be a valid ISO 3166-1 alpha-2 code (e.g., ES, US, MX).'),
       );
     }
 

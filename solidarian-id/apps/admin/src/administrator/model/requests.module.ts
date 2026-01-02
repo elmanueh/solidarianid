@@ -17,12 +17,8 @@ import { RequestEventMapper } from '@app/admin/administrator/model/infrastructur
 
 @Module({
   imports: [
-    KafkaDynamicModule.register(
-      process.env.KAFKA_REQUEST_CLIENT_ID ?? 'requests',
-    ),
-    MongooseModule.forFeature([
-      { name: RequestEntity.name, schema: RequestSchema },
-    ]),
+    KafkaDynamicModule.register(process.env.KAFKA_REQUEST_CLIENT_ID ?? 'requests'),
+    MongooseModule.forFeature([{ name: RequestEntity.name, schema: RequestSchema }]),
   ],
   controllers: [RequestsController],
   providers: [

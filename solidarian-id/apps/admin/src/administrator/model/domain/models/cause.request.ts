@@ -1,8 +1,5 @@
 import { SustainableDevelopmentGoal } from '@app/admin/administrator/model/domain/enums/ods';
-import {
-  Request,
-  RequestProps,
-} from '@app/admin/administrator/model/domain/models/request';
+import { Request, RequestProps } from '@app/admin/administrator/model/domain/models/request';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { Duration } from '@app/value-objects/model/duration';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
@@ -43,10 +40,7 @@ export class CauseRequest extends Request<CauseRequestProps> {
     super(props, id);
   }
 
-  public static create(
-    props: CreateCauseRequestProps,
-    id?: string,
-  ): Either<ValidationError, CauseRequest> {
+  public static create(props: CreateCauseRequestProps, id?: string): Either<ValidationError, CauseRequest> {
     const idOrError = UniqueEntityID.create(id);
     if (idOrError.isLeft()) {
       return left(idOrError.value);
@@ -86,16 +80,12 @@ export class CauseRequest extends Request<CauseRequestProps> {
     this.props.status = RequestStatus.APPROVED;
     if (reason) this.props.reason = reason;
 
-    this.props.actions.forEach((action) =>
-      action.approve('Approved as part of cause request'),
-    );
+    this.props.actions.forEach(action => action.approve('Approved as part of cause request'));
 
     return right(undefined);
   }
 
-  public reject(
-    reason: string,
-  ): Either<RequestAlreadyResolvedError | RequestError, void> {
+  public reject(reason: string): Either<RequestAlreadyResolvedError | RequestError, void> {
     if (this.props.status !== RequestStatus.PENDING) {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
@@ -107,10 +97,8 @@ export class CauseRequest extends Request<CauseRequestProps> {
     this.props.status = RequestStatus.REJECTED;
     this.props.reason = reason;
 
-    const res = this.props.actions.map((action) => action.reject(reason));
-    const errors = res.filter(
-      (r) => r.isLeft() && !(r.value instanceof RequestAlreadyResolvedError),
-    );
+    const res = this.props.actions.map(action => action.reject(reason));
+    const errors = res.filter(r => r.isLeft() && !(r.value instanceof RequestAlreadyResolvedError));
 
     if (errors.length > 0) {
       return left(errors[0].value as RequestError);

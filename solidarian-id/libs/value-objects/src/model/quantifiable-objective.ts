@@ -20,10 +20,7 @@ export class QuantifiableObjective extends ValueObject<QuantifiableObjectiveProp
     super(props);
   }
 
-  public static create(
-    quantity: number,
-    unit: string,
-  ): Either<ValidationError, QuantifiableObjective> {
+  public static create(quantity: number, unit: string): Either<ValidationError, QuantifiableObjective> {
     if (quantity < 0) {
       throw new Error('Quantity must be a non-negative number.');
     }

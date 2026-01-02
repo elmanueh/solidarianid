@@ -9,10 +9,7 @@ export class PasswordManagerBcrypt extends PasswordManager {
   async hashPassword(plainPassword: string): Promise<string> {
     return await bcrypt.hash(plainPassword, PasswordManagerBcrypt.SALT_ROUNDS);
   }
-  async comparePassword(
-    plainPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
+  async comparePassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
     return await bcrypt.compare(plainPassword, hashedPassword);
   }
 }

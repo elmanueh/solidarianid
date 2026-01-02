@@ -38,9 +38,7 @@ export function createInteractiveNationalitiesDoughnut(
   });
 }
 
-export function createOdsByCauseBar(
-  odsByCauseData: Array<[ods: number, count: number]>,
-): SerializableChartConfig {
+export function createOdsByCauseBar(odsByCauseData: Array<[ods: number, count: number]>): SerializableChartConfig {
   const labels = odsByCauseData.map(([ods]) => ods.toString());
   const values = odsByCauseData.map(([, count]) => count);
 
@@ -61,13 +59,11 @@ export function createOdsByCauseBar(
   });
 }
 
-export function createMonthlyJoinsLine(
-  monthlyJoinsData: { label: string; data: number[] }[],
-): SerializableChartConfig {
+export function createMonthlyJoinsLine(monthlyJoinsData: { label: string; data: number[] }[]): SerializableChartConfig {
   return createLineConfig({
     title: 'Comparativa de uniones mensuales',
     labels: monthNames,
-    series: monthlyJoinsData.map((c) => ({
+    series: monthlyJoinsData.map(c => ({
       label: c.label,
       values: c.data,
     })),

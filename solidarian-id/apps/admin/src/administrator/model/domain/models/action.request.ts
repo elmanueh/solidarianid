@@ -1,8 +1,4 @@
-import {
-  CreateRequestProps,
-  Request,
-  RequestProps,
-} from '@app/admin/administrator/model/domain/models/request';
+import { CreateRequestProps, Request, RequestProps } from '@app/admin/administrator/model/domain/models/request';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Either, left, right } from '@app/ddd/either';
@@ -40,10 +36,7 @@ export class ActionRequest extends Request<ActionRequestProps> {
   public static create(
     props: CreateActionRequestProps,
     id?: string,
-  ): Either<
-    InvalidUniqueEntityIDError | InvalidDescriptionError,
-    ActionRequest
-  > {
+  ): Either<InvalidUniqueEntityIDError | InvalidDescriptionError, ActionRequest> {
     const idOrError = UniqueEntityID.create(id);
     if (idOrError.isLeft()) {
       return left(idOrError.value);
@@ -79,9 +72,7 @@ export class ActionRequest extends Request<ActionRequestProps> {
     return right(undefined);
   }
 
-  public reject(
-    reason: string,
-  ): Either<RequestAlreadyResolvedError | RequestError, void> {
+  public reject(reason: string): Either<RequestAlreadyResolvedError | RequestError, void> {
     if (!reason) {
       return left(new RequestError('Rejection reason must be provided'));
     }

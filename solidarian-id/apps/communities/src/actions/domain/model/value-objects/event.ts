@@ -45,9 +45,7 @@ export class Event extends ValueObject<EventProps> {
    *
    * @return Either<InvalidNameError | InvalidDescriptionError, Event>
    */
-  public static create(
-    props: EventCreationProps,
-  ): Either<ValidationError, Event> {
+  public static create(props: EventCreationProps): Either<ValidationError, Event> {
     const name = Name.create(props.name);
     const description = Description.create(props.description);
 

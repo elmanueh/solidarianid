@@ -7,10 +7,7 @@ import { UserEventDto } from '../../../../../../libs/kafka/src/dtos/user.event.d
 import { UserEventMapper } from '../mappers/user.event.mapper';
 
 @Injectable()
-export class UsersKafkaPublisherAdapter
-  extends KafkaPublisher<User, UserEventDto>
-  implements UsersPublisherPort
-{
+export class UsersKafkaPublisherAdapter extends KafkaPublisher<User, UserEventDto> implements UsersPublisherPort {
   constructor(
     @Inject('users_kafka') publisher: ClientKafka,
     private readonly userEventMapper: UserEventMapper,

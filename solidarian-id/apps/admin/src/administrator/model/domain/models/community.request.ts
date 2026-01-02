@@ -1,7 +1,4 @@
-import {
-  Request,
-  RequestProps,
-} from '@app/admin/administrator/model/domain/models/request';
+import { Request, RequestProps } from '@app/admin/administrator/model/domain/models/request';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
@@ -32,10 +29,7 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     super(props, id);
   }
 
-  public static create(
-    props: CreateCommunityRequestProps,
-    id?: string,
-  ): Either<ValidationError, CommunityRequest> {
+  public static create(props: CreateCommunityRequestProps, id?: string): Either<ValidationError, CommunityRequest> {
     const idOrError = UniqueEntityID.create(id);
     if (idOrError.isLeft()) {
       return left(idOrError.value);
@@ -68,16 +62,12 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     this.props.status = RequestStatus.APPROVED;
     if (reason) this.props.reason = reason;
 
-    this.props.causes.forEach((cause) =>
-      cause.approve('Approved as part of community request'),
-    );
+    this.props.causes.forEach(cause => cause.approve('Approved as part of community request'));
 
     return right(undefined);
   }
 
-  public reject(
-    reason: string,
-  ): Either<RequestAlreadyResolvedError | RequestError, void> {
+  public reject(reason: string): Either<RequestAlreadyResolvedError | RequestError, void> {
     if (this.props.status !== RequestStatus.PENDING) {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
@@ -89,10 +79,8 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     this.props.status = RequestStatus.REJECTED;
     this.props.reason = reason;
 
-    const res = this.props.causes.map((cause) => cause.reject(reason));
-    const errors = res.filter(
-      (r) => r.isLeft() && !(r.value instanceof RequestAlreadyResolvedError),
-    );
+    const res = this.props.causes.map(cause => cause.reject(reason));
+    const errors = res.filter(r => r.isLeft() && !(r.value instanceof RequestAlreadyResolvedError));
 
     if (errors.length > 0) {
       return left(errors[0].value as RequestError);

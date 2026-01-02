@@ -30,8 +30,7 @@ export function RenderHttpExceptionMapper(statusCode: HttpStatus) {
       return {
         statusCode,
         errorTitle: 'Error del servidor',
-        message:
-          'Ha ocurrido un error inesperado. Por favor, intenta de nuevo más tarde.',
+        message: 'Ha ocurrido un error inesperado. Por favor, intenta de nuevo más tarde.',
         showHomeLink: true,
       };
 

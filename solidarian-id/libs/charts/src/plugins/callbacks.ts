@@ -21,11 +21,8 @@ export function hydrateCallbacks(
   config.options.plugins.tooltip = config.options.plugins.tooltip || {};
   config.options.plugins.tooltip.callbacks = {};
 
-  for (const [key, funcString] of Object.entries(
-    config._serializedCallbacks?.tooltip || {},
-  )) {
-    (config.options.plugins.tooltip.callbacks as Record<string, any>)[key] =
-      new Function('return ' + funcString)();
+  for (const [key, funcString] of Object.entries(config._serializedCallbacks?.tooltip || {})) {
+    (config.options.plugins.tooltip.callbacks as Record<string, any>)[key] = new Function('return ' + funcString)();
   }
 
   delete config._serializedCallbacks;

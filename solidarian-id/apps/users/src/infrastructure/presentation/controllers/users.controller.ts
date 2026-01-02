@@ -1,18 +1,6 @@
-import {
-  Controller,
-  Post,
-  Body,
-  HttpCode,
-  HttpStatus,
-  Res,
-  Patch,
-  Param,
-} from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus, Res, Patch, Param } from '@nestjs/common';
 import type { Response } from 'express';
-import {
-  UsersService,
-  RegisterUserCommand,
-} from '@app/users/domain/services/users.service';
+import { UsersService, RegisterUserCommand } from '@app/users/domain/services/users.service';
 import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
 import {
   ApiOperation,
@@ -41,17 +29,13 @@ export class UsersController {
     description: 'User created successfully',
   })
   @ApiConflictResponse({
-    description:
-      'Either the username or the phone number (or both) were registered previously',
+    description: 'Either the username or the phone number (or both) were registered previously',
   })
   @ApiBadRequestResponse({ description: 'Invalid request payload' })
   @ApiInternalServerErrorResponse({
     description: 'Internal server error',
   })
-  async register(
-    @Body() dto: RegisterUserDtoRequest,
-    @Res() res: Response,
-  ): Promise<void> {
+  async register(@Body() dto: RegisterUserDtoRequest, @Res() res: Response): Promise<void> {
     const command: RegisterUserCommand = {
       username: dto.username,
       mobilePhone: dto.mobilePhone,
@@ -78,22 +62,14 @@ export class UsersController {
     description: 'User logged in successfully',
   })
   @ApiBadRequestResponse({ description: 'Invalid request payload' })
-  async login(
-    @Body() dto: LoginUserDtoRequest,
-    @Res() res: Response,
-  ): Promise<void> {
-    const loginResult = await this.usersService.loginUser(
-      dto.username,
-      dto.password,
-    );
+  async login(@Body() dto: LoginUserDtoRequest, @Res() res: Response): Promise<void> {
+    const loginResult = await this.usersService.loginUser(dto.username, dto.password);
 
     if (loginResult.isLeft()) {
       throw loginResult.value;
     }
 
-    res
-      .status(loginResult.value ? HttpStatus.OK : HttpStatus.UNAUTHORIZED)
-      .send();
+    res.status(loginResult.value ? HttpStatus.OK : HttpStatus.UNAUTHORIZED).send();
   }
 
   @ApiOperation({ summary: 'Update user profile information' })

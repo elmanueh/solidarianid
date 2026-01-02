@@ -8,9 +8,7 @@ import { Mapper, RequestEventDto } from '@solidarianid/kafka';
 
 @Injectable()
 export class RequestEventMapper extends Mapper<Request<any>, RequestEventDto> {
-  toDto(
-    request: CommunityRequest | CauseRequest | ActionRequest,
-  ): RequestEventDto {
+  toDto(request: CommunityRequest | CauseRequest | ActionRequest): RequestEventDto {
     const dto = new RequestEventDto();
     dto.id = request.id.value;
     if (request instanceof CommunityRequest) {

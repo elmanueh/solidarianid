@@ -1,9 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  UsersService,
-  RegisterUserCommand,
-  UpdateUserProfileCommand,
-} from '@app/users/domain/services/users.service';
+import { UsersService, RegisterUserCommand, UpdateUserProfileCommand } from '@app/users/domain/services/users.service';
 import { User } from '@app/users/domain/model/user';
 import { Username } from '@app/value-objects/model/username';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
@@ -26,12 +22,9 @@ export class UsersServiceImpl extends UsersService {
     super();
   }
 
-  async registerUser(
-    command: RegisterUserCommand,
-  ): Promise<Either<Error, string>> {
+  async registerUser(command: RegisterUserCommand): Promise<Either<Error, string>> {
     // 1. Hashear la contraseña lo primero de todo para evitar realizar trabajo innecesario
-    const passwordHashingResult =
-      await this.passwordManager.validateAndHashPassword(command.password);
+    const passwordHashingResult = await this.passwordManager.validateAndHashPassword(command.password);
     if (passwordHashingResult.isLeft()) {
       return left(passwordHashingResult.value);
     }
@@ -48,30 +41,18 @@ export class UsersServiceImpl extends UsersService {
     }
 
     // 2a. Comprobar si el numero de telefono ya existe
-    const userPhoneExists = await this.usersRepository.existsByMobilePhone(
-      phoneResult.value,
-    );
+    const userPhoneExists = await this.usersRepository.existsByMobilePhone(phoneResult.value);
     if (userPhoneExists.isLeft()) return left(userPhoneExists.value);
 
     if (userPhoneExists.value)
-      return left(
-        new UserConflictError(
-          'The provided mobile phone is already signed up in SolidarianID.',
-        ),
-      );
+      return left(new UserConflictError('The provided mobile phone is already signed up in SolidarianID.'));
 
     // 2b. Comprobar si el nombre de usuario existe
-    const userNameExists = await this.usersRepository.existsByUsername(
-      usernameResult.value,
-    );
+    const userNameExists = await this.usersRepository.existsByUsername(usernameResult.value);
     if (userNameExists.isLeft()) return left(userNameExists.value);
 
     if (userNameExists.value)
-      return left(
-        new UserConflictError(
-          'The provided user name is already signed up in SolidarianID.',
-        ),
-      );
+      return left(new UserConflictError('The provided user name is already signed up in SolidarianID.'));
 
     // 3. Crear el usuario
     const user = User.create({
@@ -95,23 +76,15 @@ export class UsersServiceImpl extends UsersService {
     return right(user.value.id.value);
   }
 
-  async loginUser(
-    username: string,
-    password: string,
-  ): Promise<Either<Error, boolean>> {
+  async loginUser(username: string, password: string): Promise<Either<Error, boolean>> {
     const usernameOrError = Username.create(username);
     if (usernameOrError.isLeft()) return left(usernameOrError.value);
 
-    const userOrError = await this.usersRepository.findByUsername(
-      usernameOrError.value,
-    );
+    const userOrError = await this.usersRepository.findByUsername(usernameOrError.value);
 
     if (userOrError.isLeft()) return left(userOrError.value);
 
-    const passwordMatch = await this.passwordManager.comparePassword(
-      password,
-      userOrError.value.passwordHash,
-    );
+    const passwordMatch = await this.passwordManager.comparePassword(password, userOrError.value.passwordHash);
 
     return right(passwordMatch);
   }
@@ -120,8 +93,7 @@ export class UsersServiceImpl extends UsersService {
     userId: string,
     updateUserProfileCommand: UpdateUserProfileCommand,
   ): Promise<Either<ValidationError | RepositoryException, void>> {
-    const { username, mobilePhone, city, countryCode } =
-      updateUserProfileCommand;
+    const { username, mobilePhone, city, countryCode } = updateUserProfileCommand;
 
     const userOrError = await this.usersRepository.findById(userId);
 
@@ -131,12 +103,7 @@ export class UsersServiceImpl extends UsersService {
 
     const user = userOrError.value;
 
-    const userUpdateOrError = user.updateUserProfile(
-      username,
-      mobilePhone,
-      city,
-      countryCode,
-    );
+    const userUpdateOrError = user.updateUserProfile(username, mobilePhone, city, countryCode);
 
     if (userUpdateOrError.isLeft()) {
       return left(userUpdateOrError.value);

@@ -8,9 +8,7 @@ interface DoughnutConfigInput {
   tooltipCallbacks?: Record<string, string>;
 }
 
-export function createDoughnutConfig(
-  input: DoughnutConfigInput,
-): SerializableChartConfig {
+export function createDoughnutConfig(input: DoughnutConfigInput): SerializableChartConfig {
   return {
     type: 'doughnut',
     data: {

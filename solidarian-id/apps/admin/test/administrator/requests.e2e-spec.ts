@@ -115,11 +115,7 @@ describe('RequestsController (e2e)', () => {
       });
 
       it('should return 400 when request body is empty', async () => {
-        await server
-          .getRequest()
-          .patch(`/requests/${pendingRequestId}`)
-          .send({})
-          .expect(400);
+        await server.getRequest().patch(`/requests/${pendingRequestId}`).send({}).expect(400);
       });
 
       it('should return 400 when status is rejected but reason is missing', async () => {

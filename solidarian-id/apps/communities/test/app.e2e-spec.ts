@@ -1,9 +1,5 @@
 import { CommunitiesModule } from '@app/communities/communities/communities.module';
-import {
-  PostgreSQLTestModule,
-  TestServerHelper,
-  PostgreSQLTestContainer,
-} from '@solidarianid/testing';
+import { PostgreSQLTestModule, TestServerHelper, PostgreSQLTestContainer } from '@solidarianid/testing';
 
 describe('CommunitiesController (e2e)', () => {
   let server!: TestServerHelper;

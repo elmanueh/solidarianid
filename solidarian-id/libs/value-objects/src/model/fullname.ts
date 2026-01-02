@@ -1,9 +1,6 @@
 import { ValueObject } from '@app/ddd/value-object';
 import { Either, right, left } from '@app/ddd/either';
-import {
-  FULLNAME_MIN_LENGTH,
-  FULLNAME_MAX_LENGTH,
-} from '../constants/validation.constants';
+import { FULLNAME_MIN_LENGTH, FULLNAME_MAX_LENGTH } from '../constants/validation.constants';
 import { InvalidNameError } from '@app/value-objects/errors/validation/name-validation-error';
 
 export interface FullNameProps {
@@ -31,20 +28,12 @@ export class FullName extends ValueObject<FullNameProps> {
 
     // Validar longitud mínima
     if (plainName.length < FULLNAME_MIN_LENGTH) {
-      return left(
-        new InvalidNameError(
-          `Name must be at least ${FULLNAME_MIN_LENGTH} characters long.`,
-        ),
-      );
+      return left(new InvalidNameError(`Name must be at least ${FULLNAME_MIN_LENGTH} characters long.`));
     }
 
     // Validar longitud máxima
     if (plainName.length > FULLNAME_MAX_LENGTH) {
-      return left(
-        new InvalidNameError(
-          `Name must not exceed ${FULLNAME_MAX_LENGTH} characters.`,
-        ),
-      );
+      return left(new InvalidNameError(`Name must not exceed ${FULLNAME_MAX_LENGTH} characters.`));
     }
 
     return right(new FullName(plainName));

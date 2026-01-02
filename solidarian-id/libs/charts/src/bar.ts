@@ -9,9 +9,7 @@ interface BarConfigOptions {
   tooltipCallbacks?: Record<string, string>;
 }
 
-export function createBarConfig(
-  input: BarConfigOptions,
-): SerializableChartConfig {
+export function createBarConfig(input: BarConfigOptions): SerializableChartConfig {
   return {
     type: 'bar',
     data: {

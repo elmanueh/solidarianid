@@ -38,9 +38,7 @@ export class Event extends ValueObject<EventProps> {
     super(props);
   }
 
-  public static create(
-    props: CreateEventProps,
-  ): Either<InvalidDescriptionError, Event> {
+  public static create(props: CreateEventProps): Either<InvalidDescriptionError, Event> {
     const descriptionOrError = Description.create(props.description);
     if (descriptionOrError.isLeft()) {
       return left(descriptionOrError.value);

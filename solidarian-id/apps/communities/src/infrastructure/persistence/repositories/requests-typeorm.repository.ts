@@ -6,27 +6,22 @@ import { RepositoryTypeORM } from '@app/ddd/repository/repository-typeorm';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RequestEntity } from '../entities/request.entity';
-import { AnyRequest, RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
+import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
 import { RequestEntityMapper } from '../mappers/request-entity.mapper';
-import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
-import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
-import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
+import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
 
 /**
  * TypeORM adapter implementation for the RequestsRepositoryPort.
  *
- * This adapter provides persistence operations for all request types using TypeORM
+ * This adapter provides persistence operations for requests using TypeORM
  * and follows the Single Table Inheritance pattern where all request types share
  * the same database table distinguished by a type discriminator.
- *
- * The adapter extends the base RepositoryTypeORM class to inherit common CRUD operations
- * and implements specific methods for type-safe request retrieval.
  */
 @Injectable()
 export class RequestsRepositoryTypeOrmAdapter
-  extends RepositoryTypeORM<AnyRequest, RequestEntity>
+  extends RepositoryTypeORM<Request<RequestProps>, RequestEntity>
   implements RequestsRepositoryPort
 {
   constructor(
@@ -38,112 +33,42 @@ export class RequestsRepositoryTypeOrmAdapter
   }
 
   /**
-   * Finds a community request by its unique identifier.
+   * Finds a request by its unique identifier and type.
    */
-  async findCommunityRequestById(id: string): Promise<Either<RepositoryException, CommunityRequest>> {
+  async findByIdAndType(id: string, type: RequestType): Promise<Either<RepositoryException, Request<RequestProps>>> {
     try {
       const entity = await this.requestRepository.findOne({
-        where: { id, type: RequestType.COMMUNITY },
+        where: { id, type },
         relations: ['user'],
       });
 
       if (!entity) {
-        return left(new EntityNotFoundException('CommunityRequest', id));
+        return left(new EntityNotFoundException('Request', id));
       }
 
       const domainOrError = this.requestMapper.fromPersistence(entity);
 
       if (domainOrError.isLeft()) {
-        return left(new RepositoryException(`Failed to map CommunityRequest: ${domainOrError.value.message}`));
+        return left(new RepositoryException(`Failed to map Request: ${domainOrError.value.message}`));
       }
 
-      const domain = domainOrError.value;
-
-      if (!(domain instanceof CommunityRequest)) {
-        return left(new RepositoryException(`Expected CommunityRequest but got ${domain.constructor.name}`));
-      }
-
-      return right(domain);
+      return right(domainOrError.value);
     } catch (error) {
-      return left(new RepositoryException(`Failed to find CommunityRequest by id ${id}`, error));
-    }
-  }
-
-  /**
-   * Finds a cause request by its unique identifier.
-   */
-  async findCauseRequestById(id: string): Promise<Either<RepositoryException, CauseRequest>> {
-    try {
-      const entity = await this.requestRepository.findOne({
-        where: { id, type: RequestType.CAUSE },
-        relations: ['user'],
-      });
-
-      if (!entity) {
-        return left(new EntityNotFoundException('CauseRequest', id));
-      }
-
-      const domainOrError = this.requestMapper.fromPersistence(entity);
-
-      if (domainOrError.isLeft()) {
-        return left(new RepositoryException(`Failed to map CauseRequest: ${domainOrError.value.message}`));
-      }
-
-      const domain = domainOrError.value;
-
-      if (!(domain instanceof CauseRequest)) {
-        return left(new RepositoryException(`Expected CauseRequest but got ${domain.constructor.name}`));
-      }
-
-      return right(domain);
-    } catch (error) {
-      return left(new RepositoryException(`Failed to find CauseRequest by id ${id}`, error));
-    }
-  }
-
-  /**
-   * Finds an action request by its unique identifier.
-   */
-  async findActionRequestById(id: string): Promise<Either<RepositoryException, ActionRequest>> {
-    try {
-      const entity = await this.requestRepository.findOne({
-        where: { id, type: RequestType.ACTION },
-        relations: ['user'],
-      });
-
-      if (!entity) {
-        return left(new EntityNotFoundException('ActionRequest', id));
-      }
-
-      const domainOrError = this.requestMapper.fromPersistence(entity);
-
-      if (domainOrError.isLeft()) {
-        return left(new RepositoryException(`Failed to map ActionRequest: ${domainOrError.value.message}`));
-      }
-
-      const domain = domainOrError.value;
-
-      if (!(domain instanceof ActionRequest)) {
-        return left(new RepositoryException(`Expected ActionRequest but got ${domain.constructor.name}`));
-      }
-
-      return right(domain);
-    } catch (error) {
-      return left(new RepositoryException(`Failed to find ActionRequest by id ${id}`, error));
+      return left(new RepositoryException(`Failed to find Request by id ${id} and type ${type}`, error));
     }
   }
 
   /**
    * Finds all requests of a specific type.
    */
-  async findByType(type: RequestType): Promise<Either<RepositoryException, AnyRequest[]>> {
+  async findByType(type: RequestType): Promise<Either<RepositoryException, Request<RequestProps>[]>> {
     try {
       const entities = await this.requestRepository.find({
         where: { type },
         relations: ['user'],
       });
 
-      const results: AnyRequest[] = [];
+      const results: Request<RequestProps>[] = [];
 
       for (const entity of entities) {
         const domainOrError = this.requestMapper.fromPersistence(entity);
@@ -164,7 +89,7 @@ export class RequestsRepositoryTypeOrmAdapter
   /**
    * Finds all pending requests of a specific type.
    */
-  async findPendingRequestsByType(type: RequestType): Promise<Either<RepositoryException, AnyRequest[]>> {
+  async findPendingRequestsByType(type: RequestType): Promise<Either<RepositoryException, Request<RequestProps>[]>> {
     try {
       const entities = await this.requestRepository.find({
         where: {
@@ -177,7 +102,7 @@ export class RequestsRepositoryTypeOrmAdapter
         },
       });
 
-      const results: AnyRequest[] = [];
+      const results: Request<RequestProps>[] = [];
 
       for (const entity of entities) {
         const domainOrError = this.requestMapper.fromPersistence(entity);
@@ -198,7 +123,7 @@ export class RequestsRepositoryTypeOrmAdapter
   /**
    * Finds all requests created by a specific user.
    */
-  async findByUserId(userId: string): Promise<Either<RepositoryException, AnyRequest[]>> {
+  async findByUserId(userId: string): Promise<Either<RepositoryException, Request<RequestProps>[]>> {
     try {
       const entities = await this.requestRepository.find({
         where: { user: { id: userId } },
@@ -208,7 +133,7 @@ export class RequestsRepositoryTypeOrmAdapter
         },
       });
 
-      const results: AnyRequest[] = [];
+      const results: Request<RequestProps>[] = [];
 
       for (const entity of entities) {
         const domainOrError = this.requestMapper.fromPersistence(entity);
@@ -229,7 +154,10 @@ export class RequestsRepositoryTypeOrmAdapter
   /**
    * Finds all requests created by a specific user filtered by type.
    */
-  async findByUserIdAndType(userId: string, type: RequestType): Promise<Either<RepositoryException, AnyRequest[]>> {
+  async findByUserIdAndType(
+    userId: string,
+    type: RequestType,
+  ): Promise<Either<RepositoryException, Request<RequestProps>[]>> {
     try {
       const entities = await this.requestRepository.find({
         where: {
@@ -242,7 +170,7 @@ export class RequestsRepositoryTypeOrmAdapter
         },
       });
 
-      const results: AnyRequest[] = [];
+      const results: Request<RequestProps>[] = [];
 
       for (const entity of entities) {
         const domainOrError = this.requestMapper.fromPersistence(entity);

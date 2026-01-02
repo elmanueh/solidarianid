@@ -6,6 +6,8 @@ import {
   KafkaTestContainer,
   PostgreSQLTestContainer,
   USER_IDS,
+  COMMUNITY_IDS,
+  CAUSE_IDS,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
@@ -56,6 +58,8 @@ describe('RequestController (e2e)', () => {
   beforeEach(async () => {
     await seeder.clean();
     await seeder.seedCommunityUsers();
+    await seeder.seedCommunities();
+    await seeder.seedCauses();
   });
 
   describe('/community-requests (POST)', () => {
@@ -127,6 +131,7 @@ describe('RequestController (e2e)', () => {
       name: 'Causa Benéfica de Prueba E2E',
       description: 'Esta es una descripción válida para la causa benéfica end-to-end con más de 20 caracteres',
       userId: USER_IDS.MARIA,
+      communityId: COMMUNITY_IDS.AFRICA,
       ods: [SustainableDevelopmentGoal.ZeroHunger],
       initialDate: '2026-02-01T00:00:00.000Z',
       durationDays: 180,
@@ -185,6 +190,7 @@ describe('RequestController (e2e)', () => {
       name: 'Acción Solidaria de Prueba E2E',
       description: 'Esta es una descripción válida para la acción solidaria end-to-end con más de 20 caracteres',
       userId: USER_IDS.PEDRO,
+      causeId: CAUSE_IDS.AGUA_KENIA,
       objectives: [
         {
           name: 'Objetivo de Prueba E2E',

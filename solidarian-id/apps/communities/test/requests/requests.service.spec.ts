@@ -7,10 +7,14 @@ import { RequestsServiceImpl } from '@app/communities/application/services/reque
 import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
 import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
 import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
 import { CreateActionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-action.request.dto';
 import { User } from '@app/communities/domain/model/entities/user';
+import { Community } from '@app/communities/domain/model/aggregates/community';
+import { Cause } from '@app/communities/domain/model/entities/cause';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 
 describe('RequestsServiceImpl', () => {
@@ -18,6 +22,18 @@ describe('RequestsServiceImpl', () => {
   let mockRequestsRepository: {
     save: jest.Mock;
     findById: jest.Mock;
+    findAll: jest.Mock;
+    remove: jest.Mock;
+  };
+  let mockCommunityRepository: {
+    findById: jest.Mock;
+    save: jest.Mock;
+    findAll: jest.Mock;
+    remove: jest.Mock;
+  };
+  let mockCauseRepository: {
+    findById: jest.Mock;
+    save: jest.Mock;
     findAll: jest.Mock;
     remove: jest.Mock;
   };
@@ -30,7 +46,24 @@ describe('RequestsServiceImpl', () => {
   };
 
   const validUserId = 'a1b2c3d4-e5f6-4890-abcd-ef1234567001';
+  const validCommunityId = 'b1b2c3d4-e5f6-4890-abcd-ef1234567002';
+  const validCauseId = 'c1b2c3d4-e5f6-4890-abcd-ef1234567003';
   const validUser = User.create({ username: 'volunteer_juan' }, validUserId);
+  const validCommunity = Community.create(
+    { name: 'Test Community', description: 'A valid community description for testing with more than 20 chars' },
+    validCommunityId,
+  );
+  const validCause = Cause.create(
+    {
+      name: 'Test Cause',
+      description: 'A valid cause description for testing with more than 20 chars',
+      ods: [SustainableDevelopmentGoal.NoPoverty],
+      initialDate: new Date('2026-01-01'),
+      durationDays: 90,
+      communityId: validCommunityId,
+    },
+    validCauseId,
+  );
 
   beforeEach(async () => {
     mockRequestsRepository = {
@@ -46,6 +79,18 @@ describe('RequestsServiceImpl', () => {
       findAll: jest.fn(),
       remove: jest.fn(),
     };
+    mockCommunityRepository = {
+      findById: jest.fn(),
+      save: jest.fn(),
+      findAll: jest.fn(),
+      remove: jest.fn(),
+    };
+    mockCauseRepository = {
+      findById: jest.fn(),
+      save: jest.fn(),
+      findAll: jest.fn(),
+      remove: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -53,6 +98,8 @@ describe('RequestsServiceImpl', () => {
         { provide: RequestsRepositoryPort, useValue: mockRequestsRepository },
         { provide: RequestPublisherPort, useValue: mockRequestPublisher },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
+        { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepository },
+        { provide: CausesRepositoryPort, useValue: mockCauseRepository },
       ],
     }).compile();
 
@@ -133,12 +180,14 @@ describe('RequestsServiceImpl', () => {
       name: 'Causa Benéfica de Prueba',
       description: 'Esta es una descripción válida para la causa benéfica con más de 20 caracteres',
       userId: validUserId,
+      communityId: validCommunityId,
       ods: [SustainableDevelopmentGoal.ZeroHunger],
       initialDate: '2026-02-01T00:00:00.000Z',
       durationDays: 180,
     };
 
     it('should create a cause request successfully', async () => {
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
       mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
@@ -152,6 +201,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should return EntityNotFoundException when user does not exist', async () => {
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
@@ -163,6 +213,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should return ValidationError when description is invalid', async () => {
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
 
       const invalidDto: CreateCauseRequestDto = {
@@ -178,6 +229,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should return RepositoryException when save fails', async () => {
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
       const repoError = new RepositoryException('Database error');
       mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
@@ -195,6 +247,7 @@ describe('RequestsServiceImpl', () => {
       name: 'Acción Solidaria de Prueba',
       description: 'Esta es una descripción válida para la acción solidaria con más de 20 caracteres',
       userId: validUserId,
+      causeId: validCauseId,
       objectives: [
         {
           name: 'Objetivo de Prueba',
@@ -218,6 +271,7 @@ describe('RequestsServiceImpl', () => {
     };
 
     it('should create an action request successfully', async () => {
+      mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
       mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
@@ -231,6 +285,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should return EntityNotFoundException when user does not exist', async () => {
+      mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
       const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
@@ -242,6 +297,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should return ValidationError when name is invalid', async () => {
+      mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
 
       const invalidDto: CreateActionRequestDto = {
@@ -257,6 +313,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should return RepositoryException when save fails', async () => {
+      mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
       const repoError = new RepositoryException('Database error');
       mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
@@ -269,6 +326,7 @@ describe('RequestsServiceImpl', () => {
     });
 
     it('should publish event after successful save', async () => {
+      mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
       mockRequestPublisher.publish.mockResolvedValueOnce(undefined);

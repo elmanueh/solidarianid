@@ -1,3 +1,4 @@
+import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 
@@ -13,7 +14,9 @@ export class CauseRequestEventDto {
   reason?: string;
   userId: string;
   username: string;
+  communityId: string;
   ods: SustainableDevelopmentGoal[];
   initialDate: Date;
   durationDays: number;
+  type: RequestType = RequestType.CAUSE;
 }

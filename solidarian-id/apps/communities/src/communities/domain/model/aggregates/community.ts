@@ -68,10 +68,7 @@ export class Community extends AggregateRoot<CommunityProps> {
    *
    * @return Either<InvalidUniqueEntityIDError | InvalidNameError | InvalidDescriptionError, Community>
    */
-  public static create(
-    props: CommunityCreationProps,
-    id?: string,
-  ): Either<ValidationError, Community> {
+  public static create(props: CommunityCreationProps, id?: string): Either<ValidationError, Community> {
     const uniqueId = UniqueEntityID.create(id);
     const name = Name.create(props.name);
     const description = Description.create(props.description);

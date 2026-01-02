@@ -20,19 +20,13 @@ export class HashedPassword extends ValueObject<HashedPasswordProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    hash: string,
-  ): Either<InvalidHashPasswordError, HashedPassword> {
+  public static create(hash: string): Either<InvalidHashPasswordError, HashedPassword> {
     if (hash === null || hash === undefined || hash.trim().length === 0) {
-      return left(
-        new InvalidHashPasswordError('A password hash can not be empty'),
-      );
+      return left(new InvalidHashPasswordError('A password hash can not be empty'));
     }
 
     if (!HASHED_PASSWORD_LONGITUDE.test(hash)) {
-      return left(
-        new InvalidHashPasswordError('Hash does not have a reasonable length'),
-      );
+      return left(new InvalidHashPasswordError('Hash does not have a reasonable length'));
     }
 
     return right(new HashedPassword(hash));

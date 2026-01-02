@@ -4,7 +4,5 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Community } from '@app/communities/communities/domain/model/aggregates/community';
 
 export abstract class CommunitiesRepositoryPort extends Repository<Community> {
-  abstract getAllCommunitiesSummary(): Promise<
-    Either<ValidationError, Community[]>
-  >;
+  abstract getAllCommunitiesSummary(): Promise<Either<ValidationError, Community[]>>;
 }

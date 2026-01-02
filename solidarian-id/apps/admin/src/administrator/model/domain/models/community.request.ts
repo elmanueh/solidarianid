@@ -1,8 +1,5 @@
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
-import {
-  Request,
-  RequestProps,
-} from '@app/admin/administrator/model/domain/models/request';
+import { Request, RequestProps } from '@app/admin/administrator/model/domain/models/request';
 import { Either } from '@app/ddd/either';
 
 interface RequestCommunityProps extends RequestProps {

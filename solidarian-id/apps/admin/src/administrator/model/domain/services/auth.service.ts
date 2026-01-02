@@ -21,17 +21,12 @@ export abstract class AuthService {
     email: string,
     phone: string,
     password: string,
-  ): Promise<
-    Either<AuthError | ConflictError | ValidationError, Administrator>
-  >;
+  ): Promise<Either<AuthError | ConflictError | ValidationError, Administrator>>;
 
   /**
    * Inicia sesión de un administrador
    * @param email email
    * @param password contraseña en texto plano sin cifrar
    */
-  public abstract login(
-    email: string,
-    password: string,
-  ): Promise<Either<AuthError, Administrator>>;
+  public abstract login(email: string, password: string): Promise<Either<AuthError, Administrator>>;
 }

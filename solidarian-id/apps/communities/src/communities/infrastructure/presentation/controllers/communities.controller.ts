@@ -15,9 +15,7 @@ export class CommunitiesController {
       throw communities.value;
     }
 
-    const filtered = communities.value.map((community) =>
-      CommunityMapper.toCommunitySummaryDto(community),
-    );
+    const filtered = communities.value.map(community => CommunityMapper.toCommunitySummaryDto(community));
 
     return filtered;
   }

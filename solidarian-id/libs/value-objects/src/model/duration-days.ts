@@ -19,15 +19,9 @@ export class DurationDays extends ValueObject<DurationDaysProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    durationDays: number,
-  ): Either<InvalidDurationDaysError, DurationDays> {
+  public static create(durationDays: number): Either<InvalidDurationDaysError, DurationDays> {
     if (!Number.isInteger(durationDays) || durationDays <= 0) {
-      return left(
-        new InvalidDurationDaysError(
-          'Duration days must be a positive integer.',
-        ),
-      );
+      return left(new InvalidDurationDaysError('Duration days must be a positive integer.'));
     }
 
     return right(new DurationDays(durationDays));

@@ -46,9 +46,7 @@ export class Objective extends ValueObject<ObjectiveProps> {
    *
    * @return Either<InvalidNameError | InvalidDescriptionError | InvalidQuantityError | InvalidUnitError, Objective>
    */
-  public static create(
-    props: ObjectiveCreationProps,
-  ): Either<ValidationError, Objective> {
+  public static create(props: ObjectiveCreationProps): Either<ValidationError, Objective> {
     const name = Name.create(props.name);
     const description = Description.create(props.description);
     const quantity = Quantity.create(props.quantity);

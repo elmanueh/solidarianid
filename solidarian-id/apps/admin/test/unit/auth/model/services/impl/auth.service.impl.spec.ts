@@ -6,8 +6,7 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Test, TestingModule } from '@nestjs/testing';
 
 // Valid bcrypt hash for testing (represents 'ValidPass123!')
-const VALID_BCRYPT_HASH =
-  '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.k0s8FO/pB.OMnXJzqy';
+const VALID_BCRYPT_HASH = '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.k0s8FO/pB.OMnXJzqy';
 
 describe('AuthServiceImpl', () => {
   let service: AuthService;
@@ -72,25 +71,14 @@ describe('AuthServiceImpl', () => {
           });
 
           // Act
-          const result = await service.register(
-            'New Admin',
-            'existing@test.com',
-            '+34987654321',
-            'ValidPass123!',
-          );
+          const result = await service.register('New Admin', 'existing@test.com', '+34987654321', 'ValidPass123!');
 
           // Assert
           expect(result.isLeft()).toBe(true);
           expect(result.value).toBeInstanceOf(Error);
-          expect((result.value as Error).message).toContain(
-            'Administrator with this email already exists',
-          );
-          expect(mockAdministratorRepository.findByEmail).toHaveBeenCalledWith(
-            'existing@test.com',
-          );
-          expect(
-            mockPasswordService.validateAndHashPassword,
-          ).not.toHaveBeenCalled();
+          expect((result.value as Error).message).toContain('Administrator with this email already exists');
+          expect(mockAdministratorRepository.findByEmail).toHaveBeenCalledWith('existing@test.com');
+          expect(mockPasswordService.validateAndHashPassword).not.toHaveBeenCalled();
         });
 
         it('should return ValidationError when password validation fails (path 2)', async () => {
@@ -108,19 +96,12 @@ describe('AuthServiceImpl', () => {
           });
 
           // Act
-          const result = await service.register(
-            'New Admin',
-            'new@test.com',
-            '+34987654321',
-            'weak',
-          );
+          const result = await service.register('New Admin', 'new@test.com', '+34987654321', 'weak');
 
           // Assert
           expect(result.isLeft()).toBe(true);
           expect(result.value).toBe(validationError);
-          expect(
-            mockPasswordService.validateAndHashPassword,
-          ).toHaveBeenCalledWith('weak');
+          expect(mockPasswordService.validateAndHashPassword).toHaveBeenCalledWith('weak');
           expect(mockAdministratorRepository.save).not.toHaveBeenCalled();
         });
 
@@ -165,21 +146,12 @@ describe('AuthServiceImpl', () => {
           mockAdministratorRepository.save.mockResolvedValue(undefined);
 
           // Act
-          const result = await service.register(
-            'New Administrator',
-            'new@test.com',
-            '+34987654321',
-            'ValidPass123!',
-          );
+          const result = await service.register('New Administrator', 'new@test.com', '+34987654321', 'ValidPass123!');
 
           // Assert
           expect(result.isRight()).toBe(true);
-          expect(mockAdministratorRepository.findByEmail).toHaveBeenCalledWith(
-            'new@test.com',
-          );
-          expect(
-            mockPasswordService.validateAndHashPassword,
-          ).toHaveBeenCalledWith('ValidPass123!');
+          expect(mockAdministratorRepository.findByEmail).toHaveBeenCalledWith('new@test.com');
+          expect(mockPasswordService.validateAndHashPassword).toHaveBeenCalledWith('ValidPass123!');
           expect(mockAdministratorRepository.save).toHaveBeenCalledTimes(1);
         });
       });
@@ -194,18 +166,11 @@ describe('AuthServiceImpl', () => {
           });
 
           // Act
-          const result = await service.register(
-            'Test',
-            'existing@test.com',
-            '+34123456789',
-            'Pass123!',
-          );
+          const result = await service.register('Test', 'existing@test.com', '+34123456789', 'Pass123!');
 
           // Assert
           expect(result.isLeft()).toBe(true);
-          expect((result.value as Error).message).toContain(
-            'Administrator with this email already exists',
-          );
+          expect((result.value as Error).message).toContain('Administrator with this email already exists');
         });
 
         it('should test condition: existingAdministrator.isRight() === false', async () => {
@@ -223,18 +188,11 @@ describe('AuthServiceImpl', () => {
           mockAdministratorRepository.save.mockResolvedValue(undefined);
 
           // Act
-          const result = await service.register(
-            'Valid Name',
-            'new@test.com',
-            '+34123456789',
-            'ValidPass123!',
-          );
+          const result = await service.register('Valid Name', 'new@test.com', '+34123456789', 'ValidPass123!');
 
           // Assert - Should proceed to password validation
           expect(result.isLeft()).toBe(false);
-          expect(
-            mockPasswordService.validateAndHashPassword,
-          ).toHaveBeenCalled();
+          expect(mockPasswordService.validateAndHashPassword).toHaveBeenCalled();
         });
 
         it('should test condition: passwordHashOrError.isLeft() === true', async () => {
@@ -251,12 +209,7 @@ describe('AuthServiceImpl', () => {
           });
 
           // Act
-          const result = await service.register(
-            'Test',
-            'test@test.com',
-            '+34123456789',
-            'weak',
-          );
+          const result = await service.register('Test', 'test@test.com', '+34123456789', 'weak');
 
           // Assert
           expect(result.isLeft()).toBe(true);
@@ -278,12 +231,7 @@ describe('AuthServiceImpl', () => {
           mockAdministratorRepository.save.mockResolvedValue(undefined);
 
           // Act
-          const result = await service.register(
-            'Valid Name',
-            'test@test.com',
-            '+34123456789',
-            'ValidPass123!',
-          );
+          const result = await service.register('Valid Name', 'test@test.com', '+34123456789', 'ValidPass123!');
 
           // Assert - Should proceed to Administrator.create
           expect(result).toBeDefined();
@@ -331,12 +279,7 @@ describe('AuthServiceImpl', () => {
           mockAdministratorRepository.save.mockResolvedValue(undefined);
 
           // Act
-          const result = await service.register(
-            'Valid Administrator',
-            'new@test.com',
-            '+34123456789',
-            'ValidPass123!',
-          );
+          const result = await service.register('Valid Administrator', 'new@test.com', '+34123456789', 'ValidPass123!');
 
           // Assert - Should save the administrator
           expect(mockAdministratorRepository.save).toHaveBeenCalled();
@@ -356,19 +299,12 @@ describe('AuthServiceImpl', () => {
           });
 
           // Act
-          const result = await service.login(
-            'nonexistent@test.com',
-            'anyPassword',
-          );
+          const result = await service.login('nonexistent@test.com', 'anyPassword');
 
           // Assert
           expect(result.isLeft()).toBe(true);
-          expect((result.value as Error).message).toContain(
-            'Email o contraseña incorrectos',
-          );
-          expect(mockAdministratorRepository.findByEmail).toHaveBeenCalledWith(
-            'nonexistent@test.com',
-          );
+          expect((result.value as Error).message).toContain('Email o contraseña incorrectos');
+          expect(mockAdministratorRepository.findByEmail).toHaveBeenCalledWith('nonexistent@test.com');
           expect(mockPasswordService.comparePassword).not.toHaveBeenCalled();
         });
 
@@ -393,13 +329,8 @@ describe('AuthServiceImpl', () => {
 
           // Assert
           expect(result.isLeft()).toBe(true);
-          expect((result.value as Error).message).toContain(
-            'Email o contraseña incorrectos',
-          );
-          expect(mockPasswordService.comparePassword).toHaveBeenCalledWith(
-            'wrongPassword',
-            'hashedCorrectPassword',
-          );
+          expect((result.value as Error).message).toContain('Email o contraseña incorrectos');
+          expect(mockPasswordService.comparePassword).toHaveBeenCalledWith('wrongPassword', 'hashedCorrectPassword');
         });
 
         it('Path 3: should successfully login when credentials are valid', async () => {
@@ -419,21 +350,13 @@ describe('AuthServiceImpl', () => {
           mockPasswordService.comparePassword.mockResolvedValue(true);
 
           // Act
-          const result = await service.login(
-            'admin@test.com',
-            'correctPassword',
-          );
+          const result = await service.login('admin@test.com', 'correctPassword');
 
           // Assert
           expect(result.isRight()).toBe(true);
           expect(result.value).toEqual(mockAdmin);
-          expect(mockAdministratorRepository.findByEmail).toHaveBeenCalledWith(
-            'admin@test.com',
-          );
-          expect(mockPasswordService.comparePassword).toHaveBeenCalledWith(
-            'correctPassword',
-            'hashedCorrectPassword',
-          );
+          expect(mockAdministratorRepository.findByEmail).toHaveBeenCalledWith('admin@test.com');
+          expect(mockPasswordService.comparePassword).toHaveBeenCalledWith('correctPassword', 'hashedCorrectPassword');
         });
       });
 
@@ -451,9 +374,7 @@ describe('AuthServiceImpl', () => {
 
           // Assert
           expect(result.isLeft()).toBe(true);
-          expect((result.value as Error).message).toContain(
-            'Email o contraseña incorrectos',
-          );
+          expect((result.value as Error).message).toContain('Email o contraseña incorrectos');
         });
 
         it('should test condition: adminOrError.isLeft() === false', async () => {
@@ -497,9 +418,7 @@ describe('AuthServiceImpl', () => {
 
           // Assert
           expect(result.isLeft()).toBe(true);
-          expect((result.value as Error).message).toContain(
-            'Email o contraseña incorrectos',
-          );
+          expect((result.value as Error).message).toContain('Email o contraseña incorrectos');
         });
 
         it('should test condition: isPasswordValid === true', async () => {
@@ -517,10 +436,7 @@ describe('AuthServiceImpl', () => {
           mockPasswordService.comparePassword.mockResolvedValue(true);
 
           // Act
-          const result = await service.login(
-            'admin@test.com',
-            'correctPassword',
-          );
+          const result = await service.login('admin@test.com', 'correctPassword');
 
           // Assert
           expect(result.isRight()).toBe(true);

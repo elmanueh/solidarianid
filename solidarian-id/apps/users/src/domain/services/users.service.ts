@@ -10,19 +10,14 @@ export abstract class UsersService {
    *  Registra un nuevo usuario genérico en el sistema.
    * @param command
    */
-  abstract registerUser(
-    command: RegisterUserCommand,
-  ): Promise<Either<Error, string>>;
+  abstract registerUser(command: RegisterUserCommand): Promise<Either<Error, string>>;
 
   /**
    * Inicia sesión de un usuario con su nombre de usuario y contraseña.
    * @param username
    * @param password
    */
-  abstract loginUser(
-    username: string,
-    password: string,
-  ): Promise<Either<Error, boolean>>;
+  abstract loginUser(username: string, password: string): Promise<Either<Error, boolean>>;
 
   /**
    * Actualiza el perfil de un usuario existente.

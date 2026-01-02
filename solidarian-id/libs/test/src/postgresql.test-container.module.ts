@@ -6,8 +6,7 @@ import { DataSource } from 'typeorm';
 @Module({})
 export class PostgreSQLTestModule {
   static async forRoot(entities: any[] = []): Promise<DynamicModule> {
-    const connectionString =
-      await PostgreSQLTestContainer.getInstance().start();
+    const connectionString = await PostgreSQLTestContainer.getInstance().start();
 
     const module = {
       global: true,

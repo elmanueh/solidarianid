@@ -1,30 +1,15 @@
 import { Either, left, right } from '@app/ddd/either';
-import {
-  PASSWORD_COMPLEXITY_REGEX,
-  PASSWORD_MIN_LENGTH,
-} from '@app/value-objects/constants/validation.constants';
+import { PASSWORD_COMPLEXITY_REGEX, PASSWORD_MIN_LENGTH } from '@app/value-objects/constants/validation.constants';
 import { PasswordTooWeakError } from '@app/utils/security/password-validation-error';
 
 export abstract class PasswordManager {
-  async validateAndHashPassword(
-    plainPassword: string,
-  ): Promise<Either<PasswordTooWeakError, string>> {
-    if (
-      plainPassword === null ||
-      plainPassword === undefined ||
-      plainPassword.trim().length === 0
-    ) {
-      return left(
-        new PasswordTooWeakError('La contraseña no puede estar vacía'),
-      );
+  async validateAndHashPassword(plainPassword: string): Promise<Either<PasswordTooWeakError, string>> {
+    if (plainPassword === null || plainPassword === undefined || plainPassword.trim().length === 0) {
+      return left(new PasswordTooWeakError('La contraseña no puede estar vacía'));
     }
 
     if (plainPassword.length < PASSWORD_MIN_LENGTH) {
-      return left(
-        new PasswordTooWeakError(
-          `La contraseña debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres`,
-        ),
-      );
+      return left(new PasswordTooWeakError(`La contraseña debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres`));
     }
 
     if (!PASSWORD_COMPLEXITY_REGEX.test(plainPassword)) {
@@ -41,8 +26,5 @@ export abstract class PasswordManager {
 
   abstract hashPassword(plainPassword: string): Promise<string>;
 
-  abstract comparePassword(
-    plainPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean>;
+  abstract comparePassword(plainPassword: string, hashedPassword: string): Promise<boolean>;
 }

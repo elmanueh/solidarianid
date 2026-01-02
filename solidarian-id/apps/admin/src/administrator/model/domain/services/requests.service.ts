@@ -6,21 +6,11 @@ import { Either } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 
 export abstract class RequestsService {
-  abstract updateStatus(
-    id: string,
-    status: RequestStatus,
-    reason?: string,
-  ): Promise<Either<ValidationError, void>>;
+  abstract updateStatus(id: string, status: RequestStatus, reason?: string): Promise<Either<ValidationError, void>>;
 
-  abstract getPendingCommunityRequests(): Promise<
-    Either<ValidationError, RequestCommunity[]>
-  >;
+  abstract getPendingCommunityRequests(): Promise<Either<ValidationError, RequestCommunity[]>>;
 
-  abstract getPendingCauseRequests(): Promise<
-    Either<ValidationError, RequestCause[]>
-  >;
+  abstract getPendingCauseRequests(): Promise<Either<ValidationError, RequestCause[]>>;
 
-  abstract getPendingActionRequests(): Promise<
-    Either<ValidationError, RequestAction[]>
-  >;
+  abstract getPendingActionRequests(): Promise<Either<ValidationError, RequestAction[]>>;
 }

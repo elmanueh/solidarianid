@@ -26,12 +26,7 @@ export class PostgreSQLTestContainer implements IDatabaseTestContainer {
         POSTGRES_PASSWORD: 'test',
         POSTGRES_DB: 'test_db',
       })
-      .withWaitStrategy(
-        Wait.forLogMessage(
-          /.*database system is ready to accept connections.*/i,
-          2,
-        ),
-      )
+      .withWaitStrategy(Wait.forLogMessage(/.*database system is ready to accept connections.*/i, 2))
       .withStartupTimeout(120000)
       .start();
 

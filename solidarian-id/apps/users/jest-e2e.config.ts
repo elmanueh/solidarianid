@@ -5,9 +5,7 @@ import type { Config } from 'jest';
 const config: Config = {
   ...baseJestConfig,
 
-  testPathIgnorePatterns: baseJestConfig.testPathIgnorePatterns?.filter(
-    (pattern) => !pattern.includes('e2e-spec'),
-  ),
+  testPathIgnorePatterns: baseJestConfig.testPathIgnorePatterns?.filter(pattern => !pattern.includes('e2e-spec')),
 
   rootDir: '../../',
 

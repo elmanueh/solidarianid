@@ -21,14 +21,9 @@
       iconStatus.classList.remove('hidden');
       iconStatus.classList.toggle('icon-[lucide--alert-circle]', !isValid);
       iconStatus.classList.toggle('icon-[lucide--check-circle]', isValid);
-      iconStatus.style.color = isValid
-        ? 'var(--color-sage-green-600)'
-        : 'var(--color-dark-wine-600)';
+      iconStatus.style.color = isValid ? 'var(--color-sage-green-600)' : 'var(--color-dark-wine-600)';
       iconStatus.setAttribute('aria-hidden', 'false');
-      iconStatus.setAttribute(
-        'aria-label',
-        isValid ? 'Campo válido' : 'Error en el campo',
-      );
+      iconStatus.setAttribute('aria-label', isValid ? 'Campo válido' : 'Error en el campo');
     }
   }
 
@@ -48,10 +43,7 @@
 
     if (iconStatus) {
       iconStatus.classList.add('hidden');
-      iconStatus.classList.remove(
-        'icon-[lucide--alert-circle]',
-        'icon-[lucide--check-circle]',
-      );
+      iconStatus.classList.remove('icon-[lucide--alert-circle]', 'icon-[lucide--check-circle]');
       iconStatus.style.color = '';
       iconStatus.setAttribute('aria-hidden', 'true');
     }
@@ -63,7 +55,7 @@
 
     const inputs = form.querySelectorAll('input[required]');
 
-    inputs.forEach((input) => {
+    inputs.forEach(input => {
       input.addEventListener('blur', function () {
         if (this.value.trim()) {
           updateFieldUI(this);
@@ -86,14 +78,13 @@
       const firstInvalid = form.querySelector('input:invalid');
 
       if (firstInvalid) {
-        inputs.forEach((input) => updateFieldUI(input));
+        inputs.forEach(input => updateFieldUI(input));
 
         const announcer = document.getElementById('form-announcer');
         if (announcer) {
           announcer.textContent = '';
           setTimeout(() => {
-            announcer.textContent =
-              'Por favor, corrige los errores en el formulario antes de continuar.';
+            announcer.textContent = 'Por favor, corrige los errores en el formulario antes de continuar.';
           }, 100);
         }
 
@@ -145,26 +136,19 @@
   }
 
   function initPasswordToggle() {
-    document.querySelectorAll('.password-toggle').forEach((button) => {
+    document.querySelectorAll('.password-toggle').forEach(button => {
       button.addEventListener('click', function () {
-        const input = document.getElementById(
-          this.getAttribute('aria-controls'),
-        );
+        const input = document.getElementById(this.getAttribute('aria-controls'));
         const icon = this.querySelector('span[class*="icon-"]');
 
         if (input) {
           const isPassword = input.type === 'password';
           input.type = isPassword ? 'text' : 'password';
           this.setAttribute('aria-pressed', String(isPassword));
-          this.setAttribute(
-            'aria-label',
-            isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña',
-          );
+          this.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
 
           if (icon) {
-            icon.className = isPassword
-              ? 'icon-[lucide--eye-off]'
-              : 'icon-[lucide--eye]';
+            icon.className = isPassword ? 'icon-[lucide--eye-off]' : 'icon-[lucide--eye]';
           }
         }
       });

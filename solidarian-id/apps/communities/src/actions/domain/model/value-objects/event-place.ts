@@ -39,9 +39,7 @@ export class EventPlace extends ValueObject<EventPlaceProps> {
    *
    * @return Either<InvalidDirectionError | InvalidCityError | InvalidCountryCodeError, Place>
    */
-  public static create(
-    props: EventPlaceCreateProps,
-  ): Either<ValidationError, EventPlace> {
+  public static create(props: EventPlaceCreateProps): Either<ValidationError, EventPlace> {
     const direction = Direction.create(props.direction);
     const city = City.create(props.city);
     const countryCode = CountryCode.create(props.countryCode);

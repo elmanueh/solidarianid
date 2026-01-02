@@ -6,9 +6,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
   constructor(private readonly dataSource: DataSource) {}
 
   async seedUsers(users: UserEntity[] = []): Promise<void> {
-    const userEntityTarget = this.dataSource.entityMetadatas.find(
-      (meta) => meta.tableName === 'tbl_Usuarios',
-    )?.target;
+    const userEntityTarget = this.dataSource.entityMetadatas.find(meta => meta.tableName === 'tbl_Usuarios')?.target;
 
     if (!userEntityTarget) {
       throw new Error('UserEntity not found in DataSource');
@@ -21,8 +19,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         id: '4807f235-f4b4-41c0-939c-c97371219551',
         username: 'testUsername',
         mobilePhone: '+34000000000',
-        passwordHash:
-          '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
+        passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
         city: 'Madrid',
         countryCode: 'ES',
       },

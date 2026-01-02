@@ -1,9 +1,6 @@
 import { ValueObject } from '@app/ddd/value-object';
 import { Either, right, left } from '@app/ddd/either';
-import {
-  DESCRIPTION_MAX_LENGTH,
-  DESCRIPTION_MIN_LENGTH,
-} from '../constants/validation.constants';
+import { DESCRIPTION_MAX_LENGTH, DESCRIPTION_MIN_LENGTH } from '../constants/validation.constants';
 import { InvalidDescriptionError } from '@app/value-objects/errors/validation/description-validation-error';
 
 export interface DescriptionProps {
@@ -23,9 +20,7 @@ export class Description extends ValueObject<DescriptionProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    plainDescription: string,
-  ): Either<InvalidDescriptionError, Description> {
+  public static create(plainDescription: string): Either<InvalidDescriptionError, Description> {
     // Validar que no esté vacío
     if (!plainDescription || plainDescription.trim().length === 0) {
       return left(new InvalidDescriptionError('Description cannot be empty.'));
@@ -34,19 +29,13 @@ export class Description extends ValueObject<DescriptionProps> {
     // Validar longitud mínima
     if (plainDescription.length < DESCRIPTION_MIN_LENGTH) {
       return left(
-        new InvalidDescriptionError(
-          `Description must be at least ${DESCRIPTION_MIN_LENGTH} characters long.`,
-        ),
+        new InvalidDescriptionError(`Description must be at least ${DESCRIPTION_MIN_LENGTH} characters long.`),
       );
     }
 
     // Validar longitud máxima
     if (plainDescription.length > DESCRIPTION_MAX_LENGTH) {
-      return left(
-        new InvalidDescriptionError(
-          `Description must not exceed ${DESCRIPTION_MAX_LENGTH} characters.`,
-        ),
-      );
+      return left(new InvalidDescriptionError(`Description must not exceed ${DESCRIPTION_MAX_LENGTH} characters.`));
     }
 
     return right(new Description(plainDescription));

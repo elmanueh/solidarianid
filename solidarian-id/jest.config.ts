@@ -6,12 +6,7 @@ const baseJestConfig: Config = {
   rootDir: '.',
   roots: ['<rootDir>/apps', '<rootDir>/libs'],
 
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-    String.raw`\.e2e-spec\.ts$`,
-    String.raw`\.cy\.ts$`,
-  ],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', String.raw`\.e2e-spec\.ts$`, String.raw`\.cy\.ts$`],
 
   moduleNameMapper: {
     '^@solidarianid/testing(.*)$': '<rootDir>/libs/test/src$1',
@@ -41,6 +36,7 @@ const baseJestConfig: Config = {
     '!**/main.ts',
   ],
 
+  collectCoverage: true,
   coverageDirectory: './coverage',
   coverageReporters: ['text', 'lcov', 'json'],
 

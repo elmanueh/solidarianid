@@ -3,48 +3,242 @@ name: CI - SolidarianID
 on:
   # El CI se ejecutará en cada push o pull request a la rama develop
   push:
-    branches:
-      - develop
+    paths:
+      - "solidarian-id/**"
+      - "!docs/**"
+    branches: [develop]
   pull_request:
-    branches:
-      - develop
+    paths:
+      - "solidarian-id/**"
+      - "!docs/**"
+    branches: [develop]
   workflow_dispatch:
 
 env:
   IMAGE_NAME: solidarianid
 
 jobs:
-  ci:
+  prettier-lint-test:
+    name: Check and write Prettier and Lint checks
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+      pull-requests: write
     defaults:
       run:
         working-directory: solidarian-id
-
     strategy:
       matrix:
         node-version: [24.x]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1 last version of the action checkout
-
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f #v6.1.0 last version of the action setup-node
+      - uses: ./.github/actions/configure
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix['node-version'] }}
+          working-directory: solidarian-id
 
-      - name: Install dependencies
-        run: npm install
+      - name: Run prettier check
+        id: prettier_check
+        continue-on-error: true
+        run: npx prettier --check '**/*.{ts,js,json,css,html}'
 
-      - name: Run linter
+      - name: Run prettier format
+        if: steps.prettier_check.outcome == 'failure'
+        run: npx prettier --write '**/*.{ts,js,json,css,html}'
+
+      - name: Commit formatted files
+        if: steps.prettier_check.outcome == 'failure' && github.actor != 'github-actions[bot]'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "chore(prettier-formatting): apply prettier formatting [skip ci]" || echo "No changes to commit"
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            git push origin HEAD:${{ github.head_ref }}
+          else
+            git push origin develop
+          fi
+
+      - name: Run linter/prettier
         run: npm run lint:ci
+
+  test-build:
+    name: Build the project and run tests
+    needs: "prettier-lint-test"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: solidarian-id
+    strategy:
+      matrix:
+        node-version: [24.x]
+
+    steps:
+      - uses: ./.github/actions/configure
+        with:
+          node-version: ${{ matrix['node-version'] }}
+          working-directory: solidarian-id
 
       - name: Build project
         run: npm run build
 
+  tests:
+    name: Run tests
+    needs: test-build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: solidarian-id
+    strategy:
+      matrix:
+        node-version: [24.x]
+
+    steps:
+      - uses: ./.github/actions/configure
+        with:
+          node-version: ${{ matrix['node-version'] }}
+          working-directory: solidarian-id
+
       - name: Run unit tests and frontend tests
         run: npm run test
 
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: solidarian-id/coverage
+
       - name: Run e2e/backend tests (all test e2e, admin, users, communities)
         run: npm run test:e2e
+
+  sonarqube:
+    name: SonarQube Scan
+    needs: tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: solidarian-id
+
+    services:
+      db:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: sonar
+          POSTGRES_PASSWORD: sonar
+          POSTGRES_DB: sonar
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U sonar -d sonar"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=30
+
+      sonarqube:
+        image: sonarqube:25.12.0.117093-community
+        env:
+          SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+          SONAR_JDBC_USERNAME: sonar
+          SONAR_JDBC_PASSWORD: sonar
+        ports:
+          - 9000:9000
+
+    steps:
+      - uses: ./.github/actions/configure
+        with:
+          node-version: 24.x
+          working-directory: solidarian-id
+          fetch-depth: 0
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage
+          path: solidarian-id/coverage
+
+      - name: Install jq (for JSON parsing)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Wait for SonarQube to be UP
+        run: |
+          for i in {1..90}; do
+            STATUS="$(curl -s http://localhost:9000/api/system/status | jq -r '.status' || true)"
+            echo "SonarQube status: $STATUS"
+            if [ "$STATUS" = "UP" ]; then
+              echo "SonarQube is UP"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "SonarQube did not become UP in time"
+          docker ps
+          docker logs "$(docker ps -q --filter "ancestor=sonarqube:25.12.0.117093-community")" || true
+          exit 1
+
+      - name: Create project (idempotent) + generate token
+        run: |
+          PROJECT_KEY="SolidarianID"
+          PROJECT_NAME="SolidarianID"
+
+          # Sonarqube API to create project (idempotent)
+          curl -s -u admin:admin -X POST "http://localhost:9000/api/projects/create" \
+            -d "name=$PROJECT_NAME&project=$PROJECT_KEY" >/dev/null || true
+
+          # Sonarqube API to generate token
+          TOKEN_JSON="$(curl -s -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate" \
+            -d "name=ci-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}")"
+
+          SONAR_TOKEN="$(echo "$TOKEN_JSON" | jq -r '.token')"
+
+          if [ -z "$SONAR_TOKEN" ] || [ "$SONAR_TOKEN" = "null" ]; then
+            echo "Failed to generate SONAR_TOKEN. Response:"
+            echo "$TOKEN_JSON"
+            exit 1
+          fi
+
+          echo "SONAR_TOKEN=$SONAR_TOKEN" >> "$GITHUB_ENV"
+          echo "SONAR_PROJECT_KEY=$PROJECT_KEY" >> "$GITHUB_ENV"
+          echo "SONAR_PROJECT_NAME=$PROJECT_NAME" >> "$GITHUB_ENV"
+
+      - name: Run SonarQube Scanner
+        uses: SonarSource/sonarqube-scan-action@v2
+        env:
+          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+          SONAR_HOST_URL: http://localhost:9000
+        with:
+          args: >
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+            -Dsonar.projectName=${{ env.SONAR_PROJECT_NAME }}
+            -Dsonar.sources=apps,libs
+            -Dsonar.exclusions=**/dist/**,**/node_modules/**,**/coverage/**
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.qualitygate.wait=true
+
+      - name: Setup Java (required by CNES)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Download CNES Report (standalone jar)
+        run: |
+          mkdir -p reports
+          curl -L -o reports/sonar-cnes-report.jar \
+           https://github.com/cnescatlab/sonar-cnes-report/releases/download/5.0.2/sonar-cnes-report-5.0.2.jar
+
+      - name: Generate CNES report
+        run: |
+          mkdir -p reports/sonar
+          java -jar reports/sonar-cnes-report.jar \
+            -s http://localhost:9000 \
+            -t "${{ env.SONAR_TOKEN }}" \
+            -p "${{ env.SONAR_PROJECT_KEY }}" \
+            -o reports/sonar
+
+      - name: Upload CNES report
+        uses: actions/upload-artifact@v4
+        with:
+          name: sonar-cnes-report
+          path: solidarian-id/reports/sonar

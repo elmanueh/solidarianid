@@ -25,6 +25,14 @@ async function bootstrap() {
       layoutsDir: join(__dirname, 'views/layouts'),
       partialsDir: join(__dirname, 'views/partials'),
       defaultLayout: 'auth',
+      helpers: {
+        // Helper para comparación de igualdad
+        eq: (a: any, b: any) => a === b,
+        // Helper para comparación mayor que
+        gt: (a: any, b: any) => a > b,
+        // Helper para verificar si un array tiene elementos
+        hasLength: (arr: any[]) => arr && arr.length > 0,
+      },
     }),
   );
 

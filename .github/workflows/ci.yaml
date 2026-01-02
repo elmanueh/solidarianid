@@ -180,6 +180,7 @@ jobs:
           SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
           SONAR_HOST_URL: http://sonarqube:9000
         with:
+          projectBaseDir: solidarian-id
           args: >
             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
             -Dsonar.projectName=${{ env.SONAR_PROJECT_NAME }}

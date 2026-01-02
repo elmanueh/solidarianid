@@ -18,8 +18,8 @@ env:
   IMAGE_NAME: solidarianid
 
 jobs:
-  prettier-lint-test:
-    name: Check and write Prettier and Lint checks
+  ci:
+    name: CI Pipeline
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,15 +31,48 @@ jobs:
       matrix:
         node-version: [24.x]
 
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v4
+    services:
+      db:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: sonar
+          POSTGRES_PASSWORD: sonar
+          POSTGRES_DB: sonar
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U sonar -d sonar"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=30
 
-      - uses: ./.github/actions/configure
+      sonarqube:
+        image: sonarqube:25.12.0.117093-community
+        env:
+          SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+          SONAR_JDBC_USERNAME: sonar
+          SONAR_JDBC_PASSWORD: sonar
+        ports:
+          - 9000:9000
+
+    steps:
+      # Setup
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix['node-version'] }}
-          working-directory: solidarian-id
+          cache: npm
+          cache-dependency-path: solidarian-id/package-lock.json
 
+      - name: Install dependencies
+        run: npm ci
+
+      # Prettier & Lint
       - name: Run prettier check
         id: prettier_check
         continue-on-error: true
@@ -74,53 +107,15 @@ jobs:
           # Push
           git push origin "HEAD:$TARGET_BRANCH"
 
-      - name: Run linter/prettier
+      - name: Run linter
         run: npm run lint:ci
 
-  test-build:
-    name: Build the project and run tests
-    needs: "prettier-lint-test"
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: solidarian-id
-    strategy:
-      matrix:
-        node-version: [24.x]
-
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v4
-
-      - uses: ./.github/actions/configure
-        with:
-          node-version: ${{ matrix['node-version'] }}
-          working-directory: solidarian-id
-
+      # Build
       - name: Build project
         run: npm run build
 
-  tests:
-    name: Run tests
-    needs: test-build
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: solidarian-id
-    strategy:
-      matrix:
-        node-version: [24.x]
-
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v4
-
-      - uses: ./.github/actions/configure
-        with:
-          node-version: ${{ matrix['node-version'] }}
-          working-directory: solidarian-id
-
-      - name: Run unit tests and frontend tests
+      # Tests
+      - name: Run unit and frontend tests
         run: npm run test
 
       - name: Upload coverage
@@ -129,59 +124,10 @@ jobs:
           name: coverage
           path: solidarian-id/coverage
 
-      - name: Run e2e/backend tests (all test e2e, admin, users, communities)
+      - name: Run e2e tests
         run: npm run test:e2e
 
-  sonarqube:
-    name: SonarQube Scan
-    needs: tests
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: solidarian-id
-
-    services:
-      db:
-        image: postgres:17-alpine
-        env:
-          POSTGRES_USER: sonar
-          POSTGRES_PASSWORD: sonar
-          POSTGRES_DB: sonar
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U sonar -d sonar"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=30
-
-      sonarqube:
-        image: sonarqube:25.12.0.117093-community
-        env:
-          SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
-          SONAR_JDBC_USERNAME: sonar
-          SONAR_JDBC_PASSWORD: sonar
-        ports:
-          - 9000:9000
-
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: ./.github/actions/configure
-        with:
-          node-version: 24.x
-          working-directory: solidarian-id
-          fetch-depth: 0
-
-      - name: Download coverage artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage
-          path: solidarian-id/coverage
-
+      # SonarQube
       - name: Install jq (for JSON parsing)
         run: |
           sudo apt-get update
@@ -232,7 +178,7 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v2
         env:
           SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
-          SONAR_HOST_URL: http://localhost:9000
+          SONAR_HOST_URL: http://sonarqube:9000
         with:
           args: >
             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}

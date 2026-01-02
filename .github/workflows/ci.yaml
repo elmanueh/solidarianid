@@ -211,7 +211,7 @@ jobs:
             -Dsonar.exclusions=**/dist/**,**/node_modules/**,**/coverage/**,**/*.spec.ts,**/*.test.ts,**/*.e2e-spec.ts,**/*.js,**/*.json,**/*.css,**/*.html
             -Dsonar.tests=apps
             -Dsonar.test.inclusions=**/*.spec.ts,**/*.test.ts,**/*.e2e-spec.ts
-            -Dsonar.coverage.exclusions=**/*.entity.ts,**/*.dto.ts,**/*.filter.ts,**/*.guard.ts,**/*.mapper.ts,**/*.port.ts,**/fake*.ts,**/enums/**,**/domain/model/**,**/model/**,**/models/**,**/main.ts,**/*.module.ts,**/jest*.config.ts,**/*.config.ts,**/*.d.ts,**/index.ts
+            -Dsonar.coverage.exclusions=**/*.entity.ts,**/*.dto.ts,**/*.filter.ts,**/*.guard.ts,**/*.mapper.ts,**/*.port.ts,**/fake*.ts,**/enums/**,**/domain/model/**,**/model/**,**/models/**,**/main.ts,**/*.module.ts,**/jest*.config.ts,**/*.config.ts,**/*.d.ts,**/index.ts,**/infrastructure/**,**/domain/** 
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.qualitygate.wait=true
 

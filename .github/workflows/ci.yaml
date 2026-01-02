@@ -116,17 +116,8 @@ jobs:
         run: npm run build
 
       # Tests
-      - name: Run unit and frontend tests
-        run: npm run test
-
-      - name: Upload coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: solidarian-id/coverage
-
-      - name: Run e2e tests
-        run: npm run test:e2e
+      - name: Run all tests with combined coverage
+        run: npm run test:all:coverage
 
       # SonarQube
       - name: Install jq (for JSON parsing)
@@ -186,11 +177,12 @@ jobs:
             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
             -Dsonar.projectName=${{ env.SONAR_PROJECT_NAME }}
             -Dsonar.sources=apps,libs
+            -Dsonar.tests=apps,libs
+            -Dsonar.test.inclusions=**/*.spec.ts,**/*.test.ts,**/*.e2e-spec.ts
             -Dsonar.exclusions=**/dist/**,**/node_modules/**,**/coverage/**
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.test.inclusions=**/*.spec.ts,**/*.test.ts,**/e2e-spec.ts
+            -Dsonar.testExecutionReportPaths=test-results/**/*.xml
             -Dsonar.qualitygate.wait=true
-            -X
 
       - name: Setup Java (required by CNES)
         uses: actions/setup-java@v4

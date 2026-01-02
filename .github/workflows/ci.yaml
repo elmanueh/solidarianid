@@ -21,6 +21,7 @@ jobs:
   ci:
     name: CI Pipeline
     runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
     permissions:
       contents: write
       pull-requests: write
@@ -83,7 +84,7 @@ jobs:
         run: npx prettier --write '**/*.{ts,js,json,css,html}'
 
       - name: Commit formatted files
-        if: steps.prettier_check.outcome == 'failure' && github.actor != 'github-actions[bot]'
+        if: steps.prettier_check.outcome == 'failure'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
@@ -187,7 +188,9 @@ jobs:
             -Dsonar.sources=apps,libs
             -Dsonar.exclusions=**/dist/**,**/node_modules/**,**/coverage/**
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.test.inclusions=**/*.spec.ts,**/*.test.ts,**/e2e-spec.ts
             -Dsonar.qualitygate.wait=true
+            -X
 
       - name: Setup Java (required by CNES)
         uses: actions/setup-java@v4

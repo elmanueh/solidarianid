@@ -8,6 +8,7 @@ import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Either, left, right, sequence } from '@app/ddd/either';
 import { Reason } from '@app/value-objects/model/reason';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { RequestType } from '../enums/request-type';
 
 export interface ActionRequestObjectiveProps {
   name: Name;
@@ -44,11 +45,13 @@ export interface ActionRequestCreationEventProps {
 export interface ActionRequestProps extends RequestProps {
   objectives: ActionRequestObjectiveProps[];
   events: ActionRequestEventProps[];
+  causeId: UniqueEntityID;
 }
 
 export interface ActionCreationProps extends RequestCreationProps {
   objectives: ActionRequestCreationObjectiveProps[];
   events: ActionRequestCreationEventProps[];
+  causeId: string;
 }
 
 export class ActionRequest extends Request<ActionRequestProps> {
@@ -62,6 +65,10 @@ export class ActionRequest extends Request<ActionRequestProps> {
 
   get events(): ReadonlyArray<ActionRequestEventProps> {
     return this.props.events;
+  }
+
+  get causeId(): string {
+    return this.props.causeId.value;
   }
 
   addObjective(objective: ActionRequestObjectiveProps): void {
@@ -81,6 +88,7 @@ export class ActionRequest extends Request<ActionRequestProps> {
     const reasonOrError = Reason.create(reason);
     const objectivesOrError = sequence(objectives.map(objective => ActionRequest.validateObjective(objective)));
     const eventsOrError = sequence(events.map(event => ActionRequest.validateEvent(event)));
+    const causeIdOrError = UniqueEntityID.create(props.causeId);
 
     if (uniqueId.isLeft()) return left(uniqueId.value);
     if (reasonOrError.isLeft()) return left(reasonOrError.value);
@@ -88,8 +96,10 @@ export class ActionRequest extends Request<ActionRequestProps> {
     if (descriptionOrError.isLeft()) return left(descriptionOrError.value);
     if (objectivesOrError.isLeft()) return left(objectivesOrError.value);
     if (eventsOrError.isLeft()) return left(eventsOrError.value);
+    if (causeIdOrError.isLeft()) return left(causeIdOrError.value);
 
     const requestProps: ActionRequestProps = {
+      type: RequestType.ACTION,
       name: nameOrError.value,
       description: descriptionOrError.value,
       status,
@@ -97,6 +107,7 @@ export class ActionRequest extends Request<ActionRequestProps> {
       reason: reasonOrError.value,
       objectives: objectivesOrError.value,
       events: eventsOrError.value,
+      causeId: causeIdOrError.value,
     };
 
     return right(new ActionRequest(requestProps, uniqueId.value));

@@ -1,4 +1,5 @@
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/domain/model/enums/request-type';
 
 /**
  * DTO for an objective within an action request event
@@ -43,4 +44,6 @@ export class ActionRequestEventDto {
   username: string;
   objectives: ActionRequestObjectiveEventDto[];
   events: ActionRequestEventEventDto[];
+  causeId: string;
+  type: RequestType = RequestType.ACTION;
 }

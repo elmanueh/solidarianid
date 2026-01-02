@@ -5,6 +5,7 @@ import { Either, left, right, sequence } from '@app/ddd/either';
 import { Name } from '@app/value-objects/model/name';
 import { Description } from '@app/value-objects/model/description';
 import { RequestStatus } from '../enums/request-status';
+import { RequestType } from '../enums/request-type';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { Duration } from '@app/value-objects/model/duration';
 import { Reason } from '@app/value-objects/model/reason';
@@ -61,6 +62,7 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     if (causeRequestsOrError.isLeft()) return left(causeRequestsOrError.value);
 
     const requestProps: CommunityRequestProps = {
+      type: RequestType.COMMUNITY,
       name: nameOrError.value,
       description: descriptionOrError.value,
       reason: reasonOrError.value,

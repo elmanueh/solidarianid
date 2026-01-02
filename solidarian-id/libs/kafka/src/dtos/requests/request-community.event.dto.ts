@@ -1,4 +1,5 @@
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 
 /**
@@ -26,4 +27,5 @@ export class CommunityRequestEventDto {
   userId: string;
   username: string;
   causeRequests: CommunityRequestCauseEventDto[];
+  type: RequestType = RequestType.COMMUNITY;
 }

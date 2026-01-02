@@ -15,6 +15,9 @@ import { RequestStatus } from '@app/communities/domain/model/enums/request-statu
 import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
 import { EventType } from '@solidarianid/kafka';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { RequestType } from '@app/communities/domain/model/enums/request-type';
 
 /**
  * Implementation of the RequestsService.
@@ -28,6 +31,8 @@ export class RequestsServiceImpl extends RequestsService {
     private readonly requestsRepository: RequestsRepositoryPort,
     private readonly requestPublisher: RequestPublisherPort,
     private readonly userRepository: UsersRepositoryPort,
+    private readonly communityRepository: CommunitiesRepositoryPort,
+    private readonly causeRepository: CausesRepositoryPort,
   ) {
     super();
   }
@@ -60,6 +65,7 @@ export class RequestsServiceImpl extends RequestsService {
       name: dto.name,
       description: dto.description,
       status: RequestStatus.PENDING,
+      type: RequestType.COMMUNITY,
       user: userOrError.value,
       causeCreationRequests,
     });
@@ -89,6 +95,11 @@ export class RequestsServiceImpl extends RequestsService {
     dto: CreateCauseRequestDto,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>> {
     const userOrError = await this.userRepository.findById(dto.userId);
+    const communityOrError = await this.communityRepository.findById(dto.communityId);
+
+    if (communityOrError.isLeft()) {
+      return left(communityOrError.value);
+    }
 
     if (userOrError.isLeft()) {
       return left(userOrError.value);
@@ -99,9 +110,11 @@ export class RequestsServiceImpl extends RequestsService {
       description: dto.description,
       status: RequestStatus.PENDING,
       user: userOrError.value,
+      type: RequestType.CAUSE,
       ods: dto.ods,
       initialDate: new Date(dto.initialDate),
       durationDays: dto.durationDays,
+      communityId: dto.communityId,
     });
 
     if (causeRequestOrError.isLeft()) {
@@ -129,6 +142,11 @@ export class RequestsServiceImpl extends RequestsService {
     dto: CreateActionRequestDto,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>> {
     const userOrError = await this.userRepository.findById(dto.userId);
+    const causeOrError = await this.causeRepository.findById(dto.causeId);
+
+    if (causeOrError.isLeft()) {
+      return left(causeOrError.value);
+    }
 
     if (userOrError.isLeft()) {
       return left(userOrError.value);
@@ -156,9 +174,11 @@ export class RequestsServiceImpl extends RequestsService {
       name: dto.name,
       description: dto.description,
       status: RequestStatus.PENDING,
+      type: RequestType.ACTION,
       user: userOrError.value,
       objectives,
       events,
+      causeId: dto.causeId,
     });
 
     if (actionRequestOrError.isLeft()) {

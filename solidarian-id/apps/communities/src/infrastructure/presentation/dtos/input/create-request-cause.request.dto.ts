@@ -87,4 +87,12 @@ export class CreateCauseRequestDto {
   @IsString()
   @IsNotEmpty()
   userId: string;
+
+  @ApiProperty({
+    description: 'The ID of the community related to the cause request',
+    example: '550e8400-e29b-41d4-a716-446655440000',
+  })
+  @IsString()
+  @IsNotEmpty()
+  communityId: string;
 }

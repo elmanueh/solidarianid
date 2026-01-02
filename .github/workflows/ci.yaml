@@ -33,7 +33,7 @@ jobs:
 
     services:
       db:
-        image: postgres:17-alpine
+        image: postgres@sha256:ff4ccc02b97e0ebb6b328ef9ff92522f95586f83be6801896b615088defc8ad2
         env:
           POSTGRES_USER: sonar
           POSTGRES_PASSWORD: sonar
@@ -47,7 +47,7 @@ jobs:
           --health-retries=30
 
       sonarqube:
-        image: sonarqube:25.12.0.117093-community
+        image: sonarqube@sha256:47e573f85879254dafd7be9845f750155f33de8a6f33542015c31ce050917059
         env:
           SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
           SONAR_JDBC_USERNAME: sonar

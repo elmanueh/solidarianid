@@ -1,4 +1,36 @@
-<div>
-  Esto es la página de solicitudes. Volver al dashboard
-  <a href='/dashboard'>aquí</a>.
-</div>
+<main class="metrics" aria-labelledby="page-title">
+  <h1 id="page-title" class="metrics-title">Solicitudes pendientes</h1>
+
+  <div class="tabs tabs-box bg-white dark:bg-athens-gray-900 p-2">
+    <label class="tab space-x-1">
+      <input type="radio" name="tab-requests" checked="checked" />
+      <span
+        class="icon-[iconoir--community]"
+        role="img"
+        aria-hidden="true"
+      ></span>
+      <span>Comunidades</span>
+    </label>
+    <div class="tab-content space-y-4">
+      {{> tab-community communities=communities }}
+    </div>
+
+    <label class="tab space-x-1">
+      <input type="radio" name="tab-requests" />
+      <span class="icon-[ri--target-fill]" role="img" aria-hidden="true"></span>
+      <span>Causas</span>
+    </label>
+    <div class="tab-content space-y-4">{{> tab-cause causes=causes }}</div>
+
+    <label class="tab space-x-1">
+      <input type="radio" name="tab-requests" />
+      <span
+        class="icon-[streamline-ultimate--task-list-pin]"
+        role="img"
+        aria-hidden="true"
+      ></span>
+      <span>Acciones</span>
+    </label>
+    <div class="tab-content space-y-4">{{> tab-action actions=actions }}</div>
+  </div>
+</main>

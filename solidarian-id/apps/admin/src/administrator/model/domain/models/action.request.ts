@@ -9,6 +9,7 @@ import { Event } from '@app/value-objects/model/event';
 import { InvalidUniqueEntityIDError } from '@app/value-objects/errors/validation/unique-entity-id-validation-error';
 import { InvalidDescriptionError } from '@app/value-objects/errors/validation/description-validation-error';
 import { RequestError } from '@app/value-objects/errors/validation/request-validation.error';
+import { Reason } from '@app/value-objects/model/reason';
 
 interface ActionRequestProps extends RequestProps {
   objectives: QuantifiableObjective[];
@@ -38,21 +39,20 @@ export class ActionRequest extends Request<ActionRequestProps> {
     id?: string,
   ): Either<InvalidUniqueEntityIDError | InvalidDescriptionError, ActionRequest> {
     const idOrError = UniqueEntityID.create(id);
-    if (idOrError.isLeft()) {
-      return left(idOrError.value);
-    }
+    if (idOrError.isLeft()) return left(idOrError.value);
 
     const descriptionOrError = Description.create(props.description);
-    if (descriptionOrError.isLeft()) {
-      return left(descriptionOrError.value);
-    }
+    if (descriptionOrError.isLeft()) return left(descriptionOrError.value);
+
+    const reasonOrError = Reason.create(props.reason);
+    if (reasonOrError.isLeft()) return left(reasonOrError.value);
 
     const actionRequest = new ActionRequest(
       {
         name: props.name,
         description: descriptionOrError.value,
         status: props.status ?? RequestStatus.PENDING,
-        reason: props.reason,
+        reason: reasonOrError.value,
         objectives: props.objectives ?? [],
         events: props.events ?? [],
       },
@@ -67,8 +67,11 @@ export class ActionRequest extends Request<ActionRequestProps> {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
 
+    const reasonOrError = Reason.create(reason);
+    if (reasonOrError.isLeft()) return left(reasonOrError.value);
+
     this.props.status = RequestStatus.APPROVED;
-    if (reason) this.props.reason = reason;
+    if (reason) this.props.reason = reasonOrError.value;
     return right(undefined);
   }
 
@@ -77,12 +80,15 @@ export class ActionRequest extends Request<ActionRequestProps> {
       return left(new RequestError('Rejection reason must be provided'));
     }
 
+    const reasonOrError = Reason.create(reason);
+    if (reasonOrError.isLeft()) return left(reasonOrError.value);
+
     if (this.props.status !== RequestStatus.PENDING) {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
 
     this.props.status = RequestStatus.REJECTED;
-    this.props.reason = reason;
+    this.props.reason = reasonOrError.value;
     return right(undefined);
   }
 }

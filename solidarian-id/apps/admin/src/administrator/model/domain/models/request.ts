@@ -4,13 +4,14 @@ import { Either } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
 import { RequestError } from '@app/value-objects/errors/validation/request-validation.error';
 import { Description } from '@app/value-objects/model/description';
+import { Reason } from '@app/value-objects/model/reason';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
 export interface RequestProps {
   name: string;
   description: Description;
   status: RequestStatus;
-  reason?: string;
+  reason?: Reason;
 }
 
 export interface CreateRequestProps {
@@ -34,7 +35,7 @@ export abstract class Request<T> extends Entity<T & RequestProps> {
   }
 
   get reason(): string | undefined {
-    return this.props.reason;
+    return this.props.reason?.value;
   }
 
   protected constructor(props: T & RequestProps, id?: UniqueEntityID) {

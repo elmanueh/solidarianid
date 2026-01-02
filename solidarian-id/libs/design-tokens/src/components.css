@@ -213,6 +213,23 @@
     @apply dark:focus:ring-soft-fawn-500;
   }
 
+  .btn-success {
+    @apply bg-sage-green-500 text-white;
+    @apply hover:bg-sage-green-600;
+    @apply active:bg-sage-green-700;
+    @apply focus:ring-sage-green-400;
+    @apply dark:bg-sage-green-600 dark:hover:bg-sage-green-700;
+    @apply dark:active:bg-sage-green-600;
+    @apply dark:focus:ring-sage-green-300;
+  }
+
+  .btn-error {
+    @apply bg-dark-wine-500 text-white;
+    @apply hover:bg-dark-wine-600;
+    @apply active:bg-dark-wine-700;
+    @apply focus:ring-dark-wine-400;
+  }
+
   .btn-lg {
     @apply w-full px-5 py-2.5 sm:px-6 sm:py-3;
     @apply text-sm sm:text-base;

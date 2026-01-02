@@ -10,7 +10,7 @@ export class CauseRequestEntity extends RequestEntity {
   startDate: Date;
 
   @Prop({ required: true })
-  endDate: Date;
+  duration: number;
 }
 
 export const CauseRequestSchema = SchemaFactory.createForClass(CauseRequestEntity);

@@ -21,7 +21,7 @@ export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
           status: e.status,
           reason: e.reason,
           startDate: e.startDate,
-          endDate: e.endDate,
+          duration: e.duration,
           ods: e.ods,
         },
         e._id,
@@ -53,8 +53,8 @@ export class RequestMapper implements Mapper<Request<any>, RequestEntity> {
         ...entity,
         type: RequestType.CAUSE,
         ods: model.ods,
-        startDate: model.duration.startDate,
-        endDate: model.duration.endDate,
+        startDate: model.startDate,
+        duration: model.duration.value,
       } as RequestEntity;
     }
 

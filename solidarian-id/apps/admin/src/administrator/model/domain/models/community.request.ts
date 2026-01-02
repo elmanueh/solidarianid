@@ -7,6 +7,7 @@ import { Description } from '@app/value-objects/model/description';
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
 import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause.request';
 import { RequestError } from '@app/value-objects/errors/validation/request-validation.error';
+import { Reason } from '@app/value-objects/model/reason';
 
 interface CommunityRequestProps extends RequestProps {
   causes: CauseRequest[];
@@ -31,21 +32,20 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
 
   public static create(props: CreateCommunityRequestProps, id?: string): Either<ValidationError, CommunityRequest> {
     const idOrError = UniqueEntityID.create(id);
-    if (idOrError.isLeft()) {
-      return left(idOrError.value);
-    }
+    if (idOrError.isLeft()) return left(idOrError.value);
 
     const descriptionOrError = Description.create(props.description);
-    if (descriptionOrError.isLeft()) {
-      return left(descriptionOrError.value);
-    }
+    if (descriptionOrError.isLeft()) return left(descriptionOrError.value);
+
+    const reasonOrError = Reason.create(props.reason);
+    if (reasonOrError.isLeft()) return left(reasonOrError.value);
 
     const request = new CommunityRequest(
       {
         name: props.name,
         description: descriptionOrError.value,
         status: props.status ?? RequestStatus.PENDING,
-        reason: props.reason,
+        reason: reasonOrError.value,
         causes: props.causes ?? [],
       },
       idOrError.value,
@@ -55,12 +55,15 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
   }
 
   public approve(reason?: string): Either<RequestAlreadyResolvedError, void> {
+    const reasonOrError = Reason.create(reason);
+    if (reasonOrError.isLeft()) return left(reasonOrError.value);
+
     if (this.props.status !== RequestStatus.PENDING) {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
 
     this.props.status = RequestStatus.APPROVED;
-    if (reason) this.props.reason = reason;
+    if (reason) this.props.reason = reasonOrError.value;
 
     this.props.causes.forEach(cause => cause.approve('Approved as part of community request'));
 
@@ -68,6 +71,9 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
   }
 
   public reject(reason: string): Either<RequestAlreadyResolvedError | RequestError, void> {
+    const reasonOrError = Reason.create(reason);
+    if (reasonOrError.isLeft()) return left(reasonOrError.value);
+
     if (this.props.status !== RequestStatus.PENDING) {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
@@ -77,7 +83,7 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     }
 
     this.props.status = RequestStatus.REJECTED;
-    this.props.reason = reason;
+    this.props.reason = reasonOrError.value;
 
     const res = this.props.causes.map(cause => cause.reject(reason));
     const errors = res.filter(r => r.isLeft() && !(r.value instanceof RequestAlreadyResolvedError));

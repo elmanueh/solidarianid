@@ -11,6 +11,10 @@ const config: Config = {
 
   testMatch: ['<rootDir>/apps/communities/test/**/*.e2e-spec.ts'],
 
+  coverageDirectory: './coverage-e2e/communities',
+
+  reporters: ['default'],
+
   maxWorkers: 1,
 };
 

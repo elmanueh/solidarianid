@@ -9,6 +9,14 @@ import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/por
 import { EventType } from '@solidarianid/kafka';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { RequestError } from '@app/value-objects/errors/validation/request-validation.error';
+import {
+  fakeCommunityRequests,
+  fakeCauseRequests,
+  fakeActionRequests,
+} from '@app/admin/administrator/model/data/fakeRequest';
+import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community.request';
+import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause.request';
+import { ActionRequest } from '@app/admin/administrator/model/domain/models/action.request';
 
 @Injectable()
 export class RequestsServiceImpl extends RequestsService {
@@ -56,5 +64,17 @@ export class RequestsServiceImpl extends RequestsService {
     await this.publisher.publish(eventType, request);
 
     return right(undefined);
+  }
+
+  getPendingCommunityRequests(): Promise<Either<ValidationError, CommunityRequest[]>> {
+    return Promise.resolve(right(fakeCommunityRequests as unknown as CommunityRequest[]));
+  }
+
+  getPendingCauseRequests(): Promise<Either<ValidationError, CauseRequest[]>> {
+    return Promise.resolve(right(fakeCauseRequests as unknown as CauseRequest[]));
+  }
+
+  getPendingActionRequests(): Promise<Either<ValidationError, ActionRequest[]>> {
+    return Promise.resolve(right(fakeActionRequests as unknown as ActionRequest[]));
   }
 }

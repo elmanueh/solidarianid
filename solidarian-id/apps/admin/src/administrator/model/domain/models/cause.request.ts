@@ -1,7 +1,6 @@
 import { SustainableDevelopmentGoal } from '@app/admin/administrator/model/domain/enums/ods';
 import { Request, RequestProps } from '@app/admin/administrator/model/domain/models/request';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { Duration } from '@app/value-objects/model/duration';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Either, left, right } from '@app/ddd/either';
@@ -9,8 +8,11 @@ import { Description } from '@app/value-objects/model/description';
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
 import { ActionRequest } from '@app/admin/administrator/model/domain/models/action.request';
 import { RequestError } from '@app/value-objects/errors/validation/request-validation.error';
+import { Duration } from '@app/value-objects/model/duration';
+import { Reason } from '@app/value-objects/model/reason';
 
 interface CauseRequestProps extends RequestProps {
+  startDate: Date;
   duration: Duration;
   ods: SustainableDevelopmentGoal[];
   actions: ActionRequest[];
@@ -23,13 +25,17 @@ interface CreateCauseRequestProps {
   reason?: string;
 
   startDate: Date;
-  endDate: Date;
+  duration: number;
   ods: SustainableDevelopmentGoal[];
 }
 
 export class CauseRequest extends Request<CauseRequestProps> {
   get ods(): SustainableDevelopmentGoal[] {
     return this.props.ods;
+  }
+
+  get startDate(): Date {
+    return this.props.startDate;
   }
 
   get duration(): Duration {
@@ -42,26 +48,24 @@ export class CauseRequest extends Request<CauseRequestProps> {
 
   public static create(props: CreateCauseRequestProps, id?: string): Either<ValidationError, CauseRequest> {
     const idOrError = UniqueEntityID.create(id);
-    if (idOrError.isLeft()) {
-      return left(idOrError.value);
-    }
+    if (idOrError.isLeft()) return left(idOrError.value);
 
     const descriptionOrError = Description.create(props.description);
-    if (descriptionOrError.isLeft()) {
-      return left(descriptionOrError.value);
-    }
+    if (descriptionOrError.isLeft()) return left(descriptionOrError.value);
 
-    const durationOrError = Duration.create(props.startDate, props.endDate);
-    if (durationOrError.isLeft()) {
-      return left(durationOrError.value);
-    }
+    const durationOrError = Duration.create(props.duration);
+    if (durationOrError.isLeft()) return left(durationOrError.value);
+
+    const reasonOrError = Reason.create(props.reason);
+    if (reasonOrError.isLeft()) return left(reasonOrError.value);
 
     const request = new CauseRequest(
       {
         name: props.name,
         description: descriptionOrError.value,
         status: props.status ?? RequestStatus.PENDING,
-        reason: props.reason,
+        reason: reasonOrError.value,
+        startDate: props.startDate,
         duration: durationOrError.value,
         ods: props.ods,
         actions: [],
@@ -73,12 +77,15 @@ export class CauseRequest extends Request<CauseRequestProps> {
   }
 
   public approve(reason?: string): Either<RequestAlreadyResolvedError, void> {
+    const reasonOrError = Reason.create(reason);
+    if (reasonOrError.isLeft()) return left(reasonOrError.value);
+
     if (this.props.status !== RequestStatus.PENDING) {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
 
     this.props.status = RequestStatus.APPROVED;
-    if (reason) this.props.reason = reason;
+    if (reason) this.props.reason = reasonOrError.value;
 
     this.props.actions.forEach(action => action.approve('Approved as part of cause request'));
 
@@ -86,6 +93,9 @@ export class CauseRequest extends Request<CauseRequestProps> {
   }
 
   public reject(reason: string): Either<RequestAlreadyResolvedError | RequestError, void> {
+    const reasonOrError = Reason.create(reason);
+    if (reasonOrError.isLeft()) return left(reasonOrError.value);
+
     if (this.props.status !== RequestStatus.PENDING) {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
@@ -95,7 +105,7 @@ export class CauseRequest extends Request<CauseRequestProps> {
     }
 
     this.props.status = RequestStatus.REJECTED;
-    this.props.reason = reason;
+    this.props.reason = reasonOrError.value;
 
     const res = this.props.actions.map(action => action.reject(reason));
     const errors = res.filter(r => r.isLeft() && !(r.value instanceof RequestAlreadyResolvedError));

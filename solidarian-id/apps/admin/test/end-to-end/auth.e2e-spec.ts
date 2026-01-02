@@ -27,7 +27,7 @@ describe('AuthController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await server.close();
+    if (server) await server.close();
     await MongoDBTestContainer.getInstance().stop();
   });
 

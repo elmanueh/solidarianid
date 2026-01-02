@@ -32,6 +32,9 @@ jobs:
         node-version: [24.x]
 
     steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/configure
         with:
           node-version: ${{ matrix['node-version'] }}
@@ -74,6 +77,9 @@ jobs:
         node-version: [24.x]
 
     steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/configure
         with:
           node-version: ${{ matrix['node-version'] }}
@@ -94,6 +100,9 @@ jobs:
         node-version: [24.x]
 
     steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/configure
         with:
           node-version: ${{ matrix['node-version'] }}
@@ -144,6 +153,11 @@ jobs:
           - 9000:9000
 
     steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: ./.github/actions/configure
         with:
           node-version: 24.x

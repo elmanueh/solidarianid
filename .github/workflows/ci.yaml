@@ -176,9 +176,9 @@ jobs:
           args: >
             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
             -Dsonar.projectName=${{ env.SONAR_PROJECT_NAME }}
-            -Dsonar.sources=apps,libs
+            -Dsonar.sources=apps
             -Dsonar.exclusions=**/dist/**,**/node_modules/**,**/coverage/**,**/*.spec.ts,**/*.test.ts,**/*.e2e-spec.ts,**/*.js,**/*.json,**/*.css,**/*.html
-            -Dsonar.tests=apps,libs
+            -Dsonar.tests=apps
             -Dsonar.test.inclusions=**/*.spec.ts,**/*.test.ts,**/*.e2e-spec.ts
             -Dsonar.coverage.exclusions=**/*.entity.ts,**/*.dto.ts,**/*.filter.ts,**/*.guard.ts,**/*.mapper.ts,**/*.port.ts,**/fake*.ts,**/enums/**,**/domain/model/**,**/models/**,**/main.ts,**/*.module.ts
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info

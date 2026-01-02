@@ -23,6 +23,7 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     });
 
     it('should render page title with aria-labelledby', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const title = screen.getByRole('heading', { level: 1 });
       expect(title).toBeInTheDocument();
       expect(title).toHaveAttribute('id', 'login-title');

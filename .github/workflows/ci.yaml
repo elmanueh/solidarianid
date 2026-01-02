@@ -119,13 +119,6 @@ jobs:
       - name: Run all tests with combined coverage
         run: npm run test:all:coverage
 
-      - name: List generated test reports (debug)
-        run: |
-          echo "Listing test-results directory:"
-          ls -R test-results/ || echo "test-results directory not found"
-          echo "Listing coverage directory:"
-          ls -la coverage/ || echo "coverage directory not found"
-
       # SonarQube
       - name: Install jq (for JSON parsing)
         run: |

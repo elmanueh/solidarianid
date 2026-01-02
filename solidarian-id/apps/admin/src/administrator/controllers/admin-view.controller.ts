@@ -1,9 +1,5 @@
 import { Controller, Get, Render } from '@nestjs/common';
-import {
-  fakeDashboardData,
-  DashboardSummary,
-  fakeDashboardSummary,
-} from '../model/data/fakeMetrics';
+import { fakeDashboardData, DashboardSummary, fakeDashboardSummary } from '../model/data/fakeMetrics';
 import {
   createInteractiveNationalitiesDoughnut,
   createOdsByCauseBar,
@@ -38,9 +34,7 @@ export class AdminViewController {
 
     const charts = {
       ods: createOdsByCauseBar(dataChart.odsByCause),
-      nationalities: createInteractiveNationalitiesDoughnut(
-        dataChart.interactiveNationalities,
-      ),
+      nationalities: createInteractiveNationalitiesDoughnut(dataChart.interactiveNationalities),
       topCommunities: createTopCommunitiesPie(dataChart.topCommunitiesByUsers),
       joins: createMonthlyJoinsLine(dataChart.monthlyJoinsForCommunity),
     };

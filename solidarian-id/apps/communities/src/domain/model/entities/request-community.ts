@@ -43,21 +43,15 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     return this.props.causeRequests;
   }
 
-  public static create(
-    props: CommunityRequestCreationProps,
-    id?: string,
-  ): Either<ValidationError, CommunityRequest> {
-    const { name, description, reason, status, user, causeCreationRequests } =
-      props;
+  public static create(props: CommunityRequestCreationProps, id?: string): Either<ValidationError, CommunityRequest> {
+    const { name, description, reason, status, user, causeCreationRequests } = props;
 
     const uniqueId = UniqueEntityID.create(id);
     const nameOrError = Name.create(name);
     const reasonOrError = Reason.create(reason);
     const descriptionOrError = Description.create(description);
     const causeRequestsOrError = sequence(
-      causeCreationRequests.map((causeCreationRequest) =>
-        CommunityRequest.validateCause(causeCreationRequest),
-      ),
+      causeCreationRequests.map(causeCreationRequest => CommunityRequest.validateCause(causeCreationRequest)),
     );
 
     if (uniqueId.isLeft()) return left(uniqueId.value);

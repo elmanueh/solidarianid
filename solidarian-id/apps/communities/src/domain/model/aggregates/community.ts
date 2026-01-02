@@ -75,11 +75,11 @@ export class Community extends AggregateRoot<CommunityProps> {
   }
 
   hasMember(user: User): boolean {
-    return this.props.members.some((m) => m.id.equals(user.id));
+    return this.props.members.some(m => m.id.equals(user.id));
   }
 
   hasAdmin(user: User): boolean {
-    return this.props.admins.some((a) => a.id.equals(user.id));
+    return this.props.admins.some(a => a.id.equals(user.id));
   }
 
   /**
@@ -87,10 +87,7 @@ export class Community extends AggregateRoot<CommunityProps> {
    *
    * @return Either<InvalidUniqueEntityIDError | InvalidNameError | InvalidDescriptionError, Community>
    */
-  public static create(
-    props: CommunityCreationProps,
-    id?: string,
-  ): Either<ValidationError, Community> {
+  public static create(props: CommunityCreationProps, id?: string): Either<ValidationError, Community> {
     const uniqueId = UniqueEntityID.create(id);
     const name = Name.create(props.name);
     const description = Description.create(props.description);

@@ -13,5 +13,4 @@ export class CauseRequestEntity extends RequestEntity {
   endDate: Date;
 }
 
-export const CauseRequestSchema =
-  SchemaFactory.createForClass(CauseRequestEntity);
+export const CauseRequestSchema = SchemaFactory.createForClass(CauseRequestEntity);

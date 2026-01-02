@@ -9,10 +9,7 @@ import path from 'path';
 
 describe('Login Page - Form DOM Structure and Validation', () => {
   beforeEach(() => {
-    const loginHbsPath = path.resolve(
-      process.cwd(),
-      'apps/admin/views/pages/login.hbs',
-    );
+    const loginHbsPath = path.resolve(process.cwd(), 'apps/admin/views/pages/login.hbs');
     const hbsContent = fs.readFileSync(loginHbsPath, 'utf8');
     document.body.innerHTML = hbsContent;
   });
@@ -45,9 +42,7 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     });
 
     it('should render password input field with correct attributes', () => {
-      const passwordInput = document.getElementById(
-        'password',
-      ) as HTMLInputElement;
+      const passwordInput = document.getElementById('password') as HTMLInputElement;
       expect(passwordInput).toBeInTheDocument();
       expect(passwordInput).toHaveAttribute('type', 'password');
       expect(passwordInput).toHaveAttribute('name', 'password');
@@ -77,9 +72,7 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     });
 
     it('password input should have minlength and pattern attributes', () => {
-      const passwordInput = document.getElementById(
-        'password',
-      ) as HTMLInputElement;
+      const passwordInput = document.getElementById('password') as HTMLInputElement;
       expect(passwordInput.required).toBe(true);
       expect(passwordInput).toHaveAttribute('minlength', '12');
       expect(passwordInput).toHaveAttribute('pattern');
@@ -89,10 +82,7 @@ describe('Login Page - Form DOM Structure and Validation', () => {
       const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('password');
       expect(emailInput).toHaveAttribute('aria-describedby', 'email-error');
-      expect(passwordInput).toHaveAttribute(
-        'aria-describedby',
-        'password-error',
-      );
+      expect(passwordInput).toHaveAttribute('aria-describedby', 'password-error');
     });
 
     it('error elements should have role="alert" for accessibility', () => {
@@ -111,17 +101,13 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     });
 
     it('should be able to type in password input', () => {
-      const passwordInput = document.getElementById(
-        'password',
-      ) as HTMLInputElement;
+      const passwordInput = document.getElementById('password') as HTMLInputElement;
       passwordInput.value = 'TestPassword123!';
       expect(passwordInput.value).toBe('TestPassword123!');
     });
 
     it('should toggle password visibility when clicking password toggle button', () => {
-      const passwordInput = document.getElementById(
-        'password',
-      ) as HTMLInputElement;
+      const passwordInput = document.getElementById('password') as HTMLInputElement;
 
       expect(passwordInput.type).toBe('password');
 
@@ -170,16 +156,12 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     it('should have help text for form guidance', () => {
       const helpTexts = document.querySelectorAll('.form-help');
       expect(helpTexts).toHaveLength(2);
-      expect(helpTexts[0]).toHaveTextContent(
-        'Introduce tu correo electrónico registrado',
-      );
+      expect(helpTexts[0]).toHaveTextContent('Introduce tu correo electrónico registrado');
       expect(helpTexts[1]).toHaveTextContent('Mínimo 12 caracteres');
     });
 
     it('should mark required fields with visual indicator', () => {
-      const requiredIndicators = document.querySelectorAll(
-        '.form-label-required',
-      );
+      const requiredIndicators = document.querySelectorAll('.form-label-required');
       expect(requiredIndicators).toHaveLength(2);
     });
   });
@@ -200,7 +182,7 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     it('icons should be hidden from screen readers', () => {
       const icons = document.querySelectorAll('[aria-hidden="true"]');
       expect(icons.length).toBeGreaterThan(0);
-      icons.forEach((icon) => {
+      icons.forEach(icon => {
         expect(icon).toHaveAttribute('aria-hidden', 'true');
       });
     });
@@ -228,9 +210,7 @@ describe('Login Page - Form DOM Structure and Validation', () => {
     });
 
     it('should be able to update error messages', () => {
-      const emailError = document.getElementById(
-        'email-error',
-      ) as HTMLSpanElement;
+      const emailError = document.getElementById('email-error') as HTMLSpanElement;
       emailError.textContent = 'El correo no es válido';
       expect(emailError).toHaveTextContent('El correo no es válido');
     });

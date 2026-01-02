@@ -29,9 +29,7 @@ export abstract class RequestsRepositoryPort extends Repository<AnyRequest> {
    * @returns A promise that resolves to the community request or null if not found
    * @throws If the request exists but is not of type COMMUNITY
    */
-  abstract findCommunityRequestById(
-    id: string,
-  ): Promise<Either<RepositoryException, CommunityRequest>>;
+  abstract findCommunityRequestById(id: string): Promise<Either<RepositoryException, CommunityRequest>>;
 
   /**
    * Finds a cause request by its unique identifier.
@@ -40,9 +38,7 @@ export abstract class RequestsRepositoryPort extends Repository<AnyRequest> {
    * @returns A promise that resolves to the cause request or null if not found
    * @throws If the request exists but is not of type CAUSE
    */
-  abstract findCauseRequestById(
-    id: string,
-  ): Promise<Either<RepositoryException, CauseRequest>>;
+  abstract findCauseRequestById(id: string): Promise<Either<RepositoryException, CauseRequest>>;
 
   /**
    * Finds an action request by its unique identifier.
@@ -51,9 +47,7 @@ export abstract class RequestsRepositoryPort extends Repository<AnyRequest> {
    * @returns A promise that resolves to the action request or null if not found
    * @throws If the request exists but is not of type ACTION
    */
-  abstract findActionRequestById(
-    id: string,
-  ): Promise<Either<RepositoryException, ActionRequest>>;
+  abstract findActionRequestById(id: string): Promise<Either<RepositoryException, ActionRequest>>;
 
   /**
    * Finds all requests of a specific type.
@@ -61,9 +55,7 @@ export abstract class RequestsRepositoryPort extends Repository<AnyRequest> {
    * @param type - The type of requests to retrieve
    * @returns A promise that resolves to an array of requests of the specified type
    */
-  abstract findByType(
-    type: RequestType,
-  ): Promise<Either<RepositoryException, AnyRequest[]>>;
+  abstract findByType(type: RequestType): Promise<Either<RepositoryException, AnyRequest[]>>;
 
   /**
    * Finds all pending requests of a specific type.
@@ -72,9 +64,7 @@ export abstract class RequestsRepositoryPort extends Repository<AnyRequest> {
    * @param type - The type of requests to retrieve
    * @returns A promise that resolves to an array of pending requests
    */
-  abstract findPendingRequestsByType(
-    type: RequestType,
-  ): Promise<Either<RepositoryException, AnyRequest[]>>;
+  abstract findPendingRequestsByType(type: RequestType): Promise<Either<RepositoryException, AnyRequest[]>>;
 
   /**
    * Finds all requests created by a specific user.
@@ -82,9 +72,7 @@ export abstract class RequestsRepositoryPort extends Repository<AnyRequest> {
    * @param userId - The unique identifier of the user
    * @returns A promise that resolves to an array of requests created by the user
    */
-  abstract findByUserId(
-    userId: string,
-  ): Promise<Either<RepositoryException, AnyRequest[]>>;
+  abstract findByUserId(userId: string): Promise<Either<RepositoryException, AnyRequest[]>>;
 
   /**
    * Finds all requests created by a specific user filtered by type.
@@ -93,8 +81,5 @@ export abstract class RequestsRepositoryPort extends Repository<AnyRequest> {
    * @param type - The type of requests to retrieve
    * @returns A promise that resolves to an array of requests
    */
-  abstract findByUserIdAndType(
-    userId: string,
-    type: RequestType,
-  ): Promise<Either<RepositoryException, AnyRequest[]>>;
+  abstract findByUserIdAndType(userId: string, type: RequestType): Promise<Either<RepositoryException, AnyRequest[]>>;
 }

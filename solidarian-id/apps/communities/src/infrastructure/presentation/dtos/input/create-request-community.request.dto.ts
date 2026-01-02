@@ -39,8 +39,7 @@ export class CommunityCauseDto {
 
   @ApiProperty({
     description: 'Description of the cause',
-    example:
-      'Programa de apoyo educativo para niños en situación de vulnerabilidad',
+    example: 'Programa de apoyo educativo para niños en situación de vulnerabilidad',
     minLength: DESCRIPTION_MIN_LENGTH,
     maxLength: DESCRIPTION_MAX_LENGTH,
   })
@@ -51,8 +50,7 @@ export class CommunityCauseDto {
   description: string;
 
   @ApiProperty({
-    description:
-      'Sustainable Development Goals (SDGs) related to this cause. Must include at least one SDG.',
+    description: 'Sustainable Development Goals (SDGs) related to this cause. Must include at least one SDG.',
     example: [SustainableDevelopmentGoal.ZeroHunger],
     isArray: true,
     enum: SustainableDevelopmentGoal,
@@ -102,8 +100,7 @@ export class CreateCommunityRequestDto {
 
   @ApiProperty({
     description: 'Detailed description of the community and its purpose',
-    example:
-      'Comunidad dedicada a apoyar proyectos de desarrollo sostenible en países africanos.',
+    example: 'Comunidad dedicada a apoyar proyectos de desarrollo sostenible en países africanos.',
     minLength: DESCRIPTION_MIN_LENGTH,
     maxLength: DESCRIPTION_MAX_LENGTH,
   })
@@ -114,8 +111,7 @@ export class CreateCommunityRequestDto {
   description: string;
 
   @ApiProperty({
-    description:
-      'List of charitable causes associated with this community. Must include at least one cause.',
+    description: 'List of charitable causes associated with this community. Must include at least one cause.',
     type: [CommunityCauseDto],
     minItems: 1,
   })
@@ -126,8 +122,7 @@ export class CreateCommunityRequestDto {
   causeCreationRequests: CommunityCauseDto[];
 
   @ApiProperty({
-    description:
-      'The ID of the user creating the community (will be the administrator)',
+    description: 'The ID of the user creating the community (will be the administrator)',
     example: '550e8400-e29b-41d4-a716-446655440000',
   })
   @IsString()

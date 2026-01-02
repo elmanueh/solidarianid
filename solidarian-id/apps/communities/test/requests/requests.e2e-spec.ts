@@ -61,14 +61,12 @@ describe('RequestController (e2e)', () => {
   describe('/community-requests (POST)', () => {
     const validCommunityRequestDto = {
       name: 'Comunidad de Prueba E2E',
-      description:
-        'Esta es una descripción válida para la comunidad de prueba end-to-end con más de 20 caracteres',
+      description: 'Esta es una descripción válida para la comunidad de prueba end-to-end con más de 20 caracteres',
       userId: USER_IDS.JUAN,
       causeCreationRequests: [
         {
           name: 'Causa de Prueba E2E',
-          description:
-            'Descripción válida de la causa para pruebas end-to-end con más de 20 caracteres',
+          description: 'Descripción válida de la causa para pruebas end-to-end con más de 20 caracteres',
           ods: [SustainableDevelopmentGoal.NoPoverty],
           initialDate: '2026-01-15T00:00:00.000Z',
           durationDays: 90,
@@ -84,9 +82,7 @@ describe('RequestController (e2e)', () => {
         .expect(HttpStatus.CREATED);
 
       expect(response.headers.location).toBeDefined();
-      expect(response.headers.location).toMatch(
-        /\/community-requests\/[0-9a-f-]{36}$/,
-      );
+      expect(response.headers.location).toMatch(/\/community-requests\/[0-9a-f-]{36}$/);
     });
 
     it('should return 400 when name is too short', async () => {
@@ -95,11 +91,7 @@ describe('RequestController (e2e)', () => {
         name: 'ab', // Demasiado corto
       };
 
-      await server
-        .getRequest()
-        .post('/community-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/community-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when description is too short', async () => {
@@ -108,11 +100,7 @@ describe('RequestController (e2e)', () => {
         description: 'corta', // Demasiado corta
       };
 
-      await server
-        .getRequest()
-        .post('/community-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/community-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when causeCreationRequests is empty', async () => {
@@ -121,11 +109,7 @@ describe('RequestController (e2e)', () => {
         causeCreationRequests: [],
       };
 
-      await server
-        .getRequest()
-        .post('/community-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/community-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 404 when user does not exist', async () => {
@@ -134,19 +118,14 @@ describe('RequestController (e2e)', () => {
         userId: '00000000-0000-0000-0000-000000000999', // Usuario inexistente
       };
 
-      await server
-        .getRequest()
-        .post('/community-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.NOT_FOUND);
+      await server.getRequest().post('/community-requests').send(invalidDto).expect(HttpStatus.NOT_FOUND);
     });
   });
 
   describe('/cause-requests (POST)', () => {
     const validCauseRequestDto = {
       name: 'Causa Benéfica de Prueba E2E',
-      description:
-        'Esta es una descripción válida para la causa benéfica end-to-end con más de 20 caracteres',
+      description: 'Esta es una descripción válida para la causa benéfica end-to-end con más de 20 caracteres',
       userId: USER_IDS.MARIA,
       ods: [SustainableDevelopmentGoal.ZeroHunger],
       initialDate: '2026-02-01T00:00:00.000Z',
@@ -161,9 +140,7 @@ describe('RequestController (e2e)', () => {
         .expect(HttpStatus.CREATED);
 
       expect(response.headers.location).toBeDefined();
-      expect(response.headers.location).toMatch(
-        /\/cause-requests\/[0-9a-f-]{36}$/,
-      );
+      expect(response.headers.location).toMatch(/\/cause-requests\/[0-9a-f-]{36}$/);
     });
 
     it('should return 400 when name is too short', async () => {
@@ -172,11 +149,7 @@ describe('RequestController (e2e)', () => {
         name: 'ab',
       };
 
-      await server
-        .getRequest()
-        .post('/cause-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/cause-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when ods is empty', async () => {
@@ -185,11 +158,7 @@ describe('RequestController (e2e)', () => {
         ods: [],
       };
 
-      await server
-        .getRequest()
-        .post('/cause-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/cause-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when durationDays is less than 1', async () => {
@@ -198,11 +167,7 @@ describe('RequestController (e2e)', () => {
         durationDays: 0,
       };
 
-      await server
-        .getRequest()
-        .post('/cause-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/cause-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 404 when user does not exist', async () => {
@@ -211,25 +176,19 @@ describe('RequestController (e2e)', () => {
         userId: '00000000-0000-0000-0000-000000000999',
       };
 
-      await server
-        .getRequest()
-        .post('/cause-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.NOT_FOUND);
+      await server.getRequest().post('/cause-requests').send(invalidDto).expect(HttpStatus.NOT_FOUND);
     });
   });
 
   describe('/action-requests (POST)', () => {
     const validActionRequestDto = {
       name: 'Acción Solidaria de Prueba E2E',
-      description:
-        'Esta es una descripción válida para la acción solidaria end-to-end con más de 20 caracteres',
+      description: 'Esta es una descripción válida para la acción solidaria end-to-end con más de 20 caracteres',
       userId: USER_IDS.PEDRO,
       objectives: [
         {
           name: 'Objetivo de Prueba E2E',
-          description:
-            'Descripción del objetivo cuantificable con más de 20 caracteres',
+          description: 'Descripción del objetivo cuantificable con más de 20 caracteres',
           quantity: 100,
           unit: 'kilogramos',
         },
@@ -237,8 +196,7 @@ describe('RequestController (e2e)', () => {
       events: [
         {
           name: 'Evento de Prueba E2E',
-          description:
-            'Descripción del evento presencial con más de 20 caracteres',
+          description: 'Descripción del evento presencial con más de 20 caracteres',
           initialDate: '2026-03-15T10:00:00.000Z',
           place: {
             direction: 'Calle Mayor 123',
@@ -257,9 +215,7 @@ describe('RequestController (e2e)', () => {
         .expect(HttpStatus.CREATED);
 
       expect(response.headers.location).toBeDefined();
-      expect(response.headers.location).toMatch(
-        /\/action-requests\/[0-9a-f-]{36}$/,
-      );
+      expect(response.headers.location).toMatch(/\/action-requests\/[0-9a-f-]{36}$/);
     });
 
     it('should return 400 when name is too short', async () => {
@@ -268,11 +224,7 @@ describe('RequestController (e2e)', () => {
         name: 'ab',
       };
 
-      await server
-        .getRequest()
-        .post('/action-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when objectives is empty', async () => {
@@ -281,11 +233,7 @@ describe('RequestController (e2e)', () => {
         objectives: [],
       };
 
-      await server
-        .getRequest()
-        .post('/action-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when events is empty', async () => {
@@ -294,11 +242,7 @@ describe('RequestController (e2e)', () => {
         events: [],
       };
 
-      await server
-        .getRequest()
-        .post('/action-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when countryCode is invalid', async () => {
@@ -316,11 +260,7 @@ describe('RequestController (e2e)', () => {
         ],
       };
 
-      await server
-        .getRequest()
-        .post('/action-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when objective quantity is less than 1', async () => {
@@ -334,11 +274,7 @@ describe('RequestController (e2e)', () => {
         ],
       };
 
-      await server
-        .getRequest()
-        .post('/action-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 404 when user does not exist', async () => {
@@ -347,11 +283,7 @@ describe('RequestController (e2e)', () => {
         userId: '00000000-0000-0000-0000-000000000999',
       };
 
-      await server
-        .getRequest()
-        .post('/action-requests')
-        .send(invalidDto)
-        .expect(HttpStatus.NOT_FOUND);
+      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.NOT_FOUND);
     });
   });
 });

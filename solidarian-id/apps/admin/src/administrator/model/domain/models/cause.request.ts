@@ -1,8 +1,5 @@
 import { SustainableDevelopmentGoal } from '@app/admin/administrator/model/domain/enums/ods';
-import {
-  Request,
-  RequestProps,
-} from '@app/admin/administrator/model/domain/models/request';
+import { Request, RequestProps } from '@app/admin/administrator/model/domain/models/request';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { DurationRange } from '@app/value-objects/model/duration-range';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
@@ -39,10 +36,7 @@ export class RequestCause extends Request<RequestCauseProps> {
     super(props, id);
   }
 
-  public static create(
-    props: CreateRequestCauseProps,
-    id?: string,
-  ): Either<ValidationError, RequestCause> {
+  public static create(props: CreateRequestCauseProps, id?: string): Either<ValidationError, RequestCause> {
     const idOrError = UniqueEntityID.create(id);
     if (idOrError.isLeft()) {
       return left(idOrError.value);
@@ -53,10 +47,7 @@ export class RequestCause extends Request<RequestCauseProps> {
       return left(descriptionOrError.value);
     }
 
-    const durationOrError = DurationRange.create(
-      props.startDate,
-      props.endDate,
-    );
+    const durationOrError = DurationRange.create(props.startDate, props.endDate);
     if (durationOrError.isLeft()) {
       return left(durationOrError.value);
     }
@@ -86,15 +77,12 @@ export class RequestCause extends Request<RequestCauseProps> {
     return right(undefined);
   }
 
-  public reject(
-    reason: string,
-  ): Either<RequestAlreadyResolvedError | ValidationError, void> {
+  public reject(reason: string): Either<RequestAlreadyResolvedError | ValidationError, void> {
     if (this.props.status !== RequestStatus.PENDING) {
       return left(new RequestAlreadyResolvedError(this.id.value));
     }
 
-    if (!reason)
-      return left(new ValidationError('Rejection reason must be provided'));
+    if (!reason) return left(new ValidationError('Rejection reason must be provided'));
 
     this.props.status = RequestStatus.REJECTED;
     this.props.reason = reason;

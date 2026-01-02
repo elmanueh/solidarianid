@@ -21,9 +21,7 @@ export class CauseDomainMapper {
       description: cause.description,
       durationDays: cause.durationDays,
       ods: cause.ods,
-      actions: cause.actions.map((action) =>
-        ActionDomainMapper.toActionSummaryDto(action),
-      ),
+      actions: cause.actions.map(action => ActionDomainMapper.toActionSummaryDto(action)),
     };
   }
 }

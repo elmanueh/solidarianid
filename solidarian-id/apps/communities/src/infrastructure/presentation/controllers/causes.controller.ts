@@ -24,9 +24,7 @@ export class CausesController {
       throw causes.value;
     }
 
-    return causes.value.map((cause: Cause) =>
-      CauseDomainMapper.toCauseSummaryDto(cause),
-    );
+    return causes.value.map((cause: Cause) => CauseDomainMapper.toCauseSummaryDto(cause));
   }
 
   @Get(':id')
@@ -36,9 +34,7 @@ export class CausesController {
     type: CauseDetailResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Cause not found' })
-  async getCauseById(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<CauseDetailResponseDto> {
+  async getCauseById(@Param('id', new ParseUUIDPipe()) id: string): Promise<CauseDetailResponseDto> {
     const cause = await this.causesService.getCauseById(id);
 
     if (cause.isLeft()) {

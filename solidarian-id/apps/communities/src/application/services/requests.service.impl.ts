@@ -47,7 +47,7 @@ export class RequestsServiceImpl extends RequestsService {
       return left(userOrError.value);
     }
 
-    const causeCreationRequests = dto.causeCreationRequests.map((cause) => ({
+    const causeCreationRequests = dto.causeCreationRequests.map(cause => ({
       name: cause.name,
       description: cause.description,
       status: RequestStatus.PENDING,
@@ -68,18 +68,13 @@ export class RequestsServiceImpl extends RequestsService {
       return left(communityRequestOrError.value);
     }
 
-    const saveResult = await this.requestsRepository.save(
-      communityRequestOrError.value,
-    );
+    const saveResult = await this.requestsRepository.save(communityRequestOrError.value);
 
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
 
-    await this.requestPublisher.publish(
-      EventType.REQUEST_CREATED,
-      communityRequestOrError.value,
-    );
+    await this.requestPublisher.publish(EventType.REQUEST_CREATED, communityRequestOrError.value);
 
     return right(communityRequestOrError.value.id);
   }
@@ -113,18 +108,13 @@ export class RequestsServiceImpl extends RequestsService {
       return left(causeRequestOrError.value);
     }
 
-    const saveResult = await this.requestsRepository.save(
-      causeRequestOrError.value,
-    );
+    const saveResult = await this.requestsRepository.save(causeRequestOrError.value);
 
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
 
-    await this.requestPublisher.publish(
-      EventType.REQUEST_CREATED,
-      causeRequestOrError.value,
-    );
+    await this.requestPublisher.publish(EventType.REQUEST_CREATED, causeRequestOrError.value);
 
     return right(causeRequestOrError.value.id);
   }
@@ -144,14 +134,14 @@ export class RequestsServiceImpl extends RequestsService {
       return left(userOrError.value);
     }
 
-    const objectives = dto.objectives.map((objective) => ({
+    const objectives = dto.objectives.map(objective => ({
       name: objective.name,
       description: objective.description,
       quantity: objective.quantity,
       unit: objective.unit,
     }));
 
-    const events = dto.events.map((event) => ({
+    const events = dto.events.map(event => ({
       name: event.name,
       description: event.description,
       initialDate: new Date(event.initialDate),
@@ -175,18 +165,13 @@ export class RequestsServiceImpl extends RequestsService {
       return left(actionRequestOrError.value);
     }
 
-    const saveResult = await this.requestsRepository.save(
-      actionRequestOrError.value,
-    );
+    const saveResult = await this.requestsRepository.save(actionRequestOrError.value);
 
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
 
-    await this.requestPublisher.publish(
-      EventType.REQUEST_CREATED,
-      actionRequestOrError.value,
-    );
+    await this.requestPublisher.publish(EventType.REQUEST_CREATED, actionRequestOrError.value);
     return right(actionRequestOrError.value.id);
   }
 }

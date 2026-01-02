@@ -15,11 +15,7 @@ import { PasswordManager } from '@app/utils/security/password-manager';
 import { PasswordManagerBcrypt } from '@app/utils/security/password-manager-bcrypt';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: AdministratorEntity.name, schema: AdministratorSchema },
-    ]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: AdministratorEntity.name, schema: AdministratorSchema }])],
   controllers: [AuthViewController, AuthApiController],
   providers: [
     {

@@ -4,10 +4,7 @@ import { CommunitySummaryResponseDto } from '../dtos/output/community-summary.re
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { CommunityDomainMapper } from '../mappers/community.mapper';
 import { Community } from '@app/communities/domain/model/aggregates/community';
-import {
-  ApiNotFoundResponse,
-  ApiOkResponse,
-} from '@nestjs/swagger/dist/decorators/api-response.decorator';
+import { ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { ApiOperation } from '@nestjs/swagger';
 import { CommunityDetailResponseDto } from '../dtos/output/community-detail.response.dto';
 
@@ -29,9 +26,7 @@ export class CommunitiesController {
       throw communities.value;
     }
 
-    return communities.value.map((community: Community) =>
-      CommunityDomainMapper.toCommunitySummaryDto(community),
-    );
+    return communities.value.map((community: Community) => CommunityDomainMapper.toCommunitySummaryDto(community));
   }
 
   @Get(':id')
@@ -41,9 +36,7 @@ export class CommunitiesController {
     type: CommunityDetailResponseDto,
   })
   @ApiNotFoundResponse({ description: 'Community not found' })
-  async getCommunityById(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<CommunityDetailResponseDto> {
+  async getCommunityById(@Param('id', new ParseUUIDPipe()) id: string): Promise<CommunityDetailResponseDto> {
     const community = await this.communitiesService.getCommunityById(id);
 
     if (community.isLeft()) {

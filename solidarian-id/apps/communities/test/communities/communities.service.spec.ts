@@ -14,10 +14,7 @@ describe('CommunitiesServiceImpl', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        CommunitiesServiceImpl,
-        { provide: CommunitiesRepositoryPort, useValue: mockRepo },
-      ],
+      providers: [CommunitiesServiceImpl, { provide: CommunitiesRepositoryPort, useValue: mockRepo }],
     }).compile();
 
     service = module.get<CommunitiesServiceImpl>(CommunitiesServiceImpl);

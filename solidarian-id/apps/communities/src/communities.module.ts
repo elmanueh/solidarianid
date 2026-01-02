@@ -53,16 +53,9 @@ import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repo
       CommunityUserEntity,
       RequestEntity,
     ]),
-    KafkaDynamicModule.register(
-      process.env.KAFKA_COMMUNITIES_CLIENT_ID || 'communities',
-    ),
+    KafkaDynamicModule.register(process.env.KAFKA_COMMUNITIES_CLIENT_ID || 'communities'),
   ],
-  controllers: [
-    CommunitiesController,
-    CausesController,
-    ActionsController,
-    RequestController,
-  ],
+  controllers: [CommunitiesController, CausesController, ActionsController, RequestController],
   providers: [
     // Services
     {

@@ -58,9 +58,7 @@ export abstract class Repository<TDomain extends Entity<any>> {
    *
    * Returns {@link RepositoryException} for infrastructure-related failures.
    */
-  abstract findAll(
-    relations?: string[],
-  ): Promise<Either<RepositoryException | EntityNotFoundException, TDomain[]>>;
+  abstract findAll(relations?: string[]): Promise<Either<RepositoryException | EntityNotFoundException, TDomain[]>>;
 
   // abstract findAllByLimitAndOffset(limit: number, offset: number): Promise<T[]>;
 }

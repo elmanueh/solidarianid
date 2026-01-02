@@ -32,10 +32,7 @@
         status,
       });
 
-      globalThis.AuthAPI?.showToast(
-        `Solicitud ${status === 'approved' ? 'aprobada' : 'rechazada'} correctamente`,
-        200,
-      );
+      globalThis.AuthAPI?.showToast(`Solicitud ${status === 'approved' ? 'aprobada' : 'rechazada'} correctamente`, 200);
 
       // Eliminar la solicitud de la vista
       const article = document.querySelector(`[data-id="${id}"]`);
@@ -46,15 +43,12 @@
       }
     } catch (error) {
       console.error('Error validating request:', error);
-      globalThis.AuthAPI?.showToast(
-        'Error al procesar la solicitud',
-        error.response?.status || 500,
-      );
+      globalThis.AuthAPI?.showToast('Error al procesar la solicitud', error.response?.status || 500);
     }
   }
 
   function initValidationListeners() {
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', e => {
       const button = e.target.closest('button[data-action]');
       if (!button) return;
 

@@ -4,7 +4,5 @@ import { Community } from '../model/aggregates/community';
 
 export abstract class CommunitiesService {
   abstract getCommunities(): Promise<Either<ValidationError, Community[]>>;
-  abstract getCommunityById(
-    id: string,
-  ): Promise<Either<ValidationError, Community>>;
+  abstract getCommunityById(id: string): Promise<Either<ValidationError, Community>>;
 }

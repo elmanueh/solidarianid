@@ -6,11 +6,14 @@ import eslintPluginJest from 'eslint-plugin-jest';
 import eslintPluginJestDom from 'eslint-plugin-jest-dom';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
+import pluginPrettier from 'eslint-plugin-prettier';
 
 export default defineConfig([
   { ignores: ['eslint.config.mjs', 'node_modules/**', 'dist/**'] },
 
   eslint.configs.recommended,
+  eslintConfigPrettier,
   eslintPluginPrettierRecommended,
 
   {
@@ -28,11 +31,12 @@ export default defineConfig([
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    plugins: { prettier: pluginPrettier },
     rules: {
+      'prettier/prettier': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
-      'prettier/prettier': ['error', { endOfLine: 'auto' }],
     },
   },
 

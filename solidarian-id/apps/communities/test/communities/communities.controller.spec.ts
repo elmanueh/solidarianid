@@ -97,9 +97,7 @@ describe('CommunitiesController', () => {
         ],
       };
       mockService.getCommunityById.mockResolvedValueOnce(right(domainData));
-      await expect(controller.getCommunityById('1')).resolves.toEqual(
-        expectedDto,
-      );
+      await expect(controller.getCommunityById('1')).resolves.toEqual(expectedDto);
       expect(mockService.getCommunityById).toHaveBeenCalledWith('1');
     });
 

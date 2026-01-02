@@ -72,23 +72,15 @@ export class ActionRequest extends Request<ActionRequestProps> {
     this.props.events.push(event);
   }
 
-  public static create(
-    props: ActionCreationProps,
-    id?: string,
-  ): Either<ValidationError, ActionRequest> {
-    const { name, status, user, description, reason, events, objectives } =
-      props;
+  public static create(props: ActionCreationProps, id?: string): Either<ValidationError, ActionRequest> {
+    const { name, status, user, description, reason, events, objectives } = props;
 
     const uniqueId = UniqueEntityID.create(id);
     const nameOrError = Name.create(name);
     const descriptionOrError = Description.create(description);
     const reasonOrError = Reason.create(reason);
-    const objectivesOrError = sequence(
-      objectives.map((objective) => ActionRequest.validateObjective(objective)),
-    );
-    const eventsOrError = sequence(
-      events.map((event) => ActionRequest.validateEvent(event)),
-    );
+    const objectivesOrError = sequence(objectives.map(objective => ActionRequest.validateObjective(objective)));
+    const eventsOrError = sequence(events.map(event => ActionRequest.validateEvent(event)));
 
     if (uniqueId.isLeft()) return left(uniqueId.value);
     if (reasonOrError.isLeft()) return left(reasonOrError.value);
@@ -119,8 +111,7 @@ export class ActionRequest extends Request<ActionRequestProps> {
     const unitOrError = Unit.create(objective.unit);
 
     if (objNameOrError.isLeft()) return left(objNameOrError.value);
-    if (objDescriptionOrError.isLeft())
-      return left(objDescriptionOrError.value);
+    if (objDescriptionOrError.isLeft()) return left(objDescriptionOrError.value);
     if (quantityOrError.isLeft()) return left(quantityOrError.value);
     if (unitOrError.isLeft()) return left(unitOrError.value);
 
@@ -144,8 +135,7 @@ export class ActionRequest extends Request<ActionRequestProps> {
     });
 
     if (eventNameOrError.isLeft()) return left(eventNameOrError.value);
-    if (eventDescriptionOrError.isLeft())
-      return left(eventDescriptionOrError.value);
+    if (eventDescriptionOrError.isLeft()) return left(eventDescriptionOrError.value);
     if (placeOrError.isLeft()) return left(placeOrError.value);
 
     return right({

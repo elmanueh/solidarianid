@@ -10,10 +10,7 @@ import { CauseEntityMapper } from './cause-entity.mapper';
 import { CommunityUserEntityMapper } from './community-user-entity.mapper';
 
 @Injectable()
-export class CommunityEntityMapper implements Mapper<
-  Community,
-  CommunityEntity
-> {
+export class CommunityEntityMapper implements Mapper<Community, CommunityEntity> {
   constructor(
     private readonly causesEntityMapper: CauseEntityMapper,
     private readonly userEntityMapper: UserEntityMapper,
@@ -24,24 +21,16 @@ export class CommunityEntityMapper implements Mapper<
     entity.name = model.name;
     entity.description = model.description;
 
-    entity.members =
-      model.members?.map((member) =>
-        CommunityUserEntityMapper.toPersistence(member, model),
-      ) || [];
+    entity.members = model.members?.map(member => CommunityUserEntityMapper.toPersistence(member, model)) || [];
 
-    entity.causes =
-      model.causes?.map((cause) =>
-        this.causesEntityMapper.toPersistence(cause),
-      ) || [];
+    entity.causes = model.causes?.map(cause => this.causesEntityMapper.toPersistence(cause)) || [];
 
     return entity;
   }
 
   fromPersistence(entity: CommunityEntity): Either<ValidationError, Community> {
     const causesOrError = sequence(
-      entity.causes?.map((causeEntity) =>
-        this.causesEntityMapper.fromPersistence(causeEntity),
-      ),
+      entity.causes?.map(causeEntity => this.causesEntityMapper.fromPersistence(causeEntity)),
     );
 
     if (causesOrError.isLeft()) {
@@ -51,10 +40,8 @@ export class CommunityEntityMapper implements Mapper<
     const admins: User[] = [];
 
     const membersOrError = sequence(
-      entity.members?.map((communityUserEntity) => {
-        const user = this.userEntityMapper.fromPersistence(
-          communityUserEntity.user,
-        );
+      entity.members?.map(communityUserEntity => {
+        const user = this.userEntityMapper.fromPersistence(communityUserEntity.user);
         if (user.isRight() && communityUserEntity.role === 'admin') {
           admins.push(user.value);
         }

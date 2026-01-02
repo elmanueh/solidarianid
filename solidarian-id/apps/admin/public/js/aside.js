@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isDesktop = window.innerWidth >= 768;
     const isMobileOpen = aside.classList.contains('open');
 
-    itemsAside.forEach((link) => {
+    itemsAside.forEach(link => {
       if (isDesktop || isMobileOpen) {
         link.removeAttribute('tabindex');
       } else {
@@ -27,10 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     accesibilityAside(itemsAside);
 
     const isOpen = aside.classList.contains('open');
-    hamburgerBtn.setAttribute(
-      'aria-label',
-      isOpen ? 'Cerrar menú' : 'Abrir menú',
-    );
+    hamburgerBtn.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
     hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   }
 
@@ -44,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   accesibilityAside(itemsAside);
 
-  menuLinks.forEach((link) => {
+  menuLinks.forEach(link => {
     const href = link.getAttribute('href');
     const normalizedHref = href.startsWith('/') ? href : `/${href}`;
 
@@ -57,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   hamburgerBtn.addEventListener('click', toggleMenu);
   overlay.addEventListener('click', closeMenu);
 
-  menuLinks.forEach((link) => {
+  menuLinks.forEach(link => {
     link.addEventListener('click', () => {
       if (window.innerWidth < 768) {
         closeMenu();
@@ -65,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && aside.classList.contains('open')) {
       closeMenu();
     }

@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Post,
-  Req,
-  Res,
-  HttpCode,
-  HttpStatus,
-} from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, HttpCode, HttpStatus } from '@nestjs/common';
 import { CreateCommunityRequestDto } from '../dtos/input/create-request-community.request.dto';
 import { CreateCauseRequestDto } from '../dtos/input/create-request-cause.request.dto';
 import { CreateActionRequestDto } from '../dtos/input/create-request-action.request.dto';
@@ -39,21 +31,17 @@ export class RequestController {
       'Datos de entrada inválidos. Errores de validación en nombre, descripción, razón o en las causas asociadas',
   })
   @ApiConflictResponse({
-    description:
-      'Ya existe una solicitud de comunidad con el mismo nombre o conflicto en la base de datos',
+    description: 'Ya existe una solicitud de comunidad con el mismo nombre o conflicto en la base de datos',
   })
   @ApiInternalServerErrorResponse({
-    description:
-      'Error interno del servidor. Error en la capa de persistencia o error inesperado',
+    description: 'Error interno del servidor. Error en la capa de persistencia o error inesperado',
   })
   async createCommunityRequest(
     @Body() createCommunityRequestDto: CreateCommunityRequestDto,
     @Res() response: Response,
     @Req() request: Request,
   ) {
-    const uniqueId = await this.requestsService.createCommunityRequest(
-      createCommunityRequestDto,
-    );
+    const uniqueId = await this.requestsService.createCommunityRequest(createCommunityRequestDto);
 
     if (uniqueId.isLeft()) {
       throw uniqueId.value;
@@ -76,21 +64,17 @@ export class RequestController {
       'Datos de entrada inválidos. Errores de validación en nombre, descripción, ODS, fecha inicial o duración',
   })
   @ApiConflictResponse({
-    description:
-      'Ya existe una solicitud de causa con el mismo nombre o conflicto en la base de datos',
+    description: 'Ya existe una solicitud de causa con el mismo nombre o conflicto en la base de datos',
   })
   @ApiInternalServerErrorResponse({
-    description:
-      'Error interno del servidor. Error en la capa de persistencia o error inesperado',
+    description: 'Error interno del servidor. Error en la capa de persistencia o error inesperado',
   })
   async createCauseRequest(
     @Body() createCauseRequestDto: CreateCauseRequestDto,
     @Res() response: Response,
     @Req() request: Request,
   ) {
-    const uniqueId = await this.requestsService.createCauseRequest(
-      createCauseRequestDto,
-    );
+    const uniqueId = await this.requestsService.createCauseRequest(createCauseRequestDto);
 
     if (uniqueId.isLeft()) {
       throw uniqueId.value;
@@ -113,21 +97,17 @@ export class RequestController {
       'Datos de entrada inválidos. Errores de validación en nombre, descripción, objetivos, eventos o lugares',
   })
   @ApiConflictResponse({
-    description:
-      'Ya existe una solicitud de acción con el mismo nombre o conflicto en la base de datos',
+    description: 'Ya existe una solicitud de acción con el mismo nombre o conflicto en la base de datos',
   })
   @ApiInternalServerErrorResponse({
-    description:
-      'Error interno del servidor. Error en la capa de persistencia o error inesperado',
+    description: 'Error interno del servidor. Error en la capa de persistencia o error inesperado',
   })
   async createActionRequest(
     @Body() createActionRequestDto: CreateActionRequestDto,
     @Res() response: Response,
     @Req() request: Request,
   ) {
-    const uniqueId = await this.requestsService.createActionRequest(
-      createActionRequestDto,
-    );
+    const uniqueId = await this.requestsService.createActionRequest(createActionRequestDto);
 
     if (uniqueId.isLeft()) {
       throw uniqueId.value;

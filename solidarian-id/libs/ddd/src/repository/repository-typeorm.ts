@@ -56,36 +56,26 @@ export class RepositoryTypeORM<
       }
       return right(model.value);
     } catch (error) {
-      return left(
-        new RepositoryException(
-          `Failed to find entity by id ${id}. Error: ${error}`,
-        ),
-      );
+      return left(new RepositoryException(`Failed to find entity by id ${id}. Error: ${error}`));
     }
   }
 
-  async findAll(
-    relations?: string[],
-  ): Promise<Either<RepositoryException | EntityNotFoundException, TDomain[]>> {
+  async findAll(relations?: string[]): Promise<Either<RepositoryException | EntityNotFoundException, TDomain[]>> {
     try {
       const entities = await this.repository.find({ relations });
       if (entities.length === 0) {
         return left(new EntityNotFoundException('Entity', 'all'));
       }
 
-      const models = entities.map((entity) =>
-        this.mapper.fromPersistence(entity),
-      );
-      const lefts = models.filter((m) => m.isLeft());
+      const models = entities.map(entity => this.mapper.fromPersistence(entity));
+      const lefts = models.filter(m => m.isLeft());
       if (lefts.length > 0) {
         return left(lefts[0].value);
       }
 
-      const rights = models.filter((m) => m.isRight()) as Array<
-        Either<never, TDomain>
-      >;
+      const rights = models.filter(m => m.isRight()) as Array<Either<never, TDomain>>;
 
-      const domainModels = rights.map((r) => r.value);
+      const domainModels = rights.map(r => r.value);
       return right(domainModels);
     } catch (error) {
       return left(new RepositoryException('Failed to find entities.', error));

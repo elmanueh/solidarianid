@@ -66,27 +66,15 @@ export class User extends Entity<UserProps> {
     countryCode?: string,
   ): Either<ValidationError, void> {
     if (!username && !mobilePhone && !city && !countryCode) {
-      return left(
-        new ValidationError(
-          'At least one field must be provided to update the profile.',
-        ),
-      );
+      return left(new ValidationError('At least one field must be provided to update the profile.'));
     }
 
     if (city && !countryCode) {
-      return left(
-        new ValidationError(
-          'Country code must be provided when updating user location',
-        ),
-      );
+      return left(new ValidationError('Country code must be provided when updating user location'));
     }
 
     if (countryCode && !city) {
-      return left(
-        new ValidationError(
-          'City must be provided when updating user location',
-        ),
-      );
+      return left(new ValidationError('City must be provided when updating user location'));
     }
 
     if (username) {
@@ -116,10 +104,7 @@ export class User extends Entity<UserProps> {
     return right(undefined);
   }
 
-  public static create(
-    props: UserCreationProps,
-    id?: string,
-  ): Either<ValidationError, User> {
+  public static create(props: UserCreationProps, id?: string): Either<ValidationError, User> {
     // Create UniqueEntityID if id is provided
     let entityId: UniqueEntityID | undefined;
     if (id) {

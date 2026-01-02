@@ -18,12 +18,8 @@ export class ActionDomainMapper {
       id: action.id.value,
       name: action.name,
       description: action.description,
-      events: action.events.map((event) =>
-        EventDomainMapper.toEventSummaryDto(event),
-      ),
-      objectives: action.objectives.map((objective) =>
-        ObjetiveDomainMapper.toObjetiveSummaryDto(objective),
-      ),
+      events: action.events.map(event => EventDomainMapper.toEventSummaryDto(event)),
+      objectives: action.objectives.map(objective => ObjetiveDomainMapper.toObjetiveSummaryDto(objective)),
     };
   }
 }

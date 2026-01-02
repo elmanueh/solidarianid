@@ -19,13 +19,9 @@ export class CurrentAmount extends ValueObject<CurrentAmountProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    currentAmount: number,
-  ): Either<InvalidQuantityError, CurrentAmount> {
+  public static create(currentAmount: number): Either<InvalidQuantityError, CurrentAmount> {
     if (currentAmount < 0) {
-      return left(
-        new InvalidQuantityError('Current amount cannot be less than zero.'),
-      );
+      return left(new InvalidQuantityError('Current amount cannot be less than zero.'));
     }
 
     return right(new CurrentAmount(currentAmount));

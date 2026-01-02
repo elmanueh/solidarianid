@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
 import { ActionEntity } from './action.entity';
 import { UserEntity } from './user.entity';
 
@@ -30,7 +22,7 @@ export class ObjectiveEntity {
   @Column()
   currentAmount: number;
 
-  @ManyToOne(() => ActionEntity, (action) => action.objectives)
+  @ManyToOne(() => ActionEntity, action => action.objectives)
   @JoinColumn({ name: 'actionId' })
   action: ActionEntity;
 

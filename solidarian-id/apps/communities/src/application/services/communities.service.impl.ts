@@ -7,17 +7,13 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CommunitiesServiceImpl implements CommunitiesService {
-  constructor(
-    private readonly communityRepository: CommunitiesRepositoryPort,
-  ) {}
+  constructor(private readonly communityRepository: CommunitiesRepositoryPort) {}
 
   async getCommunities(): Promise<Either<ValidationError, Community[]>> {
     return await this.communityRepository.findAll();
   }
 
-  async getCommunityById(
-    id: string,
-  ): Promise<Either<ValidationError, Community>> {
+  async getCommunityById(id: string): Promise<Either<ValidationError, Community>> {
     return await this.communityRepository.findById(id, ['causes']);
   }
 }

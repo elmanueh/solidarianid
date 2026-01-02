@@ -59,10 +59,7 @@ export class Event extends Entity<EventProps> {
    *
    * @return Either<InvalidNameError | InvalidDescriptionError | InvalidUniqueEntityIDError, Event>
    */
-  public static create(
-    props: EventCreationProps,
-    id?: string,
-  ): Either<ValidationError, Event> {
+  public static create(props: EventCreationProps, id?: string): Either<ValidationError, Event> {
     const uniqueId = UniqueEntityID.create(id);
     const name = Name.create(props.name);
     const description = Description.create(props.description);

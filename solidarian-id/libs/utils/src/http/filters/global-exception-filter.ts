@@ -1,9 +1,4 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpException,
-} from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
 import { ErrorMapper } from './error-mapper';
 import { Request, Response } from 'express';
 
@@ -14,10 +9,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    const httpException =
-      exception instanceof HttpException
-        ? exception
-        : ErrorMapper.toHttp(exception as Error);
+    const httpException = exception instanceof HttpException ? exception : ErrorMapper.toHttp(exception as Error);
 
     const status = httpException.getStatus();
     const res = httpException.getResponse();

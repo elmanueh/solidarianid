@@ -22,37 +22,30 @@
       required: 'El nombre es obligatorio',
       empty: 'El nombre no puede estar vacío',
       hasNumbers: 'El nombre no puede contener números',
-      hasSpecialChars:
-        'El nombre no puede contener signos especiales ni números',
-      invalid:
-        'El nombre solo puede contener letras y espacios. No se permiten números ni signos.',
+      hasSpecialChars: 'El nombre no puede contener signos especiales ni números',
+      invalid: 'El nombre solo puede contener letras y espacios. No se permiten números ni signos.',
     },
     lastName: {
       required: 'Los apellidos son obligatorios',
       empty: 'Los apellidos no pueden estar vacíos',
       hasNumbers: 'Los apellidos no pueden contener números',
-      hasSpecialChars:
-        'Los apellidos no pueden contener signos especiales ni números',
-      invalid:
-        'Los apellidos solo pueden contener letras y espacios. No se permiten números ni signos.',
+      hasSpecialChars: 'Los apellidos no pueden contener signos especiales ni números',
+      invalid: 'Los apellidos solo pueden contener letras y espacios. No se permiten números ni signos.',
     },
     email: {
       required: 'El correo electrónico es obligatorio',
-      invalid:
-        'Introduce un correo electrónico válido (ej: usuario@dominio.com)',
+      invalid: 'Introduce un correo electrónico válido (ej: usuario@dominio.com)',
     },
     phone: {
       required: 'El teléfono es obligatorio',
-      invalid:
-        'Introduce un número en formato internacional (ej: +34612345678)',
+      invalid: 'Introduce un número en formato internacional (ej: +34612345678)',
       tooShort: 'El número de teléfono debe tener al menos 10 dígitos',
     },
     password: {
       required: 'La contraseña es obligatoria',
       tooShort: `La contraseña debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres`,
       noUppercase: 'La contraseña debe contener al menos una letra mayúscula',
-      noSpecialChar:
-        'La contraseña debe contener al menos un carácter especial',
+      noSpecialChar: 'La contraseña debe contener al menos un carácter especial',
       noNumber: 'La contraseña debe contener al menos un número',
       invalid: `La contraseña debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres, una mayúscula, un número y un carácter especial`,
     },
@@ -275,10 +268,7 @@
 
     if (iconStatus) {
       iconStatus.classList.add('hidden');
-      iconStatus.classList.remove(
-        'icon-[lucide--alert-circle]',
-        'icon-[lucide--check-circle]',
-      );
+      iconStatus.classList.remove('icon-[lucide--alert-circle]', 'icon-[lucide--check-circle]');
       iconStatus.style.color = '';
       iconStatus.setAttribute('aria-hidden', 'true');
     }
@@ -302,7 +292,7 @@
 
     const inputs = form.querySelectorAll('input[required]');
 
-    inputs.forEach((input) => {
+    inputs.forEach(input => {
       input.addEventListener('blur', function () {
         if (this.value.trim()) {
           validateAndUpdateUI(this);
@@ -331,7 +321,7 @@
       let isFormValid = true;
       let firstInvalidInput = null;
 
-      inputs.forEach((input) => {
+      inputs.forEach(input => {
         const isValid = validateAndUpdateUI(input);
         if (!isValid) {
           isFormValid = false;
@@ -342,9 +332,7 @@
       });
 
       if (!isFormValid) {
-        announceError(
-          'Por favor, corrige los errores en el formulario antes de continuar.',
-        );
+        announceError('Por favor, corrige los errores en el formulario antes de continuar.');
 
         if (firstInvalidInput) {
           firstInvalidInput.focus();
@@ -393,7 +381,7 @@
   function initPasswordToggle() {
     const toggleButtons = document.querySelectorAll('.password-toggle');
 
-    toggleButtons.forEach((button) => {
+    toggleButtons.forEach(button => {
       button.addEventListener('click', function () {
         const inputId = this.getAttribute('aria-controls');
         const input = document.getElementById(inputId);
@@ -404,10 +392,7 @@
           input.type = isPassword ? 'text' : 'password';
 
           this.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
-          this.setAttribute(
-            'aria-label',
-            isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña',
-          );
+          this.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
 
           if (icon) {
             icon.className = isPassword

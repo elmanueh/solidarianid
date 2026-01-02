@@ -9,13 +9,12 @@ import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { Test, TestingModule } from '@nestjs/testing';
 
-const createMockRequestsRepository =
-  (): jest.Mocked<RequestsRepositoryPort> => ({
-    save: jest.fn(),
-    remove: jest.fn(),
-    findById: jest.fn(),
-    findAll: jest.fn(),
-  });
+const createMockRequestsRepository = (): jest.Mocked<RequestsRepositoryPort> => ({
+  save: jest.fn(),
+  remove: jest.fn(),
+  findById: jest.fn(),
+  findAll: jest.fn(),
+});
 
 const createMockRequests = (): Request<any>[] => {
   const request1Result = RequestCause.create(
@@ -44,15 +43,11 @@ const createMockRequests = (): Request<any>[] => {
   );
 
   if (request1Result.isLeft()) {
-    throw new Error(
-      `Failed to create mock request 1: ${request1Result.value.message}`,
-    );
+    throw new Error(`Failed to create mock request 1: ${request1Result.value.message}`);
   }
 
   if (request2Result.isLeft()) {
-    throw new Error(
-      `Failed to create mock request 2: ${request2Result.value.message}`,
-    );
+    throw new Error(`Failed to create mock request 2: ${request2Result.value.message}`);
   }
 
   return [request1Result.value, request2Result.value];
@@ -88,14 +83,9 @@ describe('RequestsService', () => {
   describe('updateStatus', () => {
     describe('Basic Path Testing', () => {
       it('Path 1: should return left with error when request is not found (requestOrError.isLeft = true)', async () => {
-        mockRepository.findById.mockResolvedValue(
-          left(new EntityNotFoundException('Entity', requestId)),
-        );
+        mockRepository.findById.mockResolvedValue(left(new EntityNotFoundException('Entity', requestId)));
 
-        const result = await service.updateStatus(
-          requestId,
-          RequestStatus.APPROVED,
-        );
+        const result = await service.updateStatus(requestId, RequestStatus.APPROVED);
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
@@ -106,10 +96,7 @@ describe('RequestsService', () => {
       it('Path 2: should return left when request status is not PENDING', async () => {
         mockRepository.findById.mockResolvedValue(right(mockRequests[1]));
 
-        const result = await service.updateStatus(
-          requestId,
-          RequestStatus.APPROVED,
-        );
+        const result = await service.updateStatus(requestId, RequestStatus.APPROVED);
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
@@ -121,11 +108,7 @@ describe('RequestsService', () => {
         mockRepository.findById.mockResolvedValue(right(mockRequests[0]));
         mockRepository.save.mockResolvedValue(right(undefined));
 
-        const result = await service.updateStatus(
-          requestId,
-          RequestStatus.APPROVED,
-          'Looks good',
-        );
+        const result = await service.updateStatus(requestId, RequestStatus.APPROVED, 'Looks good');
 
         expect(result.isRight()).toBe(true);
         expect(result.value).toBeUndefined();
@@ -135,11 +118,7 @@ describe('RequestsService', () => {
         mockRepository.findById.mockResolvedValue(right(mockRequests[0]));
         mockRepository.save.mockResolvedValue(right(undefined));
 
-        const result = await service.updateStatus(
-          requestId,
-          RequestStatus.REJECTED,
-          'Does not meet requirements',
-        );
+        const result = await service.updateStatus(requestId, RequestStatus.REJECTED, 'Does not meet requirements');
 
         expect(result.isRight()).toBe(true);
         expect(result.value).toBeUndefined();
@@ -150,11 +129,7 @@ describe('RequestsService', () => {
       it('should return RequestAlreadyResolvedException when request was previously approved', async () => {
         mockRepository.findById.mockResolvedValue(right(mockRequests[1]));
 
-        const result = await service.updateStatus(
-          requestId,
-          RequestStatus.REJECTED,
-          'Try to reject',
-        );
+        const result = await service.updateStatus(requestId, RequestStatus.REJECTED, 'Try to reject');
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
@@ -165,11 +140,7 @@ describe('RequestsService', () => {
       it('should return RequestAlreadyResolvedException when request was previously rejected', async () => {
         mockRepository.findById.mockResolvedValue(right(mockRequests[1]));
 
-        const result = await service.updateStatus(
-          requestId,
-          RequestStatus.APPROVED,
-          'Try to approve',
-        );
+        const result = await service.updateStatus(requestId, RequestStatus.APPROVED, 'Try to approve');
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
@@ -183,10 +154,7 @@ describe('RequestsService', () => {
         const error = new EntityNotFoundException('Request', requestId);
         mockRepository.findById.mockResolvedValue(left(error));
 
-        const result = await service.updateStatus(
-          requestId,
-          RequestStatus.APPROVED,
-        );
+        const result = await service.updateStatus(requestId, RequestStatus.APPROVED);
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
@@ -198,11 +166,7 @@ describe('RequestsService', () => {
         const id = mockRequests[1].id.value;
         mockRepository.findById.mockResolvedValue(right(mockRequests[1]));
 
-        const result = await service.updateStatus(
-          id,
-          RequestStatus.REJECTED,
-          'Too late',
-        );
+        const result = await service.updateStatus(id, RequestStatus.REJECTED, 'Too late');
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
@@ -215,10 +179,7 @@ describe('RequestsService', () => {
         mockRepository.findById.mockResolvedValue(right(mockRequests[0]));
         mockRepository.save.mockResolvedValue(right(undefined));
 
-        const result = await service.updateStatus(
-          requestId,
-          RequestStatus.APPROVED,
-        );
+        const result = await service.updateStatus(requestId, RequestStatus.APPROVED);
 
         expect(result.isRight()).toBe(true);
         if (result.isRight()) {
@@ -230,11 +191,7 @@ describe('RequestsService', () => {
         mockRepository.findById.mockResolvedValue(right(mockRequests[0]));
         mockRepository.save.mockResolvedValue(right(undefined));
 
-        const result = await service.updateStatus(
-          requestId,
-          RequestStatus.REJECTED,
-          'Invalid data',
-        );
+        const result = await service.updateStatus(requestId, RequestStatus.REJECTED, 'Invalid data');
 
         expect(result.isRight()).toBe(true);
         if (result.isRight()) {

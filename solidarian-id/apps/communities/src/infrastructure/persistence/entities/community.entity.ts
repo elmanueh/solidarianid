@@ -1,11 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { CommunityUserEntity } from './community-user.entity';
 import { CauseEntity } from './cause.entity';
 
@@ -26,13 +19,13 @@ export class CommunityEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => CommunityUserEntity, (member) => member.community, {
+  @OneToMany(() => CommunityUserEntity, member => member.community, {
     cascade: true,
     orphanedRowAction: 'soft-delete',
   })
   members: CommunityUserEntity[];
 
-  @OneToMany(() => CauseEntity, (cause) => cause.community, {
+  @OneToMany(() => CauseEntity, cause => cause.community, {
     cascade: true,
   })
   causes: CauseEntity[];

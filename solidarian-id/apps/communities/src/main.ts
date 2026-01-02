@@ -16,9 +16,7 @@ async function bootstrap() {
   // Generar documentación Swagger
   const config = new DocumentBuilder()
     .setTitle('SolidarianID: Communities Microservice')
-    .setDescription(
-      'The SolidarianID`s Communities Microservice API documentation',
-    )
+    .setDescription('The SolidarianID`s Communities Microservice API documentation')
     .setVersion('0.1')
     .build();
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
@@ -42,17 +40,11 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId:
-          configService.get<string>('KAFKA_COMMUNITIES_CLIENT_ID') ??
-          'communities',
-        brokers: configService.get<string>('KAFKA_BROKERS')?.split(',') ?? [
-          'localhost:9092',
-        ],
+        clientId: configService.get<string>('KAFKA_COMMUNITIES_CLIENT_ID') ?? 'communities',
+        brokers: configService.get<string>('KAFKA_BROKERS')?.split(',') ?? ['localhost:9092'],
       },
       consumer: {
-        groupId:
-          configService.get<string>('KAFKA_COMMUNITIES_CONSUMER_GROUP_ID') ??
-          'communities-consumer-group',
+        groupId: configService.get<string>('KAFKA_COMMUNITIES_CONSUMER_GROUP_ID') ?? 'communities-consumer-group',
       },
     },
   });

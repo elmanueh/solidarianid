@@ -106,8 +106,7 @@ export class EventPlaceDto {
   @IsNotEmpty()
   @Length(COUNTRY_CODE_LENGTH, COUNTRY_CODE_LENGTH)
   @Matches(COUNTRY_CODE_REGEX, {
-    message:
-      'Country code must be a valid ISO 3166-1 alpha-2 code (e.g., ES, US)',
+    message: 'Country code must be a valid ISO 3166-1 alpha-2 code (e.g., ES, US)',
   })
   countryCode: string;
 }
@@ -130,8 +129,7 @@ export class ActionEventDto {
 
   @ApiProperty({
     description: 'Description of the event',
-    example:
-      'Evento público para recolectar donaciones de alimentos no perecederos',
+    example: 'Evento público para recolectar donaciones de alimentos no perecederos',
     minLength: DESCRIPTION_MIN_LENGTH,
     maxLength: DESCRIPTION_MAX_LENGTH,
   })
@@ -179,8 +177,7 @@ export class CreateActionRequestDto {
 
   @ApiProperty({
     description: 'Detailed description of the charitable action',
-    example:
-      'Acción concreta para recolectar y distribuir alimentos durante el mes de enero.',
+    example: 'Acción concreta para recolectar y distribuir alimentos durante el mes de enero.',
     minLength: DESCRIPTION_MIN_LENGTH,
     maxLength: DESCRIPTION_MAX_LENGTH,
   })
@@ -191,8 +188,7 @@ export class CreateActionRequestDto {
   description: string;
 
   @ApiProperty({
-    description:
-      'Quantifiable objectives for this action. Must include at least one objective.',
+    description: 'Quantifiable objectives for this action. Must include at least one objective.',
     type: [ActionObjectiveDto],
     minItems: 1,
   })
@@ -203,8 +199,7 @@ export class CreateActionRequestDto {
   objectives: ActionObjectiveDto[];
 
   @ApiProperty({
-    description:
-      'In-person events associated with this action. Must include at least one event.',
+    description: 'In-person events associated with this action. Must include at least one event.',
     type: [ActionEventDto],
     minItems: 1,
   })

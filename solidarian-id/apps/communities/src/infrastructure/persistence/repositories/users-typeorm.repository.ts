@@ -8,10 +8,7 @@ import { UserEntityMapper } from '../mappers/user-entity.mapper';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 
 @Injectable()
-export class UsersTypeOrmRepositoryAdapter
-  extends RepositoryTypeORM<User, UserEntity>
-  implements UsersRepositoryPort
-{
+export class UsersTypeOrmRepositoryAdapter extends RepositoryTypeORM<User, UserEntity> implements UsersRepositoryPort {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userEntityRepository: TypeOrmRepository<UserEntity>,

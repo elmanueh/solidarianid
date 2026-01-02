@@ -3,12 +3,7 @@ import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
 import { DataSource } from 'typeorm';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { UsersModule } from '@app/users/users.module';
-import {
-  TestServerHelper,
-  PostgreSQLSeeder,
-  PostgreSQLTestModule,
-  KafkaTestModule,
-} from '@solidarianid/testing';
+import { TestServerHelper, PostgreSQLSeeder, PostgreSQLTestModule, KafkaTestModule } from '@solidarianid/testing';
 
 describe('UsersController (e2e)', () => {
   let server!: TestServerHelper;
@@ -382,11 +377,7 @@ describe('UsersController (e2e)', () => {
     });
 
     it('Test 15 - no fields provided (empty body) → 400', async () => {
-      await server
-        .getRequest()
-        .patch(`/users/${existingUserId}`)
-        .send({})
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().patch(`/users/${existingUserId}`).send({}).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('Test 16 - user not found (invalid UUID) → 404', async () => {
@@ -452,11 +443,7 @@ describe('UsersController (e2e)', () => {
     });
 
     it('Test 5 - Should return Bad Request for empty body', async () => {
-      await server
-        .getRequest()
-        .post('/users/login')
-        .send({})
-        .expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/users/login').send({}).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('Test 6 - Should return Unauthorized for wrong password', async () => {

@@ -1,12 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { CommunityEntity } from './community.entity';
 import { UserEntity } from './user.entity';
 import { MemberType } from '@app/communities/domain/model/enums/member-type';
@@ -31,13 +23,13 @@ export class CommunityUserEntity {
   @CreateDateColumn()
   joinedAt: Date;
 
-  @ManyToOne(() => CommunityEntity, (community) => community.members, {
+  @ManyToOne(() => CommunityEntity, community => community.members, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'communityId' })
   community: CommunityEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.communityMembers, {
+  @ManyToOne(() => UserEntity, user => user.communityMembers, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'userId' })

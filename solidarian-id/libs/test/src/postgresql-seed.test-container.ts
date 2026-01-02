@@ -111,8 +111,7 @@ const DEFAULT_USERS_DATA = [
     id: '4807f235-f4b4-41c0-939c-c97371219551',
     username: 'testUsername',
     mobilePhone: '+34000000000',
-    passwordHash:
-      '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
+    passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
     city: 'Madrid',
     countryCode: 'ES',
   },
@@ -120,8 +119,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.JUAN,
     username: 'volunteer_juan',
     mobilePhone: '+34611111111',
-    passwordHash:
-      '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
+    passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Madrid',
     countryCode: 'ES',
   },
@@ -129,8 +127,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.MARIA,
     username: 'volunteer_maria',
     mobilePhone: '+34622222222',
-    passwordHash:
-      '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
+    passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Barcelona',
     countryCode: 'ES',
   },
@@ -138,8 +135,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.PEDRO,
     username: 'admin_pedro',
     mobilePhone: '+34633333333',
-    passwordHash:
-      '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
+    passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Valencia',
     countryCode: 'ES',
   },
@@ -147,8 +143,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.ANA,
     username: 'volunteer_ana',
     mobilePhone: '+34644444444',
-    passwordHash:
-      '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
+    passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Sevilla',
     countryCode: 'ES',
   },
@@ -156,8 +151,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.CARLOS,
     username: 'volunteer_carlos',
     mobilePhone: '+34655555555',
-    passwordHash:
-      '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
+    passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Bilbao',
     countryCode: 'ES',
   },
@@ -168,9 +162,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
 
   // USERS APP SEED (tabla tbl_Usuarios)
   async seedUsers(users: UserEntity[] = []): Promise<void> {
-    const userEntityTarget = this.dataSource.entityMetadatas.find(
-      (meta) => meta.tableName === 'tbl_Usuarios',
-    )?.target;
+    const userEntityTarget = this.dataSource.entityMetadatas.find(meta => meta.tableName === 'tbl_Usuarios')?.target;
 
     if (!userEntityTarget) {
       throw new Error('UserEntity not found in DataSource');
@@ -190,12 +182,10 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
   async seedCommunityUsers(users: CommunityUserSeedData[] = []): Promise<void> {
     const repo = this.dataSource.getRepository('UserEntity');
 
-    const defaultUsers: CommunityUserSeedData[] = DEFAULT_USERS_DATA.map(
-      (u) => ({
-        id: u.id,
-        username: u.username,
-      }),
-    );
+    const defaultUsers: CommunityUserSeedData[] = DEFAULT_USERS_DATA.map(u => ({
+      id: u.id,
+      username: u.username,
+    }));
 
     await repo.insert([...defaultUsers, ...users]);
   }
@@ -210,8 +200,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
       {
         id: COMMUNITY_IDS.AFRICA,
         name: 'Amigos por África',
-        description:
-          'Comunidad dedicada a proyectos solidarios en el continente africano',
+        description: 'Comunidad dedicada a proyectos solidarios en el continente africano',
       },
       {
         id: COMMUNITY_IDS.MADRID,
@@ -221,8 +210,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
       {
         id: COMMUNITY_IDS.HUMANITARIA,
         name: 'Ayuda Humanitaria España',
-        description:
-          'Red de voluntarios para emergencias humanitarias nacionales',
+        description: 'Red de voluntarios para emergencias humanitarias nacionales',
       },
     ];
 
@@ -497,7 +485,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
       },
     ];
 
-    const mappedEvents = [...defaultEvents, ...events].map((e) => ({
+    const mappedEvents = [...defaultEvents, ...events].map(e => ({
       id: e.id,
       name: e.name,
       description: e.description,
@@ -636,11 +624,4 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
   }
 }
 
-export {
-  USER_IDS,
-  COMMUNITY_IDS,
-  CAUSE_IDS,
-  ACTION_IDS,
-  OBJECTIVE_IDS,
-  EVENT_IDS,
-};
+export { USER_IDS, COMMUNITY_IDS, CAUSE_IDS, ACTION_IDS, OBJECTIVE_IDS, EVENT_IDS };

@@ -166,6 +166,11 @@ jobs:
           echo "SONAR_PROJECT_KEY=$PROJECT_KEY" >> "$GITHUB_ENV"
           echo "SONAR_PROJECT_NAME=$PROJECT_NAME" >> "$GITHUB_ENV"
 
+      - name: Debug LCOV paths
+        run: |
+          echo "First SF lines:"
+          grep -n "^SF:" -m 10 coverage/lcov.info || true
+
       - name: Run SonarQube Scanner
         uses: SonarSource/sonarqube-scan-action@v2
         env:

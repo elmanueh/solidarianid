@@ -3,7 +3,14 @@ import { Connection } from 'mongoose';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { RequestsModule } from '@app/admin/administrator/model/requests.module';
-import { KafkaTestModule, MongoDBSeeder, MongoDBTestModule, TestServerHelper } from '@solidarianid/testing';
+import {
+  KafkaTestContainer,
+  KafkaTestModule,
+  MongoDBSeeder,
+  MongoDBTestContainer,
+  MongoDBTestModule,
+  TestServerHelper,
+} from '@solidarianid/testing';
 
 describe('RequestsController (e2e)', () => {
   let repository: RequestsRepositoryPort;
@@ -15,11 +22,11 @@ describe('RequestsController (e2e)', () => {
   let seeder!: MongoDBSeeder;
 
   beforeAll(async () => {
-    const kafkaModule = await KafkaTestModule.forRoot();
+    const messageModule = await KafkaTestModule.forRoot();
     const databaseModule = await MongoDBTestModule.forRoot();
     server = new TestServerHelper();
     app = await server.create({
-      imports: [kafkaModule, databaseModule, RequestsModule],
+      imports: [messageModule, databaseModule, RequestsModule],
     });
 
     const connection: Connection = app.get<Connection>('Connection');
@@ -34,6 +41,8 @@ describe('RequestsController (e2e)', () => {
 
   afterAll(async () => {
     await server.close();
+    await MongoDBTestContainer.getInstance().stop();
+    await KafkaTestContainer.getInstance().stop();
   });
 
   describe('PATCH /requests/:id', () => {

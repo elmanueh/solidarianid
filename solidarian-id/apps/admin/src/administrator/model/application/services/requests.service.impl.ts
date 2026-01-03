@@ -145,7 +145,7 @@ export class RequestsServiceImpl extends RequestsService {
         case RequestStatus.REJECTED:
           return request.reject(reason!);
         default:
-          return left(new ValidationError('Invalid status provided'));
+          return left(new RequestError('Invalid status provided'));
       }
     };
 

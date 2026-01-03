@@ -18,6 +18,7 @@ import { KafkaBrokersModule } from '@solidarianid/kafka';
     AdminModule,
     AuthModule,
     RequestsModule,
+    KafkaBrokersModule,
   ],
   controllers: [AppController],
   providers: [],

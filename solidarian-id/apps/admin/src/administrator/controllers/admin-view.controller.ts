@@ -8,6 +8,11 @@ import {
 } from '../../utils/chart-builder';
 import { ConfigService } from '@nestjs/config';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
+import {
+  ActionRequestResponseDto,
+  CauseRequestResponseDto,
+  CommunityRequestResponseDto,
+} from '@app/admin/administrator/model/application/dtos/get-community-request.dto';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -52,17 +57,19 @@ export class AdminViewController {
   @Render('pages/requests')
   async requests() {
     const [actionsResult, causesResult, communitiesResult] = await Promise.all([
-      this.requestsService.getPendingActionRequests(),
-      this.requestsService.getPendingCauseRequests(),
-      this.requestsService.getPendingCommunityRequests(),
+      this.requestsService.getActionRequestsPending(),
+      this.requestsService.getCauseRequestsPending(),
+      this.requestsService.getCommunityRequestsPending(),
     ]);
 
     return {
       title: 'Requests',
       layout: 'dashboard',
-      actions: actionsResult.isRight() ? actionsResult.value : [],
-      causes: causesResult.isRight() ? causesResult.value : [],
-      communities: communitiesResult.isRight() ? communitiesResult.value : [],
+      actions: actionsResult.isRight() ? actionsResult.value.map(r => ActionRequestResponseDto.toDto(r)) : [],
+      causes: causesResult.isRight() ? causesResult.value.map(r => CauseRequestResponseDto.toDto(r)) : [],
+      communities: communitiesResult.isRight()
+        ? communitiesResult.value.map(r => CommunityRequestResponseDto.toDto(r))
+        : [],
       apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }

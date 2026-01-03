@@ -10,7 +10,9 @@ export class RequestsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async changeStatus(@Param('id') id: string, @Body() body: UpdateStatusRequestDto) {
     const { status, reason } = body;
+
     const res = await this.requestsService.updateStatus(id, status, reason);
+
     if (res.isLeft()) throw res.value;
   }
 }

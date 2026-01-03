@@ -3,14 +3,15 @@ import { RequestStatus } from '@app/admin/administrator/model/domain/enums/reque
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { left, right } from '@app/ddd/either';
-import { RequestsController } from '@app/admin/administrator/controllers/requets.controller';
+import { RequestsController } from '@app/admin/administrator/controllers/requests.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 
 const createMockRequestsService = (): jest.Mocked<RequestsService> => ({
+  createRequest: jest.fn(),
   updateStatus: jest.fn(),
-  getPendingCommunityRequests: jest.fn(),
-  getPendingCauseRequests: jest.fn(),
-  getPendingActionRequests: jest.fn(),
+  getCommunityRequestsPending: jest.fn(),
+  getCauseRequestsPending: jest.fn(),
+  getActionRequestsPending: jest.fn(),
 });
 
 const createMockUpdateStatusDto = (props: { status: RequestStatus; reason?: string }) => ({

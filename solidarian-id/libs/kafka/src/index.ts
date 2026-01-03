@@ -1,4 +1,5 @@
 export * from './kafka.module';
+export * from './kafka-config.module';
 export * from './events.enum';
 export * from './topics.enum';
 export * from './kafka.message';

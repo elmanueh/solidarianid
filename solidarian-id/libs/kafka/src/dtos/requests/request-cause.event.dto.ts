@@ -13,7 +13,6 @@ export class CauseRequestEventDto {
   status: RequestStatus;
   reason?: string;
   userId: string;
-  username: string;
   communityId: string;
   ods: SustainableDevelopmentGoal[];
   initialDate: Date;

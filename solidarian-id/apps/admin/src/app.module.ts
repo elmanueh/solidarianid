@@ -5,6 +5,7 @@ import { AuthModule } from '@app/admin/auth/auth.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { KafkaBrokersModule } from '@solidarianid/kafka';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    KafkaBrokersModule,
     MongooseModule.forRoot(process.env.MONGODB_URI || ''),
     AdminModule,
     AuthModule,

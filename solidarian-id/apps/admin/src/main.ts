@@ -11,11 +11,13 @@ import { ConflictErrorFilter } from './administrator/controllers/filters/conflic
 import { InternalServerErrorFilter } from './administrator/controllers/filters/internal-server-error.filter';
 import { NotFoundErrorFilter } from './administrator/controllers/filters/not-found-error.filter';
 import { ValidationErrorFilter } from './administrator/controllers/filters/validation-error.filter';
-import { ConfigService } from '@nestjs/config/dist/config.service';
+import { Transport } from '@nestjs/microservices';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
+
   app.engine(
     'hbs',
     engine({
@@ -68,6 +70,22 @@ async function bootstrap() {
     new ConflictErrorFilter(),
     new AuthenticationErrorFilter(),
   );
+
+  app.connectMicroservice({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: configService.get<string>('KAFKA_ADMIN_CLIENT_ID') ?? 'admin',
+        brokers: configService.get<string>('KAFKA_BROKERS')?.split(',') ?? ['localhost:9092'],
+      },
+      consumer: {
+        groupId: configService.get<string>('KAFKA_ADMIN_CONSUMER_GROUP_ID') ?? 'admin-consumer-group',
+      },
+    },
+  });
+
+  await app.startAllMicroservices();
+
   const port = configService.get<number>('ADMIN_PORT') ?? 3000;
   console.log(`Server running on port ${port}`);
   await app.listen(port);

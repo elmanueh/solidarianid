@@ -12,7 +12,13 @@ export class UserEntity {
   @Column({
     unique: true,
   })
-  username: string;
+  fullName: string;
+
+  @Column({ nullable: true })
+  mobilePhone?: string;
+
+  @Column({ nullable: true })
+  email?: string;
 
   @OneToMany(() => CommunityUserEntity, member => member.user, {
     cascade: true,

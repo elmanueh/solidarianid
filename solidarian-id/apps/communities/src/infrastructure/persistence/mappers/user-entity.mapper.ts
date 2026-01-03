@@ -10,14 +10,18 @@ export class UserEntityMapper implements Mapper<User, UserEntity> {
   toPersistence(model: User): UserEntity {
     const entity = new UserEntity();
     entity.id = model.id.value;
-    entity.username = model.username;
+    entity.fullName = model.fullName;
+    entity.mobilePhone = model.mobilePhone;
+    entity.email = model.email;
     return entity;
   }
 
   fromPersistence(entity: UserEntity): Either<ValidationError, User> {
     return User.create(
       {
-        username: entity.username,
+        fullName: entity.fullName,
+        mobilePhone: entity.mobilePhone,
+        email: entity.email,
       },
       entity.id,
     );

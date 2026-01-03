@@ -31,6 +31,7 @@ describe('UsersService (White Box Testing)', () => {
   };
 
   const validCommand: RegisterUserCommand = {
+    fullName: 'John Doe',
     username: 'johnDoe',
     mobilePhone: '+34612345678',
     password: 'SecureP*ssw0rd123',
@@ -362,6 +363,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Camino 2: user.updateUserProfile retorna ValidationError', () => {
         it('should return ValidationError when username format is invalid', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -388,6 +390,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Camino 3: save retorna error', () => {
         it('should return RepositoryException when save operation fails', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -412,6 +415,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Camino 4: Actualización exitosa (Happy Path)', () => {
         it('should return Right(void) when profile is updated successfully', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -437,6 +441,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Condición: No se proporciona ningún campo para actualizar', () => {
         it('should return ValidationError when no fields are provided', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -461,6 +466,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Condición: username es válido', () => {
         it('should update username when valid username is provided', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'oldUsername',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -486,6 +492,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Condición: username es inválido', () => {
         it('should return ValidationError when username is too short', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -507,6 +514,7 @@ describe('UsersService (White Box Testing)', () => {
 
         it('should return ValidationError when username contains invalid characters', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -530,6 +538,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Condición: mobilePhone es válido', () => {
         it('should update mobilePhone when valid phone is provided', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -555,6 +564,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Condición: mobilePhone es inválido', () => {
         it('should return ValidationError when mobilePhone format is invalid', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -578,6 +588,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Condición: city Y countryCode son válidos', () => {
         it('should update location when both city and countryCode are provided', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -605,6 +616,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Condición: Solo city (sin countryCode)', () => {
         it('should not update location when only city is provided', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -624,7 +636,7 @@ describe('UsersService (White Box Testing)', () => {
           expect(result.isLeft()).toBe(true);
           expect(result.value).toBeInstanceOf(ValidationError);
           expect((result.value as ValidationError).message).toContain(
-            'Country code must be provided when updating user location',
+            'City and country code must both be provided when updating user location',
           );
           expect(mockRepo.save).not.toHaveBeenCalled();
         });
@@ -633,6 +645,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Condición: solo countryCode (sin city)', () => {
         it('should not update location when only countryCode is provided', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -652,7 +665,7 @@ describe('UsersService (White Box Testing)', () => {
           expect(result.isLeft()).toBe(true);
           expect(result.value).toBeInstanceOf(ValidationError);
           expect((result.value as ValidationError).message).toContain(
-            'City must be provided when updating user location',
+            'City and country code must both be provided when updating user location',
           );
           expect(mockRepo.save).not.toHaveBeenCalled();
         });
@@ -661,6 +674,7 @@ describe('UsersService (White Box Testing)', () => {
       describe('Condición: city sin countryCode', () => {
         it('should return ValidationError when city is provided without countryCode', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -678,13 +692,14 @@ describe('UsersService (White Box Testing)', () => {
 
           expect(result.isLeft()).toBe(true);
           expect(result.value).toBeInstanceOf(ValidationError);
-          expect((result.value as ValidationError).message).toContain('Country code must be provided');
+          expect((result.value as ValidationError).message).toContain('City and country code must both be provided');
         });
       });
 
       describe('Condición: countryCode sin city', () => {
         it('should return ValidationError when countryCode is provided without city', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'existingUser',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -702,13 +717,14 @@ describe('UsersService (White Box Testing)', () => {
 
           expect(result.isLeft()).toBe(true);
           expect(result.value).toBeInstanceOf(ValidationError);
-          expect((result.value as ValidationError).message).toContain('City must be provided');
+          expect((result.value as ValidationError).message).toContain('City and country code must both be provided');
         });
       });
 
       describe('Condición: Actualización combinada de múltiples campos', () => {
         it('should update all fields when all are provided and valid', async () => {
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: 'oldUsername',
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -834,6 +850,7 @@ describe('UsersService (White Box Testing)', () => {
         it('should return true when credentials are correct', async () => {
           // Arrange
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: VALID_USERNAME,
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -856,6 +873,7 @@ describe('UsersService (White Box Testing)', () => {
         it('should return false when password does not match', async () => {
           // Arrange
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: VALID_USERNAME,
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -878,6 +896,7 @@ describe('UsersService (White Box Testing)', () => {
         it('should call comparePassword with correct arguments when user exists', async () => {
           // Arrange
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: VALID_USERNAME,
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -943,6 +962,7 @@ describe('UsersService (White Box Testing)', () => {
         it('should proceed to password comparison when repository succeeds', async () => {
           // Arrange
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: VALID_USERNAME,
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -982,6 +1002,7 @@ describe('UsersService (White Box Testing)', () => {
         it('should call comparePassword when user exists', async () => {
           // Arrange
           const existingUserOrError = User.create({
+            fullName: 'John Doe',
             username: VALID_USERNAME,
             mobilePhone: '+34612345678',
             passwordHash: VALID_HASH,
@@ -1121,6 +1142,7 @@ describe('UsersService (White Box Testing)', () => {
       it('should call findByUsername exactly once in happy path', async () => {
         // Arrange
         const existingUserOrError = User.create({
+          fullName: 'John Doe',
           username: VALID_USERNAME,
           mobilePhone: '+34612345678',
           passwordHash: VALID_HASH,
@@ -1143,6 +1165,7 @@ describe('UsersService (White Box Testing)', () => {
       it('should execute steps in correct order for successful login', async () => {
         // Arrange
         const existingUserOrError = User.create({
+          fullName: 'John Doe',
           username: VALID_USERNAME,
           mobilePhone: '+34612345678',
           passwordHash: VALID_HASH,

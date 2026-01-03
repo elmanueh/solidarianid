@@ -6,8 +6,10 @@ import { UserLocation } from '@app/value-objects/model/user-location';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Either, left, right } from '@app/ddd/either';
 import { HashedPassword } from '@app/value-objects/model/hashed-password';
+import { FullName } from '@app/value-objects/model/fullname';
 
 export interface UserProps {
+  fullName: FullName;
   username: Username;
   mobilePhone: MobilePhone;
   passwordHash: HashedPassword;
@@ -15,6 +17,7 @@ export interface UserProps {
 }
 
 export interface UserCreationProps {
+  fullName: string;
   username: string;
   mobilePhone: string;
   passwordHash: string;
@@ -47,6 +50,10 @@ export class User extends Entity<UserProps> {
     return this.props.location.countryCode;
   }
 
+  get fullName(): string {
+    return this.props.fullName.value;
+  }
+
   private set username(username: Username) {
     this.props.username = username;
   }
@@ -55,26 +62,37 @@ export class User extends Entity<UserProps> {
     this.props.mobilePhone = mobilePhone;
   }
 
+  private set fullName(fullName: FullName) {
+    this.props.fullName = fullName;
+  }
+
   private set location(location: UserLocation) {
     this.props.location = location;
   }
 
   public updateUserProfile(
+    fullName?: string,
     username?: string,
     mobilePhone?: string,
     city?: string,
     countryCode?: string,
   ): Either<ValidationError, void> {
-    if (!username && !mobilePhone && !city && !countryCode) {
+    if (!fullName && !username && !mobilePhone && !city && !countryCode) {
       return left(new ValidationError('At least one field must be provided to update the profile.'));
     }
 
-    if (city && !countryCode) {
-      return left(new ValidationError('Country code must be provided when updating user location'));
+    // Validaciones de location: si se proporciona alguno, deben proporcionarse los 2
+    const locationFieldsProvided = [city, countryCode].filter(Boolean).length;
+    if (locationFieldsProvided > 0 && locationFieldsProvided < 2) {
+      return left(new ValidationError('City and country code must both be provided when updating user location'));
     }
 
-    if (countryCode && !city) {
-      return left(new ValidationError('City must be provided when updating user location'));
+    if (fullName) {
+      const fullNameOrError = FullName.create(fullName);
+      if (fullNameOrError.isLeft()) {
+        return left(fullNameOrError.value);
+      }
+      this.fullName = fullNameOrError.value;
     }
 
     if (username) {
@@ -94,7 +112,10 @@ export class User extends Entity<UserProps> {
     }
 
     if (city && countryCode) {
-      const locationOrError = UserLocation.create({ city, countryCode });
+      const locationOrError = UserLocation.create({
+        city,
+        countryCode,
+      });
       if (locationOrError.isLeft()) {
         return left(locationOrError.value);
       }
@@ -139,9 +160,15 @@ export class User extends Entity<UserProps> {
       return left(locationOrError.value);
     }
 
+    const fullNameOrError = FullName.create(props.fullName);
+    if (fullNameOrError.isLeft()) {
+      return left(fullNameOrError.value);
+    }
+
     // Create and return the User entity
     const user = new User(
       {
+        fullName: fullNameOrError.value,
         username: usernameOrError.value,
         mobilePhone: mobilePhoneOrError.value,
         passwordHash: passwordHashOrError.value,

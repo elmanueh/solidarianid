@@ -38,6 +38,7 @@ describe('UsersController (e2e)', () => {
         .getRequest()
         .post('/users')
         .send({
+          fullName: 'John Doe Smith',
           username: 'johnDoe',
           mobilePhone: '+34612345678',
           password: 'SecureP*ssw0rd123',
@@ -53,6 +54,7 @@ describe('UsersController (e2e)', () => {
         .getRequest()
         .post('/users')
         .send({
+          fullName: 'Jane Smith Williams',
           username: 'janeSmith',
           mobilePhone: '+15551234567',
           password: 'ValidPassword789!',
@@ -69,6 +71,7 @@ describe('UsersController (e2e)', () => {
         .getRequest()
         .post('/users')
         .send({
+          fullName: 'Test User Duplicate',
           username: 'testUsername',
           mobilePhone: '+34677889900',
           password: 'SecureP*ssw0rd123',

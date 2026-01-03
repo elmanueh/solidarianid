@@ -5,11 +5,24 @@ import {
   PASSWORD_MIN_LENGTH,
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
+  FULLNAME_MIN_LENGTH,
+  FULLNAME_MAX_LENGTH,
 } from '@app/value-objects/constants/validation.constants';
 import { IsString, IsNotEmpty, MinLength, Length, IsISO31661Alpha2, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterUserDtoRequest {
+  @ApiProperty({
+    description: 'Full name of the user',
+    example: 'John Doe',
+    minLength: FULLNAME_MIN_LENGTH,
+    maxLength: FULLNAME_MAX_LENGTH,
+  })
+  @IsString()
+  @IsNotEmpty()
+  @Length(FULLNAME_MIN_LENGTH, FULLNAME_MAX_LENGTH)
+  fullName: string;
+
   @ApiProperty({
     description: 'Username for the new user´containing only alphanumeric characters',
     example: 'johnDoe',

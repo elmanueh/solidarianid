@@ -1,9 +1,7 @@
-import { Controller, Get, Param, Query, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Param, Res, HttpStatus } from '@nestjs/common';
 import type { Response } from 'express';
 import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import { UserDtoMapper } from './mappers/user.dto.mapper';
-import { PaginatedResponseDto } from '../model/application/dtos/output/paginated-response.dto';
-import { UserListResponseDto } from '../model/application/dtos/output/user-list-response.dto';
 import { UserDetailResponseDto } from '../model/application/dtos/output/user-detail-response.dto';
 import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
 import type { UserReportPdfDto } from '@app/admin/administrator/model/infrastructure/pdf/user-report-pdf.dto';

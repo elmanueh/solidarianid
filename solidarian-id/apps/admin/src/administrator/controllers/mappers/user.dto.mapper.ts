@@ -1,5 +1,4 @@
 import { User } from '@app/admin/administrator/model/domain/models/user';
-import { UserListResponseDto } from '../../model/application/dtos/output/user-list-response.dto';
 import {
   UserDetailResponseDto,
   CommunityDto,
@@ -10,19 +9,6 @@ import type { CommunityMembership } from '@app/admin/administrator/model/domain/
  * Mapper para convertir entidades User del dominio a DTOs de respuesta
  */
 export class UserDtoMapper {
-  /**
-   * Convierte User a DTO para lista (información mínima)
-   */
-  static toListDto(user: User): UserListResponseDto {
-    return new UserListResponseDto(
-      user.id.value,
-      user.username,
-      user.city,
-      user.countryCode,
-      user.communityMemberships.length,
-    );
-  }
-
   /**
    * Convierte User a DTO para detalle (información completa)
    */

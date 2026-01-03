@@ -17,3 +17,4 @@ export * from './kafka.test-container.module';
 
 // Common Utilities
 export * from './helpers/test-server.helper';
+export * from './helpers/kafka.helper';

@@ -1,6 +1,12 @@
 import { Transport } from '@nestjs/microservices';
 import { DataSource, Repository } from 'typeorm';
-import { KafkaTestModule, PostgreSQLTestModule, KafkaTestContainer, TestServerHelper } from '@solidarianid/testing';
+import {
+  KafkaTestModule,
+  PostgreSQLTestModule,
+  KafkaTestContainer,
+  TestServerHelper,
+  EventTracker,
+} from '@solidarianid/testing';
 
 // Users microservice
 import { UsersModule } from '@app/users/users.module';
@@ -21,7 +27,6 @@ import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/
 
 import { Topics } from '@solidarianid/kafka';
 import { UserService } from '@app/communities/domain/services/user.service';
-import { EventTracker } from 'libs/test/src/helpers/kafka.helper';
 
 /**
  * Note: Both microservices share the same PostgreSQL container but use different tables:

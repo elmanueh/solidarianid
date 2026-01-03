@@ -5,7 +5,9 @@ import { DataSource } from 'typeorm';
 // Interfaces para tipar los datos de seed de communities
 interface CommunityUserSeedData {
   id: string;
-  username: string;
+  fullName: string;
+  email?: string;
+  mobilePhone?: string;
 }
 
 interface CommunitySeedData {
@@ -128,7 +130,7 @@ const DEFAULT_USERS_DATA = [
     id: '4807f235-f4b4-41c0-939c-c97371219551',
     username: 'testUsername',
     email: 'test@solidarianid.org',
-    fullname: 'Test User',
+    fullName: 'Test User',
     mobilePhone: '+34000000000',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
     city: 'Madrid',
@@ -138,7 +140,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.JUAN,
     username: 'volunteer_juan',
     email: 'juan@solidarianid.org',
-    fullname: 'Juan García López',
+    fullName: 'Juan García López',
     mobilePhone: '+34611111111',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Madrid',
@@ -148,7 +150,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.MARIA,
     username: 'volunteer_maria',
     email: 'maria@solidarianid.org',
-    fullname: 'María Rodríguez Fernández',
+    fullName: 'María Rodríguez Fernández',
     mobilePhone: '+34622222222',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Barcelona',
@@ -158,7 +160,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.PEDRO,
     username: 'admin_pedro',
     email: 'pedro@solidarianid.org',
-    fullname: 'Pedro Martínez Sánchez',
+    fullName: 'Pedro Martínez Sánchez',
     mobilePhone: '+34633333333',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Valencia',
@@ -168,7 +170,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.ANA,
     username: 'volunteer_ana',
     email: 'ana@solidarianid.org',
-    fullname: 'Ana González Ruiz',
+    fullName: 'Ana González Ruiz',
     mobilePhone: '+34644444444',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Sevilla',
@@ -178,7 +180,7 @@ const DEFAULT_USERS_DATA = [
     id: USER_IDS.CARLOS,
     username: 'volunteer_carlos',
     email: 'carlos@solidarianid.org',
-    fullname: 'Carlos Hernández Díaz',
+    fullName: 'Carlos Hernández Díaz',
     mobilePhone: '+34655555555',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Bilbao',
@@ -213,7 +215,9 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
 
     const defaultUsers: CommunityUserSeedData[] = DEFAULT_USERS_DATA.map(u => ({
       id: u.id,
-      username: u.username,
+      fullName: u.fullName,
+      email: u.email,
+      mobilePhone: u.mobilePhone,
     }));
 
     await repo.insert([...defaultUsers, ...users]);

@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe, ModuleMetadata } from '@nestjs/common';
+import { INestApplication, INestMicroservice, ValidationPipe, ModuleMetadata } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
+import { MicroserviceOptions } from '@nestjs/microservices';
 import request from 'supertest';
 import session from 'express-session';
 
@@ -50,6 +51,64 @@ export class TestServerHelper {
 
     await this.app.init();
     return this.app;
+  }
+  async createWithMicroservice(
+    moduleMetadata: ModuleMetadata,
+    microserviceOptions: MicroserviceOptions,
+  ): Promise<INestApplication> {
+    const configModule = ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
+    });
+
+    const enhancedMetadata: ModuleMetadata = {
+      ...moduleMetadata,
+      imports: [configModule, ...(moduleMetadata.imports || [])],
+    };
+
+    this.moduleRef = await Test.createTestingModule(enhancedMetadata).compile();
+    this.app = this.moduleRef.createNestApplication();
+
+    this.app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      }),
+    );
+    this.app.useGlobalFilters(new GlobalExceptionFilter());
+
+    this.app.connectMicroservice(microserviceOptions);
+
+    await this.app.startAllMicroservices();
+    await this.app.init();
+
+    return this.app;
+  }
+
+  /**
+   * Creates a standalone microservice (consumer only, no HTTP).
+   */
+  async createMicroservice(
+    moduleMetadata: ModuleMetadata,
+    microserviceOptions: MicroserviceOptions,
+  ): Promise<INestMicroservice> {
+    const configModule = ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
+    });
+
+    const enhancedMetadata: ModuleMetadata = {
+      ...moduleMetadata,
+      imports: [configModule, ...(moduleMetadata.imports || [])],
+    };
+
+    this.moduleRef = await Test.createTestingModule(enhancedMetadata).compile();
+
+    const microservice = this.moduleRef.createNestMicroservice(microserviceOptions);
+    await microservice.listen();
+
+    return microservice;
   }
 
   getRequest(): ReturnType<typeof request> {

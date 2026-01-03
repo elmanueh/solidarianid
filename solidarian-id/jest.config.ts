@@ -4,7 +4,7 @@ const baseJestConfig: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   rootDir: '.',
-  roots: ['<rootDir>/apps', '<rootDir>/libs'],
+  roots: ['<rootDir>/apps', '<rootDir>/libs', '<rootDir>/test'],
 
   testPathIgnorePatterns: ['/node_modules/', '/dist/', String.raw`\.e2e-spec\.ts$`, String.raw`\.cy\.ts$`],
 

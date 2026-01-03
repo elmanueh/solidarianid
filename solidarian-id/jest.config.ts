@@ -24,13 +24,14 @@ const baseJestConfig: Config = {
     '^@app/utils/(.*)$': '<rootDir>/libs/utils/src/$1',
     '^@charts/(.*)$': '<rootDir>/libs/charts/src/$1',
     '^@charts$': '<rootDir>/libs/charts/src',
+    '^@frontend/design-tokens/(.*)$': '<rootDir>/libs/design-tokens/src/$1',
   },
 
   transform: {
     '^.+\\.ts$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
 
-  transformIgnorePatterns: ['node_modules/(?!(uuid)/)'],
+  transformIgnorePatterns: ['node_modules/(?!uuid)'],
 
   collectCoverageFrom: [
     'apps/**/*.ts',

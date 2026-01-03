@@ -19,63 +19,10 @@ import type { CommunityMembership } from '@app/admin/administrator/model/domain/
  */
 @Controller('/api/reports')
 export class ReportsApiController {
-  private readonly USERS_PER_PAGE = 6;
-
   constructor(
     private readonly userService: UsersService,
     private readonly pdfGenerator: UserPdfGeneratorPort,
   ) {}
-
-  /**
-   * Obtiene lista paginada de usuarios
-   * GET /api/reports/users?page=1
-   */
-  @Get('/users')
-  async getUsers(
-    @Query('page') page?: string,
-    @Res() response: Response = {} as Response,
-  ): Promise<Response> {
-    const pageNumber = page ? parseInt(page, 10) : 1;
-
-    // Validar que sea un número válido
-    if (isNaN(pageNumber) || pageNumber < 1) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: 'Page must be a positive integer',
-        timestamp: new Date().toISOString(),
-      });
-    }
-
-    const result = await this.userService.getPaginatedUsers(
-      pageNumber,
-      this.USERS_PER_PAGE,
-    );
-
-    if (result.isLeft()) {
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: result.value.message,
-        timestamp: new Date().toISOString(),
-      });
-    }
-
-    const paginatedResult = result.value;
-
-    // Mapear usuarios a DTOs
-    const userDtos = paginatedResult.data.map((user) =>
-      UserDtoMapper.toListDto(user),
-    );
-
-    // Crear respuesta paginada
-    const responseDto = new PaginatedResponseDto<UserListResponseDto>(
-      userDtos,
-      paginatedResult.page,
-      paginatedResult.limit,
-      paginatedResult.total,
-    );
-
-    return response.status(HttpStatus.OK).json(responseDto);
-  }
 
   /**
    * Obtiene detalle completo de un usuario

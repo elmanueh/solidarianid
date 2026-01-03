@@ -23,10 +23,10 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
   private readonly logoPath: string;
 
   constructor() {
-    // Ruta al logo en public (accesible desde dist)
+    // Ruta al logo desde la carpeta de design tokens (funciona tanto en runtime como en tests)
     this.logoPath = join(
       process.cwd(),
-      'dist/apps/admin/public/icons/solidarian-128x128.png',
+      'libs/design-tokens/src/icons/solidarian-128x128.png',
     );
   }
 

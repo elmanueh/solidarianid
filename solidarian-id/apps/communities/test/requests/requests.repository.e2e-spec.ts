@@ -303,6 +303,206 @@ describe('RequestsRepositoryTypeOrmAdapter (e2e)', () => {
   // findByType
   // ============================================
   describe('findByType', () => {
+    describe('METAMORPHIC TESTING E2E', () => {
+      describe('subset relation: each type filter returns a subset of all requests', () => {
+        it('should return community requests as a subset of all requests', async () => {
+          const communityResult = await requestsRepository.findByType(RequestType.COMMUNITY);
+          const allRequestResult = await requestsRepository.findAll();
+
+          expect(communityResult.isRight()).toBe(true);
+          expect(allRequestResult.isRight()).toBe(true);
+
+          if (communityResult.isRight() && allRequestResult.isRight()) {
+            const communityIds = new Set(communityResult.value.map(r => r.id.value));
+            const allIds = new Set(allRequestResult.value.map(r => r.id.value));
+
+            // Community ⊆ All
+            [...communityIds].forEach(id => {
+              expect(allIds.has(id)).toBe(true);
+            });
+          }
+        });
+
+        it('should return cause requests as a subset of all requests', async () => {
+          const causeResult = await requestsRepository.findByType(RequestType.CAUSE);
+          const allRequestResult = await requestsRepository.findAll();
+
+          expect(causeResult.isRight()).toBe(true);
+          expect(allRequestResult.isRight()).toBe(true);
+
+          if (causeResult.isRight() && allRequestResult.isRight()) {
+            const causeIds = new Set(causeResult.value.map(r => r.id.value));
+            const allIds = new Set(allRequestResult.value.map(r => r.id.value));
+
+            // Cause ⊆ All
+            [...causeIds].forEach(id => {
+              expect(allIds.has(id)).toBe(true);
+            });
+          }
+        });
+
+        it('should return action requests as a subset of all requests', async () => {
+          const actionResult = await requestsRepository.findByType(RequestType.ACTION);
+          const allRequestResult = await requestsRepository.findAll();
+
+          expect(actionResult.isRight()).toBe(true);
+          expect(allRequestResult.isRight()).toBe(true);
+
+          if (actionResult.isRight() && allRequestResult.isRight()) {
+            const actionIds = new Set(actionResult.value.map(r => r.id.value));
+            const allIds = new Set(allRequestResult.value.map(r => r.id.value));
+
+            // Action ⊆ All
+            [...actionIds].forEach(id => {
+              expect(allIds.has(id)).toBe(true);
+            });
+          }
+        });
+      });
+
+      describe('pairwise disjoint sets: cartesian product verification', () => {
+        it('should return disjoint sets for community and cause, with their union being a subset of all', async () => {
+          const communityResult = await requestsRepository.findByType(RequestType.COMMUNITY);
+          const causeResult = await requestsRepository.findByType(RequestType.CAUSE);
+          const allRequestResult = await requestsRepository.findAll();
+
+          expect(communityResult.isRight()).toBe(true);
+          expect(causeResult.isRight()).toBe(true);
+          expect(allRequestResult.isRight()).toBe(true);
+
+          if (communityResult.isRight() && causeResult.isRight() && allRequestResult.isRight()) {
+            const communityIds = new Set(communityResult.value.map(r => r.id.value));
+            const causeIds = new Set(causeResult.value.map(r => r.id.value));
+            const allIds = new Set(allRequestResult.value.map(r => r.id.value));
+
+            // Community ∩ Cause = ∅
+            const intersection = [...communityIds].filter(id => causeIds.has(id));
+            expect(intersection).toEqual([]);
+
+            // Community ∪ Cause ⊆ All
+            const union = new Set([...communityIds, ...causeIds]);
+            [...union].forEach(id => {
+              expect(allIds.has(id)).toBe(true);
+            });
+          }
+        });
+
+        it('should return disjoint sets for community and action, with their union being a subset of all', async () => {
+          const communityResult = await requestsRepository.findByType(RequestType.COMMUNITY);
+          const actionResult = await requestsRepository.findByType(RequestType.ACTION);
+          const allRequestResult = await requestsRepository.findAll();
+
+          expect(communityResult.isRight()).toBe(true);
+          expect(actionResult.isRight()).toBe(true);
+          expect(allRequestResult.isRight()).toBe(true);
+
+          if (communityResult.isRight() && actionResult.isRight() && allRequestResult.isRight()) {
+            const communityIds = new Set(communityResult.value.map(r => r.id.value));
+            const actionIds = new Set(actionResult.value.map(r => r.id.value));
+            const allIds = new Set(allRequestResult.value.map(r => r.id.value));
+
+            // Community ∩ Action = ∅
+            const intersection = [...communityIds].filter(id => actionIds.has(id));
+            expect(intersection).toEqual([]);
+
+            // Community ∪ Action ⊆ All
+            const union = new Set([...communityIds, ...actionIds]);
+            [...union].forEach(id => {
+              expect(allIds.has(id)).toBe(true);
+            });
+          }
+        });
+
+        it('should return disjoint sets for cause and action, with their union being a subset of all', async () => {
+          const causeResult = await requestsRepository.findByType(RequestType.CAUSE);
+          const actionResult = await requestsRepository.findByType(RequestType.ACTION);
+          const allRequestResult = await requestsRepository.findAll();
+
+          expect(causeResult.isRight()).toBe(true);
+          expect(actionResult.isRight()).toBe(true);
+          expect(allRequestResult.isRight()).toBe(true);
+
+          if (causeResult.isRight() && actionResult.isRight() && allRequestResult.isRight()) {
+            const causeIds = new Set(causeResult.value.map(r => r.id.value));
+            const actionIds = new Set(actionResult.value.map(r => r.id.value));
+            const allIds = new Set(allRequestResult.value.map(r => r.id.value));
+
+            // Cause ∩ Action = ∅
+            const intersection = [...causeIds].filter(id => actionIds.has(id));
+            expect(intersection).toEqual([]);
+
+            // Cause ∪ Action ⊆ All
+            const union = new Set([...causeIds, ...actionIds]);
+            [...union].forEach(id => {
+              expect(allIds.has(id)).toBe(true);
+            });
+          }
+        });
+      });
+
+      describe('complete partition: three disjoint sets whose union equals all requests', () => {
+        it('should return three disjoint sets when filtering by different request types (communities, causes and actions)', async () => {
+          // Arrange & Act: Obtener solicitudes por cada tipo
+          const communityResult = await requestsRepository.findByType(RequestType.COMMUNITY);
+          const causeResult = await requestsRepository.findByType(RequestType.CAUSE);
+          const actionResult = await requestsRepository.findByType(RequestType.ACTION);
+          const allRequestResult = await requestsRepository.findAll();
+
+          // Assert: Verificar que todas las consultas fueron exitosas
+          expect(communityResult.isRight()).toBe(true);
+          expect(causeResult.isRight()).toBe(true);
+          expect(actionResult.isRight()).toBe(true);
+          expect(allRequestResult.isRight()).toBe(true);
+
+          if (
+            communityResult.isRight() &&
+            causeResult.isRight() &&
+            actionResult.isRight() &&
+            allRequestResult.isRight()
+          ) {
+            const communityRequests = communityResult.value;
+            const causeRequests = causeResult.value;
+            const actionRequests = actionResult.value;
+            const allRequests = allRequestResult.value;
+
+            // Extraer los IDs de cada conjunto
+            const communityIds = new Set(communityRequests.map(r => r.id.value));
+            const causeIds = new Set(causeRequests.map(r => r.id.value));
+            const actionIds = new Set(actionRequests.map(r => r.id.value));
+            const allResultIds = new Set(allRequests.map(r => r.id.value));
+
+            const unionOfThree = new Set([...communityIds, ...causeIds, ...actionIds]);
+            const communityIntersectCause = [...communityIds].filter(id => causeIds.has(id));
+            const communityIntersectAction = [...communityIds].filter(id => actionIds.has(id));
+            const causeIntersectAction = [...causeIds].filter(id => actionIds.has(id));
+            const totalRequests = communityRequests.length + causeRequests.length + actionRequests.length;
+
+            // Verificar que la unión de los tres conjuntos es igual al conjunto de todas las solicitudes
+            // Mismo tamaño
+            expect(unionOfThree.size).toBe(allResultIds.size);
+            // Todos los elementos de la unión están en allResultIds
+            [...unionOfThree].forEach(id => {
+              expect(allResultIds.has(id)).toBe(true);
+            });
+            // Todos los elementos de allResultIds están en la unión
+            [...allResultIds].forEach(id => {
+              expect(unionOfThree.has(id)).toBe(true);
+            });
+            // Verificar que los conjuntos son disjuntos (no comparten elementos)
+            // Community ∩ Cause = ∅
+            expect(communityIntersectCause).toEqual([]);
+            // Community ∩ Action = ∅
+            expect(communityIntersectAction).toEqual([]);
+            // Cause ∩ Action = ∅
+            expect(causeIntersectAction).toEqual([]);
+
+            // Verificar que la unión de los tres conjuntos contiene todas las solicitudes
+            expect(allResultIds.size).toBe(totalRequests);
+          }
+        });
+      });
+    });
+
     it('should find all community requests', async () => {
       const result = await requestsRepository.findByType(RequestType.COMMUNITY);
 

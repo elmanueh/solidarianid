@@ -5,6 +5,9 @@ export class UserEntity {
   @PrimaryColumn('uuid', { name: 'Id' })
   id: string;
 
+  @Column({ name: 'FullName' })
+  fullName: string;
+
   @Column({
     name: 'MobilePhone',
     unique: true,

@@ -21,6 +21,10 @@ export class Email extends ValueObject<EmailProps> {
     return this.props.dominio;
   }
 
+  get value(): string {
+    return `${this.props.nombre}@${this.props.dominio}`;
+  }
+
   public equals(other: Email): boolean {
     return this.nombre === other.nombre && this.dominio === other.dominio;
   }

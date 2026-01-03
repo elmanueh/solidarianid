@@ -48,7 +48,7 @@ describe('RequestsServiceImpl', () => {
   const validUserId = 'a1b2c3d4-e5f6-4890-abcd-ef1234567001';
   const validCommunityId = 'b1b2c3d4-e5f6-4890-abcd-ef1234567002';
   const validCauseId = 'c1b2c3d4-e5f6-4890-abcd-ef1234567003';
-  const validUser = User.create({ username: 'volunteer_juan' }, validUserId);
+  const validUser = User.create({ fullName: 'Juan Voluntario García' }, validUserId);
   const validCommunity = Community.create(
     { name: 'Test Community', description: 'A valid community description for testing with more than 20 chars' },
     validCommunityId,

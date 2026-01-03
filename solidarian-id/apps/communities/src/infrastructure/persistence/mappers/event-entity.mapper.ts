@@ -5,11 +5,11 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { EventEntity } from '../entities/event.entity';
 import { Event } from '@app/communities/domain/model/entities/event';
 import { EventPlace } from '@app/communities/domain/model/value-objects/event-place';
-import { UserEntityMapper } from './user-entity.mapper';
+import { EventUserEntity } from '../entities/event-user';
+import { User } from '@app/communities/domain/model/entities/user';
 
 @Injectable()
 export class EventEntityMapper implements Mapper<Event, EventEntity> {
-  constructor(private readonly userEntityMapper: UserEntityMapper) {}
   toPersistence(model: Event): EventEntity {
     const entity = new EventEntity();
     entity.id = model.id.value;
@@ -23,7 +23,15 @@ export class EventEntityMapper implements Mapper<Event, EventEntity> {
     };
     entity.actionId = model.actionId;
 
-    entity.assistants = model.assistants?.map(assistant => this.userEntityMapper.toPersistence(assistant)) || [];
+    entity.assistants = model.assistants.map(assistant => {
+      const eventUserEntity = new EventUserEntity();
+      eventUserEntity.eventId = model.id.value;
+      eventUserEntity.userId = assistant.id.value;
+      eventUserEntity.fullname = assistant.fullName;
+      eventUserEntity.email = assistant.email;
+      eventUserEntity.mobilePhone = assistant.mobilePhone;
+      return eventUserEntity;
+    });
     return entity;
   }
 
@@ -39,7 +47,16 @@ export class EventEntityMapper implements Mapper<Event, EventEntity> {
     }
 
     const assistantsOrError = sequence(
-      entity.assistants?.map(assistantEntity => this.userEntityMapper.fromPersistence(assistantEntity)),
+      entity.assistants?.map(eventUserEntity =>
+        User.create(
+          {
+            fullName: eventUserEntity.fullname,
+            email: eventUserEntity.email,
+            mobilePhone: eventUserEntity.mobilePhone,
+          },
+          eventUserEntity.userId,
+        ),
+      ),
     );
 
     if (assistantsOrError.isLeft()) {

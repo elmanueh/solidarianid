@@ -31,6 +31,7 @@ export abstract class UsersService {
 }
 
 export interface RegisterUserCommand {
+  fullName: string;
   username: string;
   mobilePhone: string;
   password: string;
@@ -39,6 +40,7 @@ export interface RegisterUserCommand {
 }
 
 export interface UpdateUserProfileCommand {
+  fullName?: string;
   username?: string;
   mobilePhone?: string;
   city?: string;

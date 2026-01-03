@@ -5,7 +5,9 @@ import { DataSource } from 'typeorm';
 // Interfaces para tipar los datos de seed de communities
 interface CommunityUserSeedData {
   id: string;
-  username: string;
+  fullName: string;
+  email?: string;
+  mobilePhone?: string;
 }
 
 interface CommunitySeedData {
@@ -49,6 +51,23 @@ interface EventSeedData {
   placeCity: string;
   placeCountryCode: string;
   actionId: string;
+}
+
+interface EventUserSeedData {
+  eventId: string;
+  userId: string;
+  email?: string;
+  mobilePhone?: string;
+  fullname: string;
+}
+
+interface ObjectiveUserSeedData {
+  name: string;
+  actionId: string;
+  userId: string;
+  email?: string;
+  mobilePhone?: string;
+  fullname: string;
 }
 
 // UUIDs CONSTANTES (reutilizables)
@@ -110,6 +129,8 @@ const DEFAULT_USERS_DATA = [
   {
     id: '4807f235-f4b4-41c0-939c-c97371219551',
     username: 'testUsername',
+    email: 'test@solidarianid.org',
+    fullName: 'Test User',
     mobilePhone: '+34000000000',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
     city: 'Madrid',
@@ -118,6 +139,8 @@ const DEFAULT_USERS_DATA = [
   {
     id: USER_IDS.JUAN,
     username: 'volunteer_juan',
+    email: 'juan@solidarianid.org',
+    fullName: 'Juan García López',
     mobilePhone: '+34611111111',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Madrid',
@@ -126,6 +149,8 @@ const DEFAULT_USERS_DATA = [
   {
     id: USER_IDS.MARIA,
     username: 'volunteer_maria',
+    email: 'maria@solidarianid.org',
+    fullName: 'María Rodríguez Fernández',
     mobilePhone: '+34622222222',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Barcelona',
@@ -134,6 +159,8 @@ const DEFAULT_USERS_DATA = [
   {
     id: USER_IDS.PEDRO,
     username: 'admin_pedro',
+    email: 'pedro@solidarianid.org',
+    fullName: 'Pedro Martínez Sánchez',
     mobilePhone: '+34633333333',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Valencia',
@@ -142,6 +169,8 @@ const DEFAULT_USERS_DATA = [
   {
     id: USER_IDS.ANA,
     username: 'volunteer_ana',
+    email: 'ana@solidarianid.org',
+    fullName: 'Ana González Ruiz',
     mobilePhone: '+34644444444',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Sevilla',
@@ -150,6 +179,8 @@ const DEFAULT_USERS_DATA = [
   {
     id: USER_IDS.CARLOS,
     username: 'volunteer_carlos',
+    email: 'carlos@solidarianid.org',
+    fullName: 'Carlos Hernández Díaz',
     mobilePhone: '+34655555555',
     passwordHash: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2',
     city: 'Bilbao',
@@ -184,7 +215,9 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
 
     const defaultUsers: CommunityUserSeedData[] = DEFAULT_USERS_DATA.map(u => ({
       id: u.id,
-      username: u.username,
+      fullName: u.fullName,
+      email: u.email,
+      mobilePhone: u.mobilePhone,
     }));
 
     await repo.insert([...defaultUsers, ...users]);
@@ -564,6 +597,141 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
     await repo.insert(memberships);
   }
 
+  /**
+   * Seed de asistentes a eventos (usuarios que asistirán a eventos)
+   */
+  async seedEventUsers(eventUsers: EventUserSeedData[] = []): Promise<void> {
+    const repo = this.dataSource.getRepository('EventUserEntity');
+
+    const defaultEventUsers: EventUserSeedData[] = [
+      // Asistentes a "Recogida Alcobendas" - usuarios registrados con mobilePhone
+      {
+        eventId: EVENT_IDS.EVENT_001,
+        userId: USER_IDS.JUAN,
+        mobilePhone: '+34611111111',
+        fullname: 'Juan García López',
+      },
+      {
+        eventId: EVENT_IDS.EVENT_001,
+        userId: USER_IDS.MARIA,
+        mobilePhone: '+34622222222',
+        fullname: 'María Rodríguez Fernández',
+      },
+      // Asistentes a "Recogida San Sebastián de los Reyes" - mixto
+      {
+        eventId: EVENT_IDS.EVENT_002,
+        userId: USER_IDS.PEDRO,
+        mobilePhone: '+34633333333',
+        fullname: 'Pedro Martínez Sánchez',
+      },
+      {
+        eventId: EVENT_IDS.EVENT_002,
+        userId: USER_IDS.CARLOS,
+        email: 'carlos@email.com', // usuario no registrado, solo email
+        fullname: 'Carlos Hernández Díaz',
+      },
+      // Asistentes a "Reparto navideño Vallecas" - usuarios no registrados con email
+      {
+        eventId: EVENT_IDS.EVENT_003,
+        userId: USER_IDS.ANA,
+        email: 'ana.voluntaria@gmail.com',
+        fullname: 'Ana González Ruiz',
+      },
+      {
+        eventId: EVENT_IDS.EVENT_003,
+        userId: USER_IDS.JUAN,
+        mobilePhone: '+34611111111',
+        fullname: 'Juan García López',
+      },
+      // Asistentes a "Formación voluntarios docentes"
+      {
+        eventId: EVENT_IDS.EVENT_004,
+        userId: USER_IDS.MARIA,
+        mobilePhone: '+34622222222',
+        fullname: 'María Rodríguez Fernández',
+      },
+      // Asistentes a "Jornada de limpieza intensiva" - mixto
+      {
+        eventId: EVENT_IDS.EVENT_005,
+        userId: USER_IDS.PEDRO,
+        mobilePhone: '+34633333333',
+        fullname: 'Pedro Martínez Sánchez',
+      },
+      {
+        eventId: EVENT_IDS.EVENT_005,
+        userId: USER_IDS.ANA,
+        email: 'ana.voluntaria@gmail.com',
+        fullname: 'Ana González Ruiz',
+      },
+      {
+        eventId: EVENT_IDS.EVENT_005,
+        userId: USER_IDS.CARLOS,
+        email: 'carlos.voluntario@hotmail.com',
+        fullname: 'Carlos Hernández Díaz',
+      },
+    ];
+
+    await repo.insert([...defaultEventUsers, ...eventUsers]);
+  }
+
+  /**
+   * Seed de contribuidores a objetivos (usuarios que contribuyen a objetivos)
+   */
+  async seedObjectiveUsers(objectiveUsers: ObjectiveUserSeedData[] = []): Promise<void> {
+    const repo = this.dataSource.getRepository('ObjetiveUserEntity');
+
+    const defaultObjectiveUsers: ObjectiveUserSeedData[] = [
+      // Contribuidores a "Recaudación económica" del pozo Makueni - usuarios registrados
+      {
+        name: 'Recaudación económica',
+        actionId: ACTION_IDS.POZO_MAKUENI,
+        userId: USER_IDS.JUAN,
+        mobilePhone: '+34611111111',
+        fullname: 'Juan García López',
+      },
+      {
+        name: 'Recaudación económica',
+        actionId: ACTION_IDS.POZO_MAKUENI,
+        userId: USER_IDS.MARIA,
+        mobilePhone: '+34622222222',
+        fullname: 'María Rodríguez Fernández',
+      },
+      // Contribuidores a "Voluntarios técnicos" del pozo Makueni
+      {
+        name: 'Voluntarios técnicos',
+        actionId: ACTION_IDS.POZO_MAKUENI,
+        userId: USER_IDS.PEDRO,
+        mobilePhone: '+34633333333',
+        fullname: 'Pedro Martínez Sánchez',
+      },
+      // Contribuidores a "Kilos de alimentos" recogida norte - usuario no registrado
+      {
+        name: 'Kilos de alimentos',
+        actionId: ACTION_IDS.RECOGIDA_NORTE,
+        userId: USER_IDS.ANA,
+        email: 'ana.voluntaria@gmail.com',
+        fullname: 'Ana González Ruiz',
+      },
+      // Contribuidores a "Voluntarios brigadas" limpieza Paiporta - mixto
+      {
+        name: 'Voluntarios brigadas',
+        actionId: ACTION_IDS.LIMPIEZA_PAIPORTA,
+        userId: USER_IDS.CARLOS,
+        email: 'carlos.voluntario@hotmail.com',
+        fullname: 'Carlos Hernández Díaz',
+      },
+      {
+        name: 'Voluntarios brigadas',
+        actionId: ACTION_IDS.LIMPIEZA_PAIPORTA,
+        userId: USER_IDS.MARIA,
+        mobilePhone: '+34622222222',
+        fullname: 'María Rodríguez Fernández',
+      },
+    ];
+
+    await repo.insert([...defaultObjectiveUsers, ...objectiveUsers]);
+  }
+
   // ============================================
   // UTILIDADES
   // ============================================
@@ -621,6 +789,12 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
 
     // 7. Eventos (depende de actions)
     await this.seedEvents();
+
+    // 8. Asistentes a eventos (depende de events + users)
+    await this.seedEventUsers();
+
+    // 9. Contribuidores a objetivos (depende de objectives + users)
+    await this.seedObjectiveUsers();
   }
 }
 

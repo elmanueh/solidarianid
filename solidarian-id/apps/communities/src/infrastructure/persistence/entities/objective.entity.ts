@@ -1,6 +1,6 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { ActionEntity } from './action.entity';
-import { UserEntity } from './user.entity';
+import { ObjetiveUserEntity } from './objetive-user';
 
 @Entity('objective')
 export class ObjectiveEntity {
@@ -26,14 +26,6 @@ export class ObjectiveEntity {
   @JoinColumn({ name: 'actionId' })
   action: ActionEntity;
 
-  @ManyToMany(() => UserEntity)
-  @JoinTable({
-    name: 'objective_contributors',
-    joinColumns: [
-      { name: 'objectiveName', referencedColumnName: 'name' },
-      { name: 'objectiveActionId', referencedColumnName: 'actionId' },
-    ],
-    inverseJoinColumns: [{ name: 'userId', referencedColumnName: 'id' }],
-  })
-  contributors: UserEntity[];
+  @OneToMany(() => ObjetiveUserEntity, objectiveUser => objectiveUser.objective)
+  contributors: ObjetiveUserEntity[];
 }

@@ -1,16 +1,21 @@
 import { Either, left, right } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Email } from '@app/value-objects/model/email';
+import { FullName } from '@app/value-objects/model/fullname';
+import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Username } from '@app/value-objects/model/username';
 
 export interface UserProps {
-  username: Username;
-  requests: Request[];
+  fullName: FullName;
+  mobilePhone?: MobilePhone;
+  email?: Email;
 }
 
 interface UserCreationProps {
-  username: string;
+  fullName: string;
+  mobilePhone?: string;
+  email?: string;
 }
 
 export class User extends Entity<UserProps> {
@@ -18,25 +23,47 @@ export class User extends Entity<UserProps> {
     super(props, id);
   }
 
-  get username(): string {
-    return this.props.username.value;
+  get fullName(): string {
+    return this.props.fullName.value;
+  }
+
+  get mobilePhone(): string | undefined {
+    return this.props.mobilePhone?.value;
+  }
+
+  get email(): string | undefined {
+    return this.props.email?.value;
   }
 
   /**
    * Create a user.
    *
-   * @return Either<InvalidUniqueEntityIDError | InvalidUsernameError, User>
+   * @return Either<ValidationError, User>
    */
   public static create(props: UserCreationProps, id?: string): Either<ValidationError, User> {
     const uniqueId = UniqueEntityID.create(id);
-    const username = Username.create(props.username);
-
     if (uniqueId.isLeft()) return left(uniqueId.value);
-    if (username.isLeft()) return left(username.value);
+
+    const fullNameOrError = FullName.create(props.fullName);
+    if (fullNameOrError.isLeft()) return left(fullNameOrError.value);
+
+    let mobilePhone: MobilePhone | undefined;
+    if (props.mobilePhone) {
+      const mobilePhoneOrError = MobilePhone.create(props.mobilePhone);
+      if (mobilePhoneOrError.isLeft()) return left(mobilePhoneOrError.value);
+      mobilePhone = mobilePhoneOrError.value;
+    }
+
+    let email: Email | undefined;
+    if (props.email) {
+      const emailOrError = Email.create(props.email);
+      if (emailOrError.isLeft()) return left(emailOrError.value);
+    }
 
     const userProps: UserProps = {
-      username: username.value,
-      requests: [],
+      fullName: fullNameOrError.value,
+      mobilePhone,
+      email,
     };
 
     return right(new User(userProps, uniqueId.value));

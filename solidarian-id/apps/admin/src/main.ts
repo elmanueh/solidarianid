@@ -11,10 +11,11 @@ import { ConflictErrorFilter } from './administrator/controllers/filters/conflic
 import { InternalServerErrorFilter } from './administrator/controllers/filters/internal-server-error.filter';
 import { NotFoundErrorFilter } from './administrator/controllers/filters/not-found-error.filter';
 import { ValidationErrorFilter } from './administrator/controllers/filters/validation-error.filter';
+import { ConfigService } from '@nestjs/config/dist/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+  const configService = app.get(ConfigService);
   app.engine(
     'hbs',
     engine({
@@ -67,8 +68,9 @@ async function bootstrap() {
     new ConflictErrorFilter(),
     new AuthenticationErrorFilter(),
   );
-
-  await app.listen(3000);
+  const port = configService.get<number>('ADMIN_PORT') ?? 3000;
+  console.log(`Server running on port ${port}`);
+  await app.listen(port);
 }
 
 void bootstrap();

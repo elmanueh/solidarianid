@@ -4,11 +4,11 @@ import { Either, left, sequence } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Objective } from '@app/communities/domain/model/value-objects/objective';
 import { ObjectiveEntity } from '../entities/objective.entity';
-import { UserEntityMapper } from './user-entity.mapper';
+import { ObjetiveUserEntity } from '../entities/objetive-user';
+import { User } from '@app/communities/domain/model/entities/user';
 
 @Injectable()
 export class ObjectiveEntityMapper implements Mapper<Objective, ObjectiveEntity> {
-  constructor(private readonly userEntityMapper: UserEntityMapper) {}
   toPersistence(model: Objective): ObjectiveEntity {
     const entity = new ObjectiveEntity();
     entity.name = model.name;
@@ -18,14 +18,31 @@ export class ObjectiveEntityMapper implements Mapper<Objective, ObjectiveEntity>
     entity.unit = model.unit;
     entity.actionId = model.actionId;
 
-    entity.contributors =
-      model.contributors?.map(contributor => this.userEntityMapper.toPersistence(contributor)) || [];
+    entity.contributors = model.contributors.map(contributor => {
+      const objetiveUser = new ObjetiveUserEntity();
+      objetiveUser.name = model.name;
+      objetiveUser.actionId = model.actionId;
+      objetiveUser.userId = contributor.id.value;
+      objetiveUser.fullname = contributor.fullName;
+      objetiveUser.email = contributor.email;
+      objetiveUser.mobilePhone = contributor.mobilePhone;
+      return objetiveUser;
+    });
     return entity;
   }
 
   fromPersistence(entity: ObjectiveEntity): Either<ValidationError, Objective> {
     const contributorsOrError = sequence(
-      entity.contributors?.map(contributorEntity => this.userEntityMapper.fromPersistence(contributorEntity)),
+      entity.contributors?.map(contributorEntity =>
+        User.create(
+          {
+            fullName: contributorEntity.fullname,
+            email: contributorEntity.email,
+            mobilePhone: contributorEntity.mobilePhone,
+          },
+          contributorEntity.userId,
+        ),
+      ),
     );
 
     if (contributorsOrError.isLeft()) {

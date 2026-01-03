@@ -44,7 +44,7 @@ export class AdminViewController {
       layout: 'dashboard',
       dataSummary,
       charts: JSON.stringify(charts),
-      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
+      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }
 
@@ -63,7 +63,7 @@ export class AdminViewController {
       actions: actionsResult.isRight() ? actionsResult.value : [],
       causes: causesResult.isRight() ? causesResult.value : [],
       communities: communitiesResult.isRight() ? communitiesResult.value : [],
-      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
+      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }
 
@@ -73,7 +73,7 @@ export class AdminViewController {
     return {
       title: 'Reportes',
       layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_BASE_URL'),
+      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }
 }

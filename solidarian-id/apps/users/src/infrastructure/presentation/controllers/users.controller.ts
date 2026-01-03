@@ -37,6 +37,7 @@ export class UsersController {
   })
   async register(@Body() dto: RegisterUserDtoRequest, @Res() res: Response): Promise<void> {
     const command: RegisterUserCommand = {
+      fullName: dto.fullName,
       username: dto.username,
       mobilePhone: dto.mobilePhone,
       password: dto.password,
@@ -87,6 +88,7 @@ export class UsersController {
     @Res() response: Response,
   ) {
     const user = await this.usersService.updateUserProfile(id, {
+      fullName: updateUserProfileDto.fullName,
       username: updateUserProfileDto.username,
       mobilePhone: updateUserProfileDto.mobilePhone,
       city: updateUserProfileDto.city,

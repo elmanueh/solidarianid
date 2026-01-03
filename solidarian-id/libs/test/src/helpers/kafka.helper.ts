@@ -1,6 +1,6 @@
 export class EventTracker {
-  private resolvers: Map<string, () => void> = new Map();
-  private processed: Set<string> = new Set();
+  private readonly resolvers: Map<string, () => void> = new Map();
+  private readonly processed: Set<string> = new Set();
 
   markProcessed(eventKey: string): void {
     this.processed.add(eventKey);

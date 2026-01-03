@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { EventPlaceEntity } from './event-place.entity';
 import { ActionEntity } from './action.entity';
-import { UserEntity } from './user.entity';
+import { EventUserEntity } from './event-user';
 
 @Entity('event')
 export class EventEntity {
@@ -27,11 +27,6 @@ export class EventEntity {
   @JoinColumn({ name: 'actionId' })
   action: ActionEntity;
 
-  @ManyToMany(() => UserEntity)
-  @JoinTable({
-    name: 'events_assistants',
-    joinColumn: { name: 'eventId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'userId', referencedColumnName: 'id' },
-  })
-  assistants: UserEntity[];
+  @OneToMany(() => EventUserEntity, eventUser => eventUser.event)
+  assistants: EventUserEntity[];
 }

@@ -1,4 +1,3 @@
-import { INestMicroservice } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
 import { DataSource, Repository } from 'typeorm';
 import { KafkaTestModule, PostgreSQLTestModule, KafkaTestContainer, TestServerHelper } from '@solidarianid/testing';
@@ -30,7 +29,6 @@ import { Topics } from '@solidarianid/kafka';
 describe('Users-Communities Kafka Integration', () => {
   let usersServer: TestServerHelper;
   let communitiesServer: TestServerHelper;
-  let communitiesApp: INestMicroservice;
 
   let usersDataSource: DataSource;
   let communitiesUserRepository: Repository<CommunitiesUserEntity>;
@@ -81,7 +79,7 @@ describe('Users-Communities Kafka Integration', () => {
 
     // Communities: Kafka consumer only
     communitiesServer = new TestServerHelper();
-    communitiesApp = await communitiesServer.createMicroservice(
+    await communitiesServer.createWithMicroservice(
       { imports: [kafkaModule, databaseModule, CommunitiesModule] },
       {
         transport: Transport.KAFKA,
@@ -108,7 +106,7 @@ describe('Users-Communities Kafka Integration', () => {
 
   afterAll(async () => {
     await usersServer.close();
-    await communitiesApp.close();
+    await communitiesServer.close();
   });
 
   describe('USER_CREATED Event Flow', () => {

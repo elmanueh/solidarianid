@@ -86,31 +86,6 @@ export class TestServerHelper {
     return this.app;
   }
 
-  /**
-   * Creates a standalone microservice (consumer only, no HTTP).
-   */
-  async createMicroservice(
-    moduleMetadata: ModuleMetadata,
-    microserviceOptions: MicroserviceOptions,
-  ): Promise<INestMicroservice> {
-    const configModule = ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
-    });
-
-    const enhancedMetadata: ModuleMetadata = {
-      ...moduleMetadata,
-      imports: [configModule, ...(moduleMetadata.imports || [])],
-    };
-
-    this.moduleRef = await Test.createTestingModule(enhancedMetadata).compile();
-
-    const microservice = this.moduleRef.createNestMicroservice(microserviceOptions);
-    await microservice.listen();
-
-    return microservice;
-  }
-
   getRequest(): ReturnType<typeof request> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return request(this.app.getHttpServer());

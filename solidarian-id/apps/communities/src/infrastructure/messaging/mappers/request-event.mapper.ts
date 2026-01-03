@@ -47,7 +47,6 @@ export class RequestEventMapper extends Mapper<AnyRequest, RequestEventDto> {
     dto.status = model.status;
     dto.reason = model.reason;
     dto.userId = model.user.id.value;
-    dto.username = model.user.username;
     dto.type = model.type;
     dto.causeRequests = model.causeRequests.map(cause => {
       const causeDto = new CommunityRequestCauseEventDto();
@@ -70,7 +69,6 @@ export class RequestEventMapper extends Mapper<AnyRequest, RequestEventDto> {
     dto.status = model.status;
     dto.reason = model.reason;
     dto.userId = model.user.id.value;
-    dto.username = model.user.username;
     dto.ods = [...model.ods];
     dto.type = model.type;
     dto.initialDate = model.initialDate;
@@ -87,7 +85,6 @@ export class RequestEventMapper extends Mapper<AnyRequest, RequestEventDto> {
     dto.status = model.status;
     dto.reason = model.reason;
     dto.userId = model.user.id.value;
-    dto.username = model.user.username;
     dto.causeId = model.causeId;
     dto.type = model.type;
     dto.objectives = model.objectives.map(obj => {

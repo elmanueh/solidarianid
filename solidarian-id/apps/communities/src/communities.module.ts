@@ -44,7 +44,7 @@ import { UsersRepositoryPort } from './domain/ports/users.repository.port';
 import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/users-typeorm.repository';
 import { UserService } from './domain/services/user.service';
 import { UserServiceImpl } from './application/services/user.service.impl';
-import { UserConsumerAdapter } from './infrastructure/messaging/consumer/community.consumer';
+import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
 
 @Module({
   imports: [

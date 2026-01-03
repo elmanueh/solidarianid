@@ -20,6 +20,8 @@ import { EventUserEntity } from '@app/communities/infrastructure/persistence/ent
 import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user';
 
 import { Topics } from '@solidarianid/kafka';
+import { UserService } from '@app/communities/domain/services/user.service';
+import { EventTracker } from 'libs/test/src/helpers/kafka.helper';
 
 /**
  * Note: Both microservices share the same PostgreSQL container but use different tables:
@@ -32,6 +34,8 @@ describe('Users-Communities Kafka Integration', () => {
 
   let usersDataSource: DataSource;
   let communitiesUserRepository: Repository<CommunitiesUserEntity>;
+
+  let eventTracker: EventTracker;
 
   beforeAll(async () => {
     const kafkaModule = await KafkaTestModule.forRoot();
@@ -95,11 +99,31 @@ describe('Users-Communities Kafka Integration', () => {
       },
     );
 
+    eventTracker = new EventTracker();
+
+    // Spy on the UserService (application layer) instead of consumer (infrastructure)
+    const userService = communitiesServer.getModule().get(UserService);
+    const originalCreateUser = userService.createUser.bind(userService);
+    const originalUpdateUser = userService.updateUser.bind(userService);
+
+    jest.spyOn(userService, 'createUser').mockImplementation(async data => {
+      const result = await originalCreateUser(data);
+      eventTracker.markProcessed(`user:${data.id}`);
+      return result;
+    });
+
+    jest.spyOn(userService, 'updateUser').mockImplementation(async data => {
+      const result = await originalUpdateUser(data);
+      eventTracker.markProcessed(`user:${data.id}`);
+      return result;
+    });
+
     const communitiesDataSource = communitiesServer.getModule().get<DataSource>(DataSource);
     communitiesUserRepository = communitiesDataSource.getRepository(CommunitiesUserEntity);
   }, 180000);
 
   beforeEach(async () => {
+    eventTracker.clear();
     await usersDataSource.getRepository(UsersUserEntity).createQueryBuilder().delete().execute();
     await communitiesUserRepository.createQueryBuilder().delete().execute();
   });
@@ -126,7 +150,7 @@ describe('Users-Communities Kafka Integration', () => {
       expect(locationHeader).toBeDefined();
       const userId = locationHeader.split('/').pop()!;
 
-      await waitForUserInCommunities(communitiesUserRepository, userId, 10000);
+      await eventTracker.waitFor(`user:${userId}`);
 
       const communitiesUser = await communitiesUserRepository.findOne({
         where: { id: userId },
@@ -165,9 +189,7 @@ describe('Users-Communities Kafka Integration', () => {
         createdUserIds.push(userId);
       }
 
-      for (const userId of createdUserIds) {
-        await waitForUserInCommunities(communitiesUserRepository, userId, 10000);
-      }
+      await Promise.all(createdUserIds.map(id => eventTracker.waitFor(`user:${id}`)));
 
       const communitiesUsers = await communitiesUserRepository.find();
       expect(communitiesUsers).toHaveLength(2);
@@ -195,7 +217,7 @@ describe('Users-Communities Kafka Integration', () => {
 
       const userId = createResponse.headers['location'].split('/').pop()!;
 
-      await waitForUserInCommunities(communitiesUserRepository, userId, 10000);
+      await eventTracker.waitFor(`user:${userId}`);
 
       const initialCommunitiesUser = await communitiesUserRepository.findOne({
         where: { id: userId },
@@ -209,7 +231,10 @@ describe('Users-Communities Kafka Integration', () => {
 
       await usersServer.getRequest().patch(`/users/${userId}`).send(updatePayload).expect(204);
 
-      await waitForUserUpdateInCommunities(communitiesUserRepository, userId, 'Updated Name', 10000);
+      await eventTracker.waitFor(`user:${userId}`);
+
+      // Small delay to ensure TypeORM transaction completes
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       const updatedCommunitiesUser = await communitiesUserRepository.findOne({
         where: { id: userId },
@@ -221,44 +246,3 @@ describe('Users-Communities Kafka Integration', () => {
     }, 45000);
   });
 });
-
-async function waitForUserInCommunities(
-  repository: Repository<CommunitiesUserEntity>,
-  userId: string,
-  timeoutMs: number,
-): Promise<void> {
-  const startTime = Date.now();
-  const pollInterval = 500;
-
-  while (Date.now() - startTime < timeoutMs) {
-    const user = await repository.findOne({ where: { id: userId } });
-    if (user) {
-      return;
-    }
-    await new Promise(resolve => setTimeout(resolve, pollInterval));
-  }
-
-  throw new Error(`Timeout waiting for user ${userId} in Communities database after ${timeoutMs}ms`);
-}
-
-async function waitForUserUpdateInCommunities(
-  repository: Repository<CommunitiesUserEntity>,
-  userId: string,
-  expectedFullName: string,
-  timeoutMs: number,
-): Promise<void> {
-  const startTime = Date.now();
-  const pollInterval = 500;
-
-  while (Date.now() - startTime < timeoutMs) {
-    const user = await repository.findOne({ where: { id: userId } });
-    if (user && user.fullName === expectedFullName) {
-      return;
-    }
-    await new Promise(resolve => setTimeout(resolve, pollInterval));
-  }
-
-  throw new Error(
-    `Timeout waiting for user ${userId} to be updated with fullName "${expectedFullName}" in Communities database after ${timeoutMs}ms`,
-  );
-}

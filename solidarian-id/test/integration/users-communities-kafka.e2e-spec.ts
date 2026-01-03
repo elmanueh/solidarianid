@@ -1,6 +1,4 @@
 import { INestMicroservice } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigModule } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
 import { DataSource, Repository } from 'typeorm';
 import { KafkaTestModule, PostgreSQLTestModule, KafkaTestContainer, TestServerHelper } from '@solidarianid/testing';

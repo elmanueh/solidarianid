@@ -51,7 +51,7 @@ async function bootstrap() {
 
   await app.startAllMicroservices();
 
-  const port = configService.get<number>('PORT') ?? 3000;
+  const port = configService.get<number>('COMMUNITIES_PORT') ?? 3002;
   console.log(`Server running on port ${port}`);
   await app.listen(port);
 }

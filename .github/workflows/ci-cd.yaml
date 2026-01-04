@@ -215,7 +215,7 @@ jobs:
     name: CD Pipeline
     runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
-    # needs: ci
+    needs: ci
     env:
       AWS_REGION: eu-south-2 # {{ secrets.AWS_REGION }}
       DOCKERHUB_USERNAME: zerep0 # {{ secrets.DOCKERHUB_USERNAME }}

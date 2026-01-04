@@ -257,20 +257,20 @@ jobs:
           docker push zerep0/solidarianid-admin:latest
 
           # Tag and push users-app
-          docker tag deployment-users-app:latest zerep0/solidarianid-users:$IMAGE_TAG
-          docker tag deployment-users-app:latest zerep0/solidarianid-users:latest
-          docker push zerep0/solidarianid-users:$IMAGE_TAG
-          docker push zerep0/solidarianid-users:latest
+          docker tag deployment-user-app:latest zerep0/solidarianid-user:$IMAGE_TAG
+          docker tag deployment-user-app:latest zerep0/solidarianid-user:latest
+          docker push zerep0/solidarianid-user:$IMAGE_TAG
+          docker push zerep0/solidarianid-user:latest
 
           # Tag and push communities-app
-          docker tag deployment-communities-app:latest zerep0/solidarianid-communities:$IMAGE_TAG
-          docker tag deployment-communities-app:latest zerep0/solidarianid-communities:latest
-          docker push zerep0/solidarianid-communities:$IMAGE_TAG
-          docker push zerep0/solidarianid-communities:latest
+          docker tag deployment-community-app:latest zerep0/solidarianid-community:$IMAGE_TAG
+          docker tag deployment-community-app:latest zerep0/solidarianid-community:latest
+          docker push zerep0/solidarianid-community:$IMAGE_TAG
+          docker push zerep0/solidarianid-community:latest
 
           echo "admin-image=zerep0/solidarianid-admin:$IMAGE_TAG" >> $GITHUB_OUTPUT
-          echo "users-image=zerep0/solidarianid-users:$IMAGE_TAG" >> $GITHUB_OUTPUT
-          echo "communities-image=zerep0/solidarianid-communities:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "users-image=zerep0/solidarianid-user:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "communities-image=zerep0/solidarianid-community:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

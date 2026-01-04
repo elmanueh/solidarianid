@@ -21,7 +21,7 @@ jobs:
   ci:
     name: CI Pipeline
     runs-on: ubuntu-latest
-    if: false # Deshabilitado temporalmente para testear CD
+    if: github.actor != 'github-actions[bot]'
     permissions:
       contents: write
       pull-requests: write

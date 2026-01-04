@@ -222,6 +222,20 @@ Resources:
       ResourceSignal:
         Timeout: PT10M
 
+  WebServerEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: SolidarianID-EIP
+
+  WebServerEIPAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      AllocationId: !GetAtt WebServerEIP.AllocationId
+      InstanceId: !Ref WebServerInstance
+
   WebServerInstanceRole:
     Type: AWS::IAM::Role
     Properties:

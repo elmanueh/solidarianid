@@ -32,11 +32,11 @@ describe('UsersController (e2e)', () => {
     await app.close();
   });
 
-  describe('/users (POST)', () => {
+  describe('/api/users (POST)', () => {
     it('Test 1 - should register new user', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           fullName: 'John Doe Smith',
           username: 'johnDoe',
@@ -52,7 +52,7 @@ describe('UsersController (e2e)', () => {
     it('Test 2 - international phone US', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           fullName: 'Jane Smith Williams',
           username: 'janeSmith',
@@ -69,7 +69,7 @@ describe('UsersController (e2e)', () => {
     it('Test 3 - duplicate username → 409', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           fullName: 'Test User Duplicate',
           username: 'testUsername',
@@ -84,7 +84,7 @@ describe('UsersController (e2e)', () => {
     it('Test 4 - username too short → 400', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           username: 'a',
           mobilePhone: '+34612345678',
@@ -98,7 +98,7 @@ describe('UsersController (e2e)', () => {
     it('Test 5 - password too short → 400', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           username: 'test',
           mobilePhone: '+34612345678',
@@ -112,7 +112,7 @@ describe('UsersController (e2e)', () => {
     it('Test 6 - invalid country code → 400', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           username: 'test',
           mobilePhone: '+34612345678',
@@ -126,7 +126,7 @@ describe('UsersController (e2e)', () => {
     it('Test 7 - missing mobilePhone → 400', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           username: 'test',
           password: 'test',
@@ -139,7 +139,7 @@ describe('UsersController (e2e)', () => {
     it('Test 8 - empty username → 400', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           username: '',
           mobilePhone: '+34612345678',
@@ -153,7 +153,7 @@ describe('UsersController (e2e)', () => {
     it('Test 9 - invalid phone → 400', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           username: 'test',
           mobilePhone: '612345678',
@@ -167,7 +167,7 @@ describe('UsersController (e2e)', () => {
     it('Test 10 - extra fields → 400', async () => {
       await server
         .getRequest()
-        .post('/users')
+        .post('/api/users')
         .send({
           username: 'test',
           mobilePhone: '+34612345678',
@@ -180,14 +180,14 @@ describe('UsersController (e2e)', () => {
     });
   });
 
-  describe('/users/:id (PATCH)', () => {
+  describe('/api/users/:id (PATCH)', () => {
     const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
 
     // ÉXITO: Solo status 204 NO_CONTENT
     it('Test 1 - should update all fields successfully', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           username: 'updatedUsername',
           mobilePhone: '+34600111222',
@@ -200,7 +200,7 @@ describe('UsersController (e2e)', () => {
     it('Test 2 - should update only username', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           username: 'newUsername123',
         })
@@ -210,7 +210,7 @@ describe('UsersController (e2e)', () => {
     it('Test 3 - should update only mobile phone', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           mobilePhone: '+34677889900',
         })
@@ -220,7 +220,7 @@ describe('UsersController (e2e)', () => {
     it('Test 4 - should update only location (city and countryCode)', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           city: 'Valencia',
           countryCode: 'ES',
@@ -231,7 +231,7 @@ describe('UsersController (e2e)', () => {
     it('Test 7 - should update username and mobile phone combined', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           username: 'combinedUpdate',
           mobilePhone: '+34611222333',
@@ -242,7 +242,7 @@ describe('UsersController (e2e)', () => {
     it('Test 17 - should update with international phone (FR)', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           mobilePhone: '+33123456789',
           city: 'Paris',
@@ -254,7 +254,7 @@ describe('UsersController (e2e)', () => {
     it('Test 18 - should update with international phone (UK)', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           mobilePhone: '+447700900123',
           city: 'London',
@@ -266,7 +266,7 @@ describe('UsersController (e2e)', () => {
     it('Test 19 - extra fields should be rejected (forbidNonWhitelisted)', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           username: 'validUsername',
           extraField: 'should be rejected',
@@ -279,7 +279,7 @@ describe('UsersController (e2e)', () => {
     it('Test 20 - should update with maximum length username', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           username: 'maxLength12chars',
         })
@@ -290,7 +290,7 @@ describe('UsersController (e2e)', () => {
     it('Test 5 - should fail when updating only city without countryCode → 400', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           city: 'Sevilla',
         })
@@ -300,7 +300,7 @@ describe('UsersController (e2e)', () => {
     it('Test 6 - should fail when updating only countryCode without city → 400', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           countryCode: 'FR',
         })
@@ -310,7 +310,7 @@ describe('UsersController (e2e)', () => {
     it('Test 8 - username too short → 400', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           username: 'a',
         })
@@ -320,7 +320,7 @@ describe('UsersController (e2e)', () => {
     it('Test 9 - username with invalid characters → 400', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           username: 'invalid@user!',
         })
@@ -330,7 +330,7 @@ describe('UsersController (e2e)', () => {
     it('Test 10 - empty username → 400', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           username: '',
         })
@@ -340,7 +340,7 @@ describe('UsersController (e2e)', () => {
     it('Test 11 - invalid mobile phone format → 400', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           mobilePhone: '612345678',
         })
@@ -350,7 +350,7 @@ describe('UsersController (e2e)', () => {
     it('Test 12 - invalid mobile phone (letters) → 400', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           mobilePhone: 'invalid-phone',
         })
@@ -360,7 +360,7 @@ describe('UsersController (e2e)', () => {
     it('Test 13 - invalid country code → 400', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           city: 'Madrid',
           countryCode: 'INVALID',
@@ -371,7 +371,7 @@ describe('UsersController (e2e)', () => {
     it('Test 14 - country code too long → 400', async () => {
       await server
         .getRequest()
-        .patch(`/users/${existingUserId}`)
+        .patch(`/api/users/${existingUserId}`)
         .send({
           city: 'Madrid',
           countryCode: 'ESP',
@@ -380,13 +380,13 @@ describe('UsersController (e2e)', () => {
     });
 
     it('Test 15 - no fields provided (empty body) → 400', async () => {
-      await server.getRequest().patch(`/users/${existingUserId}`).send({}).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().patch(`/api/users/${existingUserId}`).send({}).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('Test 16 - user not found (invalid UUID) → 404', async () => {
       await server
         .getRequest()
-        .patch('/users/00000000-0000-0000-0000-000000000000')
+        .patch('/api/users/00000000-0000-0000-0000-000000000000')
         .send({
           username: 'updatedUsername',
         })
@@ -394,7 +394,7 @@ describe('UsersController (e2e)', () => {
     });
   });
 
-  describe('/users/login (POST)', () => {
+  describe('/api/users/login (POST)', () => {
     const username: string = 'testUsername';
     const password: string = 'Admin2024!Pass';
 
@@ -406,7 +406,7 @@ describe('UsersController (e2e)', () => {
     it('Test 1 - Should return inauthorized if the user not exists', async () => {
       await server
         .getRequest()
-        .post('/users/login')
+        .post('/api/users/login')
         .send({
           username: 'NonExistentUser',
           password,
@@ -417,7 +417,7 @@ describe('UsersController (e2e)', () => {
     it('Test 2 - Should login successfully', async () => {
       await server
         .getRequest()
-        .post('/users/login')
+        .post('/api/users/login')
         .send({
           username,
           password,
@@ -428,7 +428,7 @@ describe('UsersController (e2e)', () => {
     it('Test 3 - Should return Bad Request for missing password', async () => {
       await server
         .getRequest()
-        .post('/users/login')
+        .post('/api/users/login')
         .send({
           username,
         })
@@ -438,7 +438,7 @@ describe('UsersController (e2e)', () => {
     it('Test 4 - Should return Bad Request for missing username', async () => {
       await server
         .getRequest()
-        .post('/users/login')
+        .post('/api/users/login')
         .send({
           password,
         })
@@ -446,13 +446,13 @@ describe('UsersController (e2e)', () => {
     });
 
     it('Test 5 - Should return Bad Request for empty body', async () => {
-      await server.getRequest().post('/users/login').send({}).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/users/login').send({}).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('Test 6 - Should return Unauthorized for wrong password', async () => {
       await server
         .getRequest()
-        .post('/users/login')
+        .post('/api/users/login')
         .send({
           username,
           password: 'Wrong@Password123',

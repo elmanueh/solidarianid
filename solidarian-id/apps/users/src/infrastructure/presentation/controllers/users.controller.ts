@@ -16,7 +16,7 @@ import { UpdateUserProfileDtoRequest } from '../dtos/update-user-profile.dto';
 import { LoginUserDtoRequest } from '../dtos/login-user.request.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
 
-@Controller('users')
+@Controller('/api/users')
 @ApiTags('Users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

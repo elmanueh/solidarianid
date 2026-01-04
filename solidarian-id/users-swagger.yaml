@@ -1,6 +1,6 @@
 openapi: 3.0.0
 paths:
-  /users:
+  /api/users:
     post:
       operationId: UsersController_register
       parameters: []
@@ -9,22 +9,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterUserDtoRequest'
+              $ref: "#/components/schemas/RegisterUserDtoRequest"
       responses:
-        '201':
+        "201":
           description: User created successfully
-        '400':
+        "400":
           description: Invalid request payload
-        '409':
+        "409":
           description: >-
             Either the username or the phone number (or both) were registered
             previously
-        '500':
+        "500":
           description: Internal server error
       summary: Creating an account for SolidarianID
       tags: &ref_0
         - Users
-  /users/login:
+  /api/users/login:
     post:
       operationId: UsersController_login
       parameters: []
@@ -33,15 +33,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginUserDtoRequest'
+              $ref: "#/components/schemas/LoginUserDtoRequest"
       responses:
-        '200':
+        "200":
           description: User logged in successfully
-        '400':
+        "400":
           description: Invalid request payload
       summary: User login for SolidarianID
       tags: *ref_0
-  /users/{id}:
+  /api/users/{id}:
     patch:
       operationId: UsersController_updateUserProfile
       parameters:
@@ -55,20 +55,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateUserProfileDtoRequest'
+              $ref: "#/components/schemas/UpdateUserProfileDtoRequest"
       responses:
-        '204':
+        "204":
           description: User profile updated successfully
-        '400':
+        "400":
           description: Invalid request payload
-        '500':
+        "500":
           description: Internal server error
       summary: Update user profile information
       tags: *ref_0
 info:
-  title: 'SolidarianID: Users Microservice'
+  title: "SolidarianID: Users Microservice"
   description: The SolidarianID`s Users Microservice API documentation
-  version: '0.1'
+  version: "0.1"
   contact: {}
 tags: []
 servers: []
@@ -86,7 +86,7 @@ components:
         mobilePhone:
           type: string
           description: Mobile phone number of the user in E.164 format
-          example: '+34612345678'
+          example: "+34612345678"
         password:
           type: string
           description: >-
@@ -141,7 +141,7 @@ components:
         mobilePhone:
           type: string
           description: Mobile phone number of the user in E.164 format
-          example: '+34612345678'
+          example: "+34612345678"
         city:
           type: string
           description: City where the user resides

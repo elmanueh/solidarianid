@@ -73,7 +73,6 @@ jobs:
         run: npm ci
 
       - name: Run prettier check
-        if: false
         id: prettier_check
         continue-on-error: true
         run: npx prettier --check '**/*.{ts,js,json,css,html}'
@@ -107,14 +106,14 @@ jobs:
           # Push
           git push origin "HEAD:$TARGET_BRANCH"
 
-      #- name: Run linter
-      #  run: npm run lint:ci
+      - name: Run linter
+        run: npm run lint:ci
 
-      #- name: Build project
-      #  run: npm run build
+      - name: Build project
+        run: npm run build
 
-      #- name: Run all tests with combined coverage
-      #  run: npm run test:all:coverage
+      - name: Run all tests with combined coverage
+        run: npm run test:all:coverage
 
       - name: Install jq (for JSON parsing)
         run: |

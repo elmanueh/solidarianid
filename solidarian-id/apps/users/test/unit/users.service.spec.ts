@@ -342,8 +342,7 @@ describe('UsersService Unit testing', () => {
     });
   });
 
-  describe('UsersService.registerUser (Metamorphic Testing)', () => {
-    // Test metamórfico que verifica que el conjunto de usuarios inicial es un subconjunto del conjunto de usuarios después de registrar un nuevo usuario válido.
+  describe('UsersService.registerUser (Metamorphic unit Testing)', () => {
     test('Given an initial set of users, when a new valid user is registered, then the resulting set should contain all initial users and one more (the new user)', async () => {
       // Given: un conjunto inicial de usuarios
       const initialUsers = [

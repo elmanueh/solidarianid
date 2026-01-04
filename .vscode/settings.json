@@ -7,5 +7,23 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "yaml.customTags": [
+    "!Ref",
+    "!GetAtt",
+    "!Sub",
+    "!Join",
+    "!FindInMap",
+    "!GetAZs",
+    "!ImportValue",
+    "!Split",
+    "!Base64",
+    "!Cidr",
+    "!And",
+    "!Equals",
+    "!If",
+    "!Not",
+    "!Or",
+    "!Select"
+  ]
 }

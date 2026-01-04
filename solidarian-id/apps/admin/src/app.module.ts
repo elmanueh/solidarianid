@@ -12,7 +12,10 @@ import { MongooseModule } from '@nestjs/mongoose';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI || ''),
+    MongooseModule.forRoot(
+      process.env.MONGODB_URI ||
+        `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`,
+    ),
     AdminModule,
     AuthModule,
     RequestsModule,

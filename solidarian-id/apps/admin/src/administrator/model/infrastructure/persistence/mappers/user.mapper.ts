@@ -16,7 +16,7 @@ export class UserMapper implements Mapper<User, UserEntity> {
         city: user.city,
         countryCode: user.countryCode,
       },
-      communityMemberships: user.communityMemberships.map((membership) => ({
+      communityMemberships: user.communityMemberships.map(membership => ({
         communityId: membership.communityId,
         communityName: membership.communityName,
         isAdmin: membership.isAdmin,
@@ -31,7 +31,7 @@ export class UserMapper implements Mapper<User, UserEntity> {
       document.phone,
       document.location.city,
       document.location.countryCode,
-      document.communityMemberships.map((m) => ({
+      document.communityMemberships.map(m => ({
         communityId: m.communityId,
         communityName: m.communityName,
         isAdmin: m.isAdmin,

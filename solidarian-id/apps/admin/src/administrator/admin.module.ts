@@ -15,16 +15,10 @@ import { UsersConsumerService } from '@app/admin/administrator/model/domain/serv
 import { UsersConsumerServiceImpl } from '@app/admin/administrator/model/application/services/users-consumer.service.impl';
 import { UserConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/consumer/users.consumer';
 import { UserMapper } from '@app/admin/administrator/model/infrastructure/persistence/mappers/user.mapper';
-import {
-  UserEntity,
-  UserSchema,
-} from '@app/admin/administrator/model/infrastructure/persistence/entities/user.entity';
+import { UserEntity, UserSchema } from '@app/admin/administrator/model/infrastructure/persistence/entities/user.entity';
 
 @Module({
-  imports: [
-    ConfigModule,
-    MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }]),
-  ],
+  imports: [ConfigModule, MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }])],
   controllers: [
     UserConsumerAdapter,
     AdminViewController,

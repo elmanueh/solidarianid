@@ -27,10 +27,7 @@ export abstract class UserRepositoryPort extends Repository<User> {
    * @param limit Número de usuarios por página
    * @returns Either con error o resultado paginado con usuarios
    */
-  abstract findPaginated(
-    page: number,
-    limit: number,
-  ): Promise<Either<RepositoryException, PaginatedResult<User>>>;
+  abstract findPaginated(page: number, limit: number): Promise<Either<RepositoryException, PaginatedResult<User>>>;
 
   /**
    * Cuenta el total de usuarios en el sistema

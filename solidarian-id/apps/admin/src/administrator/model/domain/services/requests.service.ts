@@ -3,9 +3,5 @@ import { Either } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 
 export abstract class RequestsService {
-  abstract updateStatus(
-    id: string,
-    status: RequestStatus,
-    reason?: string,
-  ): Promise<Either<ValidationError, void>>;
+  abstract updateStatus(id: string, status: RequestStatus, reason?: string): Promise<Either<ValidationError, void>>;
 }

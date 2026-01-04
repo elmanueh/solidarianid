@@ -44,9 +44,7 @@ export abstract class Repository<TDomain extends Entity<any>> {
    *
    * @param id Unique identifier of the entity
    */
-  abstract findById(
-    id: string,
-  ): Promise<Either<RepositoryException | EntityNotFoundException, TDomain>>;
+  abstract findById(id: string): Promise<Either<RepositoryException | EntityNotFoundException, TDomain>>;
 
   /**
    * Retrieves all entities from the repository.
@@ -55,9 +53,7 @@ export abstract class Repository<TDomain extends Entity<any>> {
    *
    * Returns {@link RepositoryException} for infrastructure-related failures.
    */
-  abstract findAll(): Promise<
-    Either<RepositoryException | EntityNotFoundException, TDomain[]>
-  >;
+  abstract findAll(): Promise<Either<RepositoryException | EntityNotFoundException, TDomain[]>>;
 
   // abstract findAllByLimitAndOffset(limit: number, offset: number): Promise<T[]>;
 }

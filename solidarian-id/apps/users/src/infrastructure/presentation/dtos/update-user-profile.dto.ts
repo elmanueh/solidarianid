@@ -7,19 +7,11 @@ import {
   USERNAME_MIN_LENGTH,
 } from '@app/value-objects/constants/validation.constants';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsISO31661Alpha2,
-  IsOptional,
-  IsString,
-  Length,
-  Matches,
-  MaxLength,
-} from 'class-validator';
+import { IsISO31661Alpha2, IsOptional, IsString, Length, Matches, MaxLength } from 'class-validator';
 
 export class UpdateUserProfileDtoRequest {
   @ApiProperty({
-    description:
-      'Username for the new user´containing only alphanumeric characters',
+    description: 'Username for the new user´containing only alphanumeric characters',
     example: 'johnDoe',
     minLength: USERNAME_MIN_LENGTH,
     maxLength: USERNAME_MAX_LENGTH,

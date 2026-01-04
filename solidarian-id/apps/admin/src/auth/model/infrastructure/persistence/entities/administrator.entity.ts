@@ -21,5 +21,4 @@ export class AdministratorEntity {
   password: string;
 }
 
-export const AdministratorSchema =
-  SchemaFactory.createForClass(AdministratorEntity);
+export const AdministratorSchema = SchemaFactory.createForClass(AdministratorEntity);

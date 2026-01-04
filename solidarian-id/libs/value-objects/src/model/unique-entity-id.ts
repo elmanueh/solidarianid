@@ -20,15 +20,11 @@ export class UniqueEntityID extends ValueObject<UniqueEntityIDProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    plainId?: string,
-  ): Either<InvalidUniqueEntityIDError, UniqueEntityID> {
+  public static create(plainId?: string): Either<InvalidUniqueEntityIDError, UniqueEntityID> {
     const id = plainId ?? uuidv4();
 
     if (!validate(id)) {
-      const error: InvalidUniqueEntityIDError = new InvalidUniqueEntityIDError(
-        `Invalid UUID v4: ${id}`,
-      );
+      const error: InvalidUniqueEntityIDError = new InvalidUniqueEntityIDError(`Invalid UUID v4: ${id}`);
       return left<InvalidUniqueEntityIDError, UniqueEntityID>(error);
     }
 

@@ -4,10 +4,7 @@ import { UsersService } from '../../domain/services/users.service';
 import { User } from '../../domain/models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
-import {
-  UserRepositoryPort,
-  PaginatedResult,
-} from '../../domain/ports/output/user.repository.port';
+import { UserRepositoryPort, PaginatedResult } from '../../domain/ports/output/user.repository.port';
 
 /**
  * Implementación del servicio de usuarios
@@ -22,19 +19,14 @@ export class UsersServiceImpl extends UsersService {
   /**
    * Obtiene usuarios de forma paginada
    */
-  async getPaginatedUsers(
-    page: number,
-    limit: number,
-  ): Promise<Either<RepositoryException, PaginatedResult<User>>> {
+  async getPaginatedUsers(page: number, limit: number): Promise<Either<RepositoryException, PaginatedResult<User>>> {
     return await this.userRepository.findPaginated(page, limit);
   }
 
   /**
    * Obtiene un usuario específico por su ID
    */
-  async getUserById(
-    id: string,
-  ): Promise<Either<RepositoryException | UserNotFoundError, User>> {
+  async getUserById(id: string): Promise<Either<RepositoryException | UserNotFoundError, User>> {
     return await this.userRepository.findById(id);
   }
 

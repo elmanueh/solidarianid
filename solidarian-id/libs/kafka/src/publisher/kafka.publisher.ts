@@ -24,10 +24,7 @@ export class KafkaPublisher<TDomain extends Entity<any>, TDto>
   publish(eventType: EventType, entity: TDomain): Promise<void> {
     const dto: TDto = this.mapper.toDto(entity);
 
-    const genericEvent: GenericEvent<TDto> = new GenericEvent<TDto>(
-      eventType,
-      dto,
-    );
+    const genericEvent: GenericEvent<TDto> = new GenericEvent<TDto>(eventType, dto);
 
     const message: KafkaMessage = {
       key: entity.id.value,

@@ -126,9 +126,7 @@ describe('ReportsApiController', () => {
     describe('Condition Testing', () => {
       it('should handle result.isLeft() = true', async () => {
         const mockResponse = createMockResponse();
-        mockUsersService.getUserById.mockResolvedValue(
-          left(new UserNotFoundError(userId)),
-        );
+        mockUsersService.getUserById.mockResolvedValue(left(new UserNotFoundError(userId)));
 
         await controller.getUserDetail(userId, mockResponse);
 
@@ -183,18 +181,9 @@ describe('ReportsApiController', () => {
 
       it('should handle user with no communities', async () => {
         const mockResponse = createMockResponse();
-        const userResult = User.create(
-          userId,
-          'no_communities',
-          '+34612345678',
-          'Madrid',
-          'ES',
-          [],
-        );
+        const userResult = User.create(userId, 'no_communities', '+34612345678', 'Madrid', 'ES', []);
         if (userResult.isRight()) {
-          mockUsersService.getUserById.mockResolvedValue(
-            right(userResult.value),
-          );
+          mockUsersService.getUserById.mockResolvedValue(right(userResult.value));
 
           await controller.getUserDetail(userId, mockResponse);
 
@@ -246,9 +235,7 @@ describe('ReportsApiController', () => {
         const mockResponse = createMockResponse();
         const mockUser = createMockUser(userId, 'pdf_user');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockRejectedValue(
-          new Error('PDF generation error'),
-        );
+        mockPdfGenerator.generate.mockRejectedValue(new Error('PDF generation error'));
 
         await controller.downloadUserPdf(userId, mockResponse);
 
@@ -270,10 +257,7 @@ describe('ReportsApiController', () => {
 
         await controller.downloadUserPdf(userId, mockResponse);
 
-        expect(mockResponse.setHeader).toHaveBeenCalledWith(
-          'Content-Type',
-          'application/pdf',
-        );
+        expect(mockResponse.setHeader).toHaveBeenCalledWith('Content-Type', 'application/pdf');
         expect(mockResponse.setHeader).toHaveBeenCalledWith(
           'Content-Disposition',
           expect.stringContaining('attachment'),
@@ -285,9 +269,7 @@ describe('ReportsApiController', () => {
     describe('Condition Testing', () => {
       it('should handle result.isLeft() = true (user not found)', async () => {
         const mockResponse = createMockResponse();
-        mockUsersService.getUserById.mockResolvedValue(
-          left(new UserNotFoundError(userId)),
-        );
+        mockUsersService.getUserById.mockResolvedValue(left(new UserNotFoundError(userId)));
 
         await controller.downloadUserPdf(userId, mockResponse);
 
@@ -335,9 +317,7 @@ describe('ReportsApiController', () => {
         await controller.downloadUserPdf(userId, mockResponse);
         const afterTimestamp = Date.now();
 
-        const setHeaderCall = mockResponse.setHeader.mock.calls.find(
-          (call) => call[0] === 'Content-Disposition',
-        );
+        const setHeaderCall = mockResponse.setHeader.mock.calls.find(call => call[0] === 'Content-Disposition');
         expect(setHeaderCall).toBeDefined();
         if (setHeaderCall) {
           const filename = setHeaderCall[1] as string;
@@ -370,19 +350,10 @@ describe('ReportsApiController', () => {
 
       it('should handle unknown country code', async () => {
         const mockResponse = createMockResponse();
-        const userResult = User.create(
-          userId,
-          'unknown_country',
-          '+11234567890',
-          'Unknown City',
-          'XX',
-          [],
-        );
+        const userResult = User.create(userId, 'unknown_country', '+11234567890', 'Unknown City', 'XX', []);
         if (userResult.isRight()) {
           const mockStream = createMockPdfStream();
-          mockUsersService.getUserById.mockResolvedValue(
-            right(userResult.value),
-          );
+          mockUsersService.getUserById.mockResolvedValue(right(userResult.value));
           mockPdfGenerator.generate.mockResolvedValue(mockStream);
 
           await controller.downloadUserPdf(userId, mockResponse);
@@ -424,9 +395,7 @@ describe('ReportsApiController', () => {
         const mockResponse = createMockResponse();
         const mockUser = createMockUser(userId, 'error_user');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockRejectedValue(
-          new Error('Unexpected PDF error'),
-        );
+        mockPdfGenerator.generate.mockRejectedValue(new Error('Unexpected PDF error'));
 
         await controller.downloadUserPdf(userId, mockResponse);
 

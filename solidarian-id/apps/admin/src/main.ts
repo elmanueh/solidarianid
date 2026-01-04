@@ -85,14 +85,10 @@ async function bootstrap() {
     options: {
       client: {
         clientId: configService.get<string>('KAFKA_ADMIN_CLIENT_ID') ?? 'admin',
-        brokers: configService.get<string>('KAFKA_BROKERS')?.split(',') ?? [
-          'localhost:9092',
-        ],
+        brokers: configService.get<string>('KAFKA_BROKERS')?.split(',') ?? ['localhost:9092'],
       },
       consumer: {
-        groupId:
-          configService.get<string>('KAFKA_ADMIN_CONSUMER_GROUP_ID') ??
-          'admin-consumer-group',
+        groupId: configService.get<string>('KAFKA_ADMIN_CONSUMER_GROUP_ID') ?? 'admin-consumer-group',
       },
     },
   });

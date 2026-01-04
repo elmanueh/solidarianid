@@ -54,9 +54,7 @@
       console.error('Error fetching user detail:', error);
       return {
         success: false,
-        error:
-          error.response?.data?.message ||
-          'Error al cargar detalle del usuario',
+        error: error.response?.data?.message || 'Error al cargar detalle del usuario',
       };
     }
   }
@@ -102,7 +100,7 @@
     if (userData.communities && userData.communities.length > 0) {
       communitiesHtml = userData.communities
         .map(
-          (community) => `
+          community => `
         <div class="community-item">
           <span class="community-name">${community.name}</span>
           <span class="community-role-badge ${community.isAdmin ? 'community-role-admin' : 'community-role-member'}">
@@ -113,8 +111,7 @@
         )
         .join('');
     } else {
-      communitiesHtml =
-        '<p class="text-gray-500 text-sm">No pertenece a ninguna comunidad</p>';
+      communitiesHtml = '<p class="text-gray-500 text-sm">No pertenece a ninguna comunidad</p>';
     }
 
     elements.detailContent.innerHTML = `
@@ -287,12 +284,12 @@
     // Seleccionar todas las tarjetas ya renderizadas en HTML
     const userCards = document.querySelectorAll('[data-user-id]');
 
-    userCards.forEach((card) => {
+    userCards.forEach(card => {
       const userId = card.dataset.userId;
       if (!userId) return;
 
       // Interceptar click en la tarjeta completa
-      card.addEventListener('click', (e) => {
+      card.addEventListener('click', e => {
         // Permitir Ctrl+Click o Cmd+Click para abrir en nueva pestaña
         if (e.ctrlKey || e.metaKey) return;
 
@@ -301,7 +298,7 @@
       });
 
       // Interceptar Enter/Space en la tarjeta
-      card.addEventListener('keypress', (e) => {
+      card.addEventListener('keypress', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           handleUserCardClick(userId);
@@ -311,7 +308,7 @@
       // Interceptar click en el link interno (si existe)
       const link = card.querySelector('.user-detail-link');
       if (link) {
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', e => {
           // Permitir Ctrl+Click o Cmd+Click para abrir en nueva pestaña
           if (e.ctrlKey || e.metaKey) return;
 
@@ -344,11 +341,8 @@
     }
 
     // ESC para cerrar panel
-    document.addEventListener('keydown', (e) => {
-      if (
-        e.key === 'Escape' &&
-        !elements.detailPanel.classList.contains('hidden')
-      ) {
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !elements.detailPanel.classList.contains('hidden')) {
         hideDetailPanel();
       }
     });

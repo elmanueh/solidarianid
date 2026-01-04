@@ -13,7 +13,5 @@ export abstract class UsersConsumerService {
    * @param userEventDto DTO con los datos del usuario desde el evento de Kafka
    * @returns Either con RepositoryException si falla o el User guardado
    */
-  abstract saveNewUser(
-    userEventDto: UserEventDto,
-  ): Promise<Either<RepositoryException, void>>;
+  abstract saveNewUser(userEventDto: UserEventDto): Promise<Either<RepositoryException, void>>;
 }

@@ -3,10 +3,6 @@ import { AdministratorResponseDto } from '../dto/output/administrator-response.d
 
 export class AdministratorDtoMapper {
   public static toDto(administrator: Administrator): AdministratorResponseDto {
-    return new AdministratorResponseDto(
-      administrator.fullname,
-      administrator.email,
-      administrator.phone,
-    );
+    return new AdministratorResponseDto(administrator.fullname, administrator.email, administrator.phone);
   }
 }

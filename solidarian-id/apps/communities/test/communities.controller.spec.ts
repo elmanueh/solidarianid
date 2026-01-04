@@ -35,9 +35,7 @@ describe('CommunitiesController', () => {
       { id: '2', name: 'Com2', description: 'desc2' },
     ];
     mockService.getCommunities.mockResolvedValueOnce(right(domainData));
-    await expect(controller.getPublicCommunities()).resolves.toEqual(
-      expectedDtos,
-    );
+    await expect(controller.getPublicCommunities()).resolves.toEqual(expectedDtos);
     expect(mockService.getCommunities).toHaveBeenCalledTimes(1);
   });
 

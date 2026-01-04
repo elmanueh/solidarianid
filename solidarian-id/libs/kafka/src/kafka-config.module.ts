@@ -11,8 +11,7 @@ const DEFAULT_BROKERS = ['localhost:9092'];
     {
       provide: KAFKA_BROKERS,
       inject: [ConfigService],
-      useFactory: (config: ConfigService) =>
-        config.get<string>('KAFKA_BROKERS')?.split(',') ?? DEFAULT_BROKERS,
+      useFactory: (config: ConfigService) => config.get<string>('KAFKA_BROKERS')?.split(',') ?? DEFAULT_BROKERS,
     },
   ],
   exports: [KAFKA_BROKERS],

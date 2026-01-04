@@ -49,9 +49,7 @@ export class CommunityMembership extends ValueObject<CommunityMembershipProps> {
   ): Either<InvalidUniqueEntityIDError, CommunityMembership> {
     // Validar que el nombre de la comunidad no esté vacío
     if (!props.communityName || props.communityName.trim().length === 0) {
-      return left(
-        new InvalidUniqueEntityIDError('Community name cannot be empty.'),
-      );
+      return left(new InvalidUniqueEntityIDError('Community name cannot be empty.'));
     }
 
     // Validar el ID de la comunidad

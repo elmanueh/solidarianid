@@ -2,12 +2,7 @@
 import { INestApplication, DynamicModule } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { AdminModule } from '@app/admin/administrator/admin.module';
-import {
-  MongoDBSeeder,
-  MongoDBTestContainer,
-  MongoDBTestModule,
-  TestServerHelper,
-} from '@solidarianid/testing';
+import { MongoDBSeeder, MongoDBTestContainer, MongoDBTestModule, TestServerHelper } from '@solidarianid/testing';
 
 describe('ReportsApiController (e2e)', () => {
   const existingUserId = '550e8400-e29b-41d4-a716-446655440000';
@@ -40,10 +35,7 @@ describe('ReportsApiController (e2e)', () => {
 
   describe('GET /api/reports/users/:id', () => {
     it('should return detailed user information for valid ID', async () => {
-      const response = await server
-        .getRequest()
-        .get(`/api/reports/users/${existingUserId}`)
-        .expect(200);
+      const response = await server.getRequest().get(`/api/reports/users/${existingUserId}`).expect(200);
 
       expect(response.body).toHaveProperty('id', existingUserId);
       expect(response.body).toHaveProperty('username');
@@ -55,10 +47,7 @@ describe('ReportsApiController (e2e)', () => {
     });
 
     it('should include community memberships with correct structure', async () => {
-      const response = await server
-        .getRequest()
-        .get(`/api/reports/users/${existingUserId}`)
-        .expect(200);
+      const response = await server.getRequest().get(`/api/reports/users/${existingUserId}`).expect(200);
 
       if (response.body.communities.length > 0) {
         const membership = response.body.communities[0];
@@ -70,10 +59,7 @@ describe('ReportsApiController (e2e)', () => {
 
     describe('Not Found Errors (404 Not Found)', () => {
       it('should return 404 when user does not exist', async () => {
-        const response = await server
-          .getRequest()
-          .get(`/api/reports/users/${nonExistentUserId}`)
-          .expect(404);
+        const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}`).expect(404);
 
         expect(response.body).toHaveProperty('statusCode', 404);
         expect(response.body).toHaveProperty('message');
@@ -81,10 +67,7 @@ describe('ReportsApiController (e2e)', () => {
       });
 
       it('should return 404 with meaningful error message', async () => {
-        const response = await server
-          .getRequest()
-          .get(`/api/reports/users/${nonExistentUserId}`)
-          .expect(404);
+        const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}`).expect(404);
 
         expect(response.body.message).toContain(nonExistentUserId);
       });
@@ -92,20 +75,14 @@ describe('ReportsApiController (e2e)', () => {
 
     describe('Edge Cases', () => {
       it('should handle malformed UUID gracefully', async () => {
-        await server
-          .getRequest()
-          .get('/api/reports/users/invalid-uuid-format')
-          .expect(404);
+        await server.getRequest().get('/api/reports/users/invalid-uuid-format').expect(404);
       });
     });
   });
 
   describe('GET /api/reports/users/:id/pdf', () => {
     it('should generate and download PDF for existing user', async () => {
-      const response = await server
-        .getRequest()
-        .get(`/api/reports/users/${existingUserId}/pdf`)
-        .expect(200);
+      const response = await server.getRequest().get(`/api/reports/users/${existingUserId}/pdf`).expect(200);
 
       expect(response.headers['content-type']).toBe('application/pdf');
       expect(response.headers['content-disposition']).toContain('attachment');
@@ -114,10 +91,7 @@ describe('ReportsApiController (e2e)', () => {
     });
 
     it('should include username in PDF filename', async () => {
-      const response = await server
-        .getRequest()
-        .get(`/api/reports/users/${existingUserId}/pdf`)
-        .expect(200);
+      const response = await server.getRequest().get(`/api/reports/users/${existingUserId}/pdf`).expect(200);
 
       const contentDisposition = response.headers['content-disposition'];
       expect(contentDisposition).toMatch(/reporte-[\w-]+\.pdf/);
@@ -125,10 +99,7 @@ describe('ReportsApiController (e2e)', () => {
 
     describe('Not Found Errors (404 Not Found)', () => {
       it('should return 404 when user does not exist', async () => {
-        const response = await server
-          .getRequest()
-          .get(`/api/reports/users/${nonExistentUserId}/pdf`)
-          .expect(404);
+        const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}/pdf`).expect(404);
 
         expect(response.body).toHaveProperty('statusCode', 404);
         expect(response.body).toHaveProperty('message');
@@ -136,10 +107,7 @@ describe('ReportsApiController (e2e)', () => {
       });
 
       it('should not return PDF headers on 404 error', async () => {
-        const response = await server
-          .getRequest()
-          .get(`/api/reports/users/${nonExistentUserId}/pdf`)
-          .expect(404);
+        const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}/pdf`).expect(404);
 
         expect(response.headers['content-type']).not.toBe('application/pdf');
       });
@@ -147,19 +115,13 @@ describe('ReportsApiController (e2e)', () => {
 
     describe('Edge Cases', () => {
       it('should handle malformed UUID in PDF endpoint', async () => {
-        await server
-          .getRequest()
-          .get('/api/reports/users/invalid-uuid/pdf')
-          .expect(404);
+        await server.getRequest().get('/api/reports/users/invalid-uuid/pdf').expect(404);
       });
     });
 
     describe('PDF Content Validation', () => {
       it('should return valid PDF binary data', async () => {
-        const response = await server
-          .getRequest()
-          .get(`/api/reports/users/${existingUserId}/pdf`)
-          .expect(200);
+        const response = await server.getRequest().get(`/api/reports/users/${existingUserId}/pdf`).expect(200);
 
         // PDF files start with %PDF-
         const pdfHeader = response.body.toString('utf8', 0, 5);
@@ -167,18 +129,12 @@ describe('ReportsApiController (e2e)', () => {
       });
 
       it('should generate unique filenames based on timestamp', async () => {
-        const response1 = await server
-          .getRequest()
-          .get(`/api/reports/users/${existingUserId}/pdf`)
-          .expect(200);
+        const response1 = await server.getRequest().get(`/api/reports/users/${existingUserId}/pdf`).expect(200);
 
         // Small delay to ensure different timestamp
-        await new Promise((resolve) => setTimeout(resolve, 10));
+        await new Promise(resolve => setTimeout(resolve, 10));
 
-        const response2 = await server
-          .getRequest()
-          .get(`/api/reports/users/${existingUserId}/pdf`)
-          .expect(200);
+        const response2 = await server.getRequest().get(`/api/reports/users/${existingUserId}/pdf`).expect(200);
 
         const filename1 = response1.headers['content-disposition'];
         const filename2 = response2.headers['content-disposition'];

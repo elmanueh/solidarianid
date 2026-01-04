@@ -7,9 +7,7 @@ import { CommunitiesService } from '@app/communities/communities/domain/services
 
 @Injectable()
 export class CommunitiesServiceImpl implements CommunitiesService {
-  constructor(
-    private readonly communityRepository: CommunitiesRepositoryPort,
-  ) {}
+  constructor(private readonly communityRepository: CommunitiesRepositoryPort) {}
 
   async getCommunities(): Promise<Either<ValidationError, Community[]>> {
     return await this.communityRepository.getAllCommunitiesSummary();

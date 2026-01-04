@@ -7,9 +7,7 @@ interface PieConfigInput {
   tooltipCallbacks?: Record<string, string>;
 }
 
-export function createPieConfig(
-  input: PieConfigInput,
-): SerializableChartConfig {
+export function createPieConfig(input: PieConfigInput): SerializableChartConfig {
   return {
     type: 'pie',
     data: {

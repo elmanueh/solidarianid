@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Query,
-  Render,
-  BadRequestException,
-} from '@nestjs/common';
+import { Controller, Get, Query, Render, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import type { User } from '@app/admin/administrator/model/domain/models/user';
@@ -33,16 +27,11 @@ export class ReportsViewController {
     // Validar query param page
     const pageNumber = this.validatePageNumber(page);
     if (pageNumber < 1) {
-      throw new BadRequestException(
-        'El número de página debe ser un entero positivo',
-      );
+      throw new BadRequestException('El número de página debe ser un entero positivo');
     }
 
     // Obtener usuarios paginados del servicio
-    const result = await this.usersService.getPaginatedUsers(
-      pageNumber,
-      this.USERS_PER_PAGE,
-    );
+    const result = await this.usersService.getPaginatedUsers(pageNumber, this.USERS_PER_PAGE);
 
     // Manejar error del repositorio
     if (result.isLeft()) {
@@ -60,10 +49,7 @@ export class ReportsViewController {
     const paginatedResult = result.value;
 
     // Validar que la página solicitada no exceda el total
-    if (
-      pageNumber > paginatedResult.totalPages &&
-      paginatedResult.totalPages > 0
-    ) {
+    if (pageNumber > paginatedResult.totalPages && paginatedResult.totalPages > 0) {
       throw new BadRequestException(
         `La página ${pageNumber} no existe. Total de páginas: ${paginatedResult.totalPages}`,
       );
@@ -73,10 +59,7 @@ export class ReportsViewController {
     const usersViewModel = this.mapUsersToViewModel(paginatedResult.data);
 
     // Calcular paginación
-    const pagination = this.buildPaginationViewModel(
-      paginatedResult.page,
-      paginatedResult.totalPages,
-    );
+    const pagination = this.buildPaginationViewModel(paginatedResult.page, paginatedResult.totalPages);
 
     // Retornar objeto para renderizado automático con @Render
     return {
@@ -114,7 +97,7 @@ export class ReportsViewController {
    * @returns Array de objetos simples con propiedades para renderizar
    */
   private mapUsersToViewModel(users: User[]) {
-    return users.map((user) => ({
+    return users.map(user => ({
       id: user.id.value,
       username: user.username,
       location: {

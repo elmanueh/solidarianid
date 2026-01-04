@@ -55,10 +55,7 @@ export class Action extends AggregateRoot<ActionProps> {
    *
    * @return Either<InvalidUniqueEntityIDError | InvalidNameError | InvalidDescriptionError, Action>
    */
-  public static create(
-    props: ActionCreationProps,
-    id?: string,
-  ): Either<ValidationError, Action> {
+  public static create(props: ActionCreationProps, id?: string): Either<ValidationError, Action> {
     const uniqueId = UniqueEntityID.create(id);
     const name = Name.create(props.name);
     const description = Description.create(props.description);

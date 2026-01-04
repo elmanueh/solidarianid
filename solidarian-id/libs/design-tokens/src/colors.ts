@@ -178,17 +178,5 @@ export const semanticColors = {
 /**
  * Helper para acceder a colores de forma type-safe
  */
-export type ColorShade =
-  | 50
-  | 100
-  | 200
-  | 300
-  | 400
-  | 500
-  | 600
-  | 700
-  | 800
-  | 900
-  | 950
-  | 999;
+export type ColorShade = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950 | 999;
 export type ColorName = keyof typeof colors;

@@ -19,9 +19,7 @@ export class Direction extends ValueObject<DirectionProps> {
     return this.value === other.value;
   }
 
-  public static create(
-    plainDirection: string,
-  ): Either<InvalidDirectionError, Direction> {
+  public static create(plainDirection: string): Either<InvalidDirectionError, Direction> {
     // Validar que no esté vacío
     if (!plainDirection || plainDirection.trim().length === 0) {
       return left(new InvalidDirectionError('Direction cannot be empty.'));

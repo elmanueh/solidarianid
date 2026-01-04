@@ -27,9 +27,7 @@ export class UsersConsumerServiceImpl extends UsersConsumerService {
    * @param userEventDto DTO con los datos del usuario desde el evento de Kafka
    * @returns Either con RepositoryException si falla o el User guardado
    */
-  async saveNewUser(
-    userEventDto: UserEventDto,
-  ): Promise<Either<RepositoryException, void>> {
+  async saveNewUser(userEventDto: UserEventDto): Promise<Either<RepositoryException, void>> {
     try {
       // Crear entidad User desde el DTO de Kafka
       // Los usuarios de eventos de Kafka aún no tienen comunidades asignadas
@@ -44,11 +42,7 @@ export class UsersConsumerServiceImpl extends UsersConsumerService {
 
       // Validar que la entidad se creó correctamente
       if (userOrError.isLeft()) {
-        return left(
-          new RepositoryException(
-            `Validation error creating user entity: ${userOrError.value.message}`,
-          ),
-        );
+        return left(new RepositoryException(`Validation error creating user entity: ${userOrError.value.message}`));
       }
 
       const user = userOrError.value;
@@ -62,12 +56,7 @@ export class UsersConsumerServiceImpl extends UsersConsumerService {
 
       return right(void 0);
     } catch (error) {
-      return left(
-        new RepositoryException(
-          'Unexpected error processing user event',
-          error,
-        ),
-      );
+      return left(new RepositoryException('Unexpected error processing user event', error));
     }
   }
 }

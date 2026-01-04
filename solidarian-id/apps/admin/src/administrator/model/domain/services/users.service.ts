@@ -15,19 +15,14 @@ export abstract class UsersService {
    * @param limit Número de usuarios por página
    * @returns Either con error o resultado paginado
    */
-  abstract getPaginatedUsers(
-    page: number,
-    limit: number,
-  ): Promise<Either<RepositoryException, PaginatedResult<User>>>;
+  abstract getPaginatedUsers(page: number, limit: number): Promise<Either<RepositoryException, PaginatedResult<User>>>;
 
   /**
    * Obtiene un usuario específico por su ID
    * @param id ID del usuario (UUID v4)
    * @returns Either con UserNotFoundError si no existe o el usuario encontrado
    */
-  abstract getUserById(
-    id: string,
-  ): Promise<Either<RepositoryException | UserNotFoundError, User>>;
+  abstract getUserById(id: string): Promise<Either<RepositoryException | UserNotFoundError, User>>;
 
   /**
    * Obtiene el total de usuarios en el sistema

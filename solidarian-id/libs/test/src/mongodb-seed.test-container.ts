@@ -36,8 +36,7 @@ export class MongoDBSeeder implements IDatabaseSeeder {
         fullname: 'Login Test User',
         email: 'login.test@solidarianid.org',
         phone: '+34612345100',
-        password:
-          '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
+        password: '$2b$10$zesypsEg9VMRGzbVdxu/quhEhp.OTBQ0Eb.QfwBqP2KiIg/uvi8e2', // Admin2024!Pass
       },
     ];
 
@@ -52,9 +51,7 @@ export class MongoDBSeeder implements IDatabaseSeeder {
 
     const collections = await this.connection.db.collections();
 
-    await Promise.all(
-      collections.map((collection) => collection.deleteMany({})),
-    );
+    await Promise.all(collections.map(collection => collection.deleteMany({})));
   }
 
   async seedUsers(users: any[] = []): Promise<void> {

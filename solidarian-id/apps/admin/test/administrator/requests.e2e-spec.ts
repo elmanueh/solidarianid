@@ -3,12 +3,7 @@ import { Connection } from 'mongoose';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { RequestsModule } from '@app/admin/administrator/requests.module';
-import {
-  MongoDBSeeder,
-  MongoDBTestContainer,
-  MongoDBTestModule,
-  TestServerHelper,
-} from '@solidarianid/testing';
+import { MongoDBSeeder, MongoDBTestContainer, MongoDBTestModule, TestServerHelper } from '@solidarianid/testing';
 
 describe('RequestsController (e2e)', () => {
   let repository: RequestsRepositoryPort;
@@ -111,11 +106,7 @@ describe('RequestsController (e2e)', () => {
       });
 
       it('should return 400 when request body is empty', async () => {
-        await server
-          .getRequest()
-          .patch(`/requests/${pendingRequestId}`)
-          .send({})
-          .expect(400);
+        await server.getRequest().patch(`/requests/${pendingRequestId}`).send({}).expect(400);
       });
 
       it('should return 400 when status is rejected but reason is missing', async () => {

@@ -12,11 +12,7 @@ export class RequestsServiceImpl extends RequestsService {
     super();
   }
 
-  async updateStatus(
-    id: string,
-    status: RequestStatus,
-    reason?: string,
-  ): Promise<Either<ValidationError, void>> {
+  async updateStatus(id: string, status: RequestStatus, reason?: string): Promise<Either<ValidationError, void>> {
     const idOrError = UniqueEntityID.create(id);
     if (idOrError.isLeft()) {
       return left(idOrError.value);

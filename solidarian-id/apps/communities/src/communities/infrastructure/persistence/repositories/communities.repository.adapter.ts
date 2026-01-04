@@ -22,22 +22,18 @@ export class CommunitiesRepositoryAdapter
     super(communityRepository, communityMapper);
   }
 
-  async getAllCommunitiesSummary(): Promise<
-    Either<ValidationError, Community[]>
-  > {
+  async getAllCommunitiesSummary(): Promise<Either<ValidationError, Community[]>> {
     const communities = await this.communityRepository.find({
       select: ['id', 'name', 'description'],
     });
 
-    const filtered = communities.map((e) =>
-      this.communityMapper.fromPersistence(e),
-    );
+    const filtered = communities.map(e => this.communityMapper.fromPersistence(e));
 
-    if (filtered.some((c) => c.isLeft())) {
-      const firstError = filtered.find((c) => c.isLeft())!;
+    if (filtered.some(c => c.isLeft())) {
+      const firstError = filtered.find(c => c.isLeft())!;
       return left(firstError.value);
     }
 
-    return right(filtered.map((c) => c.value as Community));
+    return right(filtered.map(c => c.value as Community));
   }
 }

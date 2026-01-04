@@ -66,21 +66,15 @@ const createMockUsers = (): User[] => {
   );
 
   if (user1Result.isLeft()) {
-    throw new Error(
-      `Failed to create mock user 1: ${user1Result.value.message}`,
-    );
+    throw new Error(`Failed to create mock user 1: ${user1Result.value.message}`);
   }
 
   if (user2Result.isLeft()) {
-    throw new Error(
-      `Failed to create mock user 2: ${user2Result.value.message}`,
-    );
+    throw new Error(`Failed to create mock user 2: ${user2Result.value.message}`);
   }
 
   if (user3Result.isLeft()) {
-    throw new Error(
-      `Failed to create mock user 3: ${user3Result.value.message}`,
-    );
+    throw new Error(`Failed to create mock user 3: ${user3Result.value.message}`);
   }
 
   return [user1Result.value, user2Result.value, user3Result.value];

@@ -1,8 +1,5 @@
 import { User } from '@app/admin/administrator/model/domain/models/user';
-import {
-  UserDetailResponseDto,
-  CommunityDto,
-} from '../../model/application/dtos/output/user-detail-response.dto';
+import { UserDetailResponseDto, CommunityDto } from '../../model/application/dtos/output/user-detail-response.dto';
 import type { CommunityMembership } from '@app/admin/administrator/model/domain/value-objects/community-membership';
 
 /**
@@ -15,11 +12,7 @@ export class UserDtoMapper {
   static toDetailDto(user: User): UserDetailResponseDto {
     const communities = user.communityMemberships.map(
       (membership: CommunityMembership) =>
-        new CommunityDto(
-          membership.communityId,
-          membership.communityName,
-          membership.isAdmin,
-        ),
+        new CommunityDto(membership.communityId, membership.communityName, membership.isAdmin),
     );
 
     return new UserDetailResponseDto(

@@ -27,10 +27,7 @@ export class ReportsApiController {
    * GET /api/reports/users/:id
    */
   @Get('/users/:id')
-  async getUserDetail(
-    @Param('id') id: string,
-    @Res() response: Response = {} as Response,
-  ): Promise<Response> {
+  async getUserDetail(@Param('id') id: string, @Res() response: Response = {} as Response): Promise<Response> {
     const result = await this.userService.getUserById(id);
 
     if (result.isLeft()) {
@@ -43,8 +40,7 @@ export class ReportsApiController {
     }
 
     const user = result.value;
-    const userDetailDto: UserDetailResponseDto =
-      UserDtoMapper.toDetailDto(user);
+    const userDetailDto: UserDetailResponseDto = UserDtoMapper.toDetailDto(user);
 
     return response.status(HttpStatus.OK).json(userDetailDto);
   }
@@ -54,10 +50,7 @@ export class ReportsApiController {
    * GET /api/reports/users/:id/pdf
    */
   @Get('/users/:id/pdf')
-  async downloadUserPdf(
-    @Param('id') id: string,
-    @Res() response: Response = {} as Response,
-  ): Promise<Response> {
+  async downloadUserPdf(@Param('id') id: string, @Res() response: Response = {} as Response): Promise<Response> {
     // Obtener datos del usuario
     const result = await this.userService.getUserById(id);
 
@@ -91,13 +84,11 @@ export class ReportsApiController {
       city: user.city,
       countryCode: user.countryCode,
       countryName: countryNames[user.countryCode] || user.countryCode,
-      communities: user.communityMemberships.map(
-        (membership: CommunityMembership) => ({
-          id: membership.communityId,
-          name: membership.communityName,
-          isAdmin: membership.isAdmin,
-        }),
-      ),
+      communities: user.communityMemberships.map((membership: CommunityMembership) => ({
+        id: membership.communityId,
+        name: membership.communityName,
+        isAdmin: membership.isAdmin,
+      })),
       generatedAt: new Date(),
     };
 
@@ -107,10 +98,7 @@ export class ReportsApiController {
 
       // Configurar headers de respuesta
       response.setHeader('Content-Type', 'application/pdf');
-      response.setHeader(
-        'Content-Disposition',
-        `attachment; filename="reporte-${user.username}-${Date.now()}.pdf"`,
-      );
+      response.setHeader('Content-Disposition', `attachment; filename="reporte-${user.username}-${Date.now()}.pdf"`);
 
       // Pipe el stream al response
       pdfStream.pipe(response);

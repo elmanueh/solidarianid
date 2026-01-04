@@ -6,9 +6,7 @@ import { colors } from '@frontend/design-tokens/colors';
 import { Injectable } from '@nestjs/common';
 import { UserPdfGeneratorPort } from '../../domain/ports/output/user-pdf-generator.port';
 
-type PDFDoc = typeof PDFDocument extends new (...args: any[]) => infer R
-  ? R
-  : never;
+type PDFDoc = typeof PDFDocument extends new (...args: any[]) => infer R ? R : never;
 
 /**
  * Generador de PDF para reportes de usuario usando PDFKit
@@ -24,10 +22,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
 
   constructor() {
     // Ruta al logo desde la carpeta de design tokens (funciona tanto en runtime como en tests)
-    this.logoPath = join(
-      process.cwd(),
-      'libs/design-tokens/src/icons/solidarian-128x128.png',
-    );
+    this.logoPath = join(process.cwd(), 'libs/design-tokens/src/icons/solidarian-128x128.png');
   }
 
   /**
@@ -81,11 +76,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
         // Resolver con el stream
         resolve(doc as unknown as Readable);
       } catch (error) {
-        reject(
-          error instanceof Error
-            ? error
-            : new Error('Error generating PDF document'),
-        );
+        reject(error instanceof Error ? error : new Error('Error generating PDF document'));
       }
     });
   }
@@ -102,26 +93,13 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     }
 
     // Título principal
-    doc
-      .fontSize(24)
-      .font('Helvetica-Bold')
-      .fillColor(colors.oceanBlue[700])
-      .text('SolidarianID', 50, 50);
+    doc.fontSize(24).font('Helvetica-Bold').fillColor(colors.oceanBlue[700]).text('SolidarianID', 50, 50);
 
     // Título del reporte
-    doc
-      .fontSize(18)
-      .font('Helvetica-Bold')
-      .fillColor(colors.blackHaze[950])
-      .text('Reporte de Usuario', 50, 90);
+    doc.fontSize(18).font('Helvetica-Bold').fillColor(colors.blackHaze[950]).text('Reporte de Usuario', 50, 90);
 
     // Línea separadora
-    doc
-      .strokeColor(colors.iron[200])
-      .lineWidth(1)
-      .moveTo(50, 120)
-      .lineTo(545, 120)
-      .stroke();
+    doc.strokeColor(colors.iron[200]).lineWidth(1).moveTo(50, 120).lineTo(545, 120).stroke();
 
     // Fecha de generación
     doc
@@ -183,12 +161,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     this.renderField(doc, 'Ciudad', data.city, currentY);
     currentY += 30; // Espacio entre bloques
 
-    this.renderField(
-      doc,
-      'País',
-      `${data.countryName} (${data.countryCode})`,
-      currentY,
-    );
+    this.renderField(doc, 'País', `${data.countryName} (${data.countryCode})`, currentY);
     currentY += 40; // Espacio antes de la siguiente sección
 
     doc.moveDown(2);
@@ -201,11 +174,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     const startY = doc.y;
 
     // Título de sección
-    this.renderSectionTitle(
-      doc,
-      `Comunidades (${data.communities.length})`,
-      startY,
-    );
+    this.renderSectionTitle(doc, `Comunidades (${data.communities.length})`, startY);
 
     let currentY = startY + 30;
 
@@ -216,7 +185,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
         .fillColor(colors.paleSky[400])
         .text('No pertenece a ninguna comunidad', 50, currentY);
     } else {
-      data.communities.forEach((community) => {
+      data.communities.forEach(community => {
         // Verificar si hay espacio suficiente, si no, crear nueva página
         if (currentY > 700) {
           doc.addPage();
@@ -238,12 +207,8 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
 
         // Badge de rol
         const badgeText = community.isAdmin ? 'Administrador' : 'Miembro';
-        const badgeColor = community.isAdmin
-          ? colors.harvestOrange[100]
-          : colors.oceanBlue[100];
-        const badgeTextColor = community.isAdmin
-          ? colors.harvestOrange[800]
-          : colors.oceanBlue[800];
+        const badgeColor = community.isAdmin ? colors.harvestOrange[100] : colors.oceanBlue[100];
+        const badgeTextColor = community.isAdmin ? colors.harvestOrange[800] : colors.oceanBlue[800];
 
         const badgeWidth = doc.widthOfString(badgeText) + 20;
         const badgeX = 495 - badgeWidth;
@@ -277,15 +242,10 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
       .fontSize(8)
       .font('Helvetica')
       .fillColor(colors.paleSky[400])
-      .text(
-        'Este documento ha sido generado automáticamente por SolidarianID',
-        50,
-        bottomY,
-        {
-          align: 'center',
-          width: 495,
-        },
-      );
+      .text('Este documento ha sido generado automáticamente por SolidarianID', 50, bottomY, {
+        align: 'center',
+        width: 495,
+      });
 
     doc.text(`Usuario: ${data.username} | ID: ${data.id}`, 50, bottomY + 12, {
       align: 'center',
@@ -305,11 +265,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
    * Renderiza un título de sección
    */
   private renderSectionTitle(doc: PDFDoc, title: string, y: number): void {
-    doc
-      .fontSize(14)
-      .font('Helvetica-Bold')
-      .fillColor(colors.blackHaze[950])
-      .text(title, 50, y);
+    doc.fontSize(14).font('Helvetica-Bold').fillColor(colors.blackHaze[950]).text(title, 50, y);
 
     // Línea debajo del título
     doc
@@ -323,18 +279,9 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
   /**
    * Renderiza un campo con label y valor
    */
-  private renderField(
-    doc: PDFDoc,
-    label: string,
-    value: string,
-    y: number,
-  ): void {
+  private renderField(doc: PDFDoc, label: string, value: string, y: number): void {
     // Label
-    doc
-      .fontSize(9)
-      .font('Helvetica-Bold')
-      .fillColor(colors.paleSky[500])
-      .text(label.toUpperCase(), 50, y);
+    doc.fontSize(9).font('Helvetica-Bold').fillColor(colors.paleSky[500]).text(label.toUpperCase(), 50, y);
 
     // Valor
     doc

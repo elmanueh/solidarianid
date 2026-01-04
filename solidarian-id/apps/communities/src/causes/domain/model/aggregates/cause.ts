@@ -61,10 +61,7 @@ export class Cause extends AggregateRoot<CauseProps> {
    *
    * @return Either<InvalidUniqueEntityIDError | InvalidNameError | InvalidDescriptionError | InvalidDurationDaysError, Cause>
    */
-  public static create(
-    props: CauseCreationProps,
-    id?: string,
-  ): Either<ValidationError, Cause> {
+  public static create(props: CauseCreationProps, id?: string): Either<ValidationError, Cause> {
     const uniqueId = UniqueEntityID.create(id);
     const name = Name.create(props.name);
     const description = Description.create(props.description);

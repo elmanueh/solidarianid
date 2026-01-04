@@ -28,11 +28,7 @@ export class City extends ValueObject<CityProps> {
 
     // Validar longitud máxima de city
     if (city.length > CITY_MAX_LENGTH) {
-      return left(
-        new InvalidCityError(
-          `City name must not exceed ${CITY_MAX_LENGTH} characters.`,
-        ),
-      );
+      return left(new InvalidCityError(`City name must not exceed ${CITY_MAX_LENGTH} characters.`));
     }
 
     return right(new City(city));

@@ -10,6 +10,7 @@ export class UserMapper implements Mapper<User, UserEntity> {
   toPersistence(user: User): UserEntity {
     return {
       _id: user.id.value,
+      fullName: user.fullName,
       username: user.username,
       phone: user.phone,
       location: {
@@ -27,6 +28,7 @@ export class UserMapper implements Mapper<User, UserEntity> {
   fromPersistence(document: UserEntity): Either<ValidationError, User> {
     return User.create(
       document._id,
+      document.fullName,
       document.username,
       document.phone,
       document.location.city,

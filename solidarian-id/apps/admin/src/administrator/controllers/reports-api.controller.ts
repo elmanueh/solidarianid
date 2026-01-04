@@ -79,6 +79,7 @@ export class ReportsApiController {
     // Preparar datos para el PDF
     const pdfData: UserReportPdfDto = {
       id: user.id.value,
+      fullName: user.fullName,
       username: user.username,
       phone: user.phone,
       city: user.city,

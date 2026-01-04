@@ -134,6 +134,9 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     // Campos con espaciado mejorado
     let currentY = startY + 30;
 
+    this.renderField(doc, 'Nombre Completo', data.fullName, currentY);
+    currentY += 30; // Espacio entre bloques
+
     this.renderField(doc, 'ID Solidario', data.id, currentY);
     currentY += 30; // Espacio entre bloques
 

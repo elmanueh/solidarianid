@@ -30,6 +30,9 @@ export class UserEntity {
   _id: string;
 
   @Prop({ required: true })
+  fullName: string;
+
+  @Prop({ required: true })
   username: string;
 
   @Prop({ required: true })

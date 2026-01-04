@@ -33,6 +33,7 @@ export class UsersConsumerServiceImpl extends UsersConsumerService {
       // Los usuarios de eventos de Kafka aún no tienen comunidades asignadas
       const userOrError = User.create(
         userEventDto.id,
+        userEventDto.fullName,
         userEventDto.username,
         userEventDto.mobilePhone,
         userEventDto.city,

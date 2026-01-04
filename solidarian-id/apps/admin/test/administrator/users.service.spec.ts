@@ -23,6 +23,7 @@ const createMockUserRepository = (): jest.Mocked<UserRepositoryPort> => ({
 const createMockUsers = (): User[] => {
   const user1Result = User.create(
     '550e8400-e29b-41d4-a716-446655440000',
+    'Juan Pérez',
     'juan_perez',
     '+34612345678',
     'Madrid',
@@ -43,6 +44,7 @@ const createMockUsers = (): User[] => {
 
   const user2Result = User.create(
     '550e8400-e29b-41d4-a716-446655440001',
+    'María López',
     'maria_lopez',
     '+52155123456',
     'Ciudad de México',
@@ -58,6 +60,7 @@ const createMockUsers = (): User[] => {
 
   const user3Result = User.create(
     '550e8400-e29b-41d4-a716-446655440002',
+    'Carlos García',
     'carlos_garcia',
     '+541145678910',
     'Buenos Aires',

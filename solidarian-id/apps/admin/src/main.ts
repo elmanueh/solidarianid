@@ -21,8 +21,8 @@ async function bootstrap() {
     'hbs',
     engine({
       extname: '.hbs',
-      layoutsDir: join(__dirname, 'views/layouts'),
-      partialsDir: join(__dirname, 'views/partials'),
+      layoutsDir: join(process.cwd(), 'apps/admin/views/layouts'),
+      partialsDir: join(process.cwd(), 'apps/admin/views/partials'),
       defaultLayout: 'auth',
       helpers: {
         // Helper para comparación de igualdad
@@ -50,9 +50,9 @@ async function bootstrap() {
   );
 
   app.setViewEngine('hbs');
-  app.setBaseViewsDir(join(__dirname, 'views'));
+  app.setBaseViewsDir(join(process.cwd(), 'apps/admin/views'));
 
-  app.useStaticAssets(join(__dirname, 'public'));
+  app.useStaticAssets(join(process.cwd(), 'apps/admin/public'));
 
   app.set('view cache', false);
 

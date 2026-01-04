@@ -3,6 +3,7 @@
  */
 export interface UserReportPdfDto {
   id: string;
+  fullName: string;
   username: string;
   phone: string;
   city: string;

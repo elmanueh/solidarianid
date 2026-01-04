@@ -3,11 +3,13 @@ import { Entity } from '@app/ddd/entity';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Username } from '@app/value-objects/model/username';
+import { FullName } from '@app/value-objects/model/fullname';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { UserLocation } from '@app/value-objects/model/user-location';
 import { CommunityMembership } from '@app/admin/administrator/model/domain/value-objects/community-membership';
 
 interface UserProps {
+  fullName: FullName;
   username: Username;
   phone: MobilePhone;
   location: UserLocation;
@@ -30,6 +32,7 @@ export class User extends Entity<UserProps> {
    */
   public static create(
     id: string,
+    fullName: string,
     username: string,
     phone: string,
     city: string,
@@ -44,6 +47,12 @@ export class User extends Entity<UserProps> {
     const idOrError = UniqueEntityID.create(id);
     if (idOrError.isLeft()) {
       return left(idOrError.value);
+    }
+
+    // Validar fullName
+    const fullNameOrError = FullName.create(fullName);
+    if (fullNameOrError.isLeft()) {
+      return left(fullNameOrError.value);
     }
 
     // Validar username
@@ -76,6 +85,7 @@ export class User extends Entity<UserProps> {
 
     const user = new User(
       {
+        fullName: fullNameOrError.value,
         username: usernameOrError.value,
         phone: phoneOrError.value,
         location: locationOrError.value,
@@ -90,6 +100,10 @@ export class User extends Entity<UserProps> {
   // ════════════════════════════════════════════════════════════════
   // GETTERS
   // ════════════════════════════════════════════════════════════════
+
+  get fullName(): string {
+    return this.props.fullName.value;
+  }
 
   get username(): string {
     return this.props.username.value;

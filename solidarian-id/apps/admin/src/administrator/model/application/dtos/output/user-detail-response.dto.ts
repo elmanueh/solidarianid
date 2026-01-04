@@ -19,6 +19,7 @@ export class CommunityDto {
  */
 export class UserDetailResponseDto {
   id: string;
+  fullName: string;
   username: string;
   phone: string;
   city: string;
@@ -27,6 +28,7 @@ export class UserDetailResponseDto {
 
   constructor(
     id: string,
+    fullName: string,
     username: string,
     phone: string,
     city: string,
@@ -34,6 +36,7 @@ export class UserDetailResponseDto {
     communities: CommunityDto[],
   ) {
     this.id = id;
+    this.fullName = fullName;
     this.username = username;
     this.phone = phone;
     this.city = city;

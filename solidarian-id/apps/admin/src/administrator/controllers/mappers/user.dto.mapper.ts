@@ -17,6 +17,7 @@ export class UserDtoMapper {
 
     return new UserDetailResponseDto(
       user.id.value,
+      user.fullName,
       user.username,
       user.phone,
       user.city,

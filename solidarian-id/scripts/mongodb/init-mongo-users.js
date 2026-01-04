@@ -11,6 +11,7 @@ db.createCollection('users');
 const users = [
   {
     _id: '550e8400-e29b-41d4-a716-446655440001',
+    fullName: 'Juan Pérez',
     username: 'juanperez',
     phone: '+34612345678',
     location: {
@@ -34,6 +35,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440002',
+    fullName: 'María López',
     username: 'marialopez',
     phone: '+34623456789',
     location: {
@@ -62,6 +64,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440003',
+    fullName: 'Carlos Ruiz',
     username: 'carlosruiz',
     phone: '+34634567890',
     location: {
@@ -80,6 +83,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440004',
+    fullName: 'Ana González',
     username: 'anagonzalez',
     phone: '+34645678901',
     location: {
@@ -92,6 +96,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440005',
+    fullName: 'Luis Rodríguez',
     username: 'luisrodriguez',
     phone: '+52155123456',
     location: {
@@ -115,6 +120,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440006',
+    fullName: 'Laura Martínez',
     username: 'lauramartinez',
     phone: '+541143210987',
     location: {
@@ -138,6 +144,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440007',
+    fullName: 'David Hernández',
     username: 'davidhernandez',
     phone: '+34656789012',
     location: {
@@ -156,6 +163,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440008',
+    fullName: 'Sofía Torres',
     username: 'sofiatorres',
     phone: '+573001234567',
     location: {
@@ -184,6 +192,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440009',
+    fullName: 'Javier Moreno',
     username: 'javiermoreno',
     phone: '+34667890123',
     location: {
@@ -196,6 +205,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440010',
+    fullName: 'Carmen Gómez',
     username: 'carmengomez',
     phone: '+34678901234',
     location: {
@@ -219,6 +229,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440011',
+    fullName: 'Pedro Álvarez',
     username: 'pedroalvarez',
     phone: '+56912345678',
     location: {
@@ -237,6 +248,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440012',
+    fullName: 'Isabel Sánchez',
     username: 'isabelsanchez',
     phone: '+34689012345',
     location: {
@@ -265,6 +277,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440013',
+    fullName: 'Miguel Castro',
     username: 'miguelcastro',
     phone: '+34690123456',
     location: {
@@ -277,6 +290,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440014',
+    fullName: 'Rosa Vargas',
     username: 'rosavargas',
     phone: '+51987654321',
     location: {
@@ -300,6 +314,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440015',
+    fullName: 'Antonio Fernández',
     username: 'antoniofernandez',
     phone: '+34601234567',
     location: {
@@ -323,6 +338,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440016',
+    fullName: 'Beatriz López',
     username: 'beatrizlopez',
     phone: '+34612345670',
     location: {
@@ -341,6 +357,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440017',
+    fullName: 'Francisco Jiménez',
     username: 'franciscojimenez',
     phone: '+593987654321',
     location: {
@@ -364,6 +381,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440018',
+    fullName: 'Elena Rodríguez',
     username: 'elenarodriguez',
     phone: '+34623456780',
     location: {
@@ -376,6 +394,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440019',
+    fullName: 'Ramón García',
     username: 'ramongarcia',
     phone: '+34634567891',
     location: {
@@ -399,6 +418,7 @@ const users = [
   },
   {
     _id: '550e8400-e29b-41d4-a716-446655440020',
+    fullName: 'Pilar Martínez',
     username: 'pilarmartinez',
     phone: '+34645678902',
     location: {

@@ -33,7 +33,7 @@ const createMockResponse = (): jest.Mocked<Response> => {
 };
 
 const createMockUser = (id: string, username: string): User => {
-  const userResult = User.create(id, username, '+34612345678', 'Madrid', 'ES', [
+  const userResult = User.create(id, 'Test User', username, '+34612345678', 'Madrid', 'ES', [
     {
       communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
       communityName: 'Test Community',
@@ -181,7 +181,15 @@ describe('ReportsApiController', () => {
 
       it('should handle user with no communities', async () => {
         const mockResponse = createMockResponse();
-        const userResult = User.create(userId, 'no_communities', '+34612345678', 'Madrid', 'ES', []);
+        const userResult = User.create(
+          userId,
+          'No Communities User',
+          'no_communities',
+          '+34612345678',
+          'Madrid',
+          'ES',
+          [],
+        );
         if (userResult.isRight()) {
           mockUsersService.getUserById.mockResolvedValue(right(userResult.value));
 
@@ -350,7 +358,15 @@ describe('ReportsApiController', () => {
 
       it('should handle unknown country code', async () => {
         const mockResponse = createMockResponse();
-        const userResult = User.create(userId, 'unknown_country', '+11234567890', 'Unknown City', 'XX', []);
+        const userResult = User.create(
+          userId,
+          'Unknown Country User',
+          'unknown_country',
+          '+11234567890',
+          'Unknown City',
+          'XX',
+          [],
+        );
         if (userResult.isRight()) {
           const mockStream = createMockPdfStream();
           mockUsersService.getUserById.mockResolvedValue(right(userResult.value));

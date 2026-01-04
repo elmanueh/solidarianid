@@ -60,6 +60,7 @@ export class MongoDBSeeder implements IDatabaseSeeder {
     const defaultUsers: any[] = [
       {
         _id: '550e8400-e29b-41d4-a716-446655440000',
+        fullName: 'Test User One',
         username: 'test_user_1',
         phone: '+34612345678',
         location: {
@@ -76,6 +77,7 @@ export class MongoDBSeeder implements IDatabaseSeeder {
       },
       {
         _id: '550e8400-e29b-41d4-a716-446655440001',
+        fullName: 'Test User Two',
         username: 'test_user_2',
         phone: '+34612345679',
         location: {

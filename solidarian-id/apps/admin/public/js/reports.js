@@ -122,7 +122,11 @@
         </h3>
         <div class="detail-info-grid">
           <div class="detail-info-item">
-            <span class="detail-info-label">ID</span>
+            <span class="detail-info-label">Nombre Completo</span>
+            <span class="detail-info-value">${userData.fullName}</span>
+          </div>
+          <div class="detail-info-item">
+            <span class="detail-info-label">ID Solidario</span>
             <span class="detail-info-value">${userData.id}</span>
           </div>
           <div class="detail-info-item">

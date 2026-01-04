@@ -1,4 +1,4 @@
-name: CI/CD - SolidarianID
+name: CI - SolidarianID
 
 on:
   # El CI se ejecutará en cada push o pull request a la rama develop
@@ -10,12 +10,9 @@ on:
   pull_request:
     paths:
       - "solidarian-id/**"
-      - "!docs/**"
+      - "deployment/**"
     branches: [develop]
   workflow_dispatch:
-
-env:
-  IMAGE_NAME: solidarianid
 
 jobs:
   ci:
@@ -206,159 +203,3 @@ jobs:
         with:
           name: sonar-cnes-report
           path: solidarian-id/reports/sonar
-  cd:
-    name: CD Pipeline
-    runs-on: ubuntu-latest
-    if: false #github.actor != 'github-actions[bot]'
-    needs: ci
-    env:
-      AWS_REGION: eu-south-2 # {{ secrets.AWS_REGION }}
-      DOCKERHUB_USERNAME: zerep0 # {{ secrets.DOCKERHUB_USERNAME }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Generate image tag
-        id: image-tag
-        run: |
-          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-          IMAGE_TAG="${SHORT_SHA}-$(date +%s)"
-          echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: zerep0 #${{ secrets.DOCKERHUB_USERNAME }}
-          password: dckr_pat_XUXulXWMLguhYJVoYX205e-RSM8 #${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
-
-      - name: Build and push Docker images
-        id: build-images
-        working-directory: deployment
-        env:
-          IMAGE_TAG: ${{ steps.image-tag.outputs.tag }}
-        run: |
-          set -euo pipefail
-
-          # Build all 3 apps
-          docker compose -p deployment build admin-app user-app community-app
-
-          # Tag and push admin-app
-          docker tag deployment-admin-app:latest zerep0/solidarianid-admin:$IMAGE_TAG
-          docker tag deployment-admin-app:latest zerep0/solidarianid-admin:latest
-          docker push zerep0/solidarianid-admin:$IMAGE_TAG
-          docker push zerep0/solidarianid-admin:latest
-
-          # Tag and push users-app
-          docker tag deployment-user-app:latest zerep0/solidarianid-user:$IMAGE_TAG
-          docker tag deployment-user-app:latest zerep0/solidarianid-user:latest
-          docker push zerep0/solidarianid-user:$IMAGE_TAG
-          docker push zerep0/solidarianid-user:latest
-
-          # Tag and push communities-app
-          docker tag deployment-community-app:latest zerep0/solidarianid-community:$IMAGE_TAG
-          docker tag deployment-community-app:latest zerep0/solidarianid-community:latest
-          docker push zerep0/solidarianid-community:$IMAGE_TAG
-          docker push zerep0/solidarianid-community:latest
-
-          echo "admin-image=zerep0/solidarianid-admin:$IMAGE_TAG" >> $GITHUB_OUTPUT
-          echo "users-image=zerep0/solidarianid-user:$IMAGE_TAG" >> $GITHUB_OUTPUT
-          echo "communities-image=zerep0/solidarianid-community:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: AKIA4TJL7BLFRNZVE3E2 #${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: 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 #${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-south-2 # ${{ secrets.AWS_REGION }}
-
-      - name: Deploy Network Stack
-        working-directory: deployment
-        run: |
-          aws cloudformation deploy \
-            --stack-name MyStackNetwork \
-            --template-file lab-network.yaml \
-            --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
-            --no-fail-on-empty-changeset
-
-      - name: Deploy Application Stack
-        working-directory: deployment
-        run: |
-          aws cloudformation deploy \
-            --stack-name MyStackApp \
-            --template-file stack.yaml \
-            --parameter-overrides DockerHubUsername=zerep0 \
-            --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
-            --no-fail-on-empty-changeset
-
-      - name: Force new deployment (if stack unchanged)
-        run: |
-          set -euo pipefail
-
-          INSTANCE_ID="$(aws cloudformation describe-stack-resources \
-            --stack-name MyStackApp \
-            --logical-resource-id WebServerInstance \
-            --query 'StackResources[0].PhysicalResourceId' \
-            --output text)"
-
-          if [ -z "$INSTANCE_ID" ] || [ "$INSTANCE_ID" = "None" ]; then
-            echo "No instance id found"
-            exit 1
-          fi
-
-          echo "Forcing deployment on instance: $INSTANCE_ID"
-
-          CMD_ID="$(aws ssm send-command \
-            --instance-ids "$INSTANCE_ID" \
-            --document-name "AWS-RunShellScript" \
-            --parameters 'commands=["cd /home/ec2-user && docker-compose pull && docker-compose up -d --force-recreate"]' \
-            --query "Command.CommandId" \
-            --output text)"
-
-          aws ssm wait command-executed --command-id "$CMD_ID" --instance-id "$INSTANCE_ID"
-
-          STATUS="$(aws ssm get-command-invocation \
-            --command-id "$CMD_ID" \
-            --instance-id "$INSTANCE_ID" \
-            --query "Status" \
-            --output text)"
-
-          if [ "$STATUS" != "Success" ]; then
-            echo "SSM failed: $STATUS"
-            aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id "$INSTANCE_ID"
-            exit 1
-          fi
-
-      - name: Get deployment URLs
-        id: get-urls
-        run: |
-          ADMIN_URL=$(aws cloudformation describe-stacks \
-            --stack-name MyStackApp \
-            --query 'Stacks[0].Outputs[?OutputKey==`AdminURL`].OutputValue' \
-            --output text)
-          USERS_URL=$(aws cloudformation describe-stacks \
-            --stack-name MyStackApp \
-            --query 'Stacks[0].Outputs[?OutputKey==`UsersURL`].OutputValue' \
-            --output text)
-          COMMUNITIES_URL=$(aws cloudformation describe-stacks \
-            --stack-name MyStackApp \
-            --query 'Stacks[0].Outputs[?OutputKey==`CommunitiesURL`].OutputValue' \
-            --output text)
-          echo "admin-url=${ADMIN_URL}" >> $GITHUB_OUTPUT
-          echo "users-url=${USERS_URL}" >> $GITHUB_OUTPUT
-          echo "communities-url=${COMMUNITIES_URL}" >> $GITHUB_OUTPUT
-
-      - name: Deployment Status
-        if: ${{ success() }}
-        run: |
-          echo "✅ Deployment successful!"
-          echo "🚀 Admin App URL: ${{ steps.get-urls.outputs.admin-url }}"
-          echo "🚀 Users App URL: ${{ steps.get-urls.outputs.users-url }}"
-          echo "🚀 Communities App URL: ${{ steps.get-urls.outputs.communities-url }}"
-
-      - name: Deployment Failure Notification
-        if: ${{ failure() }}
-        run: |
-          echo "❌ Deployment failed!"

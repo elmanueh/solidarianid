@@ -21,7 +21,7 @@ Parameters:
   DockerHubUsername:
     Description: Docker Hub username for pulling images
     Type: String
-    Default: Zerep0
+    Default: zerep0
 
 Resources:
   WebServerInstance:

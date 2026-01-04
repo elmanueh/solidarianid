@@ -3,14 +3,7 @@ import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
 import { DataSource } from 'typeorm';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { UsersModule } from '@app/users/users.module';
-import {
-  TestServerHelper,
-  PostgreSQLSeeder,
-  PostgreSQLTestContainer,
-  KafkaTestContainer,
-  PostgreSQLTestModule,
-  KafkaTestModule,
-} from '@solidarianid/testing';
+import { TestServerHelper, PostgreSQLSeeder, PostgreSQLTestModule, KafkaTestModule } from '@solidarianid/testing';
 
 describe('UsersController (e2e)', () => {
   let server!: TestServerHelper;
@@ -37,8 +30,6 @@ describe('UsersController (e2e)', () => {
 
   afterAll(async () => {
     await app.close();
-    await PostgreSQLTestContainer.getInstance().stop();
-    await KafkaTestContainer.getInstance().stop();
   });
 
   describe('/users (POST)', () => {
@@ -47,6 +38,7 @@ describe('UsersController (e2e)', () => {
         .getRequest()
         .post('/users')
         .send({
+          fullName: 'John Doe Smith',
           username: 'johnDoe',
           mobilePhone: '+34612345678',
           password: 'SecureP*ssw0rd123',
@@ -62,6 +54,7 @@ describe('UsersController (e2e)', () => {
         .getRequest()
         .post('/users')
         .send({
+          fullName: 'Jane Smith Williams',
           username: 'janeSmith',
           mobilePhone: '+15551234567',
           password: 'ValidPassword789!',
@@ -78,6 +71,7 @@ describe('UsersController (e2e)', () => {
         .getRequest()
         .post('/users')
         .send({
+          fullName: 'Test User Duplicate',
           username: 'testUsername',
           mobilePhone: '+34677889900',
           password: 'SecureP*ssw0rd123',

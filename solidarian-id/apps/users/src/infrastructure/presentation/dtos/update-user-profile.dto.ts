@@ -5,11 +5,25 @@ import {
   MOBILE_PHONE_REGEX,
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
+  FULLNAME_MIN_LENGTH,
+  FULLNAME_MAX_LENGTH,
 } from '@app/value-objects/constants/validation.constants';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsISO31661Alpha2, IsOptional, IsString, Length, Matches, MaxLength } from 'class-validator';
 
 export class UpdateUserProfileDtoRequest {
+  @ApiProperty({
+    description: 'Full name of the user',
+    example: 'Juan García López',
+    minLength: FULLNAME_MIN_LENGTH,
+    maxLength: FULLNAME_MAX_LENGTH,
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  @Length(FULLNAME_MIN_LENGTH, FULLNAME_MAX_LENGTH)
+  fullName?: string;
+
   @ApiProperty({
     description: 'Username for the new user´containing only alphanumeric characters',
     example: 'johnDoe',

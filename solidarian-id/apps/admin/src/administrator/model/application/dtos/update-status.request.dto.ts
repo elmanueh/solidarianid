@@ -1,10 +1,11 @@
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { IsIn, IsString } from 'class-validator';
+import { IsIn, IsString, IsOptional } from 'class-validator';
 
 export class UpdateStatusRequestDto {
   @IsIn([RequestStatus.APPROVED, RequestStatus.REJECTED])
   status: RequestStatus;
 
+  @IsOptional()
   @IsString()
   reason?: string;
 }

@@ -10,6 +10,7 @@ export class UserMapper implements Mapper<User, UserEntity> {
   toPersistence(user: User) {
     const entity = new UserEntity();
     entity.id = user.id.value;
+    entity.fullName = user.fullName;
     entity.username = user.username;
     entity.mobilePhone = user.mobilePhone;
     entity.passwordHash = user.passwordHash;
@@ -21,6 +22,7 @@ export class UserMapper implements Mapper<User, UserEntity> {
   fromPersistence(entity: UserEntity): Either<ValidationError, User> {
     return User.create(
       {
+        fullName: entity.fullName,
         username: entity.username,
         mobilePhone: entity.mobilePhone,
         passwordHash: entity.passwordHash,

@@ -40,6 +40,11 @@ lib-cov
 # nyc test coverage
 .nyc_output
 
+# Test reports
+test-results/
+junit.xml
+*.xml
+
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 

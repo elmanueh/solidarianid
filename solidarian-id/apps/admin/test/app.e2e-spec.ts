@@ -2,7 +2,7 @@ import { DynamicModule } from '@nestjs/common';
 import { AdminModule } from '@app/admin/administrator/admin.module';
 import { AuthModule } from '@app/admin/auth/auth.module';
 import { AppController } from '@app/admin/app.controller';
-import { MongoDBTestModule, TestServerHelper, MongoDBTestContainer } from '@solidarianid/testing';
+import { MongoDBTestContainer, MongoDBTestModule, TestServerHelper } from '@solidarianid/testing';
 
 describe('AppController (e2e)', () => {
   let server!: TestServerHelper;
@@ -17,7 +17,7 @@ describe('AppController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await server.close();
+    if (server) await server.close();
     await MongoDBTestContainer.getInstance().stop();
   });
 

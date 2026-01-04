@@ -4,14 +4,9 @@ const baseJestConfig: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   rootDir: '.',
-  roots: ['<rootDir>/apps', '<rootDir>/libs'],
+  roots: ['<rootDir>/apps', '<rootDir>/libs', '<rootDir>/test'],
 
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-    String.raw`\.e2e-spec\.ts$`,
-    String.raw`\.cy\.ts$`,
-  ],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', String.raw`\.e2e-spec\.ts$`, String.raw`\.cy\.ts$`],
 
   moduleNameMapper: {
     '^@solidarianid/testing(.*)$': '<rootDir>/libs/test/src$1',
@@ -35,15 +30,32 @@ const baseJestConfig: Config = {
 
   collectCoverageFrom: [
     'apps/**/*.ts',
+    '!libs/**',
     '!**/*.spec.ts',
     '!**/*.test.ts',
     '!**/*.e2e-spec.ts',
     '!**/*.module.ts',
     '!**/main.ts',
+    '!**/*.entity.ts',
+    '!**/*.dto.ts',
+    '!**/*.d.ts',
+    '!**/jest*.config.ts',
+    '!**/*.config.ts',
+    '!**/index.ts',
+    '!**/*.filter.ts',
+    '!**/*.guard.ts',
+    '!**/*.mapper.ts',
+    '!**/*.port.ts',
+    '!**/fake*.ts',
+    '!**/enums/**',
+    '!**/model/**',
+    '!**/models/**',
   ],
 
+  reporters: ['default'],
+  collectCoverage: true,
   coverageDirectory: './coverage',
-  coverageReporters: ['text', 'lcov', 'json'],
+  coverageReporters: ['lcov', 'text', 'json'],
 
   testTimeout: 60000,
 };

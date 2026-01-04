@@ -1,16 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { right, left } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { CommunitiesServiceImpl } from '../src/communities/application/services/communities.service.impl';
-import { CommunitiesRepositoryPort } from '../src/communities/domain/ports/communities.repository.port';
+import { CommunitiesServiceImpl } from '@app/communities/application/services/communities.service.impl';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 
 describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;
-  let mockRepo: { getAllCommunitiesSummary: jest.Mock };
+  let mockRepo: { findAll: jest.Mock; findById: jest.Mock };
 
   beforeEach(async () => {
     mockRepo = {
-      getAllCommunitiesSummary: jest.fn(),
+      findAll: jest.fn(),
+      findById: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -21,9 +22,9 @@ describe('CommunitiesServiceImpl', () => {
   });
 
   it('returns empty array when repository returns []', async () => {
-    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce(right([]));
+    mockRepo.findAll.mockResolvedValueOnce(right([]));
     await expect(service.getCommunities()).resolves.toEqual(right([]));
-    expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
+    expect(mockRepo.findAll).toHaveBeenCalledTimes(1);
   });
 
   it('returns summaries when repository returns data', async () => {
@@ -31,15 +32,15 @@ describe('CommunitiesServiceImpl', () => {
       { id: '1', name: 'Comunidad 1', description: 'Esta es la comunidad 1' },
       { id: '2', name: 'Comunidad 2', description: 'Esta es la comunidad 2' },
     ];
-    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce(right(data));
+    mockRepo.findAll.mockResolvedValueOnce(right(data));
     await expect(service.getCommunities()).resolves.toEqual(right(data));
-    expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
+    expect(mockRepo.findAll).toHaveBeenCalledTimes(1);
   });
 
   it('propagates ValidationError from repository', async () => {
     const err = new ValidationError('invalid repo data');
-    mockRepo.getAllCommunitiesSummary.mockResolvedValueOnce(left(err));
+    mockRepo.findAll.mockResolvedValueOnce(left(err));
     await expect(service.getCommunities()).resolves.toEqual(left(err));
-    expect(mockRepo.getAllCommunitiesSummary).toHaveBeenCalledTimes(1);
+    expect(mockRepo.findAll).toHaveBeenCalledTimes(1);
   });
 });

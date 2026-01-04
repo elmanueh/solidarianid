@@ -1,0 +1,25 @@
+{{#each causes}}
+<article class="request" data-variant="cause" data-id="{{this.id}}">
+  <section class="name-buttons-request">
+    <span class="font-bold text-md sm:text-lg">{{this.name}}</span>
+
+    {{> validation-buttons}}
+  </section>
+
+  <section class="flex flex-col gap-2 text-sm sm:text-md">
+    <span>{{this.date}}</span>
+    <p>{{this.description}}</p>
+  </section>
+
+  {{#if this.action_requests}} {{#each this.action_requests}}
+  <article class="request" data-variant="action-nested">
+    <span class="font-bold text-sm sm:text-md">{{this.name}}</span>
+
+    <section class="flex flex-col gap-2 text-xs sm:text-sm">
+      <span>{{this.date}}</span>
+      <p>{{this.description}}</p>
+    </section>
+  </article>
+  {{/each}} {{/if}}
+</article>
+{{/each}}

@@ -7,6 +7,7 @@ import {
   createMonthlyJoinsLine,
 } from '../../utils/chart-builder';
 import { ConfigService } from '@nestjs/config';
+import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -14,7 +15,10 @@ import { ConfigService } from '@nestjs/config';
  */
 @Controller()
 export class AdminViewController {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly requestsService: RequestsService,
+  ) {}
 
   @Get('/dashboard')
   @Render('pages/metrics')
@@ -40,17 +44,26 @@ export class AdminViewController {
       layout: 'dashboard',
       dataSummary,
       charts: JSON.stringify(charts),
-      apiBaseUrl: this.configService.get<string>('API_ADMIN_BASE_URL'),
+      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }
 
   @Get('/requests')
   @Render('pages/requests')
-  requests() {
+  async requests() {
+    const [actionsResult, causesResult, communitiesResult] = await Promise.all([
+      this.requestsService.getPendingActionRequests(),
+      this.requestsService.getPendingCauseRequests(),
+      this.requestsService.getPendingCommunityRequests(),
+    ]);
+
     return {
       title: 'Requests',
       layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_ADMIN_BASE_URL'),
+      actions: actionsResult.isRight() ? actionsResult.value : [],
+      causes: causesResult.isRight() ? causesResult.value : [],
+      communities: communitiesResult.isRight() ? communitiesResult.value : [],
+      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }
 }

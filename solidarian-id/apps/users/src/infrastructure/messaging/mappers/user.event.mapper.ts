@@ -8,6 +8,7 @@ export class UserEventMapper extends Mapper<User, UserEventDto> {
   toDto(user: User): UserEventDto {
     const dto = new UserEventDto();
     dto.id = user.id.value;
+    dto.fullName = user.fullName;
     dto.username = user.username;
     dto.mobilePhone = user.mobilePhone;
     dto.city = user.city;

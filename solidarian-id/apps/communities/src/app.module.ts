@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from 'apps/communities/src/database.module';
-import { CommunitiesModule } from '@app/communities/communities/communities.module';
-import { CausesModule } from '@app/communities/causes/causes.module';
-import { ActionsModule } from '@app/communities/actions/actions.module';
+import { DatabaseModule } from './database.module';
+import { CommunitiesModule } from './communities.module';
+import { KafkaBrokersModule } from 'libs/kafka/src/kafka-config.module';
 
 @Module({
   imports: [
@@ -12,9 +11,8 @@ import { ActionsModule } from '@app/communities/actions/actions.module';
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     DatabaseModule,
+    KafkaBrokersModule,
     CommunitiesModule,
-    CausesModule,
-    ActionsModule,
   ],
 })
 export class AppModule {}

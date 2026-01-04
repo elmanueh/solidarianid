@@ -5,6 +5,14 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Injectable } from '@nestjs/common';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
+import { RequestAction } from '@app/admin/administrator/model/domain/models/action.request';
+import { RequestCause } from '@app/admin/administrator/model/domain/models/cause.request';
+import { RequestCommunity } from '@app/admin/administrator/model/domain/models/community.request';
+import {
+  fakeCommunityRequests,
+  fakeCauseRequests,
+  fakeActionRequests,
+} from '@app/admin/administrator/model/data/fakeRequest';
 
 @Injectable()
 export class RequestsServiceImpl extends RequestsService {
@@ -41,5 +49,17 @@ export class RequestsServiceImpl extends RequestsService {
 
     await this.requestsRepository.save(request);
     return right(undefined);
+  }
+
+  getPendingCommunityRequests(): Promise<Either<ValidationError, RequestCommunity[]>> {
+    return Promise.resolve(right(fakeCommunityRequests as unknown as RequestCommunity[]));
+  }
+
+  getPendingCauseRequests(): Promise<Either<ValidationError, RequestCause[]>> {
+    return Promise.resolve(right(fakeCauseRequests as unknown as RequestCause[]));
+  }
+
+  getPendingActionRequests(): Promise<Either<ValidationError, RequestAction[]>> {
+    return Promise.resolve(right(fakeActionRequests as unknown as RequestAction[]));
   }
 }

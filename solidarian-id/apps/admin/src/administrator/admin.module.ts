@@ -2,6 +2,7 @@ import { AdminApiController } from '@app/admin/administrator/controllers/admin-a
 import { AdminViewController } from '@app/admin/administrator/controllers/admin-view.controller';
 import { ReportsViewController } from '@app/admin/administrator/controllers/reports-view.controller';
 import { ReportsApiController } from '@app/admin/administrator/controllers/reports-api.controller';
+import { RequestsModule } from '@app/admin/administrator/requests.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -18,7 +19,7 @@ import { UserMapper } from '@app/admin/administrator/model/infrastructure/persis
 import { UserEntity, UserSchema } from '@app/admin/administrator/model/infrastructure/persistence/entities/user.entity';
 
 @Module({
-  imports: [ConfigModule, MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }])],
+  imports: [ConfigModule, RequestsModule, MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }])],
   controllers: [
     UserConsumerAdapter,
     AdminViewController,

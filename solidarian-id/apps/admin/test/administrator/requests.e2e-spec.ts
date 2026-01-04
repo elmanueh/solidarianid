@@ -3,7 +3,7 @@ import { Connection } from 'mongoose';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { RequestsModule } from '@app/admin/administrator/requests.module';
-import { MongoDBSeeder, MongoDBTestContainer, MongoDBTestModule, TestServerHelper } from '@solidarianid/testing';
+import { MongoDBSeeder, MongoDBTestModule, TestServerHelper } from '@solidarianid/testing';
 
 describe('RequestsController (e2e)', () => {
   let repository: RequestsRepositoryPort;
@@ -33,7 +33,6 @@ describe('RequestsController (e2e)', () => {
 
   afterAll(async () => {
     await server.close();
-    await MongoDBTestContainer.getInstance().stop();
   });
 
   describe('PATCH /requests/:id', () => {

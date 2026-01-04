@@ -56,6 +56,7 @@ export class UsersServiceImpl extends UsersService {
 
     // 3. Crear el usuario
     const user = User.create({
+      fullName: command.fullName,
       username: command.username,
       mobilePhone: command.mobilePhone,
       passwordHash: passwordHashingResult.value,
@@ -93,7 +94,7 @@ export class UsersServiceImpl extends UsersService {
     userId: string,
     updateUserProfileCommand: UpdateUserProfileCommand,
   ): Promise<Either<ValidationError | RepositoryException, void>> {
-    const { username, mobilePhone, city, countryCode } = updateUserProfileCommand;
+    const { fullName, username, mobilePhone, city, countryCode } = updateUserProfileCommand;
 
     const userOrError = await this.usersRepository.findById(userId);
 
@@ -103,7 +104,7 @@ export class UsersServiceImpl extends UsersService {
 
     const user = userOrError.value;
 
-    const userUpdateOrError = user.updateUserProfile(username, mobilePhone, city, countryCode);
+    const userUpdateOrError = user.updateUserProfile(fullName, username, mobilePhone, city, countryCode);
 
     if (userUpdateOrError.isLeft()) {
       return left(userUpdateOrError.value);
@@ -114,6 +115,8 @@ export class UsersServiceImpl extends UsersService {
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
+
+    await this.usersPublisher.publish(EventType.USER_UPDATED, user);
 
     return right(undefined);
   }

@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
 import { join } from 'node:path';
 import { engine } from 'express-handlebars';
@@ -13,11 +12,11 @@ import { ConflictErrorFilter } from './administrator/controllers/filters/conflic
 import { InternalServerErrorFilter } from './administrator/controllers/filters/internal-server-error.filter';
 import { NotFoundErrorFilter } from './administrator/controllers/filters/not-found-error.filter';
 import { ValidationErrorFilter } from './administrator/controllers/filters/validation-error.filter';
+import { ConfigService } from '@nestjs/config/dist/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
-
   app.engine(
     'hbs',
     engine({
@@ -95,7 +94,9 @@ async function bootstrap() {
 
   await app.startAllMicroservices();
 
-  await app.listen(configService.get<string>('ADMIN_PORT') || 5000);
+  const port = configService.get<number>('ADMIN_PORT') ?? 3000;
+  console.log(`Server running on port ${port}`);
+  await app.listen(port);
 }
 
 void bootstrap();

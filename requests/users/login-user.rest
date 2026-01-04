@@ -9,7 +9,7 @@
 @wrongPassword = Wrong@Password123
 
 ### Create a user for testing login
-POST {{baseUrl}}/users
+POST {{baseUrl}}/api/users
 Content-Type: {{contentType}}
 
 {
@@ -24,7 +24,7 @@ Content-Type: {{contentType}}
 
 ### Test 1 - Should return not found if the user does not exist
 
-POST {{baseUrl}}/users/login HTTP/1.1
+POST {{baseUrl}}/api/users/login HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -34,7 +34,7 @@ Content-Type: {{contentType}}
 
 ### Test 2 - Should login successfully
 
-POST {{baseUrl}}/users/login HTTP/1.1
+POST {{baseUrl}}/api/users/login HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -44,7 +44,7 @@ Content-Type: {{contentType}}
 
 ### Test 3 - Should return Bad Request for missing password
 
-POST {{baseUrl}}/users/login HTTP/1.1
+POST {{baseUrl}}/api/users/login HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -54,7 +54,7 @@ Content-Type: {{contentType}}
 
 ### Test 4 - Should return Bad Request for missing username
 
-POST {{baseUrl}}/users/login HTTP/1.1
+POST {{baseUrl}}/api/users/login HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -63,14 +63,14 @@ Content-Type: {{contentType}}
 
 ### Test 5 - Should return Bad Request for empty body
 
-POST {{baseUrl}}/users/login HTTP/1.1
+POST {{baseUrl}}/api/users/login HTTP/1.1
 Content-Type: {{contentType}}
 
 {
 }
 
 ### Test 6 - Should return Unauthorized for wrong password
-POST {{baseUrl}}/users/login HTTP/1.1
+POST {{baseUrl}}/api/users/login HTTP/1.1
 Content-Type: {{contentType}}
 
 {

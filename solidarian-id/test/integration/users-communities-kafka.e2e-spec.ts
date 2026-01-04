@@ -149,7 +149,7 @@ describe('Users-Communities Kafka Integration', () => {
         countryCode: 'ES',
       };
 
-      const response = await usersServer.getRequest().post('/users').send(newUserPayload).expect(201);
+      const response = await usersServer.getRequest().post('/api/users').send(newUserPayload).expect(201);
 
       const locationHeader = response.headers['location'];
       expect(locationHeader).toBeDefined();
@@ -189,7 +189,7 @@ describe('Users-Communities Kafka Integration', () => {
       const createdUserIds: string[] = [];
 
       for (const userPayload of users) {
-        const response = await usersServer.getRequest().post('/users').send(userPayload).expect(201);
+        const response = await usersServer.getRequest().post('/api/users').send(userPayload).expect(201);
         const userId = response.headers['location'].split('/').pop()!;
         createdUserIds.push(userId);
       }
@@ -218,7 +218,7 @@ describe('Users-Communities Kafka Integration', () => {
         countryCode: 'ES',
       };
 
-      const createResponse = await usersServer.getRequest().post('/users').send(newUserPayload).expect(201);
+      const createResponse = await usersServer.getRequest().post('/api/users').send(newUserPayload).expect(201);
 
       const userId = createResponse.headers['location'].split('/').pop()!;
 
@@ -234,7 +234,7 @@ describe('Users-Communities Kafka Integration', () => {
         mobilePhone: '+34699333444',
       };
 
-      await usersServer.getRequest().patch(`/users/${userId}`).send(updatePayload).expect(204);
+      await usersServer.getRequest().patch(`/api/users/${userId}`).send(updatePayload).expect(204);
 
       await eventTracker.waitFor(`user:${userId}`);
 

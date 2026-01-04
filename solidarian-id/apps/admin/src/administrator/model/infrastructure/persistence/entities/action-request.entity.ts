@@ -14,16 +14,14 @@ export type ActionRequestDocument = HydratedDocument<ActionRequestEntity>;
 
 @Schema()
 export class ActionRequestEntity extends RequestEntity {
-  @Prop({ required: true, index: true })
-  causeId: string;
-
   @Prop({ type: [ObjectiveEmbeddedSchema], default: [] })
   objectives: ObjectiveEmbedded[];
 
   @Prop({ type: [EventEmbeddedSchema], default: [] })
   events: EventEmbedded[];
+
+  @Prop({ required: true, index: true })
+  causeId: string;
 }
 
 export const ActionRequestSchema = SchemaFactory.createForClass(ActionRequestEntity);
-
-ActionRequestSchema.index({ causeId: 1 });

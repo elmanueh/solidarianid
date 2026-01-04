@@ -9,7 +9,7 @@ import { Repository } from '@app/ddd/repository/repository';
  * Port for Request repository operations.
  */
 export abstract class RequestsRepositoryPort extends Repository<Request<any>> {
-  abstract findRequestsByStatusAndType(
+  abstract findByStatusAndType(
     status: RequestStatus,
     type: RequestType,
   ): Promise<Either<RepositoryException, Request<any>[]>>;

@@ -16,16 +16,16 @@ export class RequestConsumerAdapter {
   async handleRequestEvent(@Payload() payload: RequestEvent): Promise<void> {
     try {
       const { data, eventType } = payload;
+      this.logger.debug(`Received event: ${eventType}, type: ${data.type}, id: ${data.id}`);
       const result = await this.dispatch(eventType, data);
 
-      if (!result.isLeft()) return;
-      this.logger.error(`Error processing request event: ${result.value.message}`);
+      if (result.isLeft()) {
+        this.logger.error(`Error processing request event: ${result.value.message}`);
+      }
     } catch (error) {
       this.logger.error(`Unexpected error processing request event: ${error}`);
       throw error;
     }
-
-    await this.requestService.createRequest(payload.data);
   }
 
   private async dispatch(

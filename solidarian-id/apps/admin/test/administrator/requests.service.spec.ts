@@ -1,13 +1,13 @@
 import { RequestsServiceImpl } from '@app/admin/administrator/model/application/services/requests.service.impl';
-import { SustainableDevelopmentGoal } from '@app/admin/administrator/model/domain/enums/ods';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
-import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause.request';
+import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
 import { Request } from '@app/admin/administrator/model/domain/models/request';
 import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { Test, TestingModule } from '@nestjs/testing';
 
 const createMockRequestsRepository = (): jest.Mocked<RequestsRepositoryPort> => ({
@@ -15,33 +15,36 @@ const createMockRequestsRepository = (): jest.Mocked<RequestsRepositoryPort> => 
   remove: jest.fn(),
   findById: jest.fn(),
   findAll: jest.fn(),
+  findByStatusAndType: jest.fn(),
 });
 
 const createMockRequests = (): Request<any>[] => {
-  const request1Result = CauseRequest.create(
-    {
-      name: 'Environmental Conservation Request',
-      description: 'Comprehensive environmental initiative',
-      status: RequestStatus.PENDING,
-      startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-      ods: [SustainableDevelopmentGoal.NoPoverty],
-    },
-    '2db201c8-5d35-462e-a1d1-985cb677725d',
-  );
+  const request1Result = CauseRequest.reconstitute({
+    id: '2db201c8-5d35-462e-a1d1-985cb677725d',
+    name: 'Environmental Conservation Request',
+    description: 'Comprehensive environmental initiative',
+    status: RequestStatus.PENDING,
+    startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    duration: 30,
+    userId: '04a6ba1e-5b2b-4765-b46b-5f07a52b4b60',
+    ods: [SustainableDevelopmentGoal.NoPoverty],
+    actions: [],
+    communityId: '1c9e1f4e-3d2f-4b6a-8f4e-2d3c4b5a6e7f',
+  });
 
-  const request2Result = CauseRequest.create(
-    {
-      name: 'Hunger Relief Initiative',
-      description: 'Detailed hunger program',
-      status: RequestStatus.APPROVED,
-      reason: 'Meets all criteria and aligns with organizational goals',
-      startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-      ods: [SustainableDevelopmentGoal.ZeroHunger],
-    },
-    '3db201c8-5d35-462e-a1d1-985cb677725e',
-  );
+  const request2Result = CauseRequest.reconstitute({
+    id: '3db201c8-5d35-462e-a1d1-985cb677725e',
+    name: 'Hunger Relief Initiative',
+    description: 'Detailed hunger program',
+    status: RequestStatus.APPROVED,
+    reason: 'Meets all criteria and aligns with organizational goals',
+    startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    duration: 15,
+    userId: '4d8cd85d-db4b-4705-9727-72355583a5ce',
+    ods: [SustainableDevelopmentGoal.ZeroHunger],
+    actions: [],
+    communityId: '2d9e1f4e-3d2f-4b6a-8f4e-2d3c4b5a6e7f',
+  });
 
   if (request1Result.isLeft()) {
     throw new Error(`Failed to create mock request 1: ${request1Result.value.message}`);

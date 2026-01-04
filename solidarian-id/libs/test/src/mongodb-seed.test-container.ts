@@ -19,8 +19,11 @@ export class MongoDBSeeder implements IDatabaseSeeder {
         status: RequestStatus.PENDING,
         type: RequestType.CAUSE,
         startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+        duration: 30,
         ods: [1, 2],
+        userId: '53ba64a8-7e4d-4c35-a7e3-06e6f39f3728',
+        communityId: 'f1e6d3c4-8b2a-4f4b-9c4d-2e5f6a7b8c9d',
+        actionsId: [],
       },
     ];
     const allRequests = [...defaultRequests, ...requests];

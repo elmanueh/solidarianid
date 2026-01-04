@@ -18,12 +18,6 @@ export class CauseRequestEntity extends RequestEntity {
 
   @Prop({ required: true, index: true })
   communityId: string;
-
-  @Prop({ type: [String], default: [] })
-  actionsId: string[];
 }
 
 export const CauseRequestSchema = SchemaFactory.createForClass(CauseRequestEntity);
-
-CauseRequestSchema.index({ communityId: 1 });
-CauseRequestSchema.index({ actionsId: 1 });

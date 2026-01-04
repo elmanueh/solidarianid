@@ -18,7 +18,7 @@ import { RequestConsumerAdapter } from '@app/admin/administrator/model/infrastru
 import { KafkaDynamicModule } from '@solidarianid/kafka';
 import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
 import { RequestsKafkaPublisherAdapter } from '@app/admin/administrator/model/infrastructure/messaging/request.publisher';
-import { RequestEventMapper } from '@app/admin/administrator/model/infrastructure/messaging/request.event.mapper';
+import { RequestEventMapper } from '@app/admin/administrator/model/infrastructure/messaging/request-event.mapper';
 
 @Module({
   imports: [

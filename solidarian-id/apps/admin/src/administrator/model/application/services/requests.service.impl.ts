@@ -157,10 +157,7 @@ export class RequestsServiceImpl extends RequestsService {
   }
 
   async getCommunityRequestsPending(): Promise<Either<ValidationError, CommunityRequest[]>> {
-    const communitiesOrError = await this.repository.findRequestsByStatusAndType(
-      RequestStatus.PENDING,
-      RequestType.COMMUNITY,
-    );
+    const communitiesOrError = await this.repository.findByStatusAndType(RequestStatus.PENDING, RequestType.COMMUNITY);
 
     if (communitiesOrError.isLeft()) {
       return left(new ValidationError('Failed to fetch community requests'));
@@ -170,7 +167,7 @@ export class RequestsServiceImpl extends RequestsService {
   }
 
   async getCauseRequestsPending(): Promise<Either<ValidationError, CauseRequest[]>> {
-    const causesOrError = await this.repository.findRequestsByStatusAndType(RequestStatus.PENDING, RequestType.CAUSE);
+    const causesOrError = await this.repository.findByStatusAndType(RequestStatus.PENDING, RequestType.CAUSE);
 
     if (causesOrError.isLeft()) {
       return left(new ValidationError('Failed to fetch cause requests'));
@@ -180,7 +177,7 @@ export class RequestsServiceImpl extends RequestsService {
   }
 
   async getActionRequestsPending(): Promise<Either<ValidationError, ActionRequest[]>> {
-    const actionsOrError = await this.repository.findRequestsByStatusAndType(RequestStatus.PENDING, RequestType.ACTION);
+    const actionsOrError = await this.repository.findByStatusAndType(RequestStatus.PENDING, RequestType.ACTION);
 
     if (actionsOrError.isLeft()) {
       return left(new ValidationError('Failed to fetch action requests'));

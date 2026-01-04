@@ -160,7 +160,7 @@ Resources:
               restart: unless-stopped
 
             users-app:
-              image: ${DockerHubUsername}/solidarianid-users:latest
+              image: ${DockerHubUsername}/solidarianid-user:latest
               container_name: solidarian_users
               ports:
                 - "3001:3001"
@@ -182,7 +182,7 @@ Resources:
               restart: unless-stopped
 
             communities-app:
-              image: ${DockerHubUsername}/solidarianid-communities:latest
+              image: ${DockerHubUsername}/solidarianid-community:latest
               container_name: solidarian_communities
               ports:
                 - "3002:3002"

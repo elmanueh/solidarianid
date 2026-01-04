@@ -11,7 +11,7 @@ COPY . ./
 RUN npm run build:tailwind
 
 # Construir todas las apps (necesario por las dependencias compartidas)
-RUN npm run build
+RUN npm run build -- admin
 
 # Etapa de producción
 FROM node:24-alpine AS production

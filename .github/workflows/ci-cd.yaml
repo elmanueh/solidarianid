@@ -248,7 +248,7 @@ jobs:
           set -euo pipefail
 
           # Build all 3 apps
-          docker compose -p deployment build admin-app users-app communities-app
+          docker compose -p deployment build admin-app user-app community-app
 
           # Tag and push admin-app
           docker tag deployment-admin-app:latest zerep0/solidarianid-admin:$IMAGE_TAG

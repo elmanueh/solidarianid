@@ -9,6 +9,7 @@ import {
   ActionRequestEventDto,
   CauseRequestEventDto,
   CommunityRequestEventDto,
+  EventType,
   RequestEventDto,
 } from '@solidarianid/kafka';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
@@ -19,10 +20,14 @@ import { RequestType } from '@app/admin/administrator/model/domain/enums/request
 import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
 import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
 import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
+import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
 
 @Injectable()
 export class RequestsServiceImpl extends RequestsService {
-  constructor(private readonly repository: RequestsRepositoryPort) {
+  constructor(
+    private readonly repository: RequestsRepositoryPort,
+    private readonly messagery: RequestsPublisherPort,
+  ) {
     super();
   }
 
@@ -185,6 +190,12 @@ export class RequestsServiceImpl extends RequestsService {
     if (statusResult.isLeft()) return left(statusResult.value);
 
     await this.repository.save(request);
+    const eventByStatus: Partial<Record<RequestStatus, EventType>> = {
+      [RequestStatus.APPROVED]: EventType.REQUEST_ACCEPTED,
+      [RequestStatus.REJECTED]: EventType.REQUEST_DECLINED,
+    };
+
+    await this.messagery.publish(eventByStatus[status]!, request);
     return right(undefined);
   }
 

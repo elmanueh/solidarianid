@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
+import { Transport } from '@nestjs/microservices';
 import { join } from 'node:path';
 import { engine } from 'express-handlebars';
 import { AppModule } from '@app/admin/app.module';
@@ -20,9 +21,17 @@ async function bootstrap() {
     'hbs',
     engine({
       extname: '.hbs',
-      layoutsDir: join(__dirname, 'views/layouts'),
-      partialsDir: join(__dirname, 'views/partials'),
+      layoutsDir: join(process.cwd(), 'apps/admin/views/layouts'),
+      partialsDir: join(process.cwd(), 'apps/admin/views/partials'),
       defaultLayout: 'auth',
+      helpers: {
+        // Helper para comparación de igualdad
+        eq: (a: any, b: any) => a === b,
+        // Helper para comparación mayor que
+        gt: (a: any, b: any) => a > b,
+        // Helper para verificar si un array tiene elementos
+        hasLength: (arr: any[]) => arr && arr.length > 0,
+      },
     }),
   );
 
@@ -41,9 +50,9 @@ async function bootstrap() {
   );
 
   app.setViewEngine('hbs');
-  app.setBaseViewsDir(join(__dirname, 'views'));
+  app.setBaseViewsDir(join(process.cwd(), 'apps/admin/views'));
 
-  app.useStaticAssets(join(__dirname, 'public'));
+  app.useStaticAssets(join(process.cwd(), 'apps/admin/public'));
 
   app.set('view cache', false);
 
@@ -68,6 +77,23 @@ async function bootstrap() {
     new ConflictErrorFilter(),
     new AuthenticationErrorFilter(),
   );
+
+  // Configurar Kafka como microservicio para consumir eventos
+  app.connectMicroservice({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: configService.get<string>('KAFKA_ADMIN_CLIENT_ID') ?? 'admin',
+        brokers: configService.get<string>('KAFKA_BROKERS')?.split(',') ?? ['localhost:9092'],
+      },
+      consumer: {
+        groupId: configService.get<string>('KAFKA_ADMIN_CONSUMER_GROUP_ID') ?? 'admin-consumer-group',
+      },
+    },
+  });
+
+  await app.startAllMicroservices();
+
   const port = configService.get<number>('ADMIN_PORT') ?? 3000;
   console.log(`Server running on port ${port}`);
   await app.listen(port);

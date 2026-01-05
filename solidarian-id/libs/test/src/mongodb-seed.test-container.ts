@@ -54,9 +54,49 @@ export class MongoDBSeeder implements IDatabaseSeeder {
     await Promise.all(collections.map(collection => collection.deleteMany({})));
   }
 
+  async seedUsers(users: any[] = []): Promise<void> {
+    const usersCollection = this.connection.collection('users');
+
+    const defaultUsers: any[] = [
+      {
+        _id: '550e8400-e29b-41d4-a716-446655440000',
+        fullName: 'Test User One',
+        username: 'test_user_1',
+        phone: '+34612345678',
+        location: {
+          city: 'Madrid',
+          countryCode: 'ES',
+        },
+        communityMemberships: [
+          {
+            communityId: '650e8400-e29b-41d4-a716-446655440001',
+            communityName: 'Test Community 1',
+            isAdmin: false,
+          },
+        ],
+      },
+      {
+        _id: '550e8400-e29b-41d4-a716-446655440001',
+        fullName: 'Test User Two',
+        username: 'test_user_2',
+        phone: '+34612345679',
+        location: {
+          city: 'Barcelona',
+          countryCode: 'ES',
+        },
+        communityMemberships: [],
+      },
+    ];
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const allUsers = [...defaultUsers, ...users];
+    await usersCollection.insertMany(allUsers);
+  }
+
   async seedAll(): Promise<void> {
     await this.clean();
     await this.seedRequests();
     await this.seedAdministrators();
+    await this.seedUsers();
   }
 }

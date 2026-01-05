@@ -241,6 +241,22 @@ describe('UsersService Unit testing', () => {
         expect(result.isLeft() && result.value instanceof ValidationError).toBe(true);
         expect(mockRepo.save).not.toHaveBeenCalled();
       });
+
+      it('should return ValidationError when fullName is too short', async () => {
+        mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
+        mockRepo.existsByMobilePhone.mockResolvedValueOnce(right(false));
+        mockRepo.existsByUsername.mockResolvedValueOnce(right(false));
+
+        const command: RegisterUserCommand = {
+          ...validCommand,
+          fullName: 'J', // Less than min length (3)
+        };
+
+        const result = await service.registerUser(command);
+
+        expect(result.isLeft() && result.value instanceof ValidationError).toBe(true);
+        expect(mockRepo.save).not.toHaveBeenCalled();
+      });
     });
 
     describe('Path 9: Repository error on save', () => {

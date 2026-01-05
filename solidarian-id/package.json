@@ -37,6 +37,7 @@
     "test:e2e:coverage": "cross-env NODE_ENV=test jest --config ./apps/communities/jest-e2e.config.ts --coverage && jest --config ./apps/users/jest-e2e.config.ts --coverage && jest --config ./apps/admin/jest-e2e.config.ts --coverage",
     "test:all:coverage": "npm run test && npm run test:e2e:admin && npm run test:e2e:users && npm run test:e2e:communities && npm run test:integration && node -e \"const fs=require('fs');const p=require('path');['coverage','coverage-e2e/admin','coverage-e2e/users','coverage-e2e/communities','coverage-e2e/integration'].forEach(d=>{try{const f=p.join(d,'coverage-final.json');if(fs.existsSync(f)){const t='.nyc_output';if(!fs.existsSync(t))fs.mkdirSync(t);fs.copyFileSync(f,p.join(t,d.replace(/[\\/]/g,'-')+'.json'))}}catch(e){}})\" && nyc report --reporter=text --reporter=html --reporter=lcov",
     "test:mutation": "npx stryker run",
+    "test:mutation:users": "stryker run",
     "cypress:open": "cypress open --config-file ./apps/admin/test/cypress.config.js",
     "cypress:run": "cypress run --config-file ./apps/admin/test/cypress.config.js",
     "docker:dev": "docker compose --env-file .env.development up -d --build",

@@ -9,7 +9,7 @@ import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Either, left, right, sequence } from '@app/ddd/either';
 import { Description } from '@app/value-objects/model/description';
-import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
+import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
 import { CauseRequest, CreateCauseRequestProps } from '@app/admin/administrator/model/domain/models/cause-request';
 import { Reason } from '@app/value-objects/model/reason';
 import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
@@ -111,36 +111,36 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     return right(undefined);
   }
 
-  public approve(reason?: string): Either<RequestAlreadyResolvedError, void> {
+  public approve(reason?: string): Either<RequestInvalidStatusError, void> {
     const reasonOrError = Reason.create(reason);
     if (reasonOrError.isLeft()) return left(new RequestError(reasonOrError.value.message));
 
     if (this.props.status !== RequestStatus.PENDING) {
-      return left(new RequestAlreadyResolvedError('Community request has already been resolved.'));
+      return left(new RequestInvalidStatusError('Action request has already been resolved.', this.id.value));
     }
 
     this.props.status = RequestStatus.APPROVED;
     this.props.reason = reasonOrError.value;
 
     const res = sequence(this.props.causes.map(cause => cause.approve('Approved as part of community request.')));
-    if (res.isLeft()) return left(new RequestAlreadyResolvedError(res.value.message));
+    if (res.isLeft()) return left(new RequestInvalidStatusError(res.value.message, this.id.value));
 
     return right(undefined);
   }
 
-  public reject(reason: string): Either<RequestAlreadyResolvedError, void> {
+  public reject(reason: string): Either<RequestInvalidStatusError, void> {
     const reasonOrError = Reason.create(reason);
     if (reasonOrError.isLeft()) return left(new RequestError(reasonOrError.value.message));
 
     if (this.props.status !== RequestStatus.PENDING) {
-      return left(new RequestAlreadyResolvedError('Community request has already been resolved.'));
+      return left(new RequestInvalidStatusError('Action request has already been resolved.', this.id.value));
     }
 
     this.props.status = RequestStatus.REJECTED;
     this.props.reason = reasonOrError.value;
 
     const res = sequence(this.props.causes.map(cause => cause.reject(reason)));
-    if (res.isLeft()) return left(new RequestAlreadyResolvedError(res.value.message));
+    if (res.isLeft()) return left(new RequestInvalidStatusError(res.value.message, this.id.value));
 
     return right(undefined);
   }

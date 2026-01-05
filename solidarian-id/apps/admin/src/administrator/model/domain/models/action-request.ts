@@ -8,7 +8,7 @@ import { RequestStatus } from '@app/admin/administrator/model/domain/enums/reque
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Either, left, right, sequence } from '@app/ddd/either';
 import { Description } from '@app/value-objects/model/description';
-import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
+import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
 import { InvalidUniqueEntityIDError } from '@app/value-objects/errors/validation/unique-entity-id-validation-error';
 import { InvalidDescriptionError } from '@app/value-objects/errors/validation/description-validation-error';
 import { Reason } from '@app/value-objects/model/reason';
@@ -173,12 +173,12 @@ export class ActionRequest extends Request<ActionRequestProps> {
     );
   }
 
-  public approve(reason?: string): Either<RequestAlreadyResolvedError, void> {
+  public approve(reason?: string): Either<RequestInvalidStatusError, void> {
     const reasonOrError = Reason.create(reason);
     if (reasonOrError.isLeft()) return left(reasonOrError.value);
 
     if (this.props.status !== RequestStatus.PENDING) {
-      return left(new RequestAlreadyResolvedError(this.id.value));
+      return left(new RequestInvalidStatusError('Action request has already been resolved.', this.id.value));
     }
 
     this.props.status = RequestStatus.APPROVED;
@@ -186,7 +186,7 @@ export class ActionRequest extends Request<ActionRequestProps> {
     return right(undefined);
   }
 
-  public reject(reason: string): Either<RequestAlreadyResolvedError | RequestError, void> {
+  public reject(reason: string): Either<RequestInvalidStatusError | RequestError, void> {
     if (!reason) {
       return left(new RequestError('Rejection reason must be provided'));
     }
@@ -195,7 +195,7 @@ export class ActionRequest extends Request<ActionRequestProps> {
     if (reasonOrError.isLeft()) return left(reasonOrError.value);
 
     if (this.props.status !== RequestStatus.PENDING) {
-      return left(new RequestAlreadyResolvedError(this.id.value));
+      return left(new RequestInvalidStatusError('Action request has already been resolved.', this.id.value));
     }
 
     this.props.status = RequestStatus.REJECTED;

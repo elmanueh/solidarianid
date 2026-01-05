@@ -2,7 +2,7 @@
 import { RequestsServiceImpl } from '@app/admin/administrator/model/application/services/requests.service.impl';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
-import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
+import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
 import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
 import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
 import { Request } from '@app/admin/administrator/model/domain/models/request';
@@ -101,8 +101,10 @@ const createMockRequests = (): Request<any>[] => {
     userId: '04a6ba1e-5b2b-4765-b46b-5f07a52b4b60',
     ods: [SustainableDevelopmentGoal.NoPoverty],
     actions: [],
-    communityId: '1c9e1f4e-3d2f-4b6a-8f4e-2d3c4b5a6e7f',
+    communityId: '1db201c8-5d35-462e-a1d1-985cb677725c',
   });
+
+  if (request1Result.isLeft()) throw new Error('Failed to create mock request 1');
 
   const request2Result = CauseRequest.reconstitute({
     id: '3db201c8-5d35-462e-a1d1-985cb677725e',
@@ -115,18 +117,38 @@ const createMockRequests = (): Request<any>[] => {
     userId: '4d8cd85d-db4b-4705-9727-72355583a5ce',
     ods: [SustainableDevelopmentGoal.ZeroHunger],
     actions: [],
-    communityId: '2d9e1f4e-3d2f-4b6a-8f4e-2d3c4b5a6e7f',
+    communityId: '1db201c8-5d35-462e-a1d1-985cb677725c',
   });
 
-  if (request1Result.isLeft()) {
-    throw new Error(`Failed to create mock request 1: ${request1Result.value.message}`);
-  }
+  if (request2Result.isLeft()) throw new Error('Failed to create mock request 2');
 
-  if (request2Result.isLeft()) {
-    throw new Error(`Failed to create mock request 2: ${request2Result.value.message}`);
-  }
+  const pendingCauseResult = CauseRequest.reconstitute({
+    id: '4db201c8-5d35-462e-a1d1-985cb677725f',
+    name: 'Pending Cause for Testing',
+    description: 'A cause that is pending for testing purposes',
+    status: RequestStatus.PENDING,
+    startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    duration: 20,
+    userId: '04a6ba1e-5b2b-4765-b46b-5f07a52b4b60',
+    ods: [SustainableDevelopmentGoal.QualityEducation],
+    actions: [],
+    communityId: '1db201c8-5d35-462e-a1d1-985cb677725c',
+  });
 
-  return [request1Result.value, request2Result.value];
+  if (pendingCauseResult.isLeft()) throw new Error('Failed to create pending cause');
+
+  const communnityRequest = CommunityRequest.reconstitute({
+    id: '1db201c8-5d35-462e-a1d1-985cb677725c',
+    name: 'Community Development Request',
+    description: 'A detailed community development plan',
+    status: RequestStatus.PENDING,
+    userId: 'a3f1c2d4-e5f6-4789-abcd-1234567890ab',
+    causes: [pendingCauseResult.value],
+  });
+
+  if (communnityRequest.isLeft()) throw new Error('Failed to create mock community request');
+
+  return [request1Result.value, request2Result.value, communnityRequest.value];
 };
 
 describe('RequestsService', () => {
@@ -180,12 +202,12 @@ describe('RequestsService', () => {
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
-          expect(result.value.name).toBe(RequestAlreadyResolvedError.name);
+          expect(result.value.name).toBe(RequestInvalidStatusError.name);
         }
       });
 
       it('Path 3: should approve request when status is APPROVED and request is PENDING', async () => {
-        mockRepository.findById.mockResolvedValue(right(mockRequests[0]));
+        mockRepository.findById.mockResolvedValue(right(mockRequests[2]));
         mockRepository.save.mockResolvedValue(right(undefined));
 
         const result = await service.updateStatus(requestId, RequestStatus.APPROVED, 'Looks good');
@@ -195,7 +217,7 @@ describe('RequestsService', () => {
       });
 
       it('Path 4: should reject request when status is REJECTED and request is PENDING', async () => {
-        mockRepository.findById.mockResolvedValue(right(mockRequests[0]));
+        mockRepository.findById.mockResolvedValue(right(mockRequests[2]));
         mockRepository.save.mockResolvedValue(right(undefined));
 
         const result = await service.updateStatus(requestId, RequestStatus.REJECTED, 'Does not meet requirements');
@@ -213,7 +235,7 @@ describe('RequestsService', () => {
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(RequestAlreadyResolvedError);
+          expect(result.value).toBeInstanceOf(RequestInvalidStatusError);
         }
       });
 
@@ -224,7 +246,7 @@ describe('RequestsService', () => {
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(RequestAlreadyResolvedError);
+          expect(result.value).toBeInstanceOf(RequestInvalidStatusError);
         }
       });
     });
@@ -250,13 +272,28 @@ describe('RequestsService', () => {
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(RequestAlreadyResolvedError);
+          expect(result.value).toBeInstanceOf(RequestInvalidStatusError);
           expect(result.value.message).toContain(id);
         }
       });
 
       it('should return Right(undefined) when request is successfully approved', async () => {
-        mockRepository.findById.mockResolvedValue(right(mockRequests[0]));
+        // For CauseRequest, the service also checks if the parent community is APPROVED
+        const approvedCommunity = CommunityRequest.reconstitute({
+          id: '1db201c8-5d35-462e-a1d1-985cb677725c',
+          name: 'Approved Community',
+          description: 'An approved community',
+          status: RequestStatus.APPROVED,
+          userId: 'a3f1c2d4-e5f6-4789-abcd-1234567890ab',
+          causes: [],
+        });
+        if (approvedCommunity.isLeft()) throw new Error('Failed to create approved community');
+
+        mockRepository.findById.mockImplementation((id: string) => {
+          if (id === requestId) return Promise.resolve(right(mockRequests[0]));
+          if (id === '1db201c8-5d35-462e-a1d1-985cb677725c') return Promise.resolve(right(approvedCommunity.value));
+          return Promise.resolve(left(new EntityNotFoundException('Request', id)));
+        });
         mockRepository.save.mockResolvedValue(right(undefined));
 
         const result = await service.updateStatus(requestId, RequestStatus.APPROVED);
@@ -268,7 +305,22 @@ describe('RequestsService', () => {
       });
 
       it('should return Right(undefined) when request is successfully rejected', async () => {
-        mockRepository.findById.mockResolvedValue(right(mockRequests[0]));
+        // For CauseRequest, the service also checks if the parent community is APPROVED
+        const approvedCommunity = CommunityRequest.reconstitute({
+          id: '1db201c8-5d35-462e-a1d1-985cb677725c',
+          name: 'Approved Community',
+          description: 'An approved community',
+          status: RequestStatus.APPROVED,
+          userId: 'a3f1c2d4-e5f6-4789-abcd-1234567890ab',
+          causes: [],
+        });
+        if (approvedCommunity.isLeft()) throw new Error('Failed to create approved community');
+
+        mockRepository.findById.mockImplementation((id: string) => {
+          if (id === requestId) return Promise.resolve(right(mockRequests[0]));
+          if (id === '1db201c8-5d35-462e-a1d1-985cb677725c') return Promise.resolve(right(approvedCommunity.value));
+          return Promise.resolve(left(new EntityNotFoundException('Request', id)));
+        });
         mockRepository.save.mockResolvedValue(right(undefined));
 
         const result = await service.updateStatus(requestId, RequestStatus.REJECTED, 'Invalid data');

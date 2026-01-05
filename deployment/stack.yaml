@@ -291,7 +291,7 @@ Resources:
   WebServerEIPAssociation:
     Type: AWS::EC2::EIPAssociation
     Properties:
-      AllocationId: !GetAtt WebServerEIP.AllocationId
+      AllocationId: eipalloc-086485758b47098be
       InstanceId: !Ref WebServerInstance
 
   WebServerInstanceRole:

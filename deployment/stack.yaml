@@ -84,6 +84,11 @@ Resources:
           chown ec2-user:ec2-user /home/ec2-user/solidarian.env
           chmod 600 /home/ec2-user/solidarian.env
 
+          # Descargamos los datos de prueba de un bucket S3
+          mkdir -p /home/ec2-user/init-data
+          aws s3 cp s3://solidarianid-bucket-init-data-database /home/ec2-user/init-data --recursive --exclude "*" --include "init-*" --region ${AWS::Region}
+          chown -R ec2-user:ec2-user /home/ec2-user/init-data
+
           # Creamos el fichero docker-compose.yml con las 3 apps
           cat <<'EOT' > /home/ec2-user/docker-compose.yml
           version: '3.8'
@@ -308,6 +313,18 @@ Resources:
               - Effect: Allow
                 Action: secretsmanager:GetSecretValue
                 Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:prod/solidarianid*
+        - PolicyName: S3ReadAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                Resource:
+                  - !Sub arn:aws:s3:::solidarianid-bucket-init-data-database
+                  - !Sub arn:aws:s3:::solidarianid-bucket-init-data-database/*
       Tags:
         - Key: Name
           Value: SolidarianID-EC2-Role

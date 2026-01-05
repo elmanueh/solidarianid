@@ -92,11 +92,6 @@
 
   .request {
     @apply border-l-4 sm:border-l-8 p-4 rounded-md;
-    @apply transition-transform duration-300 ease-in-out;
-    @apply hover:scale-[1.005] hover:shadow-md;
-    will-change: transform;
-    backface-visibility: hidden;
-    transform: translateZ(0);
   }
 
   .request[data-variant='community'] {

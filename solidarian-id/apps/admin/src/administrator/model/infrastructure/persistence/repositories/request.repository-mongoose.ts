@@ -9,7 +9,6 @@ import { RepositoryMongoose } from '@app/ddd/repository/repository-mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { Either, left, right, sequence } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
@@ -19,6 +18,7 @@ import { CommunityRequest } from '@app/admin/administrator/model/domain/models/c
 import { CommunityRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/community-request.entity';
 import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
 import { ActionRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/action-request.entity';
+import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
 
 @Injectable()
 export class RequestRepositoryMongoose
@@ -201,23 +201,149 @@ export class RequestRepositoryMongoose
     }
   }
 
-  async findByStatusAndType(
-    status: RequestStatus,
-    type: RequestType,
-  ): Promise<Either<RepositoryException, Request<unknown>[]>> {
+  async findPendingCommunityRequests(): Promise<Either<RepositoryException, CommunityRequest[]>> {
     try {
-      const documents = await this.requestModel.find({ status, type }).lean().exec();
+      const communityDocs = await this.requestModel
+        .aggregate<CommunityRequestEntity & { causes: CauseRequestEntity[]; actions: ActionRequestEntity[] }>([
+          { $match: { status: 'pending', type: RequestType.COMMUNITY } },
+          {
+            $lookup: {
+              from: this.requestModel.collection.name,
+              let: { communityId: '$_id' },
+              pipeline: [{ $match: { $expr: { $eq: ['$communityId', '$$communityId'] }, type: RequestType.CAUSE } }],
+              as: 'causes',
+            },
+          },
+          {
+            $lookup: {
+              from: this.requestModel.collection.name,
+              let: { causeIds: { $map: { input: '$causes', as: 'cause', in: '$$cause._id' } } },
+              pipeline: [{ $match: { $expr: { $in: ['$causeId', '$$causeIds'] }, type: RequestType.ACTION } }],
+              as: 'actions',
+            },
+          },
+        ])
+        .exec();
 
-      const requestsOrError = sequence(
-        documents.map(document => this.requestMapper.fromPersistence(document as RequestEntity)),
+      const requestsOrErrors = communityDocs.map(doc =>
+        this.requestMapper.fromPersistenceAggregate(doc, doc.causes, doc.actions),
       );
+
+      const requestsOrError = sequence(requestsOrErrors);
       if (requestsOrError.isLeft()) {
         return left(new RepositoryException('Failed to map requests.', requestsOrError.value));
       }
 
       return right(requestsOrError.value);
     } catch (error: unknown) {
-      return left(new RepositoryException('Failed to find requests by status and type.', error));
+      return left(new RepositoryException('Failed to find pending community requests.', error));
+    }
+  }
+
+  async findPendingCauseRequests(): Promise<Either<RepositoryException, CauseRequest[]>> {
+    try {
+      const causeDocs = await this.requestModel
+        .aggregate<CauseRequestEntity & { actions: ActionRequestEntity[] }>([
+          {
+            $match: { status: 'approved', type: RequestType.COMMUNITY },
+          },
+          {
+            $lookup: {
+              from: this.requestModel.collection.name,
+              let: { communityId: '$_id' },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: { $eq: ['$communityId', '$$communityId'] },
+                    status: 'pending',
+                    type: RequestType.CAUSE,
+                  },
+                },
+              ],
+              as: 'causes',
+            },
+          },
+          {
+            $unwind: '$causes',
+          },
+          {
+            $replaceRoot: { newRoot: '$causes' },
+          },
+          {
+            $lookup: {
+              from: this.requestModel.collection.name,
+              let: { causeId: '$_id' },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: { $eq: ['$causeId', '$$causeId'] },
+                    type: RequestType.ACTION,
+                  },
+                },
+              ],
+              as: 'actions',
+            },
+          },
+        ])
+        .exec();
+
+      const requestsOrErrors = causeDocs.map(doc => this.requestMapper.fromPersistenceCauseAggregate(doc, doc.actions));
+
+      const requestsOrError = sequence(requestsOrErrors);
+      if (requestsOrError.isLeft()) {
+        return left(new RepositoryException('Failed to map cause requests.', requestsOrError.value));
+      }
+
+      return right(requestsOrError.value);
+    } catch (error: unknown) {
+      return left(new RepositoryException('Failed to find pending cause requests.', error));
+    }
+  }
+
+  async findPendingActionRequests(): Promise<Either<RepositoryException, ActionRequest[]>> {
+    try {
+      const actionDocs = await this.requestModel
+        .aggregate<ActionRequestEntity>([
+          {
+            $match: { status: 'approved', type: RequestType.CAUSE },
+          },
+          {
+            $lookup: {
+              from: this.requestModel.collection.name,
+              let: { causeId: '$_id' },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: { $eq: ['$causeId', '$$causeId'] },
+                    status: 'pending',
+                    type: RequestType.ACTION,
+                  },
+                },
+              ],
+              as: 'actions',
+            },
+          },
+          {
+            $unwind: '$actions',
+          },
+          {
+            $replaceRoot: { newRoot: '$actions' },
+          },
+        ])
+        .exec();
+
+      const requestsOrErrors = actionDocs.map(
+        doc => this.requestMapper.fromPersistence(doc) as Either<RepositoryException, ActionRequest>,
+      );
+
+      const requestsOrError = sequence(requestsOrErrors);
+      if (requestsOrError.isLeft()) {
+        return left(new RepositoryException('Failed to map action requests.', requestsOrError.value));
+      }
+
+      return right(requestsOrError.value);
+    } catch (error: unknown) {
+      return left(new RepositoryException('Failed to find pending action requests.', error));
     }
   }
 }

@@ -200,32 +200,32 @@ export class RequestsServiceImpl extends RequestsService {
   }
 
   async getCommunityRequestsPending(): Promise<Either<ValidationError, CommunityRequest[]>> {
-    const communitiesOrError = await this.repository.findByStatusAndType(RequestStatus.PENDING, RequestType.COMMUNITY);
+    const communitiesOrError = await this.repository.findPendingCommunityRequests();
 
     if (communitiesOrError.isLeft()) {
       return left(new ValidationError('Failed to fetch community requests'));
     }
 
-    return right(communitiesOrError.value as CommunityRequest[]);
+    return right(communitiesOrError.value);
   }
 
   async getCauseRequestsPending(): Promise<Either<ValidationError, CauseRequest[]>> {
-    const causesOrError = await this.repository.findByStatusAndType(RequestStatus.PENDING, RequestType.CAUSE);
+    const causesOrError = await this.repository.findPendingCauseRequests();
 
     if (causesOrError.isLeft()) {
       return left(new ValidationError('Failed to fetch cause requests'));
     }
 
-    return right(causesOrError.value as CauseRequest[]);
+    return right(causesOrError.value);
   }
 
   async getActionRequestsPending(): Promise<Either<ValidationError, ActionRequest[]>> {
-    const actionsOrError = await this.repository.findByStatusAndType(RequestStatus.PENDING, RequestType.ACTION);
+    const actionsOrError = await this.repository.findPendingActionRequests();
 
     if (actionsOrError.isLeft()) {
       return left(new ValidationError('Failed to fetch action requests'));
     }
 
-    return right(actionsOrError.value as ActionRequest[]);
+    return right(actionsOrError.value);
   }
 }

@@ -139,7 +139,7 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     this.props.status = RequestStatus.REJECTED;
     this.props.reason = reasonOrError.value;
 
-    const res = sequence(this.props.causes.map(cause => cause.reject(reason)));
+    const res = sequence(this.props.causes.map(cause => cause.reject('Rejected as part of community request.')));
     if (res.isLeft()) return left(new RequestInvalidStatusError(res.value.message, this.id.value));
 
     return right(undefined);

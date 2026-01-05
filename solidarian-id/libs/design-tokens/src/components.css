@@ -293,3 +293,104 @@
     @apply px-8 py-3 min-w-60;
   }
 }
+
+/* Reports - User Cards */
+@layer components {
+  .user-card {
+    @apply bg-white border border-iron-200 rounded-lg p-6 cursor-pointer;
+    @apply transition-all duration-200;
+    @apply hover:shadow-lg hover:border-ocean-blue-500 hover:-translate-y-1;
+    @apply focus:outline-none focus:ring-2 focus:ring-ocean-blue-500 focus:ring-offset-2;
+    @apply dark:bg-black-haze-900 dark:border-iron-700;
+    @apply dark:hover:border-ocean-blue-400;
+  }
+
+  .user-card-header {
+    @apply flex items-center mb-4;
+  }
+
+  .user-card-info {
+    @apply flex-1 min-w-0;
+  }
+
+  .user-card-username {
+    @apply font-semibold text-lg truncate;
+    @apply text-black-haze-950;
+    @apply dark:text-black-haze-50;
+  }
+
+  .user-card-location {
+    @apply flex items-center gap-2 text-sm mt-1;
+    @apply text-pale-sky-600;
+    @apply dark:text-pale-sky-400;
+  }
+
+  .user-card-meta {
+    @apply flex items-center justify-between pt-4 border-t;
+    @apply border-iron-200;
+    @apply dark:border-iron-700;
+  }
+
+  .user-card-communities {
+    @apply flex items-center gap-2 text-sm;
+    @apply text-pale-sky-600;
+    @apply dark:text-pale-sky-400;
+  }
+
+  /* Detail Panel Sections */
+  .detail-section {
+    @apply space-y-4;
+  }
+
+  .detail-section-title {
+    @apply font-semibold text-lg flex items-center gap-2 mb-4;
+    @apply text-black-haze-900;
+    @apply dark:text-black-haze-100;
+  }
+
+  .detail-info-grid {
+    @apply grid gap-4;
+  }
+
+  .detail-info-item {
+    @apply flex flex-col gap-1;
+  }
+
+  .detail-info-label {
+    @apply text-xs font-semibold uppercase tracking-wide;
+    @apply text-pale-sky-600;
+    @apply dark:text-pale-sky-500;
+  }
+
+  .detail-info-value {
+    @apply text-base;
+    @apply text-black-haze-950;
+    @apply dark:text-black-haze-50;
+  }
+
+  .community-item {
+    @apply flex items-center justify-between p-3 rounded-lg;
+    @apply bg-black-haze-50;
+    @apply dark:bg-black-haze-800;
+  }
+
+  .community-name {
+    @apply font-medium;
+    @apply text-black-haze-900;
+    @apply dark:text-black-haze-100;
+  }
+
+  .community-role-badge {
+    @apply px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .community-role-admin {
+    @apply bg-harvest-orange-100 text-harvest-orange-800;
+    @apply dark:bg-harvest-orange-900 dark:text-harvest-orange-200;
+  }
+
+  .community-role-member {
+    @apply bg-ocean-blue-100 text-ocean-blue-800;
+    @apply dark:bg-ocean-blue-900 dark:text-ocean-blue-200;
+  }
+}

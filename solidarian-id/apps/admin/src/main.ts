@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
+import { Transport } from '@nestjs/microservices';
 import { join } from 'node:path';
 import { engine } from 'express-handlebars';
 import { AppModule } from '@app/admin/app.module';
@@ -11,7 +12,6 @@ import { ConflictErrorFilter } from './administrator/controllers/filters/conflic
 import { InternalServerErrorFilter } from './administrator/controllers/filters/internal-server-error.filter';
 import { NotFoundErrorFilter } from './administrator/controllers/filters/not-found-error.filter';
 import { ValidationErrorFilter } from './administrator/controllers/filters/validation-error.filter';
-import { Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -22,9 +22,17 @@ async function bootstrap() {
     'hbs',
     engine({
       extname: '.hbs',
-      layoutsDir: join(__dirname, 'views/layouts'),
-      partialsDir: join(__dirname, 'views/partials'),
+      layoutsDir: join(process.cwd(), 'apps/admin/views/layouts'),
+      partialsDir: join(process.cwd(), 'apps/admin/views/partials'),
       defaultLayout: 'auth',
+      helpers: {
+        // Helper para comparación de igualdad
+        eq: (a: any, b: any) => a === b,
+        // Helper para comparación mayor que
+        gt: (a: any, b: any) => a > b,
+        // Helper para verificar si un array tiene elementos
+        hasLength: (arr: any[]) => arr && arr.length > 0,
+      },
     }),
   );
 
@@ -43,9 +51,9 @@ async function bootstrap() {
   );
 
   app.setViewEngine('hbs');
-  app.setBaseViewsDir(join(__dirname, 'views'));
+  app.setBaseViewsDir(join(process.cwd(), 'apps/admin/views'));
 
-  app.useStaticAssets(join(__dirname, 'public'));
+  app.useStaticAssets(join(process.cwd(), 'apps/admin/public'));
 
   app.set('view cache', false);
 
@@ -71,6 +79,7 @@ async function bootstrap() {
     new AuthenticationErrorFilter(),
   );
 
+  // Configurar Kafka como microservicio para consumir eventos
   app.connectMicroservice({
     transport: Transport.KAFKA,
     options: {

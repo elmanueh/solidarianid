@@ -19,13 +19,13 @@
         "tsConfigPath": "apps/admin/tsconfig.app.json",
         "assets": [
           {
-            "include": "../views/**/*",
-            "outDir": "dist/apps/admin/views",
+            "include": "views/**/*",
+            "outDir": "dist/apps/admin",
             "watchAssets": true
           },
           {
-            "include": "../public/**/*",
-            "outDir": "dist/apps/admin/public",
+            "include": "public/**/*",
+            "outDir": "dist/apps/admin",
             "watchAssets": true
           }
         ]

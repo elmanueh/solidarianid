@@ -1,5 +1,5 @@
 import { AdminModule } from '@app/admin/administrator/admin.module';
-import { RequestsModule } from '@app/admin/administrator/model/requests.module';
+import { RequestsModule } from '@app/admin/administrator/requests.module';
 import { AppController } from '@app/admin/app.controller';
 import { AuthModule } from '@app/admin/auth/auth.module';
 import { Module } from '@nestjs/common';
@@ -14,7 +14,10 @@ import { KafkaBrokersModule } from '@solidarianid/kafka';
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     KafkaBrokersModule,
-    MongooseModule.forRoot(process.env.MONGODB_URI || ''),
+    MongooseModule.forRoot(
+      process.env.MONGODB_URI ||
+        `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`,
+    ),
     AdminModule,
     AuthModule,
     RequestsModule,

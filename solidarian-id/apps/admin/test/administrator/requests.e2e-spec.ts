@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
-import { RequestsModule } from '@app/admin/administrator/model/requests.module';
 import {
   KafkaTestContainer,
   KafkaTestModule,
@@ -11,6 +10,7 @@ import {
   MongoDBTestModule,
   TestServerHelper,
 } from '@solidarianid/testing';
+import { RequestsModule } from '@app/admin/administrator/requests.module';
 
 describe('RequestsController (e2e)', () => {
   let repository: RequestsRepositoryPort;

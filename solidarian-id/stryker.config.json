@@ -6,12 +6,41 @@
   "testRunner": "jest",
   "testRunner_comment": "Take a look at https://stryker-mutator.io/docs/stryker-js/jest-runner for information about the jest plugin.",
   "coverageAnalysis": "perTest",
+  "tempDirName": ".stryker-tmp",
+  "cleanTempDir": true,
+  "symlinkNodeModules": false,
+  "jest": {
+    "configFile": "jest.config.ts",
+    "config": {
+      "testPathIgnorePatterns": ["/node_modules/", "/apps/admin/", "/apps/communities/"]
+    }
+  },
+  "thresholds": {
+    "high": 70,
+    "low": 60,
+    "break": 50
+  },
+  "mutator": {
+    "excludedMutations": ["StringLiteral"]
+  },
+  "timeoutMS": 60000,
+  "maxConcurrentTestRunners": 2,
+  "incrementalFile": ".stryker-tmp/incremental.json",
   "mutate": [
-    "apps/**/src/**/*.ts",
-    "!libs/**/src/**/*.ts",
+    "apps/users/src/application/services/users.service.impl.ts",
+    "apps/users/src/domain/model/user.ts",
+    "libs/value-objects/src/model/username.ts",
+    "libs/value-objects/src/model/mobile-phone.ts",
+    "libs/value-objects/src/model/hashed-password.ts",
+    "libs/value-objects/src/model/fullname.ts",
+    "libs/value-objects/src/model/user-location.ts",
+    "libs/value-objects/src/model/city.ts",
+    "libs/value-objects/src/model/country-code.ts",
+    "libs/value-objects/src/model/unique-entity-id.ts",
     "!**/*.spec.ts",
     "!**/*.e2e-spec.ts",
     "!**/test/**",
     "!**/main.ts"
-  ]
+  ],
+  "ignorePatterns": ["data", "data/**/*", "dist", "node_modules", ".git", "coverage", "reports"]
 }

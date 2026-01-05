@@ -39,6 +39,10 @@ lib-cov
 # nyc test coverage
 .nyc_output
 
+# Stryker mutation testing
+.stryker-tmp/
+reports/
+
 # Test reports
 test-results/
 junit.xml

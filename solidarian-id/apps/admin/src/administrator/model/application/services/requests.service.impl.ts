@@ -18,6 +18,7 @@ import { Request } from '@app/admin/administrator/model/domain/models/request';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
 import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
+import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
 
 @Injectable()
 export class RequestsServiceImpl extends RequestsService {
@@ -138,6 +139,37 @@ export class RequestsServiceImpl extends RequestsService {
     if (requestOrError.isLeft()) return left(requestOrError.value);
 
     const request = requestOrError.value;
+
+    if (request instanceof CauseRequest) {
+      const communityOrError = await this.repository.findById(request.communityId);
+      if (communityOrError.isLeft()) return left(communityOrError.value);
+
+      const community = communityOrError.value as CommunityRequest;
+      if (community.status !== RequestStatus.APPROVED)
+        return left(
+          new RequestInvalidStatusError(
+            'Cannot process cause request because the associated community request is not approved',
+            request.id.value,
+          ),
+        );
+    } else if (request instanceof ActionRequest) {
+      const causeOrError = await this.repository.findById(request.causeId);
+      if (causeOrError.isLeft()) return left(causeOrError.value);
+
+      const cause = causeOrError.value as CauseRequest;
+      const communityOrError = await this.repository.findById(cause.communityId);
+      if (communityOrError.isLeft()) return left(communityOrError.value);
+
+      const community = communityOrError.value as CommunityRequest;
+      if (community.status !== RequestStatus.APPROVED)
+        return left(
+          new RequestInvalidStatusError(
+            'Cannot process action request because the associated community request is not approved',
+            request.id.value,
+          ),
+        );
+    }
+
     const applyStatus = (): Either<ValidationError, void> => {
       switch (status) {
         case RequestStatus.APPROVED:

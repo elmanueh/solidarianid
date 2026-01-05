@@ -1,6 +1,6 @@
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
+import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { left, right } from '@app/ddd/either';
 import { RequestsController } from '@app/admin/administrator/controllers/requests.controller';
@@ -128,7 +128,7 @@ describe('RequestsController', () => {
         const dto = createMockUpdateStatusDto({
           status: RequestStatus.APPROVED,
         });
-        const exception = new RequestAlreadyResolvedError(requestId);
+        const exception = new RequestInvalidStatusError('Invalid status', requestId);
         mockRequestsService.updateStatus.mockResolvedValue(left(exception));
 
         await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(exception);
@@ -205,10 +205,10 @@ describe('RequestsController', () => {
           status: RequestStatus.REJECTED,
           reason: 'Already resolved',
         });
-        const exception = new RequestAlreadyResolvedError(requestId);
+        const exception = new RequestInvalidStatusError('Invalid status', requestId);
         mockRequestsService.updateStatus.mockResolvedValue(left(exception));
 
-        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(RequestAlreadyResolvedError);
+        await expect(controller.changeStatus(requestId, dto)).rejects.toThrow(RequestInvalidStatusError);
       });
 
       it('should throw the exact error object returned by service', async () => {

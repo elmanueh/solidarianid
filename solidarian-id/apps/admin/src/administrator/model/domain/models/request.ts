@@ -1,5 +1,5 @@
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { RequestAlreadyResolvedError } from '@app/admin/administrator/model/domain/errors/already-resolved.request.error';
+import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
 import { Either } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
 import { RequestError } from '@app/value-objects/errors/validation/request-validation.error';
@@ -56,8 +56,8 @@ export abstract class Request<T> extends Entity<T & RequestProps> {
   }
 
   /** Marks the request as approved and optionally stores an admin note. */
-  public abstract approve(reason?: string): Either<RequestAlreadyResolvedError, void>;
+  public abstract approve(reason?: string): Either<RequestInvalidStatusError, void>;
 
   /** Marks the request as rejected and stores the rejection reason. */
-  public abstract reject(reason: string): Either<RequestAlreadyResolvedError | RequestError, void>;
+  public abstract reject(reason: string): Either<RequestInvalidStatusError | RequestError, void>;
 }

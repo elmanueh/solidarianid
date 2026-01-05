@@ -1,8 +1,9 @@
 import { DomainError } from '@app/ddd/errors/domain-error';
 
 export class RequestError extends DomainError {
-  constructor(requestId: string) {
-    super(`There was an error processing the request with ID ${requestId}.`);
+  constructor(message: string, requestId?: string) {
+    const requestInfo = requestId ? ` for request ID ${requestId}` : '';
+    super(`Request error${requestInfo}: ${message}`);
     this.name = RequestError.name;
   }
 }

@@ -125,6 +125,7 @@ Resources:
                 - solidarian_network
               volumes:
                 - mongo_data:/data/db
+                - /home/ec2-user/init-data:/docker-entrypoint-initdb.d
               healthcheck:
                 test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
                 interval: 10s

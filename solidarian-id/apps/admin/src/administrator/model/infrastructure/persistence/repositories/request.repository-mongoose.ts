@@ -3,7 +3,7 @@ import {
   RequestDocument,
   RequestEntity,
 } from '@app/admin/administrator/model/infrastructure/persistence/entities/request.entity';
-import { RequestMapper } from '@app/admin/administrator/model/infrastructure/persistence/request.mapper';
+import { RequestMapper } from '@app/admin/administrator/model/infrastructure/persistence/mappers/request.mapper';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { RepositoryMongoose } from '@app/ddd/repository/repository-mongoose';
 import { Injectable } from '@nestjs/common';

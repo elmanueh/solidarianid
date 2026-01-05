@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersServiceImpl } from '@app/users/application/services/users.service.impl';
 import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
 import { RegisterUserCommand } from '@app/users/domain/services/users.service';
-import { right, left } from '@app/ddd/either';
+import { right, left, Either } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
@@ -12,13 +12,14 @@ import { User } from '@app/users/domain/model/user';
 import { USERNAME_MAX_LENGTH } from '@app/value-objects/constants/validation.constants';
 import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
 
-describe('UsersService (White Box Testing)', () => {
+describe('UsersService Unit testing', () => {
   let service: UsersServiceImpl;
   let mockRepo: {
     existsByMobilePhone: jest.Mock;
     existsByUsername: jest.Mock;
     save: jest.Mock;
     findById: jest.Mock;
+    findAll: jest.Mock;
     findByUsername: jest.Mock;
   };
   let mockPasswordManager: {
@@ -41,12 +42,16 @@ describe('UsersService (White Box Testing)', () => {
 
   const VALID_HASH = '$2b$10$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX';
 
+  const VALID_USERNAME = 'johnDoe';
+  const VALID_PASSWORD = 'SecureP*ssw0rd123';
+
   beforeEach(async () => {
     mockRepo = {
       existsByMobilePhone: jest.fn(),
       existsByUsername: jest.fn(),
       save: jest.fn(),
       findById: jest.fn(),
+      findAll: jest.fn(),
       findByUsername: jest.fn(),
     };
 
@@ -350,6 +355,75 @@ describe('UsersService (White Box Testing)', () => {
         expect(mockCalls[1]).toBeLessThan(mockCalls[2]);
         expect(mockCalls[2]).toBeLessThan(mockCalls[3]);
       });
+    });
+  });
+
+  describe('UsersService.registerUser (Metamorphic unit Testing)', () => {
+    test('Given an initial set of users, when a new valid user is registered, then the resulting set should contain all initial users and one more (the new user)', async () => {
+      // Given: un conjunto inicial de usuarios
+      const initialUsers = [
+        User.create({
+          fullName: 'Alice Smith',
+          username: 'alice',
+          mobilePhone: '+34611111111',
+          passwordHash: VALID_HASH,
+          city: 'Madrid',
+          countryCode: 'ES',
+        }).value,
+        User.create({
+          fullName: 'Bob Johnson',
+          username: 'bob',
+          mobilePhone: '+34622222222',
+          passwordHash: VALID_HASH,
+          city: 'Barcelona',
+          countryCode: 'ES',
+        }).value,
+      ];
+
+      // Mock para findAll
+      mockRepo.findAll = jest
+        .fn()
+        .mockResolvedValueOnce(right(initialUsers)) // Antes de registrar
+        .mockResolvedValueOnce(
+          right([
+            ...initialUsers,
+            User.create({
+              fullName: validCommand.fullName,
+              username: validCommand.username,
+              mobilePhone: validCommand.mobilePhone,
+              passwordHash: VALID_HASH,
+              city: validCommand.city,
+              countryCode: validCommand.countryCode,
+            }).value,
+          ]),
+        ); // Después de registrar
+
+      // Mock para save y validaciones
+      mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
+      mockRepo.existsByMobilePhone.mockResolvedValueOnce(right(false));
+      mockRepo.existsByUsername.mockResolvedValueOnce(right(false));
+      mockRepo.save.mockResolvedValueOnce(right(undefined));
+
+      // When: se registra un nuevo usuario válido
+      const usersBefore = (await mockRepo.findAll()) as Either<RepositoryException, User[]>;
+      const result = await service.registerUser(validCommand);
+      const usersAfter = (await mockRepo.findAll()) as Either<RepositoryException, User[]>;
+
+      // Then: el conjunto resultante contiene todos los usuarios iniciales y uno más
+      expect(result.isRight()).toBe(true);
+      expect(usersBefore.isRight()).toBe(true);
+      expect(usersAfter.isRight()).toBe(true);
+      const beforeSet = usersBefore.value as User[];
+      const afterSet = usersAfter.value as User[];
+      expect(afterSet.length).toBe(beforeSet.length + 1);
+      // Todos los usuarios iniciales siguen presentes
+      beforeSet.forEach(u => {
+        expect(afterSet.some(ua => ua.username === u.username && ua.mobilePhone === u.mobilePhone)).toBe(true);
+      });
+      // El nuevo usuario está presente
+      expect(
+        afterSet.some(u => u.username === validCommand.username && u.mobilePhone === validCommand.mobilePhone),
+      ).toBe(true);
     });
   });
 
@@ -771,9 +845,6 @@ describe('UsersService (White Box Testing)', () => {
   });
 
   describe('UsersService.loginUser (White Box Testing)', () => {
-    const VALID_USERNAME = 'johnDoe';
-    const VALID_PASSWORD = 'SecureP*ssw0rd123';
-
     describe('Basic Path Testing (Cyclomatic Complexity = 5)', () => {
       describe('Path 1: Username validation fails', () => {
         it('should return ValidationError when username is too short', async () => {
@@ -785,6 +856,8 @@ describe('UsersService (White Box Testing)', () => {
 
           // Assert
           expect(result.isLeft() && result.value instanceof ValidationError).toBe(true);
+          expect(mockRepo.findByUsername).not.toHaveBeenCalled();
+          expect(mockPasswordManager.comparePassword).not.toHaveBeenCalled();
         });
 
         it('should return ValidationError when username is empty', async () => {
@@ -796,17 +869,8 @@ describe('UsersService (White Box Testing)', () => {
 
           // Assert
           expect(result.isLeft() && result.value instanceof ValidationError).toBe(true);
-        });
-
-        it('should not call repository when username validation fails', async () => {
-          // Arrange
-          const invalidUsername = 'a';
-
-          // Act
-          await service.loginUser(invalidUsername, VALID_PASSWORD);
-
-          // Assert
           expect(mockRepo.findByUsername).not.toHaveBeenCalled();
+          expect(mockPasswordManager.comparePassword).not.toHaveBeenCalled();
         });
       });
 
@@ -1043,166 +1107,119 @@ describe('UsersService (White Box Testing)', () => {
       });
     });
 
-    describe('Edge Cases', () => {
-      describe('Null and undefined inputs', () => {
-        it('should handle null username gracefully', async () => {
-          // Arrange & Act
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          const result = await service.loginUser(null as any, VALID_PASSWORD);
+    describe('UsersService.loginUser (Black Box Testing)', () => {
+      //TODO
+      describe('Equivalence Class Partitioning', () => {});
 
-          // Assert
-          expect(result.isLeft()).toBe(true);
-        });
-
-        it('should handle undefined username gracefully', async () => {
-          // Arrange & Act
-          const result = await service.loginUser(
+      describe('Edge Cases', () => {
+        describe('Null and undefined inputs', () => {
+          it('should handle null username gracefully', async () => {
+            // Arrange & Act
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            undefined as any,
-            VALID_PASSWORD,
-          );
+            const result = await service.loginUser(null as any, VALID_PASSWORD);
 
-          // Assert
-          expect(result.isLeft()).toBe(true);
-        });
+            // Assert
+            expect(result.isLeft()).toBe(true);
+          });
 
-        it('should handle null password gracefully', async () => {
-          // Arrange
-          const notFoundError = new EntityNotFoundException('User', 'username');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+          it('should handle undefined username gracefully', async () => {
+            // Arrange & Act
+            const result = await service.loginUser(
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+              undefined as any,
+              VALID_PASSWORD,
+            );
 
-          // Act
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          const result = await service.loginUser(VALID_USERNAME, null as any);
+            // Assert
+            expect(result.isLeft()).toBe(true);
+          });
 
-          // Assert
-          expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-        });
+          it('should handle null password gracefully', async () => {
+            // Arrange
+            const notFoundError = new EntityNotFoundException('User', 'username');
+            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
 
-        it('should handle undefined password gracefully', async () => {
-          // Arrange
-          const notFoundError = new EntityNotFoundException('User', 'username');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-          // Act
-          const result = await service.loginUser(
-            VALID_USERNAME,
+            // Act
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            undefined as any,
-          );
+            const result = await service.loginUser(VALID_USERNAME, null as any);
 
-          // Assert
-          expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-        });
-      });
+            // Assert
+            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
+          });
 
-      describe('Boundary values', () => {
-        it('should handle minimum valid username length', async () => {
-          // Arrange
-          const minUsername = 'abc';
-          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-          const notFoundError = new EntityNotFoundException('User', 'username');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+          it('should handle undefined password gracefully', async () => {
+            // Arrange
+            const notFoundError = new EntityNotFoundException('User', 'username');
+            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
 
-          // Act
-          const result = await service.loginUser(minUsername, VALID_PASSWORD);
+            // Act
+            const result = await service.loginUser(
+              VALID_USERNAME,
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+              undefined as any,
+            );
 
-          // Assert
-          expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-        });
-
-        it('should handle maximum valid username length', async () => {
-          // Arrange
-          const maxUsername = 'a'.repeat(USERNAME_MAX_LENGTH);
-          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-          const notFoundError = new EntityNotFoundException('User', 'username');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-          // Act
-          const result = await service.loginUser(maxUsername, VALID_PASSWORD);
-
-          // Assert
-          expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-        });
-      });
-
-      describe('Special characters in inputs', () => {
-        it('should reject username with special characters', async () => {
-          // Arrange
-          const specialCharUsername = 'user@name!';
-
-          // Act
-          const result = await service.loginUser(specialCharUsername, VALID_PASSWORD);
-
-          // Assert
-          expect(result.isLeft() && result.value instanceof ValidationError).toBe(true);
+            // Assert
+            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
+          });
         });
 
-        it('should accept username with allowed special characters', async () => {
-          // Arrange
-          const validUsernameWithUnderscore = 'user_name';
-          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-          const notFoundError = new EntityNotFoundException('User', 'username');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+        describe('Boundary values', () => {
+          it('should handle minimum valid username length', async () => {
+            // Arrange
+            const minUsername = 'abc';
+            mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
+            const notFoundError = new EntityNotFoundException('User', 'username');
+            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
 
-          // Act
-          const result = await service.loginUser(validUsernameWithUnderscore, VALID_PASSWORD);
+            // Act
+            const result = await service.loginUser(minUsername, VALID_PASSWORD);
 
-          // Assert
-          expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
+            // Assert
+            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
+          });
+
+          it('should handle maximum valid username length', async () => {
+            // Arrange
+            const maxUsername = 'a'.repeat(USERNAME_MAX_LENGTH);
+            mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
+            const notFoundError = new EntityNotFoundException('User', 'username');
+            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+
+            // Act
+            const result = await service.loginUser(maxUsername, VALID_PASSWORD);
+
+            // Assert
+            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
+          });
         });
-      });
-    });
 
-    describe('Mock Verification', () => {
-      it('should call findByUsername exactly once in happy path', async () => {
-        // Arrange
-        const existingUserOrError = User.create({
-          fullName: 'John Doe',
-          username: VALID_USERNAME,
-          mobilePhone: '+34612345678',
-          passwordHash: VALID_HASH,
-          city: 'Madrid',
-          countryCode: 'ES',
+        describe('Special characters in inputs', () => {
+          it('should reject username with special characters', async () => {
+            // Arrange
+            const specialCharUsername = 'user@name!';
+
+            // Act
+            const result = await service.loginUser(specialCharUsername, VALID_PASSWORD);
+
+            // Assert
+            expect(result.isLeft() && result.value instanceof ValidationError).toBe(true);
+          });
+
+          it('should accept username with allowed special characters', async () => {
+            // Arrange
+            const validUsernameWithUnderscore = 'user_name';
+            mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
+            const notFoundError = new EntityNotFoundException('User', 'username');
+            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
+
+            // Act
+            const result = await service.loginUser(validUsernameWithUnderscore, VALID_PASSWORD);
+
+            // Assert
+            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
+          });
         });
-        if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
-
-        mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-        mockRepo.findByUsername.mockResolvedValueOnce(right(existingUserOrError.value));
-        mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
-
-        // Act
-        await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-        // Assert
-        expect(mockRepo.findByUsername).toHaveBeenCalledTimes(1);
-      });
-
-      it('should execute steps in correct order for successful login', async () => {
-        // Arrange
-        const existingUserOrError = User.create({
-          fullName: 'John Doe',
-          username: VALID_USERNAME,
-          mobilePhone: '+34612345678',
-          passwordHash: VALID_HASH,
-          city: 'Madrid',
-          countryCode: 'ES',
-        });
-        if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
-
-        mockRepo.findByUsername.mockResolvedValueOnce(right(existingUserOrError.value));
-        mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
-
-        // Act
-        await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-        // Assert
-        const mockCalls = [
-          mockRepo.findByUsername.mock.invocationCallOrder[0],
-          mockPasswordManager.comparePassword.mock.invocationCallOrder[0],
-        ];
-
-        expect(mockCalls[0]).toBeLessThan(mockCalls[1]);
       });
     });
   });

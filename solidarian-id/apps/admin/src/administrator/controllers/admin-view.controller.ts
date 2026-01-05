@@ -66,14 +66,4 @@ export class AdminViewController {
       apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }
-
-  @Get('/reports')
-  @Render('pages/reports')
-  reports() {
-    return {
-      title: 'Reportes',
-      layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
-    };
-  }
 }

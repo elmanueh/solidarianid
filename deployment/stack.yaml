@@ -151,6 +151,29 @@ Resources:
                 retries: 10
                 start_period: 30s
 
+            kafka-init:
+              image: apache/kafka@sha256:0bc1bb2478f45b6cea78864df86acdc11e8df2c5172477819a4d12942cbe5d40
+              depends_on:
+                kafka:
+                  condition: service_healthy
+              entrypoint: ["/bin/bash", "-lc"]
+              command: >
+                "
+                set -e;
+                BOOTSTRAP=kafka:9093;
+
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic user-topic      --partitions 1 --replication-factor 1;
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic request-topic   --partitions 1 --replication-factor 1;
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic community-topic --partitions 1 --replication-factor 1;
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic cause-topic     --partitions 1 --replication-factor 1;
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic event-topic     --partitions 1 --replication-factor 1;
+
+                echo 'Topics ready';
+                "
+              networks:
+                - solidarian_network
+              restart: "no"
+
             admin-app:
               image: ${DockerHubUsername}/solidarianid-admin:latest
               container_name: solidarian_admin
@@ -168,6 +191,7 @@ Resources:
                 - API_BASE_USERS_URL=${!API_BASE_USERS_URL}
                 - API_BASE_COMMUNITIES_URL=${!API_BASE_COMMUNITIES_URL}
                 - SESSION_SECRET=${!SESSION_SECRET}
+                - KAFKA_ADMIN_CLIENT_ID=${!KAFKA_ADMIN_CLIENT_ID}
               depends_on:
                 mongo:
                   condition: service_healthy
@@ -190,6 +214,8 @@ Resources:
                 - POSTGRES_PASSWORD=${!POSTGRES_PASSWORD}
                 - POSTGRES_DB=${!POSTGRES_DB}
                 - KAFKA_BROKERS=${!KAFKA_BROKERS}
+                - KAFKA_USERS_CLIENT_ID=${!KAFKA_USERS_CLIENT_ID}
+                - KAFKA_USERS_CONSUMER_GROUP_ID=${!KAFKA_USERS_CONSUMER_GROUP_ID}
                 - API_BASE_ADMIN_URL=${!API_BASE_ADMIN_URL}
                 - API_BASE_USERS_URL=${!API_BASE_USERS_URL}
                 - API_BASE_COMMUNITIES_URL=${!API_BASE_COMMUNITIES_URL}
@@ -215,6 +241,8 @@ Resources:
                 - POSTGRES_PASSWORD=${!POSTGRES_PASSWORD}
                 - POSTGRES_DB=${!POSTGRES_DB}
                 - KAFKA_BROKERS=${!KAFKA_BROKERS}
+                - KAFKA_COMMUNITIES_CLIENT_ID=${!KAFKA_COMMUNITIES_CLIENT_ID}
+                - KAFKA_COMMUNITIES_CONSUMER_GROUP_ID=${!KAFKA_COMMUNITIES_CONSUMER_GROUP_ID}
                 - API_BASE_ADMIN_URL=${!API_BASE_ADMIN_URL}
                 - API_BASE_USERS_URL=${!API_BASE_USERS_URL}
                 - API_BASE_COMMUNITIES_URL=${!API_BASE_COMMUNITIES_URL}

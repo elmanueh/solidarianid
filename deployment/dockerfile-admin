@@ -32,10 +32,10 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=builder --chown=nestjs:nodejs /app/dist/apps/admin ./dist/apps/admin
 
 # Copiar views de la aplicación admin
-COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/views ./dist/apps/admin/views
+COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/views ./apps/admin/views
 
 # Copiar archivos estáticos
-COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/public ./dist/apps/admin/public
+COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/public ./apps/admin/public
 
 EXPOSE 3000
 

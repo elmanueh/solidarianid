@@ -24,7 +24,9 @@ export class TestServerHelper {
     const builder = Test.createTestingModule(enhancedMetadata);
 
     this.moduleRef = await builder.compile();
-    this.app = this.moduleRef.createNestApplication();
+    this.app = this.moduleRef.createNestApplication({
+      logger: false,
+    });
     this.app.use(
       session({
         secret: 'test-secret-key-for-e2e-tests',
@@ -67,7 +69,9 @@ export class TestServerHelper {
     };
 
     this.moduleRef = await Test.createTestingModule(enhancedMetadata).compile();
-    this.app = this.moduleRef.createNestApplication();
+    this.app = this.moduleRef.createNestApplication({
+      logger: false,
+    });
 
     this.app.useGlobalPipes(
       new ValidationPipe({

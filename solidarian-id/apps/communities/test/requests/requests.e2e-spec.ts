@@ -63,6 +63,7 @@ describe('RequestController (e2e)', () => {
     await seeder.clean();
     await seeder.seedCommunityUsers();
     await seeder.seedCommunities();
+    await seeder.seedCommunityMembers();
     await seeder.seedCauses();
   });
 

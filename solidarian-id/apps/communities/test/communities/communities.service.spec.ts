@@ -39,7 +39,6 @@ describe('CommunitiesServiceImpl', () => {
     description: 'A valid test community description',
     status: RequestStatus.APPROVED,
     userId: validUserId,
-    username: 'testuser',
     causeRequests: [],
     type: RequestType.COMMUNITY,
   });
@@ -84,7 +83,7 @@ describe('CommunitiesServiceImpl', () => {
     it('returns empty array when repository returns []', async () => {
       mockCommunityRepo.findAll.mockResolvedValueOnce(right([]));
       await expect(service.getCommunities()).resolves.toEqual(right([]));
-      expect(mockCommunityRepo.findAll).toHaveBeenCalledTimes(1);
+      expect(mockCommunityRepo.findAll).toHaveBeenCalledWith(['members', 'members.user']);
     });
 
     it('returns summaries when repository returns data', async () => {
@@ -94,14 +93,14 @@ describe('CommunitiesServiceImpl', () => {
       ];
       mockCommunityRepo.findAll.mockResolvedValueOnce(right(data));
       await expect(service.getCommunities()).resolves.toEqual(right(data));
-      expect(mockCommunityRepo.findAll).toHaveBeenCalledTimes(1);
+      expect(mockCommunityRepo.findAll).toHaveBeenCalledWith(['members', 'members.user']);
     });
 
     it('propagates ValidationError from repository', async () => {
       const err = new ValidationError('invalid repo data');
       mockCommunityRepo.findAll.mockResolvedValueOnce(left(err));
       await expect(service.getCommunities()).resolves.toEqual(left(err));
-      expect(mockCommunityRepo.findAll).toHaveBeenCalledTimes(1);
+      expect(mockCommunityRepo.findAll).toHaveBeenCalledWith(['members', 'members.user']);
     });
   });
 
@@ -114,14 +113,14 @@ describe('CommunitiesServiceImpl', () => {
       };
       mockCommunityRepo.findById.mockResolvedValueOnce(right(data));
       await expect(service.getCommunityById('1')).resolves.toEqual(right(data));
-      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['causes']);
+      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['causes', 'members', 'members.user']);
     });
 
     it('propagates ValidationError from repository', async () => {
       const err = new ValidationError('invalid repo data');
       mockCommunityRepo.findById.mockResolvedValueOnce(left(err));
       await expect(service.getCommunityById('1')).resolves.toEqual(left(err));
-      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['causes']);
+      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['causes', 'members', 'members.user']);
     });
   });
 

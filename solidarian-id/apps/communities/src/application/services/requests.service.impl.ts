@@ -109,7 +109,7 @@ export class RequestsServiceImpl extends RequestsService {
     dto: CreateCauseRequestDto,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>> {
     const userOrError = await this.userRepository.findById(dto.userId);
-    const communityOrError = await this.communityRepository.findById(dto.communityId);
+    const communityOrError = await this.communityRepository.findById(dto.communityId, ['members', 'members.user']);
 
     if (communityOrError.isLeft()) {
       return left(communityOrError.value);

@@ -10,7 +10,7 @@ import {
   MongoDBTestModule,
   TestServerHelper,
 } from '@solidarianid/testing';
-import { RequestsModule } from '@app/admin/administrator/requests.module';
+import { RequestsModule } from '@app/admin/administrator/modules/requests.module';
 
 describe('RequestsController (e2e)', () => {
   let repository: RequestsRepositoryPort;

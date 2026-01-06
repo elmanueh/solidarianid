@@ -11,7 +11,7 @@ export class RequestsKafkaPublisherAdapter
   implements RequestsPublisherPort
 {
   constructor(
-    @Inject('requests_kafka') publisher: ClientKafka,
+    @Inject('admin_kafka') publisher: ClientKafka,
     private readonly requestEventMapper: RequestEventMapper,
   ) {
     super(publisher, requestEventMapper, Topics.REQUESTS);

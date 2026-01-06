@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -15,9 +16,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         password: config.get<string>('POSTGRES_PASSWORD'),
         database: config.get<string>('POSTGRES_DB'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: process.env.NODE_ENV !== 'production',
       }),
     }),
   ],
+  exports: [TypeOrmModule],
 })
-export class DatabaseModule {}
+export class DatabaseSqlModule {}

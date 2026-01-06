@@ -1,16 +1,25 @@
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { RequestAction } from '@app/admin/administrator/model/domain/models/action.request';
-import { RequestCause } from '@app/admin/administrator/model/domain/models/cause.request';
-import { RequestCommunity } from '@app/admin/administrator/model/domain/models/community.request';
+import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
+import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
+import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
+import { Request } from '@app/admin/administrator/model/domain/models/request';
 import { Either } from '@app/ddd/either';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { RequestEventDto } from '@solidarianid/kafka';
 
 export abstract class RequestsService {
-  abstract updateStatus(id: string, status: RequestStatus, reason?: string): Promise<Either<ValidationError, void>>;
+  abstract createRequest(props: RequestEventDto): Promise<Either<RepositoryException | ValidationError, Request<any>>>;
 
-  abstract getPendingCommunityRequests(): Promise<Either<ValidationError, RequestCommunity[]>>;
+  abstract updateStatus(
+    id: string,
+    status: RequestStatus,
+    reason?: string,
+  ): Promise<Either<RepositoryException | ValidationError, void>>;
 
-  abstract getPendingCauseRequests(): Promise<Either<ValidationError, RequestCause[]>>;
+  abstract getCommunityRequestsPending(): Promise<Either<ValidationError, CommunityRequest[]>>;
 
-  abstract getPendingActionRequests(): Promise<Either<ValidationError, RequestAction[]>>;
+  abstract getCauseRequestsPending(): Promise<Either<ValidationError, CauseRequest[]>>;
+
+  abstract getActionRequestsPending(): Promise<Either<ValidationError, ActionRequest[]>>;
 }

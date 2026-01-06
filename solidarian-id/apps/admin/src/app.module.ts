@@ -5,6 +5,7 @@ import { AuthModule } from '@app/admin/auth/auth.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { KafkaBrokersModule } from '@solidarianid/kafka';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    KafkaBrokersModule,
     MongooseModule.forRoot(
       process.env.MONGODB_URI ||
         `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`,
@@ -19,6 +21,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     AdminModule,
     AuthModule,
     RequestsModule,
+    KafkaBrokersModule,
   ],
   controllers: [AppController],
   providers: [],

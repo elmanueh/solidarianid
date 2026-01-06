@@ -10,7 +10,7 @@ import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-n
 import { UserNotFoundError } from '@app/admin/administrator/model/domain/errors/user-not-found.error';
 import { Test, TestingModule } from '@nestjs/testing';
 import type { Response } from 'express';
-import { Readable } from 'stream';
+import { Readable } from 'node:stream';
 
 const createMockUsersService = (): jest.Mocked<UsersService> => ({
   getPaginatedUsers: jest.fn(),
@@ -329,10 +329,10 @@ describe('ReportsApiController', () => {
         expect(setHeaderCall).toBeDefined();
         if (setHeaderCall) {
           const filename = setHeaderCall[1] as string;
-          const timestampMatch = filename.match(/-(\d+)\.pdf/);
+          const timestampMatch = new RegExp(/-(\d+)\.pdf/).exec(filename);
           expect(timestampMatch).toBeTruthy();
           if (timestampMatch) {
-            const timestamp = parseInt(timestampMatch[1], 10);
+            const timestamp = Number.parseInt(timestampMatch[1], 10);
             expect(timestamp).toBeGreaterThanOrEqual(beforeTimestamp);
             expect(timestamp).toBeLessThanOrEqual(afterTimestamp);
           }

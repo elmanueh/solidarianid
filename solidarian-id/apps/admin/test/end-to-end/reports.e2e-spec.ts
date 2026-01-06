@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { INestApplication, DynamicModule } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { AdminModule } from '@app/admin/administrator/admin.module';
-import { MongoDBSeeder, MongoDBTestContainer, MongoDBTestModule, TestServerHelper } from '@solidarianid/testing';
+import {
+  KafkaTestContainer,
+  KafkaTestModule,
+  MongoDBSeeder,
+  MongoDBTestContainer,
+  MongoDBTestModule,
+  TestServerHelper,
+} from '@solidarianid/testing';
 
 describe('ReportsApiController (e2e)', () => {
   const existingUserId = '550e8400-e29b-41d4-a716-446655440000';
@@ -13,10 +20,11 @@ describe('ReportsApiController (e2e)', () => {
   let seeder!: MongoDBSeeder;
 
   beforeAll(async () => {
-    const databaseModule: DynamicModule = await MongoDBTestModule.forRoot();
+    const messageModule = await KafkaTestModule.forRoot();
+    const databaseModule = await MongoDBTestModule.forRoot();
     server = new TestServerHelper();
     app = await server.create({
-      imports: [databaseModule, AdminModule],
+      imports: [messageModule, databaseModule, AdminModule],
     });
 
     const connection: Connection = app.get<Connection>('Connection');
@@ -31,6 +39,7 @@ describe('ReportsApiController (e2e)', () => {
   afterAll(async () => {
     await server.close();
     await MongoDBTestContainer.getInstance().stop();
+    await KafkaTestContainer.getInstance().stop();
   });
 
   describe('GET /api/reports/users/:id', () => {

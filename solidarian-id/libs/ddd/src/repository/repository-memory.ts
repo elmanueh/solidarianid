@@ -4,7 +4,7 @@ import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-n
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Repository } from '@app/ddd/repository/repository';
 
-export abstract class InMemoryRepository<T extends Entity<any>> extends Repository<T> {
+export abstract class RepositoryMemory<T extends Entity<any>> extends Repository<T> {
   protected readonly items: Map<string, T>;
 
   constructor() {
@@ -16,10 +16,12 @@ export abstract class InMemoryRepository<T extends Entity<any>> extends Reposito
     this.items.set(model.id.value, model);
     return Promise.resolve(right(undefined));
   }
+
   remove(id: string): Promise<Either<RepositoryException, void>> {
     this.items.delete(id);
     return Promise.resolve(right(undefined));
   }
+
   findById(id: string): Promise<Either<RepositoryException | EntityNotFoundException, T>> {
     const item = this.items.get(id);
     if (!item) {
@@ -27,6 +29,7 @@ export abstract class InMemoryRepository<T extends Entity<any>> extends Reposito
     }
     return Promise.resolve(right(item));
   }
+
   findAll(): Promise<Either<RepositoryException | EntityNotFoundException, T[]>> {
     const allItems = Array.from(this.items.values());
     return Promise.resolve(right(allItems));

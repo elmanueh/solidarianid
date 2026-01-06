@@ -28,7 +28,7 @@ export class UserConsumerAdapter {
       case EventType.USER_UPDATED:
         return this.userService.updateUser(data);
       default:
-        return Promise.resolve(left(new ValidationError(`Unhandled event type: ${eventType}`)));
+        return left(new ValidationError(`Unhandled event type: ${eventType}`));
     }
   }
 }

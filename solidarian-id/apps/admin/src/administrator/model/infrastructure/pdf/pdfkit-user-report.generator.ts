@@ -1,7 +1,7 @@
 import PDFDocument from 'pdfkit';
-import type { Readable } from 'stream';
+import type { Readable } from 'node:stream';
 import type { UserReportPdfDto } from './user-report-pdf.dto';
-import { join } from 'path';
+import { join } from 'node:path';
 import { colors } from '@frontend/design-tokens/colors';
 import { Injectable } from '@nestjs/common';
 import { UserPdfGeneratorPort } from '../../domain/ports/output/user-pdf-generator.port';

@@ -41,7 +41,6 @@ export class ActionRequestEventDto {
   status: RequestStatus;
   reason?: string;
   userId: string;
-  username: string;
   objectives: ActionRequestObjectiveEventDto[];
   events: ActionRequestEventEventDto[];
   causeId: string;

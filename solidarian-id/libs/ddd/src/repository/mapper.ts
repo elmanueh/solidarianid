@@ -1,7 +1,6 @@
 import { Either } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { ValueObject } from '../value-object';
 
 /**
  * Maps between domain models and persistence entities.
@@ -9,7 +8,7 @@ import { ValueObject } from '../value-object';
  * @template TDomain Domain model type
  * @template TPersistence Persistence entity type
  */
-export abstract class Mapper<TDomain extends Entity<any> | ValueObject<any>, TPersistence> {
+export abstract class Mapper<TDomain extends Entity<any>, TPersistence> {
   /**
    * Converts a domain model into its persistence representation.
    *

@@ -25,7 +25,6 @@ export class CommunityRequestEventDto {
   status: RequestStatus;
   reason?: string;
   userId: string;
-  username: string;
   causeRequests: CommunityRequestCauseEventDto[];
   type: RequestType = RequestType.COMMUNITY;
 }

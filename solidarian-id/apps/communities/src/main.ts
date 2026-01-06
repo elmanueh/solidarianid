@@ -49,8 +49,6 @@ async function bootstrap() {
     },
   });
 
-  app.setGlobalPrefix('api/communities');
-
   await app.startAllMicroservices();
 
   const port = configService.get<number>('COMMUNITIES_PORT') ?? 3002;

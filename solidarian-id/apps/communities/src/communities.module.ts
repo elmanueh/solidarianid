@@ -45,6 +45,7 @@ import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repo
 import { UserService } from './domain/services/user.service';
 import { UserServiceImpl } from './application/services/user.service.impl';
 import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
+import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/requests.consumer';
 
 @Module({
   imports: [
@@ -62,7 +63,14 @@ import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.co
     ]),
     KafkaDynamicModule.register(process.env.KAFKA_COMMUNITIES_CLIENT_ID || 'communities'),
   ],
-  controllers: [CommunitiesController, CausesController, ActionsController, RequestController, UserConsumerAdapter],
+  controllers: [
+    CommunitiesController,
+    CausesController,
+    ActionsController,
+    RequestController,
+    UserConsumerAdapter,
+    RequestsConsumerAdapter,
+  ],
   providers: [
     // Services
     {

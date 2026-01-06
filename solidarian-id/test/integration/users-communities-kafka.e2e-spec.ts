@@ -46,7 +46,7 @@ describe('Users-Communities Kafka Integration', () => {
     const kafkaModule = await KafkaTestModule.forRoot();
     const kafkaBroker = KafkaTestContainer.getInstance().getConnectionString();
 
-    await KafkaTestContainer.getInstance().createTopics([Topics.USERS]);
+    await KafkaTestContainer.getInstance().createTopics([Topics.USERS, Topics.REQUESTS]);
 
     // Wait kafka to be fully ready
     await new Promise(resolve => setTimeout(resolve, 5000));

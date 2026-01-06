@@ -13,6 +13,7 @@ const config: Config = {
     '<rootDir>/apps/admin/test/**/*.e2e-spec.ts',
     '<rootDir>/apps/users/test/**/*.e2e-spec.ts',
     '<rootDir>/apps/communities/test/**/*.e2e-spec.ts',
+    '<rootDir>/test/integration/**/*.e2e-spec.ts',
   ],
 
   globalSetup: '<rootDir>/test/e2e/global-setup.ts',

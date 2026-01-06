@@ -15,8 +15,38 @@ export class TestContainerLifecycle {
   /**
    * Returns true if containers are managed by global setup
    */
-  private isUsingGlobalSetup(): boolean {
+  public isUsingGlobalSetup(): boolean {
     return !!(process.env.TEST_MONGODB_URI || process.env.TEST_POSTGRESQL_URI || process.env.TEST_KAFKA_BROKER);
+  }
+
+  /**
+   * Gets Kafka broker URL from environment or container
+   */
+  public getKafkaBroker(): string {
+    if (process.env.TEST_KAFKA_BROKER) {
+      return process.env.TEST_KAFKA_BROKER;
+    }
+    return KafkaTestContainer.getInstance().getConnectionString();
+  }
+
+  /**
+   * Gets MongoDB URI from environment or container
+   */
+  public getMongoDBUri(): string {
+    if (process.env.TEST_MONGODB_URI) {
+      return process.env.TEST_MONGODB_URI;
+    }
+    return MongoDBTestContainer.getInstance().getConnectionString();
+  }
+
+  /**
+   * Gets PostgreSQL URI from environment or container
+   */
+  public getPostgreSQLUri(): string {
+    if (process.env.TEST_POSTGRESQL_URI) {
+      return process.env.TEST_POSTGRESQL_URI;
+    }
+    return PostgreSQLTestContainer.getInstance().getConnectionString();
   }
 
   /**

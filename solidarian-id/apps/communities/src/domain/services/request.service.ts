@@ -34,10 +34,18 @@ export abstract class RequestsService {
     createActionRequestDto: CreateActionRequestDto,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>>;
 
+  /**
+   * Accepts a request.
+   * @param requestEventDto  Data Transfer Object containing request event details
+   */
   abstract acceptRequest(
     requestEventDto: RequestEventDto,
   ): Promise<Either<ValidationError | RepositoryException, void>>;
 
+  /**
+   * Rejects a request.
+   * @param requestEventDto Data Transfer Object containing request event details
+   */
   abstract rejectRequest(
     requestEventDto: RequestEventDto,
   ): Promise<Either<ValidationError | RepositoryException, void>>;

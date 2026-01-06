@@ -13,7 +13,13 @@ import { CauseRequest } from '@app/communities/domain/model/entities/request-cau
 import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
-import { EventType, RequestEventDto } from '@solidarianid/kafka';
+import {
+  ActionRequestEventDto,
+  CauseRequestEventDto,
+  CommunityRequestEventDto,
+  EventType,
+  RequestEventDto,
+} from '@solidarianid/kafka';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
@@ -226,17 +232,34 @@ export class RequestsServiceImpl extends RequestsService {
 
     // Additional logic based on request type
     switch (request.type) {
-      case RequestType.COMMUNITY:
-        // Assuming community creation logic is handled in CommunitiesService
+      case RequestType.COMMUNITY: {
+        const communityResult = await this.communitiesService.create(requestEventDto as CommunityRequestEventDto);
+        if (communityResult.isLeft()) {
+          console.error(
+            `Failed to create community for request ID ${requestEventDto.id}: ${communityResult.value.message}`,
+          );
+          return left(communityResult.value);
+        }
         break;
-      case RequestType.CAUSE:
-        // Assuming cause creation logic is handled in CausesService
+      }
+      case RequestType.CAUSE: {
+        const causeResult = await this.causesService.create(requestEventDto as CauseRequestEventDto);
+        if (causeResult.isLeft()) {
+          console.error(`Failed to create cause for request ID ${requestEventDto.id}: ${causeResult.value.message}`);
+          return left(causeResult.value);
+        }
         break;
-      case RequestType.ACTION:
-        // Implement action creation logic if needed
+      }
+      case RequestType.ACTION: {
+        const actionResult = await this.actionsService.create(requestEventDto as ActionRequestEventDto);
+        if (actionResult.isLeft()) {
+          console.error(`Failed to create action for request ID ${requestEventDto.id}: ${actionResult.value.message}`);
+          return left(actionResult.value);
+        }
         break;
+      }
       default:
-        console.warn(`Unhandled request type: ${String(request.type)}`);
+        return left(new ValidationError('Invalid request type'));
     }
 
     return Promise.resolve(right(undefined));

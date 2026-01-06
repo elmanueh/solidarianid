@@ -6,6 +6,8 @@ on:
       - "solidarian-id/**"
       - "deployment/**"
       - "!docs/**"
+  pull_request:
+    branches: [develop]
   workflow_dispatch:
 
 jobs:

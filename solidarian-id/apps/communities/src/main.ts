@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import type { OpenAPIObject } from '@nestjs/swagger';
 import { dump } from 'js-yaml';
-import { writeFileSync } from 'fs';
+import { writeFileSync } from 'node:fs';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';

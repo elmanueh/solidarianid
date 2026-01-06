@@ -1,6 +1,7 @@
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
+import { CommunityRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/community-request.entity';
 import { AdministratorEntity } from '@app/admin/auth/model/infrastructure/persistence/entities/administrator.entity';
 import { IDatabaseSeeder } from '@solidarianid/testing';
 import { Connection } from 'mongoose';
@@ -11,7 +12,19 @@ export class MongoDBSeeder implements IDatabaseSeeder {
   async seedRequests(requests: CauseRequestEntity[] = []): Promise<void> {
     const requestsCollection = this.connection.collection('requests');
 
-    const defaultRequests: CauseRequestEntity[] = [
+    const defaultCommunityRequests: CommunityRequestEntity[] = [
+      {
+        _id: 'f1e6d3c4-8b2a-4f4b-9c4d-2e5f6a7b8c9d',
+        name: 'Test Community Request',
+        description: 'This is a test community that is approved for E2E tests',
+        status: RequestStatus.APPROVED,
+        type: RequestType.COMMUNITY,
+        userId: '53ba64a8-7e4d-4c35-a7e3-06e6f39f3728',
+        reason: 'Approved for testing',
+      },
+    ];
+
+    const defaultCauseRequests: CauseRequestEntity[] = [
       {
         _id: '2db201c8-5d35-462e-a1d1-985cb677725d',
         name: 'Test Request for Approval',
@@ -19,11 +32,13 @@ export class MongoDBSeeder implements IDatabaseSeeder {
         status: RequestStatus.PENDING,
         type: RequestType.CAUSE,
         startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+        duration: 30,
         ods: [1, 2],
+        userId: '53ba64a8-7e4d-4c35-a7e3-06e6f39f3728',
+        communityId: 'f1e6d3c4-8b2a-4f4b-9c4d-2e5f6a7b8c9d',
       },
     ];
-    const allRequests = [...defaultRequests, ...requests];
+    const allRequests = [...defaultCommunityRequests, ...defaultCauseRequests, ...requests];
     await requestsCollection.insertMany(allRequests as any[]);
   }
 

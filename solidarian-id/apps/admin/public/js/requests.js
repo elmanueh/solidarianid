@@ -44,6 +44,11 @@
     let title = 'Error';
 
     switch (statusCode) {
+      case 200:
+        alertClass = 'alert-success';
+        iconClass = 'icon-[lucide--check-circle]';
+        title = 'Éxito';
+        break;
       case 400:
         alertClass = 'alert-warning';
         iconClass = 'icon-[lucide--alert-triangle]';

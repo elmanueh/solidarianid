@@ -1,16 +1,23 @@
-import { SustainableDevelopmentGoal } from '@app/admin/administrator/model/domain/enums/ods';
 import { RequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/request.entity';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
+export type CauseRequestDocument = HydratedDocument<CauseRequestEntity>;
+
+@Schema()
 export class CauseRequestEntity extends RequestEntity {
-  @Prop({ type: [Number], enum: SustainableDevelopmentGoal, required: true })
+  @Prop({ type: [String], enum: SustainableDevelopmentGoal, required: true })
   ods: SustainableDevelopmentGoal[];
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Date })
   startDate: Date;
 
   @Prop({ required: true })
-  endDate: Date;
+  duration: number;
+
+  @Prop({ required: true, index: true })
+  communityId: string;
 }
 
 export const CauseRequestSchema = SchemaFactory.createForClass(CauseRequestEntity);

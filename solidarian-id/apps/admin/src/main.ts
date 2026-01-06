@@ -12,11 +12,13 @@ import { ConflictErrorFilter } from './administrator/controllers/filters/conflic
 import { InternalServerErrorFilter } from './administrator/controllers/filters/internal-server-error.filter';
 import { NotFoundErrorFilter } from './administrator/controllers/filters/not-found-error.filter';
 import { ValidationErrorFilter } from './administrator/controllers/filters/validation-error.filter';
-import { ConfigService } from '@nestjs/config/dist/config.service';
+import { ConfigService } from '@nestjs/config';
+import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
+
   app.engine(
     'hbs',
     engine({
@@ -76,6 +78,7 @@ async function bootstrap() {
     new NotFoundErrorFilter(),
     new ConflictErrorFilter(),
     new AuthenticationErrorFilter(),
+    new GlobalExceptionFilter(),
   );
 
   // Configurar Kafka como microservicio para consumir eventos

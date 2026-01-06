@@ -107,7 +107,7 @@ jobs:
         run: npm run lint:ci
 
       - name: Build project
-        run: npm run build
+        run: npm run build users admin communities
 
       - name: Run all tests with combined coverage
         run: npm run test:all:coverage

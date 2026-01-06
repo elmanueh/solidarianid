@@ -1,11 +1,11 @@
-import { Controller, Get, Param, Res, HttpStatus } from '@nestjs/common';
-import type { Response } from 'express';
-import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
-import { UserDtoMapper } from './mappers/user.dto.mapper';
-import { UserDetailResponseDto } from '../model/application/dtos/output/user-detail-response.dto';
+import { UserDtoMapper } from '@app/admin/administrator/controllers/mappers/user.dto.mapper';
+import { UserDetailResponseDto } from '@app/admin/administrator/model/application/dtos/output/user-detail.response.dto';
 import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
-import type { UserReportPdfDto } from '@app/admin/administrator/model/infrastructure/pdf/user-report-pdf.dto';
+import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import type { CommunityMembership } from '@app/admin/administrator/model/domain/value-objects/community-membership';
+import type { UserReportPdfDto } from '@app/admin/administrator/model/infrastructure/report/user-report-pdf.dto';
+import { Controller, Get, HttpStatus, Param, Res } from '@nestjs/common';
+import type { Response } from 'express';
 
 /**
  * Controlador API para reportes

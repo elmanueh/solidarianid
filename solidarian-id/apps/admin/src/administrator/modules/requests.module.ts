@@ -4,9 +4,9 @@ import { RequestType } from '@app/admin/administrator/model/domain/enums/request
 import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
-import { RequestEventMapper } from '@app/admin/administrator/model/infrastructure/messaging/request-event.mapper';
-import { RequestConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/request.consumer';
-import { RequestsKafkaPublisherAdapter } from '@app/admin/administrator/model/infrastructure/messaging/request.publisher';
+import { RequestConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/consumer/request.consumer';
+import { RequestEventMapper } from '@app/admin/administrator/model/infrastructure/messaging/mappers/request-event.mapper';
+import { RequestsKafkaPublisherAdapter } from '@app/admin/administrator/model/infrastructure/messaging/publisher/request.publisher';
 import { ActionRequestSchema } from '@app/admin/administrator/model/infrastructure/persistence/entities/action-request.entity';
 import { CauseRequestSchema } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
 import { CommunityRequestSchema } from '@app/admin/administrator/model/infrastructure/persistence/entities/community-request.entity';
@@ -17,8 +17,8 @@ import {
 import { RequestMapper } from '@app/admin/administrator/model/infrastructure/persistence/mappers/request.mapper';
 import { RequestRepositoryMongoose } from '@app/admin/administrator/model/infrastructure/persistence/repositories/request.repository-mongoose';
 import { Module } from '@nestjs/common';
-import { KafkaDynamicModule } from '@solidarianid/kafka';
 import { MongooseModule } from '@nestjs/mongoose';
+import { KafkaDynamicModule } from '@solidarianid/kafka';
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { RequestConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/request.consumer';
+import { RequestConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/consumer/request.consumer';
 import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';

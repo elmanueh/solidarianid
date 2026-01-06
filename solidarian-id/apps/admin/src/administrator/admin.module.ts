@@ -5,12 +5,11 @@ import { ReportsViewController } from '@app/admin/administrator/controllers/repo
 import { RequestsModule } from '@app/admin/administrator/modules/requests.module';
 import { UsersModule } from '@app/admin/administrator/modules/users.module';
 import { Module } from '@nestjs/common';
-import { KafkaDynamicModule } from '@solidarianid/kafka';
 
 @Module({
   imports: [RequestsModule, UsersModule],
   controllers: [AdminViewController, AdminApiController, ReportsViewController, ReportsApiController],
   providers: [],
-  exports: [KafkaDynamicModule],
+  exports: [],
 })
 export class AdminModule {}

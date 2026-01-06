@@ -1,5 +1,5 @@
-import type { Readable } from 'stream';
-import type { UserReportPdfDto } from '../../../infrastructure/pdf/user-report-pdf.dto';
+import { UserReportPdfDto } from '@app/admin/administrator/model/infrastructure/report/user-report-pdf.dto';
+import type { Readable } from 'node:stream';
 
 /**
  * Puerto (interfaz) para la generación de PDFs de reportes de usuario

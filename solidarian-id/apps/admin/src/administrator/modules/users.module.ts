@@ -5,10 +5,10 @@ import { UserRepositoryPort } from '@app/admin/administrator/model/domain/ports/
 import { UsersConsumerService } from '@app/admin/administrator/model/domain/services/users-consumer.service';
 import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import { UserConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/consumer/users.consumer';
-import { PdfKitUserReportGenerator } from '@app/admin/administrator/model/infrastructure/pdf/pdfkit-user-report.generator';
 import { UserEntity, UserSchema } from '@app/admin/administrator/model/infrastructure/persistence/entities/user.entity';
 import { UserMapper } from '@app/admin/administrator/model/infrastructure/persistence/mappers/user.mapper';
 import { UserRepositoryMongoose } from '@app/admin/administrator/model/infrastructure/persistence/repositories/user.repository-mongoose';
+import { PdfKitUserReportGenerator } from '@app/admin/administrator/model/infrastructure/report/pdfkit-user-report.generator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 

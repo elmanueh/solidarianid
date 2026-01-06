@@ -1,18 +1,20 @@
 import { Controller, Get, Render } from '@nestjs/common';
-import { fakeDashboardData, DashboardSummary, fakeDashboardSummary } from '../model/data/fakeMetrics';
-import {
-  createInteractiveNationalitiesDoughnut,
-  createOdsByCauseBar,
-  createTopCommunitiesPie,
-  createMonthlyJoinsLine,
-} from '../../utils/chart-builder';
 import { ConfigService } from '@nestjs/config';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
+import { CommunityRequestResponseDto } from '@app/admin/administrator/model/application/dtos/output/community-request.response.dto';
+import { ActionRequestResponseDto } from '@app/admin/administrator/model/application/dtos/output/action-request.response.dto';
+import { CauseRequestResponseDto } from '@app/admin/administrator/model/application/dtos/output/cause-request.response.dto';
 import {
-  ActionRequestResponseDto,
-  CauseRequestResponseDto,
-  CommunityRequestResponseDto,
-} from '@app/admin/administrator/model/application/dtos/get-community-request.dto';
+  DashboardSummary,
+  fakeDashboardData,
+  fakeDashboardSummary,
+} from '@app/admin/administrator/model/data/fakeMetrics';
+import {
+  createInteractiveNationalitiesDoughnut,
+  createMonthlyJoinsLine,
+  createOdsByCauseBar,
+  createTopCommunitiesPie,
+} from '@app/admin/utils/chart-builder';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)

@@ -1,10 +1,10 @@
-import PDFDocument from 'pdfkit';
-import type { Readable } from 'node:stream';
-import type { UserReportPdfDto } from './user-report-pdf.dto';
-import { join } from 'node:path';
+import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
+import { UserReportPdfDto } from '@app/admin/administrator/model/infrastructure/report/user-report-pdf.dto';
 import { colors } from '@frontend/design-tokens/colors';
 import { Injectable } from '@nestjs/common';
-import { UserPdfGeneratorPort } from '../../domain/ports/output/user-pdf-generator.port';
+import { join } from 'node:path';
+import type { Readable } from 'node:stream';
+import PDFDocument from 'pdfkit';
 
 type PDFDoc = typeof PDFDocument extends new (...args: any[]) => infer R ? R : never;
 

@@ -3,11 +3,10 @@ import { INestApplication } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { AdminModule } from '@app/admin/administrator/admin.module';
 import {
-  KafkaTestContainer,
   KafkaTestModule,
   MongoDBSeeder,
-  MongoDBTestContainer,
   MongoDBTestModule,
+  TestContainerLifecycle,
   TestServerHelper,
 } from '@solidarianid/testing';
 
@@ -38,8 +37,7 @@ describe('ReportsApiController (e2e)', () => {
 
   afterAll(async () => {
     await server.close();
-    await MongoDBTestContainer.getInstance().stop();
-    await KafkaTestContainer.getInstance().stop();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   describe('GET /api/reports/users/:id', () => {

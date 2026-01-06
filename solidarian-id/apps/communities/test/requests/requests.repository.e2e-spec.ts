@@ -1,4 +1,4 @@
-import { PostgreSQLTestModule, PostgreSQLSeeder, PostgreSQLTestContainer, USER_IDS } from '@solidarianid/testing';
+import { PostgreSQLTestModule, PostgreSQLSeeder, USER_IDS, TestContainerLifecycle } from '@solidarianid/testing';
 import { INestApplication } from '@nestjs/common';
 import { DataSource, Repository as TypeOrmRepository } from 'typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -16,11 +16,10 @@ import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.r
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { Request } from '@app/communities/domain/model/entities/request';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { RequestsRepositoryTypeOrmAdapter } from '@app/communities/infrastructure/persistence/repositories/requests-typeorm.repository';
 import { RequestEntityMapper } from '@app/communities/infrastructure/persistence/mappers/request-entity.mapper';
 import { UserEntityMapper } from '@app/communities/infrastructure/persistence/mappers/user-entity.mapper';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 
 // ============================================
 // TEST DATA - Request IDs (Valid UUID format)
@@ -82,8 +81,8 @@ describe('RequestsRepositoryTypeOrmAdapter (e2e)', () => {
   });
 
   afterAll(async () => {
-    if (app) await app.close();
-    await PostgreSQLTestContainer.getInstance().stop();
+    await app.close();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   /**

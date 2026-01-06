@@ -6,7 +6,7 @@ import { Connection } from 'mongoose';
 @Module({})
 export class MongoDBTestModule {
   static async forRoot(): Promise<DynamicModule> {
-    const connectionString = await MongoDBTestContainer.getInstance().start();
+    const connectionString = process.env.TEST_MONGODB_URI ?? (await MongoDBTestContainer.getInstance().start());
 
     const module = {
       global: true,

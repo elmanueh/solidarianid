@@ -3,8 +3,8 @@ import {
   TestServerHelper,
   PostgreSQLSeeder,
   KafkaTestModule,
-  KafkaTestContainer,
-  PostgreSQLTestContainer,
+  COMMUNITY_IDS,
+  TestContainerLifecycle,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
@@ -18,7 +18,6 @@ import { EventUserEntity } from '../../src/infrastructure/persistence/entities/e
 import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user';
 import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
 import { CommunitiesModule } from '@app/communities/communities.module';
-import { COMMUNITY_IDS } from '@solidarianid/testing';
 import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
 
 describe('CommunitiesController (e2e)', () => {
@@ -51,9 +50,8 @@ describe('CommunitiesController (e2e)', () => {
   });
 
   afterAll(async () => {
-    if (app) await app.close();
-    await KafkaTestContainer.getInstance().stop();
-    await PostgreSQLTestContainer.getInstance().stop();
+    await app.close();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   beforeEach(async () => {

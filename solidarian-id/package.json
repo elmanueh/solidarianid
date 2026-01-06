@@ -29,7 +29,7 @@
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:cov": "cross-env NODE_ENV=test jest --coverage",
     "test:debug": "cross-env NODE_ENV=test node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "npm run test:e2e:admin && npm run test:e2e:users && npm run test:e2e:communities",
+    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/e2e/jest-e2e.config.ts",
     "test:e2e:admin": "cross-env NODE_ENV=test jest --config ./apps/admin/jest-e2e.config.ts",
     "test:e2e:users": "cross-env NODE_ENV=test jest --config ./apps/users/jest-e2e.config.ts",
     "test:e2e:communities": "cross-env NODE_ENV=test jest --config ./apps/communities/jest-e2e.config.ts",

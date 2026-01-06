@@ -3,11 +3,10 @@ import { Connection } from 'mongoose';
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import {
-  KafkaTestContainer,
   KafkaTestModule,
   MongoDBSeeder,
-  MongoDBTestContainer,
   MongoDBTestModule,
+  TestContainerLifecycle,
   TestServerHelper,
 } from '@solidarianid/testing';
 import { RequestsModule } from '@app/admin/administrator/modules/requests.module';
@@ -41,8 +40,7 @@ describe('RequestsController (e2e)', () => {
 
   afterAll(async () => {
     await server.close();
-    await MongoDBTestContainer.getInstance().stop();
-    await KafkaTestContainer.getInstance().stop();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   describe('PATCH /requests/:id', () => {

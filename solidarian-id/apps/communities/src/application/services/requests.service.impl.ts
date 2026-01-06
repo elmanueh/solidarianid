@@ -216,7 +216,6 @@ export class RequestsServiceImpl extends RequestsService {
     > = await this.requestsRepository.findById(requestEventDto.id);
 
     if (requestOrError.isLeft()) {
-      console.error(`Request with ID ${requestEventDto.id} not found.`);
       return left(requestOrError.value);
     }
 
@@ -226,7 +225,6 @@ export class RequestsServiceImpl extends RequestsService {
     const saveResult = await this.requestsRepository.save(request);
 
     if (saveResult.isLeft()) {
-      console.error(`Failed to save accepted request with ID ${requestEventDto.id}: ${saveResult.value.message}`);
       return left(saveResult.value);
     }
 
@@ -235,9 +233,6 @@ export class RequestsServiceImpl extends RequestsService {
       case RequestType.COMMUNITY: {
         const communityResult = await this.communitiesService.create(requestEventDto as CommunityRequestEventDto);
         if (communityResult.isLeft()) {
-          console.error(
-            `Failed to create community for request ID ${requestEventDto.id}: ${communityResult.value.message}`,
-          );
           return left(communityResult.value);
         }
         break;
@@ -245,7 +240,6 @@ export class RequestsServiceImpl extends RequestsService {
       case RequestType.CAUSE: {
         const causeResult = await this.causesService.create(requestEventDto as CauseRequestEventDto);
         if (causeResult.isLeft()) {
-          console.error(`Failed to create cause for request ID ${requestEventDto.id}: ${causeResult.value.message}`);
           return left(causeResult.value);
         }
         break;
@@ -253,7 +247,6 @@ export class RequestsServiceImpl extends RequestsService {
       case RequestType.ACTION: {
         const actionResult = await this.actionsService.create(requestEventDto as ActionRequestEventDto);
         if (actionResult.isLeft()) {
-          console.error(`Failed to create action for request ID ${requestEventDto.id}: ${actionResult.value.message}`);
           return left(actionResult.value);
         }
         break;
@@ -272,7 +265,6 @@ export class RequestsServiceImpl extends RequestsService {
     > = await this.requestsRepository.findById(requestEventDto.id);
 
     if (requestOrError.isLeft()) {
-      console.error(`Request with ID ${requestEventDto.id} not found.`);
       return left(requestOrError.value);
     }
 
@@ -281,14 +273,12 @@ export class RequestsServiceImpl extends RequestsService {
     const rejectOrError = request.reject(requestEventDto.reason || 'No reason provided');
 
     if (rejectOrError.isLeft()) {
-      console.error(`Failed to reject request with ID ${requestEventDto.id}: ${rejectOrError.value.message}`);
       return left(rejectOrError.value);
     }
 
     const saveResult = await this.requestsRepository.save(request);
 
     if (saveResult.isLeft()) {
-      console.error(`Failed to save rejected request with ID ${requestEventDto.id}: ${saveResult.value.message}`);
       return left(saveResult.value);
     }
 

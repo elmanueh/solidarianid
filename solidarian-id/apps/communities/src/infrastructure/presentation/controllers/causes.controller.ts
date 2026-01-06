@@ -6,11 +6,11 @@ import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Cause } from '@app/communities/domain/model/entities/cause';
 import { CauseDetailResponseDto } from '../dtos/output/cause-detail.response.dto';
 
-@Controller('causes')
+@Controller('')
 export class CausesController {
   constructor(private readonly causesService: CausesService) {}
 
-  @Get()
+  @Get('causes')
   @ApiOperation({ summary: 'Retrieve all charitable causes' })
   @ApiOkResponse({
     description: 'List of causes',
@@ -27,7 +27,7 @@ export class CausesController {
     return causes.value.map((cause: Cause) => CauseDomainMapper.toCauseSummaryDto(cause));
   }
 
-  @Get(':id')
+  @Get('causes/:id')
   @ApiOperation({ summary: 'Retrieve a charitable cause by ID' })
   @ApiOkResponse({
     description: 'Cause details',

@@ -8,7 +8,7 @@ import { ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger/dist/decorat
 import { ApiOperation } from '@nestjs/swagger';
 import { CommunityDetailResponseDto } from '../dtos/output/community-detail.response.dto';
 
-@Controller('communities')
+@Controller('')
 export class CommunitiesController {
   constructor(private readonly communitiesService: CommunitiesService) {}
 

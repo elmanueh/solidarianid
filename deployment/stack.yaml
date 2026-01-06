@@ -198,6 +198,7 @@ Resources:
                 - API_BASE_COMMUNITIES_URL=${!API_BASE_COMMUNITIES_URL}
                 - SESSION_SECRET=${!SESSION_SECRET}
                 - KAFKA_ADMIN_CLIENT_ID=${!KAFKA_ADMIN_CLIENT_ID}
+                - KAFKA_ADMIN_CONSUMER_GROUP_ID=${!KAFKA_ADMIN_CONSUMER_GROUP_ID}
               depends_on:
                 mongo:
                   condition: service_healthy

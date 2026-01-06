@@ -1,7 +1,6 @@
 import { Either } from '@app/ddd/either';
 import { User } from '../models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { UserNotFoundError } from '../errors/user-not-found.error';
 import { PaginatedResult } from '../ports/output/user.repository.port';
 
 /**
@@ -20,13 +19,13 @@ export abstract class UsersService {
   /**
    * Obtiene un usuario específico por su ID
    * @param id ID del usuario (UUID v4)
-   * @returns Either con UserNotFoundError si no existe o el usuario encontrado
+   * @returns Either con error de repositorio o el usuario encontrado
    */
-  abstract getUserById(id: string): Promise<Either<RepositoryException | UserNotFoundError, User>>;
+  abstract getUserById(id: string): Promise<Either<RepositoryException, User>>;
 
   /**
    * Obtiene el total de usuarios en el sistema
    * @returns Número total de usuarios
    */
-  abstract getTotalUsers(): Promise<number>;
+  abstract getTotalUsers(): Promise<Either<RepositoryException, number>>;
 }

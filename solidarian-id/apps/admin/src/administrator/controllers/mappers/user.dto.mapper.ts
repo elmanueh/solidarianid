@@ -1,5 +1,5 @@
 import { User } from '@app/admin/administrator/model/domain/models/user';
-import { UserDetailResponseDto, CommunityDto } from '../../model/application/dtos/output/user-detail-response.dto';
+import { UserDetailResponseDto, CommunityDto } from '../dtos/user-detail-response.dto';
 import type { CommunityMembership } from '@app/admin/administrator/model/domain/value-objects/community-membership';
 
 /**

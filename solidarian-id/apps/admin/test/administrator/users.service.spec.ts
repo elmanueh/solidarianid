@@ -8,7 +8,6 @@ import {
 import { left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { UserNotFoundError } from '@app/admin/administrator/model/domain/errors/user-not-found.error';
 import { Test, TestingModule } from '@nestjs/testing';
 
 const createMockUserRepository = (): jest.Mocked<UserRepositoryPort> => ({
@@ -463,15 +462,15 @@ describe('UsersService', () => {
         }
       });
 
-      it('should handle UserNotFoundError', async () => {
-        const error = new UserNotFoundError(nonExistentUserId);
+      it('should handle EntityNotFoundException', async () => {
+        const error = new EntityNotFoundException('User', nonExistentUserId);
         mockRepository.findById.mockResolvedValue(left(error));
 
         const result = await service.getUserById(nonExistentUserId);
 
         expect(result.isLeft()).toBe(true);
         if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(UserNotFoundError);
+          expect(result.value).toBeInstanceOf(EntityNotFoundException);
         }
       });
 
@@ -575,64 +574,107 @@ describe('UsersService', () => {
 
   describe('getTotalUsers', () => {
     describe('Basic Path Testing', () => {
-      it('Path 1: should return total count from repository', async () => {
-        mockRepository.countAll.mockResolvedValue(10);
+      it('Path 1: should return right with total count from repository', async () => {
+        mockRepository.countAll.mockResolvedValue(right(10));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(10);
+        expect(result.isRight()).toBe(true);
+        if (result.isRight()) {
+          expect(result.value).toBe(10);
+        }
+      });
+
+      it('Path 2: should return left with error when repository fails', async () => {
+        const error = new RepositoryException('Database connection failed');
+        mockRepository.countAll.mockResolvedValue(left(error));
+
+        const result = await service.getTotalUsers();
+
+        expect(result.isLeft()).toBe(true);
+        if (result.isLeft()) {
+          expect(result.value).toBe(error);
+        }
       });
     });
 
     describe('Edge Cases', () => {
       it('should handle zero users', async () => {
-        mockRepository.countAll.mockResolvedValue(0);
+        mockRepository.countAll.mockResolvedValue(right(0));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(0);
+        expect(result.isRight()).toBe(true);
+        if (result.isRight()) {
+          expect(result.value).toBe(0);
+        }
       });
 
       it('should handle large number of users', async () => {
-        mockRepository.countAll.mockResolvedValue(10000);
+        mockRepository.countAll.mockResolvedValue(right(10000));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(10000);
+        expect(result.isRight()).toBe(true);
+        if (result.isRight()) {
+          expect(result.value).toBe(10000);
+        }
       });
 
       it('should handle exactly one user', async () => {
-        mockRepository.countAll.mockResolvedValue(1);
+        mockRepository.countAll.mockResolvedValue(right(1));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(1);
+        expect(result.isRight()).toBe(true);
+        if (result.isRight()) {
+          expect(result.value).toBe(1);
+        }
+      });
+
+      it('should handle repository error', async () => {
+        const error = new RepositoryException('Query timeout');
+        mockRepository.countAll.mockResolvedValue(left(error));
+
+        const result = await service.getTotalUsers();
+
+        expect(result.isLeft()).toBe(true);
+        if (result.isLeft()) {
+          expect(result.value).toBeInstanceOf(RepositoryException);
+        }
       });
     });
 
     describe('Return Value Testing', () => {
-      it('should return number returned by repository.countAll', async () => {
+      it('should return Right with number from repository.countAll', async () => {
         const expectedCount = 42;
-        mockRepository.countAll.mockResolvedValue(expectedCount);
+        mockRepository.countAll.mockResolvedValue(right(expectedCount));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(expectedCount);
-        expect(typeof result).toBe('number');
+        expect(result.isRight()).toBe(true);
+        if (result.isRight()) {
+          expect(result.value).toBe(expectedCount);
+          expect(typeof result.value).toBe('number');
+        }
       });
 
-      it('should always return a number', async () => {
-        mockRepository.countAll.mockResolvedValue(5);
+      it('should return Left when repository.countAll returns error', async () => {
+        const error = new RepositoryException('Database error');
+        mockRepository.countAll.mockResolvedValue(left(error));
 
         const result = await service.getTotalUsers();
 
-        expect(typeof result).toBe('number');
+        expect(result.isLeft()).toBe(true);
+        if (result.isLeft()) {
+          expect(result.value).toBe(error);
+        }
       });
     });
 
     describe('Repository Method Call Verification', () => {
       it('should call repository.countAll without parameters', async () => {
-        mockRepository.countAll.mockResolvedValue(10);
+        mockRepository.countAll.mockResolvedValue(right(10));
 
         await service.getTotalUsers();
 

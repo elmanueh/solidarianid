@@ -7,21 +7,15 @@
 (function () {
   'use strict';
 
-  // ════════════════════════════════════════════════════════════════
   // CONFIGURACIÓN
-  // ════════════════════════════════════════════════════════════════
   const config = globalThis.APP_CONFIG || {
     apiBaseUrl: '', // Axios usará el mismo origen automáticamente
   };
 
-  // ════════════════════════════════════════════════════════════════
   // ESTADO
-  // ════════════════════════════════════════════════════════════════
   let selectedUserId = null;
 
-  // ════════════════════════════════════════════════════════════════
   // ELEMENTOS DEL DOM
-  // ════════════════════════════════════════════════════════════════
   const elements = {
     detailPanel: document.getElementById('user-detail-panel'),
     detailContent: document.getElementById('detail-content'),
@@ -30,22 +24,16 @@
     downloadPdf: document.getElementById('download-pdf'),
   };
 
-  // ════════════════════════════════════════════════════════════════
   // API CLIENT (AXIOS)
-  // ════════════════════════════════════════════════════════════════
   const api = axios.create({
     baseURL: config.apiBaseUrl,
     timeout: 10000,
     headers: { 'Content-Type': 'application/json' },
   });
 
-  // ════════════════════════════════════════════════════════════════
   // FUNCIONES DE API
-  // ════════════════════════════════════════════════════════════════
 
-  /**
-   * Obtiene detalle de un usuario específico
-   */
+  // Obtiene detalle de un usuario específico
   async function fetchUserDetail(userId) {
     try {
       const response = await api.get(`/api/reports/users/${userId}`);
@@ -59,9 +47,7 @@
     }
   }
 
-  /**
-   * Descarga el PDF de un usuario
-   */
+  // Descarga el PDF de un usuario
   async function downloadUserPdf(userId) {
     try {
       const response = await api.get(`/api/reports/users/${userId}/pdf`, {
@@ -88,13 +74,9 @@
     }
   }
 
-  // ════════════════════════════════════════════════════════════════
   // FUNCIONES DE RENDERIZADO
-  // ════════════════════════════════════════════════════════════════
 
-  /**
-   * Renderiza el detalle de un usuario en el panel
-   */
+  // Renderiza el detalle de un usuario en el panel
   function renderUserDetail(userData) {
     let communitiesHtml = '';
     if (userData.communities && userData.communities.length > 0) {
@@ -167,9 +149,7 @@
     `;
   }
 
-  // ════════════════════════════════════════════════════════════════
   // FUNCIONES DE UI
-  // ════════════════════════════════════════════════════════════════
 
   function showDetailPanel() {
     elements.detailPanel.classList.remove('hidden');
@@ -222,9 +202,7 @@
     }
   }
 
-  // ════════════════════════════════════════════════════════════════
   // HANDLERS DE EVENTOS
-  // ════════════════════════════════════════════════════════════════
 
   async function handleUserCardClick(userId) {
     selectedUserId = userId;
@@ -276,14 +254,10 @@
     `;
   }
 
-  // ════════════════════════════════════════════════════════════════
   // PROGRESSIVE ENHANCEMENT: INTERCEPTAR CLICKS EN TARJETAS
-  // ════════════════════════════════════════════════════════════════
 
-  /**
-   * Intercepta clicks en tarjetas de usuarios ya renderizadas por SSR
-   * Abre el drawer en lugar de navegar a la ruta
-   */
+  // Intercepta clicks en tarjetas de usuarios ya renderizadas por SSR
+  // Abre el drawer en lugar de navegar a la ruta
   function setupUserCardsInterception() {
     // Seleccionar todas las tarjetas ya renderizadas en HTML
     const userCards = document.querySelectorAll('[data-user-id]');
@@ -323,9 +297,7 @@
     });
   }
 
-  // ════════════════════════════════════════════════════════════════
   // INICIALIZACIÓN
-  // ════════════════════════════════════════════════════════════════
 
   function init() {
     // Progressive enhancement: interceptar tarjetas ya renderizadas

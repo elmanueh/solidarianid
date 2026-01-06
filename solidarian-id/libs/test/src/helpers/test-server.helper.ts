@@ -51,6 +51,8 @@ export class TestServerHelper {
 
     this.app.useGlobalFilters(new GlobalExceptionFilter());
 
+    this.app.setGlobalPrefix('api');
+
     await this.app.init();
     return this.app;
   }
@@ -83,6 +85,8 @@ export class TestServerHelper {
     this.app.useGlobalFilters(new GlobalExceptionFilter());
 
     this.app.connectMicroservice(microserviceOptions);
+
+    this.app.setGlobalPrefix('api');
 
     await this.app.startAllMicroservices();
     await this.app.init();

@@ -13,11 +13,16 @@ import { CauseRequest } from '@app/communities/domain/model/entities/request-cau
 import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
-import { EventType } from '@solidarianid/kafka';
+import { EventType, RequestEventDto } from '@solidarianid/kafka';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { CommunitiesService } from '@app/communities/domain/services/communities.service';
+import { CausesService } from '@app/communities/domain/services/causes.service';
+import { ActionsService } from '@app/communities/domain/services/actions.service';
 
 /**
  * Implementation of the RequestsService.
@@ -33,6 +38,9 @@ export class RequestsServiceImpl extends RequestsService {
     private readonly userRepository: UsersRepositoryPort,
     private readonly communityRepository: CommunitiesRepositoryPort,
     private readonly causeRepository: CausesRepositoryPort,
+    private readonly communitiesService: CommunitiesService,
+    private readonly causesService: CausesService,
+    private readonly actionsService: ActionsService,
   ) {
     super();
   }
@@ -193,5 +201,74 @@ export class RequestsServiceImpl extends RequestsService {
 
     await this.requestPublisher.publish(EventType.REQUEST_CREATED, actionRequestOrError.value);
     return right(actionRequestOrError.value.id);
+  }
+
+  async acceptRequest(requestEventDto: RequestEventDto): Promise<Either<ValidationError | RepositoryException, void>> {
+    const requestOrError: Either<
+      RepositoryException | EntityNotFoundException,
+      Request<RequestProps>
+    > = await this.requestsRepository.findById(requestEventDto.id);
+
+    if (requestOrError.isLeft()) {
+      console.error(`Request with ID ${requestEventDto.id} not found.`);
+      return left(requestOrError.value);
+    }
+
+    const request: Request<RequestProps> = requestOrError.value;
+    request.accept(requestEventDto.reason || 'No reason provided');
+
+    const saveResult = await this.requestsRepository.save(request);
+
+    if (saveResult.isLeft()) {
+      console.error(`Failed to save accepted request with ID ${requestEventDto.id}: ${saveResult.value.message}`);
+      return left(saveResult.value);
+    }
+
+    // Additional logic based on request type
+    switch (request.type) {
+      case RequestType.COMMUNITY:
+        // Assuming community creation logic is handled in CommunitiesService
+        break;
+      case RequestType.CAUSE:
+        // Assuming cause creation logic is handled in CausesService
+        break;
+      case RequestType.ACTION:
+        // Implement action creation logic if needed
+        break;
+      default:
+        console.warn(`Unhandled request type: ${String(request.type)}`);
+    }
+
+    return Promise.resolve(right(undefined));
+  }
+
+  async rejectRequest(requestEventDto: RequestEventDto): Promise<Either<ValidationError | RepositoryException, void>> {
+    const requestOrError: Either<
+      RepositoryException | EntityNotFoundException,
+      Request<RequestProps>
+    > = await this.requestsRepository.findById(requestEventDto.id);
+
+    if (requestOrError.isLeft()) {
+      console.error(`Request with ID ${requestEventDto.id} not found.`);
+      return left(requestOrError.value);
+    }
+
+    const request: Request<RequestProps> = requestOrError.value;
+
+    const rejectOrError = request.reject(requestEventDto.reason || 'No reason provided');
+
+    if (rejectOrError.isLeft()) {
+      console.error(`Failed to reject request with ID ${requestEventDto.id}: ${rejectOrError.value.message}`);
+      return left(rejectOrError.value);
+    }
+
+    const saveResult = await this.requestsRepository.save(request);
+
+    if (saveResult.isLeft()) {
+      console.error(`Failed to save rejected request with ID ${requestEventDto.id}: ${saveResult.value.message}`);
+      return left(saveResult.value);
+    }
+
+    return Promise.resolve(right(undefined));
   }
 }

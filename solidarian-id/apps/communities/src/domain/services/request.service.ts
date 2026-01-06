@@ -5,6 +5,7 @@ import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { RequestEventDto } from '@solidarianid/kafka';
 
 /**
  * Request service for handling different types of requests
@@ -32,4 +33,12 @@ export abstract class RequestsService {
   abstract createActionRequest(
     createActionRequestDto: CreateActionRequestDto,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>>;
+
+  abstract acceptRequest(
+    requestEventDto: RequestEventDto,
+  ): Promise<Either<ValidationError | RepositoryException, void>>;
+
+  abstract rejectRequest(
+    requestEventDto: RequestEventDto,
+  ): Promise<Either<ValidationError | RepositoryException, void>>;
 }

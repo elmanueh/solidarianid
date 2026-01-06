@@ -13,6 +13,11 @@ import {
   CauseRequestResponseDto,
   CommunityRequestResponseDto,
 } from '@app/admin/administrator/model/application/dtos/get-community-request.dto';
+import {
+  fakeActionRequests,
+  fakeCauseRequests,
+  fakeCommunityRequests,
+} from '@app/admin/administrator/controllers/fakeData';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -55,21 +60,24 @@ export class AdminViewController {
 
   @Get('/requests')
   @Render('pages/requests')
-  async requests() {
-    const [actionsResult, causesResult, communitiesResult] = await Promise.all([
-      this.requestsService.getActionRequestsPending(),
-      this.requestsService.getCauseRequestsPending(),
-      this.requestsService.getCommunityRequestsPending(),
-    ]);
+  requests() {
+    // const [actionsResult, causesResult, communitiesResult] = await Promise.all([
+    //   this.requestsService.getActionRequestsPending(),
+    //   this.requestsService.getCauseRequestsPending(),
+    //   this.requestsService.getCommunityRequestsPending(),
+    // ]);
 
     return {
       title: 'Requests',
       layout: 'dashboard',
-      actions: actionsResult.isRight() ? actionsResult.value.map(r => ActionRequestResponseDto.toDto(r)) : [],
-      causes: causesResult.isRight() ? causesResult.value.map(r => CauseRequestResponseDto.toDto(r)) : [],
-      communities: communitiesResult.isRight()
-        ? communitiesResult.value.map(r => CommunityRequestResponseDto.toDto(r))
-        : [],
+      // actions: actionsResult.isRight() ? actionsResult.value.map(r => ActionRequestResponseDto.toDto(r)) : [],
+      // causes: causesResult.isRight() ? causesResult.value.map(r => CauseRequestResponseDto.toDto(r)) : [],
+      // communities: communitiesResult.isRight()
+      //   ? communitiesResult.value.map(r => CommunityRequestResponseDto.toDto(r))
+      //   : [],
+      actions: fakeActionRequests,
+      causes: fakeCauseRequests,
+      communities: fakeCommunityRequests,
       apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }

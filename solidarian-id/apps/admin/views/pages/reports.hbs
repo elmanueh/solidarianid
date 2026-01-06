@@ -1,228 +1,154 @@
+{{!--
 <main
-  class='min-h-screen bg-gradient-to-br from-black-haze-50 to-athens-gray-100 dark:from-black-haze-950 dark:to-athens-gray-950 px-4 py-8'
+  class="min-h-screen bg-gradient-to-br from-black-haze-50 to-athens-gray-100 dark:from-black-haze-950 dark:to-athens-gray-950 px-4 py-8"
 >
-  <div class='container mx-auto max-w-7xl'>
-    <!-- Header -->
-    <header class='text-center mb-8'>
-      <h1
-        class='text-3xl md:text-4xl font-bold text-black-haze-950 dark:text-black-haze-50 mb-2'
-      >
-        Reportes de Usuarios
-      </h1>
-      <p class='text-pale-sky-500 dark:text-pale-sky-400'>
+  --}}
+  <main class="metrics" aria-labelledby="page-title">
+    <div class="container mx-auto max-w-7xl">
+      <!-- Header -->
+      <h1 id="page-title" class="metrics-title">Reportes de usuarios</h1>
+
+      <p class="text-pale-sky-500 dark:text-pale-sky-400 text-center mb-8 mt-5">
         Total de usuarios:
-        <span
-          class='font-semibold text-ocean-blue-600 dark:text-ocean-blue-400'
-        >{{totalUsers}}</span>
+        <span class="font-semibold text-ocean-blue-600 dark:text-ocean-blue-400">{{totalUsers}}</span>
       </p>
-    </header>
 
-    <!-- Announcer para lectores de pantalla -->
-    <div
-      id='status-announcer'
-      class='sr-only'
-      aria-live='polite'
-      aria-atomic='true'
-    ></div>
+      <!-- Announcer para lectores de pantalla -->
+      <div id="status-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-    <!-- Lista de usuarios -->
-    <section class='min-h-[400px] mb-8' aria-label='Lista de usuarios'>
-      {{#if error}}
+      <!-- Lista de usuarios -->
+      <section class="min-h-[400px] mb-8" aria-label="Lista de usuarios">
+        {{#if error}}
         <!-- Error state -->
-        <div class='flex flex-col items-center justify-center min-h-[400px]'>
-          <span
-            class='icon-[lucide--alert-circle] text-6xl text-dark-wine-500 dark:text-dark-wine-400 mb-4'
-          ></span>
-          <p class='text-pale-sky-600 dark:text-pale-sky-400 mb-4'>
-            {{error}}
-          </p>
-          <a href='/reports' class='btn btn-primary'>
-            <span class='icon-[lucide--refresh-cw]'></span>
+        <div class="flex flex-col items-center justify-center min-h-[400px]">
+          <span class="icon-[lucide--alert-circle] text-6xl text-dark-wine-500 dark:text-dark-wine-400 mb-4"></span>
+          <p class="text-pale-sky-600 dark:text-pale-sky-400 mb-4">{{error}}</p>
+          <a href="/reports" class="btn btn-primary">
+            <span class="icon-[lucide--refresh-cw]"></span>
             Reintentar
           </a>
         </div>
-      {{else}}
-        {{#if (hasLength users)}}
-          <!-- Grid de usuarios renderizado en servidor -->
-          <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            {{#each users}}
-              <div
-                class='user-card'
-                data-user-id='{{this.id}}'
-                tabindex='0'
-                role='button'
-                aria-label='Ver detalles de {{this.username}}'
-              >
-                <div class='user-card-header'>
-                  <div class='user-card-info'>
-                    <div class='user-card-username'>@{{this.username}}</div>
-                    <div class='user-card-location'>
-                      <span
-                        class='icon-[lucide--map-pin]'
-                        aria-hidden='true'
-                      ></span>
-                      <span>{{this.location.city}},
-                        {{this.location.countryCode}}</span>
-                    </div>
-                  </div>
-                </div>
-                <div class='user-card-meta'>
-                  <div class='user-card-communities'>
-                    <span
-                      class='icon-[lucide--users]'
-                      aria-hidden='true'
-                    ></span>
-                    <span>
-                      {{this.communitiesCount}}
-                      {{#if (eq this.communitiesCount 1)}}
-                        comunidad
-                      {{else}}
-                        comunidades
-                      {{/if}}
-                    </span>
-                  </div>
+        {{else}} {{#if (hasLength users)}}
+        <!-- Grid de usuarios renderizado en servidor -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {{#each users}}
+          <div
+            class="user-card"
+            data-user-id="{{this.id}}"
+            tabindex="0"
+            role="button"
+            aria-label="Ver detalles de {{this.username}}"
+          >
+            <div class="user-card-header">
+              <div class="user-card-info">
+                <div class="user-card-username">@{{this.username}}</div>
+                <div class="user-card-location">
+                  <span class="icon-[lucide--map-pin]" aria-hidden="true"></span>
+                  <span>{{this.location.city}}, {{this.location.countryCode}}</span>
                 </div>
               </div>
-            {{/each}}
+            </div>
+            <div class="user-card-meta">
+              <div class="user-card-communities">
+                <span class="icon-[lucide--users]" aria-hidden="true"></span>
+                <span>
+                  {{this.communitiesCount}} {{#if (eq this.communitiesCount 1)}} comunidad {{else}} comunidades {{/if}}
+                </span>
+              </div>
+            </div>
           </div>
+          {{/each}}
+        </div>
         {{else}}
-          <!-- Empty state -->
-          <div class='flex flex-col items-center justify-center min-h-[400px]'>
-            <span
-              class='icon-[lucide--user-x] text-6xl text-pale-sky-400 dark:text-pale-sky-600 mb-4'
-            ></span>
-            <p class='text-pale-sky-500 dark:text-pale-sky-400'>
-              No se encontraron usuarios
-            </p>
-          </div>
-        {{/if}}
-      {{/if}}
-    </section>
+        <!-- Empty state -->
+        <div class="flex flex-col items-center justify-center min-h-[400px]">
+          <span class="icon-[lucide--user-x] text-6xl text-pale-sky-400 dark:text-pale-sky-600 mb-4"></span>
+          <p class="text-pale-sky-500 dark:text-pale-sky-400">No se encontraron usuarios</p>
+        </div>
+        {{/if}} {{/if}}
+      </section>
 
-    <!-- Paginación estática renderizada en servidor -->
-    {{#if (gt totalPages 1)}}
-      <nav
-        class='flex justify-center gap-2 mb-8'
-        aria-label='Paginación de usuarios'
-      >
+      <!-- Paginación estática renderizada en servidor -->
+      {{#if (gt totalPages 1)}}
+      <nav class="flex justify-center gap-2 mb-8" aria-label="Paginación de usuarios">
         <!-- Botón anterior -->
         {{#if hasPrev}}
-          <a
-            href='/reports?page={{prevPage}}'
-            class='btn btn-sm btn-outline'
-            aria-label='Ir a página anterior'
-          >
-            <span class='icon-[lucide--chevron-left]'></span>
-          </a>
+        <a href="/reports?page={{prevPage}}" class="btn btn-sm btn-outline" aria-label="Ir a página anterior">
+          <span class="icon-[lucide--chevron-left]"></span>
+        </a>
         {{else}}
-          <span
-            class='btn btn-sm btn-outline btn-disabled'
-            aria-disabled='true'
-          >
-            <span class='icon-[lucide--chevron-left]'></span>
-          </span>
+        <span class="btn btn-sm btn-outline btn-disabled" aria-disabled="true">
+          <span class="icon-[lucide--chevron-left]"></span>
+        </span>
         {{/if}}
 
         <!-- Páginas -->
-        {{#each pages}}
-          {{#if this.isEllipsis}}
-            <span class='btn btn-sm btn-ghost btn-disabled'>...</span>
-          {{else}}
-            {{#if this.isActive}}
-              <span
-                class='btn btn-sm btn-primary'
-                aria-current='page'
-                aria-label='Página {{this.number}}, página actual'
-              >
-                {{this.number}}
-              </span>
-            {{else}}
-              <a
-                href='/reports?page={{this.number}}'
-                class='btn btn-sm btn-outline'
-                aria-label='Ir a página {{this.number}}'
-              >
-                {{this.number}}
-              </a>
-            {{/if}}
-          {{/if}}
-        {{/each}}
+        {{#each pages}} {{#if this.isEllipsis}}
+        <span class="btn btn-sm btn-ghost btn-disabled">...</span>
+        {{else}} {{#if this.isActive}}
+        <span class="btn btn-sm btn-primary" aria-current="page" aria-label="Página {{this.number}}, página actual">
+          {{this.number}}
+        </span>
+        {{else}}
+        <a href="/reports?page={{this.number}}" class="btn btn-sm btn-outline" aria-label="Ir a página {{this.number}}">
+          {{this.number}}
+        </a>
+        {{/if}} {{/if}} {{/each}}
 
         <!-- Botón siguiente -->
         {{#if hasNext}}
-          <a
-            href='/reports?page={{nextPage}}'
-            class='btn btn-sm btn-outline'
-            aria-label='Ir a página siguiente'
-          >
-            <span class='icon-[lucide--chevron-right]'></span>
-          </a>
+        <a href="/reports?page={{nextPage}}" class="btn btn-sm btn-outline" aria-label="Ir a página siguiente">
+          <span class="icon-[lucide--chevron-right]"></span>
+        </a>
         {{else}}
-          <span
-            class='btn btn-sm btn-outline btn-disabled'
-            aria-disabled='true'
-          >
-            <span class='icon-[lucide--chevron-right]'></span>
-          </span>
+        <span class="btn btn-sm btn-outline btn-disabled" aria-disabled="true">
+          <span class="icon-[lucide--chevron-right]"></span>
+        </span>
         {{/if}}
       </nav>
-    {{/if}}
-  </div>
+      {{/if}}
+    </div>
 
-  <!-- Panel de detalle (drawer lateral) -->
-  <div id='user-detail-panel' class='hidden'>
-    <!-- Overlay -->
-    <div
-      id='panel-overlay'
-      class='fixed inset-0 bg-black/20 dark:bg-white/10 backdrop-blur-sm z-40 transition-all duration-300 opacity-0'
-    ></div>
-
-    <!-- Panel -->
-    <aside
-      class='fixed top-0 right-0 bottom-0 w-full max-w-md bg-white dark:bg-black-haze-900 shadow-2xl z-50 flex flex-col transform transition-transform duration-300 ease-in-out translate-x-full'
-      id='panel-content'
-      role='complementary'
-      aria-labelledby='detail-title'
-    >
-      <!-- Header del panel -->
+    <!-- Panel de detalle (drawer lateral) -->
+    <div id="user-detail-panel" class="hidden">
+      <!-- Overlay -->
       <div
-        class='flex items-center justify-between p-6 border-b border-iron-200 dark:border-iron-700'
+        id="panel-overlay"
+        class="fixed inset-0 bg-black/20 dark:bg-white/10 backdrop-blur-sm z-40 transition-all duration-300 opacity-0"
+      ></div>
+
+      <!-- Panel -->
+      <aside
+        class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white dark:bg-black-haze-900 shadow-2xl z-50 flex flex-col transform transition-transform duration-300 ease-in-out translate-x-full"
+        id="panel-content"
+        role="complementary"
+        aria-labelledby="detail-title"
       >
-        <h2
-          id='detail-title'
-          class='text-2xl font-bold text-black-haze-950 dark:text-black-haze-50'
-        >
-          Información del Usuario
-        </h2>
-        <button
-          type='button'
-          id='close-detail'
-          class='btn btn-ghost btn-sm btn-circle'
-          aria-label='Cerrar panel'
-        >
-          <span class='icon-[lucide--x] text-xl'></span>
-        </button>
-      </div>
+        <!-- Header del panel -->
+        <div class="flex items-center justify-between p-6 border-b border-iron-200 dark:border-iron-700">
+          <h2 id="detail-title" class="text-2xl font-bold text-black-haze-950 dark:text-black-haze-50">
+            Información del Usuario
+          </h2>
+          <button type="button" id="close-detail" class="btn btn-ghost btn-sm btn-circle" aria-label="Cerrar panel">
+            <span class="icon-[lucide--x] text-xl"></span>
+          </button>
+        </div>
 
-      <!-- Contenido del panel -->
-      <div id='detail-content' class='flex-1 overflow-y-auto p-6 space-y-6'>
-        <!-- Se llena dinámicamente con JS -->
-      </div>
+        <!-- Contenido del panel -->
+        <div id="detail-content" class="flex-1 overflow-y-auto p-6 space-y-6">
+          <!-- Se llena dinámicamente con JS -->
+        </div>
 
-      <!-- Acciones del panel -->
-      <div class='p-6 border-t border-iron-200 dark:border-iron-700'>
-        <button
-          type='button'
-          id='download-pdf'
-          class='btn btn-primary w-full'
-          disabled
-        >
-          <span class='icon-[lucide--download]'></span>
-          Descargar PDF
-        </button>
-      </div>
-    </aside>
-  </div>
+        <!-- Acciones del panel -->
+        <div class="p-6 border-t border-iron-200 dark:border-iron-700">
+          <button type="button" id="download-pdf" class="btn btn-primary w-full" disabled>
+            <span class="icon-[lucide--download]"></span>
+            Descargar PDF
+          </button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script defer src="/js/reports.js"></script>
 </main>
-
-<script defer src='/js/reports.js'></script>

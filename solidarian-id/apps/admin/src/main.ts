@@ -14,6 +14,7 @@ import { NotFoundErrorFilter } from './administrator/controllers/filters/not-fou
 import { ValidationErrorFilter } from './administrator/controllers/filters/validation-error.filter';
 import { ConfigService } from '@nestjs/config';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
+import { odsNames } from '@app/admin/utils/data-utils';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -33,6 +34,34 @@ async function bootstrap() {
         gt: (a: any, b: any) => a > b,
         // Helper para verificar si un array tiene elementos
         hasLength: (arr: any[]) => arr && arr.length > 0,
+        // Helper para formatear fechas
+        formatDate: (date: Date | string) => {
+          if (!date) return '';
+          const d = new Date(date);
+          const day = d.getDate();
+          const month = d.getMonth();
+          const year = d.getFullYear();
+          const months = [
+            'enero',
+            'febrero',
+            'marzo',
+            'abril',
+            'mayo',
+            'junio',
+            'julio',
+            'agosto',
+            'septiembre',
+            'octubre',
+            'noviembre',
+            'diciembre',
+          ];
+          return `${day} de ${months[month]} de ${year}`;
+        },
+        // Helper para obtener el título del ODS
+        odsTitle: (odsNumber: string | number) => {
+          const key = String(odsNumber);
+          return odsNames[key] || '';
+        },
       },
     }),
   );

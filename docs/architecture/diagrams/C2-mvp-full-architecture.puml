@@ -1,4 +1,4 @@
-@startuml C2-Container-AdminApp
+@startuml C2-Container-Full-Architecture
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 !$ICONURL = "https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v3.0.0/icons"
@@ -18,7 +18,6 @@
 !include $ICONURL/devicons2/mongodb.puml
 !include $ICONURL/devicons2/postgresql.puml
 !include $ICONURL/devicons2/nestjs_original.puml
-!include $ICONURL/devicons2/redis.puml
 
 LAYOUT_WITH_LEGEND()
 
@@ -33,7 +32,6 @@ AddElementTag("monolith-database", $bgColor="#00943eff", $fontColor="#FFFFFF", $
 AddElementTag("microservice", $bgColor="#db7a03ff", $fontColor="#FFFFFF")
 AddElementTag("microservice-database", $bgColor="#1C2833", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)  
 AddElementTag("message-broker", $bgColor="#530176ff", $fontColor="#ffffff", $borderColor="#FFFFFF", $borderThickness=2)
-AddElementTag("cache", $bgColor="#720606ff", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)
 
 ' Definición de Actores
 Person(admin, "Administrador de la plataforma", "Personal autorizado de SolidarianID", $sprite="user_military")
@@ -52,19 +50,16 @@ Lay_R(userNotRegistered, userRegistered)
 ' Contexto de la aplicación de administración en alto nivel
 System_Boundary(adminAppBoundary, "Aplicación de Administración - Monolito NestJS - SolidarianID") {
   Container(adminMonolith, "Monolito MVC de administración", "Monolito NestJS", "Gestiona peticiones HTTP y renderiza vistas Handlebars", $sprite="nestjs_original", $tags="monolith")
-  ContainerDb(adminCache, "Caché de Administración", "Redis (TBD)", "Almacena sesiones y datos temporales para la aplicación de administración", $sprite="redis", $tags="cache")
   ContainerDb(adminDatabase, "Base de Datos de Administración", "MongoDB (TBD)", "Almacena administradores, usuarios, causas, comunidades, eventos, SDGs", $sprite="mongodb", $tags="monolith-database")
 }
 ' Contexto de la aplicación principal en alto nivel
 System_Boundary(principalAppBoundary, "Aplicación Principal (MVP) - Microservicios NestJS - SolidarianID") {
   System_Boundary(userServiceBoundary, "Microservicio de Usuarios") {
     Container(userService, "Microservicio de Usuarios", "NestJS Microservicio", "Gestiona el registro, autenticación y perfil de usuarios", $sprite="nestjs_original", $tags="microservice")
-    ContainerDb(userCache, "Caché de Usuarios", "Redis (TBD)", "Almacena sesiones y datos temporales para el microservicio de usuarios", $sprite="redis", $tags="cache")
     ContainerDb(userDatabase, "Base de Datos de Usuarios", "PostgreSQL (TBD)", "Almacena datos de usuarios registrados", $sprite="postgresql", $tags="microservice-database")
   }
   System_Boundary(communitiesServiceBoundary, "Microservicio de Comunidades") {
     Container(communitiesService, "Microservicio de Comunidades", "NestJS Microservicio", "Gestiona comunidades y la asociación de usuarios a comunidades", $sprite="nestjs_original", $tags="microservice")
-    ContainerDb(communitiesCache, "Caché de Comunidades", "Redis (TBD)", "Almacena sesiones y datos temporales para el microservicio de comunidades", $sprite="redis", $tags="cache")
     ContainerDb(communitiesDatabase, "Base de Datos de Comunidades", "PostgreSQL (TBD)", "Almacena datos relacionados con comunidades y sus miembros", $sprite="postgresql", $tags="microservice-database")
   }
 }
@@ -80,7 +75,6 @@ Lay_D(communitiesDatabase, kafkaBroker)
 ' Relaciones de alto nivel de la aplicación de administración
 BiRel_Down(admin, adminAppBoundary, "Accede a la aplicación de administración", "HTTPS")
 BiRel_Down(adminMonolith, adminDatabase, "2. NO está en caché. Lee/Escribe datos de administración", "NoSQL queries MongoDB")
-BiRel_Down(adminMonolith, adminCache, "1. ¿Está en caché? Lee/Escribe datos temporales", "Operaciones de caché Redis")
 BiRel_Down(adminMonolith, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
 
 
@@ -91,10 +85,8 @@ Rel_Down(userNotRegistered, principalAppBoundary, "Navega por el sitio web públ
 Rel_Down(userRegistered, principalAppBoundary, "Inicia sesión y utiliza la plataforma", "HTTPS")
 
 BiRel_Down(userService, userDatabase, "2. NO está en caché. Lee/Escribe datos de usuarios", "SQL queries PostgreSQL")
-BiRel_Down(userService, userCache, "1. ¿Está en caché? Lee/Escribe datos temporales", "Operaciones de caché Redis")
 BiRel_Down(userService, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
 BiRel_Down(communitiesService, communitiesDatabase, "2. NO está en caché. Lee/Escribe datos de comunidades", "SQL queries PostgreSQL")
-BiRel_Down(communitiesService, communitiesCache, "1. ¿Está en caché? Lee/Escribe datos temporales", "Operaciones de caché Redis")
 BiRel_Down(communitiesService, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
 
 

@@ -8,6 +8,7 @@ import { User } from '../../../domain/model/entities/user';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { CauseEntityMapper } from './cause-entity.mapper';
 import { CommunityUserEntityMapper } from './community-user-entity.mapper';
+import { MemberType } from '@app/communities/domain/model/enums/member-type';
 
 @Injectable()
 export class CommunityEntityMapper implements Mapper<Community, CommunityEntity> {
@@ -38,12 +39,17 @@ export class CommunityEntityMapper implements Mapper<Community, CommunityEntity>
     }
 
     const admins: User[] = [];
+    let creator: User | null = null;
 
     const membersOrError = sequence(
       entity.members?.map(communityUserEntity => {
         const user = this.userEntityMapper.fromPersistence(communityUserEntity.user);
-        if (user.isRight() && communityUserEntity.role === 'admin') {
-          admins.push(user.value);
+        if (user.isRight()) {
+          if (communityUserEntity.role === (MemberType.CREATOR as string)) {
+            creator = user.value;
+          } else if (communityUserEntity.role === (MemberType.ADMIN as string)) {
+            admins.push(user.value);
+          }
         }
         return user;
       }),
@@ -53,10 +59,15 @@ export class CommunityEntityMapper implements Mapper<Community, CommunityEntity>
       return left(membersOrError.value);
     }
 
+    if (!creator) {
+      return left(new ValidationError('Community must have a creator'));
+    }
+
     return Community.create(
       {
         name: entity.name,
         description: entity.description,
+        creator,
         members: membersOrError.value,
         admins,
         causes: causesOrError.value,

@@ -16,6 +16,15 @@ import { User } from '@app/communities/domain/model/entities/user';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { Cause } from '@app/communities/domain/model/entities/cause';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { CommunitiesService } from '@app/communities/domain/services/communities.service';
+import { CausesService } from '@app/communities/domain/services/causes.service';
+import { ActionsService } from '@app/communities/domain/services/actions.service';
+import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
+import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
+import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
+import { CommunityRequestEventDto, CauseRequestEventDto, ActionRequestEventDto } from '@solidarianid/kafka';
 
 describe('RequestsServiceImpl', () => {
   let service: RequestsServiceImpl;
@@ -44,13 +53,21 @@ describe('RequestsServiceImpl', () => {
     findAll: jest.Mock;
     remove: jest.Mock;
   };
+  let mockCommunitiesService: { create: jest.Mock };
+  let mockCausesService: { create: jest.Mock };
+  let mockActionsService: { create: jest.Mock };
 
   const validUserId = 'a1b2c3d4-e5f6-4890-abcd-ef1234567001';
   const validCommunityId = 'b1b2c3d4-e5f6-4890-abcd-ef1234567002';
   const validCauseId = 'c1b2c3d4-e5f6-4890-abcd-ef1234567003';
+  const validRequestId = 'd1b2c3d4-e5f6-4890-abcd-ef1234567004';
   const validUser = User.create({ fullName: 'Juan Voluntario García' }, validUserId);
   const validCommunity = Community.create(
-    { name: 'Test Community', description: 'A valid community description for testing with more than 20 chars' },
+    {
+      name: 'Test Community',
+      description: 'A valid community description for testing with more than 20 chars',
+      creator: validUser.value as User,
+    },
     validCommunityId,
   );
   const validCause = Cause.create(
@@ -91,6 +108,9 @@ describe('RequestsServiceImpl', () => {
       findAll: jest.fn(),
       remove: jest.fn(),
     };
+    mockCommunitiesService = { create: jest.fn() };
+    mockCausesService = { create: jest.fn() };
+    mockActionsService = { create: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -100,6 +120,9 @@ describe('RequestsServiceImpl', () => {
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepository },
         { provide: CausesRepositoryPort, useValue: mockCauseRepository },
+        { provide: CommunitiesService, useValue: mockCommunitiesService },
+        { provide: CausesService, useValue: mockCausesService },
+        { provide: ActionsService, useValue: mockActionsService },
       ],
     }).compile();
 
@@ -335,11 +358,252 @@ describe('RequestsServiceImpl', () => {
 
       expect(mockRequestPublisher.publish).toHaveBeenCalledTimes(1);
       expect(mockRequestPublisher.publish).toHaveBeenCalledWith(
-        expect.any(String) as unknown as string, // EventType.REQUEST_CREATED
+        expect.any(String) as unknown as string,
         expect.objectContaining({
           id: expect.objectContaining({}) as unknown as object,
         }) as unknown as object,
       );
+    });
+  });
+
+  describe('acceptRequest', () => {
+    const createMockCommunityRequest = () => {
+      const request = CommunityRequest.create({
+        name: 'Test Community Request',
+        description: 'A valid description for the community request with more than 20 chars',
+        status: RequestStatus.PENDING,
+        type: RequestType.COMMUNITY,
+        user: validUser.value as User,
+        causeCreationRequests: [],
+      });
+      return request.value as CommunityRequest;
+    };
+
+    const createMockCauseRequest = () => {
+      const request = CauseRequest.create({
+        name: 'Test Cause Request',
+        description: 'A valid description for the cause request with more than 20 chars',
+        status: RequestStatus.PENDING,
+        type: RequestType.CAUSE,
+        user: validUser.value as User,
+        ods: [SustainableDevelopmentGoal.NoPoverty],
+        initialDate: new Date('2026-01-01'),
+        durationDays: 90,
+        communityId: validCommunityId,
+      });
+      return request.value as CauseRequest;
+    };
+
+    const createMockActionRequest = () => {
+      const request = ActionRequest.create({
+        name: 'Test Action Request',
+        description: 'A valid description for the action request with more than 20 chars',
+        status: RequestStatus.PENDING,
+        type: RequestType.ACTION,
+        user: validUser.value as User,
+        objectives: [],
+        events: [],
+        causeId: validCauseId,
+      });
+      return request.value as ActionRequest;
+    };
+
+    it('should accept a community request and create community successfully', async () => {
+      const mockRequest = createMockCommunityRequest();
+      const communityEventDto: CommunityRequestEventDto = {
+        id: mockRequest.id.value,
+        name: mockRequest.name,
+        description: mockRequest.description,
+        status: RequestStatus.APPROVED,
+        userId: validUserId,
+        username: 'testuser',
+        causeRequests: [],
+        type: RequestType.COMMUNITY,
+      };
+
+      mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
+      mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
+      mockCommunitiesService.create.mockResolvedValueOnce(right(validCommunity.value));
+
+      const result = await service.acceptRequest(communityEventDto);
+
+      expect(result.isRight()).toBe(true);
+      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(communityEventDto.id);
+      expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
+      expect(mockCommunitiesService.create).toHaveBeenCalledWith(communityEventDto);
+    });
+
+    it('should accept a cause request and create cause successfully', async () => {
+      const mockRequest = createMockCauseRequest();
+      const causeEventDto: CauseRequestEventDto = {
+        id: mockRequest.id.value,
+        name: mockRequest.name,
+        description: mockRequest.description,
+        status: RequestStatus.APPROVED,
+        userId: validUserId,
+        username: 'testuser',
+        communityId: validCommunityId,
+        ods: [SustainableDevelopmentGoal.NoPoverty],
+        initialDate: new Date('2026-01-01'),
+        durationDays: 90,
+        type: RequestType.CAUSE,
+      };
+
+      mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
+      mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
+      mockCausesService.create.mockResolvedValueOnce(right(validCause.value));
+
+      const result = await service.acceptRequest(causeEventDto);
+
+      expect(result.isRight()).toBe(true);
+      expect(mockCausesService.create).toHaveBeenCalledWith(causeEventDto);
+    });
+
+    it('should accept an action request and create action successfully', async () => {
+      const mockRequest = createMockActionRequest();
+      const actionEventDto: ActionRequestEventDto = {
+        id: mockRequest.id.value,
+        name: mockRequest.name,
+        description: mockRequest.description,
+        status: RequestStatus.APPROVED,
+        userId: validUserId,
+        username: 'testuser',
+        objectives: [],
+        events: [],
+        causeId: validCauseId,
+        type: RequestType.ACTION,
+      };
+
+      mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
+      mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
+      mockActionsService.create.mockResolvedValueOnce(right({}));
+
+      const result = await service.acceptRequest(actionEventDto);
+
+      expect(result.isRight()).toBe(true);
+      expect(mockActionsService.create).toHaveBeenCalledWith(actionEventDto);
+    });
+
+    it('should return error when request is not found', async () => {
+      const notFoundError = new EntityNotFoundException('Request', 'Request not found');
+      mockRequestsRepository.findById.mockResolvedValueOnce(left(notFoundError));
+
+      const result = await service.acceptRequest({ id: validRequestId } as CommunityRequestEventDto);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBe(notFoundError);
+      expect(mockCommunitiesService.create).not.toHaveBeenCalled();
+    });
+
+    it('should return error when save fails', async () => {
+      const mockRequest = createMockCommunityRequest();
+      const repoError = new RepositoryException('Database error');
+
+      mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
+      mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
+
+      const result = await service.acceptRequest({
+        id: mockRequest.id.value,
+        type: RequestType.COMMUNITY,
+      } as CommunityRequestEventDto);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBe(repoError);
+      expect(mockCommunitiesService.create).not.toHaveBeenCalled();
+    });
+
+    it('should return error when community creation fails', async () => {
+      const mockRequest = createMockCommunityRequest();
+      const validationError = new ValidationError('Community creation failed');
+
+      mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
+      mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
+      mockCommunitiesService.create.mockResolvedValueOnce(left(validationError));
+
+      const result = await service.acceptRequest({
+        id: mockRequest.id.value,
+        name: mockRequest.name,
+        description: mockRequest.description,
+        type: RequestType.COMMUNITY,
+      } as CommunityRequestEventDto);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBe(validationError);
+    });
+  });
+
+  describe('rejectRequest', () => {
+    const createMockCommunityRequest = () => {
+      const request = CommunityRequest.create({
+        name: 'Test Community Request',
+        description: 'A valid description for the community request with more than 20 chars',
+        status: RequestStatus.PENDING,
+        type: RequestType.COMMUNITY,
+        user: validUser.value as User,
+        causeCreationRequests: [],
+      });
+      return request.value as CommunityRequest;
+    };
+
+    it('should reject a request successfully', async () => {
+      const mockRequest = createMockCommunityRequest();
+      const rejectDto = {
+        id: mockRequest.id.value,
+        reason: 'Request does not meet requirements',
+        type: RequestType.COMMUNITY,
+      } as CommunityRequestEventDto;
+
+      mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
+      mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
+
+      const result = await service.rejectRequest(rejectDto);
+
+      expect(result.isRight()).toBe(true);
+      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(rejectDto.id);
+      expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return error when request is not found', async () => {
+      const notFoundError = new EntityNotFoundException('Request', 'Request not found');
+      mockRequestsRepository.findById.mockResolvedValueOnce(left(notFoundError));
+
+      const result = await service.rejectRequest({
+        id: validRequestId,
+        reason: 'Not valid',
+      } as CommunityRequestEventDto);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBe(notFoundError);
+    });
+
+    it('should return error when save fails', async () => {
+      const mockRequest = createMockCommunityRequest();
+      const repoError = new RepositoryException('Database error');
+
+      mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
+      mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
+
+      const result = await service.rejectRequest({
+        id: mockRequest.id.value,
+        reason: 'Not valid',
+      } as CommunityRequestEventDto);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBe(repoError);
+    });
+
+    it('should use default reason when none provided', async () => {
+      const mockRequest = createMockCommunityRequest();
+
+      mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
+      mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
+
+      const result = await service.rejectRequest({
+        id: mockRequest.id.value,
+      } as CommunityRequestEventDto);
+
+      expect(result.isRight()).toBe(true);
+      expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -81,4 +81,24 @@ export class Request<T extends RequestProps> extends Entity<T> {
       ),
     );
   }
+
+  reject(reason: string): Either<ValidationError, void> {
+    const reasonOrError = Reason.create(reason);
+    if (reasonOrError.isLeft()) {
+      return left(reasonOrError.value);
+    }
+    this.props.status = RequestStatus.REJECTED;
+    this.props.reason = reasonOrError.value;
+    return right(undefined);
+  }
+
+  accept(reason: string): Either<ValidationError, void> {
+    const reasonOrError = Reason.create(reason);
+    if (reasonOrError.isLeft()) {
+      return left(reasonOrError.value);
+    }
+    this.props.status = RequestStatus.APPROVED;
+    this.props.reason = reasonOrError.value;
+    return right(undefined);
+  }
 }

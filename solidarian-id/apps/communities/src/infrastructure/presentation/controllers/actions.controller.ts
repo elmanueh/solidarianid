@@ -6,11 +6,11 @@ import { Action } from '@app/communities/domain/model/entities/action';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { ActionDetailResponseDto } from '../dtos/output/action-detail.response.dto';
 
-@Controller('actions')
+@Controller()
 export class ActionsController {
   constructor(private readonly actionsService: ActionsService) {}
 
-  @Get()
+  @Get('actions')
   @ApiOperation({ summary: 'Retrieve all charitable actions' })
   @ApiOkResponse({
     description: 'List of actions',

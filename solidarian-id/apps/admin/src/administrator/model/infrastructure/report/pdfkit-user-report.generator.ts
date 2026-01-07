@@ -144,7 +144,6 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     currentY += 30; // Espacio entre bloques
 
     this.renderField(doc, 'Teléfono', data.phone, currentY);
-    currentY += 40; // Espacio antes de la siguiente sección
 
     doc.moveDown(2);
   }
@@ -165,7 +164,6 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     currentY += 30; // Espacio entre bloques
 
     this.renderField(doc, 'País', `${data.countryName} (${data.countryCode})`, currentY);
-    currentY += 40; // Espacio antes de la siguiente sección
 
     doc.moveDown(2);
   }

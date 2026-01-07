@@ -22,7 +22,7 @@ import { KafkaDynamicModule } from '@solidarianid/kafka';
 
 @Module({
   imports: [
-    KafkaDynamicModule.register(process.env.KAFKA_ADMIN_CLIENT_ID || 'admin'),
+    KafkaDynamicModule.register(process.env.KAFKA_ADMIN_CLIENT_ID ?? 'admin'),
     MongooseModule.forFeature([
       {
         name: RequestEntity.name,

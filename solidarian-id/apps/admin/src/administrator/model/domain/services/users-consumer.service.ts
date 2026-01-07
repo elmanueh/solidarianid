@@ -1,6 +1,6 @@
-import { UserEventDto } from '@solidarianid/kafka';
 import { Either } from '@app/ddd/either';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { UserEventDto } from '@solidarianid/kafka';
 
 /**
  * Port (interfaz) del servicio de consumo de eventos de usuarios
@@ -13,5 +13,5 @@ export abstract class UsersConsumerService {
    * @param userEventDto DTO con los datos del usuario desde el evento de Kafka
    * @returns Either con RepositoryException si falla o el User guardado
    */
-  abstract saveNewUser(userEventDto: UserEventDto): Promise<Either<RepositoryException, void>>;
+  abstract saveNewUser(userEventDto: UserEventDto): Promise<Either<ValidationError, void>>;
 }

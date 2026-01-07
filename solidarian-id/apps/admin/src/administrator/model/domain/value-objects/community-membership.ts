@@ -1,15 +1,21 @@
+import { Either, left, right } from '@app/ddd/either';
 import { ValueObject } from '@app/ddd/value-object';
-import { Either, right, left } from '@app/ddd/either';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { InvalidUniqueEntityIDError } from '@app/value-objects/errors/validation/unique-entity-id-validation-error';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
-export interface CommunityMembershipProps {
+interface CommunityMembershipProps {
   communityId: UniqueEntityID;
   communityName: string;
   isAdmin: boolean;
 }
 
-export interface CommunityMembershipCreationProps {
+interface CreateCommunityMembershipProps {
+  communityId: string;
+  communityName: string;
+  isAdmin: boolean;
+}
+
+export interface ReconstituteCommunityMembershipProps {
   communityId: string;
   communityName: string;
   isAdmin: boolean;
@@ -44,9 +50,7 @@ export class CommunityMembership extends ValueObject<CommunityMembershipProps> {
     );
   }
 
-  public static create(
-    props: CommunityMembershipCreationProps,
-  ): Either<InvalidUniqueEntityIDError, CommunityMembership> {
+  public static create(props: CreateCommunityMembershipProps): Either<InvalidUniqueEntityIDError, CommunityMembership> {
     // Validar que el nombre de la comunidad no esté vacío
     if (!props.communityName || props.communityName.trim().length === 0) {
       return left(new InvalidUniqueEntityIDError('Community name cannot be empty.'));

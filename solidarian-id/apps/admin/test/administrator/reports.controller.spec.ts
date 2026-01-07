@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/unbound-method */
 import { ReportsApiController } from '@app/admin/administrator/controllers/reports-api.controller';
-import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
-import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
+import { UserNotFoundError } from '@app/admin/administrator/model/domain/errors/user-not-found.error';
 import { User } from '@app/admin/administrator/model/domain/models/user';
+import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
+import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { UserNotFoundError } from '@app/admin/administrator/model/domain/errors/user-not-found.error';
 import { Test, TestingModule } from '@nestjs/testing';
 import type { Response } from 'express';
 import { Readable } from 'node:stream';
@@ -33,13 +33,21 @@ const createMockResponse = (): jest.Mocked<Response> => {
 };
 
 const createMockUser = (id: string, username: string): User => {
-  const userResult = User.create(id, 'Test User', username, '+34612345678', 'Madrid', 'ES', [
-    {
-      communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
-      communityName: 'Test Community',
-      isAdmin: false,
-    },
-  ]);
+  const userResult = User.reconstitute({
+    id: id,
+    fullName: 'Test User',
+    username: username,
+    phone: '+34612345678',
+    city: 'Madrid',
+    countryCode: 'ES',
+    communityMemberships: [
+      {
+        communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
+        communityName: 'Test Community',
+        isAdmin: false,
+      },
+    ],
+  });
 
   if (userResult.isLeft()) {
     throw new Error(`Failed to create mock user: ${userResult.value.message}`);
@@ -181,15 +189,16 @@ describe('ReportsApiController', () => {
 
       it('should handle user with no communities', async () => {
         const mockResponse = createMockResponse();
-        const userResult = User.create(
-          userId,
-          'No Communities User',
-          'no_communities',
-          '+34612345678',
-          'Madrid',
-          'ES',
-          [],
-        );
+        const userResult = User.reconstitute({
+          id: userId,
+          fullName: 'No Communities User',
+          username: 'no_communities',
+          phone: '+34612345678',
+          city: 'Madrid',
+          countryCode: 'ES',
+          communityMemberships: [],
+        });
+
         if (userResult.isRight()) {
           mockUsersService.getUserById.mockResolvedValue(right(userResult.value));
 
@@ -358,15 +367,16 @@ describe('ReportsApiController', () => {
 
       it('should handle unknown country code', async () => {
         const mockResponse = createMockResponse();
-        const userResult = User.create(
-          userId,
-          'Unknown Country User',
-          'unknown_country',
-          '+11234567890',
-          'Unknown City',
-          'XX',
-          [],
-        );
+        const userResult = User.reconstitute({
+          id: userId,
+          fullName: 'Unknown Country User',
+          username: 'unknown_country',
+          phone: '+11234567890',
+          city: 'Unknown City',
+          countryCode: 'XX',
+          communityMemberships: [],
+        });
+
         if (userResult.isRight()) {
           const mockStream = createMockPdfStream();
           mockUsersService.getUserById.mockResolvedValue(right(userResult.value));

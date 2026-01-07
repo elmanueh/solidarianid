@@ -38,11 +38,29 @@ export class CausesServiceImpl implements CausesService {
     return right(causeOrError.value);
   }
 
-  async getCauses(): Promise<Either<ValidationError, Cause[]>> {
+  async getAll(): Promise<Either<ValidationError, Cause[]>> {
     return await this.causeRepository.findAll();
   }
 
-  async getCauseById(id: string): Promise<Either<ValidationError, Cause>> {
+  async getById(id: string): Promise<Either<ValidationError, Cause>> {
     return await this.causeRepository.findById(id, ['actions']);
+  }
+
+  async getAllByCommunityId(communityId: string, actions: boolean = false): Promise<Either<ValidationError, Cause[]>> {
+    return await this.causeRepository.findAllByCommunityId(communityId, actions);
+  }
+
+  async getByCommunityIdAndCauseId(
+    communityId: string,
+    causeId: string,
+    actions: boolean = false,
+  ): Promise<Either<ValidationError | RepositoryException, Cause>> {
+    const causeOrError = await this.causeRepository.findByCommunityIdAndCauseId(communityId, causeId, actions);
+
+    if (causeOrError.isLeft()) {
+      return left(causeOrError.value);
+    }
+
+    return right(causeOrError.value);
   }
 }

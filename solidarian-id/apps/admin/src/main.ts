@@ -97,6 +97,13 @@ async function bootstrap() {
 
   await app.startAllMicroservices();
 
+  app.enableCors({
+    origin: configService.get<string>('API_BASE_ADMIN_URL') ?? '*',
+    exposedHeaders: ['Location'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    credentials: true,
+  });
+
   const port = configService.get<number>('ADMIN_PORT') ?? 3000;
   console.log(`Server running on port ${port}`);
   await app.listen(port);

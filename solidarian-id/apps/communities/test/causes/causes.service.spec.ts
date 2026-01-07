@@ -28,7 +28,6 @@ describe('CausesServiceImpl', () => {
     description: 'A valid test cause description with more than 20 characters',
     status: RequestStatus.APPROVED,
     userId: validUserId,
-    username: 'testuser',
     communityId: validCommunityId,
     ods: [SustainableDevelopmentGoal.NoPoverty],
     initialDate: new Date('2026-01-01'),
@@ -134,7 +133,7 @@ describe('CausesServiceImpl', () => {
     it('should return empty array when repository returns []', async () => {
       mockCauseRepository.findAll.mockResolvedValueOnce(right([]));
 
-      const result = await service.getCauses();
+      const result = await service.getAll();
 
       expect(result.isRight()).toBe(true);
       if (result.isRight()) {
@@ -147,7 +146,7 @@ describe('CausesServiceImpl', () => {
       const mockCauses = [createMockCause()];
       mockCauseRepository.findAll.mockResolvedValueOnce(right(mockCauses));
 
-      const result = await service.getCauses();
+      const result = await service.getAll();
 
       expect(result.isRight()).toBe(true);
       if (result.isRight()) {
@@ -161,7 +160,7 @@ describe('CausesServiceImpl', () => {
       const err = new ValidationError('Invalid repository data');
       mockCauseRepository.findAll.mockResolvedValueOnce(left(err));
 
-      const result = await service.getCauses();
+      const result = await service.getAll();
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBe(err);
@@ -174,7 +173,7 @@ describe('CausesServiceImpl', () => {
       const mockCause = createMockCause();
       mockCauseRepository.findById.mockResolvedValueOnce(right(mockCause));
 
-      const result = await service.getCauseById(validCauseId);
+      const result = await service.getById(validCauseId);
 
       expect(result.isRight()).toBe(true);
       if (result.isRight()) {
@@ -188,7 +187,7 @@ describe('CausesServiceImpl', () => {
       const err = new ValidationError('Cause not found');
       mockCauseRepository.findById.mockResolvedValueOnce(left(err));
 
-      const result = await service.getCauseById(validCauseId);
+      const result = await service.getById(validCauseId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBe(err);
@@ -199,7 +198,7 @@ describe('CausesServiceImpl', () => {
       const mockCause = createMockCause();
       mockCauseRepository.findById.mockResolvedValueOnce(right(mockCause));
 
-      await service.getCauseById(validCauseId);
+      await service.getById(validCauseId);
 
       expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions']);
     });

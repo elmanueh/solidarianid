@@ -32,10 +32,13 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=builder --chown=nestjs:nodejs /app/dist/apps/admin ./dist/apps/admin
 
 # Copiar views de la aplicación admin
-COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/views ./dist/apps/admin/views
+COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/views ./apps/admin/views
 
 # Copiar archivos estáticos
-COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/public ./dist/apps/admin/public
+COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/public ./apps/admin/public
+
+# Copiar el logo solidarian-128x128.png
+COPY --from=builder --chown=nestjs:nodejs /app/libs/design-tokens/src/icons/solidarian-128x128.png ./libs/design-tokens/src/icons/solidarian-128x128.png
 
 EXPOSE 3000
 

@@ -83,6 +83,7 @@ describe('Users-Communities Kafka Integration', () => {
         },
       },
     );
+    await usersServer.getApp().init();
 
     usersDataSource = usersServer.getModule().get<DataSource>(DataSource);
 

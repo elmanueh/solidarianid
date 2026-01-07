@@ -10,7 +10,7 @@ export class TestServerHelper {
   private app: INestApplication;
   private moduleRef: TestingModule;
 
-  async create(moduleMetadata: ModuleMetadata): Promise<INestApplication> {
+  async create(moduleMetadata: ModuleMetadata, globalPrefix?: string): Promise<INestApplication> {
     const configModule = ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
@@ -51,12 +51,18 @@ export class TestServerHelper {
 
     this.app.useGlobalFilters(new GlobalExceptionFilter());
 
+    if (globalPrefix) {
+      this.app.setGlobalPrefix(globalPrefix);
+    }
+
     await this.app.init();
+
     return this.app;
   }
   async createWithMicroservice(
     moduleMetadata: ModuleMetadata,
     microserviceOptions: MicroserviceOptions,
+    globalPrefix?: string,
   ): Promise<INestApplication> {
     const configModule = ConfigModule.forRoot({
       isGlobal: true,
@@ -85,6 +91,11 @@ export class TestServerHelper {
     this.app.connectMicroservice(microserviceOptions);
 
     await this.app.startAllMicroservices();
+
+    if (globalPrefix) {
+      this.app.setGlobalPrefix(globalPrefix);
+    }
+
     await this.app.init();
 
     return this.app;

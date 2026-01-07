@@ -89,8 +89,12 @@ jobs:
           aws cloudformation deploy \
             --stack-name MyStackApp \
             --template-file stack.yaml \
-            --parameter-overrides DockerHubUsername=${{ secrets.DOCKERHUB_USERNAME }} \
-            --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+            --parameter-overrides \
+              DockerHubUsername=${{ secrets.DOCKERHUB_USERNAME }} \
+              AmazonLinuxAMIID=ami-02e50d15ca7664be9 \
+              ExistingEipAllocationId=eipalloc-086485758b47098be \
+              NetworkStackName=MyStackNetwork \
+            --capabilities CAPABILITY_NAMED_IAM \
             --no-fail-on-empty-changeset
 
       - name: Force new deployment (if stack unchanged)

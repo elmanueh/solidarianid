@@ -15,13 +15,17 @@ Parameters:
     Default: MyStackNetwork
 
   AmazonLinuxAMIID:
-    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
-    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+    Type: AWS::EC2::Image::Id
+    Default: ami-02e50d15ca7664be9
 
   DockerHubUsername:
     Description: Docker Hub username for pulling images
     Type: String
     Default: zerep0
+
+  ExistingEipAllocationId:
+    Type: String
+    Default: eipalloc-086485758b47098be
 
 Resources:
   WebServerInstance:
@@ -281,18 +285,10 @@ Resources:
       ResourceSignal:
         Timeout: PT10M
 
-  WebServerEIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-      Tags:
-        - Key: Name
-          Value: SolidarianID-EIP
-
   WebServerEIPAssociation:
     Type: AWS::EC2::EIPAssociation
     Properties:
-      AllocationId: eipalloc-086485758b47098be
+      AllocationId: !Ref ExistingEipAllocationId
       InstanceId: !Ref WebServerInstance
 
   WebServerInstanceRole:
@@ -346,6 +342,7 @@ Resources:
         - Key: Name
           Value: SolidarianID Data Volume
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
 
   DiskMountPoint:
     Type: AWS::EC2::VolumeAttachment

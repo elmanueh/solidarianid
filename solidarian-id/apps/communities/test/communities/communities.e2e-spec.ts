@@ -42,9 +42,12 @@ describe('CommunitiesController (e2e)', () => {
     ]);
 
     server = new TestServerHelper();
-    app = await server.create({
-      imports: [databaseModule, messageModule, CommunitiesModule],
-    });
+    app = await server.create(
+      {
+        imports: [databaseModule, messageModule, CommunitiesModule],
+      },
+      'api',
+    );
 
     const dataSource = app.get<DataSource>('DataSource');
     seeder = new PostgreSQLSeeder(dataSource);

@@ -416,7 +416,6 @@ describe('RequestsServiceImpl', () => {
         description: mockRequest.description,
         status: RequestStatus.APPROVED,
         userId: validUserId,
-        username: 'testuser',
         causeRequests: [],
         type: RequestType.COMMUNITY,
       };
@@ -441,7 +440,6 @@ describe('RequestsServiceImpl', () => {
         description: mockRequest.description,
         status: RequestStatus.APPROVED,
         userId: validUserId,
-        username: 'testuser',
         communityId: validCommunityId,
         ods: [SustainableDevelopmentGoal.NoPoverty],
         initialDate: new Date('2026-01-01'),
@@ -467,7 +465,6 @@ describe('RequestsServiceImpl', () => {
         description: mockRequest.description,
         status: RequestStatus.APPROVED,
         userId: validUserId,
-        username: 'testuser',
         objectives: [],
         events: [],
         causeId: validCauseId,

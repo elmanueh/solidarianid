@@ -2,15 +2,15 @@ import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import { CauseDomainMapper } from '../mappers/cause.mapper';
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { CauseSummaryResponseDto } from '../dtos/output/cause-summary.response.dto';
-import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Cause } from '@app/communities/domain/model/entities/cause';
 import { CauseDetailResponseDto } from '../dtos/output/cause-detail.response.dto';
 
-@Controller('causes')
+@Controller()
 export class CausesController {
   constructor(private readonly causesService: CausesService) {}
 
-  @Get()
+  @Get('causes')
   @ApiOperation({ summary: 'Retrieve all charitable causes' })
   @ApiOkResponse({
     description: 'List of causes',
@@ -18,7 +18,7 @@ export class CausesController {
     isArray: true,
   })
   async getCauses(): Promise<CauseSummaryResponseDto[]> {
-    const causes = await this.causesService.getCauses();
+    const causes = await this.causesService.getAll();
 
     if (causes.isLeft()) {
       throw causes.value;
@@ -27,7 +27,7 @@ export class CausesController {
     return causes.value.map((cause: Cause) => CauseDomainMapper.toCauseSummaryDto(cause));
   }
 
-  @Get(':id')
+  @Get('causes/:id')
   @ApiOperation({ summary: 'Retrieve a charitable cause by ID' })
   @ApiOkResponse({
     description: 'Cause details',
@@ -35,8 +35,47 @@ export class CausesController {
   })
   @ApiResponse({ status: 404, description: 'Cause not found' })
   async getCauseById(@Param('id', new ParseUUIDPipe()) id: string): Promise<CauseDetailResponseDto> {
-    const cause = await this.causesService.getCauseById(id);
+    const cause = await this.causesService.getById(id);
 
+    if (cause.isLeft()) {
+      throw cause.value;
+    }
+
+    return CauseDomainMapper.toCauseDetailDto(cause.value);
+  }
+
+  @Get('communities/:communityId/causes')
+  @ApiOperation({ summary: 'Retrieve all causes for a specific community' })
+  @ApiOkResponse({
+    description: 'List of causes for the specified community',
+    type: [CauseSummaryResponseDto],
+    isArray: true,
+  })
+  @ApiNotFoundResponse({ description: 'Community not found' })
+  async getCausesByCommunityId(
+    @Param('communityId', new ParseUUIDPipe()) communityId: string,
+  ): Promise<CauseSummaryResponseDto[]> {
+    const causes = await this.causesService.getAllByCommunityId(communityId);
+
+    if (causes.isLeft()) {
+      throw causes.value;
+    }
+
+    return causes.value.map((cause: Cause) => CauseDomainMapper.toCauseSummaryDto(cause));
+  }
+
+  @Get('communities/:communityId/causes/:causeId')
+  @ApiOperation({ summary: 'Retrieve a specific cause for a specific community' })
+  @ApiOkResponse({
+    description: 'Details of the specified cause for the specified community',
+    type: CauseDetailResponseDto,
+  })
+  @ApiNotFoundResponse({ description: 'Community or Cause not found' })
+  async getCauseByCommunityIdAndCauseId(
+    @Param('communityId', new ParseUUIDPipe()) communityId: string,
+    @Param('causeId', new ParseUUIDPipe()) causeId: string,
+  ): Promise<CauseDetailResponseDto> {
+    const cause = await this.causesService.getByCommunityIdAndCauseId(communityId, causeId, true);
     if (cause.isLeft()) {
       throw cause.value;
     }

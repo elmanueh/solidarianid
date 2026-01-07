@@ -44,9 +44,12 @@ describe('RequestController (e2e)', () => {
     ]);
 
     server = new TestServerHelper();
-    app = await server.create({
-      imports: [databaseModule, messageModule, CommunitiesModule],
-    });
+    app = await server.create(
+      {
+        imports: [databaseModule, messageModule, CommunitiesModule],
+      },
+      'api',
+    );
 
     const dataSource = app.get<DataSource>('DataSource');
     seeder = new PostgreSQLSeeder(dataSource);
@@ -84,7 +87,7 @@ describe('RequestController (e2e)', () => {
     it('should create a community request and return 201 with Location header', async () => {
       const response = await server
         .getRequest()
-        .post('/community-requests')
+        .post('/api/community-requests')
         .send(validCommunityRequestDto)
         .expect(HttpStatus.CREATED);
 
@@ -98,7 +101,7 @@ describe('RequestController (e2e)', () => {
         name: 'ab', // Demasiado corto
       };
 
-      await server.getRequest().post('/community-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/community-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when description is too short', async () => {
@@ -107,7 +110,7 @@ describe('RequestController (e2e)', () => {
         description: 'corta', // Demasiado corta
       };
 
-      await server.getRequest().post('/community-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/community-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when causeCreationRequests is empty', async () => {
@@ -116,7 +119,7 @@ describe('RequestController (e2e)', () => {
         causeCreationRequests: [],
       };
 
-      await server.getRequest().post('/community-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/community-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 404 when user does not exist', async () => {
@@ -125,7 +128,7 @@ describe('RequestController (e2e)', () => {
         userId: '00000000-0000-0000-0000-000000000999', // Usuario inexistente
       };
 
-      await server.getRequest().post('/community-requests').send(invalidDto).expect(HttpStatus.NOT_FOUND);
+      await server.getRequest().post('/api/community-requests').send(invalidDto).expect(HttpStatus.NOT_FOUND);
     });
   });
 
@@ -143,7 +146,7 @@ describe('RequestController (e2e)', () => {
     it('should create a cause request and return 201 with Location header', async () => {
       const response = await server
         .getRequest()
-        .post('/cause-requests')
+        .post('/api/cause-requests')
         .send(validCauseRequestDto)
         .expect(HttpStatus.CREATED);
 
@@ -157,7 +160,7 @@ describe('RequestController (e2e)', () => {
         name: 'ab',
       };
 
-      await server.getRequest().post('/cause-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/cause-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when ods is empty', async () => {
@@ -166,7 +169,7 @@ describe('RequestController (e2e)', () => {
         ods: [],
       };
 
-      await server.getRequest().post('/cause-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/cause-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when durationDays is less than 1', async () => {
@@ -175,7 +178,7 @@ describe('RequestController (e2e)', () => {
         durationDays: 0,
       };
 
-      await server.getRequest().post('/cause-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/cause-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 404 when user does not exist', async () => {
@@ -184,7 +187,7 @@ describe('RequestController (e2e)', () => {
         userId: '00000000-0000-0000-0000-000000000999',
       };
 
-      await server.getRequest().post('/cause-requests').send(invalidDto).expect(HttpStatus.NOT_FOUND);
+      await server.getRequest().post('/api/cause-requests').send(invalidDto).expect(HttpStatus.NOT_FOUND);
     });
   });
 
@@ -219,7 +222,7 @@ describe('RequestController (e2e)', () => {
     it('should create an action request and return 201 with Location header', async () => {
       const response = await server
         .getRequest()
-        .post('/action-requests')
+        .post('/api/action-requests')
         .send(validActionRequestDto)
         .expect(HttpStatus.CREATED);
 
@@ -233,7 +236,7 @@ describe('RequestController (e2e)', () => {
         name: 'ab',
       };
 
-      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when objectives is empty', async () => {
@@ -242,7 +245,7 @@ describe('RequestController (e2e)', () => {
         objectives: [],
       };
 
-      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when events is empty', async () => {
@@ -251,7 +254,7 @@ describe('RequestController (e2e)', () => {
         events: [],
       };
 
-      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when countryCode is invalid', async () => {
@@ -269,7 +272,7 @@ describe('RequestController (e2e)', () => {
         ],
       };
 
-      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 400 when objective quantity is less than 1', async () => {
@@ -283,7 +286,7 @@ describe('RequestController (e2e)', () => {
         ],
       };
 
-      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/action-requests').send(invalidDto).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 404 when user does not exist', async () => {
@@ -292,7 +295,7 @@ describe('RequestController (e2e)', () => {
         userId: '00000000-0000-0000-0000-000000000999',
       };
 
-      await server.getRequest().post('/action-requests').send(invalidDto).expect(HttpStatus.NOT_FOUND);
+      await server.getRequest().post('/api/action-requests').send(invalidDto).expect(HttpStatus.NOT_FOUND);
     });
   });
 });

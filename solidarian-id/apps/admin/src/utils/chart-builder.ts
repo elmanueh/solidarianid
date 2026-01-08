@@ -2,7 +2,7 @@ import { createBarConfig } from '@charts/bar';
 import { createDoughnutConfig } from '@charts/doughnut';
 import { createLineConfig } from '@charts/line';
 import { createPieConfig } from '@charts/pie';
-import { monthNames, odsNames } from './data-utils';
+import { odsNames } from './data-utils';
 import { SerializableChartConfig } from '@charts/plugins/plugins';
 
 export function createTopCommunitiesPie(
@@ -59,10 +59,12 @@ export function createOdsByCauseBar(odsByCauseData: Array<[ods: number, count: n
   });
 }
 
-export function createMonthlyJoinsLine(monthlyJoinsData: { label: string; data: number[] }[]): SerializableChartConfig {
+export function createMonthlyJoinsLine(
+  monthlyJoinsData: { label: string; months: string[]; data: number[] }[],
+): SerializableChartConfig {
   return createLineConfig({
     title: 'Comparativa de uniones mensuales',
-    labels: monthNames,
+    labels: monthlyJoinsData[0].months,
     series: monthlyJoinsData.map(c => ({
       label: c.label,
       values: c.data,

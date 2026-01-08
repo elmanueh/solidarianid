@@ -8,12 +8,16 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Injectable } from '@nestjs/common';
 import { CommunityRequestEventDto } from '@solidarianid/kafka';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { RankingCommunitiesByUsersData } from './community-ranking.data';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query-repository-port';
+import { CommunityLastUsersJoinedData } from './community-last-users-joined.data';
 
 @Injectable()
 export class CommunitiesServiceImpl implements CommunitiesService {
   constructor(
     private readonly communityRepository: CommunitiesRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
+    private readonly communityQueryRepository: CommunitiesQueryRepositoryPort,
   ) {}
 
   async create(
@@ -76,5 +80,16 @@ export class CommunitiesServiceImpl implements CommunitiesService {
 
   async getCommunityById(id: string): Promise<Either<ValidationError, Community>> {
     return await this.communityRepository.findById(id, ['causes', 'members', 'members.user']);
+  }
+
+  async getOrderByMostUsers(limit?: number): Promise<Either<ValidationError, RankingCommunitiesByUsersData[]>> {
+    return await this.communityQueryRepository.findOrderByMostUsers(limit);
+  }
+
+  async getJoinedUsersLastMonths(
+    communityId: string,
+    months?: number,
+  ): Promise<Either<ValidationError, CommunityLastUsersJoinedData[]>> {
+    return await this.communityQueryRepository.findJoinedUsersLastMonths(communityId, months);
   }
 }

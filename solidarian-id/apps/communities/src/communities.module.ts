@@ -46,6 +46,8 @@ import { UserService } from './domain/services/user.service';
 import { UserServiceImpl } from './application/services/user.service.impl';
 import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
 import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/requests.consumer';
+import { CommunitiesQueryRepositoryPort } from './domain/ports/community-query-repository-port';
+import { CommunitiesQueryTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/communities-query-typeorm-repository';
 
 @Module({
   imports: [
@@ -93,6 +95,10 @@ import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/req
     {
       provide: CommunitiesRepositoryPort,
       useClass: CommunitiesRepositoryTypeOrmAdapter,
+    },
+    {
+      provide: CommunitiesQueryRepositoryPort,
+      useClass: CommunitiesQueryTypeOrmRepositoryAdapter,
     },
     {
       provide: CausesRepositoryPort,

@@ -92,4 +92,54 @@ describe('CommunitiesController (e2e)', () => {
         .expect(HttpStatus.NOT_FOUND);
     });
   });
+
+  describe('/communities/ranking/most-users (GET)', () => {
+    it('should return communities ordered by number of users desc', async () => {
+      const response = await server.getRequest().get('/api/communities/ranking/most-users').expect(HttpStatus.OK);
+
+      expect(response.body).toHaveLength(Object.keys(COMMUNITY_IDS).length);
+      expect(response.body[0].name).toBe('Voluntarios Sin Fronteras Madrid');
+      expect(response.body[0].userCount).toBe(3);
+      expect(response.body[1].name).toBe('Amigos por África');
+      expect(response.body[1].userCount).toBe(3);
+    });
+
+    it('should return limited communities when limit query param is provided', async () => {
+      const response = await server
+        .getRequest()
+        .get('/api/communities/ranking/most-users?limit=1')
+        .expect(HttpStatus.OK);
+
+      expect(response.body).toHaveLength(1);
+      expect(response.body[0].name).toBe('Voluntarios Sin Fronteras Madrid');
+      expect(response.body[0].userCount).toBe(3);
+    });
+
+    it('should return 400 when limit query param is invalid', async () => {
+      await server.getRequest().get('/api/communities/ranking/most-users?limit=invalid').expect(HttpStatus.BAD_REQUEST);
+    });
+  });
+
+  describe('/communities/:id/users-joined (GET)', () => {
+    it('should return monthly joined users data for a community', async () => {
+      const response = await server
+        .getRequest()
+        .get(`/api/communities/${COMMUNITY_IDS.AFRICA}/users-joined?months=2`)
+        .expect(HttpStatus.OK);
+
+      expect(response.body.communityName).toBe('Amigos por África');
+      expect(response.body.dataRange).toHaveLength(2);
+    });
+
+    it('should return 400 when invalid UUID is provided', async () => {
+      await server.getRequest().get('/api/communities/invalid-uuid/users-joined').expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('should return 400 when months query param is invalid', async () => {
+      await server
+        .getRequest()
+        .get(`/api/communities/${COMMUNITY_IDS.AFRICA}/users-joined?months=invalid`)
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+  });
 });

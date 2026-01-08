@@ -12,6 +12,7 @@ import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query-repository-port';
 
 describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;
@@ -72,6 +73,7 @@ describe('CommunitiesServiceImpl', () => {
       providers: [
         CommunitiesServiceImpl,
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepo },
+        { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
       ],
     }).compile();

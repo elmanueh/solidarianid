@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { engine } from 'express-handlebars';
 import { AppModule } from '@app/admin/app.module';
 import session from 'express-session';
+import { RepositoryExceptionFilter } from './administrator/controllers/filters/repository-exception.filter';
 import { HttpExceptionFilter } from '@app/admin/administrator/controllers/filters/http-exception.filter';
 import { AuthenticationErrorFilter } from './administrator/controllers/filters/authentication-error.filter';
 import { ConflictErrorFilter } from './administrator/controllers/filters/conflict-error.filter';
@@ -73,11 +74,12 @@ async function bootstrap() {
   // Configurar filtros globales de excepciones
   app.useGlobalFilters(
     new HttpExceptionFilter(),
-    new InternalServerErrorFilter(),
-    new ValidationErrorFilter(),
     new NotFoundErrorFilter(),
+    new RepositoryExceptionFilter(),
+    new ValidationErrorFilter(),
     new ConflictErrorFilter(),
     new AuthenticationErrorFilter(),
+    new InternalServerErrorFilter(),
     new GlobalExceptionFilter(),
   );
 

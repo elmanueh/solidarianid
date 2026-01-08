@@ -381,38 +381,60 @@ describe('UsersService', () => {
 
   describe('getTotalUsers', () => {
     describe('Basic Path Testing', () => {
-      it('Path 1: should return total count from repository', async () => {
-        mockRepository.countAll.mockResolvedValue(10);
+      it('Path 1: should return right with total count from repository', async () => {
+        mockRepository.countAll.mockResolvedValue(right(10));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(10);
+        expect(result.isRight()).toBe(true);
+        if (result.isRight()) {
+          expect(result.value).toBe(10);
+        }
+      });
+
+      it('Path 2: should return left with error when repository fails', async () => {
+        const error = new RepositoryException('Database connection failed');
+        mockRepository.countAll.mockResolvedValue(left(error));
+
+        const result = await service.getTotalUsers();
+
+        expect(result.isLeft()).toBe(true);
+        if (result.isLeft()) {
+          expect(result.value).toBe(error);
+        }
       });
     });
 
     describe('Return Value Testing', () => {
-      it('should return number returned by repository.countAll', async () => {
+      it('should return Right with number from repository.countAll', async () => {
         const expectedCount = 42;
-        mockRepository.countAll.mockResolvedValue(expectedCount);
+        mockRepository.countAll.mockResolvedValue(right(expectedCount));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(expectedCount);
-        expect(typeof result).toBe('number');
+        expect(result.isRight()).toBe(true);
+        if (result.isRight()) {
+          expect(result.value).toBe(expectedCount);
+          expect(typeof result.value).toBe('number');
+        }
       });
 
-      it('should always return a number', async () => {
-        mockRepository.countAll.mockResolvedValue(5);
+      it('should return Left when repository.countAll returns error', async () => {
+        const error = new RepositoryException('Database error');
+        mockRepository.countAll.mockResolvedValue(left(error));
 
         const result = await service.getTotalUsers();
 
-        expect(typeof result).toBe('number');
+        expect(result.isLeft()).toBe(true);
+        if (result.isLeft()) {
+          expect(result.value).toBe(error);
+        }
       });
     });
 
     describe('Repository Method Call Verification', () => {
       it('should call repository.countAll without parameters', async () => {
-        mockRepository.countAll.mockResolvedValue(10);
+        mockRepository.countAll.mockResolvedValue(right(10));
 
         await service.getTotalUsers();
 

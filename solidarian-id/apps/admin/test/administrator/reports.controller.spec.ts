@@ -7,7 +7,7 @@ import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/port
 import { User } from '@app/admin/administrator/model/domain/models/user';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { UserNotFoundError } from '@app/admin/administrator/model/domain/errors/user-not-found.error';
+import { PdfGenerationException } from '@app/admin/administrator/model/domain/errors/pdf-generation.exception';
 import { Test, TestingModule } from '@nestjs/testing';
 import type { Response } from 'express';
 import { Readable } from 'node:stream';
@@ -90,31 +90,21 @@ describe('ReportsApiController', () => {
 
   describe('getUserDetail', () => {
     describe('Basic Path Testing', () => {
-      it('Path 1: should return 404 when service returns Left', async () => {
-        const mockResponse = createMockResponse();
+      it('Path 1: should throw EntityNotFoundException when service returns Left', async () => {
         const error = new EntityNotFoundException('User', userId);
         mockUsersService.getUserById.mockResolvedValue(left(error));
 
-        await controller.getUserDetail(userId, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(404);
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            statusCode: 404,
-            message: error.message,
-          }),
-        );
+        await expect(controller.getUserDetail(userId)).rejects.toThrow(EntityNotFoundException);
+        await expect(controller.getUserDetail(userId)).rejects.toThrow(/was not found/);
       });
 
-      it('Path 2: should return 200 with user detail when service succeeds', async () => {
-        const mockResponse = createMockResponse();
+      it('Path 2: should return user detail DTO when service succeeds', async () => {
         const mockUser = createMockUser(userId, 'detailed_user');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
 
-        await controller.getUserDetail(userId, mockResponse);
+        const result = await controller.getUserDetail(userId);
 
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
-        expect(mockResponse.json).toHaveBeenCalledWith(
+        expect(result).toEqual(
           expect.objectContaining({
             id: userId,
             username: 'detailed_user',
@@ -125,37 +115,27 @@ describe('ReportsApiController', () => {
 
     describe('Condition Testing', () => {
       it('should handle result.isLeft() = true', async () => {
-        const mockResponse = createMockResponse();
-        mockUsersService.getUserById.mockResolvedValue(left(new UserNotFoundError(userId)));
+        mockUsersService.getUserById.mockResolvedValue(left(new EntityNotFoundException('User', userId)));
 
-        await controller.getUserDetail(userId, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(404);
+        await expect(controller.getUserDetail(userId)).rejects.toThrow(EntityNotFoundException);
       });
 
       it('should handle result.isLeft() = false', async () => {
-        const mockResponse = createMockResponse();
         const mockUser = createMockUser(userId, 'test_user');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
 
-        await controller.getUserDetail(userId, mockResponse);
+        const result = await controller.getUserDetail(userId);
 
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        expect(result).toBeDefined();
+        expect(result.id).toBe(userId);
       });
     });
     describe('Exception Handling', () => {
-      it('should return error response with timestamp', async () => {
-        const mockResponse = createMockResponse();
+      it('should throw EntityNotFoundException with correct message', async () => {
         const error = new EntityNotFoundException('User', userId);
         mockUsersService.getUserById.mockResolvedValue(left(error));
 
-        await controller.getUserDetail(userId, mockResponse);
-
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            timestamp: expect.any(String),
-          }),
-        );
+        await expect(controller.getUserDetail(userId)).rejects.toThrow(error.message);
       });
     });
   });
@@ -164,7 +144,7 @@ describe('ReportsApiController', () => {
     describe('Basic Path Testing', () => {
       it('Path 1: should return 404 when user is not found', async () => {
         const mockResponse = createMockResponse();
-        const error = new UserNotFoundError(nonExistentUserId);
+        const error = new EntityNotFoundException('User', nonExistentUserId);
         mockUsersService.getUserById.mockResolvedValue(left(error));
 
         await controller.downloadUserPdf(nonExistentUserId, mockResponse);
@@ -178,21 +158,15 @@ describe('ReportsApiController', () => {
         );
       });
 
-      it('Path 2: should return 500 when PDF generation fails', async () => {
+      it('Path 2: should throw PdfGenerationException when PDF generation fails', async () => {
         const mockResponse = createMockResponse();
         const mockUser = createMockUser(userId, 'pdf_user');
+        const pdfError = new PdfGenerationException('Failed to generate PDF report: PDF generation error');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockRejectedValue(new Error('PDF generation error'));
+        mockPdfGenerator.generate.mockReturnValue(left(pdfError));
 
-        await controller.downloadUserPdf(userId, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(500);
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            statusCode: 500,
-            message: 'Error generating PDF report',
-          }),
-        );
+        await expect(controller.downloadUserPdf(userId, mockResponse)).rejects.toThrow(PdfGenerationException);
+        await expect(controller.downloadUserPdf(userId, mockResponse)).rejects.toThrow(/Failed to generate PDF/);
       });
 
       it('Path 3: should generate and stream PDF when everything succeeds', async () => {
@@ -200,7 +174,7 @@ describe('ReportsApiController', () => {
         const mockUser = createMockUser(userId, 'pdf_user');
         const mockStream = createMockPdfStream();
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockResolvedValue(mockStream);
+        mockPdfGenerator.generate.mockReturnValue(right(mockStream));
 
         await controller.downloadUserPdf(userId, mockResponse);
 
@@ -216,7 +190,7 @@ describe('ReportsApiController', () => {
     describe('Condition Testing', () => {
       it('should handle result.isLeft() = true (user not found)', async () => {
         const mockResponse = createMockResponse();
-        mockUsersService.getUserById.mockResolvedValue(left(new UserNotFoundError(userId)));
+        mockUsersService.getUserById.mockResolvedValue(left(new EntityNotFoundException('User', userId)));
 
         await controller.downloadUserPdf(userId, mockResponse);
 
@@ -228,7 +202,7 @@ describe('ReportsApiController', () => {
         const mockUser = createMockUser(userId, 'pdf_user');
         const mockStream = createMockPdfStream();
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockResolvedValue(mockStream);
+        mockPdfGenerator.generate.mockReturnValue(right(mockStream));
 
         await controller.downloadUserPdf(userId, mockResponse);
 
@@ -238,35 +212,15 @@ describe('ReportsApiController', () => {
     });
 
     describe('Exception Handling', () => {
-      it('should catch PDF generation errors', async () => {
+      it('should throw PdfGenerationException on PDF generation errors', async () => {
         const mockResponse = createMockResponse();
         const mockUser = createMockUser(userId, 'error_user');
+        const pdfError = new PdfGenerationException('Failed to generate PDF report: Unexpected PDF error');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockRejectedValue(new Error('Unexpected PDF error'));
+        mockPdfGenerator.generate.mockReturnValue(left(pdfError));
 
-        await controller.downloadUserPdf(userId, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(500);
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            message: 'Error generating PDF report',
-          }),
-        );
-      });
-
-      it('should return error response with timestamp on PDF failure', async () => {
-        const mockResponse = createMockResponse();
-        const mockUser = createMockUser(userId, 'error_user');
-        mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockRejectedValue(new Error('PDF error'));
-
-        await controller.downloadUserPdf(userId, mockResponse);
-
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            timestamp: expect.any(String),
-          }),
-        );
+        await expect(controller.downloadUserPdf(userId, mockResponse)).rejects.toThrow(PdfGenerationException);
+        await expect(controller.downloadUserPdf(userId, mockResponse)).rejects.toThrow(/Unexpected PDF error/);
       });
     });
   });

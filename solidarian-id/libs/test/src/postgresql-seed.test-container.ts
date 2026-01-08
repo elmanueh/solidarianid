@@ -1,3 +1,5 @@
+import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { IDatabaseSeeder } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
@@ -14,6 +16,16 @@ interface CommunitySeedData {
   id: string;
   name: string;
   description: string;
+}
+
+interface RequestSeedData {
+  id: string;
+  name: string;
+  description: string;
+  status: RequestStatus;
+  type: RequestType;
+  reason?: string;
+  user: UserEntity;
 }
 
 interface CauseSeedData {
@@ -122,6 +134,21 @@ const EVENT_IDS = {
   EVENT_003: 'f1b2c3d4-e5f6-4890-abcd-ef1234567003',
   EVENT_004: 'f1b2c3d4-e5f6-4890-abcd-ef1234567004',
   EVENT_005: 'f1b2c3d4-e5f6-4890-abcd-ef1234567005',
+};
+
+const REQUEST_IDS = {
+  COMMUNITY_PENDING_1: '01b2c3d4-e5f6-4890-abcd-ef1234567001',
+  COMMUNITY_PENDING_2: '01b2c3d4-e5f6-4890-abcd-ef1234567002',
+  COMMUNITY_APPROVED: '01b2c3d4-e5f6-4890-abcd-ef1234567003',
+  COMMUNITY_REJECTED: '01b2c3d4-e5f6-4890-abcd-ef1234567004',
+  CAUSE_PENDING_1: '02b2c3d4-e5f6-4890-abcd-ef1234567001',
+  CAUSE_PENDING_2: '02b2c3d4-e5f6-4890-abcd-ef1234567002',
+  CAUSE_APPROVED: '02b2c3d4-e5f6-4890-abcd-ef1234567003',
+  ACTION_PENDING_1: '03b2c3d4-e5f6-4890-abcd-ef1234567001',
+  ACTION_PENDING_2: '03b2c3d4-e5f6-4890-abcd-ef1234567002',
+  ACTION_APPROVED: '03b2c3d4-e5f6-4890-abcd-ef1234567003',
+  ACTION_REJECTED: '03b2c3d4-e5f6-4890-abcd-ef1234567004',
+  NON_EXISTENT: 'ffffffff-ffff-4fff-bfff-ffffffffffff',
 };
 
 // DATOS DE USUARIOS (compartidos entre Users App y Communities App)
@@ -732,6 +759,114 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
     await repo.insert([...defaultObjectiveUsers, ...objectiveUsers]);
   }
 
+  /**
+   * Seeds request data for testing.
+   * Creates requests of different types and statuses linked to seeded users.
+   */
+  async seedRequests(requests: RequestSeedData[] = []): Promise<void> {
+    const repo = this.dataSource.getRepository('RequestEntity');
+    const defaultRequests: RequestSeedData[] = [
+      // Community Requests
+      {
+        id: REQUEST_IDS.COMMUNITY_PENDING_1,
+        name: 'Comunidad Amigos del Medio Ambiente',
+        description: 'Solicitud para crear una comunidad enfocada en proyectos de sostenibilidad ambiental',
+        status: RequestStatus.PENDING,
+        type: RequestType.COMMUNITY,
+        user: { id: USER_IDS.JUAN } as UserEntity,
+      },
+      {
+        id: REQUEST_IDS.COMMUNITY_PENDING_2,
+        name: 'Comunidad Educación Rural',
+        description: 'Solicitud para comunidad de apoyo educativo en zonas rurales de España',
+        status: RequestStatus.PENDING,
+        type: RequestType.COMMUNITY,
+        user: { id: USER_IDS.MARIA } as UserEntity,
+      },
+      {
+        id: REQUEST_IDS.COMMUNITY_APPROVED,
+        name: 'Comunidad Solidaria Barcelona',
+        description: 'Comunidad aprobada para voluntariado en Barcelona metropolitana',
+        status: RequestStatus.APPROVED,
+        type: RequestType.COMMUNITY,
+        reason: 'Cumple con todos los requisitos de la plataforma',
+        user: { id: USER_IDS.PEDRO } as UserEntity,
+      },
+      {
+        id: REQUEST_IDS.COMMUNITY_REJECTED,
+        name: 'Comunidad Duplicada',
+        description: 'Solicitud rechazada por duplicidad con otra comunidad existente',
+        status: RequestStatus.REJECTED,
+        type: RequestType.COMMUNITY,
+        reason: 'Ya existe una comunidad con objetivos similares en la misma zona',
+        user: { id: USER_IDS.JUAN } as UserEntity,
+      },
+      // Cause Requests
+      {
+        id: REQUEST_IDS.CAUSE_PENDING_1,
+        name: 'Causa Reforestación Sierra Norte',
+        description: 'Solicitud de causa para plantar 10000 árboles en la Sierra Norte de Madrid',
+        status: RequestStatus.PENDING,
+        type: RequestType.CAUSE,
+        user: { id: USER_IDS.MARIA } as UserEntity,
+      },
+      {
+        id: REQUEST_IDS.CAUSE_PENDING_2,
+        name: 'Causa Comedores Sociales',
+        description: 'Solicitud para causa de apoyo a comedores sociales en Andalucía',
+        status: RequestStatus.PENDING,
+        type: RequestType.CAUSE,
+        user: { id: USER_IDS.ANA } as UserEntity,
+      },
+      {
+        id: REQUEST_IDS.CAUSE_APPROVED,
+        name: 'Causa Refugiados Ucrania',
+        description: 'Causa aprobada para ayuda humanitaria a refugiados ucranianos',
+        status: RequestStatus.APPROVED,
+        type: RequestType.CAUSE,
+        reason: 'Causa prioritaria aprobada de urgencia',
+        user: { id: USER_IDS.PEDRO } as UserEntity,
+      },
+      // Action Requests
+      {
+        id: REQUEST_IDS.ACTION_PENDING_1,
+        name: 'Acción Recogida Ropa Invierno',
+        description: 'Solicitud de acción para recoger ropa de invierno para personas sin hogar',
+        status: RequestStatus.PENDING,
+        type: RequestType.ACTION,
+        user: { id: USER_IDS.CARLOS } as UserEntity,
+      },
+      {
+        id: REQUEST_IDS.ACTION_PENDING_2,
+        name: 'Acción Limpieza Playas',
+        description: 'Solicitud de acción para organizar jornadas de limpieza de playas en Valencia',
+        status: RequestStatus.PENDING,
+        type: RequestType.ACTION,
+        user: { id: USER_IDS.JUAN } as UserEntity,
+      },
+      {
+        id: REQUEST_IDS.ACTION_APPROVED,
+        name: 'Acción Donación Sangre',
+        description: 'Acción aprobada para organizar maratón de donación de sangre',
+        status: RequestStatus.APPROVED,
+        type: RequestType.ACTION,
+        reason: 'Coordinada con Cruz Roja',
+        user: { id: USER_IDS.MARIA } as UserEntity,
+      },
+      {
+        id: REQUEST_IDS.ACTION_REJECTED,
+        name: 'Acción Sin Recursos',
+        description: 'Acción rechazada por falta de recursos disponibles',
+        status: RequestStatus.REJECTED,
+        type: RequestType.ACTION,
+        reason: 'No hay voluntarios suficientes en la zona indicada',
+        user: { id: USER_IDS.ANA } as UserEntity,
+      },
+    ];
+
+    await repo.insert([...defaultRequests, ...requests]);
+  }
+
   // ============================================
   // UTILIDADES
   // ============================================
@@ -798,4 +933,4 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
   }
 }
 
-export { USER_IDS, COMMUNITY_IDS, CAUSE_IDS, ACTION_IDS, OBJECTIVE_IDS, EVENT_IDS };
+export { USER_IDS, COMMUNITY_IDS, CAUSE_IDS, ACTION_IDS, OBJECTIVE_IDS, EVENT_IDS, REQUEST_IDS };

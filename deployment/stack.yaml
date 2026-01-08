@@ -48,7 +48,7 @@ Resources:
     Properties:
       IamInstanceProfile: !Ref WebServerInstanceProfile
       KeyName: solidarian-keypair
-      InstanceType: t3.small
+      InstanceType: t3.medium
       ImageId: !Ref AmazonLinuxAMIID
       NetworkInterfaces:
         - GroupSet:

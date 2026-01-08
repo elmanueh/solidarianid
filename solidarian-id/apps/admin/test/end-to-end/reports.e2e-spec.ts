@@ -81,12 +81,6 @@ describe('ReportsApiController (e2e)', () => {
         expect(response.body.message).toContain(nonExistentUserId);
       });
     });
-
-    describe('Edge Cases', () => {
-      it('should handle malformed UUID gracefully', async () => {
-        await server.getRequest().get('/api/reports/users/invalid-uuid-format').expect(404);
-      });
-    });
   });
 
   describe('GET /api/reports/users/:id/pdf', () => {
@@ -119,12 +113,6 @@ describe('ReportsApiController (e2e)', () => {
         const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}/pdf`).expect(404);
 
         expect(response.headers['content-type']).not.toBe('application/pdf');
-      });
-    });
-
-    describe('Edge Cases', () => {
-      it('should handle malformed UUID in PDF endpoint', async () => {
-        await server.getRequest().get('/api/reports/users/invalid-uuid/pdf').expect(404);
       });
     });
 

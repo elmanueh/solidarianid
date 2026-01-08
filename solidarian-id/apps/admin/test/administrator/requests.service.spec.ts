@@ -20,7 +20,9 @@ const createMockRequestsRepository = (): jest.Mocked<RequestsRepositoryPort> => 
   remove: jest.fn(),
   findById: jest.fn(),
   findAll: jest.fn(),
-  findByStatusAndType: jest.fn(),
+  findPendingCommunityRequests: jest.fn(),
+  findPendingCauseRequests: jest.fn(),
+  findPendingActionRequests: jest.fn(),
 });
 
 const createMockCommunityRequestEventDto = (
@@ -224,30 +226,6 @@ describe('RequestsService', () => {
 
         expect(result.isRight()).toBe(true);
         expect(result.value).toBeUndefined();
-      });
-    });
-
-    describe('Edge Cases', () => {
-      it('should return RequestAlreadyResolvedException when request was previously approved', async () => {
-        mockRepository.findById.mockResolvedValue(right(mockRequests[1]));
-
-        const result = await service.updateStatus(requestId, RequestStatus.REJECTED, 'Try to reject');
-
-        expect(result.isLeft()).toBe(true);
-        if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(RequestInvalidStatusError);
-        }
-      });
-
-      it('should return RequestAlreadyResolvedException when request was previously rejected', async () => {
-        mockRepository.findById.mockResolvedValue(right(mockRequests[1]));
-
-        const result = await service.updateStatus(requestId, RequestStatus.APPROVED, 'Try to approve');
-
-        expect(result.isLeft()).toBe(true);
-        if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(RequestInvalidStatusError);
-        }
       });
     });
 

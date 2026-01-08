@@ -70,15 +70,15 @@ describe('ReportsApiController (e2e)', () => {
       it('should return 404 when user does not exist', async () => {
         const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}`).expect(404);
 
-        expect(response.body).toHaveProperty('statusCode', 404);
-        expect(response.body).toHaveProperty('message');
+        expect(response.body.error).toHaveProperty('statusCode', 404);
+        expect(response.body.error).toHaveProperty('message');
         expect(response.body).toHaveProperty('timestamp');
       });
 
       it('should return 404 with meaningful error message', async () => {
         const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}`).expect(404);
 
-        expect(response.body.message).toContain(nonExistentUserId);
+        expect(response.body.error.message).toContain(nonExistentUserId);
       });
     });
 

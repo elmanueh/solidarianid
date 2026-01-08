@@ -77,51 +77,90 @@ export class User extends Entity<UserProps> {
     city?: string,
     countryCode?: string,
   ): Either<ValidationError, void> {
-    if (!fullName && !username && !mobilePhone && !city && !countryCode) {
+    const validationResult = this.validateUpdatePayload(fullName, username, mobilePhone, city, countryCode);
+    if (validationResult.isLeft()) {
+      return validationResult;
+    }
+
+    const fullNameResult = this.updateField(
+      fullName,
+      val => FullName.create(val),
+      v => (this.fullName = v),
+    );
+    if (fullNameResult.isLeft()) return left(fullNameResult.value);
+
+    const usernameResult = this.updateField(
+      username,
+      val => Username.create(val),
+      v => (this.username = v),
+    );
+    if (usernameResult.isLeft()) return left(usernameResult.value);
+
+    const phoneResult = this.updateField(
+      mobilePhone,
+      val => MobilePhone.create(val),
+      v => (this.mobilePhone = v),
+    );
+    if (phoneResult.isLeft()) return left(phoneResult.value);
+
+    return this.updateLocation(city, countryCode);
+  }
+
+  // Métodos Privados para reducir complejidad
+
+  /**
+   * Encapsula la lógica de validación de invariantes de la petición.
+   * Reduce la complejidad del método principal al mover los operadores && y || aquí.
+   */
+  private validateUpdatePayload(
+    fullName?: string,
+    username?: string,
+    mobilePhone?: string,
+    city?: string,
+    countryCode?: string,
+  ): Either<ValidationError, void> {
+    const hasNoUpdates = !fullName && !username && !mobilePhone && !city && !countryCode;
+    if (hasNoUpdates) {
       return left(new ValidationError('At least one field must be provided to update the profile.'));
     }
 
-    // Validaciones de location: si se proporciona alguno, deben proporcionarse los 2
-    const locationFieldsProvided = [city, countryCode].filter(Boolean).length;
-    if (locationFieldsProvided > 0 && locationFieldsProvided < 2) {
+    const locationFieldsCount = [city, countryCode].filter(Boolean).length;
+    // Simplificado: si hay 1 campo, es un error (deben ser 0 o 2)
+    if (locationFieldsCount === 1) {
       return left(new ValidationError('City and country code must both be provided when updating user location'));
     }
 
-    if (fullName) {
-      const fullNameOrError = FullName.create(fullName);
-      if (fullNameOrError.isLeft()) {
-        return left(fullNameOrError.value);
-      }
-      this.fullName = fullNameOrError.value;
+    return right(undefined);
+  }
+
+  // Método genérico para el patrón: Si existe valor -> Crear VO -> Validar -> Asignar
+  private updateField<T>(
+    rawValue: string | undefined,
+    factory: (val: string) => Either<ValidationError, T>,
+    setter: (val: T) => void,
+  ): Either<ValidationError, void> {
+    if (!rawValue) {
+      return right(undefined);
     }
 
-    if (username) {
-      const usernameOrError = Username.create(username);
-      if (usernameOrError.isLeft()) {
-        return left(usernameOrError.value);
-      }
-      this.username = usernameOrError.value;
+    const result = factory(rawValue);
+    if (result.isLeft()) {
+      return left(result.value); // Retorna el error encapsulado
     }
 
-    if (mobilePhone) {
-      const mobilePhoneOrError = MobilePhone.create(mobilePhone);
-      if (mobilePhoneOrError.isLeft()) {
-        return left(mobilePhoneOrError.value);
-      }
-      this.mobilePhone = mobilePhoneOrError.value;
-    }
+    setter(result.value);
+    return right(undefined);
+  }
 
+  // Lógica específica para Location (que requiere 2 campos)
+  private updateLocation(city?: string, countryCode?: string): Either<ValidationError, void> {
     if (city && countryCode) {
-      const locationOrError = UserLocation.create({
-        city,
-        countryCode,
-      });
+      const locationOrError = UserLocation.create({ city, countryCode });
       if (locationOrError.isLeft()) {
         return left(locationOrError.value);
       }
       this.location = locationOrError.value;
     }
-
     return right(undefined);
   }
 

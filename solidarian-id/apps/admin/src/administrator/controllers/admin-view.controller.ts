@@ -12,7 +12,7 @@ import {
   ActionRequestResponseDto,
   CauseRequestResponseDto,
   CommunityRequestResponseDto,
-} from '@app/admin/administrator/model/application/dtos/get-community-request.dto';
+} from '@app/admin/administrator/controllers/dtos/get-community-request.dto';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)

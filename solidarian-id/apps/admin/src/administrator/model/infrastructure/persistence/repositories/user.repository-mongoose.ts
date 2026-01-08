@@ -60,7 +60,12 @@ export class UserRepositoryMongoose extends RepositoryMongoose<User, UserEntity>
     }
   }
 
-  async countAll(): Promise<number> {
-    return this.userModel.countDocuments();
+  async countAll(): Promise<Either<RepositoryException, number>> {
+    try {
+      const count = await this.userModel.countDocuments();
+      return right(count);
+    } catch (error) {
+      return left(new RepositoryException('Failed to count users.', error));
+    }
   }
 }

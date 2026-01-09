@@ -7,7 +7,7 @@ import { RequestDocument, RequestEntity } from '../entities/request.entity';
 import { Model } from 'mongoose';
 import { RequestStatus } from '../../../domain/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { CauseGroupByOdsData } from '../../../application/services/cause-group-by-ods.data';
+import { CauseGroupByOdsData } from '../../../application/data/cause-group-by-ods.data';
 
 @Injectable()
 export class RequestsQueryMongooseRepository extends RequestsQueryRepositoryPort {

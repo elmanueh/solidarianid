@@ -19,6 +19,7 @@ import { CommunityRequestEntity } from '@app/admin/administrator/model/infrastru
 import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
 import { ActionRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/action-request.entity';
 import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
+import { RequestStatus } from '../../../domain/enums/request-status';
 
 @Injectable()
 export class RequestRepositoryMongoose
@@ -199,6 +200,23 @@ export class RequestRepositoryMongoose
     } catch (error: unknown) {
       return left(new RepositoryException('Failed to find request.', error));
     }
+  }
+
+  async findByStatusAndType(
+    status: RequestStatus,
+    type: RequestType,
+  ): Promise<Either<RepositoryException, Request<unknown>[]>> {
+    const documents = await this.requestModel.find({ status, type }).lean().exec();
+
+    const requestsOrError = sequence(
+      documents.map(document => this.requestMapper.fromPersistence(document as RequestEntity)),
+    );
+
+    if (requestsOrError.isLeft()) {
+      return left(new RepositoryException('Failed to map requests from persistence', requestsOrError.value));
+    }
+
+    return right(requestsOrError.value);
   }
 
   async findPendingCommunityRequests(): Promise<Either<RepositoryException, CommunityRequest[]>> {

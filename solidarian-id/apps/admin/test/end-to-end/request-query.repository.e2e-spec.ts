@@ -11,7 +11,7 @@ import {
 import { MongoDBTestModule, MongoDBSeeder } from '@solidarianid/testing';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Connection } from 'mongoose';
-import { CauseGroupByOdsData } from '@app/admin/administrator/model/application/services/cause-group-by-ods.data';
+import { CauseGroupByOdsData } from '@app/admin/administrator/model/application/data/cause-group-by-ods.data';
 
 describe('RequestsQueryMongooseRepository (e2e)', () => {
   let app: INestApplication;

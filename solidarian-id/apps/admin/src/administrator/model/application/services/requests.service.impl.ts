@@ -21,7 +21,7 @@ import { CommunityRequest } from '@app/admin/administrator/model/domain/models/c
 import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
 import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
 import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
-import { CauseGroupByOdsData } from './cause-group-by-ods.data';
+import { CauseGroupByOdsData } from '../data/cause-group-by-ods.data';
 import { RequestsQueryRepositoryPort } from '../../domain/ports/output/request-query.repository.port';
 
 @Injectable()
@@ -200,6 +200,17 @@ export class RequestsServiceImpl extends RequestsService {
 
     await this.messagery.publish(eventByStatus[status]!, request);
     return right(undefined);
+  }
+
+  async getCountByStatusAndType(
+    status: RequestStatus,
+    type: RequestType,
+  ): Promise<Either<RepositoryException, number>> {
+    const requestsOrError = await this.repository.findByStatusAndType(status, type);
+    if (requestsOrError.isLeft()) {
+      return right(0);
+    }
+    return right(requestsOrError.value.length);
   }
 
   async getCommunityRequestsPending(): Promise<Either<ValidationError, CommunityRequest[]>> {

@@ -5,10 +5,6 @@ import { UserGroupByCountryResponseDto } from './dtos/user-group-by-country.resp
 import { AdminDtoMapper } from './mappers/admin.dto.mapper';
 import { CauseGroupByOdsResponseDto } from './dtos/cause-group-by-ods.response.dto';
 
-/**
- * Controlador API para administración
- * Maneja las peticiones REST del panel de administración
- */
 @Controller('api/metrics')
 export class MetricsApiController {
   constructor(

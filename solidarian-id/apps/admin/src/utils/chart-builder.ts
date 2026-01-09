@@ -4,10 +4,10 @@ import { createLineConfig } from '@charts/line';
 import { createPieConfig } from '@charts/pie';
 import { odsNames } from './data-utils';
 import { SerializableChartConfig } from '@charts/plugins/plugins';
-import { CauseGroupByOdsData } from '../administrator/model/application/services/cause-group-by-ods.data';
-import { UserGroupByCountryData } from '../administrator/model/application/services/user-group-by-country.data';
 import { CommunityRankingUserResponseDto } from '../administrator/model/application/apis/dtos/community-ranking-user.response.dto';
 import { CommunityLastUsersJoinedSummaryResponseDto } from '../administrator/model/application/apis/dtos/community-last-users-joined-summary.response.dto';
+import { UserGroupByCountryResponseDto } from '../administrator/controllers/dtos/user-group-by-country.response.dto';
+import { CauseGroupByOdsResponseDto } from '../administrator/controllers/dtos/cause-group-by-ods.response.dto';
 
 export function createTopCommunitiesPie(
   topCommunitiesByUser: CommunityRankingUserResponseDto[],
@@ -26,7 +26,7 @@ export function createTopCommunitiesPie(
 }
 
 export function createInteractiveNationalitiesDoughnut(
-  nationalitiesData: UserGroupByCountryData[],
+  nationalitiesData: UserGroupByCountryResponseDto[],
 ): SerializableChartConfig {
   const labels = nationalitiesData.map(({ country }) => country);
   const values = nationalitiesData.map(({ userCount }) => userCount);
@@ -42,7 +42,7 @@ export function createInteractiveNationalitiesDoughnut(
   });
 }
 
-export function createOdsByCauseBar(odsByCauseData: CauseGroupByOdsData[]): SerializableChartConfig {
+export function createOdsByCauseBar(odsByCauseData: CauseGroupByOdsResponseDto[]): SerializableChartConfig {
   const labels = odsByCauseData.map(({ ods }) => ods.toString());
   const values = odsByCauseData.map(({ causeCount }) => causeCount);
 

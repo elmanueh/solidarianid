@@ -5,7 +5,7 @@ import { RequestsService } from '@app/admin/administrator/model/domain/services/
 import { Controller, Get, Render } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AdminViewService } from '@app/admin/administrator/model/domain/services/admin-view.service';
-import { DashboardSummary } from '../model/application/services/data/dashboardSummary.data';
+import { DashboardSummary } from '@app/admin/administrator/model/application/services/data/dashboardSummary.data';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)

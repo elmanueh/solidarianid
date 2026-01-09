@@ -4,8 +4,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const ctx = chart => document.getElementById(chart).getContext('2d');
 
-  new Chart(ctx('chart-communities'), ChartsLib.hydrateCallbacks(chartsData.topCommunities));
-  new Chart(ctx('chart-nationalities'), ChartsLib.hydrateCallbacks(chartsData.nationalities));
-  new Chart(ctx('chart-ods'), ChartsLib.hydrateCallbacks(chartsData.ods));
-  new Chart(ctx('chart-joins'), ChartsLib.hydrateCallbacks(chartsData.joins));
+  const createChartIfDataExists = (elementId, chartData) => {
+    const canvas = document.getElementById(elementId);
+
+    if (chartData) {
+      new Chart(ctx(elementId), ChartsLib.hydrateCallbacks(chartData));
+    } else {
+      // Ocultar canvas y mostrar alerta centrada
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'alert alert-error d-flex align-items-center justify-content-center';
+      errorDiv.setAttribute('role', 'alert');
+      errorDiv.innerHTML = `
+        <span class="icon-[mdi--alert]" role="img" aria-hidden="true"></span>
+        <div>Error al recuperar los datos del gráfico</div>
+      `;
+      canvas.parentElement.appendChild(errorDiv);
+    }
+  };
+
+  createChartIfDataExists('chart-communities', chartsData.topCommunities);
+  createChartIfDataExists('chart-nationalities', chartsData.nationalities);
+  createChartIfDataExists('chart-ods', chartsData.ods);
+  createChartIfDataExists('chart-joins', chartsData.joins);
 });

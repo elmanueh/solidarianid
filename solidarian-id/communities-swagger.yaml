@@ -13,6 +13,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/'
+        '500':
+          description: Internal server error
       summary: Retrieve all charitable communities
       tags: &ref_0
         - Communities
@@ -32,9 +34,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommunityDetailResponseDto'
+        '400':
+          description: The provided ID is invalid
         '404':
           description: Community not found
+        '500':
+          description: Internal server error
       summary: Retrieve a charitable community by ID
+      tags: *ref_0
+  /communities/ranking/most-users:
+    get:
+      operationId: CommunitiesController_getCommunitiesOrderByMostUsers
+      parameters:
+        - name: limit
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: List of communities ranked by user count
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/'
+        '400':
+          description: The request parameters are invalid
+        '500':
+          description: Internal server error
+      summary: Retrieve communities ranked by number of users
+      tags: *ref_0
+  /communities/{id}/users-joined:
+    get:
+      operationId: CommunitiesController_getJoinedUsersLastMonths
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: months
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: List of months with the number of users who joined
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/'
+        '400':
+          description: The request parameters are invalid
+        '500':
+          description: Internal server error
+      summary: Retrieve the number of users who joined a community in the last months
       tags: *ref_0
   /causes:
     get:
@@ -71,6 +130,53 @@ paths:
         '404':
           description: Cause not found
       summary: Retrieve a charitable cause by ID
+      tags: *ref_1
+  /communities/{communityId}/causes:
+    get:
+      operationId: CausesController_getCausesByCommunityId
+      parameters:
+        - name: communityId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of causes for the specified community
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/'
+        '404':
+          description: Community not found
+      summary: Retrieve all causes for a specific community
+      tags: *ref_1
+  /communities/{communityId}/causes/{causeId}:
+    get:
+      operationId: CausesController_getCauseByCommunityIdAndCauseId
+      parameters:
+        - name: communityId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: causeId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Details of the specified cause for the specified community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CauseDetailResponseDto'
+        '404':
+          description: Community or Cause not found
+      summary: Retrieve a specific cause for a specific community
       tags: *ref_1
   /actions:
     get:
@@ -507,5 +613,8 @@ components:
         - userId
         - causeId
     UserEvent:
+      type: object
+      properties: {}
+    RequestEvent:
       type: object
       properties: {}

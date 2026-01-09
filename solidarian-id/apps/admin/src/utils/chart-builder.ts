@@ -4,12 +4,16 @@ import { createLineConfig } from '@charts/line';
 import { createPieConfig } from '@charts/pie';
 import { odsNames } from './data-utils';
 import { SerializableChartConfig } from '@charts/plugins/plugins';
+import { CauseGroupByOdsData } from '../administrator/model/application/services/cause-group-by-ods.data';
+import { UserGroupByCountryData } from '../administrator/model/application/services/user-group-by-country.data';
+import { CommunityRankingUserResponseDto } from '../administrator/model/application/apis/dtos/community-ranking-user.response.dto';
+import { CommunityLastUsersJoinedSummaryResponseDto } from '../administrator/model/application/apis/dtos/community-last-users-joined-summary.response.dto';
 
 export function createTopCommunitiesPie(
-  topCommunitiesByUser: Array<[communityName: string, count: number]>,
+  topCommunitiesByUser: CommunityRankingUserResponseDto[],
 ): SerializableChartConfig {
-  const labels = topCommunitiesByUser.map(([communityName]) => communityName);
-  const values = topCommunitiesByUser.map(([, count]) => count);
+  const labels = topCommunitiesByUser.map(({ name }) => name);
+  const values = topCommunitiesByUser.map(({ userCount }) => userCount);
 
   return createPieConfig({
     title: 'Comunidades con más usuarios',
@@ -22,10 +26,10 @@ export function createTopCommunitiesPie(
 }
 
 export function createInteractiveNationalitiesDoughnut(
-  nationalitiesData: Array<[nationality: string, count: number]>,
+  nationalitiesData: UserGroupByCountryData[],
 ): SerializableChartConfig {
-  const labels = nationalitiesData.map(([nationality]) => nationality);
-  const values = nationalitiesData.map(([, count]) => count);
+  const labels = nationalitiesData.map(({ country }) => country);
+  const values = nationalitiesData.map(({ userCount }) => userCount);
 
   return createDoughnutConfig({
     title: 'Nacionalidades más comunes',
@@ -38,9 +42,9 @@ export function createInteractiveNationalitiesDoughnut(
   });
 }
 
-export function createOdsByCauseBar(odsByCauseData: Array<[ods: number, count: number]>): SerializableChartConfig {
-  const labels = odsByCauseData.map(([ods]) => ods.toString());
-  const values = odsByCauseData.map(([, count]) => count);
+export function createOdsByCauseBar(odsByCauseData: CauseGroupByOdsData[]): SerializableChartConfig {
+  const labels = odsByCauseData.map(({ ods }) => ods.toString());
+  const values = odsByCauseData.map(({ causeCount }) => causeCount);
 
   return createBarConfig({
     title: 'Número de causas por ODS',
@@ -59,16 +63,18 @@ export function createOdsByCauseBar(odsByCauseData: Array<[ods: number, count: n
   });
 }
 
-export function createMonthlyJoinsLine(
-  monthlyJoinsData: { label: string; months: string[]; data: number[] }[],
-): SerializableChartConfig {
+export function createMonthlyJoinsLine(data: CommunityLastUsersJoinedSummaryResponseDto[]): SerializableChartConfig {
+  const hasData = data && data.length > 0 && data[0]?.dataRange && data[0].dataRange.length > 0;
+
   return createLineConfig({
     title: 'Comparativa de uniones mensuales',
-    labels: monthlyJoinsData[0].months,
-    series: monthlyJoinsData.map(c => ({
-      label: c.label,
-      values: c.data,
-    })),
+    labels: hasData ? data[0].dataRange.map(({ month }) => month) : [],
+    series: hasData
+      ? data.map(communityData => ({
+          label: communityData.communityName,
+          values: communityData.dataRange.map(({ userCount }) => userCount),
+        }))
+      : [],
     tension: 0.1,
     tooltipCallbacks: {
       label: `(item) => \`Usuarios nuevos: \${item.formattedValue}\``,

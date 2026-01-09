@@ -37,10 +37,12 @@ export interface DashboardChart {
 
   // Line
   monthlyJoinsForCommunity: {
-    label: string;
     months: string[];
-    data: number[];
-  }[];
+    series: {
+      label: string;
+      data: number[];
+    }[];
+  };
 }
 
 export const fakeDashboardSummary: DashboardSummary = {
@@ -90,60 +92,34 @@ export const fakeDashboardData: DashboardChart = {
     ['Penes sin fronteras', 100],
   ],
 
-  monthlyJoinsForCommunity: [
-    {
-      label: 'Salvemos africa',
-      months: [
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-        'January',
-      ],
-      data: [20, 25, 40, 45, 55, 45, 35, 55, 40, 65, 70, 75],
-    },
-    {
-      label: 'NotreDawn',
-      months: [
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-        'January',
-      ],
-      data: [15, 20, 30, 35, 40, 30, 25, 40, 30, 45, 50, 55],
-    },
-    {
-      label: 'Penes sin fronteras',
-      months: [
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-        'January',
-      ],
-      data: [10, 15, 20, 25, 30, 20, 15, 25, 20, 30, 35, 40],
-    },
-  ],
+  monthlyJoinsForCommunity: {
+    months: [
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+      'January',
+    ],
+    series: [
+      {
+        label: 'Salvemos africa',
+        data: [20, 25, 40, 45, 55, 45, 35, 55, 40, 65, 70, 75],
+      },
+      {
+        label: 'NotreDawn',
+        data: [15, 20, 30, 35, 40, 30, 25, 40, 30, 45, 50, 55],
+      },
+      {
+        label: 'Penes sin fronteras',
+        data: [10, 15, 20, 25, 30, 20, 15, 25, 20, 30, 35, 40],
+      },
+    ],
+  },
 };

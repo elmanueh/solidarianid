@@ -1,12 +1,11 @@
 import { ActionRequestResponseDto } from '@app/admin/administrator/controllers/dtos/action-request.response.dto';
 import { CauseRequestResponseDto } from '@app/admin/administrator/controllers/dtos/cause-request.response.dto';
 import { CommunityRequestResponseDto } from '@app/admin/administrator/controllers/dtos/community-request.response.dto';
-import {
-  DashboardSummary,
-  fakeDashboardData,
-  fakeDashboardSummary,
-} from '@app/admin/administrator/model/data/fakeMetrics';
+import { DashboardSummary, fakeDashboardSummary } from '@app/admin/administrator/model/data/fakeMetrics';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
+import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
+import { CommunitiesApiService } from '@app/admin/administrator/model/domain/apis/communities.service';
+import { AdminDtoMapper } from '@app/admin/administrator/controllers/mappers/admin.dto.mapper';
 import {
   createInteractiveNationalitiesDoughnut,
   createMonthlyJoinsLine,
@@ -25,27 +24,60 @@ export class AdminViewController {
   constructor(
     private readonly configService: ConfigService,
     private readonly requestsService: RequestsService,
+    private readonly usersService: UsersService,
+    private readonly communitiesApiService: CommunitiesApiService,
+    private readonly adminMapper: AdminDtoMapper,
   ) {}
 
   @Get('/dashboard')
   @Render('pages/metrics')
-  dashboard(): {
+  async dashboard(): Promise<{
     title: string;
     layout: string;
     dataSummary: DashboardSummary;
     charts: string;
     apiBaseUrl?: string;
-  } {
+  }> {
     const dataSummary = fakeDashboardSummary;
-    const dataChart = fakeDashboardData;
+
+    const [causesResult, usersResult, communitiesResult] = await Promise.allSettled([
+      this.requestsService.getCausesGroupByOds(),
+      this.usersService.getUsersGroupByCountry(6),
+      this.communitiesApiService.getCommunitiesOrderByMostUsers(5),
+    ]);
+
+    const odsByCauseData = causesResult.status === 'fulfilled' ? causesResult.value : undefined;
+    const nationalitiesData = usersResult.status === 'fulfilled' ? usersResult.value : undefined;
+    const topCommunitiesData = communitiesResult.status === 'fulfilled' ? communitiesResult.value : undefined;
+
+    const topThreeCommunityIds = topCommunitiesData?.isRight()
+      ? topCommunitiesData.value.slice(0, 3).map(community => community.id)
+      : [];
+
+    const monthlyJoinsResults = await Promise.allSettled(
+      topThreeCommunityIds.map(id => this.communitiesApiService.getJoinedUsersLastMonths(id)),
+    );
+
+    console.log('Monthly Joins Results:', monthlyJoinsResults);
+
+    const monthlyJoinsData = monthlyJoinsResults
+      .filter(result => result.status === 'fulfilled')
+      .map(result => result.value)
+      .filter(either => either.isRight())
+      .map(either => either.value);
+
+    console.log('Monthly Joins Data:', monthlyJoinsData);
 
     const charts = {
-      ods: createOdsByCauseBar(dataChart.odsByCause),
-      nationalities: createInteractiveNationalitiesDoughnut(dataChart.interactiveNationalities),
-      topCommunities: createTopCommunitiesPie(dataChart.topCommunitiesByUsers),
-      joins: createMonthlyJoinsLine(dataChart.monthlyJoinsForCommunity),
+      ods: odsByCauseData?.isRight() ? createOdsByCauseBar(odsByCauseData.value) : undefined,
+      nationalities: nationalitiesData?.isRight()
+        ? createInteractiveNationalitiesDoughnut(nationalitiesData.value)
+        : undefined,
+      topCommunities: topCommunitiesData?.isRight() ? createTopCommunitiesPie(topCommunitiesData.value) : undefined,
+      joins: createMonthlyJoinsLine(monthlyJoinsData),
     };
 
+    console.log('Charts:', charts);
     return {
       title: 'Dashboard',
       layout: 'dashboard',

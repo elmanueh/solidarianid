@@ -1,4 +1,4 @@
-import { ActionRequestResponseDto } from '@app/admin/administrator/model/application/dtos/output/action-request.response.dto';
+import { ActionRequestResponseDto } from '@app/admin/administrator/controllers/dtos/action-request.response.dto';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
 

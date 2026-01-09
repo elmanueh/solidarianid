@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { RequestConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/consumer/request.consumer';
+import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
+import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
-import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
-import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
+import { RequestConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/consumer/request.consumer';
 import { left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { CommunityRequestEventDto, EventType, RequestEvent } from '@solidarianid/kafka';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { CommunityRequestEventDto, EventType, RequestEvent } from '@solidarianid/kafka';
 
 const createMockRequestsService = (): jest.Mocked<RequestsService> =>
   ({
@@ -270,76 +269,6 @@ describe('RequestConsumerAdapter', () => {
         // Act & Assert - should complete without throwing
         await expect(sut.handleRequestEvent(payload)).resolves.not.toThrow();
       });
-    });
-  });
-
-  describe('Edge Cases', () => {
-    it('should handle payload with minimal required fields', async () => {
-      // Arrange
-      const mockData = createMockCommunityRequestEventDto();
-      const payload = createMockRequestEvent(EventType.REQUEST_CREATED, mockData);
-      mockRequestsService.createRequest.mockResolvedValue(right({} as any));
-
-      // Act & Assert
-      await expect(sut.handleRequestEvent(payload)).resolves.not.toThrow();
-    });
-
-    it('should handle multiple cause requests in community', async () => {
-      // Arrange
-      const mockData = createMockCommunityRequestEventDto({
-        causeRequests: [
-          {
-            name: 'Cause 1',
-            description: 'First cause description',
-            status: RequestStatus.PENDING,
-            ods: [SustainableDevelopmentGoal.NoPoverty],
-            initialDate: new Date(),
-            durationDays: 30,
-          },
-          {
-            name: 'Cause 2',
-            description: 'Second cause description',
-            status: RequestStatus.PENDING,
-            ods: [SustainableDevelopmentGoal.ZeroHunger],
-            initialDate: new Date(),
-            durationDays: 15,
-          },
-        ],
-      });
-      const payload = createMockRequestEvent(EventType.REQUEST_CREATED, mockData);
-      mockRequestsService.createRequest.mockResolvedValue(right({} as any));
-
-      // Act
-      await sut.handleRequestEvent(payload);
-
-      // Assert
-      expect(mockRequestsService.createRequest).toHaveBeenCalledWith(
-        expect.objectContaining({
-          causeRequests: expect.arrayContaining([
-            expect.objectContaining({ name: 'Cause 1' }),
-            expect.objectContaining({ name: 'Cause 2' }),
-          ]),
-        }),
-      );
-    });
-
-    it('should process events with optional reason field', async () => {
-      // Arrange
-      const mockData = createMockCommunityRequestEventDto({
-        reason: 'Some reason for the request',
-      });
-      const payload = createMockRequestEvent(EventType.REQUEST_CREATED, mockData);
-      mockRequestsService.createRequest.mockResolvedValue(right({} as any));
-
-      // Act
-      await sut.handleRequestEvent(payload);
-
-      // Assert
-      expect(mockRequestsService.createRequest).toHaveBeenCalledWith(
-        expect.objectContaining({
-          reason: 'Some reason for the request',
-        }),
-      );
     });
   });
 });

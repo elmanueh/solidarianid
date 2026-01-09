@@ -3,6 +3,7 @@ import { ConflictErrorFilter } from '@app/admin/administrator/controllers/filter
 import { HttpExceptionFilter } from '@app/admin/administrator/controllers/filters/http-exception.filter';
 import { InternalServerErrorFilter } from '@app/admin/administrator/controllers/filters/internal-server-error.filter';
 import { NotFoundErrorFilter } from '@app/admin/administrator/controllers/filters/not-found-error.filter';
+import { RepositoryExceptionFilter } from '@app/admin/administrator/controllers/filters/repository-exception.filter';
 import { ValidationErrorFilter } from '@app/admin/administrator/controllers/filters/validation-error.filter';
 import { AppModule } from '@app/admin/app.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
@@ -73,11 +74,12 @@ async function bootstrap() {
   // Configurar filtros globales de excepciones
   app.useGlobalFilters(
     new HttpExceptionFilter(),
-    new InternalServerErrorFilter(),
-    new ValidationErrorFilter(),
     new NotFoundErrorFilter(),
+    new RepositoryExceptionFilter(),
+    new ValidationErrorFilter(),
     new ConflictErrorFilter(),
     new AuthenticationErrorFilter(),
+    new InternalServerErrorFilter(),
     new GlobalExceptionFilter(),
   );
 

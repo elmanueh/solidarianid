@@ -1,4 +1,4 @@
-import { CauseRequestResponseDto } from '@app/admin/administrator/model/application/dtos/output/cause-request.response.dto';
+import { CauseRequestResponseDto } from '@app/admin/administrator/controllers/dtos/cause-request.response.dto';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
 

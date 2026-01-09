@@ -1,9 +1,11 @@
+import { UserDetailResponseDto } from '@app/admin/administrator/controllers/dtos/user-detail.response.dto';
 import { UserDtoMapper } from '@app/admin/administrator/controllers/mappers/user.dto.mapper';
-import { UserDetailResponseDto } from '@app/admin/administrator/model/application/dtos/output/user-detail.response.dto';
-import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
+import {
+  UserPdfGeneratorPort,
+  type UserReportPdfCommand,
+} from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
 import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import type { CommunityMembership } from '@app/admin/administrator/model/domain/value-objects/community-membership';
-import type { UserReportPdfDto } from '@app/admin/administrator/model/infrastructure/report/user-report-pdf.dto';
 import { Controller, Get, HttpStatus, Param, Res } from '@nestjs/common';
 import type { Response } from 'express';
 
@@ -27,22 +29,15 @@ export class ReportsApiController {
    * GET /api/reports/users/:id
    */
   @Get('/users/:id')
-  async getUserDetail(@Param('id') id: string, @Res() response: Response = {} as Response): Promise<Response> {
+  async getUserDetail(@Param('id') id: string): Promise<UserDetailResponseDto> {
     const result = await this.userService.getUserById(id);
 
     if (result.isLeft()) {
-      const error = result.value;
-      return response.status(HttpStatus.NOT_FOUND).json({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: error.message,
-        timestamp: new Date().toISOString(),
-      });
+      throw result.value;
     }
 
     const user = result.value;
-    const userDetailDto: UserDetailResponseDto = UserDtoMapper.toDetailDto(user);
-
-    return response.status(HttpStatus.OK).json(userDetailDto);
+    return UserDtoMapper.toDetailDto(user);
   }
 
   /**
@@ -65,26 +60,14 @@ export class ReportsApiController {
 
     const user = result.value;
 
-    // Mapear a nombres de país
-    const countryNames: Record<string, string> = {
-      ES: 'España',
-      MX: 'México',
-      AR: 'Argentina',
-      CO: 'Colombia',
-      CL: 'Chile',
-      PE: 'Perú',
-      EC: 'Ecuador',
-    };
-
     // Preparar datos para el PDF
-    const pdfData: UserReportPdfDto = {
+    const pdfData: UserReportPdfCommand = {
       id: user.id.value,
       fullName: user.fullName,
       username: user.username,
       phone: user.phone,
       city: user.city,
       countryCode: user.countryCode,
-      countryName: countryNames[user.countryCode] || user.countryCode,
       communities: user.communityMemberships.map((membership: CommunityMembership) => ({
         id: membership.communityId,
         name: membership.communityName,
@@ -93,24 +76,22 @@ export class ReportsApiController {
       generatedAt: new Date(),
     };
 
-    try {
-      // Generar PDF
-      const pdfStream = await this.pdfGenerator.generate(pdfData);
+    // Generar PDF
+    const pdfResult = this.pdfGenerator.generate(pdfData);
 
-      // Configurar headers de respuesta
-      response.setHeader('Content-Type', 'application/pdf');
-      response.setHeader('Content-Disposition', `attachment; filename="reporte-${user.username}-${Date.now()}.pdf"`);
-
-      // Pipe el stream al response
-      pdfStream.pipe(response);
-
-      return response;
-    } catch {
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: 'Error generating PDF report',
-        timestamp: new Date().toISOString(),
-      });
+    if (pdfResult.isLeft()) {
+      throw pdfResult.value;
     }
+
+    const pdfStream = pdfResult.value;
+
+    // Configurar headers de respuesta
+    response.setHeader('Content-Type', 'application/pdf');
+    response.setHeader('Content-Disposition', `attachment; filename="reporte-${user.username}-${Date.now()}.pdf"`);
+
+    // Pipe el stream al response
+    pdfStream.pipe(response);
+
+    return response;
   }
 }

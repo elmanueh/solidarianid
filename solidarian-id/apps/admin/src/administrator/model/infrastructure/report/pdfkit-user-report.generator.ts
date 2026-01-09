@@ -1,5 +1,9 @@
-import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
-import { UserReportPdfDto } from '@app/admin/administrator/model/infrastructure/report/user-report-pdf.dto';
+import { PdfGenerationException } from '@app/admin/administrator/model/domain/errors/pdf-generation.exception';
+import {
+  UserPdfGeneratorPort,
+  UserReportPdfCommand,
+} from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
+import { Either, left, right } from '@app/ddd/either';
 import { colors } from '@frontend/design-tokens/colors';
 import { Injectable } from '@nestjs/common';
 import { join } from 'node:path';
@@ -31,60 +35,58 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
    * Implementación del contrato UserPdfGeneratorPort
    *
    * @param data Datos del usuario para el reporte
-   * @returns Stream del PDF generado
-   * @throws Error si la generación falla
+   * @returns Either con error o stream del PDF generado
    */
-  async generate(data: UserReportPdfDto): Promise<Readable> {
-    return new Promise((resolve, reject) => {
-      try {
-        // Crear nuevo documento PDF
-        const doc = new PDFDocument({
-          size: 'A4',
-          margins: {
-            top: 50,
-            bottom: 50,
-            left: 50,
-            right: 50,
-          },
-          info: {
-            Title: `Reporte de Usuario - ${data.username}`,
-            Author: 'SolidarianID',
-            Subject: 'Reporte de Usuario',
-            Keywords: 'reporte, usuario, voluntarios',
-            CreationDate: data.generatedAt,
-          },
-        });
+  generate(data: UserReportPdfCommand): Either<PdfGenerationException, Readable> {
+    try {
+      // Crear nuevo documento PDF
+      const doc = new PDFDocument({
+        size: 'A4',
+        margins: {
+          top: 50,
+          bottom: 50,
+          left: 50,
+          right: 50,
+        },
+        info: {
+          Title: `Reporte de Usuario - ${data.username}`,
+          Author: 'SolidarianID',
+          Subject: 'Reporte de Usuario',
+          Keywords: 'reporte, usuario, voluntarios',
+          CreationDate: data.generatedAt,
+        },
+      });
 
-        // Header del documento
-        this.renderHeader(doc, data);
+      // Header del documento
+      this.renderHeader(doc, data);
 
-        // Información personal
-        this.renderPersonalInfo(doc, data);
+      // Información personal
+      this.renderPersonalInfo(doc, data);
 
-        // Ubicación
-        this.renderLocation(doc, data);
+      // Ubicación
+      this.renderLocation(doc, data);
 
-        // Comunidades
-        this.renderCommunities(doc, data);
+      // Comunidades
+      this.renderCommunities(doc, data);
 
-        // Footer
-        this.renderFooter(doc, data);
+      // Footer
+      this.renderFooter(doc, data);
 
-        // Finalizar el documento
-        doc.end();
+      // Finalizar el documento
+      doc.end();
 
-        // Resolver con el stream
-        resolve(doc as unknown as Readable);
-      } catch (error) {
-        reject(error instanceof Error ? error : new Error('Error generating PDF document'));
-      }
-    });
+      // Retornar éxito con el stream
+      return right(doc as unknown as Readable);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error generating PDF document';
+      return left(new PdfGenerationException(`Failed to generate PDF report: ${errorMessage}`, error));
+    }
   }
 
   /**
    * Renderiza el header del documento
    */
-  private renderHeader(doc: PDFDoc, data: UserReportPdfDto): void {
+  private renderHeader(doc: PDFDoc, data: UserReportPdfCommand): void {
     // Logo en la esquina superior derecha
     try {
       doc.image(this.logoPath, 490, 45, { width: 60 });
@@ -125,7 +127,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
   /**
    * Renderiza la sección de información personal
    */
-  private renderPersonalInfo(doc: PDFDoc, data: UserReportPdfDto): void {
+  private renderPersonalInfo(doc: PDFDoc, data: UserReportPdfCommand): void {
     const startY = 170;
 
     // Título de sección
@@ -151,7 +153,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
   /**
    * Renderiza la sección de ubicación
    */
-  private renderLocation(doc: PDFDoc, data: UserReportPdfDto): void {
+  private renderLocation(doc: PDFDoc, data: UserReportPdfCommand): void {
     const startY = doc.y;
 
     // Título de sección
@@ -163,7 +165,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     this.renderField(doc, 'Ciudad', data.city, currentY);
     currentY += 30; // Espacio entre bloques
 
-    this.renderField(doc, 'País', `${data.countryName} (${data.countryCode})`, currentY);
+    this.renderField(doc, 'País', `(${data.countryCode})`, currentY);
 
     doc.moveDown(2);
   }
@@ -171,7 +173,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
   /**
    * Renderiza la sección de comunidades
    */
-  private renderCommunities(doc: PDFDoc, data: UserReportPdfDto): void {
+  private renderCommunities(doc: PDFDoc, data: UserReportPdfCommand): void {
     const startY = doc.y;
 
     // Título de sección
@@ -235,7 +237,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
   /**
    * Renderiza el footer del documento
    */
-  private renderFooter(doc: PDFDoc, data: UserReportPdfDto): void {
+  private renderFooter(doc: PDFDoc, data: UserReportPdfCommand): void {
     const bottomY = 792 - 50; // A4 height - margin
 
     // Mover al final de la página

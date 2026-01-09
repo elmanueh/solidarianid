@@ -1,20 +1,20 @@
-import { Controller, Get, Render } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
-import { CommunityRequestResponseDto } from '@app/admin/administrator/model/application/dtos/output/community-request.response.dto';
-import { ActionRequestResponseDto } from '@app/admin/administrator/model/application/dtos/output/action-request.response.dto';
-import { CauseRequestResponseDto } from '@app/admin/administrator/model/application/dtos/output/cause-request.response.dto';
+import { ActionRequestResponseDto } from '@app/admin/administrator/controllers/dtos/action-request.response.dto';
+import { CauseRequestResponseDto } from '@app/admin/administrator/controllers/dtos/cause-request.response.dto';
+import { CommunityRequestResponseDto } from '@app/admin/administrator/controllers/dtos/community-request.response.dto';
 import {
   DashboardSummary,
   fakeDashboardData,
   fakeDashboardSummary,
 } from '@app/admin/administrator/model/data/fakeMetrics';
+import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import {
   createInteractiveNationalitiesDoughnut,
   createMonthlyJoinsLine,
   createOdsByCauseBar,
   createTopCommunitiesPie,
 } from '@app/admin/utils/chart-builder';
+import { Controller, Get, Render } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)

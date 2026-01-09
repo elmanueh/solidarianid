@@ -1,6 +1,6 @@
 import { CommunityLastUsersJoinedData } from '@app/communities/application/services/community-last-users-joined.data';
 import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query-repository-port';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
 import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
 import { CommunityUserEntity } from '@app/communities/infrastructure/persistence/entities/community-user.entity';
@@ -17,11 +17,11 @@ import { CommunityEntityMapper } from '@app/communities/infrastructure/persisten
 import { EventEntityMapper } from '@app/communities/infrastructure/persistence/mappers/event-entity.mapper';
 import { ObjectiveEntityMapper } from '@app/communities/infrastructure/persistence/mappers/objetive-entity.mapper';
 import { UserEntityMapper } from '@app/communities/infrastructure/persistence/mappers/user-entity.mapper';
-import { CommunitiesQueryTypeOrmRepositoryAdapter } from '@app/communities/infrastructure/persistence/repositories/communities-query-typeorm-repository';
+import { CommunitiesQueryTypeOrmRepositoryAdapter } from '@app/communities/infrastructure/persistence/repositories/communities-query-typeorm.repository';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { COMMUNITY_IDS, PostgreSQLSeeder, PostgreSQLTestContainer, PostgreSQLTestModule } from '@solidarianid/testing';
+import { COMMUNITY_IDS, PostgreSQLSeeder, PostgreSQLTestModule, TestContainerLifecycle } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
 describe('RequestsRepositoryTypeOrmAdapter (e2e)', () => {
@@ -81,7 +81,7 @@ describe('RequestsRepositoryTypeOrmAdapter (e2e)', () => {
 
   afterAll(async () => {
     if (app) await app.close();
-    await PostgreSQLTestContainer.getInstance().stop();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   beforeEach(async () => {

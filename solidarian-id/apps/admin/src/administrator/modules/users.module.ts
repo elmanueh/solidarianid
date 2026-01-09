@@ -11,6 +11,8 @@ import { UserRepositoryMongoose } from '@app/admin/administrator/model/infrastru
 import { PdfKitUserReportGenerator } from '@app/admin/administrator/model/infrastructure/report/pdfkit-user-report.generator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UserQueryRepositoryPort } from '../model/domain/ports/output/user-query.repository.port';
+import { UserQueryMongooseRepository } from '../model/infrastructure/persistence/repositories/user-query.repository-mongoose';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }])],
@@ -24,6 +26,10 @@ import { MongooseModule } from '@nestjs/mongoose';
     {
       provide: UserRepositoryPort,
       useClass: UserRepositoryMongoose,
+    },
+    {
+      provide: UserQueryRepositoryPort,
+      useClass: UserQueryMongooseRepository,
     },
     {
       provide: UserPdfGeneratorPort,

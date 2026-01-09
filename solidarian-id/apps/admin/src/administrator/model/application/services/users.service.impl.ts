@@ -4,6 +4,8 @@ import { UsersService } from '../../domain/services/users.service';
 import { User } from '../../domain/models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserRepositoryPort, PaginatedResult } from '../../domain/ports/output/user.repository.port';
+import { UserQueryRepositoryPort } from '../../domain/ports/output/user-query.repository.port';
+import { UserGroupByCountryData } from './user-group-by-country.data';
 
 /**
  * Implementación del servicio de usuarios
@@ -11,7 +13,10 @@ import { UserRepositoryPort, PaginatedResult } from '../../domain/ports/output/u
  */
 @Injectable()
 export class UsersServiceImpl extends UsersService {
-  constructor(private readonly userRepository: UserRepositoryPort) {
+  constructor(
+    private readonly userRepository: UserRepositoryPort,
+    private readonly userQueryRepository: UserQueryRepositoryPort,
+  ) {
     super();
   }
 
@@ -34,5 +39,9 @@ export class UsersServiceImpl extends UsersService {
    */
   async getTotalUsers(): Promise<Either<RepositoryException, number>> {
     return await this.userRepository.countAll();
+  }
+
+  async getUsersGroupByCountry(limit: number): Promise<Either<RepositoryException, UserGroupByCountryData[]>> {
+    return await this.userQueryRepository.findUsersGroupByCountry(limit);
   }
 }

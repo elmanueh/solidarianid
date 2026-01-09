@@ -28,8 +28,8 @@ export class AdminViewController {
     charts: string;
     apiBaseUrl?: string;
   }> {
-    const chartsJson: string = await this.adminService.buildDashboardViewModel();
-    const dataSummary: DashboardSummary = await this.adminService.buildDashboardSummaryViewModel();
+    const chartsJson = await this.adminService.buildDashboardViewModel();
+    const dataSummary = await this.adminService.buildDashboardSummaryViewModel();
     return {
       title: 'Dashboard',
       layout: 'dashboard',

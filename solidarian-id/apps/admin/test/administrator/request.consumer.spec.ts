@@ -19,6 +19,7 @@ const createMockRequestsService = (): jest.Mocked<RequestsService> =>
     getCauseRequestsPending: jest.fn(),
     getActionRequestsPending: jest.fn(),
     getCausesGroupByOds: jest.fn(),
+    getCountByStatusAndType: jest.fn(),
   }) as jest.Mocked<RequestsService>;
 
 const createMockCommunityRequestEventDto = (

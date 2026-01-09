@@ -24,6 +24,7 @@ const createMockRequestsRepository = (): jest.Mocked<RequestsRepositoryPort> => 
   findPendingCommunityRequests: jest.fn(),
   findPendingCauseRequests: jest.fn(),
   findPendingActionRequests: jest.fn(),
+  findByStatusAndType: jest.fn(),
 });
 
 const createMockCommunityRequestEventDto = (

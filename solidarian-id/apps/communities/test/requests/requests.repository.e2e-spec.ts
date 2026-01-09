@@ -12,9 +12,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   PostgreSQLSeeder,
   PostgreSQLTestModule,
-  REQUEST_IDS,
+  PG_REQUEST_IDS as REQUEST_IDS,
   TestContainerLifecycle,
-  USER_IDS,
+  PG_USER_IDS as USER_IDS,
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';

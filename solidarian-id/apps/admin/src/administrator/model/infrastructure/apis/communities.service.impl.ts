@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { CommunitiesApiService } from '../../domain/apis/communities.service';
-import { CommunityRankingUserResponseDto } from '../../application/apis/dtos/community-ranking-user.response.dto';
+import { CommunitiesApiPort } from '../../domain/ports/output/communities.api.port';
+import { CommunityRankingUserResponseDto } from './dtos/community-ranking-user.response.dto';
 import { CommunityLastUsersJoinedSummaryResponseDto } from './dtos/community-last-users-joined-summary.response.dto';
 
 @Injectable()
-export class CommunitiesApiServiceImpl extends CommunitiesApiService {
+export class CommunitiesApiServiceImpl extends CommunitiesApiPort {
   private readonly communitiesApiUrl: string;
 
   constructor(private readonly configService: ConfigService) {

@@ -4,8 +4,8 @@ import { createLineConfig } from '@charts/line';
 import { createPieConfig } from '@charts/pie';
 import { odsNames } from './data-utils';
 import { SerializableChartConfig } from '@charts/plugins/plugins';
-import { CommunityRankingUserResponseDto } from '../administrator/model/application/apis/dtos/community-ranking-user.response.dto';
-import { CommunityLastUsersJoinedSummaryResponseDto } from '../administrator/model/application/apis/dtos/community-last-users-joined-summary.response.dto';
+import { CommunityRankingUserResponseDto } from '../administrator/model/infrastructure/apis/dtos/community-ranking-user.response.dto';
+import { CommunityLastUsersJoinedSummaryResponseDto } from '../administrator/model/infrastructure/apis/dtos/community-last-users-joined-summary.response.dto';
 import { UserGroupByCountryResponseDto } from '../administrator/controllers/dtos/user-group-by-country.response.dto';
 import { CauseGroupByOdsResponseDto } from '../administrator/controllers/dtos/cause-group-by-ods.response.dto';
 

@@ -21,7 +21,12 @@ import { CommunitiesQueryTypeOrmRepositoryAdapter } from '@app/communities/infra
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { COMMUNITY_IDS, PostgreSQLSeeder, PostgreSQLTestModule, TestContainerLifecycle } from '@solidarianid/testing';
+import {
+  PG_COMMUNITY_IDS as COMMUNITY_IDS,
+  PostgreSQLSeeder,
+  PostgreSQLTestModule,
+  TestContainerLifecycle,
+} from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
 describe('RequestsRepositoryTypeOrmAdapter (e2e)', () => {

@@ -1,6 +1,6 @@
 import { AdminDtoMapper } from '@app/admin/administrator/controllers/mappers/admin.dto.mapper';
 import { Injectable } from '@nestjs/common';
-import { CommunitiesApiService } from '../../domain/apis/communities.service';
+import { CommunitiesApiPort } from '../../domain/ports/output/communities.api.port';
 import { RequestsService } from '../../domain/services/requests.service';
 import { UsersService } from '../../domain/services/users.service';
 import { Either, fulfilledValue } from '@app/ddd/either';
@@ -14,8 +14,8 @@ import { DashboardSummary } from './data/dashboardSummary.data';
 import { AdminViewService } from '../../domain/services/admin-view.service';
 import { CauseGroupByOdsData } from './data/cause-group-by-ods.data';
 import { UserGroupByCountryData } from './data/user-group-by-country.data';
-import { CommunityRankingUserResponseDto } from '../apis/dtos/community-ranking-user.response.dto';
-import { CommunityLastUsersJoinedSummaryResponseDto } from '../apis/dtos/community-last-users-joined-summary.response.dto';
+import { CommunityRankingUserResponseDto } from '../../infrastructure/apis/dtos/community-ranking-user.response.dto';
+import { CommunityLastUsersJoinedSummaryResponseDto } from '../../infrastructure/apis/dtos/community-last-users-joined-summary.response.dto';
 import { RequestStatus } from '../../domain/enums/request-status';
 import { RequestType } from '../../domain/enums/request-type';
 
@@ -25,7 +25,7 @@ export class AdminViewServiceImpl implements AdminViewService {
     private readonly requestsService: RequestsService,
     private readonly usersService: UsersService,
     private readonly adminMapper: AdminDtoMapper,
-    private readonly communitiesApiService: CommunitiesApiService,
+    private readonly communitiesApiService: CommunitiesApiPort,
   ) {}
 
   async buildDashboardViewModel(): Promise<string> {

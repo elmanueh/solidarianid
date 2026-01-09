@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CommunitiesApiService } from '@app/admin/administrator/model/domain/apis/communities.service';
-import { CommunitiesApiServiceImpl } from '@app/admin/administrator/model/application/apis/communities.service.impl';
+import { CommunitiesApiPort } from '@app/admin/administrator/model/domain/ports/output/communities.api.port';
+import { CommunitiesApiServiceImpl } from '@app/admin/administrator/model/infrastructure/apis/communities.service.impl';
 
 /**
  * Módulo que gestiona la comunicación con el microservicio de Communities vía API
@@ -8,10 +8,10 @@ import { CommunitiesApiServiceImpl } from '@app/admin/administrator/model/applic
 @Module({
   providers: [
     {
-      provide: CommunitiesApiService,
+      provide: CommunitiesApiPort,
       useClass: CommunitiesApiServiceImpl,
     },
   ],
-  exports: [CommunitiesApiService],
+  exports: [CommunitiesApiPort],
 })
 export class CommunitiesModule {}

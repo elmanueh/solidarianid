@@ -3,9 +3,9 @@ import {
   TestServerHelper,
   PostgreSQLSeeder,
   KafkaTestModule,
-  USER_IDS,
-  COMMUNITY_IDS,
-  CAUSE_IDS,
+  PG_USER_IDS as USER_IDS,
+  PG_COMMUNITY_IDS as COMMUNITY_IDS,
+  PG_CAUSE_IDS as CAUSE_IDS,
   TestContainerLifecycle,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';

@@ -2,10 +2,10 @@ import {
   PostgreSQLTestModule,
   TestServerHelper,
   PostgreSQLSeeder,
-  CAUSE_IDS,
+  PG_CAUSE_IDS as CAUSE_IDS,
   KafkaTestModule,
   TestContainerLifecycle,
-  COMMUNITY_IDS,
+  PG_COMMUNITY_IDS as COMMUNITY_IDS,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';

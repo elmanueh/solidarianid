@@ -8,7 +8,7 @@ import { UserEntity, UserSchema } from '@app/admin/administrator/model/infrastru
 import { MongoDBTestModule, MongoDBSeeder } from '@solidarianid/testing';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Connection } from 'mongoose';
-import { UserGroupByCountryData } from '@app/admin/administrator/model/application/data/user-group-by-country.data';
+import { UserGroupByCountryData } from '@app/admin/administrator/model/application/services/data/user-group-by-country.data';
 
 describe('UserQueryMongooseRepository (e2e)', () => {
   let app: INestApplication;

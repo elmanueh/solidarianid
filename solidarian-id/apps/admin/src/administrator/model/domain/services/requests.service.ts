@@ -7,7 +7,7 @@ import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RequestEventDto } from '@solidarianid/kafka';
-import { CauseGroupByOdsData } from '../../application/data/cause-group-by-ods.data';
+import { CauseGroupByOdsData } from '../../application/services/data/cause-group-by-ods.data';
 import { RequestType } from '../enums/request-type';
 
 export abstract class RequestsService {

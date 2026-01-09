@@ -21,7 +21,7 @@ import { CommunityRequest } from '@app/admin/administrator/model/domain/models/c
 import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
 import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
 import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
-import { CauseGroupByOdsData } from '../data/cause-group-by-ods.data';
+import { CauseGroupByOdsData } from './data/cause-group-by-ods.data';
 import { RequestsQueryRepositoryPort } from '../../domain/ports/output/request-query.repository.port';
 
 @Injectable()

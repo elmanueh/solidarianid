@@ -1,7 +1,7 @@
 import { Either, left, right } from '@app/ddd/either';
 import { UserQueryRepositoryPort } from '../../../domain/ports/output/user-query.repository.port';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { UserGroupByCountryData } from '../../../application/data/user-group-by-country.data';
+import { UserGroupByCountryData } from '../../../application/services/data/user-group-by-country.data';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';

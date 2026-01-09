@@ -10,12 +10,14 @@ import {
   createOdsByCauseBar,
   createTopCommunitiesPie,
 } from '@app/admin/utils/chart-builder';
-import { DashboardSummary, fakeDashboardSummary } from '../../data/fakeMetrics';
+import { DashboardSummary } from './data/dashboardSummary.data';
 import { AdminViewService } from '../../domain/services/admin.service';
-import { CauseGroupByOdsData } from './cause-group-by-ods.data';
-import { UserGroupByCountryData } from './user-group-by-country.data';
+import { CauseGroupByOdsData } from './data/cause-group-by-ods.data';
+import { UserGroupByCountryData } from './data/user-group-by-country.data';
 import { CommunityRankingUserResponseDto } from '../apis/dtos/community-ranking-user.response.dto';
 import { CommunityLastUsersJoinedSummaryResponseDto } from '../apis/dtos/community-last-users-joined-summary.response.dto';
+import { RequestStatus } from '../../domain/enums/request-status';
+import { RequestType } from '../../domain/enums/request-type';
 
 @Injectable()
 export class AdminViewServiceImpl implements AdminViewService {
@@ -26,61 +28,13 @@ export class AdminViewServiceImpl implements AdminViewService {
     private readonly communitiesApiService: CommunitiesApiService,
   ) {}
 
-  /*async buildDashboardViewModel() {
-    const [causesSettled, usersSettled, communitiesSettled] = await Promise.allSettled([
-      this.requestsService.getCausesGroupByOds(),
-      this.usersService.getUsersGroupByCountry(6),
-      this.communitiesApiService.getCommunitiesOrderByMostUsers(5),
-    ]);
-
-    const causesEither = fulfilledValue(causesSettled);
-    const usersEither = fulfilledValue(usersSettled);
-    const communitiesEither = fulfilledValue(communitiesSettled);
-
-    const topThreeIds = communitiesEither?.isRight() ? communitiesEither.value.slice(0, 3).map(c => c.id) : [];
-
-    const monthlyJoinsSettled = await Promise.allSettled(
-      topThreeIds.map(id => this.communitiesApiService.getJoinedUsersLastMonths(id)),
-    );
-
-    const monthlyJoinsData = monthlyJoinsSettled
-      .map(fulfilledValue)
-      .filter((v): v is NonNullable<typeof v> => !!v)
-      .filter(either => either.isRight())
-      .map(either => either.value);
-
-    const charts = {
-      ods: causesEither?.isRight()
-        ? createOdsByCauseBar(causesEither.value.map(d => this.adminMapper.toCauseGroupByOdsResponseDto(d)))
-        : undefined,
-
-      nationalities: usersEither?.isRight()
-        ? createInteractiveNationalitiesDoughnut(
-            usersEither.value.map(d => this.adminMapper.toUserGroupByCountryResponseDto(d)),
-          )
-        : undefined,
-
-      topCommunities: communitiesEither?.isRight() ? createTopCommunitiesPie(communitiesEither.value) : undefined,
-
-      joins: createMonthlyJoinsLine(monthlyJoinsData),
-    };
-
-    return {
-      dataSummary: fakeDashboardSummary,
-      chartsJson: JSON.stringify(charts),
-    };
-  }*/
   async buildDashboardViewModel(): Promise<string> {
     const [causesEither, usersEither, communitiesEither] = await this.loadMainDashboardData();
 
     const topThreeIds = this.topIdsFromEither(communitiesEither, 3, c => c.id);
     const monthlyJoinsData = await this.loadMonthlyJoins(topThreeIds, communitiesEither);
 
-    console.log('Top Three IDs:', topThreeIds);
-    console.log('Monthly Joins Data:', monthlyJoinsData);
-
     const joinsChart = monthlyJoinsData === null ? undefined : createMonthlyJoinsLine(monthlyJoinsData);
-    console.log('Joins Chart:', joinsChart);
 
     const charts = {
       ods: this.buildOdsChart(causesEither),
@@ -92,10 +46,15 @@ export class AdminViewServiceImpl implements AdminViewService {
     return JSON.stringify(charts);
   }
 
-  buildDashboardSummaryViewModel(): Promise<{ dataSummary: DashboardSummary }> {
-    return Promise.resolve({
-      dataSummary: fakeDashboardSummary,
-    });
+  async buildDashboardSummaryViewModel(): Promise<DashboardSummary> {
+    const { totalUsersEither, totalCommunitiesEither, totalCausesEither, totalActionsEither } =
+      await this.loadSummaryDashboardData();
+    return {
+      totalUsers: totalUsersEither?.isRight() ? totalUsersEither.value : 0,
+      totalComunities: totalCommunitiesEither?.isRight() ? totalCommunitiesEither.value : 0,
+      totalCauses: totalCausesEither?.isRight() ? totalCausesEither.value : 0,
+      totalActions: totalActionsEither?.isRight() ? totalActionsEither.value : 0,
+    };
   }
 
   private async loadMainDashboardData() {
@@ -110,6 +69,26 @@ export class AdminViewServiceImpl implements AdminViewService {
     const communitiesEither = fulfilledValue(settled[2]);
 
     return [causesEither, usersEither, communitiesEither] as const;
+  }
+
+  private async loadSummaryDashboardData() {
+    const settled = await Promise.allSettled([
+      this.usersService.getTotalUsers(),
+      this.requestsService.getCountByStatusAndType(RequestStatus.APPROVED, RequestType.COMMUNITY),
+      this.requestsService.getCountByStatusAndType(RequestStatus.APPROVED, RequestType.CAUSE),
+      this.requestsService.getCountByStatusAndType(RequestStatus.APPROVED, RequestType.ACTION),
+    ]);
+    const totalUsersEither = fulfilledValue(settled[0]);
+    const totalCommunitiesEither = fulfilledValue(settled[1]);
+    const totalCausesEither = fulfilledValue(settled[2]);
+    const totalActionsEither = fulfilledValue(settled[3]);
+
+    return {
+      totalUsersEither,
+      totalCommunitiesEither,
+      totalCausesEither,
+      totalActionsEither,
+    };
   }
 
   private topIdsFromEither<L, T>(

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
@@ -8,7 +8,6 @@ import { CommunityLastUsersJoinedSummaryResponseDto } from './dtos/community-las
 
 @Injectable()
 export class CommunitiesApiServiceImpl extends CommunitiesApiService {
-  private readonly logger = new Logger(CommunitiesApiServiceImpl.name);
   private readonly communitiesApiUrl: string;
 
   constructor(private readonly configService: ConfigService) {

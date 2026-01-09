@@ -2,7 +2,7 @@ import { Either } from '@app/ddd/either';
 import { User } from '../models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { PaginatedResult } from '../ports/output/user.repository.port';
-import { UserGroupByCountryData } from '../../application/services/user-group-by-country.data';
+import { UserGroupByCountryData } from '../../application/services/data/user-group-by-country.data';
 
 /**
  * Servicio de dominio para usuarios

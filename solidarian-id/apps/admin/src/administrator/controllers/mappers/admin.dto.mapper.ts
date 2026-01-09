@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { UserGroupByCountryData } from '../../model/application/services/user-group-by-country.data';
+import { UserGroupByCountryData } from '../../model/application/services/data/user-group-by-country.data';
 import { CauseGroupByOdsResponseDto } from '../dtos/cause-group-by-ods.response.dto';
 import { UserGroupByCountryResponseDto } from '../dtos/user-group-by-country.response.dto';
-import { CauseGroupByOdsData } from '../../model/application/services/cause-group-by-ods.data';
+import { CauseGroupByOdsData } from '../../model/application/services/data/cause-group-by-ods.data';
 
 @Injectable()
 export class AdminDtoMapper {

@@ -5,7 +5,7 @@ import { User } from '../../domain/models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserRepositoryPort, PaginatedResult } from '../../domain/ports/output/user.repository.port';
 import { UserQueryRepositoryPort } from '../../domain/ports/output/user-query.repository.port';
-import { UserGroupByCountryData } from '../data/user-group-by-country.data';
+import { UserGroupByCountryData } from './data/user-group-by-country.data';
 
 /**
  * Implementación del servicio de usuarios

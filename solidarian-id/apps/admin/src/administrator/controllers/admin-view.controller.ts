@@ -1,12 +1,11 @@
 import { ActionRequestResponseDto } from '@app/admin/administrator/controllers/dtos/action-request.response.dto';
 import { CauseRequestResponseDto } from '@app/admin/administrator/controllers/dtos/cause-request.response.dto';
 import { CommunityRequestResponseDto } from '@app/admin/administrator/controllers/dtos/community-request.response.dto';
-import { DashboardSummary } from '@app/admin/administrator/model/data/fakeMetrics';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
-
 import { Controller, Get, Render } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AdminViewService } from '@app/admin/administrator/model/domain/services/admin.service';
+import { DashboardSummary } from '../model/application/services/data/dashboardSummary.data';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -30,7 +29,7 @@ export class AdminViewController {
     apiBaseUrl?: string;
   }> {
     const chartsJson = await this.adminService.buildDashboardViewModel();
-    const { dataSummary } = await this.adminService.buildDashboardSummaryViewModel();
+    const dataSummary = await this.adminService.buildDashboardSummaryViewModel();
     return {
       title: 'Dashboard',
       layout: 'dashboard',

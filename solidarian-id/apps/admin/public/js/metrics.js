@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const hasData = chartData => {
     if (!chartData || !chartData.data) return false;
 
-    // Verificar si tiene labels o datasets con datos
+    // has data? :0
     const hasLabels = chartData.data.labels && chartData.data.labels.length > 0;
     const hasDatasets =
       chartData.data.datasets &&

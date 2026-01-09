@@ -33,5 +33,5 @@ export abstract class UserRepositoryPort extends Repository<User> {
    * Cuenta el total de usuarios en el sistema
    * @returns Número total de usuarios
    */
-  abstract countAll(): Promise<number>;
+  abstract countAll(): Promise<Either<RepositoryException, number>>;
 }

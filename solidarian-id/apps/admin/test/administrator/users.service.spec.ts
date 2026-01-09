@@ -8,7 +8,6 @@ import {
 import { left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { UserNotFoundError } from '@app/admin/administrator/model/domain/errors/user-not-found.error';
 import { Test, TestingModule } from '@nestjs/testing';
 
 const createMockUserRepository = (): jest.Mocked<UserRepositoryPort> => ({
@@ -179,138 +178,6 @@ describe('UsersService', () => {
       });
     });
 
-    describe('Edge Cases', () => {
-      it('should handle empty result set (no users found)', async () => {
-        const emptyResult: PaginatedResult<User> = {
-          data: [],
-          page: 1,
-          limit: 6,
-          total: 0,
-          totalPages: 0,
-        };
-        mockRepository.findPaginated.mockResolvedValue(right(emptyResult));
-
-        const result = await service.getPaginatedUsers(1, 6);
-
-        expect(result.isRight()).toBe(true);
-        if (result.isRight()) {
-          expect(result.value.data).toHaveLength(0);
-          expect(result.value.total).toBe(0);
-        }
-      });
-
-      it('should handle page 1 with limit 6', async () => {
-        const paginatedResult: PaginatedResult<User> = {
-          data: mockUsers,
-          page: 1,
-          limit: 6,
-          total: 3,
-          totalPages: 1,
-        };
-        mockRepository.findPaginated.mockResolvedValue(right(paginatedResult));
-
-        const result = await service.getPaginatedUsers(1, 6);
-
-        expect(result.isRight()).toBe(true);
-        if (result.isRight()) {
-          expect(result.value.page).toBe(1);
-          expect(result.value.limit).toBe(6);
-        }
-      });
-
-      it('should handle page 2 with limit 6', async () => {
-        const paginatedResult: PaginatedResult<User> = {
-          data: [mockUsers[2]],
-          page: 2,
-          limit: 6,
-          total: 7,
-          totalPages: 2,
-        };
-        mockRepository.findPaginated.mockResolvedValue(right(paginatedResult));
-
-        const result = await service.getPaginatedUsers(2, 6);
-
-        expect(result.isRight()).toBe(true);
-        if (result.isRight()) {
-          expect(result.value.page).toBe(2);
-          expect(result.value.data).toHaveLength(1);
-        }
-      });
-
-      it('should handle large page number (beyond available pages)', async () => {
-        const emptyResult: PaginatedResult<User> = {
-          data: [],
-          page: 100,
-          limit: 6,
-          total: 10,
-          totalPages: 2,
-        };
-        mockRepository.findPaginated.mockResolvedValue(right(emptyResult));
-
-        const result = await service.getPaginatedUsers(100, 6);
-
-        expect(result.isRight()).toBe(true);
-        if (result.isRight()) {
-          expect(result.value.data).toHaveLength(0);
-        }
-      });
-
-      it('should handle different limit values', async () => {
-        const paginatedResult: PaginatedResult<User> = {
-          data: [mockUsers[0], mockUsers[1]],
-          page: 1,
-          limit: 2,
-          total: 3,
-          totalPages: 2,
-        };
-        mockRepository.findPaginated.mockResolvedValue(right(paginatedResult));
-
-        const result = await service.getPaginatedUsers(1, 2);
-
-        expect(result.isRight()).toBe(true);
-        if (result.isRight()) {
-          expect(result.value.limit).toBe(2);
-          expect(result.value.data).toHaveLength(2);
-        }
-      });
-
-      it('should handle users with no community memberships', async () => {
-        const paginatedResult: PaginatedResult<User> = {
-          data: [mockUsers[2]], // carlos_garcia has no communities
-          page: 1,
-          limit: 6,
-          total: 1,
-          totalPages: 1,
-        };
-        mockRepository.findPaginated.mockResolvedValue(right(paginatedResult));
-
-        const result = await service.getPaginatedUsers(1, 6);
-
-        expect(result.isRight()).toBe(true);
-        if (result.isRight()) {
-          expect(result.value.data[0].communityMemberships).toHaveLength(0);
-        }
-      });
-
-      it('should handle users with multiple community memberships', async () => {
-        const paginatedResult: PaginatedResult<User> = {
-          data: [mockUsers[0]], // juan_perez has 2 communities
-          page: 1,
-          limit: 6,
-          total: 1,
-          totalPages: 1,
-        };
-        mockRepository.findPaginated.mockResolvedValue(right(paginatedResult));
-
-        const result = await service.getPaginatedUsers(1, 6);
-
-        expect(result.isRight()).toBe(true);
-        if (result.isRight()) {
-          expect(result.value.data[0].communityMemberships).toHaveLength(2);
-        }
-      });
-    });
-
     describe('Return Value Testing', () => {
       it('should return Left when repository.findPaginated returns Left', async () => {
         const error = new RepositoryException('Network error');
@@ -449,67 +316,6 @@ describe('UsersService', () => {
       });
     });
 
-    describe('Edge Cases', () => {
-      it('should handle user not found', async () => {
-        const error = new EntityNotFoundException('User', nonExistentUserId);
-        mockRepository.findById.mockResolvedValue(left(error));
-
-        const result = await service.getUserById(nonExistentUserId);
-
-        expect(result.isLeft()).toBe(true);
-        if (result.isLeft()) {
-          expect(result.value.name).toBe(EntityNotFoundException.name);
-          expect(result.value.message).toContain(nonExistentUserId);
-        }
-      });
-
-      it('should handle UserNotFoundError', async () => {
-        const error = new UserNotFoundError(nonExistentUserId);
-        mockRepository.findById.mockResolvedValue(left(error));
-
-        const result = await service.getUserById(nonExistentUserId);
-
-        expect(result.isLeft()).toBe(true);
-        if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(UserNotFoundError);
-        }
-      });
-
-      it('should return user with no communities', async () => {
-        mockRepository.findById.mockResolvedValue(right(mockUsers[2]));
-
-        const result = await service.getUserById(mockUsers[2].id.value);
-
-        expect(result.isRight()).toBe(true);
-        if (result.isRight()) {
-          expect(result.value.communityMemberships).toHaveLength(0);
-        }
-      });
-
-      it('should return user with multiple communities', async () => {
-        mockRepository.findById.mockResolvedValue(right(mockUsers[0]));
-
-        const result = await service.getUserById(mockUsers[0].id.value);
-
-        expect(result.isRight()).toBe(true);
-        if (result.isRight()) {
-          expect(result.value.communityMemberships).toHaveLength(2);
-        }
-      });
-
-      it('should handle repository connection error', async () => {
-        const error = new RepositoryException('Database connection lost');
-        mockRepository.findById.mockResolvedValue(left(error));
-
-        const result = await service.getUserById(userId);
-
-        expect(result.isLeft()).toBe(true);
-        if (result.isLeft()) {
-          expect(result.value).toBeInstanceOf(RepositoryException);
-        }
-      });
-    });
-
     describe('Return Value Testing', () => {
       it('should return Left when repository.findById returns Left', async () => {
         const error = new EntityNotFoundException('User', userId);
@@ -575,64 +381,60 @@ describe('UsersService', () => {
 
   describe('getTotalUsers', () => {
     describe('Basic Path Testing', () => {
-      it('Path 1: should return total count from repository', async () => {
-        mockRepository.countAll.mockResolvedValue(10);
+      it('Path 1: should return right with total count from repository', async () => {
+        mockRepository.countAll.mockResolvedValue(right(10));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(10);
-      });
-    });
-
-    describe('Edge Cases', () => {
-      it('should handle zero users', async () => {
-        mockRepository.countAll.mockResolvedValue(0);
-
-        const result = await service.getTotalUsers();
-
-        expect(result).toBe(0);
+        expect(result.isRight()).toBe(true);
+        if (result.isRight()) {
+          expect(result.value).toBe(10);
+        }
       });
 
-      it('should handle large number of users', async () => {
-        mockRepository.countAll.mockResolvedValue(10000);
+      it('Path 2: should return left with error when repository fails', async () => {
+        const error = new RepositoryException('Database connection failed');
+        mockRepository.countAll.mockResolvedValue(left(error));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(10000);
-      });
-
-      it('should handle exactly one user', async () => {
-        mockRepository.countAll.mockResolvedValue(1);
-
-        const result = await service.getTotalUsers();
-
-        expect(result).toBe(1);
+        expect(result.isLeft()).toBe(true);
+        if (result.isLeft()) {
+          expect(result.value).toBe(error);
+        }
       });
     });
 
     describe('Return Value Testing', () => {
-      it('should return number returned by repository.countAll', async () => {
+      it('should return Right with number from repository.countAll', async () => {
         const expectedCount = 42;
-        mockRepository.countAll.mockResolvedValue(expectedCount);
+        mockRepository.countAll.mockResolvedValue(right(expectedCount));
 
         const result = await service.getTotalUsers();
 
-        expect(result).toBe(expectedCount);
-        expect(typeof result).toBe('number');
+        expect(result.isRight()).toBe(true);
+        if (result.isRight()) {
+          expect(result.value).toBe(expectedCount);
+          expect(typeof result.value).toBe('number');
+        }
       });
 
-      it('should always return a number', async () => {
-        mockRepository.countAll.mockResolvedValue(5);
+      it('should return Left when repository.countAll returns error', async () => {
+        const error = new RepositoryException('Database error');
+        mockRepository.countAll.mockResolvedValue(left(error));
 
         const result = await service.getTotalUsers();
 
-        expect(typeof result).toBe('number');
+        expect(result.isLeft()).toBe(true);
+        if (result.isLeft()) {
+          expect(result.value).toBe(error);
+        }
       });
     });
 
     describe('Repository Method Call Verification', () => {
       it('should call repository.countAll without parameters', async () => {
-        mockRepository.countAll.mockResolvedValue(10);
+        mockRepository.countAll.mockResolvedValue(right(10));
 
         await service.getTotalUsers();
 

@@ -1,4 +1,4 @@
-import { UpdateStatusRequestDto } from '@app/admin/administrator/model/application/dtos/update-status.request.dto';
+import { UpdateStatusRequestDto } from '@app/admin/administrator/controllers/dtos/update-status.request.dto';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import { Controller, Patch, Param, Body, HttpCode, HttpStatus } from '@nestjs/common';
 

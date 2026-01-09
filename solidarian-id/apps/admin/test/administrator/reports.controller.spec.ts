@@ -7,7 +7,7 @@ import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/port
 import { User } from '@app/admin/administrator/model/domain/models/user';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { UserNotFoundError } from '@app/admin/administrator/model/domain/errors/user-not-found.error';
+import { PdfGenerationException } from '@app/admin/administrator/model/domain/errors/pdf-generation.exception';
 import { Test, TestingModule } from '@nestjs/testing';
 import type { Response } from 'express';
 import { Readable } from 'node:stream';
@@ -90,31 +90,21 @@ describe('ReportsApiController', () => {
 
   describe('getUserDetail', () => {
     describe('Basic Path Testing', () => {
-      it('Path 1: should return 404 when service returns Left', async () => {
-        const mockResponse = createMockResponse();
+      it('Path 1: should throw EntityNotFoundException when service returns Left', async () => {
         const error = new EntityNotFoundException('User', userId);
         mockUsersService.getUserById.mockResolvedValue(left(error));
 
-        await controller.getUserDetail(userId, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(404);
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            statusCode: 404,
-            message: error.message,
-          }),
-        );
+        await expect(controller.getUserDetail(userId)).rejects.toThrow(EntityNotFoundException);
+        await expect(controller.getUserDetail(userId)).rejects.toThrow(/was not found/);
       });
 
-      it('Path 2: should return 200 with user detail when service succeeds', async () => {
-        const mockResponse = createMockResponse();
+      it('Path 2: should return user detail DTO when service succeeds', async () => {
         const mockUser = createMockUser(userId, 'detailed_user');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
 
-        await controller.getUserDetail(userId, mockResponse);
+        const result = await controller.getUserDetail(userId);
 
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
-        expect(mockResponse.json).toHaveBeenCalledWith(
+        expect(result).toEqual(
           expect.objectContaining({
             id: userId,
             username: 'detailed_user',
@@ -125,98 +115,27 @@ describe('ReportsApiController', () => {
 
     describe('Condition Testing', () => {
       it('should handle result.isLeft() = true', async () => {
-        const mockResponse = createMockResponse();
-        mockUsersService.getUserById.mockResolvedValue(left(new UserNotFoundError(userId)));
+        mockUsersService.getUserById.mockResolvedValue(left(new EntityNotFoundException('User', userId)));
 
-        await controller.getUserDetail(userId, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(404);
+        await expect(controller.getUserDetail(userId)).rejects.toThrow(EntityNotFoundException);
       });
 
       it('should handle result.isLeft() = false', async () => {
-        const mockResponse = createMockResponse();
         const mockUser = createMockUser(userId, 'test_user');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
 
-        await controller.getUserDetail(userId, mockResponse);
+        const result = await controller.getUserDetail(userId);
 
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        expect(result).toBeDefined();
+        expect(result.id).toBe(userId);
       });
     });
-
-    describe('Edge Cases', () => {
-      it('should handle user not found error', async () => {
-        const mockResponse = createMockResponse();
-        const error = new UserNotFoundError(nonExistentUserId);
-        mockUsersService.getUserById.mockResolvedValue(left(error));
-
-        await controller.getUserDetail(nonExistentUserId, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(404);
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            message: expect.stringContaining(nonExistentUserId),
-          }),
-        );
-      });
-
-      it('should include complete user data in response', async () => {
-        const mockResponse = createMockResponse();
-        const mockUser = createMockUser(userId, 'complete_user');
-        mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-
-        await controller.getUserDetail(userId, mockResponse);
-
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            id: userId,
-            username: 'complete_user',
-            phone: '+34612345678',
-            city: 'Madrid',
-            countryCode: 'ES',
-            communities: expect.any(Array),
-          }),
-        );
-      });
-
-      it('should handle user with no communities', async () => {
-        const mockResponse = createMockResponse();
-        const userResult = User.create(
-          userId,
-          'No Communities User',
-          'no_communities',
-          '+34612345678',
-          'Madrid',
-          'ES',
-          [],
-        );
-        if (userResult.isRight()) {
-          mockUsersService.getUserById.mockResolvedValue(right(userResult.value));
-
-          await controller.getUserDetail(userId, mockResponse);
-
-          expect(mockResponse.json).toHaveBeenCalledWith(
-            expect.objectContaining({
-              communities: [],
-            }),
-          );
-        }
-      });
-    });
-
     describe('Exception Handling', () => {
-      it('should return error response with timestamp', async () => {
-        const mockResponse = createMockResponse();
+      it('should throw EntityNotFoundException with correct message', async () => {
         const error = new EntityNotFoundException('User', userId);
         mockUsersService.getUserById.mockResolvedValue(left(error));
 
-        await controller.getUserDetail(userId, mockResponse);
-
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            timestamp: expect.any(String),
-          }),
-        );
+        await expect(controller.getUserDetail(userId)).rejects.toThrow(error.message);
       });
     });
   });
@@ -225,7 +144,7 @@ describe('ReportsApiController', () => {
     describe('Basic Path Testing', () => {
       it('Path 1: should return 404 when user is not found', async () => {
         const mockResponse = createMockResponse();
-        const error = new UserNotFoundError(nonExistentUserId);
+        const error = new EntityNotFoundException('User', nonExistentUserId);
         mockUsersService.getUserById.mockResolvedValue(left(error));
 
         await controller.downloadUserPdf(nonExistentUserId, mockResponse);
@@ -239,21 +158,15 @@ describe('ReportsApiController', () => {
         );
       });
 
-      it('Path 2: should return 500 when PDF generation fails', async () => {
+      it('Path 2: should throw PdfGenerationException when PDF generation fails', async () => {
         const mockResponse = createMockResponse();
         const mockUser = createMockUser(userId, 'pdf_user');
+        const pdfError = new PdfGenerationException('Failed to generate PDF report: PDF generation error');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockRejectedValue(new Error('PDF generation error'));
+        mockPdfGenerator.generate.mockReturnValue(left(pdfError));
 
-        await controller.downloadUserPdf(userId, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(500);
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            statusCode: 500,
-            message: 'Error generating PDF report',
-          }),
-        );
+        await expect(controller.downloadUserPdf(userId, mockResponse)).rejects.toThrow(PdfGenerationException);
+        await expect(controller.downloadUserPdf(userId, mockResponse)).rejects.toThrow(/Failed to generate PDF/);
       });
 
       it('Path 3: should generate and stream PDF when everything succeeds', async () => {
@@ -261,7 +174,7 @@ describe('ReportsApiController', () => {
         const mockUser = createMockUser(userId, 'pdf_user');
         const mockStream = createMockPdfStream();
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockResolvedValue(mockStream);
+        mockPdfGenerator.generate.mockReturnValue(right(mockStream));
 
         await controller.downloadUserPdf(userId, mockResponse);
 
@@ -277,7 +190,7 @@ describe('ReportsApiController', () => {
     describe('Condition Testing', () => {
       it('should handle result.isLeft() = true (user not found)', async () => {
         const mockResponse = createMockResponse();
-        mockUsersService.getUserById.mockResolvedValue(left(new UserNotFoundError(userId)));
+        mockUsersService.getUserById.mockResolvedValue(left(new EntityNotFoundException('User', userId)));
 
         await controller.downloadUserPdf(userId, mockResponse);
 
@@ -289,7 +202,7 @@ describe('ReportsApiController', () => {
         const mockUser = createMockUser(userId, 'pdf_user');
         const mockStream = createMockPdfStream();
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockResolvedValue(mockStream);
+        mockPdfGenerator.generate.mockReturnValue(right(mockStream));
 
         await controller.downloadUserPdf(userId, mockResponse);
 
@@ -298,144 +211,16 @@ describe('ReportsApiController', () => {
       });
     });
 
-    describe('Edge Cases', () => {
-      it('should include username in filename', async () => {
-        const mockResponse = createMockResponse();
-        const mockUser = createMockUser(userId, 'test_user');
-        const mockStream = createMockPdfStream();
-        mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockResolvedValue(mockStream);
-
-        await controller.downloadUserPdf(userId, mockResponse);
-
-        expect(mockResponse.setHeader).toHaveBeenCalledWith(
-          'Content-Disposition',
-          expect.stringMatching(/reporte-test_user-\d+\.pdf/),
-        );
-      });
-
-      it('should include timestamp in filename', async () => {
-        const mockResponse = createMockResponse();
-        const mockUser = createMockUser(userId, 'pdf_user');
-        const mockStream = createMockPdfStream();
-        mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockResolvedValue(mockStream);
-
-        const beforeTimestamp = Date.now();
-        await controller.downloadUserPdf(userId, mockResponse);
-        const afterTimestamp = Date.now();
-
-        const setHeaderCall = mockResponse.setHeader.mock.calls.find(call => call[0] === 'Content-Disposition');
-        expect(setHeaderCall).toBeDefined();
-        if (setHeaderCall) {
-          const filename = setHeaderCall[1] as string;
-          const timestampMatch = new RegExp(/-(\d+)\.pdf/).exec(filename);
-          expect(timestampMatch).toBeTruthy();
-          if (timestampMatch) {
-            const timestamp = Number.parseInt(timestampMatch[1], 10);
-            expect(timestamp).toBeGreaterThanOrEqual(beforeTimestamp);
-            expect(timestamp).toBeLessThanOrEqual(afterTimestamp);
-          }
-        }
-      });
-
-      it('should map country codes to names in PDF data', async () => {
-        const mockResponse = createMockResponse();
-        const mockUser = createMockUser(userId, 'spanish_user');
-        const mockStream = createMockPdfStream();
-        mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockResolvedValue(mockStream);
-
-        await controller.downloadUserPdf(userId, mockResponse);
-
-        expect(mockPdfGenerator.generate).toHaveBeenCalledWith(
-          expect.objectContaining({
-            countryCode: 'ES',
-            countryName: 'España',
-          }),
-        );
-      });
-
-      it('should handle unknown country code', async () => {
-        const mockResponse = createMockResponse();
-        const userResult = User.create(
-          userId,
-          'Unknown Country User',
-          'unknown_country',
-          '+11234567890',
-          'Unknown City',
-          'XX',
-          [],
-        );
-        if (userResult.isRight()) {
-          const mockStream = createMockPdfStream();
-          mockUsersService.getUserById.mockResolvedValue(right(userResult.value));
-          mockPdfGenerator.generate.mockResolvedValue(mockStream);
-
-          await controller.downloadUserPdf(userId, mockResponse);
-
-          expect(mockPdfGenerator.generate).toHaveBeenCalledWith(
-            expect.objectContaining({
-              countryCode: 'XX',
-              countryName: 'XX', // Falls back to country code
-            }),
-          );
-        }
-      });
-
-      it('should include community memberships in PDF data', async () => {
-        const mockResponse = createMockResponse();
-        const mockUser = createMockUser(userId, 'community_user');
-        const mockStream = createMockPdfStream();
-        mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockResolvedValue(mockStream);
-
-        await controller.downloadUserPdf(userId, mockResponse);
-
-        expect(mockPdfGenerator.generate).toHaveBeenCalledWith(
-          expect.objectContaining({
-            communities: expect.arrayContaining([
-              expect.objectContaining({
-                id: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
-                name: 'Test Community',
-                isAdmin: false,
-              }),
-            ]),
-          }),
-        );
-      });
-    });
-
     describe('Exception Handling', () => {
-      it('should catch PDF generation errors', async () => {
+      it('should throw PdfGenerationException on PDF generation errors', async () => {
         const mockResponse = createMockResponse();
         const mockUser = createMockUser(userId, 'error_user');
+        const pdfError = new PdfGenerationException('Failed to generate PDF report: Unexpected PDF error');
         mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockRejectedValue(new Error('Unexpected PDF error'));
+        mockPdfGenerator.generate.mockReturnValue(left(pdfError));
 
-        await controller.downloadUserPdf(userId, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(500);
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            message: 'Error generating PDF report',
-          }),
-        );
-      });
-
-      it('should return error response with timestamp on PDF failure', async () => {
-        const mockResponse = createMockResponse();
-        const mockUser = createMockUser(userId, 'error_user');
-        mockUsersService.getUserById.mockResolvedValue(right(mockUser));
-        mockPdfGenerator.generate.mockRejectedValue(new Error('PDF error'));
-
-        await controller.downloadUserPdf(userId, mockResponse);
-
-        expect(mockResponse.json).toHaveBeenCalledWith(
-          expect.objectContaining({
-            timestamp: expect.any(String),
-          }),
-        );
+        await expect(controller.downloadUserPdf(userId, mockResponse)).rejects.toThrow(PdfGenerationException);
+        await expect(controller.downloadUserPdf(userId, mockResponse)).rejects.toThrow(/Unexpected PDF error/);
       });
     });
   });

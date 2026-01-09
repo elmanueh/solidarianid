@@ -1,5 +1,25 @@
 import type { Readable } from 'stream';
-import type { UserReportPdfDto } from '../../../infrastructure/pdf/user-report-pdf.dto';
+import { Either } from '@app/ddd/either';
+import { PdfGenerationException } from '../../errors/pdf-generation.exception';
+
+// DTO con los datos necesarios para generar el PDF del reporte de usuario
+export interface UserReportPdfCommand {
+  id: string;
+  fullName: string;
+  username: string;
+  phone: string;
+  city: string;
+  countryCode: string;
+  communities: CommunityPdfCommand[];
+  generatedAt: Date;
+}
+
+// DTO de comunidad para el PDF
+export interface CommunityPdfCommand {
+  id: string;
+  name: string;
+  isAdmin: boolean;
+}
 
 /**
  * Puerto (interfaz) para la generación de PDFs de reportes de usuario
@@ -15,8 +35,7 @@ export abstract class UserPdfGeneratorPort {
    * Genera un documento PDF de reporte de usuario
    *
    * @param data Datos del usuario para generar el reporte PDF
-   * @returns Promise que resuelve con un stream del PDF generado
-   * @throws Error si la generación falla
+   * @returns Either con error de generación de PDF o stream del PDF generado
    */
-  abstract generate(data: UserReportPdfDto): Promise<Readable>;
+  abstract generate(data: UserReportPdfCommand): Either<PdfGenerationException, Readable>;
 }

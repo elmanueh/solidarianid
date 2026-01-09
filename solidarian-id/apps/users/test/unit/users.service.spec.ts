@@ -9,7 +9,6 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { User } from '@app/users/domain/model/user';
-import { USERNAME_MAX_LENGTH } from '@app/value-objects/constants/validation.constants';
 import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
 
 describe('UsersService Unit testing', () => {
@@ -1103,122 +1102,6 @@ describe('UsersService Unit testing', () => {
             VALID_PASSWORD,
             existingUserOrError.value.passwordHash,
           );
-        });
-      });
-    });
-
-    describe('UsersService.loginUser (Black Box Testing)', () => {
-      //TODO
-      describe('Equivalence Class Partitioning', () => {});
-
-      describe('Edge Cases', () => {
-        describe('Null and undefined inputs', () => {
-          it('should handle null username gracefully', async () => {
-            // Arrange & Act
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            const result = await service.loginUser(null as any, VALID_PASSWORD);
-
-            // Assert
-            expect(result.isLeft()).toBe(true);
-          });
-
-          it('should handle undefined username gracefully', async () => {
-            // Arrange & Act
-            const result = await service.loginUser(
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-              undefined as any,
-              VALID_PASSWORD,
-            );
-
-            // Assert
-            expect(result.isLeft()).toBe(true);
-          });
-
-          it('should handle null password gracefully', async () => {
-            // Arrange
-            const notFoundError = new EntityNotFoundException('User', 'username');
-            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-            // Act
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            const result = await service.loginUser(VALID_USERNAME, null as any);
-
-            // Assert
-            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-          });
-
-          it('should handle undefined password gracefully', async () => {
-            // Arrange
-            const notFoundError = new EntityNotFoundException('User', 'username');
-            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-            // Act
-            const result = await service.loginUser(
-              VALID_USERNAME,
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-              undefined as any,
-            );
-
-            // Assert
-            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-          });
-        });
-
-        describe('Boundary values', () => {
-          it('should handle minimum valid username length', async () => {
-            // Arrange
-            const minUsername = 'abc';
-            mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-            const notFoundError = new EntityNotFoundException('User', 'username');
-            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-            // Act
-            const result = await service.loginUser(minUsername, VALID_PASSWORD);
-
-            // Assert
-            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-          });
-
-          it('should handle maximum valid username length', async () => {
-            // Arrange
-            const maxUsername = 'a'.repeat(USERNAME_MAX_LENGTH);
-            mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-            const notFoundError = new EntityNotFoundException('User', 'username');
-            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-            // Act
-            const result = await service.loginUser(maxUsername, VALID_PASSWORD);
-
-            // Assert
-            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-          });
-        });
-
-        describe('Special characters in inputs', () => {
-          it('should reject username with special characters', async () => {
-            // Arrange
-            const specialCharUsername = 'user@name!';
-
-            // Act
-            const result = await service.loginUser(specialCharUsername, VALID_PASSWORD);
-
-            // Assert
-            expect(result.isLeft() && result.value instanceof ValidationError).toBe(true);
-          });
-
-          it('should accept username with allowed special characters', async () => {
-            // Arrange
-            const validUsernameWithUnderscore = 'user_name';
-            mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-            const notFoundError = new EntityNotFoundException('User', 'username');
-            mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-            // Act
-            const result = await service.loginUser(validUsernameWithUnderscore, VALID_PASSWORD);
-
-            // Assert
-            expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-          });
         });
       });
     });

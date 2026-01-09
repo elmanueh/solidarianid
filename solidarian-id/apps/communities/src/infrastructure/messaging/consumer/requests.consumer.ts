@@ -24,10 +24,8 @@ export class RequestsConsumerAdapter {
     switch (eventType) {
       case EventType.REQUEST_ACCEPTED:
         return await this.requestService.acceptRequest(data);
-        break;
       case EventType.REQUEST_DECLINED:
         return await this.requestService.rejectRequest(data);
-        break;
       default:
         return left(new ValidationError(`Unhandled event type: ${eventType}`));
     }

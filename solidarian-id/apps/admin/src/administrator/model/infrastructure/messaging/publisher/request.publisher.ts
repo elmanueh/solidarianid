@@ -1,6 +1,6 @@
 import { Request } from '@app/admin/administrator/model/domain/models/request';
 import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
-import { RequestEventMapper } from '@app/admin/administrator/model/infrastructure/messaging/request-event.mapper';
+import { RequestEventMapper } from '@app/admin/administrator/model/infrastructure/messaging/mappers/request-event.mapper';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { KafkaPublisher, RequestEventDto, Topics } from '@solidarianid/kafka';
@@ -11,7 +11,7 @@ export class RequestsKafkaPublisherAdapter
   implements RequestsPublisherPort
 {
   constructor(
-    @Inject('requests_kafka') publisher: ClientKafka,
+    @Inject('admin_kafka') publisher: ClientKafka,
     private readonly requestEventMapper: RequestEventMapper,
   ) {
     super(publisher, requestEventMapper, Topics.REQUESTS);

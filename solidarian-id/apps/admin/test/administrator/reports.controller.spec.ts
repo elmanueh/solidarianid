@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/unbound-method */
 import { ReportsApiController } from '@app/admin/administrator/controllers/reports-api.controller';
-import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
-import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
 import { User } from '@app/admin/administrator/model/domain/models/user';
+import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
+import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { PdfGenerationException } from '@app/admin/administrator/model/domain/errors/pdf-generation.exception';
@@ -16,6 +16,7 @@ const createMockUsersService = (): jest.Mocked<UsersService> => ({
   getPaginatedUsers: jest.fn(),
   getUserById: jest.fn(),
   getTotalUsers: jest.fn(),
+  getUsersGroupByCountry: jest.fn(),
 });
 
 const createMockPdfGenerator = (): jest.Mocked<UserPdfGeneratorPort> => ({
@@ -33,13 +34,21 @@ const createMockResponse = (): jest.Mocked<Response> => {
 };
 
 const createMockUser = (id: string, username: string): User => {
-  const userResult = User.create(id, 'Test User', username, '+34612345678', 'Madrid', 'ES', [
-    {
-      communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
-      communityName: 'Test Community',
-      isAdmin: false,
-    },
-  ]);
+  const userResult = User.reconstitute({
+    id: id,
+    fullName: 'Test User',
+    username: username,
+    phone: '+34612345678',
+    city: 'Madrid',
+    countryCode: 'ES',
+    communityMemberships: [
+      {
+        communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
+        communityName: 'Test Community',
+        isAdmin: false,
+      },
+    ],
+  });
 
   if (userResult.isLeft()) {
     throw new Error(`Failed to create mock user: ${userResult.value.message}`);

@@ -7,6 +7,7 @@ import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RequestEventDto } from '@solidarianid/kafka';
+import { CauseGroupByOdsData } from '../../application/services/cause-group-by-ods.data';
 
 export abstract class RequestsService {
   abstract createRequest(props: RequestEventDto): Promise<Either<RepositoryException | ValidationError, Request<any>>>;
@@ -22,4 +23,6 @@ export abstract class RequestsService {
   abstract getCauseRequestsPending(): Promise<Either<ValidationError, CauseRequest[]>>;
 
   abstract getActionRequestsPending(): Promise<Either<ValidationError, ActionRequest[]>>;
+
+  abstract getCausesGroupByOds(): Promise<Either<RepositoryException, CauseGroupByOdsData[]>>;
 }

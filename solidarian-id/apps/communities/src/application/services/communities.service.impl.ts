@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common';
 import { CommunityRequestEventDto } from '@solidarianid/kafka';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { RankingCommunitiesByUsersData } from './community-ranking.data';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query-repository-port';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { CommunityLastUsersJoinedData } from './community-last-users-joined.data';
 
 @Injectable()

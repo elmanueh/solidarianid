@@ -1,9 +1,11 @@
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
+import { ActionRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/action-request.entity';
 import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
 import { CommunityRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/community-request.entity';
 import { AdministratorEntity } from '@app/admin/auth/model/infrastructure/persistence/entities/administrator.entity';
 import { IDatabaseSeeder } from '@solidarianid/testing';
+import { name } from 'eslint-plugin-prettier/recommended';
 import { Connection } from 'mongoose';
 
 export class MongoDBSeeder implements IDatabaseSeeder {
@@ -38,7 +40,43 @@ export class MongoDBSeeder implements IDatabaseSeeder {
         communityId: 'f1e6d3c4-8b2a-4f4b-9c4d-2e5f6a7b8c9d',
       },
     ];
-    const allRequests = [...defaultCommunityRequests, ...defaultCauseRequests, ...requests];
+
+    const defaultActionRequests: ActionRequestEntity[] = [
+      {
+        _id: '3ac201c8-5d35-462e-a1d1-985cb677725e',
+        name: 'Test Action Request',
+        description: 'This is a test action request for E2E tests',
+        status: RequestStatus.APPROVED,
+        type: RequestType.ACTION,
+        reason: 'Approved for testing',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        causeId: '2db201c8-5d35-462e-a1d1-985cb677725d',
+        events: [
+          {
+            place: {
+              city: 'Madrid',
+              countryCode: 'ES',
+              direction: 'Calle Falsa 123',
+            },
+            name: 'Initial Event',
+            description: 'This is the initial event for the action',
+            initialDate: new Date(Date.now() + 48 * 60 * 60 * 1000),
+          },
+        ],
+        objectives: [
+          {
+            name: 'Initial Objective',
+            description: 'This is the initial objective for the action',
+            quantity: 100,
+            unit: 'items',
+            currentAmount: 0,
+          },
+        ],
+        userId: '53ba64a8-7e4d-4c35-a7e3-06e6f39f3728',
+      },
+    ];
+    const allRequests = [...defaultCommunityRequests, ...defaultCauseRequests, ...defaultActionRequests, ...requests];
     await requestsCollection.insertMany(allRequests as any[]);
   }
 

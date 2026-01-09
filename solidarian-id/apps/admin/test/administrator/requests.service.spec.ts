@@ -14,6 +14,7 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { ActionRequestEventDto, CauseRequestEventDto, CommunityRequestEventDto } from '@solidarianid/kafka';
 import { Test, TestingModule } from '@nestjs/testing';
+import { RequestsQueryRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request-query.repository.port';
 
 const createMockRequestsRepository = (): jest.Mocked<RequestsRepositoryPort> => ({
   save: jest.fn(),
@@ -173,6 +174,10 @@ describe('RequestsService', () => {
         {
           provide: RequestsPublisherPort,
           useValue: { publish: jest.fn() },
+        },
+        {
+          provide: RequestsQueryRepositoryPort,
+          useValue: {},
         },
       ],
     }).compile();

@@ -1,7 +1,4 @@
-import {
-  CreateEventPlaceProps,
-  EventPlace,
-} from '@app/admin/administrator/model/domain/models/value-objects/event-place';
+import { CreateEventPlaceProps, EventPlace } from '@app/admin/administrator/model/domain/value-objects/event-place';
 import { Either, left, right } from '@app/ddd/either';
 import { ValueObject } from '@app/ddd/value-object';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';

@@ -4,8 +4,7 @@ import {
   PostgreSQLSeeder,
   CAUSE_IDS,
   KafkaTestModule,
-  KafkaTestContainer,
-  PostgreSQLTestContainer,
+  TestContainerLifecycle,
   COMMUNITY_IDS,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
@@ -56,9 +55,8 @@ describe('CausesController (e2e)', () => {
   });
 
   afterAll(async () => {
-    if (app) await app.close();
-    await KafkaTestContainer.getInstance().stop();
-    await PostgreSQLTestContainer.getInstance().stop();
+    await app.close();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   beforeEach(async () => {

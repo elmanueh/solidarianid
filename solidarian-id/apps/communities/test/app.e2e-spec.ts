@@ -1,11 +1,5 @@
 import { CommunitiesModule } from '@app/communities/communities.module';
-import {
-  PostgreSQLTestModule,
-  TestServerHelper,
-  PostgreSQLTestContainer,
-  KafkaTestModule,
-  KafkaTestContainer,
-} from '@solidarianid/testing';
+import { PostgreSQLTestModule, TestServerHelper, KafkaTestModule, TestContainerLifecycle } from '@solidarianid/testing';
 
 describe('CommunitiesController (e2e)', () => {
   let server!: TestServerHelper;
@@ -21,8 +15,7 @@ describe('CommunitiesController (e2e)', () => {
 
   afterAll(async () => {
     await server.close();
-    await PostgreSQLTestContainer.getInstance().stop();
-    await KafkaTestContainer.getInstance().stop();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   it('/ (GET)', () => {

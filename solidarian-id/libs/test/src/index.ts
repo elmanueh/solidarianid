@@ -15,6 +15,9 @@ export * from './postgresql-seed.test-container';
 export * from './kafka.test-container';
 export * from './kafka.test-container.module';
 
+// Lifecycle Helpers
+export * from './test-container.lifecycle';
+
 // Common Utilities
 export * from './helpers/test-server.helper';
 export * from './helpers/kafka.helper';

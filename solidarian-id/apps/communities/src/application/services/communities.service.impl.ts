@@ -74,7 +74,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     return right(community);
   }
 
-  async getCommunities(): Promise<Either<ValidationError, Community[]>> {
+  async getCommunities(): Promise<Either<RepositoryException | ValidationError, Community[]>> {
     return await this.communityRepository.findAll(['members', 'members.user']);
   }
 

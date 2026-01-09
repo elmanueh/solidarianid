@@ -1,0 +1,9 @@
+<main class="metrics" aria-labelledby="page-title">
+  <h1 id="page-title" class="metrics-title">{{title}}</h1>
+
+  <div class="space-y-4">{{> tab-community communities=communities }}</div>
+
+  {{> pagination currentPage=currentPage totalPages=totalPages baseUrl="/community-requests"}}
+</main>
+
+{{> reason-modal }}

@@ -5,14 +5,24 @@ import { Request } from '@app/admin/administrator/model/domain/models/request';
 import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Repository } from '@app/ddd/repository/repository';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/models/value-objects/paginated-result';
 
 /**
  * Port for Request repository operations.
  */
 export abstract class RequestsRepositoryPort extends Repository<Request<any>> {
-  abstract findPendingCommunityRequests(): Promise<Either<RepositoryException, CommunityRequest[]>>;
+  abstract findPendingCommunityRequests(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException, PaginatedResult<CommunityRequest>>>;
 
-  abstract findPendingCauseRequests(): Promise<Either<RepositoryException, CauseRequest[]>>;
+  abstract findPendingCauseRequests(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException, PaginatedResult<CauseRequest>>>;
 
-  abstract findPendingActionRequests(): Promise<Either<RepositoryException, ActionRequest[]>>;
+  abstract findPendingActionRequests(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException, PaginatedResult<ActionRequest>>>;
 }

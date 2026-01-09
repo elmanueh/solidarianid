@@ -4,7 +4,8 @@ import { UsersService } from '../../domain/services/users.service';
 import { User } from '../../domain/models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
-import { UserRepositoryPort, PaginatedResult } from '../../domain/ports/output/user.repository.port';
+import { UserRepositoryPort } from '../../domain/ports/output/user.repository.port';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/models/value-objects/paginated-result';
 
 /**
  * Implementación del servicio de usuarios

@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Render, Query, BadRequestException } from '@nestjs/common';
 import { fakeDashboardData, DashboardSummary, fakeDashboardSummary } from '../model/data/fakeMetrics';
 import {
   createInteractiveNationalitiesDoughnut,
@@ -8,16 +8,12 @@ import {
 } from '../../utils/chart-builder';
 import { ConfigService } from '@nestjs/config';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
+import { validatePageNumber } from '@app/admin/administrator/controllers/utils';
 import {
-  ActionRequestResponseDto,
-  CauseRequestResponseDto,
   CommunityRequestResponseDto,
-} from '@app/admin/administrator/model/application/dtos/get-community-request.dto';
-import {
-  fakeActionRequests,
-  fakeCauseRequests,
-  fakeCommunityRequests,
-} from '@app/admin/administrator/controllers/fakeData';
+  CauseRequestResponseDto,
+  ActionRequestResponseDto,
+} from '@app/admin/administrator/model/application/dtos/requests.mapper.dto';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -25,6 +21,8 @@ import {
  */
 @Controller()
 export class AdminViewController {
+  private readonly REQUESTS_PER_PAGE = 10;
+
   constructor(
     private readonly configService: ConfigService,
     private readonly requestsService: RequestsService,
@@ -59,26 +57,122 @@ export class AdminViewController {
   }
 
   @Get('/requests')
-  @Render('pages/requests')
-  requests() {
-    // const [actionsResult, causesResult, communitiesResult] = await Promise.all([
-    //   this.requestsService.getActionRequestsPending(),
-    //   this.requestsService.getCauseRequestsPending(),
-    //   this.requestsService.getCommunityRequestsPending(),
-    // ]);
+  @Render('pages/community-requests')
+  async requests(@Query('page') page?: string) {
+    return this.getCommunitiesData(page);
+  }
+
+  @Get('/community-requests')
+  @Render('pages/community-requests')
+  async communitiesRequests(@Query('page') page?: string) {
+    return this.getCommunitiesData(page);
+  }
+
+  @Get('/cause-requests')
+  @Render('pages/cause-requests')
+  async causesRequests(@Query('page') page?: string) {
+    return this.getCausesData(page);
+  }
+
+  @Get('/action-requests')
+  @Render('pages/action-requests')
+  async actionsRequests(@Query('page') page?: string) {
+    return this.getActionsData(page);
+  }
+
+  private async getCommunitiesData(page?: string): Promise<{
+    title: string;
+    layout: string;
+    apiBaseUrl?: string;
+    communities: any[];
+    currentPage: number;
+    totalPages: number;
+    total: number;
+  }> {
+    const pageNumber = validatePageNumber(page);
+    if (pageNumber < 1) {
+      throw new BadRequestException('El número de página debe ser un entero positivo');
+    }
+
+    const result = await this.requestsService.getCommunityRequestsPending(pageNumber, this.REQUESTS_PER_PAGE);
+    const data = result.isLeft()
+      ? { data: [], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
+      : result.value;
+
+    const mappedData = data.data.map(request => CommunityRequestResponseDto.toDto(request));
 
     return {
-      title: 'Requests',
+      title: 'Solicitudes de comunidades',
       layout: 'dashboard',
-      // actions: actionsResult.isRight() ? actionsResult.value.map(r => ActionRequestResponseDto.toDto(r)) : [],
-      // causes: causesResult.isRight() ? causesResult.value.map(r => CauseRequestResponseDto.toDto(r)) : [],
-      // communities: communitiesResult.isRight()
-      //   ? communitiesResult.value.map(r => CommunityRequestResponseDto.toDto(r))
-      //   : [],
-      actions: fakeActionRequests,
-      causes: fakeCauseRequests,
-      communities: fakeCommunityRequests,
       apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
+      communities: mappedData,
+      currentPage: data.page,
+      totalPages: data.totalPages,
+      total: data.total,
+    };
+  }
+
+  private async getCausesData(page?: string): Promise<{
+    title: string;
+    layout: string;
+    apiBaseUrl?: string;
+    causes: any[];
+    currentPage: number;
+    totalPages: number;
+    total: number;
+  }> {
+    const pageNumber = validatePageNumber(page);
+    if (pageNumber < 1) {
+      throw new BadRequestException('El número de página debe ser un entero positivo');
+    }
+
+    const result = await this.requestsService.getCauseRequestsPending(pageNumber, this.REQUESTS_PER_PAGE);
+    const data = result.isLeft()
+      ? { data: [], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
+      : result.value;
+
+    const mappedData = data.data.map(request => CauseRequestResponseDto.toDto(request));
+
+    return {
+      title: 'Solicitudes de causas',
+      layout: 'dashboard',
+      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
+      causes: mappedData,
+      currentPage: data.page,
+      totalPages: data.totalPages,
+      total: data.total,
+    };
+  }
+
+  private async getActionsData(page?: string): Promise<{
+    title: string;
+    layout: string;
+    apiBaseUrl?: string;
+    actions: any[];
+    currentPage: number;
+    totalPages: number;
+    total: number;
+  }> {
+    const pageNumber = validatePageNumber(page);
+    if (pageNumber < 1) {
+      throw new BadRequestException('El número de página debe ser un entero positivo');
+    }
+
+    const result = await this.requestsService.getActionRequestsPending(pageNumber, this.REQUESTS_PER_PAGE);
+    const data = result.isLeft()
+      ? { data: [], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
+      : result.value;
+
+    const mappedData = data.data.map(request => ActionRequestResponseDto.toDto(request));
+
+    return {
+      title: 'Solicitudes de acciones',
+      layout: 'dashboard',
+      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
+      actions: mappedData,
+      currentPage: data.page,
+      totalPages: data.totalPages,
+      total: data.total,
     };
   }
 }

@@ -1,0 +1,9 @@
+<main class="metrics" aria-labelledby="page-title">
+  <h1 id="page-title" class="metrics-title">{{title}}</h1>
+
+  <div class="space-y-4">{{> tab-action actions=actions }}</div>
+
+  {{> pagination currentPage=currentPage totalPages=totalPages baseUrl="/action-requests"}}
+</main>
+
+{{> reason-modal }}

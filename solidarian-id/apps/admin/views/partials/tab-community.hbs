@@ -7,16 +7,16 @@
   </section>
 
   <section class="flex flex-col gap-2 text-sm sm:text-md">
-    <span>{{this.date}}</span>
+    <span>{{ formatDateShort this.date}}</span>
     <p>{{this.description}}</p>
   </section>
 
-  {{#if this.cause_requests}} {{#each this.cause_requests}}
+  {{#if this.causeRequests}} {{#each this.causeRequests}}
   <article class="request" data-variant="cause-nested">
     <span class="font-bold text-sm sm:text-md">{{this.name}}</span>
 
     <section class="flex flex-col gap-2 text-xs sm:text-sm">
-      <span>{{this.date}}</span>
+      <span>{{ formatDateShort this.date}}</span>
       <p>{{this.description}}</p>
 
       <p>

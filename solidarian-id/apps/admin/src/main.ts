@@ -32,6 +32,8 @@ async function bootstrap() {
         eq: (a: any, b: any) => a === b,
         // Helper para comparación mayor que
         gt: (a: any, b: any) => a > b,
+        // Helper para comparación menor que
+        lt: (a: any, b: any) => a < b,
         // Helper para verificar si un array tiene elementos
         hasLength: (arr: any[]) => arr && arr.length > 0,
         // Helper para formatear fechas
@@ -57,10 +59,38 @@ async function bootstrap() {
           ];
           return `${day} de ${months[month]} de ${year}`;
         },
+        // Helper para formatear fechas como DD/MM/AAAA
+        formatDateShort: (date: Date | string) => {
+          if (!date) return '';
+          const d = new Date(date);
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const year = d.getFullYear();
+          return `${day}/${month}/${year}`;
+        },
         // Helper para obtener el título del ODS
         odsTitle: (odsNumber: string | number) => {
           const key = String(odsNumber);
           return odsNames[key] || '';
+        },
+        // Helper para ordenar arrays numéricos (ODS) y eliminar duplicados
+        sort: (arr: any): any => {
+          if (!Array.isArray(arr)) return arr;
+          const copy = arr.slice();
+          const sorted = copy.sort((a: any, b: any) => a - b);
+          return [...new Set(sorted)];
+        },
+        // Helper para suma
+        add: (a: number, b: number) => a + b,
+        // Helper para resta
+        subtract: (a: number, b: number) => a - b,
+        // Helper para generar array de números dentro de un rango
+        range: (start: number, end: number) => {
+          const arr = [];
+          for (let i = start; i < end; i++) {
+            arr.push(i);
+          }
+          return arr;
         },
       },
     }),

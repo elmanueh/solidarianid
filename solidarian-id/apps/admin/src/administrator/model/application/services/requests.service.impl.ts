@@ -13,6 +13,7 @@ import {
   RequestEventDto,
 } from '@solidarianid/kafka';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/models/value-objects/paginated-result';
 import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
 import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
 import { Request } from '@app/admin/administrator/model/domain/models/request';
@@ -199,33 +200,24 @@ export class RequestsServiceImpl extends RequestsService {
     return right(undefined);
   }
 
-  async getCommunityRequestsPending(): Promise<Either<ValidationError, CommunityRequest[]>> {
-    const communitiesOrError = await this.repository.findPendingCommunityRequests();
-
-    if (communitiesOrError.isLeft()) {
-      return left(new ValidationError('Failed to fetch community requests'));
-    }
-
-    return right(communitiesOrError.value);
+  async getCommunityRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<CommunityRequest>>> {
+    return await this.repository.findPendingCommunityRequests(page, limit);
   }
 
-  async getCauseRequestsPending(): Promise<Either<ValidationError, CauseRequest[]>> {
-    const causesOrError = await this.repository.findPendingCauseRequests();
-
-    if (causesOrError.isLeft()) {
-      return left(new ValidationError('Failed to fetch cause requests'));
-    }
-
-    return right(causesOrError.value);
+  async getCauseRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<CauseRequest>>> {
+    return await this.repository.findPendingCauseRequests(page, limit);
   }
 
-  async getActionRequestsPending(): Promise<Either<ValidationError, ActionRequest[]>> {
-    const actionsOrError = await this.repository.findPendingActionRequests();
-
-    if (actionsOrError.isLeft()) {
-      return left(new ValidationError('Failed to fetch action requests'));
-    }
-
-    return right(actionsOrError.value);
+  async getActionRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<ActionRequest>>> {
+    return await this.repository.findPendingActionRequests(page, limit);
   }
 }

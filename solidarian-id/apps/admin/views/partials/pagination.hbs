@@ -1,0 +1,19 @@
+{{#if (gt totalPages 1)}}
+<div class="join flex justify-center">
+  {{#if (gt currentPage 1)}}
+  <a href="{{baseUrl}}?page={{subtract currentPage 1}}" class="join-item btn btn-md border">
+    <span class="icon-[lucide--chevron-left]" aria-hidden="true"></span>
+    Anterior
+  </a>
+  {{/if}} {{#each (range 1 (add totalPages 1))}} {{#if (eq this ../currentPage)}}
+  <button class="join-item btn btn-md btn-active border">{{this}}</button>
+  {{else}}
+  <a href="{{../baseUrl}}?page={{this}}" class="join-item btn btn-md border">{{this}}</a>
+  {{/if}} {{/each}} {{#if (lt currentPage totalPages)}}
+  <a href="{{baseUrl}}?page={{add currentPage 1}}" class="join-item btn btn-md border">
+    Siguiente
+    <span class="icon-[lucide--chevron-right]" aria-hidden="true"></span>
+  </a>
+  {{/if}}
+</div>
+{{/if}}

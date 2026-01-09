@@ -2,7 +2,7 @@ import { Either } from '@app/ddd/either';
 import { User } from '../models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserNotFoundError } from '../errors/user-not-found.error';
-import { PaginatedResult } from '../ports/output/user.repository.port';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/models/value-objects/paginated-result';
 
 /**
  * Servicio de dominio para usuarios

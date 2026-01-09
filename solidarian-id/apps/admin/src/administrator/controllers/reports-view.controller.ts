@@ -2,6 +2,7 @@ import { Controller, Get, Query, Render, BadRequestException } from '@nestjs/com
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import type { User } from '@app/admin/administrator/model/domain/models/user';
+import { validatePageNumber } from '@app/admin/administrator/controllers/utils';
 
 /**
  * Controlador de vistas para reportes (MVC)
@@ -25,7 +26,7 @@ export class ReportsViewController {
   @Render('pages/reports')
   async reports(@Query('page') page?: string): Promise<any> {
     // Validar query param page
-    const pageNumber = this.validatePageNumber(page);
+    const pageNumber = validatePageNumber(page);
     if (pageNumber < 1) {
       throw new BadRequestException('El número de página debe ser un entero positivo');
     }
@@ -72,23 +73,6 @@ export class ReportsViewController {
       totalPages: paginatedResult.totalPages,
       ...pagination,
     };
-  }
-
-  /**
-   * Valida el número de página del query param
-   * @param page Query param page (string)
-   * @returns Número de página válido o -1 si es inválido
-   */
-  private validatePageNumber(page?: string): number {
-    if (!page) return 1; // Default a página 1
-
-    const pageNumber = parseInt(page, 10);
-
-    if (isNaN(pageNumber) || pageNumber < 1) {
-      return -1; // Inválido
-    }
-
-    return pageNumber;
   }
 
   /**

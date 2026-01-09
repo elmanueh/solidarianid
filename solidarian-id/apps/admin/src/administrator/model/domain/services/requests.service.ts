@@ -7,6 +7,7 @@ import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RequestEventDto } from '@solidarianid/kafka';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/models/value-objects/paginated-result';
 
 export abstract class RequestsService {
   abstract createRequest(props: RequestEventDto): Promise<Either<RepositoryException | ValidationError, Request<any>>>;
@@ -17,9 +18,18 @@ export abstract class RequestsService {
     reason?: string,
   ): Promise<Either<RepositoryException | ValidationError, void>>;
 
-  abstract getCommunityRequestsPending(): Promise<Either<ValidationError, CommunityRequest[]>>;
+  abstract getCommunityRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<CommunityRequest>>>;
 
-  abstract getCauseRequestsPending(): Promise<Either<ValidationError, CauseRequest[]>>;
+  abstract getCauseRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<CauseRequest>>>;
 
-  abstract getActionRequestsPending(): Promise<Either<ValidationError, ActionRequest[]>>;
+  abstract getActionRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<ActionRequest>>>;
 }

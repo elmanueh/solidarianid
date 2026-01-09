@@ -16,12 +16,12 @@ import {
   CreateObjectiveProps,
   Objective,
   ReconstituteObjectiveProps,
-} from '@app/admin/administrator/model/domain/models/value-objects/objective';
+} from '@app/admin/administrator/model/domain/value-objects/objective';
 import {
   CreateEventProps,
   Event,
   ReconstituteEventProps,
-} from '@app/admin/administrator/model/domain/models/value-objects/event';
+} from '@app/admin/administrator/model/domain/value-objects/event';
 import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
 
 interface ActionRequestProps extends RequestProps {

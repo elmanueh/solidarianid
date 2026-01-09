@@ -1,19 +1,19 @@
+import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
+import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
+import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
 import {
   CreateRequestProps,
   ReconstituteRequestProps,
   Request,
   RequestProps,
 } from '@app/admin/administrator/model/domain/models/request';
-import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Either, left, right } from '@app/ddd/either';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
-import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
-import { ActionRequest, CreateActionRequestProps } from '@app/admin/administrator/model/domain/models/action-request';
 import { Duration } from '@app/value-objects/model/duration';
-import { Reason } from '@app/value-objects/model/reason';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { Reason } from '@app/value-objects/model/reason';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
 interface CauseRequestProps extends RequestProps {
   startDate: Date;
@@ -133,17 +133,6 @@ export class CauseRequest extends Request<CauseRequestProps> {
         idOrError.value,
       ),
     );
-  }
-
-  public addAction(action: Omit<CreateActionRequestProps, 'causeId'>): Either<ValidationError, void> {
-    const actionOrError = ActionRequest.create({
-      ...action,
-      causeId: this.id.value,
-    });
-    if (actionOrError.isLeft()) return left(actionOrError.value);
-
-    this.props.actions.push(actionOrError.value);
-    return right(undefined);
   }
 
   public approve(reason?: string): Either<RequestInvalidStatusError, void> {

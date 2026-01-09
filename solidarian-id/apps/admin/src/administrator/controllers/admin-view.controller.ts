@@ -1,20 +1,11 @@
 import { ActionRequestResponseDto } from '@app/admin/administrator/controllers/dtos/action-request.response.dto';
 import { CauseRequestResponseDto } from '@app/admin/administrator/controllers/dtos/cause-request.response.dto';
 import { CommunityRequestResponseDto } from '@app/admin/administrator/controllers/dtos/community-request.response.dto';
-import {
-  DashboardSummary,
-  fakeDashboardData,
-  fakeDashboardSummary,
-} from '@app/admin/administrator/model/data/fakeMetrics';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
-import {
-  createInteractiveNationalitiesDoughnut,
-  createMonthlyJoinsLine,
-  createOdsByCauseBar,
-  createTopCommunitiesPie,
-} from '@app/admin/utils/chart-builder';
 import { Controller, Get, Render } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { AdminViewService } from '@app/admin/administrator/model/domain/services/admin-view.service';
+import { DashboardSummary } from '@app/admin/administrator/model/application/services/data/dashboardSummary.data';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -25,32 +16,25 @@ export class AdminViewController {
   constructor(
     private readonly configService: ConfigService,
     private readonly requestsService: RequestsService,
+    private readonly adminService: AdminViewService,
   ) {}
 
   @Get('/dashboard')
   @Render('pages/metrics')
-  dashboard(): {
+  async dashboard(): Promise<{
     title: string;
     layout: string;
     dataSummary: DashboardSummary;
     charts: string;
     apiBaseUrl?: string;
-  } {
-    const dataSummary = fakeDashboardSummary;
-    const dataChart = fakeDashboardData;
-
-    const charts = {
-      ods: createOdsByCauseBar(dataChart.odsByCause),
-      nationalities: createInteractiveNationalitiesDoughnut(dataChart.interactiveNationalities),
-      topCommunities: createTopCommunitiesPie(dataChart.topCommunitiesByUsers),
-      joins: createMonthlyJoinsLine(dataChart.monthlyJoinsForCommunity),
-    };
-
+  }> {
+    const chartsJson = await this.adminService.buildDashboardViewModel();
+    const dataSummary = await this.adminService.buildDashboardSummaryViewModel();
     return {
       title: 'Dashboard',
       layout: 'dashboard',
       dataSummary,
-      charts: JSON.stringify(charts),
+      charts: chartsJson,
       apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }

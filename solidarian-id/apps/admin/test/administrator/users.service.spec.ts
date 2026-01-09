@@ -9,6 +9,7 @@ import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Test, TestingModule } from '@nestjs/testing';
+import { UserQueryRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/user-query.repository.port';
 
 const createMockUserRepository = (): jest.Mocked<UserRepositoryPort> => ({
   findPaginated: jest.fn(),
@@ -99,6 +100,10 @@ describe('UsersService', () => {
         {
           provide: UserRepositoryPort,
           useValue: mockRepository,
+        },
+        {
+          provide: UserQueryRepositoryPort,
+          useValue: {},
         },
       ],
     }).compile();

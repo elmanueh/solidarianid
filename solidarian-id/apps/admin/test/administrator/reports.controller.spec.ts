@@ -16,6 +16,7 @@ const createMockUsersService = (): jest.Mocked<UsersService> => ({
   getPaginatedUsers: jest.fn(),
   getUserById: jest.fn(),
   getTotalUsers: jest.fn(),
+  getUsersGroupByCountry: jest.fn(),
 });
 
 const createMockPdfGenerator = (): jest.Mocked<UserPdfGeneratorPort> => ({

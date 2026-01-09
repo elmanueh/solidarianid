@@ -7,6 +7,8 @@ import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RequestEventDto } from '@solidarianid/kafka';
+import { CauseGroupByOdsData } from '../../application/services/data/cause-group-by-ods.data';
+import { RequestType } from '../enums/request-type';
 
 export abstract class RequestsService {
   abstract createRequest(props: RequestEventDto): Promise<Either<RepositoryException | ValidationError, Request<any>>>;
@@ -17,9 +19,16 @@ export abstract class RequestsService {
     reason?: string,
   ): Promise<Either<RepositoryException | ValidationError, void>>;
 
+  abstract getCountByStatusAndType(
+    status: RequestStatus,
+    type: RequestType,
+  ): Promise<Either<RepositoryException, number>>;
+
   abstract getCommunityRequestsPending(): Promise<Either<ValidationError, CommunityRequest[]>>;
 
   abstract getCauseRequestsPending(): Promise<Either<ValidationError, CauseRequest[]>>;
 
   abstract getActionRequestsPending(): Promise<Either<ValidationError, ActionRequest[]>>;
+
+  abstract getCausesGroupByOds(): Promise<Either<RepositoryException, CauseGroupByOdsData[]>>;
 }

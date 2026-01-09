@@ -63,9 +63,6 @@ export class RepositoryTypeORM<
   async findAll(relations?: string[]): Promise<Either<RepositoryException | EntityNotFoundException, TDomain[]>> {
     try {
       const entities = await this.repository.find({ relations });
-      if (entities.length === 0) {
-        return left(new EntityNotFoundException('Entity', 'all'));
-      }
 
       const models = entities.map(entity => this.mapper.fromPersistence(entity));
       const lefts = models.filter(m => m.isLeft());

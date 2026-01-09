@@ -4,6 +4,7 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { CommunitiesServiceImpl } from '@app/communities/application/services/communities.service.impl';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 
 describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;
@@ -25,6 +26,7 @@ describe('CommunitiesServiceImpl', () => {
       providers: [
         CommunitiesServiceImpl,
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepo },
+        { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
       ],
     }).compile();

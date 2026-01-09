@@ -19,6 +19,8 @@ import { RequestRepositoryMongoose } from '@app/admin/administrator/model/infras
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { KafkaDynamicModule } from '@solidarianid/kafka';
+import { RequestsQueryRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request-query.repository.port';
+import { RequestsQueryMongooseRepository } from '@app/admin/administrator/model/infrastructure/persistence/repositories/request-query.repository-mongoose';
 
 @Module({
   imports: [
@@ -50,6 +52,10 @@ import { KafkaDynamicModule } from '@solidarianid/kafka';
     {
       provide: RequestsPublisherPort,
       useClass: RequestsKafkaPublisherAdapter,
+    },
+    {
+      provide: RequestsQueryRepositoryPort,
+      useClass: RequestsQueryMongooseRepository,
     },
   ],
   exports: [RequestsService],

@@ -27,7 +27,6 @@ describe('ActionsServiceImpl', () => {
     description: 'A valid test action description with more than 20 characters',
     status: RequestStatus.APPROVED,
     userId: validUserId,
-    username: 'testuser',
     causeId: validCauseId,
     objectives: [
       {

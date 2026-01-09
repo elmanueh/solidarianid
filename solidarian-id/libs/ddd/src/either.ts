@@ -58,3 +58,7 @@ export function sequence<L, R>(eithers?: Either<L, R>[]): Either<L, R[]> {
   }
   return right(results);
 }
+
+export function fulfilledValue<T>(r: PromiseSettledResult<T>): T | undefined {
+  return r.status === 'fulfilled' ? r.value : undefined;
+}

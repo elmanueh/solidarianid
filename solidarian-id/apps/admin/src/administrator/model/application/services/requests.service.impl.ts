@@ -22,11 +22,14 @@ import {
   EventType,
   RequestEventDto,
 } from '@solidarianid/kafka';
+import { RequestsQueryRepositoryPort } from '../../domain/ports/output/request-query.repository.port';
+import { CauseGroupByOdsData } from './data/cause-group-by-ods.data';
 
 @Injectable()
 export class RequestsServiceImpl extends RequestsService {
   constructor(
     private readonly repository: RequestsRepositoryPort,
+    private readonly repositoryQuery: RequestsQueryRepositoryPort,
     private readonly messagery: RequestsPublisherPort,
   ) {
     super();
@@ -203,6 +206,17 @@ export class RequestsServiceImpl extends RequestsService {
     return right(undefined);
   }
 
+  async getCountByStatusAndType(
+    status: RequestStatus,
+    type: RequestType,
+  ): Promise<Either<RepositoryException, number>> {
+    const requestsOrError = await this.repository.findByStatusAndType(status, type);
+    if (requestsOrError.isLeft()) {
+      return right(0);
+    }
+    return right(requestsOrError.value.length);
+  }
+
   async getCommunityRequestsPending(
     page: number,
     limit: number,
@@ -222,5 +236,9 @@ export class RequestsServiceImpl extends RequestsService {
     limit: number,
   ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<ActionRequest>>> {
     return await this.repository.findPendingActionRequests(page, limit);
+  }
+
+  async getCausesGroupByOds(): Promise<Either<RepositoryException, CauseGroupByOdsData[]>> {
+    return this.repositoryQuery.findCausesGroupByOds();
   }
 }

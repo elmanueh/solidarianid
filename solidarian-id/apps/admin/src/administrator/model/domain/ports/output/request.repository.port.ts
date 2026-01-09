@@ -6,6 +6,8 @@ import { PaginatedResult } from '@app/admin/administrator/model/domain/value-obj
 import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Repository } from '@app/ddd/repository/repository';
+import { RequestStatus } from '../../enums/request-status';
+import { RequestType } from '../../enums/request-type';
 
 /**
  * Port for Request repository operations.
@@ -25,4 +27,9 @@ export abstract class RequestsRepositoryPort extends Repository<Request<any>> {
     page: number,
     limit: number,
   ): Promise<Either<RepositoryException, PaginatedResult<ActionRequest>>>;
+
+  abstract findByStatusAndType(
+    status: RequestStatus,
+    type: RequestType,
+  ): Promise<Either<RepositoryException, Request<any>[]>>;
 }

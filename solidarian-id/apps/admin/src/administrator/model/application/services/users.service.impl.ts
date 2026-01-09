@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../../domain/services/users.service';
 import { User } from '../../domain/models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { UserQueryRepositoryPort } from '../../domain/ports/output/user-query.repository.port';
+import { UserGroupByCountryData } from './data/user-group-by-country.data';
 import { UserRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/user.repository.port';
 import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 
@@ -12,7 +14,10 @@ import { PaginatedResult } from '@app/admin/administrator/model/domain/value-obj
  */
 @Injectable()
 export class UsersServiceImpl extends UsersService {
-  constructor(private readonly userRepository: UserRepositoryPort) {
+  constructor(
+    private readonly userRepository: UserRepositoryPort,
+    private readonly userQueryRepository: UserQueryRepositoryPort,
+  ) {
     super();
   }
 
@@ -35,5 +40,9 @@ export class UsersServiceImpl extends UsersService {
    */
   async getTotalUsers(): Promise<Either<RepositoryException, number>> {
     return await this.userRepository.countAll();
+  }
+
+  async getUsersGroupByCountry(limit: number): Promise<Either<RepositoryException, UserGroupByCountryData[]>> {
+    return await this.userQueryRepository.findUsersGroupByCountry(limit);
   }
 }

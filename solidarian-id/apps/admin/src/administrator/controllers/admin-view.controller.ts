@@ -1,23 +1,14 @@
-import {
-  DashboardSummary,
-  fakeDashboardData,
-  fakeDashboardSummary,
-} from '@app/admin/administrator/model/data/fakeMetrics';
-import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import { validatePageNumber } from '@app/admin/administrator/controllers/utils';
-import {
-  createInteractiveNationalitiesDoughnut,
-  createMonthlyJoinsLine,
-  createOdsByCauseBar,
-  createTopCommunitiesPie,
-} from '@app/admin/utils/chart-builder';
 import { BadRequestException, Controller, Get, Query, Render } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
+import { AdminViewService } from '@app/admin/administrator/model/domain/services/admin-view.service';
+import { DashboardSummary } from '@app/admin/administrator/model/application/services/data/dashboardSummary.data';
 import { CommunityRequestResponseDto } from '@app/admin/administrator/controllers/dtos/community-request.response.dto';
-import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
 import { CauseRequestResponseDto } from '@app/admin/administrator/controllers/dtos/cause-request.response.dto';
-import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
 import { ActionRequestResponseDto } from '@app/admin/administrator/controllers/dtos/action-request.response.dto';
+import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
+import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
 import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
 
 /**
@@ -31,32 +22,25 @@ export class AdminViewController {
   constructor(
     private readonly configService: ConfigService,
     private readonly requestsService: RequestsService,
+    private readonly adminService: AdminViewService,
   ) {}
 
   @Get('/dashboard')
   @Render('pages/metrics')
-  dashboard(): {
+  async dashboard(): Promise<{
     title: string;
     layout: string;
     dataSummary: DashboardSummary;
     charts: string;
     apiBaseUrl?: string;
-  } {
-    const dataSummary = fakeDashboardSummary;
-    const dataChart = fakeDashboardData;
-
-    const charts = {
-      ods: createOdsByCauseBar(dataChart.odsByCause),
-      nationalities: createInteractiveNationalitiesDoughnut(dataChart.interactiveNationalities),
-      topCommunities: createTopCommunitiesPie(dataChart.topCommunitiesByUsers),
-      joins: createMonthlyJoinsLine(dataChart.monthlyJoinsForCommunity),
-    };
-
+  }> {
+    const chartsJson = await this.adminService.buildDashboardViewModel();
+    const dataSummary = await this.adminService.buildDashboardSummaryViewModel();
     return {
       title: 'Dashboard',
       layout: 'dashboard',
       dataSummary,
-      charts: JSON.stringify(charts),
+      charts: chartsJson,
       apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
     };
   }
@@ -95,8 +79,8 @@ export class AdminViewController {
 
     const result = await this.requestsService.getCommunityRequestsPending(pageNumber, this.REQUESTS_PER_PAGE);
     const data = result.isLeft()
-      ? { data: [], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
-      : result.value;
+      ? { data: [] as CommunityRequest[], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
+      : (result.value as { data: CommunityRequest[]; total: number; totalPages: number; page: number });
 
     const mappedData = data.data.map((request: CommunityRequest) => CommunityRequestResponseDto.toDto(request));
 
@@ -127,8 +111,8 @@ export class AdminViewController {
 
     const result = await this.requestsService.getCauseRequestsPending(pageNumber, this.REQUESTS_PER_PAGE);
     const data = result.isLeft()
-      ? { data: [], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
-      : result.value;
+      ? { data: [] as CauseRequest[], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
+      : (result.value as { data: CauseRequest[]; total: number; totalPages: number; page: number });
 
     const mappedData = data.data.map((request: CauseRequest) => CauseRequestResponseDto.toDto(request));
 
@@ -160,9 +144,11 @@ export class AdminViewController {
     const result = await this.requestsService.getActionRequestsPending(pageNumber, this.REQUESTS_PER_PAGE);
     const data = result.isLeft()
       ? { data: [], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
-      : result.value;
+      : (result.value as { data: ActionRequest[]; total: number; totalPages: number; page: number });
 
-    const mappedData = data.data.map((request: ActionRequest) => ActionRequestResponseDto.toDto(request));
+    const mappedData = (data.data as ActionRequest[]).map((request: ActionRequest) =>
+      ActionRequestResponseDto.toDto(request),
+    );
 
     return {
       title: 'Solicitudes de acciones',

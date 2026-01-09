@@ -1,10 +1,20 @@
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
+import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
+import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
+import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
+import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
+import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
+import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
+import { Request } from '@app/admin/administrator/model/domain/models/request';
+import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
-import { Either, left, right } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { Injectable } from '@nestjs/common';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
+import { Either, left, right } from '@app/ddd/either';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { Injectable } from '@nestjs/common';
 import {
   ActionRequestEventDto,
   CauseRequestEventDto,
@@ -12,16 +22,6 @@ import {
   EventType,
   RequestEventDto,
 } from '@solidarianid/kafka';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { PaginatedResult } from '@app/admin/administrator/model/domain/models/value-objects/paginated-result';
-import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
-import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
-import { Request } from '@app/admin/administrator/model/domain/models/request';
-import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
-import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
-import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
-import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
-import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
 
 @Injectable()
 export class RequestsServiceImpl extends RequestsService {
@@ -56,81 +56,84 @@ export class RequestsServiceImpl extends RequestsService {
     }
   }
 
-  private async buildActionRequest(data: ActionRequestEventDto): Promise<Either<ValidationError, CauseRequest>> {
+  private async buildActionRequest(data: ActionRequestEventDto): Promise<Either<ValidationError, ActionRequest>> {
     const causeIdOrError = UniqueEntityID.create(data.causeId);
     if (causeIdOrError.isLeft()) return left(causeIdOrError.value);
 
     const causeOrError = await this.repository.findById(data.causeId);
-    if (causeIdOrError.isLeft()) return left(causeIdOrError.value);
+    if (causeOrError.isLeft()) return left(causeOrError.value);
 
-    const cause = causeOrError.value as CauseRequest;
-    const res = cause.addAction({
-      name: data.name,
-      description: data.description,
-      userId: data.userId,
-      objectives: data.objectives.map(objective => {
-        return {
-          name: objective.name,
-          description: objective.description,
-          quantity: objective.quantity,
-          unit: objective.unit,
-        };
-      }),
-      events: data.events.map(event => {
-        return {
-          name: event.name,
-          description: event.description,
-          initialDate: event.initialDate,
-          place: {
-            direction: event.place.direction,
-            city: event.place.city,
-            countryCode: event.place.countryCode,
-          },
-        };
-      }),
-    });
-
-    if (res.isLeft()) return left(res.value);
-    return right(cause);
+    return ActionRequest.create(
+      {
+        name: data.name,
+        description: data.description,
+        userId: data.userId,
+        causeId: data.causeId,
+        objectives: data.objectives.map(objective => {
+          return {
+            name: objective.name,
+            description: objective.description,
+            quantity: objective.quantity,
+            unit: objective.unit,
+          };
+        }),
+        events: data.events.map(event => {
+          return {
+            name: event.name,
+            description: event.description,
+            initialDate: event.initialDate,
+            place: {
+              direction: event.place.direction,
+              city: event.place.city,
+              countryCode: event.place.countryCode,
+            },
+          };
+        }),
+      },
+      data.id,
+    );
   }
 
-  private async buildCauseRequest(data: CauseRequestEventDto): Promise<Either<ValidationError, CommunityRequest>> {
+  private async buildCauseRequest(data: CauseRequestEventDto): Promise<Either<ValidationError, CauseRequest>> {
     const communityidOrError = UniqueEntityID.create(data.communityId);
     if (communityidOrError.isLeft()) return left(communityidOrError.value);
 
     const communityOrError = await this.repository.findById(data.communityId);
     if (communityOrError.isLeft()) return left(communityOrError.value);
 
-    const community = communityOrError.value as CommunityRequest;
-    const res = community.addCause({
-      name: data.name,
-      description: data.description,
-      startDate: data.initialDate,
-      duration: data.durationDays,
-      ods: data.ods,
-      userId: data.userId,
-    });
-
-    if (res.isLeft()) return left(res.value);
-    return right(community);
+    return CauseRequest.create(
+      {
+        name: data.name,
+        description: data.description,
+        startDate: data.initialDate,
+        duration: data.durationDays,
+        ods: data.ods,
+        userId: data.userId,
+        communityId: data.communityId,
+      },
+      data.id,
+    );
   }
 
   private buildCommunityRequest(data: CommunityRequestEventDto): Either<ValidationError, CommunityRequest> {
-    return CommunityRequest.create({
-      name: data.name,
-      description: data.description,
-      userId: data.userId,
-      causes: data.causeRequests.map(cause => {
-        return {
-          name: cause.name,
-          description: cause.description,
-          ods: cause.ods,
-          userId: data.userId,
-          startDate: cause.initialDate,
-          duration: cause.durationDays,
-        };
-      }),
-    });
+    return CommunityRequest.create(
+      {
+        name: data.name,
+        description: data.description,
+        userId: data.userId,
+        causes: data.causeRequests.map(cause => {
+          return {
+            name: cause.name,
+            description: cause.description,
+            ods: cause.ods,
+            userId: data.userId,
+            startDate: cause.initialDate,
+            duration: cause.durationDays,
+          };
+        }),
+      },
+      data.id,
+    );
   }
 
   async updateStatus(

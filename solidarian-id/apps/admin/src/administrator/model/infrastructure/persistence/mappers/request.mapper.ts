@@ -9,12 +9,12 @@ import { Injectable } from '@nestjs/common';
 import { CommunityRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/community-request.entity';
 import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
 import { ActionRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/action-request.entity';
-import { Objective } from '@app/admin/administrator/model/domain/models/value-objects/objective';
-import { Event } from '@app/admin/administrator/model/domain/models/value-objects/event';
+import { Objective } from '@app/admin/administrator/model/domain/value-objects/objective';
+import { Event } from '@app/admin/administrator/model/domain/value-objects/event';
 import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
 import { ObjectiveEmbedded } from '@app/admin/administrator/model/infrastructure/persistence/entities/embedded/objective.embedded';
 import { EventEmbedded } from '@app/admin/administrator/model/infrastructure/persistence/entities/embedded/event.embedded';
-import { EventPlace } from '@app/admin/administrator/model/domain/models/value-objects/event-place';
+import { EventPlace } from '@app/admin/administrator/model/domain/value-objects/event-place';
 import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
 
 @Injectable()

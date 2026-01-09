@@ -1,21 +1,19 @@
-import { Mapper } from '@solidarianid/kafka';
+import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
+import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
+import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
 import { AnyRequest } from '@app/communities/domain/ports/requests.publisher.port';
-import { RequestEventDto } from '@solidarianid/kafka';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Injectable } from '@nestjs/common';
 import {
   ActionRequestEventDto,
   ActionRequestEventEventDto,
   ActionRequestObjectiveEventDto,
-} from '../../../../../../libs/kafka/src/dtos/requests/request-action.event.dto';
-import { CauseRequestEventDto } from '../../../../../../libs/kafka/src/dtos/requests/request-cause.event.dto';
-import {
-  CommunityRequestEventDto,
+  CauseRequestEventDto,
   CommunityRequestCauseEventDto,
-} from '../../../../../../libs/kafka/src/dtos/requests/request-community.event.dto';
-import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
-import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
-import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { Injectable } from '@nestjs/common';
+  CommunityRequestEventDto,
+  Mapper,
+  RequestEventDto,
+} from '@solidarianid/kafka';
 
 /**
  * Mapper for converting domain Request entities to event DTOs.

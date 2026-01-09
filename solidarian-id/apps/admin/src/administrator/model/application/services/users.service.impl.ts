@@ -3,9 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../../domain/services/users.service';
 import { User } from '../../domain/models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
-import { UserRepositoryPort } from '../../domain/ports/output/user.repository.port';
-import { PaginatedResult } from '@app/admin/administrator/model/domain/models/value-objects/paginated-result';
+import { UserRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/user.repository.port';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 
 /**
  * Implementación del servicio de usuarios
@@ -27,14 +26,14 @@ export class UsersServiceImpl extends UsersService {
   /**
    * Obtiene un usuario específico por su ID
    */
-  async getUserById(id: string): Promise<Either<RepositoryException | UserNotFoundError, User>> {
+  async getUserById(id: string): Promise<Either<RepositoryException, User>> {
     return await this.userRepository.findById(id);
   }
 
   /**
    * Obtiene el total de usuarios en el sistema
    */
-  async getTotalUsers(): Promise<number> {
+  async getTotalUsers(): Promise<Either<RepositoryException, number>> {
     return await this.userRepository.countAll();
   }
 }

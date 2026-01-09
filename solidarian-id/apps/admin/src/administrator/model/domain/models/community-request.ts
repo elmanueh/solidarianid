@@ -1,18 +1,18 @@
+import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
+import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
+import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
+import { CauseRequest, CreateCauseRequestProps } from '@app/admin/administrator/model/domain/models/cause-request';
 import {
   CreateRequestProps,
   ReconstituteRequestProps,
   Request,
   RequestProps,
 } from '@app/admin/administrator/model/domain/models/request';
-import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Either, left, right, sequence } from '@app/ddd/either';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
-import { RequestInvalidStatusError } from '@app/admin/administrator/model/domain/errors/invalid-status.request-error';
-import { CauseRequest, CreateCauseRequestProps } from '@app/admin/administrator/model/domain/models/cause-request';
 import { Reason } from '@app/value-objects/model/reason';
-import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 
 interface CommunityRequestProps extends RequestProps {
   causes: CauseRequest[];
@@ -98,17 +98,6 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
         idOrError.value,
       ),
     );
-  }
-
-  public addCause(cause: Omit<CreateCauseRequestProps, 'communityId'>): Either<ValidationError, void> {
-    const causeOrError = CauseRequest.create({
-      ...cause,
-      communityId: this.id.value,
-    });
-    if (causeOrError.isLeft()) return left(causeOrError.value);
-
-    this.props.causes.push(causeOrError.value);
-    return right(undefined);
   }
 
   public approve(reason?: string): Either<RequestInvalidStatusError, void> {

@@ -10,6 +10,7 @@ import { Cause } from '../entities/cause';
 interface CommunityProps {
   name: Name;
   description: Description;
+  creator: User;
   admins: User[];
   members: User[];
   causes: Cause[];
@@ -18,6 +19,7 @@ interface CommunityProps {
 interface CommunityCreationProps {
   name: string;
   description: string;
+  creator: User;
   admins?: User[];
   members?: User[];
   causes?: Cause[];
@@ -50,6 +52,10 @@ export class Community extends AggregateRoot<CommunityProps> {
     }
   }
 
+  get creator(): User {
+    return this.props.creator;
+  }
+
   get admins(): ReadonlyArray<User> {
     return this.props.admins;
   }
@@ -74,12 +80,20 @@ export class Community extends AggregateRoot<CommunityProps> {
     this.props.admins.push(user);
   }
 
+  add(cause: Cause): void {
+    this.props.causes.push(cause);
+  }
+
   hasMember(user: User): boolean {
     return this.props.members.some(m => m.id.equals(user.id));
   }
 
   hasAdmin(user: User): boolean {
     return this.props.admins.some(a => a.id.equals(user.id));
+  }
+
+  isCreator(user: User): boolean {
+    return this.props.creator.id.equals(user.id);
   }
 
   /**
@@ -99,6 +113,7 @@ export class Community extends AggregateRoot<CommunityProps> {
     const communityProps: CommunityProps = {
       name: name.value,
       description: description.value,
+      creator: props.creator,
       admins: props.admins ?? [],
       members: props.members ?? [],
       causes: props.causes ?? [],

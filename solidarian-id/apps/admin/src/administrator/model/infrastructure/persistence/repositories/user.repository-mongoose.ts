@@ -8,7 +8,7 @@ import { User } from '@app/admin/administrator/model/domain/models/user';
 import { UserDocument, UserEntity } from '../entities/user.entity';
 import { UserMapper } from '../mappers/user.mapper';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { PaginatedResult } from '@app/admin/administrator/model/domain/models/value-objects/paginated-result';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 
 @Injectable()
 export class UserRepositoryMongoose extends RepositoryMongoose<User, UserEntity> implements UserRepositoryPort {
@@ -58,7 +58,12 @@ export class UserRepositoryMongoose extends RepositoryMongoose<User, UserEntity>
     }
   }
 
-  async countAll(): Promise<number> {
-    return this.userModel.countDocuments();
+  async countAll(): Promise<Either<RepositoryException, number>> {
+    try {
+      const count = await this.userModel.countDocuments();
+      return right(count);
+    } catch (error) {
+      return left(new RepositoryException('Failed to count users.', error));
+    }
   }
 }

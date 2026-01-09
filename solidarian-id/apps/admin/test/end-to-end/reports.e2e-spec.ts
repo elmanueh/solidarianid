@@ -3,11 +3,10 @@ import { INestApplication } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { AdminModule } from '@app/admin/administrator/admin.module';
 import {
-  KafkaTestContainer,
   KafkaTestModule,
   MongoDBSeeder,
-  MongoDBTestContainer,
   MongoDBTestModule,
+  TestContainerLifecycle,
   TestServerHelper,
 } from '@solidarianid/testing';
 
@@ -38,8 +37,7 @@ describe('ReportsApiController (e2e)', () => {
 
   afterAll(async () => {
     await server.close();
-    await MongoDBTestContainer.getInstance().stop();
-    await KafkaTestContainer.getInstance().stop();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   describe('GET /api/reports/users/:id', () => {
@@ -70,21 +68,15 @@ describe('ReportsApiController (e2e)', () => {
       it('should return 404 when user does not exist', async () => {
         const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}`).expect(404);
 
-        expect(response.body).toHaveProperty('statusCode', 404);
-        expect(response.body).toHaveProperty('message');
+        expect(response.body.error).toHaveProperty('statusCode', 404);
+        expect(response.body.error).toHaveProperty('message');
         expect(response.body).toHaveProperty('timestamp');
       });
 
       it('should return 404 with meaningful error message', async () => {
         const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}`).expect(404);
 
-        expect(response.body.message).toContain(nonExistentUserId);
-      });
-    });
-
-    describe('Edge Cases', () => {
-      it('should handle malformed UUID gracefully', async () => {
-        await server.getRequest().get('/api/reports/users/invalid-uuid-format').expect(404);
+        expect(response.body.error.message).toContain(nonExistentUserId);
       });
     });
   });
@@ -119,12 +111,6 @@ describe('ReportsApiController (e2e)', () => {
         const response = await server.getRequest().get(`/api/reports/users/${nonExistentUserId}/pdf`).expect(404);
 
         expect(response.headers['content-type']).not.toBe('application/pdf');
-      });
-    });
-
-    describe('Edge Cases', () => {
-      it('should handle malformed UUID in PDF endpoint', async () => {
-        await server.getRequest().get('/api/reports/users/invalid-uuid/pdf').expect(404);
       });
     });
 

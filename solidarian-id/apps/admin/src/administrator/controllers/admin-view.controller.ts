@@ -1,19 +1,24 @@
-import { Controller, Get, Render, Query, BadRequestException } from '@nestjs/common';
-import { fakeDashboardData, DashboardSummary, fakeDashboardSummary } from '../model/data/fakeMetrics';
 import {
-  createInteractiveNationalitiesDoughnut,
-  createOdsByCauseBar,
-  createTopCommunitiesPie,
-  createMonthlyJoinsLine,
-} from '../../utils/chart-builder';
-import { ConfigService } from '@nestjs/config';
+  DashboardSummary,
+  fakeDashboardData,
+  fakeDashboardSummary,
+} from '@app/admin/administrator/model/data/fakeMetrics';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import { validatePageNumber } from '@app/admin/administrator/controllers/utils';
 import {
-  CommunityRequestResponseDto,
-  CauseRequestResponseDto,
-  ActionRequestResponseDto,
-} from '@app/admin/administrator/model/application/dtos/requests.mapper.dto';
+  createInteractiveNationalitiesDoughnut,
+  createMonthlyJoinsLine,
+  createOdsByCauseBar,
+  createTopCommunitiesPie,
+} from '@app/admin/utils/chart-builder';
+import { BadRequestException, Controller, Get, Query, Render } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { CommunityRequestResponseDto } from '@app/admin/administrator/controllers/dtos/community-request.response.dto';
+import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
+import { CauseRequestResponseDto } from '@app/admin/administrator/controllers/dtos/cause-request.response.dto';
+import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
+import { ActionRequestResponseDto } from '@app/admin/administrator/controllers/dtos/action-request.response.dto';
+import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
@@ -56,12 +61,6 @@ export class AdminViewController {
     };
   }
 
-  @Get('/requests')
-  @Render('pages/community-requests')
-  async requests(@Query('page') page?: string) {
-    return this.getCommunitiesData(page);
-  }
-
   @Get('/community-requests')
   @Render('pages/community-requests')
   async communitiesRequests(@Query('page') page?: string) {
@@ -99,7 +98,7 @@ export class AdminViewController {
       ? { data: [], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
       : result.value;
 
-    const mappedData = data.data.map(request => CommunityRequestResponseDto.toDto(request));
+    const mappedData = data.data.map((request: CommunityRequest) => CommunityRequestResponseDto.toDto(request));
 
     return {
       title: 'Solicitudes de comunidades',
@@ -131,7 +130,7 @@ export class AdminViewController {
       ? { data: [], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
       : result.value;
 
-    const mappedData = data.data.map(request => CauseRequestResponseDto.toDto(request));
+    const mappedData = data.data.map((request: CauseRequest) => CauseRequestResponseDto.toDto(request));
 
     return {
       title: 'Solicitudes de causas',
@@ -163,7 +162,7 @@ export class AdminViewController {
       ? { data: [], total: 0, totalPages: 0, page: pageNumber, limit: this.REQUESTS_PER_PAGE }
       : result.value;
 
-    const mappedData = data.data.map(request => ActionRequestResponseDto.toDto(request));
+    const mappedData = data.data.map((request: ActionRequest) => ActionRequestResponseDto.toDto(request));
 
     return {
       title: 'Solicitudes de acciones',

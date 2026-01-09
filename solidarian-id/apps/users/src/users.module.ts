@@ -12,7 +12,6 @@ import { PasswordManagerBcrypt } from '@app/utils/security/password-manager-bcry
 import { KafkaDynamicModule } from '@solidarianid/kafka';
 import { UsersPublisherPort } from './domain/ports/users.publisher.port';
 import { UsersKafkaPublisherAdapter } from './infrastructure/messaging/producer/user.publisher';
-import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
 import { UserEventMapper } from './infrastructure/messaging/mappers/user.event.mapper';
 
 @Module({
@@ -20,7 +19,7 @@ import { UserEventMapper } from './infrastructure/messaging/mappers/user.event.m
     TypeOrmModule.forFeature([UserEntity]),
     KafkaDynamicModule.register(process.env.KAFKA_USERS_CLIENT_ID ?? 'users'),
   ],
-  controllers: [UsersController, UserConsumerAdapter],
+  controllers: [UsersController],
   providers: [
     UserMapper,
     UserEventMapper,

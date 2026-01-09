@@ -1,6 +1,6 @@
 {{#if (gt totalPages 1)}}
-<div class="flex justify-center">
-  <div class="join flex gap-1 shadow-xl bg-base-200 p-2 rounded-box">
+<div class="flex flex-col items-center gap-2">
+  <div class="join flex gap-1 shadow-sm bg-base-200 p-2 rounded-box">
     {{#if (gt currentPage 1)}}
     <a href="{{baseUrl}}?page={{subtract currentPage 1}}" class="join-item btn btn-md bg-base-300">
       <span class="icon-[lucide--chevron-left]" aria-hidden="true"></span>
@@ -17,5 +17,7 @@
     </a>
     {{/if}}
   </div>
+
+  <div class="text-sm">{{currentPage}} / {{totalPages}}</div>
 </div>
 {{/if}}

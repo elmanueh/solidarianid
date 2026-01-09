@@ -1,23 +1,34 @@
+import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
+import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
+import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
+import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
+import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
+import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { ActionsService } from '@app/communities/domain/services/actions.service';
+import { CausesService } from '@app/communities/domain/services/causes.service';
+import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { RequestsService } from '@app/communities/domain/services/request.service';
 import { CreateActionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-action.request.dto';
 import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
 import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
 import { Either, left, right } from '@app/ddd/either';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Injectable } from '@nestjs/common';
-import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
-import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
-import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
-import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
-import { EventType } from '@solidarianid/kafka';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import {
+  ActionRequestEventDto,
+  CauseRequestEventDto,
+  CommunityRequestEventDto,
+  EventType,
+  RequestEventDto,
+} from '@solidarianid/kafka';
 
 /**
  * Implementation of the RequestsService.
@@ -33,6 +44,9 @@ export class RequestsServiceImpl extends RequestsService {
     private readonly userRepository: UsersRepositoryPort,
     private readonly communityRepository: CommunitiesRepositoryPort,
     private readonly causeRepository: CausesRepositoryPort,
+    private readonly communitiesService: CommunitiesService,
+    private readonly causesService: CausesService,
+    private readonly actionsService: ActionsService,
   ) {
     super();
   }
@@ -95,7 +109,7 @@ export class RequestsServiceImpl extends RequestsService {
     dto: CreateCauseRequestDto,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>> {
     const userOrError = await this.userRepository.findById(dto.userId);
-    const communityOrError = await this.communityRepository.findById(dto.communityId);
+    const communityOrError = await this.communityRepository.findById(dto.communityId, ['members', 'members.user']);
 
     if (communityOrError.isLeft()) {
       return left(communityOrError.value);
@@ -193,5 +207,81 @@ export class RequestsServiceImpl extends RequestsService {
 
     await this.requestPublisher.publish(EventType.REQUEST_CREATED, actionRequestOrError.value);
     return right(actionRequestOrError.value.id);
+  }
+
+  async acceptRequest(requestEventDto: RequestEventDto): Promise<Either<ValidationError | RepositoryException, void>> {
+    const requestOrError: Either<
+      RepositoryException | EntityNotFoundException,
+      Request<RequestProps>
+    > = await this.requestsRepository.findById(requestEventDto.id);
+
+    if (requestOrError.isLeft()) {
+      return left(requestOrError.value);
+    }
+
+    const request: Request<RequestProps> = requestOrError.value;
+    request.accept(requestEventDto.reason ?? 'No reason provided');
+
+    const saveResult = await this.requestsRepository.save(request);
+
+    if (saveResult.isLeft()) {
+      return left(saveResult.value);
+    }
+
+    // Additional logic based on request type
+    switch (request.type) {
+      case RequestType.COMMUNITY: {
+        const communityResult = await this.communitiesService.create(requestEventDto as CommunityRequestEventDto);
+        if (communityResult.isLeft()) {
+          return left(communityResult.value);
+        }
+        break;
+      }
+      case RequestType.CAUSE: {
+        const causeResult = await this.causesService.create(requestEventDto as CauseRequestEventDto);
+        if (causeResult.isLeft()) {
+          return left(causeResult.value);
+        }
+        break;
+      }
+      case RequestType.ACTION: {
+        const actionResult = await this.actionsService.create(requestEventDto as ActionRequestEventDto);
+        if (actionResult.isLeft()) {
+          return left(actionResult.value);
+        }
+        break;
+      }
+      default:
+        return left(new ValidationError('Invalid request type'));
+    }
+
+    return right(undefined);
+  }
+
+  async rejectRequest(requestEventDto: RequestEventDto): Promise<Either<ValidationError | RepositoryException, void>> {
+    const requestOrError: Either<
+      RepositoryException | EntityNotFoundException,
+      Request<RequestProps>
+    > = await this.requestsRepository.findById(requestEventDto.id);
+
+    if (requestOrError.isLeft()) {
+      return left(requestOrError.value);
+    }
+
+    const request: Request<RequestProps> = requestOrError.value;
+
+    const rejectOrError = request.reject(requestEventDto.reason ?? 'No reason provided');
+
+    if (rejectOrError.isLeft()) {
+      return left(rejectOrError.value);
+    }
+
+    const saveResult = await this.requestsRepository.save(request);
+
+    if (saveResult.isLeft()) {
+      return left(saveResult.value);
+    }
+
+    return right(undefined);
   }
 }

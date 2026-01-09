@@ -1,20 +1,21 @@
-import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { ValidationPipe } from '@nestjs/common';
-import { Transport } from '@nestjs/microservices';
-import { join } from 'node:path';
-import { engine } from 'express-handlebars';
-import { AppModule } from '@app/admin/app.module';
-import session from 'express-session';
+import { AuthenticationErrorFilter } from '@app/admin/administrator/controllers/filters/authentication-error.filter';
+import { ConflictErrorFilter } from '@app/admin/administrator/controllers/filters/conflict-error.filter';
 import { HttpExceptionFilter } from '@app/admin/administrator/controllers/filters/http-exception.filter';
-import { AuthenticationErrorFilter } from './administrator/controllers/filters/authentication-error.filter';
-import { ConflictErrorFilter } from './administrator/controllers/filters/conflict-error.filter';
-import { InternalServerErrorFilter } from './administrator/controllers/filters/internal-server-error.filter';
-import { NotFoundErrorFilter } from './administrator/controllers/filters/not-found-error.filter';
-import { ValidationErrorFilter } from './administrator/controllers/filters/validation-error.filter';
-import { ConfigService } from '@nestjs/config';
+import { InternalServerErrorFilter } from '@app/admin/administrator/controllers/filters/internal-server-error.filter';
+import { NotFoundErrorFilter } from '@app/admin/administrator/controllers/filters/not-found-error.filter';
+import { RepositoryExceptionFilter } from '@app/admin/administrator/controllers/filters/repository-exception.filter';
+import { ValidationErrorFilter } from '@app/admin/administrator/controllers/filters/validation-error.filter';
+import { AppModule } from '@app/admin/app.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 import { odsNames } from '@app/admin/utils/data-utils';
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { Transport } from '@nestjs/microservices';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { engine } from 'express-handlebars';
+import session from 'express-session';
+import { join } from 'node:path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -98,7 +99,7 @@ async function bootstrap() {
 
   app.use(
     session({
-      secret: process.env.SESSION_SECRET || 'YouHaveToChangeThisSecret',
+      secret: process.env.SESSION_SECRET ?? 'YouHaveToChangeThisSecret',
       resave: false,
       saveUninitialized: false,
       cookie: {
@@ -132,11 +133,12 @@ async function bootstrap() {
   // Configurar filtros globales de excepciones
   app.useGlobalFilters(
     new HttpExceptionFilter(),
-    new InternalServerErrorFilter(),
-    new ValidationErrorFilter(),
     new NotFoundErrorFilter(),
+    new RepositoryExceptionFilter(),
+    new ValidationErrorFilter(),
     new ConflictErrorFilter(),
     new AuthenticationErrorFilter(),
+    new InternalServerErrorFilter(),
     new GlobalExceptionFilter(),
   );
 
@@ -155,6 +157,13 @@ async function bootstrap() {
   });
 
   await app.startAllMicroservices();
+
+  app.enableCors({
+    origin: configService.get<string>('API_BASE_ADMIN_URL') ?? '*',
+    exposedHeaders: ['Location'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    credentials: true,
+  });
 
   const port = configService.get<number>('ADMIN_PORT') ?? 3000;
   console.log(`Server running on port ${port}`);

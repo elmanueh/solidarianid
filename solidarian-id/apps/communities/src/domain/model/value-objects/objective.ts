@@ -5,9 +5,9 @@ import { Name } from '@app/value-objects/model/name';
 import { Quantity } from '@app/value-objects/model/quantity';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Unit } from '@app/value-objects/model/unit';
-import { User } from '../entities/user';
 import { CurrentAmount } from '@app/value-objects/model/current-amount';
 import { ValueObject } from '@app/ddd/value-object';
+import { User } from '@app/communities/domain/model/entities/user';
 
 export interface ObjectiveProps {
   name: Name;
@@ -73,7 +73,7 @@ export class Objective extends ValueObject<ObjectiveProps> {
     const quantity = Quantity.create(props.quantity);
     const unit = Unit.create(props.unit);
     const actionId = UniqueEntityID.create(props.actionId);
-    const currentAmount = CurrentAmount.create(props.currentAmount || 0);
+    const currentAmount = CurrentAmount.create(props.currentAmount ?? 0);
 
     if (name.isLeft()) return left(name.value);
     if (description.isLeft()) return left(description.value);

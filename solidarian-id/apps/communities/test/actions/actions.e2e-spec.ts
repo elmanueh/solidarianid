@@ -3,8 +3,7 @@ import {
   TestServerHelper,
   PostgreSQLSeeder,
   KafkaTestModule,
-  KafkaTestContainer,
-  PostgreSQLTestContainer,
+  TestContainerLifecycle,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
@@ -42,18 +41,20 @@ describe('ActionsController (e2e)', () => {
     ]);
 
     server = new TestServerHelper();
-    app = await server.create({
-      imports: [databaseModule, messageModule, CommunitiesModule],
-    });
+    app = await server.create(
+      {
+        imports: [databaseModule, messageModule, CommunitiesModule],
+      },
+      'api',
+    );
 
     const dataSource = app.get<DataSource>('DataSource');
     seeder = new PostgreSQLSeeder(dataSource);
   });
 
   afterAll(async () => {
-    if (app) await app.close();
-    await KafkaTestContainer.getInstance().stop();
-    await PostgreSQLTestContainer.getInstance().stop();
+    await app.close();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   beforeEach(async () => {
@@ -63,7 +64,7 @@ describe('ActionsController (e2e)', () => {
 
   describe('/actions (GET)', () => {
     it('should return an array with all actions', async () => {
-      const response = await server.getRequest().get('/actions').expect(HttpStatus.OK);
+      const response = await server.getRequest().get('/api/actions').expect(HttpStatus.OK);
 
       expect(response.body).toHaveLength(8);
       expect(response.body[0]).toHaveProperty('id');
@@ -72,7 +73,7 @@ describe('ActionsController (e2e)', () => {
     });
 
     it('should return actions with correct properties', async () => {
-      const response = await server.getRequest().get('/actions').expect(HttpStatus.OK);
+      const response = await server.getRequest().get('/api/actions').expect(HttpStatus.OK);
 
       const firstAction = response.body[0] as ActionSummaryResponseDto;
       expect(firstAction.id).toBeDefined();
@@ -83,11 +84,11 @@ describe('ActionsController (e2e)', () => {
 
   describe('/actions/:id (GET)', () => {
     it('should return 400 when invalid UUID is provided', async () => {
-      await server.getRequest().get('/actions/not-a-valid-uuid').expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().get('/api/actions/not-a-valid-uuid').expect(HttpStatus.BAD_REQUEST);
     });
 
     it('should return 404 when action does not exist', async () => {
-      await server.getRequest().get('/actions/00000000-0000-0000-0000-000000000999').expect(HttpStatus.NOT_FOUND);
+      await server.getRequest().get('/api/actions/00000000-0000-0000-0000-000000000999').expect(HttpStatus.NOT_FOUND);
     });
   });
 });

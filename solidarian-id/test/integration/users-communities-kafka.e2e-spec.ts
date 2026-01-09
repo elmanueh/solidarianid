@@ -3,9 +3,9 @@ import { DataSource, Repository } from 'typeorm';
 import {
   KafkaTestModule,
   PostgreSQLTestModule,
-  KafkaTestContainer,
   TestServerHelper,
   EventTracker,
+  TestContainerLifecycle,
 } from '@solidarianid/testing';
 
 // Users microservice
@@ -25,7 +25,6 @@ import { RequestEntity } from '@app/communities/infrastructure/persistence/entit
 import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user';
 import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user';
 
-import { Topics } from '@solidarianid/kafka';
 import { UserService } from '@app/communities/domain/services/user.service';
 
 /**
@@ -44,12 +43,7 @@ describe('Users-Communities Kafka Integration', () => {
 
   beforeAll(async () => {
     const kafkaModule = await KafkaTestModule.forRoot();
-    const kafkaBroker = KafkaTestContainer.getInstance().getConnectionString();
-
-    await KafkaTestContainer.getInstance().createTopics([Topics.USERS]);
-
-    // Wait kafka to be fully ready
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    const kafkaBroker = TestContainerLifecycle.getInstance().getKafkaBroker();
 
     // PostgreSQL module shared by both microservices
     const databaseModule = await PostgreSQLTestModule.forRoot([
@@ -136,6 +130,7 @@ describe('Users-Communities Kafka Integration', () => {
   afterAll(async () => {
     await usersServer.close();
     await communitiesServer.close();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   describe('USER_CREATED Event Flow', () => {

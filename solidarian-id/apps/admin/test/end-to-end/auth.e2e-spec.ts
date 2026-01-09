@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { AuthModule } from '@app/admin/auth/auth.module';
 import { Connection } from 'mongoose';
-import { MongoDBSeeder, MongoDBTestContainer, MongoDBTestModule, TestServerHelper } from '@solidarianid/testing';
+import { MongoDBSeeder, MongoDBTestModule, TestContainerLifecycle, TestServerHelper } from '@solidarianid/testing';
 
 describe('AuthController (e2e)', () => {
   const validRegisterData = {
@@ -27,8 +27,8 @@ describe('AuthController (e2e)', () => {
   });
 
   afterAll(async () => {
-    if (server) await server.close();
-    await MongoDBTestContainer.getInstance().stop();
+    await server.close();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   describe('POST /api/auth/register', () => {

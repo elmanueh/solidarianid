@@ -4,11 +4,11 @@ import { CommunityRequest } from '@app/admin/administrator/model/domain/models/c
 import { Request } from '@app/admin/administrator/model/domain/models/request';
 import { Injectable } from '@nestjs/common';
 import {
+  ActionRequestEventDto,
+  CauseRequestEventDto,
+  CommunityRequestEventDto,
   Mapper,
   RequestEventDto,
-  CommunityRequestEventDto,
-  CauseRequestEventDto,
-  ActionRequestEventDto,
 } from '@solidarianid/kafka';
 type AnyRequest = CommunityRequest | CauseRequest | ActionRequest;
 

@@ -19,7 +19,7 @@ import { CommunityRequestEntity } from '@app/admin/administrator/model/infrastru
 import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
 import { ActionRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/action-request.entity';
 import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
-import { PaginatedResult } from '@app/admin/administrator/model/domain/models/value-objects/paginated-result';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 
 @Injectable()
 export class RequestRepositoryMongoose

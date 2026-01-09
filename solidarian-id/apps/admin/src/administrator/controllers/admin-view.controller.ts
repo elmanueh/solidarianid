@@ -4,7 +4,7 @@ import { CommunityRequestResponseDto } from '@app/admin/administrator/controller
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import { Controller, Get, Render } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AdminViewService } from '@app/admin/administrator/model/domain/services/admin.service';
+import { AdminViewService } from '@app/admin/administrator/model/domain/services/admin-view.service';
 import { DashboardSummary } from '../model/application/services/data/dashboardSummary.data';
 
 /**
@@ -28,8 +28,8 @@ export class AdminViewController {
     charts: string;
     apiBaseUrl?: string;
   }> {
-    const chartsJson = await this.adminService.buildDashboardViewModel();
-    const dataSummary = await this.adminService.buildDashboardSummaryViewModel();
+    const chartsJson: string = await this.adminService.buildDashboardViewModel();
+    const dataSummary: DashboardSummary = await this.adminService.buildDashboardSummaryViewModel();
     return {
       title: 'Dashboard',
       layout: 'dashboard',

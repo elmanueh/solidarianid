@@ -7,16 +7,16 @@ import { CauseGroupByOdsData } from '../../model/application/services/data/cause
 @Injectable()
 export class AdminDtoMapper {
   toUserGroupByCountryResponseDto(data: UserGroupByCountryData): UserGroupByCountryResponseDto {
-    const dto = new UserGroupByCountryResponseDto();
-    dto.country = data.country;
-    dto.userCount = data.userCount;
-    return dto;
+    return {
+      country: data.country,
+      userCount: data.userCount,
+    };
   }
 
   toCauseGroupByOdsResponseDto(data: CauseGroupByOdsData): CauseGroupByOdsResponseDto {
-    const dto = new CauseGroupByOdsResponseDto();
-    dto.ods = data.ods;
-    dto.causeCount = data.causeCount;
-    return dto;
+    return {
+      ods: data.ods,
+      causeCount: data.causeCount,
+    };
   }
 }

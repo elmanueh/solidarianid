@@ -11,7 +11,7 @@ import {
   createTopCommunitiesPie,
 } from '@app/admin/utils/chart-builder';
 import { DashboardSummary } from './data/dashboardSummary.data';
-import { AdminViewService } from '../../domain/services/admin.service';
+import { AdminViewService } from '../../domain/services/admin-view.service';
 import { CauseGroupByOdsData } from './data/cause-group-by-ods.data';
 import { UserGroupByCountryData } from './data/user-group-by-country.data';
 import { CommunityRankingUserResponseDto } from '../apis/dtos/community-ranking-user.response.dto';

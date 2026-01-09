@@ -6,7 +6,7 @@ import { KafkaTestContainer } from '@solidarianid/testing';
 @Module({})
 export class KafkaTestModule {
   static async forRoot(): Promise<DynamicModule> {
-    const broker = await KafkaTestContainer.getInstance().start();
+    const broker = process.env.TEST_KAFKA_BROKER ?? (await KafkaTestContainer.getInstance().start());
 
     return {
       module: KafkaTestModule,

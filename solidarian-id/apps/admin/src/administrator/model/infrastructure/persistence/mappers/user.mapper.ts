@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { User } from '@app/admin/administrator/model/domain/models/user';
+import { UserEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/user.entity';
 import { Either } from '@app/ddd/either';
 import { Mapper } from '@app/ddd/repository/mapper';
-import { User } from '@app/admin/administrator/model/domain/models/user';
-import { UserEntity } from '../entities/user.entity';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserMapper implements Mapper<User, UserEntity> {
@@ -26,18 +26,18 @@ export class UserMapper implements Mapper<User, UserEntity> {
   }
 
   fromPersistence(document: UserEntity): Either<ValidationError, User> {
-    return User.create(
-      document._id,
-      document.fullName,
-      document.username,
-      document.phone,
-      document.location.city,
-      document.location.countryCode,
-      document.communityMemberships.map(m => ({
+    return User.reconstitute({
+      id: document._id,
+      fullName: document.fullName,
+      username: document.username,
+      phone: document.phone,
+      city: document.location.city,
+      countryCode: document.location.countryCode,
+      communityMemberships: document.communityMemberships.map(m => ({
         communityId: m.communityId,
         communityName: m.communityName,
         isAdmin: m.isAdmin,
       })),
-    );
+    });
   }
 }

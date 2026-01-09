@@ -1,20 +1,20 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, Res, Patch, Param } from '@nestjs/common';
-import type { Response } from 'express';
-import { UsersService, RegisterUserCommand } from '@app/users/domain/services/users.service';
+import { RegisterUserCommand, UsersService } from '@app/users/domain/services/users.service';
+import { LoginUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/login-user.request.dto';
 import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
+import { UpdateUserProfileDtoRequest } from '@app/users/infrastructure/presentation/dtos/update-user-profile.dto';
+import { Body, Controller, HttpCode, HttpStatus, Param, Patch, Post, Res } from '@nestjs/common';
 import {
-  ApiOperation,
-  ApiBody,
-  ApiTags,
-  ApiCreatedResponse,
   ApiBadRequestResponse,
+  ApiBody,
   ApiConflictResponse,
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiNoContentResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
-import { UpdateUserProfileDtoRequest } from '../dtos/update-user-profile.dto';
-import { LoginUserDtoRequest } from '../dtos/login-user.request.dto';
-import { ApiOkResponse } from '@nestjs/swagger';
+import type { Response } from 'express';
 
 @Controller('/api/users')
 @ApiTags('Users')

@@ -1,7 +1,7 @@
 import { Either } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
+import { ValueObject } from '@app/ddd/value-object';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { ValueObject } from '../value-object';
 
 /**
  * Maps between domain models and persistence entities.

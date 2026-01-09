@@ -3,11 +3,10 @@ import {
   TestServerHelper,
   PostgreSQLSeeder,
   KafkaTestModule,
-  KafkaTestContainer,
-  PostgreSQLTestContainer,
   USER_IDS,
   COMMUNITY_IDS,
   CAUSE_IDS,
+  TestContainerLifecycle,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
@@ -57,9 +56,8 @@ describe('RequestController (e2e)', () => {
   });
 
   afterAll(async () => {
-    if (app) await app.close();
-    await KafkaTestContainer.getInstance().stop();
-    await PostgreSQLTestContainer.getInstance().stop();
+    await app.close();
+    await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   beforeEach(async () => {

@@ -2,12 +2,12 @@
 import { UsersServiceImpl } from '@app/admin/administrator/model/application/services/users.service.impl';
 import { User } from '@app/admin/administrator/model/domain/models/user';
 import {
-  UserRepositoryPort,
   PaginatedResult,
+  UserRepositoryPort,
 } from '@app/admin/administrator/model/domain/ports/output/user.repository.port';
 import { left, right } from '@app/ddd/either';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Test, TestingModule } from '@nestjs/testing';
 
 const createMockUserRepository = (): jest.Mocked<UserRepositoryPort> => ({
@@ -20,14 +20,14 @@ const createMockUserRepository = (): jest.Mocked<UserRepositoryPort> => ({
 });
 
 const createMockUsers = (): User[] => {
-  const user1Result = User.create(
-    '550e8400-e29b-41d4-a716-446655440000',
-    'Juan Pérez',
-    'juan_perez',
-    '+34612345678',
-    'Madrid',
-    'ES',
-    [
+  const user1Result = User.reconstitute({
+    id: '550e8400-e29b-41d4-a716-446655440000',
+    fullName: 'Juan Pérez',
+    username: 'juan_perez',
+    phone: '+34612345678',
+    city: 'Madrid',
+    countryCode: 'ES',
+    communityMemberships: [
       {
         communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
         communityName: 'Volunteers Spain',
@@ -39,33 +39,33 @@ const createMockUsers = (): User[] => {
         isAdmin: false,
       },
     ],
-  );
+  });
 
-  const user2Result = User.create(
-    '550e8400-e29b-41d4-a716-446655440001',
-    'María López',
-    'maria_lopez',
-    '+52155123456',
-    'Ciudad de México',
-    'MX',
-    [
+  const user2Result = User.reconstitute({
+    id: '550e8400-e29b-41d4-a716-446655440001',
+    fullName: 'María López',
+    username: 'maria_lopez',
+    phone: '+52155123456',
+    city: 'Ciudad de México',
+    countryCode: 'MX',
+    communityMemberships: [
       {
         communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430d0',
         communityName: 'Mexico Relief',
         isAdmin: false,
       },
     ],
-  );
+  });
 
-  const user3Result = User.create(
-    '550e8400-e29b-41d4-a716-446655440002',
-    'Carlos García',
-    'carlos_garcia',
-    '+541145678910',
-    'Buenos Aires',
-    'AR',
-    [],
-  );
+  const user3Result = User.reconstitute({
+    id: '550e8400-e29b-41d4-a716-446655440002',
+    fullName: 'Carlos García',
+    username: 'carlos_garcia',
+    phone: '+541145678910',
+    city: 'Buenos Aires',
+    countryCode: 'AR',
+    communityMemberships: [],
+  });
 
   if (user1Result.isLeft()) {
     throw new Error(`Failed to create mock user 1: ${user1Result.value.message}`);

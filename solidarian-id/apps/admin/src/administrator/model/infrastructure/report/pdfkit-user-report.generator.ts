@@ -1,11 +1,14 @@
-import PDFDocument from 'pdfkit';
-import type { Readable } from 'node:stream';
-import { join } from 'node:path';
+import { PdfGenerationException } from '@app/admin/administrator/model/domain/errors/pdf-generation.exception';
+import {
+  UserPdfGeneratorPort,
+  UserReportPdfCommand,
+} from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
+import { Either, left, right } from '@app/ddd/either';
 import { colors } from '@frontend/design-tokens/colors';
 import { Injectable } from '@nestjs/common';
-import { UserPdfGeneratorPort, type UserReportPdfCommand } from '../../domain/ports/output/user-pdf-generator.port';
-import { Either, left, right } from '@app/ddd/either';
-import { PdfGenerationException } from '../../domain/errors/pdf-generation.exception';
+import { join } from 'node:path';
+import type { Readable } from 'node:stream';
+import PDFDocument from 'pdfkit';
 
 type PDFDoc = typeof PDFDocument extends new (...args: any[]) => infer R ? R : never;
 
@@ -143,7 +146,6 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     currentY += 30; // Espacio entre bloques
 
     this.renderField(doc, 'Teléfono', data.phone, currentY);
-    currentY += 40; // Espacio antes de la siguiente sección
 
     doc.moveDown(2);
   }
@@ -163,8 +165,7 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     this.renderField(doc, 'Ciudad', data.city, currentY);
     currentY += 30; // Espacio entre bloques
 
-    this.renderField(doc, 'País', `${data.countryCode}`, currentY);
-    currentY += 40; // Espacio antes de la siguiente sección
+    this.renderField(doc, 'País', `(${data.countryCode})`, currentY);
 
     doc.moveDown(2);
   }

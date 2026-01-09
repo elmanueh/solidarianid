@@ -1,6 +1,6 @@
-import type { Readable } from 'stream';
+import type { Readable } from 'node:stream';
 import { Either } from '@app/ddd/either';
-import { PdfGenerationException } from '../../errors/pdf-generation.exception';
+import { PdfGenerationException } from '@app/admin/administrator/model/domain/errors/pdf-generation.exception';
 
 // DTO con los datos necesarios para generar el PDF del reporte de usuario
 export interface UserReportPdfCommand {

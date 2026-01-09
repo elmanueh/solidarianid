@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { RequestConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/request.consumer';
+import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
+import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { RequestError } from '@app/admin/administrator/model/domain/errors/request-error';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
-import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
-import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
+import { RequestConsumerAdapter } from '@app/admin/administrator/model/infrastructure/messaging/consumer/request.consumer';
 import { left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { CommunityRequestEventDto, EventType, RequestEvent } from '@solidarianid/kafka';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { CommunityRequestEventDto, EventType, RequestEvent } from '@solidarianid/kafka';
 
 const createMockRequestsService = (): jest.Mocked<RequestsService> =>
   ({

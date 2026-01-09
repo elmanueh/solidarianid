@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { UsersService, RegisterUserCommand, UpdateUserProfileCommand } from '@app/users/domain/services/users.service';
-import { User } from '@app/users/domain/model/user';
-import { Username } from '@app/value-objects/model/username';
-import { MobilePhone } from '@app/value-objects/model/mobile-phone';
-import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
-import { Either, right, left } from '@app/ddd/either';
+import { Either, left, right } from '@app/ddd/either';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
+import { User } from '@app/users/domain/model/user';
+import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
+import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
+import { RegisterUserCommand, UpdateUserProfileCommand, UsersService } from '@app/users/domain/services/users.service';
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
+import { MobilePhone } from '@app/value-objects/model/mobile-phone';
+import { Username } from '@app/value-objects/model/username';
+import { Injectable } from '@nestjs/common';
 import { EventType } from '@solidarianid/kafka';
 
 @Injectable()
@@ -23,22 +23,16 @@ export class UsersServiceImpl extends UsersService {
   }
 
   async registerUser(command: RegisterUserCommand): Promise<Either<Error, string>> {
-    // 1. Hashear la contraseña lo primero de todo para evitar realizar trabajo innecesario
+    // 1. Hashear la contraseña desde el principio para evitar trabajo innecesario
     const passwordHashingResult = await this.passwordManager.validateAndHashPassword(command.password);
-    if (passwordHashingResult.isLeft()) {
-      return left(passwordHashingResult.value);
-    }
+    if (passwordHashingResult.isLeft()) return left(passwordHashingResult.value);
 
     // 2. Crear Value Objects móvil y username para comprobar unicidad
     const phoneResult = MobilePhone.create(command.mobilePhone);
-    if (phoneResult.isLeft()) {
-      return left(phoneResult.value);
-    }
+    if (phoneResult.isLeft()) return left(phoneResult.value);
 
     const usernameResult = Username.create(command.username);
-    if (usernameResult.isLeft()) {
-      return left(usernameResult.value);
-    }
+    if (usernameResult.isLeft()) return left(usernameResult.value);
 
     // 2a. Comprobar si el numero de telefono ya existe
     const userPhoneExists = await this.usersRepository.existsByMobilePhone(phoneResult.value);

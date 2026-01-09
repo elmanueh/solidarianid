@@ -1,12 +1,15 @@
-import { Either, left, right } from '@app/ddd/either';
+import {
+  CommunityMembership,
+  ReconstituteCommunityMembershipProps,
+} from '@app/admin/administrator/model/domain/value-objects/community-membership';
+import { Either, left, right, sequence } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Username } from '@app/value-objects/model/username';
 import { FullName } from '@app/value-objects/model/fullname';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { UserLocation } from '@app/value-objects/model/user-location';
-import { CommunityMembership } from '@app/admin/administrator/model/domain/value-objects/community-membership';
+import { Username } from '@app/value-objects/model/username';
 
 interface UserProps {
   fullName: FullName;
@@ -16,91 +19,26 @@ interface UserProps {
   communityMemberships: CommunityMembership[];
 }
 
-/**
- * Entidad de dominio User
- * Representa un usuario/voluntario del sistema SolidarianID
- * Los usuarios se obtienen desde el sistema, no se crean en este panel de administración
- */
+interface CreateUserProps {
+  id: string;
+  fullName: string;
+  username: string;
+  phone: string;
+  city: string;
+  countryCode: string;
+}
+
+interface ReconstituteUserProps {
+  id: string;
+  fullName: string;
+  username: string;
+  phone: string;
+  city: string;
+  countryCode: string;
+  communityMemberships: ReconstituteCommunityMembershipProps[];
+}
+
 export class User extends Entity<UserProps> {
-  private constructor(props: UserProps, id: UniqueEntityID) {
-    super(props, id);
-  }
-
-  /**
-   * Factory method para crear un usuario desde persistencia/datos mock
-   * Requiere ID obligatorio ya que los usuarios ya existen en el sistema
-   */
-  public static create(
-    id: string,
-    fullName: string,
-    username: string,
-    phone: string,
-    city: string,
-    countryCode: string,
-    communityMemberships: Array<{
-      communityId: string;
-      communityName: string;
-      isAdmin: boolean;
-    }>,
-  ): Either<ValidationError, User> {
-    // Validar ID
-    const idOrError = UniqueEntityID.create(id);
-    if (idOrError.isLeft()) {
-      return left(idOrError.value);
-    }
-
-    // Validar fullName
-    const fullNameOrError = FullName.create(fullName);
-    if (fullNameOrError.isLeft()) {
-      return left(fullNameOrError.value);
-    }
-
-    // Validar username
-    const usernameOrError = Username.create(username);
-    if (usernameOrError.isLeft()) {
-      return left(usernameOrError.value);
-    }
-
-    // Validar teléfono
-    const phoneOrError = MobilePhone.create(phone);
-    if (phoneOrError.isLeft()) {
-      return left(phoneOrError.value);
-    }
-
-    // Validar ubicación
-    const locationOrError = UserLocation.create({ city, countryCode });
-    if (locationOrError.isLeft()) {
-      return left(locationOrError.value);
-    }
-
-    // Validar y crear memberships
-    const membershipsOrErrors: CommunityMembership[] = [];
-    for (const membership of communityMemberships) {
-      const membershipOrError = CommunityMembership.create(membership);
-      if (membershipOrError.isLeft()) {
-        return left(membershipOrError.value);
-      }
-      membershipsOrErrors.push(membershipOrError.value);
-    }
-
-    const user = new User(
-      {
-        fullName: fullNameOrError.value,
-        username: usernameOrError.value,
-        phone: phoneOrError.value,
-        location: locationOrError.value,
-        communityMemberships: membershipsOrErrors,
-      },
-      idOrError.value,
-    );
-
-    return right(user);
-  }
-
-  // ════════════════════════════════════════════════════════════════
-  // GETTERS
-  // ════════════════════════════════════════════════════════════════
-
   get fullName(): string {
     return this.props.fullName.value;
   }
@@ -121,7 +59,76 @@ export class User extends Entity<UserProps> {
     return this.props.location.countryCode;
   }
 
-  get communityMemberships(): CommunityMembership[] {
+  get communityMemberships(): ReadonlyArray<CommunityMembership> {
     return this.props.communityMemberships;
+  }
+
+  private constructor(props: UserProps, id: UniqueEntityID) {
+    super(props, id);
+  }
+
+  public static create(props: CreateUserProps): Either<ValidationError, User> {
+    const idOrError = UniqueEntityID.create(props.id);
+    if (idOrError.isLeft()) return left(idOrError.value);
+
+    const fullNameOrError = FullName.create(props.fullName);
+    if (fullNameOrError.isLeft()) return left(fullNameOrError.value);
+
+    const usernameOrError = Username.create(props.username);
+    if (usernameOrError.isLeft()) return left(usernameOrError.value);
+
+    const phoneOrError = MobilePhone.create(props.phone);
+    if (phoneOrError.isLeft()) return left(phoneOrError.value);
+
+    const locationOrError = UserLocation.create({ city: props.city, countryCode: props.countryCode });
+    if (locationOrError.isLeft()) return left(locationOrError.value);
+
+    return right(
+      new User(
+        {
+          fullName: fullNameOrError.value,
+          username: usernameOrError.value,
+          phone: phoneOrError.value,
+          location: locationOrError.value,
+          communityMemberships: [],
+        },
+        idOrError.value,
+      ),
+    );
+  }
+
+  public static reconstitute(props: ReconstituteUserProps): Either<ValidationError, User> {
+    const idOrError = UniqueEntityID.create(props.id);
+    if (idOrError.isLeft()) return left(idOrError.value);
+
+    const fullNameOrError = FullName.create(props.fullName);
+    if (fullNameOrError.isLeft()) return left(fullNameOrError.value);
+
+    const usernameOrError = Username.create(props.username);
+    if (usernameOrError.isLeft()) return left(usernameOrError.value);
+
+    const phoneOrError = MobilePhone.create(props.phone);
+    if (phoneOrError.isLeft()) return left(phoneOrError.value);
+
+    const locationOrError = UserLocation.create({ city: props.city, countryCode: props.countryCode });
+    if (locationOrError.isLeft()) return left(locationOrError.value);
+
+    const communityMembershipsOrErrors = sequence(
+      props.communityMemberships.map(membership => CommunityMembership.create(membership)),
+    );
+    if (communityMembershipsOrErrors.isLeft()) return left(communityMembershipsOrErrors.value);
+
+    return right(
+      new User(
+        {
+          fullName: fullNameOrError.value,
+          username: usernameOrError.value,
+          phone: phoneOrError.value,
+          location: locationOrError.value,
+          communityMemberships: communityMembershipsOrErrors.value,
+        },
+        idOrError.value,
+      ),
+    );
   }
 }

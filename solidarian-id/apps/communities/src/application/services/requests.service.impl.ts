@@ -1,18 +1,27 @@
+import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
+import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
+import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
+import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
+import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
+import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { ActionsService } from '@app/communities/domain/services/actions.service';
+import { CausesService } from '@app/communities/domain/services/causes.service';
+import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { RequestsService } from '@app/communities/domain/services/request.service';
 import { CreateActionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-action.request.dto';
 import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
 import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
 import { Either, left, right } from '@app/ddd/either';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Injectable } from '@nestjs/common';
-import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
-import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
-import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
-import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
 import {
   ActionRequestEventDto,
   CauseRequestEventDto,
@@ -20,15 +29,6 @@ import {
   EventType,
   RequestEventDto,
 } from '@solidarianid/kafka';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
-import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { CommunitiesService } from '@app/communities/domain/services/communities.service';
-import { CausesService } from '@app/communities/domain/services/causes.service';
-import { ActionsService } from '@app/communities/domain/services/actions.service';
 
 /**
  * Implementation of the RequestsService.
@@ -220,7 +220,7 @@ export class RequestsServiceImpl extends RequestsService {
     }
 
     const request: Request<RequestProps> = requestOrError.value;
-    request.accept(requestEventDto.reason || 'No reason provided');
+    request.accept(requestEventDto.reason ?? 'No reason provided');
 
     const saveResult = await this.requestsRepository.save(request);
 
@@ -255,7 +255,7 @@ export class RequestsServiceImpl extends RequestsService {
         return left(new ValidationError('Invalid request type'));
     }
 
-    return Promise.resolve(right(undefined));
+    return right(undefined);
   }
 
   async rejectRequest(requestEventDto: RequestEventDto): Promise<Either<ValidationError | RepositoryException, void>> {
@@ -270,7 +270,7 @@ export class RequestsServiceImpl extends RequestsService {
 
     const request: Request<RequestProps> = requestOrError.value;
 
-    const rejectOrError = request.reject(requestEventDto.reason || 'No reason provided');
+    const rejectOrError = request.reject(requestEventDto.reason ?? 'No reason provided');
 
     if (rejectOrError.isLeft()) {
       return left(rejectOrError.value);
@@ -282,6 +282,6 @@ export class RequestsServiceImpl extends RequestsService {
       return left(saveResult.value);
     }
 
-    return Promise.resolve(right(undefined));
+    return right(undefined);
   }
 }

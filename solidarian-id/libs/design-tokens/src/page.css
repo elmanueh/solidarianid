@@ -103,8 +103,7 @@
     @apply border-harvest-orange-500;
   }
 
-  .request[data-variant='action'],
-  .request[data-variant='action-nested'] {
+  .request[data-variant='action'] {
     @apply border-sage-green-500;
   }
 
@@ -116,10 +115,6 @@
 
   .request[data-variant='cause-nested'] {
     @apply bg-base-300;
-  }
-
-  .request[data-variant='action-nested'] {
-    @apply bg-base-100;
   }
 
   .request[data-variant$='-nested'] {

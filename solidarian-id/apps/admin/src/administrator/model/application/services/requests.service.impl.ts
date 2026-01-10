@@ -9,6 +9,7 @@ import { Request } from '@app/admin/administrator/model/domain/models/request';
 import { RequestsPublisherPort } from '@app/admin/administrator/model/domain/ports/output/request.publisher.port';
 import { RequestsRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request.repository.port';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
@@ -216,34 +217,25 @@ export class RequestsServiceImpl extends RequestsService {
     return right(requestsOrError.value.length);
   }
 
-  async getCommunityRequestsPending(): Promise<Either<ValidationError, CommunityRequest[]>> {
-    const communitiesOrError = await this.repository.findPendingCommunityRequests();
-
-    if (communitiesOrError.isLeft()) {
-      return left(new ValidationError('Failed to fetch community requests'));
-    }
-
-    return right(communitiesOrError.value);
+  async getCommunityRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<CommunityRequest>>> {
+    return await this.repository.findPendingCommunityRequests(page, limit);
   }
 
-  async getCauseRequestsPending(): Promise<Either<ValidationError, CauseRequest[]>> {
-    const causesOrError = await this.repository.findPendingCauseRequests();
-
-    if (causesOrError.isLeft()) {
-      return left(new ValidationError('Failed to fetch cause requests'));
-    }
-
-    return right(causesOrError.value);
+  async getCauseRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<CauseRequest>>> {
+    return await this.repository.findPendingCauseRequests(page, limit);
   }
 
-  async getActionRequestsPending(): Promise<Either<ValidationError, ActionRequest[]>> {
-    const actionsOrError = await this.repository.findPendingActionRequests();
-
-    if (actionsOrError.isLeft()) {
-      return left(new ValidationError('Failed to fetch action requests'));
-    }
-
-    return right(actionsOrError.value);
+  async getActionRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<ActionRequest>>> {
+    return await this.repository.findPendingActionRequests(page, limit);
   }
 
   async getCausesGroupByOds(): Promise<Either<RepositoryException, CauseGroupByOdsData[]>> {

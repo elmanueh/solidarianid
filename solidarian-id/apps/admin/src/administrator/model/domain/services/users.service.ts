@@ -1,8 +1,8 @@
 import { Either } from '@app/ddd/either';
 import { User } from '../models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { PaginatedResult } from '../ports/output/user.repository.port';
 import { UserGroupByCountryData } from '../../application/services/data/user-group-by-country.data';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 
 /**
  * Servicio de dominio para usuarios

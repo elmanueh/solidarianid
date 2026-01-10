@@ -3,6 +3,7 @@ import { ActionRequest } from '@app/admin/administrator/model/domain/models/acti
 import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
 import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
 import { Request } from '@app/admin/administrator/model/domain/models/request';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
@@ -24,11 +25,20 @@ export abstract class RequestsService {
     type: RequestType,
   ): Promise<Either<RepositoryException, number>>;
 
-  abstract getCommunityRequestsPending(): Promise<Either<ValidationError, CommunityRequest[]>>;
-
-  abstract getCauseRequestsPending(): Promise<Either<ValidationError, CauseRequest[]>>;
-
-  abstract getActionRequestsPending(): Promise<Either<ValidationError, ActionRequest[]>>;
-
   abstract getCausesGroupByOds(): Promise<Either<RepositoryException, CauseGroupByOdsData[]>>;
+
+  abstract getCommunityRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<CommunityRequest>>>;
+
+  abstract getCauseRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<CauseRequest>>>;
+
+  abstract getActionRequestsPending(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException | ValidationError, PaginatedResult<ActionRequest>>>;
 }

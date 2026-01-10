@@ -86,6 +86,7 @@ export class RequestMapper extends Mapper<Request<unknown>, RequestEntity> {
       reason: entity.reason,
       userId: entity.userId,
       causes: [],
+      createdAt: entity.createdAt,
     });
   }
 
@@ -102,6 +103,7 @@ export class RequestMapper extends Mapper<Request<unknown>, RequestEntity> {
       duration: entity.duration,
       actions: [],
       communityId: entity.communityId,
+      createdAt: entity.createdAt,
     });
   }
 
@@ -122,6 +124,7 @@ export class RequestMapper extends Mapper<Request<unknown>, RequestEntity> {
       objectives: objectivesOrError.value,
       events: eventsOrError.value,
       causeId: entity.causeId,
+      createdAt: entity.createdAt,
     });
   }
 

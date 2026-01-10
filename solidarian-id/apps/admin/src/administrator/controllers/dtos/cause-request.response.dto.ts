@@ -1,19 +1,15 @@
-import { ActionRequestResponseDto } from '@app/admin/administrator/controllers/dtos/action-request.response.dto';
-import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
 
 export class CauseRequestResponseDto {
-  static toDto(request: CauseRequest): CauseRequestResponseDto {
+  static toDto(cause: CauseRequest): CauseRequestResponseDto {
     return {
-      id: request.id.value,
-      type: RequestType.CAUSE,
-      date: new Date().toISOString(),
-      state: request.status,
-
-      name: request.name,
-      description: request.description,
-
-      action_requests: request.actions.map(action => ActionRequestResponseDto.toDto(action)),
+      id: cause.id.value,
+      name: cause.name,
+      description: cause.description,
+      date: cause.createdAt,
+      startDate: cause.startDate,
+      duration: cause.duration,
+      ods: [...cause.ods],
     };
   }
 }

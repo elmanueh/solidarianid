@@ -1,16 +1,29 @@
-import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
 import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
 
 export class ActionRequestResponseDto {
-  static toDto(request: ActionRequest): ActionRequestResponseDto {
+  static toDto(action: ActionRequest): ActionRequestResponseDto {
     return {
-      id: request.id.value,
-      type: RequestType.ACTION,
-      date: new Date().toISOString(),
-      state: request.status,
+      id: action.id.value,
+      name: action.name,
+      description: action.description,
 
-      name: request.name,
-      description: request.description,
+      date: action.createdAt,
+      objectives: action.objectives.map(obj => ({
+        name: obj.name,
+        description: obj.description,
+        quantity: obj.quantity,
+        unit: obj.unit,
+      })),
+      events: action.events.map(evt => ({
+        name: evt.name,
+        description: evt.description,
+        initialDate: evt.initialDate,
+        place: {
+          direction: evt.place.direction,
+          city: evt.place.city,
+          countryCode: evt.place.countryCode,
+        },
+      })),
     };
   }
 }

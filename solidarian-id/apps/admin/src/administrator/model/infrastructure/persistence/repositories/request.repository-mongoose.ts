@@ -19,7 +19,8 @@ import { CommunityRequestEntity } from '@app/admin/administrator/model/infrastru
 import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
 import { ActionRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/action-request.entity';
 import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
-import { RequestStatus } from '../../../domain/enums/request-status';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
+import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 
 @Injectable()
 export class RequestRepositoryMongoose
@@ -219,10 +220,28 @@ export class RequestRepositoryMongoose
     return right(requestsOrError.value);
   }
 
-  async findPendingCommunityRequests(): Promise<Either<RepositoryException, CommunityRequest[]>> {
+  async findPendingCommunityRequests(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException, PaginatedResult<CommunityRequest>>> {
     try {
+      if (page < 1) {
+        return left(new RepositoryException('Page must be greater than 0'));
+      }
+      if (limit < 1) {
+        return left(new RepositoryException('Limit must be greater than 0'));
+      }
+
+      const total = await this.requestModel.countDocuments({
+        status: 'pending',
+        type: RequestType.COMMUNITY,
+      });
+
+      const totalPages = Math.ceil(total / limit);
+      const skip = (page - 1) * limit;
+
       const communityDocs = await this.requestModel
-        .aggregate<CommunityRequestEntity & { causes: CauseRequestEntity[]; actions: ActionRequestEntity[] }>([
+        .aggregate<CommunityRequestEntity & { causes: CauseRequestEntity[] }>([
           { $match: { status: 'pending', type: RequestType.COMMUNITY } },
           {
             $lookup: {
@@ -232,19 +251,13 @@ export class RequestRepositoryMongoose
               as: 'causes',
             },
           },
-          {
-            $lookup: {
-              from: this.requestModel.collection.name,
-              let: { causeIds: { $map: { input: '$causes', as: 'cause', in: '$$cause._id' } } },
-              pipeline: [{ $match: { $expr: { $in: ['$causeId', '$$causeIds'] }, type: RequestType.ACTION } }],
-              as: 'actions',
-            },
-          },
+          { $skip: skip },
+          { $limit: limit },
         ])
         .exec();
 
       const requestsOrErrors = communityDocs.map(doc =>
-        this.requestMapper.fromPersistenceAggregate(doc, doc.causes, doc.actions),
+        this.requestMapper.fromPersistenceAggregate(doc, doc.causes, []),
       );
 
       const requestsOrError = sequence(requestsOrErrors);
@@ -252,19 +265,35 @@ export class RequestRepositoryMongoose
         return left(new RepositoryException('Failed to map requests.', requestsOrError.value));
       }
 
-      return right(requestsOrError.value);
+      const result: PaginatedResult<CommunityRequest> = {
+        data: requestsOrError.value,
+        total,
+        page,
+        limit,
+        totalPages,
+      };
+
+      return right(result);
     } catch (error: unknown) {
       return left(new RepositoryException('Failed to find pending community requests.', error));
     }
   }
 
-  async findPendingCauseRequests(): Promise<Either<RepositoryException, CauseRequest[]>> {
+  async findPendingCauseRequests(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException, PaginatedResult<CauseRequest>>> {
     try {
-      const causeDocs = await this.requestModel
-        .aggregate<CauseRequestEntity & { actions: ActionRequestEntity[] }>([
-          {
-            $match: { status: 'approved', type: RequestType.COMMUNITY },
-          },
+      if (page < 1) {
+        return left(new RepositoryException('Page must be greater than 0'));
+      }
+      if (limit < 1) {
+        return left(new RepositoryException('Limit must be greater than 0'));
+      }
+
+      const countPipeline = await this.requestModel
+        .aggregate<{ count: number }>([
+          { $match: { status: 'approved', type: RequestType.COMMUNITY } },
           {
             $lookup: {
               from: this.requestModel.collection.name,
@@ -281,50 +310,77 @@ export class RequestRepositoryMongoose
               as: 'causes',
             },
           },
-          {
-            $unwind: '$causes',
-          },
-          {
-            $replaceRoot: { newRoot: '$causes' },
-          },
-          {
-            $lookup: {
-              from: this.requestModel.collection.name,
-              let: { causeId: '$_id' },
-              pipeline: [
-                {
-                  $match: {
-                    $expr: { $eq: ['$causeId', '$$causeId'] },
-                    type: RequestType.ACTION,
-                  },
-                },
-              ],
-              as: 'actions',
-            },
-          },
+          { $unwind: '$causes' },
+          { $group: { _id: null, count: { $sum: 1 } } },
         ])
         .exec();
 
-      const requestsOrErrors = causeDocs.map(doc => this.requestMapper.fromPersistenceCauseAggregate(doc, doc.actions));
+      const total = countPipeline.length > 0 ? countPipeline[0].count : 0;
+      const totalPages = Math.ceil(total / limit);
+      const skip = (page - 1) * limit;
+
+      const causeDocs = await this.requestModel
+        .aggregate<CauseRequestEntity>([
+          { $match: { status: 'approved', type: RequestType.COMMUNITY } },
+          {
+            $lookup: {
+              from: this.requestModel.collection.name,
+              let: { communityId: '$_id' },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: { $eq: ['$communityId', '$$communityId'] },
+                    status: 'pending',
+                    type: RequestType.CAUSE,
+                  },
+                },
+              ],
+              as: 'causes',
+            },
+          },
+          { $unwind: '$causes' },
+          { $replaceRoot: { newRoot: '$causes' } },
+          { $skip: skip },
+          { $limit: limit },
+        ])
+        .exec();
+
+      const requestsOrErrors = causeDocs.map(doc => this.requestMapper.fromPersistenceCauseAggregate(doc, []));
 
       const requestsOrError = sequence(requestsOrErrors);
       if (requestsOrError.isLeft()) {
         return left(new RepositoryException('Failed to map cause requests.', requestsOrError.value));
       }
 
-      return right(requestsOrError.value);
+      const result: PaginatedResult<CauseRequest> = {
+        data: requestsOrError.value,
+        total,
+        page,
+        limit,
+        totalPages,
+      };
+
+      return right(result);
     } catch (error: unknown) {
       return left(new RepositoryException('Failed to find pending cause requests.', error));
     }
   }
 
-  async findPendingActionRequests(): Promise<Either<RepositoryException, ActionRequest[]>> {
+  async findPendingActionRequests(
+    page: number,
+    limit: number,
+  ): Promise<Either<RepositoryException, PaginatedResult<ActionRequest>>> {
     try {
-      const actionDocs = await this.requestModel
-        .aggregate<ActionRequestEntity>([
-          {
-            $match: { status: 'approved', type: RequestType.CAUSE },
-          },
+      if (page < 1) {
+        return left(new RepositoryException('Page must be greater than 0'));
+      }
+      if (limit < 1) {
+        return left(new RepositoryException('Limit must be greater than 0'));
+      }
+
+      const countPipeline = await this.requestModel
+        .aggregate<{ count: number }>([
+          { $match: { status: 'approved', type: RequestType.CAUSE } },
           {
             $lookup: {
               from: this.requestModel.collection.name,
@@ -341,12 +397,38 @@ export class RequestRepositoryMongoose
               as: 'actions',
             },
           },
+          { $unwind: '$actions' },
+          { $group: { _id: null, count: { $sum: 1 } } },
+        ])
+        .exec();
+
+      const total = countPipeline.length > 0 ? countPipeline[0].count : 0;
+      const totalPages = Math.ceil(total / limit);
+      const skip = (page - 1) * limit;
+
+      const actionDocs = await this.requestModel
+        .aggregate<ActionRequestEntity>([
+          { $match: { status: 'approved', type: RequestType.CAUSE } },
           {
-            $unwind: '$actions',
+            $lookup: {
+              from: this.requestModel.collection.name,
+              let: { causeId: '$_id' },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: { $eq: ['$causeId', '$$causeId'] },
+                    status: 'pending',
+                    type: RequestType.ACTION,
+                  },
+                },
+              ],
+              as: 'actions',
+            },
           },
-          {
-            $replaceRoot: { newRoot: '$actions' },
-          },
+          { $unwind: '$actions' },
+          { $replaceRoot: { newRoot: '$actions' } },
+          { $skip: skip },
+          { $limit: limit },
         ])
         .exec();
 
@@ -359,7 +441,15 @@ export class RequestRepositoryMongoose
         return left(new RepositoryException('Failed to map action requests.', requestsOrError.value));
       }
 
-      return right(requestsOrError.value);
+      const result: PaginatedResult<ActionRequest> = {
+        data: requestsOrError.value,
+        total,
+        page,
+        limit,
+        totalPages,
+      };
+
+      return right(result);
     } catch (error: unknown) {
       return left(new RepositoryException('Failed to find pending action requests.', error));
     }

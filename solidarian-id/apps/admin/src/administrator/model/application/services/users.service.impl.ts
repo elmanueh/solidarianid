@@ -3,9 +3,10 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../../domain/services/users.service';
 import { User } from '../../domain/models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { UserRepositoryPort, PaginatedResult } from '../../domain/ports/output/user.repository.port';
 import { UserQueryRepositoryPort } from '../../domain/ports/output/user-query.repository.port';
 import { UserGroupByCountryData } from './data/user-group-by-country.data';
+import { UserRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/user.repository.port';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 
 /**
  * Implementación del servicio de usuarios

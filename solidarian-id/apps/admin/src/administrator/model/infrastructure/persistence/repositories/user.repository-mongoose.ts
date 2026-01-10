@@ -3,14 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryMongoose } from '@app/ddd/repository/repository-mongoose';
-import {
-  UserRepositoryPort,
-  PaginatedResult,
-} from '@app/admin/administrator/model/domain/ports/output/user.repository.port';
+import { UserRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/user.repository.port';
 import { User } from '@app/admin/administrator/model/domain/models/user';
 import { UserDocument, UserEntity } from '../entities/user.entity';
 import { UserMapper } from '../mappers/user.mapper';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 
 @Injectable()
 export class UserRepositoryMongoose extends RepositoryMongoose<User, UserEntity> implements UserRepositoryPort {

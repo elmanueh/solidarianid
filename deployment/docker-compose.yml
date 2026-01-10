@@ -23,6 +23,7 @@ services:
       - API_BASE_USERS_URL=${API_BASE_USERS_URL}
       - API_BASE_COMMUNITIES_URL=${API_BASE_COMMUNITIES_URL}
       - SESSION_SECRET=${SESSION_SECRET}
+      - API_BASE_COMMUNITIES_INTERNAL_URL=${API_BASE_COMMUNITIES_INTERNAL_URL}
     depends_on:
       mongo:
         condition: service_healthy
@@ -109,7 +110,7 @@ services:
     networks:
       - solidarian_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U solidarian_user -d solidarian_id_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5

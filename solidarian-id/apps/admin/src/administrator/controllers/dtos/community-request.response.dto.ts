@@ -7,7 +7,7 @@ export class CommunityRequestResponseDto {
       id: community.id.value,
       name: community.name,
       description: community.description,
-      date: new Date().toISOString(),
+      date: community.createdAt,
 
       causeRequests: community.causes.map(cause => CauseRequestResponseDto.toDto(cause)),
     };

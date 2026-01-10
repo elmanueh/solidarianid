@@ -7,7 +7,7 @@ export class ActionRequestResponseDto {
       name: action.name,
       description: action.description,
 
-      date: new Date().toISOString(),
+      date: action.createdAt,
       objectives: action.objectives.map(obj => ({
         name: obj.name,
         description: obj.description,

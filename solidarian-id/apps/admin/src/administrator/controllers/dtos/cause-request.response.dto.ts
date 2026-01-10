@@ -6,7 +6,7 @@ export class CauseRequestResponseDto {
       id: cause.id.value,
       name: cause.name,
       description: cause.description,
-      date: new Date().toISOString(),
+      date: cause.createdAt,
       startDate: cause.startDate,
       duration: cause.duration,
       ods: [...cause.ods],

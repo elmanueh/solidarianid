@@ -18,7 +18,11 @@ export class ActionRequestResponseDto {
         name: evt.name,
         description: evt.description,
         initialDate: evt.initialDate,
-        place: evt.place,
+        place: {
+          direction: evt.place.direction,
+          city: evt.place.city,
+          countryCode: evt.place.countryCode,
+        },
       })),
     };
   }

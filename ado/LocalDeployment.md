@@ -32,21 +32,17 @@ cd deployment
 cp ado/ado.env.example .env
 ```
 
-Una vez copiado el archivo, es fundamental revisar y modificar las siguientes variables críticas de seguridad:
-
-- `SESSION_SECRET`: Clave secreta para las sesiones de usuario
-- `POSTGRES_PASSWORD`: Contraseña de la base de datos PostgreSQL
-- `MONGO_USER` y `MONGO_PASSWORD`: Credenciales de MongoDB
-
 ### 2. Iniciar los Servicios
 
 Una vez configurado el archivo `.env`, puedes levantar todos los servicios con un único comando:
 
 ```bash
-docker compose up -d
+docker compose up -d --force-recreate --build
 ```
 
 El flag `-d` (detached mode) ejecuta los contenedores en segundo plano, permitiendo que continúes trabajando en la terminal.
+El flag `--force-recreate` obliga a recrear los contenedores, eliminando los existentes incluso si no han cambiado (si existen).
+El flag `--build` obliga a construir las imagenes nuevamente.
 
 ### 3. Verificar el Estado de los Servicios
 
@@ -63,15 +59,13 @@ Deberías ver todos los servicios con estado `Up` y los servicios críticos (pos
 Si necesitas revisar los logs de algún servicio específico:
 
 ```bash
-docker compose logs admin-app --tail=50
-docker compose logs user-app --tail=50
-docker compose logs community-app --tail=50
+docker compose logs <container>
 ```
 
 Para seguir los logs en tiempo real:
 
 ```bash
-docker compose logs -f admin-app
+docker compose logs -f <container>
 ```
 
 ## Detener los Servicios
@@ -94,8 +88,6 @@ Para eliminar completamente el sistema incluyendo volúmenes de datos:
 docker compose down -v
 ```
 
-**Advertencia**: El último comando eliminará permanentemente todos los datos almacenados.
-
 ## Acceso a las Aplicaciones
 
 Una vez desplegado el sistema, puedes acceder a:
@@ -114,10 +106,6 @@ Verifica que los puertos no estén siendo utilizados por otros servicios:
 ```bash
 netstat -tulpn | grep -E '3000|3001|3002|5432|27017|9092'
 ```
-
-### Error de conexión a la base de datos
-
-Asegúrate de que las variables de entorno `POSTGRES_HOST` y `MONGO_HOST` apunten a los nombres de los servicios Docker (`postgres` y `mongo`) y no a `localhost`.
 
 ### Problemas con Kafka
 

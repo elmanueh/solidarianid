@@ -1,0 +1,13 @@
+<main class="metrics" aria-labelledby="page-title">
+  <h1 id="page-title" class="metrics-title">{{title}}</h1>
+
+  <div class="flex justify-center">
+    <span class="bg-base-200 p-2 rounded-xl">Solicitudes pendientes: {{total}}</span>
+  </div>
+
+  <div class="space-y-4">{{> tab-cause causes=causes }}</div>
+
+  {{> pagination currentPage=currentPage totalPages=totalPages baseUrl="/cause-requests"}}
+</main>
+
+{{> reason-modal }}

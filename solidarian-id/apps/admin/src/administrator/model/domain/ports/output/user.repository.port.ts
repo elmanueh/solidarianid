@@ -2,17 +2,7 @@ import { Either } from '@app/ddd/either';
 import { User } from '../../models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Repository } from '@app/ddd/repository/repository';
-
-/**
- * Resultado paginado genérico
- */
-export interface PaginatedResult<T> {
-  data: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 
 /**
  * Puerto de salida para el repositorio de usuarios

@@ -13,6 +13,7 @@ export interface RequestProps {
   status: RequestStatus;
   reason?: Reason;
   userId: string;
+  createdAt?: Date;
 }
 
 export interface CreateRequestProps {
@@ -28,6 +29,7 @@ export interface ReconstituteRequestProps {
   userId: string;
   status: string;
   reason?: string;
+  createdAt?: Date;
 }
 
 export abstract class Request<T> extends Entity<T & RequestProps> {
@@ -49,6 +51,10 @@ export abstract class Request<T> extends Entity<T & RequestProps> {
 
   get userId(): string {
     return this.props.userId;
+  }
+
+  get createdAt(): Date | undefined {
+    return this.props.createdAt;
   }
 
   protected constructor(props: T & RequestProps, id?: UniqueEntityID) {

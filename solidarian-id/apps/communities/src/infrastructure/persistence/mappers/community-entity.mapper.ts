@@ -22,9 +22,15 @@ export class CommunityEntityMapper implements Mapper<Community, CommunityEntity>
     entity.name = model.name;
     entity.description = model.description;
 
-    entity.members = model.members?.map(member => CommunityUserEntityMapper.toPersistence(member, model)) || [];
+    if (model.members && model.members.length > 0) {
+      entity.members = model.members.map(member => {
+        return CommunityUserEntityMapper.toPersistence(member, model);
+      });
+    }
 
-    entity.causes = model.causes?.map(cause => this.causesEntityMapper.toPersistence(cause)) || [];
+    if (model.causes && model.causes.length > 0) {
+      entity.causes = model.causes.map(cause => this.causesEntityMapper.toPersistence(cause));
+    }
 
     return entity;
   }

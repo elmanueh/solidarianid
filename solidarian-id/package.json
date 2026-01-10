@@ -42,7 +42,8 @@
     "cypress:run": "cypress run --config-file ./apps/admin/test/cypress.config.js",
     "docker:dev": "docker compose --env-file .env.development up -d --build",
     "docker:prod": "docker-compose --env-file .env.production up -d --build",
-    "docker:down": "docker-compose down"
+    "docker:down": "docker-compose down",
+    "seed:dev": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register scripts/seed/index.ts"
   },
   "dependencies": {
     "@iconify/tailwind": "^1.2.0",
@@ -81,6 +82,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
+    "@faker-js/faker": "^9.3.0",
     "@nestjs/cli": "^11.0.0",
     "@iconify/json": "^2.2.419",
     "@iconify/tailwind4": "^1.2.0",

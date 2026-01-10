@@ -579,7 +579,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
         communityId: COMMUNITY_IDS.AFRICA,
         userId: USER_IDS.MARIA,
         role: 'admin',
-        joinedAt: new Date('2024-02-01'),
+        joinedAt: new Date('2024-03-01'),
       },
       {
         communityId: COMMUNITY_IDS.AFRICA,

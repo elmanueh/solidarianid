@@ -20,7 +20,8 @@ export class CommunitiesApiServiceImpl extends CommunitiesApiPort {
     limit?: number,
   ): Promise<Either<RepositoryException, CommunityRankingUserResponseDto[]>> {
     try {
-      const url = new URL(`${this.communitiesApiUrl}/ranking/most-users`);
+      const url = new URL(this.communitiesApiUrl);
+      url.searchParams.append('criteria', 'most-users');
       if (limit) {
         url.searchParams.append('limit', limit.toString());
       }
@@ -54,7 +55,7 @@ export class CommunitiesApiServiceImpl extends CommunitiesApiPort {
     months?: number,
   ): Promise<Either<RepositoryException, CommunityLastUsersJoinedSummaryResponseDto>> {
     try {
-      const url = new URL(`${this.communitiesApiUrl}/${communityId}/users-joined`);
+      const url = new URL(`${this.communitiesApiUrl}/${communityId}/users`);
       if (months) {
         url.searchParams.append('months', months.toString());
       }

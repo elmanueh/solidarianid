@@ -6,12 +6,13 @@ import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
-import { CommunityRequestEventDto } from '@solidarianid/kafka';
+import { CommunityRequestEventDto, EventType } from '@solidarianid/kafka';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { RankingCommunitiesByUsersData } from './community-ranking.data';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { CommunityLastUsersJoinedData } from './community-last-users-joined.data';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
 
 @Injectable()
 export class CommunitiesServiceImpl implements CommunitiesService {
@@ -19,6 +20,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     private readonly communityRepository: CommunitiesRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communityQueryRepository: CommunitiesQueryRepositoryPort,
+    private readonly communitiesPublisher: CommunitiesPublisherPort,
   ) {}
 
   async create(
@@ -72,6 +74,8 @@ export class CommunitiesServiceImpl implements CommunitiesService {
       return left(saveResult.value);
     }
 
+    await this.communitiesPublisher.publish(EventType.COMMUNITY_CREATED, community);
+
     return right(community);
   }
 
@@ -118,9 +122,10 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     const saveResult = await this.communityRepository.save(communityOrError.value);
 
     if (saveResult.isLeft()) {
-      console.log(saveResult.value);
       return left(saveResult.value);
     }
+
+    await this.communitiesPublisher.publish(EventType.COMMUNITY_MEMBER_JOINED, communityOrError.value);
 
     return right(saveResult.value);
   }

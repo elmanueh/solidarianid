@@ -8,14 +8,14 @@ export enum EventType {
   REQUEST_DECLINED = 'request.declined',
 
   COMMUNITY_CREATED = 'community.created',
-  COMMUNITY_UPDATED = 'community.updated',
   COMMUNITY_DELETED = 'community.deleted',
+  COMMUNITY_MEMBER_JOINED = 'community.member_joined',
 
   CAUSE_CREATED = 'cause.created',
   CAUSE_UPDATED = 'cause.updated',
   CAUSE_DELETED = 'cause.deleted',
 
-  EVENT_CREATED = 'event.created',
-  EVENT_UPDATED = 'event.updated',
-  EVENT_DELETED = 'event.deleted',
+  ACTION_CREATED = 'action.created',
+  ACTION_UPDATED = 'action.updated',
+  ACTION_DELETED = 'action.deleted',
 }

@@ -1,5 +1,5 @@
 export class CommunityMemberJoinedEventDto {
-  idUsuario: string;
-  idCommunity: string;
+  userId: string;
+  communityId: string;
   joinedAt: Date;
 }

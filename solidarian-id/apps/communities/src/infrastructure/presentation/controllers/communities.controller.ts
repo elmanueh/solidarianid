@@ -139,7 +139,7 @@ export class CommunitiesController {
     @Param('id', new ParseUUIDPipe()) communityId: string,
     @Body() dto: MemberJoinCommunityRequestDto,
   ): Promise<void> {
-    const result = await this.communitiesService.joinCommunity(communityId, dto.idUsuario);
+    const result = await this.communitiesService.joinCommunity(communityId, dto.userId);
 
     if (result.isLeft()) {
       throw result.value;

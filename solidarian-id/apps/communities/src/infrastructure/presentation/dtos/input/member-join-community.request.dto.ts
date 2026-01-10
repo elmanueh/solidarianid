@@ -7,5 +7,5 @@ export class MemberJoinCommunityRequestDto {
     description: 'Unique identifier of the user joining the community',
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
   })
-  idUsuario: string;
+  userId: string;
 }

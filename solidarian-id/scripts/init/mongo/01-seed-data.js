@@ -1,0 +1,26771 @@
+// =====================================================
+// MongoDB Seed Data
+// Generated: 2026-01-10T16:42:33.483Z
+// Database: solidarianid
+// =====================================================
+
+db = db.getSiblingDB('solidarianid');
+print('Loading seed data for solidarianid...');
+
+// administrators (5 documents)
+print('  Loading administrators...');
+db.administrators.deleteMany({});
+db.administrators.insertMany([
+  {
+    _id: "550e8400-e29b-41d4-a716-446655440001",
+    fullname: "Sergio García Martínez",
+    email: "sergio.garcia@solidarianid.org",
+    phone: "+34612345001",
+    password: "$2b$10$JfG.9oSu4kdEk8X3EVb0UO.W6dhczhEmbMeh/DFemc.C3aWWUk/2a",
+    createdAt: "2025-12-27T23:31:26.359Z",
+    updatedAt: "2025-12-27T23:31:26.359Z"
+  },
+  {
+    _id: "550e8400-e29b-41d4-a716-446655440002",
+    fullname: "Fabián Rodríguez López",
+    email: "fabian.rodriguez@solidarianid.org",
+    phone: "+34612345002",
+    password: "$2b$10$KdEVcjeISvubnkzuttlClu79MJzlbkG0CGcGTsbrOK6hz8YnMWJ.6",
+    createdAt: "2025-12-27T23:31:26.359Z",
+    updatedAt: "2025-12-27T23:31:26.359Z"
+  },
+  {
+    _id: "550e8400-e29b-41d4-a716-446655440003",
+    fullname: "Pablo Fernández Sánchez",
+    email: "pablo.fernandez@solidarianid.org",
+    phone: "+34612345003",
+    password: "$2b$10$7dM48dzIeh0bPlR3RYjmKekvBf12z1tRyLHwcIg6ptJoV.Tib110e",
+    createdAt: "2025-12-27T23:31:26.359Z",
+    updatedAt: "2025-12-27T23:31:26.359Z"
+  },
+  {
+    _id: "550e8400-e29b-41d4-a716-446655440004",
+    fullname: "Antonio Martín González",
+    email: "antonio.martin@solidarianid.org",
+    phone: "+34612345004",
+    password: "$2b$10$3Nq1wC/3LHLlIH8RKBR13eaSUdLR7hGq6ng4FiZ9TzfommFiurpW2",
+    createdAt: "2025-12-27T23:31:26.359Z",
+    updatedAt: "2025-12-27T23:31:26.359Z"
+  },
+  {
+    _id: "550e8400-e29b-41d4-a716-446655440005",
+    fullname: "Manuel Pérez Ruiz",
+    email: "manuel.perez@solidarianid.org",
+    phone: "+34612345005",
+    password: "$2b$10$Dtg1KCQDwrKSku61QSLeWOZWO.y/ZgzJItk7Xnsl/b0sBrAeQEGKa",
+    createdAt: "2025-12-27T23:31:26.359Z",
+    updatedAt: "2025-12-27T23:31:26.359Z"
+  }
+]);
+
+// users (318 documents)
+print('  Loading users...');
+db.users.deleteMany({});
+db.users.insertMany([
+  {
+    _id: "1c943f5d-1923-4361-adfc-5d43b1be653f",
+    fullName: "Connor Mertz O'Keefe-Rohan",
+    username: "madalynwillms0",
+    phone: "+57012688976",
+    location: {
+      city: "Medellín",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.029Z",
+    updatedAt: "2026-01-10T01:08:27.029Z",
+    __v: 0
+  },
+  {
+    _id: "cbd3b884-ebe4-4101-9fe0-7358fd2d6062",
+    fullName: "Juliana Bechtelar Rempel",
+    username: "rebekaschroed1",
+    phone: "+34022447151",
+    location: {
+      city: "Sevilla",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.085Z",
+    updatedAt: "2026-01-10T01:08:27.085Z",
+    __v: 0
+  },
+  {
+    _id: "fff6e00e-9062-4e78-a2c2-a006d2bffce3",
+    fullName: "Piper Wiza Towne",
+    username: "jeromeratke2",
+    phone: "+52522749952",
+    location: {
+      city: "Tijuana",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.144Z",
+    updatedAt: "2026-01-10T01:08:27.144Z",
+    __v: 0
+  },
+  {
+    _id: "10c94659-dd4f-45ab-bbf3-b959f911e11a",
+    fullName: "Reymundo Baumbach Grimes",
+    username: "lizaconroy3",
+    phone: "+55568657294",
+    location: {
+      city: "Rio de Janeiro",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.200Z",
+    updatedAt: "2026-01-10T01:08:27.200Z",
+    __v: 0
+  },
+  {
+    _id: "d138254d-4228-4e2b-8055-f8058f23a680",
+    fullName: "Avis Kohler Powlowski",
+    username: "mikaylajerde4",
+    phone: "+44097136311",
+    location: {
+      city: "Manchester",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.258Z",
+    updatedAt: "2026-01-10T01:08:27.258Z",
+    __v: 0
+  },
+  {
+    _id: "af88d051-f09a-40ca-8768-28945eba4ece",
+    fullName: "Korey Bahringer Jerde",
+    username: "leilasmitham5",
+    phone: "+58747829873",
+    location: {
+      city: "Caracas",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.316Z",
+    updatedAt: "2026-01-10T01:08:27.316Z",
+    __v: 0
+  },
+  {
+    _id: "0e36d1da-053d-4a57-a16a-d93bccfbd085",
+    fullName: "Opal Cormier Ruecker",
+    username: "damionkoch6",
+    phone: "+33258348305",
+    location: {
+      city: "Paris",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.373Z",
+    updatedAt: "2026-01-10T01:08:27.373Z",
+    __v: 0
+  },
+  {
+    _id: "56d91884-81be-438d-bc55-4b6ac47a5f99",
+    fullName: "Delpha Russel Champlin",
+    username: "malloryorn7",
+    phone: "+54632210022",
+    location: {
+      city: "Córdoba",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.432Z",
+    updatedAt: "2026-01-10T01:08:27.432Z",
+    __v: 0
+  },
+  {
+    _id: "e8dde852-dc91-4c4d-ad49-f8d2a5adec14",
+    fullName: "Terrance Hansen Kunze",
+    username: "haroldblanda8",
+    phone: "+52677374714",
+    location: {
+      city: "Tijuana",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.490Z",
+    updatedAt: "2026-01-10T01:08:27.490Z",
+    __v: 0
+  },
+  {
+    _id: "2ba5de2c-73b6-4756-b73a-2e7f67483645",
+    fullName: "Sammie Botsford Jerde",
+    username: "abagailparker9",
+    phone: "+56334519541",
+    location: {
+      city: "Concepción",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.547Z",
+    updatedAt: "2026-01-10T01:08:27.547Z",
+    __v: 0
+  },
+  {
+    _id: "4cd2f718-ad88-442e-b8df-42f343f00378",
+    fullName: "Bailey Wolf Dibbert",
+    username: "leonhalvorson10",
+    phone: "+58626264229",
+    location: {
+      city: "Caracas",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.604Z",
+    updatedAt: "2026-01-10T01:08:27.604Z",
+    __v: 0
+  },
+  {
+    _id: "87d984f6-861b-408d-bd95-de5c08c788e0",
+    fullName: "Abel Heller Lebsack",
+    username: "crystalgleich11",
+    phone: "+44546171620",
+    location: {
+      city: "London",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.661Z",
+    updatedAt: "2026-01-10T01:08:27.661Z",
+    __v: 0
+  },
+  {
+    _id: "6fad9312-ce25-4c99-92e4-85e420b3db11",
+    fullName: "Karli Crooks Renner",
+    username: "vickyrau12",
+    phone: "+58917185594",
+    location: {
+      city: "Valencia",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.718Z",
+    updatedAt: "2026-01-10T01:08:27.718Z",
+    __v: 0
+  },
+  {
+    _id: "93631d92-8986-4c35-9f11-1ecb0ae4314c",
+    fullName: "Crystal Emmerich Stamm",
+    username: "tomasparisian13",
+    phone: "+49276385882",
+    location: {
+      city: "Frankfurt",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.775Z",
+    updatedAt: "2026-01-10T01:08:27.775Z",
+    __v: 0
+  },
+  {
+    _id: "85190a0b-d05a-4a8e-9c24-4a8ad23a7270",
+    fullName: "Marta Heller Williamson",
+    username: "eileenbauch14",
+    phone: "+57084334844",
+    location: {
+      city: "Bogotá",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.832Z",
+    updatedAt: "2026-01-10T01:08:27.832Z",
+    __v: 0
+  },
+  {
+    _id: "6cb497eb-c391-443c-8e2e-0595b3aa56fe",
+    fullName: "Joany Witting Kassulke",
+    username: "ladariusdare15",
+    phone: "+57558360739",
+    location: {
+      city: "Medellín",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.889Z",
+    updatedAt: "2026-01-10T01:08:27.889Z",
+    __v: 0
+  },
+  {
+    _id: "e7b8e274-ef7f-420f-a922-d2968d16485c",
+    fullName: "Christy Lehner Hagenes",
+    username: "elsiemedhurst16",
+    phone: "+58242129485",
+    location: {
+      city: "Maracaibo",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:27.946Z",
+    updatedAt: "2026-01-10T01:08:27.946Z",
+    __v: 0
+  },
+  {
+    _id: "03f81753-1a0d-4bbe-b4d4-8f6481201dbb",
+    fullName: "Kay Ullrich Turcotte",
+    username: "brooklynwiza17",
+    phone: "+51950033785",
+    location: {
+      city: "Lima",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.004Z",
+    updatedAt: "2026-01-10T01:08:28.004Z",
+    __v: 0
+  },
+  {
+    _id: "bd95add3-78ff-49cd-993e-fb720bd3d62f",
+    fullName: "Larry Wehner Tillman",
+    username: "kenyonswift18",
+    phone: "+44278066071",
+    location: {
+      city: "Manchester",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.061Z",
+    updatedAt: "2026-01-10T01:08:28.061Z",
+    __v: 0
+  },
+  {
+    _id: "ddb262e5-2aa9-45be-9de1-1e453313b9c9",
+    fullName: "Remington Schmeler Schneider",
+    username: "elianewatsica19",
+    phone: "+34915666315",
+    location: {
+      city: "Bilbao",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.118Z",
+    updatedAt: "2026-01-10T01:08:28.118Z",
+    __v: 0
+  },
+  {
+    _id: "fe88acb1-2994-4b48-9e4c-8c7390ebe23c",
+    fullName: "Clint Schultz Welch",
+    username: "rudykohlerkuh20",
+    phone: "+51593565142",
+    location: {
+      city: "Trujillo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.275Z",
+    updatedAt: "2026-01-10T01:08:28.275Z",
+    __v: 0
+  },
+  {
+    _id: "0bb3523a-b868-4fde-8ec9-5b763595b012",
+    fullName: "Rebeca Wilkinson Mills",
+    username: "erynokuneva21",
+    phone: "+54472026471",
+    location: {
+      city: "Tucumán",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.332Z",
+    updatedAt: "2026-01-10T01:08:28.332Z",
+    __v: 0
+  },
+  {
+    _id: "d194e0bb-9717-4321-a9ca-9aa7bbc3534f",
+    fullName: "Dayana Bernhard Heathcote",
+    username: "yeseniawehner22",
+    phone: "+49703006964",
+    location: {
+      city: "Munich",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.389Z",
+    updatedAt: "2026-01-10T01:08:28.389Z",
+    __v: 0
+  },
+  {
+    _id: "c3b39509-cd5f-464d-96db-c8a83eaf07bc",
+    fullName: "Mya Greenholt Bernier",
+    username: "mariloulubowi23",
+    phone: "+49722396902",
+    location: {
+      city: "Dresden",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.445Z",
+    updatedAt: "2026-01-10T01:08:28.445Z",
+    __v: 0
+  },
+  {
+    _id: "356f0b45-a054-4f06-aaa1-cb66fc5ce267",
+    fullName: "Edwin Gorczany D'Amore",
+    username: "demondwolf24",
+    phone: "+51027295576",
+    location: {
+      city: "Trujillo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.503Z",
+    updatedAt: "2026-01-10T01:08:28.503Z",
+    __v: 0
+  },
+  {
+    _id: "23d4dd5b-b4a8-482a-82bc-929573a1dcd3",
+    fullName: "Orval Bogan Friesen",
+    username: "susierau25",
+    phone: "+44299523674",
+    location: {
+      city: "Manchester",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.561Z",
+    updatedAt: "2026-01-10T01:08:28.561Z",
+    __v: 0
+  },
+  {
+    _id: "096ab8b6-0ced-4368-a38f-c75594679d9e",
+    fullName: "Otho Fadel Bergnaum",
+    username: "davonolson26",
+    phone: "+52249546528",
+    location: {
+      city: "Ciudad de México",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.618Z",
+    updatedAt: "2026-01-10T01:08:28.618Z",
+    __v: 0
+  },
+  {
+    _id: "2a07e34d-13b3-440a-80bf-050d8a21282d",
+    fullName: "Sedrick Treutel Nienow",
+    username: "savannahhaag27",
+    phone: "+49051502785",
+    location: {
+      city: "Berlin",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.676Z",
+    updatedAt: "2026-01-10T01:08:28.676Z",
+    __v: 0
+  },
+  {
+    _id: "7652eb8d-09e6-44ff-af59-15713c0afacb",
+    fullName: "Gerardo Metz Nikolaus",
+    username: "ismaelcrooks28",
+    phone: "+54145719388",
+    location: {
+      city: "Tucumán",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.738Z",
+    updatedAt: "2026-01-10T01:08:28.738Z",
+    __v: 0
+  },
+  {
+    _id: "1509ee0c-96c0-42bb-8fd0-853457b2e888",
+    fullName: "Simone Kerluke Pfeffer",
+    username: "rashadmayert29",
+    phone: "+51742736085",
+    location: {
+      city: "Lima",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.799Z",
+    updatedAt: "2026-01-10T01:08:28.799Z",
+    __v: 0
+  },
+  {
+    _id: "544efd53-d6e9-4024-80fd-754968ad950f",
+    fullName: "Thomas Homenick-Wintheiser Kuvalis",
+    username: "earnestkirlin30",
+    phone: "+33355021928",
+    location: {
+      city: "Lille",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.857Z",
+    updatedAt: "2026-01-10T01:08:28.857Z",
+    __v: 0
+  },
+  {
+    _id: "a6a9fd9e-d555-4ba9-8074-8d17be3e341d",
+    fullName: "Breanne Davis Tremblay",
+    username: "dinokutch31",
+    phone: "+58751325988",
+    location: {
+      city: "Maracay",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.916Z",
+    updatedAt: "2026-01-10T01:08:28.916Z",
+    __v: 0
+  },
+  {
+    _id: "316d853e-782d-4b30-9ddd-baad4354e68c",
+    fullName: "Eloy Reichert Witting",
+    username: "serenitygoodw32",
+    phone: "+51559495930",
+    location: {
+      city: "Arequipa",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:28.974Z",
+    updatedAt: "2026-01-10T01:08:28.974Z",
+    __v: 0
+  },
+  {
+    _id: "de408f4c-4c27-48a4-aa49-26ec362d5c18",
+    fullName: "Eloisa Mitchell Beier",
+    username: "lindsaymohr33",
+    phone: "+39669816078",
+    location: {
+      city: "Napoli",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.032Z",
+    updatedAt: "2026-01-10T01:08:29.032Z",
+    __v: 0
+  },
+  {
+    _id: "e03c2936-dead-4474-8cd5-e03a7f28a659",
+    fullName: "Alize Dietrich Heaney",
+    username: "westonwisoky34",
+    phone: "+39521786316",
+    location: {
+      city: "Bologna",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.097Z",
+    updatedAt: "2026-01-10T01:08:29.097Z",
+    __v: 0
+  },
+  {
+    _id: "3c16fa98-0545-4eb0-a526-f16e07df5538",
+    fullName: "Lincoln Schumm-Hane Russel",
+    username: "julienbaumbac35",
+    phone: "+44796124757",
+    location: {
+      city: "Edinburgh",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.155Z",
+    updatedAt: "2026-01-10T01:08:29.155Z",
+    __v: 0
+  },
+  {
+    _id: "dec6ac04-b4f3-4eac-9541-4bb4be337c6c",
+    fullName: "Laila Moen Towne",
+    username: "mayhayes36",
+    phone: "+39672812375",
+    location: {
+      city: "Roma",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.214Z",
+    updatedAt: "2026-01-10T01:08:29.214Z",
+    __v: 0
+  },
+  {
+    _id: "f0e8e38b-e643-44b0-885a-64038bb25291",
+    fullName: "Fausto Corkery Waters",
+    username: "williefeil37",
+    phone: "+44882205888",
+    location: {
+      city: "Birmingham",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.272Z",
+    updatedAt: "2026-01-10T01:08:29.272Z",
+    __v: 0
+  },
+  {
+    _id: "052dcb7c-2784-429c-afeb-07484016427b",
+    fullName: "Carolina Carroll Upton",
+    username: "ruthbrown38",
+    phone: "+54210883031",
+    location: {
+      city: "Rosario",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.331Z",
+    updatedAt: "2026-01-10T01:08:29.331Z",
+    __v: 0
+  },
+  {
+    _id: "c87fcb53-1ee4-4b69-9d7d-a2c4af968fbe",
+    fullName: "Lilly Leannon Homenick",
+    username: "mittieprice39",
+    phone: "+55229417454",
+    location: {
+      city: "São Paulo",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.390Z",
+    updatedAt: "2026-01-10T01:08:29.390Z",
+    __v: 0
+  },
+  {
+    _id: "b63a2813-450c-4eec-a00f-738f9dcf0201",
+    fullName: "Eunice Labadie Grant",
+    username: "rahulkesslerg40",
+    phone: "+56580100391",
+    location: {
+      city: "Santiago",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.558Z",
+    updatedAt: "2026-01-10T01:08:29.558Z",
+    __v: 0
+  },
+  {
+    _id: "9d1fe85d-cd95-461b-ba51-87c17fed78c7",
+    fullName: "Clare Klein Metz",
+    username: "kathrynwilkin41",
+    phone: "+33512041603",
+    location: {
+      city: "Paris",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.617Z",
+    updatedAt: "2026-01-10T01:08:29.617Z",
+    __v: 0
+  },
+  {
+    _id: "80289107-eec3-4b5e-9745-f5b6924aee62",
+    fullName: "Domenick Hane Dibbert",
+    username: "clemmiegerhol42",
+    phone: "+52886615378",
+    location: {
+      city: "Ciudad de México",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.682Z",
+    updatedAt: "2026-01-10T01:08:29.682Z",
+    __v: 0
+  },
+  {
+    _id: "49298584-4192-4fcf-9882-74cb0b0e3b97",
+    fullName: "Kris Olson Gusikowski",
+    username: "jamieprosacco43",
+    phone: "+51981408152",
+    location: {
+      city: "Lima",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.749Z",
+    updatedAt: "2026-01-10T01:08:29.749Z",
+    __v: 0
+  },
+  {
+    _id: "39206045-d030-4601-babd-be2ad5ae4e54",
+    fullName: "Rossie Hartmann Konopelski",
+    username: "thomaskerluke44",
+    phone: "+33985602158",
+    location: {
+      city: "Paris",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.809Z",
+    updatedAt: "2026-01-10T01:08:29.809Z",
+    __v: 0
+  },
+  {
+    _id: "a9639f72-f2ff-4740-b536-df9225b8e5a7",
+    fullName: "Kyle Turcotte Torphy",
+    username: "khalilwisoky45",
+    phone: "+54806985077",
+    location: {
+      city: "Mendoza",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.868Z",
+    updatedAt: "2026-01-10T01:08:29.868Z",
+    __v: 0
+  },
+  {
+    _id: "d6872228-95da-43f8-97ea-a233cd5bc4d6",
+    fullName: "Morgan Johnston Spencer",
+    username: "stephoncole46",
+    phone: "+54056115216",
+    location: {
+      city: "Tucumán",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.928Z",
+    updatedAt: "2026-01-10T01:08:29.928Z",
+    __v: 0
+  },
+  {
+    _id: "701a500a-88e5-4c72-af33-3a70b7dc71e5",
+    fullName: "Sebastian Kshlerin Schumm",
+    username: "camrynkub47",
+    phone: "+52264120340",
+    location: {
+      city: "Cancún",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:29.988Z",
+    updatedAt: "2026-01-10T01:08:29.988Z",
+    __v: 0
+  },
+  {
+    _id: "d3d7ae60-e964-49aa-9767-88c9acbcedc7",
+    fullName: "Jammie Nolan Parisian",
+    username: "talonfarrell48",
+    phone: "+51870440121",
+    location: {
+      city: "Trujillo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.047Z",
+    updatedAt: "2026-01-10T01:08:30.047Z",
+    __v: 0
+  },
+  {
+    _id: "4ec53b63-2363-4528-885c-c97c95d32102",
+    fullName: "Gene Kutch Effertz",
+    username: "javonkling49",
+    phone: "+58183210239",
+    location: {
+      city: "Valencia",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.107Z",
+    updatedAt: "2026-01-10T01:08:30.107Z",
+    __v: 0
+  },
+  {
+    _id: "500cd7aa-5e9c-40bd-aee5-4d0646e9c529",
+    fullName: "Mekhi Medhurst Altenwerth",
+    username: "catherinestie50",
+    phone: "+44931873008",
+    location: {
+      city: "Glasgow",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.167Z",
+    updatedAt: "2026-01-10T01:08:30.167Z",
+    __v: 0
+  },
+  {
+    _id: "f5788676-18b9-4009-9d9c-6e42d8a30087",
+    fullName: "Cordie O'Kon Effertz",
+    username: "dorthabergnau51",
+    phone: "+56864600754",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.229Z",
+    updatedAt: "2026-01-10T01:08:30.229Z",
+    __v: 0
+  },
+  {
+    _id: "9ee0e99b-d9a0-4a3b-ab45-6b258c46efc0",
+    fullName: "Cordie Jast Pouros",
+    username: "joanylegros52",
+    phone: "+51973555443",
+    location: {
+      city: "Cusco",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.286Z",
+    updatedAt: "2026-01-10T01:08:30.286Z",
+    __v: 0
+  },
+  {
+    _id: "92a26b71-7d12-45d6-9604-6e826295d2a0",
+    fullName: "Felton Harris O'Connell",
+    username: "israelmurazik53",
+    phone: "+57823135553",
+    location: {
+      city: "Bogotá",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.345Z",
+    updatedAt: "2026-01-10T01:08:30.345Z",
+    __v: 0
+  },
+  {
+    _id: "e92eef3b-6058-41bf-95bd-16e8cd336953",
+    fullName: "Roy Grant Douglas-Tremblay",
+    username: "ivoryfriesen54",
+    phone: "+44936003137",
+    location: {
+      city: "Glasgow",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.406Z",
+    updatedAt: "2026-01-10T01:08:30.406Z",
+    __v: 0
+  },
+  {
+    _id: "82b25e89-0b5c-4025-a048-bf793185f489",
+    fullName: "Hassan Doyle-Cartwright Johnson",
+    username: "eloisadooley55",
+    phone: "+44750442275",
+    location: {
+      city: "London",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.465Z",
+    updatedAt: "2026-01-10T01:08:30.465Z",
+    __v: 0
+  },
+  {
+    _id: "e06bfcff-2582-48a2-97b2-c343674916da",
+    fullName: "Makenzie Bayer Schiller",
+    username: "terrellbayer56",
+    phone: "+55364412961",
+    location: {
+      city: "Brasília",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.523Z",
+    updatedAt: "2026-01-10T01:08:30.523Z",
+    __v: 0
+  },
+  {
+    _id: "6acb7e21-d293-4c02-b979-69976c1f25f6",
+    fullName: "Rick Mraz Sauer",
+    username: "princecremin57",
+    phone: "+57177395613",
+    location: {
+      city: "Cartagena",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.580Z",
+    updatedAt: "2026-01-10T01:08:30.580Z",
+    __v: 0
+  },
+  {
+    _id: "207025f2-5340-473c-bf9c-447cc2e51e8e",
+    fullName: "Marcel Rutherford Turcotte",
+    username: "veronicacassi58",
+    phone: "+52917460093",
+    location: {
+      city: "Monterrey",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.638Z",
+    updatedAt: "2026-01-10T01:08:30.638Z",
+    __v: 0
+  },
+  {
+    _id: "3dd93241-5fd3-42d3-b1c3-dcace5afa5f6",
+    fullName: "Helen Fritsch Rath",
+    username: "rebecaleuschk59",
+    phone: "+57452072423",
+    location: {
+      city: "Cali",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.696Z",
+    updatedAt: "2026-01-10T01:08:30.696Z",
+    __v: 0
+  },
+  {
+    _id: "a5d930a4-808e-4ec1-86ef-be0e26bf47e0",
+    fullName: "Aurelio Connelly Welch",
+    username: "rebeccasanfor60",
+    phone: "+49408452041",
+    location: {
+      city: "Stuttgart",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.858Z",
+    updatedAt: "2026-01-10T01:08:30.858Z",
+    __v: 0
+  },
+  {
+    _id: "e882b5d5-2ec9-46c4-abb8-8143b657cab7",
+    fullName: "Ferne Bernhard Kunde",
+    username: "joellefarrell61",
+    phone: "+58750727860",
+    location: {
+      city: "Maracay",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.914Z",
+    updatedAt: "2026-01-10T01:08:30.914Z",
+    __v: 0
+  },
+  {
+    _id: "0a9397f0-b22a-4a6d-8cd7-a998b93cdc55",
+    fullName: "Fiona Nienow Mraz",
+    username: "jerelmillshom62",
+    phone: "+44560103833",
+    location: {
+      city: "Glasgow",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:30.972Z",
+    updatedAt: "2026-01-10T01:08:30.972Z",
+    __v: 0
+  },
+  {
+    _id: "e513ab96-3736-47e6-afd2-2f8560a18764",
+    fullName: "Caroline Konopelski Oberbrunner",
+    username: "orphasipes63",
+    phone: "+55296660140",
+    location: {
+      city: "Salvador",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.030Z",
+    updatedAt: "2026-01-10T01:08:31.030Z",
+    __v: 0
+  },
+  {
+    _id: "33c89fa3-a2e8-46d1-8a21-eadab035cc34",
+    fullName: "Unique Kuhic Schulist",
+    username: "waldofeest64",
+    phone: "+39737383563",
+    location: {
+      city: "Torino",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.087Z",
+    updatedAt: "2026-01-10T01:08:31.087Z",
+    __v: 0
+  },
+  {
+    _id: "0d1d8c44-b4a5-4491-8c78-0112cc968666",
+    fullName: "Enola Bednar Ryan",
+    username: "reubenmacejko65",
+    phone: "+51519313095",
+    location: {
+      city: "Trujillo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.144Z",
+    updatedAt: "2026-01-10T01:08:31.144Z",
+    __v: 0
+  },
+  {
+    _id: "2390ddf4-68f0-4741-bec2-ecb6d5020ac8",
+    fullName: "Barton Roob Block",
+    username: "jarrettconn66",
+    phone: "+49173446872",
+    location: {
+      city: "Berlin",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.200Z",
+    updatedAt: "2026-01-10T01:08:31.200Z",
+    __v: 0
+  },
+  {
+    _id: "8e6945b7-f50f-4fee-b44c-fbafbc04d837",
+    fullName: "Helga Reinger Waters",
+    username: "eugeniabernha67",
+    phone: "+39734157555",
+    location: {
+      city: "Roma",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.258Z",
+    updatedAt: "2026-01-10T01:08:31.258Z",
+    __v: 0
+  },
+  {
+    _id: "02c19ca9-b0cf-4108-87b4-f8a2b5809ef0",
+    fullName: "Christ Kessler Bechtelar",
+    username: "rowlandbaumba68",
+    phone: "+39972320643",
+    location: {
+      city: "Firenze",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.315Z",
+    updatedAt: "2026-01-10T01:08:31.315Z",
+    __v: 0
+  },
+  {
+    _id: "bcdca0aa-5029-466b-aa55-601ceccbe8be",
+    fullName: "Ardith Sawayn Hansen",
+    username: "anissawatsica69",
+    phone: "+44726386550",
+    location: {
+      city: "Edinburgh",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.371Z",
+    updatedAt: "2026-01-10T01:08:31.371Z",
+    __v: 0
+  },
+  {
+    _id: "64f7e3a8-f87e-498a-9e9f-78c0001bf657",
+    fullName: "Houston Ondricka Rau-Powlowski",
+    username: "casperbeatty70",
+    phone: "+49756674458",
+    location: {
+      city: "Frankfurt",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.430Z",
+    updatedAt: "2026-01-10T01:08:31.430Z",
+    __v: 0
+  },
+  {
+    _id: "7387cfe6-3799-4e7a-bf12-3e716bd7cdda",
+    fullName: "Serenity Schowalter Breitenberg-Gleason",
+    username: "priscillamora71",
+    phone: "+52115365468",
+    location: {
+      city: "Guadalajara",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.488Z",
+    updatedAt: "2026-01-10T01:08:31.488Z",
+    __v: 0
+  },
+  {
+    _id: "fedc18bc-f476-48d5-abcd-05b79d20886c",
+    fullName: "Jayme Anderson Durgan",
+    username: "pricemayer72",
+    phone: "+58218638585",
+    location: {
+      city: "Barquisimeto",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.546Z",
+    updatedAt: "2026-01-10T01:08:31.546Z",
+    __v: 0
+  },
+  {
+    _id: "46539a58-76f5-4324-be5c-8ff042b3c821",
+    fullName: "Lucienne Sipes Stark",
+    username: "jessikachrist73",
+    phone: "+58921548053",
+    location: {
+      city: "Caracas",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.605Z",
+    updatedAt: "2026-01-10T01:08:31.605Z",
+    __v: 0
+  },
+  {
+    _id: "b183994d-26d8-4217-96aa-c24d5c20f9d3",
+    fullName: "Sarah Hagenes Rice",
+    username: "roelgrimeskir74",
+    phone: "+49847000350",
+    location: {
+      city: "Dresden",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.661Z",
+    updatedAt: "2026-01-10T01:08:31.661Z",
+    __v: 0
+  },
+  {
+    _id: "e82824b5-fb2d-4fbd-93c1-44591a01e3d8",
+    fullName: "Maryjane Wiegand Batz",
+    username: "glendaleuschk75",
+    phone: "+34239265086",
+    location: {
+      city: "Zaragoza",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.717Z",
+    updatedAt: "2026-01-10T01:08:31.717Z",
+    __v: 0
+  },
+  {
+    _id: "3a16d985-f175-40cc-a0ea-87d5f1453066",
+    fullName: "Timothy Jacobi Weber",
+    username: "shayleewittin76",
+    phone: "+54941182667",
+    location: {
+      city: "Córdoba",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.775Z",
+    updatedAt: "2026-01-10T01:08:31.775Z",
+    __v: 0
+  },
+  {
+    _id: "69247962-7d38-41c6-81bf-38105e0327c3",
+    fullName: "Amani Hane D'Amore",
+    username: "mateomante77",
+    phone: "+49867810395",
+    location: {
+      city: "Stuttgart",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.832Z",
+    updatedAt: "2026-01-10T01:08:31.832Z",
+    __v: 0
+  },
+  {
+    _id: "4868b65a-1613-49c0-8024-02dc673c7e12",
+    fullName: "Dallin Kutch Stroman",
+    username: "cruzmaggio78",
+    phone: "+44562006385",
+    location: {
+      city: "Manchester",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.890Z",
+    updatedAt: "2026-01-10T01:08:31.890Z",
+    __v: 0
+  },
+  {
+    _id: "e2317d46-311a-47e2-aef3-e2c5c948b47c",
+    fullName: "Jerrold Labadie Dare",
+    username: "adriennewelch79",
+    phone: "+51345370546",
+    location: {
+      city: "Lima",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:31.950Z",
+    updatedAt: "2026-01-10T01:08:31.950Z",
+    __v: 0
+  },
+  {
+    _id: "0da92fd0-63b4-4aa0-9ef7-3c6d66300703",
+    fullName: "Lura Champlin Kub",
+    username: "marquiseflatl80",
+    phone: "+58866428651",
+    location: {
+      city: "Maracaibo",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.111Z",
+    updatedAt: "2026-01-10T01:08:32.111Z",
+    __v: 0
+  },
+  {
+    _id: "2f18d090-2db0-4634-b537-3a7c4de8db19",
+    fullName: "Lizeth Strosin Reilly",
+    username: "coltenhagenes81",
+    phone: "+54802392984",
+    location: {
+      city: "Mar del Plata",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.167Z",
+    updatedAt: "2026-01-10T01:08:32.167Z",
+    __v: 0
+  },
+  {
+    _id: "51283d7d-b2f3-468e-8ba1-f86023536979",
+    fullName: "Aliza Bailey Effertz",
+    username: "mafaldaschmid82",
+    phone: "+57081702185",
+    location: {
+      city: "Medellín",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.225Z",
+    updatedAt: "2026-01-10T01:08:32.225Z",
+    __v: 0
+  },
+  {
+    _id: "870b11c4-9686-46ee-bec6-22967cea6f9b",
+    fullName: "Ervin Schowalter-Stanton Kassulke",
+    username: "deannaparisia83",
+    phone: "+39230831853",
+    location: {
+      city: "Napoli",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.282Z",
+    updatedAt: "2026-01-10T01:08:32.282Z",
+    __v: 0
+  },
+  {
+    _id: "38773b82-40f0-42da-bf59-1c6255f508ba",
+    fullName: "Karianne Weber Shanahan",
+    username: "montanaherzog84",
+    phone: "+55993633872",
+    location: {
+      city: "Brasília",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.339Z",
+    updatedAt: "2026-01-10T01:08:32.339Z",
+    __v: 0
+  },
+  {
+    _id: "01ae789b-fd29-483d-a6a2-dc7c3c9d65eb",
+    fullName: "Kameron Windler Schiller",
+    username: "sarahcorwin85",
+    phone: "+52507490355",
+    location: {
+      city: "Guadalajara",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.396Z",
+    updatedAt: "2026-01-10T01:08:32.396Z",
+    __v: 0
+  },
+  {
+    _id: "87ee6a45-1964-42b0-8ffa-bc1694aad4b8",
+    fullName: "Braxton Feest Hoeger",
+    username: "priscillawuns86",
+    phone: "+56128893528",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.453Z",
+    updatedAt: "2026-01-10T01:08:32.453Z",
+    __v: 0
+  },
+  {
+    _id: "41e61a7b-d324-4c1d-ace6-887564d10384",
+    fullName: "Priscilla Herzog Braun",
+    username: "judgeharber87",
+    phone: "+34092574037",
+    location: {
+      city: "Barcelona",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.509Z",
+    updatedAt: "2026-01-10T01:08:32.509Z",
+    __v: 0
+  },
+  {
+    _id: "a2805777-df7c-4e8a-be38-65e87d43cb2e",
+    fullName: "Ezra Daugherty Reynolds",
+    username: "lewschultz88",
+    phone: "+55787103161",
+    location: {
+      city: "Brasília",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.567Z",
+    updatedAt: "2026-01-10T01:08:32.567Z",
+    __v: 0
+  },
+  {
+    _id: "8225fb56-65e1-4bae-ba13-677391c8078a",
+    fullName: "Ronaldo Thiel Grant-Rolfson",
+    username: "denaquigley89",
+    phone: "+56137416038",
+    location: {
+      city: "Concepción",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.624Z",
+    updatedAt: "2026-01-10T01:08:32.624Z",
+    __v: 0
+  },
+  {
+    _id: "a80ff311-aa3c-42f2-9cbe-213f5862459f",
+    fullName: "Lizeth Pfeffer Shanahan-Bahringer",
+    username: "briannemuller90",
+    phone: "+56132474714",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.681Z",
+    updatedAt: "2026-01-10T01:08:32.681Z",
+    __v: 0
+  },
+  {
+    _id: "35461096-7f5d-46e8-80fa-67113a1dc7ed",
+    fullName: "Reid Bogisich Langworth",
+    username: "alisharippin91",
+    phone: "+52973331131",
+    location: {
+      city: "León",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.738Z",
+    updatedAt: "2026-01-10T01:08:32.738Z",
+    __v: 0
+  },
+  {
+    _id: "36951be5-cce4-49af-993b-5917b12cd7b4",
+    fullName: "Antonetta Bauch Kertzmann",
+    username: "bessiegoyette92",
+    phone: "+51708586304",
+    location: {
+      city: "Cusco",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.795Z",
+    updatedAt: "2026-01-10T01:08:32.795Z",
+    __v: 0
+  },
+  {
+    _id: "0a3eae0d-02e8-472b-9b9d-772b33c68217",
+    fullName: "Jesse Funk Ferry-Gerlach",
+    username: "marlinabbott93",
+    phone: "+34911022333",
+    location: {
+      city: "Zaragoza",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.853Z",
+    updatedAt: "2026-01-10T01:08:32.853Z",
+    __v: 0
+  },
+  {
+    _id: "3bbad0b7-e742-48ec-8697-b387206486c3",
+    fullName: "Lia Greenholt Feil",
+    username: "stephanyconro94",
+    phone: "+57316749006",
+    location: {
+      city: "Medellín",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.910Z",
+    updatedAt: "2026-01-10T01:08:32.910Z",
+    __v: 0
+  },
+  {
+    _id: "5c817b34-5cef-4a15-bae1-ed2749069ba3",
+    fullName: "Hulda Ledner Marks",
+    username: "janessahaag95",
+    phone: "+56295596470",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:32.967Z",
+    updatedAt: "2026-01-10T01:08:32.967Z",
+    __v: 0
+  },
+  {
+    _id: "aa487d21-a40a-49c0-a8ce-219e56e2607b",
+    fullName: "Lisa Dietrich Schulist",
+    username: "nellafadel96",
+    phone: "+57486295591",
+    location: {
+      city: "Cartagena",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.025Z",
+    updatedAt: "2026-01-10T01:08:33.025Z",
+    __v: 0
+  },
+  {
+    _id: "1853aa28-7a81-4f2a-b4d8-ce394263acc4",
+    fullName: "Delia Blanda Prohaska",
+    username: "carleechampli97",
+    phone: "+57397888785",
+    location: {
+      city: "Cali",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.082Z",
+    updatedAt: "2026-01-10T01:08:33.082Z",
+    __v: 0
+  },
+  {
+    _id: "730fd0a0-98ec-4365-8b79-4d305b5c2023",
+    fullName: "Florian Ritchie Hermann",
+    username: "kielbogisich98",
+    phone: "+39089940544",
+    location: {
+      city: "Bologna",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.139Z",
+    updatedAt: "2026-01-10T01:08:33.139Z",
+    __v: 0
+  },
+  {
+    _id: "40500af5-7c45-44c0-bd3c-698879234871",
+    fullName: "Lincoln McDermott Predovic",
+    username: "ramiromraz99",
+    phone: "+52180921666",
+    location: {
+      city: "Monterrey",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.197Z",
+    updatedAt: "2026-01-10T01:08:33.197Z",
+    __v: 0
+  },
+  {
+    _id: "04bbb59d-d509-43e3-b8bd-955c9c1369ed",
+    fullName: "Claudine Miller O'Connell",
+    username: "doloresdickin100",
+    phone: "+49209704637",
+    location: {
+      city: "Berlin",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.361Z",
+    updatedAt: "2026-01-10T01:08:33.361Z",
+    __v: 0
+  },
+  {
+    _id: "15acc880-f861-4dc2-a4ca-6d04ddf485a3",
+    fullName: "Mae Von Emmerich",
+    username: "eduardogerhol101",
+    phone: "+52827350848",
+    location: {
+      city: "Ciudad de México",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.417Z",
+    updatedAt: "2026-01-10T01:08:33.417Z",
+    __v: 0
+  },
+  {
+    _id: "0d965b81-151e-4d3d-b76e-353f8c62f04c",
+    fullName: "Ellis Schultz-Schoen Schimmel",
+    username: "orvillebruen102",
+    phone: "+58499292333",
+    location: {
+      city: "Maracaibo",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.477Z",
+    updatedAt: "2026-01-10T01:08:33.477Z",
+    __v: 0
+  },
+  {
+    _id: "f1db4524-1c56-4c15-b4cb-eff82c326efb",
+    fullName: "Alverta Gibson Hessel",
+    username: "liawindlercon103",
+    phone: "+57099451041",
+    location: {
+      city: "Bogotá",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.534Z",
+    updatedAt: "2026-01-10T01:08:33.534Z",
+    __v: 0
+  },
+  {
+    _id: "38fd508a-33eb-4d2f-9567-175e7f0356f1",
+    fullName: "Kaitlin Mante Klocko",
+    username: "marcelinacorm104",
+    phone: "+51575945852",
+    location: {
+      city: "Chiclayo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.593Z",
+    updatedAt: "2026-01-10T01:08:33.593Z",
+    __v: 0
+  },
+  {
+    _id: "40427b44-087c-4a91-95ec-aa80aa037fa1",
+    fullName: "Isom Farrell Thompson",
+    username: "garrygoldner105",
+    phone: "+39747026488",
+    location: {
+      city: "Milano",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.650Z",
+    updatedAt: "2026-01-10T01:08:33.650Z",
+    __v: 0
+  },
+  {
+    _id: "8ed0b0c2-abe5-4271-a27e-2bd4b2e0fed1",
+    fullName: "Harmon Goldner Hagenes",
+    username: "nataliaschult106",
+    phone: "+39087315005",
+    location: {
+      city: "Roma",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.708Z",
+    updatedAt: "2026-01-10T01:08:33.708Z",
+    __v: 0
+  },
+  {
+    _id: "a799f2e7-da90-4655-9f4c-b45b3137ddbe",
+    fullName: "Pauline Jenkins Swift",
+    username: "hersheldietri107",
+    phone: "+49359864938",
+    location: {
+      city: "Dresden",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.766Z",
+    updatedAt: "2026-01-10T01:08:33.766Z",
+    __v: 0
+  },
+  {
+    _id: "276af5a9-feda-48b2-9231-1e3e50cf08e2",
+    fullName: "Jerel Moen Kulas",
+    username: "americohermis108",
+    phone: "+39238134075",
+    location: {
+      city: "Bologna",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.828Z",
+    updatedAt: "2026-01-10T01:08:33.828Z",
+    __v: 0
+  },
+  {
+    _id: "421be84a-572d-4388-806d-7d1a00d4efed",
+    fullName: "Maureen Dietrich Keebler",
+    username: "calebstark109",
+    phone: "+58082080847",
+    location: {
+      city: "Barquisimeto",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.891Z",
+    updatedAt: "2026-01-10T01:08:33.891Z",
+    __v: 0
+  },
+  {
+    _id: "792cb878-d538-42e3-a036-0b7ba1893e8a",
+    fullName: "Dorian Ryan Rippin",
+    username: "hollybahringe110",
+    phone: "+49900722757",
+    location: {
+      city: "Munich",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:33.951Z",
+    updatedAt: "2026-01-10T01:08:33.951Z",
+    __v: 0
+  },
+  {
+    _id: "c7cfb461-d416-4e3c-888a-50efd73fcb13",
+    fullName: "Chaim Hahn Erdman-Davis",
+    username: "noemybernhard111",
+    phone: "+33724164037",
+    location: {
+      city: "Toulouse",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.014Z",
+    updatedAt: "2026-01-10T01:08:34.014Z",
+    __v: 0
+  },
+  {
+    _id: "04f8eef9-b1f1-4b7f-83aa-b5191460b73c",
+    fullName: "Alfredo Ernser Marks",
+    username: "orphabechtela112",
+    phone: "+49355628259",
+    location: {
+      city: "Stuttgart",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.073Z",
+    updatedAt: "2026-01-10T01:08:34.073Z",
+    __v: 0
+  },
+  {
+    _id: "b8e756ea-9090-467a-a548-e3e61ae62066",
+    fullName: "Bradly Lehner Bode",
+    username: "myrnaschmeler113",
+    phone: "+51073005415",
+    location: {
+      city: "Cusco",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.133Z",
+    updatedAt: "2026-01-10T01:08:34.133Z",
+    __v: 0
+  },
+  {
+    _id: "16e5303f-c583-42f7-ac3f-272d209dc227",
+    fullName: "Marcia Brown Terry",
+    username: "alanisvolkman114",
+    phone: "+54469802677",
+    location: {
+      city: "Buenos Aires",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.192Z",
+    updatedAt: "2026-01-10T01:08:34.192Z",
+    __v: 0
+  },
+  {
+    _id: "d25ff7a6-b97e-4262-bbde-afcef1c6db02",
+    fullName: "Houston Lueilwitz Carroll",
+    username: "chelsiekoch115",
+    phone: "+49582813229",
+    location: {
+      city: "Hamburg",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.251Z",
+    updatedAt: "2026-01-10T01:08:34.251Z",
+    __v: 0
+  },
+  {
+    _id: "d8a040a1-cb63-4e18-9962-806f74b2d340",
+    fullName: "Imogene Sawayn Boyle",
+    username: "willissatterf116",
+    phone: "+51427058826",
+    location: {
+      city: "Cusco",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.313Z",
+    updatedAt: "2026-01-10T01:08:34.313Z",
+    __v: 0
+  },
+  {
+    _id: "361bcf9f-508a-4d70-8d1a-7f8963ddd29c",
+    fullName: "Gretchen Mertz Frami",
+    username: "demariofraney117",
+    phone: "+58233379943",
+    location: {
+      city: "Caracas",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.373Z",
+    updatedAt: "2026-01-10T01:08:34.373Z",
+    __v: 0
+  },
+  {
+    _id: "03ad56fd-3d10-4b7d-b866-d8da7f791ce2",
+    fullName: "Carolanne Pacocha Cremin",
+    username: "jovanyschulis118",
+    phone: "+52413965597",
+    location: {
+      city: "Puebla",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.432Z",
+    updatedAt: "2026-01-10T01:08:34.432Z",
+    __v: 0
+  },
+  {
+    _id: "a98468b6-e8d0-4b2b-b663-78f06a517db8",
+    fullName: "Ubaldo O'Keefe Cormier",
+    username: "javonschneide119",
+    phone: "+58202601198",
+    location: {
+      city: "Maracay",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.497Z",
+    updatedAt: "2026-01-10T01:08:34.497Z",
+    __v: 0
+  },
+  {
+    _id: "120066e5-f8d0-40eb-b3fd-8d1512cd95f3",
+    fullName: "Enola Doyle Lehner",
+    username: "verliejerde120",
+    phone: "+52820308004",
+    location: {
+      city: "León",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.660Z",
+    updatedAt: "2026-01-10T01:08:34.660Z",
+    __v: 0
+  },
+  {
+    _id: "7083ddfb-3299-4608-bfde-c41b982c8de6",
+    fullName: "Mariam Stroman Flatley",
+    username: "roderickbeier121",
+    phone: "+54323743839",
+    location: {
+      city: "Mar del Plata",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.722Z",
+    updatedAt: "2026-01-10T01:08:34.722Z",
+    __v: 0
+  },
+  {
+    _id: "69a478a1-10be-4ed4-a178-3df9159930a5",
+    fullName: "Cassandra Schamberger-Rolfson Schmitt",
+    username: "kathrynjohns122",
+    phone: "+34050727255",
+    location: {
+      city: "Murcia",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.785Z",
+    updatedAt: "2026-01-10T01:08:34.785Z",
+    __v: 0
+  },
+  {
+    _id: "32ec14d1-e299-4e7d-88ad-3c0630cd837d",
+    fullName: "Darron Marks Tremblay",
+    username: "vestaschimmel123",
+    phone: "+55428927523",
+    location: {
+      city: "Fortaleza",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.847Z",
+    updatedAt: "2026-01-10T01:08:34.847Z",
+    __v: 0
+  },
+  {
+    _id: "abbb4afb-0c87-4ad3-8e76-b98bf3433e31",
+    fullName: "Matilde Jacobson Waters",
+    username: "isachermann124",
+    phone: "+56523709131",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.905Z",
+    updatedAt: "2026-01-10T01:08:34.905Z",
+    __v: 0
+  },
+  {
+    _id: "316cac7f-4dce-4a7a-a73b-fc53dafe9716",
+    fullName: "Landen Stehr Tremblay",
+    username: "hobartraynor125",
+    phone: "+44861125897",
+    location: {
+      city: "Liverpool",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:34.966Z",
+    updatedAt: "2026-01-10T01:08:34.966Z",
+    __v: 0
+  },
+  {
+    _id: "6fa6c0dd-bcf9-4e49-a458-24da5839c6f9",
+    fullName: "Eleanore Steuber Reilly",
+    username: "jarrellwill126",
+    phone: "+34723870923",
+    location: {
+      city: "Zaragoza",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.024Z",
+    updatedAt: "2026-01-10T01:08:35.024Z",
+    __v: 0
+  },
+  {
+    _id: "d8c00305-7f6d-441a-8e31-80698fe62d05",
+    fullName: "Jasmin Rutherford Steuber",
+    username: "camilawatsica127",
+    phone: "+55678159452",
+    location: {
+      city: "Brasília",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.081Z",
+    updatedAt: "2026-01-10T01:08:35.081Z",
+    __v: 0
+  },
+  {
+    _id: "d0e41b0f-d8bc-4469-bd6f-2fd68ba88fc2",
+    fullName: "Octavia Ortiz Daniel",
+    username: "murlsenger128",
+    phone: "+34357887153",
+    location: {
+      city: "Valencia",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.139Z",
+    updatedAt: "2026-01-10T01:08:35.139Z",
+    __v: 0
+  },
+  {
+    _id: "12385c99-040b-42d0-8bb1-0032be58c2ea",
+    fullName: "Stephany Walker Powlowski",
+    username: "antoniayost129",
+    phone: "+51362776759",
+    location: {
+      city: "Chiclayo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.197Z",
+    updatedAt: "2026-01-10T01:08:35.197Z",
+    __v: 0
+  },
+  {
+    _id: "bf6de966-fdc9-4188-943d-40284ffaf2c2",
+    fullName: "Loma Schiller Sawayn",
+    username: "erniecummings130",
+    phone: "+58777049699",
+    location: {
+      city: "Maracaibo",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.257Z",
+    updatedAt: "2026-01-10T01:08:35.257Z",
+    __v: 0
+  },
+  {
+    _id: "23a9fa4c-8f59-43d1-98f6-8a29194fb52e",
+    fullName: "Cierra Price Gutmann",
+    username: "nolanhuels131",
+    phone: "+51594907238",
+    location: {
+      city: "Arequipa",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.314Z",
+    updatedAt: "2026-01-10T01:08:35.314Z",
+    __v: 0
+  },
+  {
+    _id: "04fd3f5a-c78d-40f3-aa4d-fd80c4a138a1",
+    fullName: "Malinda Hahn Metz",
+    username: "lilianeschade132",
+    phone: "+54484559467",
+    location: {
+      city: "Rosario",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.373Z",
+    updatedAt: "2026-01-10T01:08:35.373Z",
+    __v: 0
+  },
+  {
+    _id: "5de5a847-5f4b-47ed-afd6-a293976a1093",
+    fullName: "Dell Dach Altenwerth",
+    username: "angelokilback133",
+    phone: "+39032790386",
+    location: {
+      city: "Roma",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.432Z",
+    updatedAt: "2026-01-10T01:08:35.432Z",
+    __v: 0
+  },
+  {
+    _id: "ade31128-b25c-494f-b271-90c83a107409",
+    fullName: "Dorothy Pagac Friesen",
+    username: "eleazarwelch134",
+    phone: "+55025974495",
+    location: {
+      city: "Salvador",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.492Z",
+    updatedAt: "2026-01-10T01:08:35.492Z",
+    __v: 0
+  },
+  {
+    _id: "e1c5d272-595c-42d6-920a-6a746e879e73",
+    fullName: "Alyce Daugherty Ledner",
+    username: "omaribogisich135",
+    phone: "+55189658158",
+    location: {
+      city: "Rio de Janeiro",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.552Z",
+    updatedAt: "2026-01-10T01:08:35.552Z",
+    __v: 0
+  },
+  {
+    _id: "cfc3c9e5-7968-4452-918f-cfd3fc522f2d",
+    fullName: "Yasmeen Jenkins Hammes",
+    username: "jedediahtorp136",
+    phone: "+54491722772",
+    location: {
+      city: "Mendoza",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.612Z",
+    updatedAt: "2026-01-10T01:08:35.612Z",
+    __v: 0
+  },
+  {
+    _id: "e454dc60-614c-4be0-9c4d-2e9fed5174fa",
+    fullName: "Antone Marquardt Herzog",
+    username: "donnellschimm137",
+    phone: "+54947382392",
+    location: {
+      city: "Buenos Aires",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.672Z",
+    updatedAt: "2026-01-10T01:08:35.672Z",
+    __v: 0
+  },
+  {
+    _id: "9ec45a0d-3c22-407b-a752-e1da713eed75",
+    fullName: "Pearline Moore Turner",
+    username: "luzadams138",
+    phone: "+56991602962",
+    location: {
+      city: "Santiago",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.733Z",
+    updatedAt: "2026-01-10T01:08:35.733Z",
+    __v: 0
+  },
+  {
+    _id: "a19ccc78-1efd-4fde-856e-45f48a415918",
+    fullName: "Stone Considine Hermann",
+    username: "holliehessels139",
+    phone: "+34584728137",
+    location: {
+      city: "Madrid",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.790Z",
+    updatedAt: "2026-01-10T01:08:35.790Z",
+    __v: 0
+  },
+  {
+    _id: "139c63a5-9149-4c64-b2c6-623530211796",
+    fullName: "Dayton Gibson Medhurst-Fay",
+    username: "lindadare140",
+    phone: "+39487479513",
+    location: {
+      city: "Roma",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:35.955Z",
+    updatedAt: "2026-01-10T01:08:35.955Z",
+    __v: 0
+  },
+  {
+    _id: "7e589d8c-d5c4-4563-bc4c-4e06191d5ac9",
+    fullName: "Ernesto Hegmann-Hauck Oberbrunner",
+    username: "kaypowlowski141",
+    phone: "+58474058107",
+    location: {
+      city: "Caracas",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.013Z",
+    updatedAt: "2026-01-10T01:08:36.013Z",
+    __v: 0
+  },
+  {
+    _id: "ea1e6178-0abb-4936-a322-9e2de2c1d4d4",
+    fullName: "Gail Howe Tremblay",
+    username: "davonbogisich142",
+    phone: "+39924389344",
+    location: {
+      city: "Roma",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.074Z",
+    updatedAt: "2026-01-10T01:08:36.074Z",
+    __v: 0
+  },
+  {
+    _id: "5ae4afb8-65b8-4218-ae70-51cc5d79dd24",
+    fullName: "Mina Rempel Witting",
+    username: "hendersonlars143",
+    phone: "+54961392614",
+    location: {
+      city: "La Plata",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.134Z",
+    updatedAt: "2026-01-10T01:08:36.134Z",
+    __v: 0
+  },
+  {
+    _id: "11c5d45f-ffa1-41d7-b6de-b2b52f14af04",
+    fullName: "Catherine Kemmer Altenwerth",
+    username: "alfordstanton144",
+    phone: "+54739037401",
+    location: {
+      city: "Mar del Plata",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.193Z",
+    updatedAt: "2026-01-10T01:08:36.193Z",
+    __v: 0
+  },
+  {
+    _id: "79b9a932-60f3-47d9-af3c-cb5433bd7855",
+    fullName: "Alvera Wunsch Quigley",
+    username: "bethelbaumbac145",
+    phone: "+34222460585",
+    location: {
+      city: "Bilbao",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.254Z",
+    updatedAt: "2026-01-10T01:08:36.254Z",
+    __v: 0
+  },
+  {
+    _id: "42631dfb-1ee7-4d54-9547-7f7473232933",
+    fullName: "Earline Donnelly Kuhn",
+    username: "arliegrant146",
+    phone: "+44270389198",
+    location: {
+      city: "Edinburgh",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.315Z",
+    updatedAt: "2026-01-10T01:08:36.315Z",
+    __v: 0
+  },
+  {
+    _id: "c126d300-8a74-4b40-aa70-32eb9576aa48",
+    fullName: "Shea Mitchell Kuvalis",
+    username: "nolanhilll147",
+    phone: "+54541971239",
+    location: {
+      city: "Buenos Aires",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.373Z",
+    updatedAt: "2026-01-10T01:08:36.373Z",
+    __v: 0
+  },
+  {
+    _id: "a68ff1aa-fe21-42a0-89fc-6de5b3348fec",
+    fullName: "Charlene Morissette Waelchi",
+    username: "erabraun148",
+    phone: "+56733297118",
+    location: {
+      city: "La Serena",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.432Z",
+    updatedAt: "2026-01-10T01:08:36.432Z",
+    __v: 0
+  },
+  {
+    _id: "6ae4a37d-2b53-41fa-b4ef-6b63d7dee42c",
+    fullName: "Janice Stark Halvorson",
+    username: "wavawisozk149",
+    phone: "+56455047381",
+    location: {
+      city: "Concepción",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.490Z",
+    updatedAt: "2026-01-10T01:08:36.490Z",
+    __v: 0
+  },
+  {
+    _id: "1cd8497e-1826-40d9-8ca8-c7e792797a24",
+    fullName: "Hester Lowe Haley",
+    username: "anabelleondri150",
+    phone: "+56429113602",
+    location: {
+      city: "La Serena",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.547Z",
+    updatedAt: "2026-01-10T01:08:36.547Z",
+    __v: 0
+  },
+  {
+    _id: "af9828a1-6632-4fa7-b025-79cec94bcc9b",
+    fullName: "Branson Kilback Cremin",
+    username: "altaschusters151",
+    phone: "+33161820839",
+    location: {
+      city: "Nice",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.606Z",
+    updatedAt: "2026-01-10T01:08:36.606Z",
+    __v: 0
+  },
+  {
+    _id: "cd59b1c9-f611-4e10-957e-80458902a9d7",
+    fullName: "Genevieve Wisoky Heidenreich",
+    username: "henristreich152",
+    phone: "+44989013397",
+    location: {
+      city: "Edinburgh",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.664Z",
+    updatedAt: "2026-01-10T01:08:36.664Z",
+    __v: 0
+  },
+  {
+    _id: "4f83702c-cf3b-47be-aecf-e644cd300981",
+    fullName: "Timmy Crona-Lockman Metz",
+    username: "adrienkeebler153",
+    phone: "+57712046439",
+    location: {
+      city: "Cartagena",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.722Z",
+    updatedAt: "2026-01-10T01:08:36.722Z",
+    __v: 0
+  },
+  {
+    _id: "7ad9bad6-47d6-4261-8f17-c64e1f6d0a33",
+    fullName: "Claud Corkery Kuhn",
+    username: "lizakshlerin154",
+    phone: "+49277591532",
+    location: {
+      city: "Hamburg",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.781Z",
+    updatedAt: "2026-01-10T01:08:36.781Z",
+    __v: 0
+  },
+  {
+    _id: "033a4ad6-ad36-41f2-b3ec-6e200004f6df",
+    fullName: "Corbin Lindgren Johns",
+    username: "rosaliajohns155",
+    phone: "+57245430240",
+    location: {
+      city: "Cartagena",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.840Z",
+    updatedAt: "2026-01-10T01:08:36.840Z",
+    __v: 0
+  },
+  {
+    _id: "2fc70400-2910-421a-9a83-25e51d4732f9",
+    fullName: "Wilton Cruickshank-Weimann Wiegand",
+    username: "peytondavis156",
+    phone: "+54973497701",
+    location: {
+      city: "Rosario",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.901Z",
+    updatedAt: "2026-01-10T01:08:36.901Z",
+    __v: 0
+  },
+  {
+    _id: "f27f8d4e-6c65-484e-8df1-323d77f37835",
+    fullName: "Milan Carter Leuschke",
+    username: "ryanabernathy157",
+    phone: "+49099939254",
+    location: {
+      city: "Cologne",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:36.959Z",
+    updatedAt: "2026-01-10T01:08:36.959Z",
+    __v: 0
+  },
+  {
+    _id: "d00e797c-8f90-4199-add4-a2beac966d70",
+    fullName: "Ophelia Corwin Smitham",
+    username: "millierosenba158",
+    phone: "+44684793558",
+    location: {
+      city: "Manchester",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.017Z",
+    updatedAt: "2026-01-10T01:08:37.017Z",
+    __v: 0
+  },
+  {
+    _id: "5c724730-67f2-4c23-a30c-b60e9fdd90e1",
+    fullName: "Wilton Bayer Shields",
+    username: "jamesonwatsic159",
+    phone: "+52835863870",
+    location: {
+      city: "Ciudad de México",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.074Z",
+    updatedAt: "2026-01-10T01:08:37.074Z",
+    __v: 0
+  },
+  {
+    _id: "7daf40f0-931a-493e-bf61-e3f128a366ff",
+    fullName: "Isabell Mayert Johnson",
+    username: "carlieritchie160",
+    phone: "+56666048438",
+    location: {
+      city: "Santiago",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.245Z",
+    updatedAt: "2026-01-10T01:08:37.245Z",
+    __v: 0
+  },
+  {
+    _id: "385d9dcc-6343-4501-ab2d-44f481276fc1",
+    fullName: "Nella McCullough Moore",
+    username: "gretchenbarro161",
+    phone: "+44899033995",
+    location: {
+      city: "Glasgow",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.304Z",
+    updatedAt: "2026-01-10T01:08:37.304Z",
+    __v: 0
+  },
+  {
+    _id: "4c5e3cf4-de52-4ead-be37-be914f0aaef9",
+    fullName: "Kaela Huels Becker",
+    username: "torreyleuschk162",
+    phone: "+56094665141",
+    location: {
+      city: "Santiago",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.361Z",
+    updatedAt: "2026-01-10T01:08:37.361Z",
+    __v: 0
+  },
+  {
+    _id: "05384bd4-bf7b-45af-9151-d7a59b006dd5",
+    fullName: "Lulu Bartell Reilly",
+    username: "dorcasprosacc163",
+    phone: "+33586476104",
+    location: {
+      city: "Marseille",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.421Z",
+    updatedAt: "2026-01-10T01:08:37.421Z",
+    __v: 0
+  },
+  {
+    _id: "074f7ac2-175a-4ba8-891d-b9cad85795ec",
+    fullName: "Gina Donnelly Bode",
+    username: "darenvonruede164",
+    phone: "+51265220977",
+    location: {
+      city: "Trujillo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.478Z",
+    updatedAt: "2026-01-10T01:08:37.478Z",
+    __v: 0
+  },
+  {
+    _id: "2195165d-b901-4ba3-9e38-51f0caa40ce4",
+    fullName: "Devon Larson Denesik",
+    username: "chasitysanfor165",
+    phone: "+44641390433",
+    location: {
+      city: "Glasgow",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.535Z",
+    updatedAt: "2026-01-10T01:08:37.535Z",
+    __v: 0
+  },
+  {
+    _id: "a88d4603-1843-42df-b5c0-00b54903dab3",
+    fullName: "Myrtie DuBuque Fadel-Douglas",
+    username: "gavinkuhn166",
+    phone: "+39635321243",
+    location: {
+      city: "Bologna",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.596Z",
+    updatedAt: "2026-01-10T01:08:37.596Z",
+    __v: 0
+  },
+  {
+    _id: "10874307-532a-44a7-8b85-ef284b6db9c3",
+    fullName: "Furman Mayert Weissnat",
+    username: "maeswaniawski167",
+    phone: "+57794695297",
+    location: {
+      city: "Bogotá",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.657Z",
+    updatedAt: "2026-01-10T01:08:37.657Z",
+    __v: 0
+  },
+  {
+    _id: "3f3e6c3f-3b83-41be-8464-472a124286f7",
+    fullName: "Sylvester Thompson Donnelly",
+    username: "tristianfries168",
+    phone: "+49323563911",
+    location: {
+      city: "Berlin",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.715Z",
+    updatedAt: "2026-01-10T01:08:37.715Z",
+    __v: 0
+  },
+  {
+    _id: "95a5065b-3677-44cb-a839-40f9247c00d9",
+    fullName: "Eliezer Koss Ondricka",
+    username: "ellenbrowndic169",
+    phone: "+51842957948",
+    location: {
+      city: "Trujillo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.773Z",
+    updatedAt: "2026-01-10T01:08:37.773Z",
+    __v: 0
+  },
+  {
+    _id: "f7bbd43a-4c83-4216-9248-096673daf498",
+    fullName: "Milo Nicolas Kerluke",
+    username: "amarasporer170",
+    phone: "+58385121606",
+    location: {
+      city: "Caracas",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.831Z",
+    updatedAt: "2026-01-10T01:08:37.831Z",
+    __v: 0
+  },
+  {
+    _id: "e76bfa3e-2da5-4505-8071-68bcc558c6b1",
+    fullName: "Luther Baumbach Runolfsdottir",
+    username: "alexandrealyn171",
+    phone: "+56778169178",
+    location: {
+      city: "Antofagasta",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.890Z",
+    updatedAt: "2026-01-10T01:08:37.890Z",
+    __v: 0
+  },
+  {
+    _id: "db9c54e0-c0f6-4d5c-bea1-6db5a557ab82",
+    fullName: "Loraine Grady Hodkiewicz",
+    username: "minahodkiewic172",
+    phone: "+52702313991",
+    location: {
+      city: "Ciudad de México",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:37.948Z",
+    updatedAt: "2026-01-10T01:08:37.948Z",
+    __v: 0
+  },
+  {
+    _id: "827da6ab-f136-4935-a6ce-7cc2d9eade01",
+    fullName: "Elijah Weissnat Dicki",
+    username: "emmetbradtke173",
+    phone: "+44911959476",
+    location: {
+      city: "Edinburgh",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.006Z",
+    updatedAt: "2026-01-10T01:08:38.006Z",
+    __v: 0
+  },
+  {
+    _id: "1cbb1275-8bef-4a50-ae0b-deef074bdb0b",
+    fullName: "Braulio Kutch Sauer",
+    username: "jadynhills174",
+    phone: "+58411954716",
+    location: {
+      city: "Caracas",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.063Z",
+    updatedAt: "2026-01-10T01:08:38.063Z",
+    __v: 0
+  },
+  {
+    _id: "cf287776-41e3-45b1-8f25-04a1e5d5941f",
+    fullName: "Nathaniel Schuster Volkman",
+    username: "caitlyntorp175",
+    phone: "+56267775697",
+    location: {
+      city: "Santiago",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.122Z",
+    updatedAt: "2026-01-10T01:08:38.122Z",
+    __v: 0
+  },
+  {
+    _id: "bcee7b18-303f-4d94-a515-1ce21533bd9d",
+    fullName: "Pablo Dare Bednar",
+    username: "rosamondaufde176",
+    phone: "+39720910413",
+    location: {
+      city: "Napoli",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.182Z",
+    updatedAt: "2026-01-10T01:08:38.182Z",
+    __v: 0
+  },
+  {
+    _id: "4098679e-78df-4556-ae8b-9f129f4f09a6",
+    fullName: "Antwan Schaden Rowe",
+    username: "cicerobernier177",
+    phone: "+54594589055",
+    location: {
+      city: "Buenos Aires",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.241Z",
+    updatedAt: "2026-01-10T01:08:38.241Z",
+    __v: 0
+  },
+  {
+    _id: "a23bcec6-7f6b-4c89-a671-471d109e8efd",
+    fullName: "Karl Toy Turner",
+    username: "reubenorn178",
+    phone: "+58806543996",
+    location: {
+      city: "Maracay",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.301Z",
+    updatedAt: "2026-01-10T01:08:38.301Z",
+    __v: 0
+  },
+  {
+    _id: "ff257735-ce42-4717-93de-bea73c953442",
+    fullName: "Retha Mitchell Strosin",
+    username: "alizeankundin179",
+    phone: "+58661849492",
+    location: {
+      city: "Caracas",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.360Z",
+    updatedAt: "2026-01-10T01:08:38.360Z",
+    __v: 0
+  },
+  {
+    _id: "037464c8-6064-47fe-80ba-45b51c7dac60",
+    fullName: "Madilyn Weissnat Hand",
+    username: "clementinecor180",
+    phone: "+58761765285",
+    location: {
+      city: "Maracaibo",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.527Z",
+    updatedAt: "2026-01-10T01:08:38.527Z",
+    __v: 0
+  },
+  {
+    _id: "0ede81ca-3c50-40b8-9b63-acab6b8323a4",
+    fullName: "Fletcher Bayer Veum",
+    username: "oranbosco181",
+    phone: "+55592049009",
+    location: {
+      city: "São Paulo",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.584Z",
+    updatedAt: "2026-01-10T01:08:38.584Z",
+    __v: 0
+  },
+  {
+    _id: "cf036bd8-d92d-41a1-a3e4-dc23f24ce914",
+    fullName: "Mandy Hudson Bosco",
+    username: "charlenelangw182",
+    phone: "+52214806369",
+    location: {
+      city: "León",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.646Z",
+    updatedAt: "2026-01-10T01:08:38.646Z",
+    __v: 0
+  },
+  {
+    _id: "8652eff5-7c8d-4370-8039-539fa50d2cc7",
+    fullName: "Nannie Cronin Franecki",
+    username: "berthowe183",
+    phone: "+49616407786",
+    location: {
+      city: "Berlin",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.703Z",
+    updatedAt: "2026-01-10T01:08:38.703Z",
+    __v: 0
+  },
+  {
+    _id: "8469f7db-e45a-4752-83b8-b7763b37e95a",
+    fullName: "Wellington Dickens Zemlak",
+    username: "geovanybarton184",
+    phone: "+39040137889",
+    location: {
+      city: "Milano",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.760Z",
+    updatedAt: "2026-01-10T01:08:38.760Z",
+    __v: 0
+  },
+  {
+    _id: "a070baeb-962d-46e1-9948-3078ef6bce71",
+    fullName: "Milan Douglas-Hudson Keeling",
+    username: "zoralittle185",
+    phone: "+49883839789",
+    location: {
+      city: "Hamburg",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.818Z",
+    updatedAt: "2026-01-10T01:08:38.818Z",
+    __v: 0
+  },
+  {
+    _id: "e87057ce-8811-4a79-9725-a7f2ff263737",
+    fullName: "Ellsworth Schroeder Hartmann",
+    username: "jermainhilll186",
+    phone: "+44136436315",
+    location: {
+      city: "Liverpool",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.875Z",
+    updatedAt: "2026-01-10T01:08:38.875Z",
+    __v: 0
+  },
+  {
+    _id: "318272a9-3bee-4c66-b450-d73b8d505c27",
+    fullName: "Salma Vandervort Feest",
+    username: "jeromeoberbru187",
+    phone: "+34561518946",
+    location: {
+      city: "Murcia",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.933Z",
+    updatedAt: "2026-01-10T01:08:38.933Z",
+    __v: 0
+  },
+  {
+    _id: "9e535df7-9710-43b6-bec5-5cb86e4255bc",
+    fullName: "Nova Conroy Ebert",
+    username: "olgaziemann188",
+    phone: "+57274671324",
+    location: {
+      city: "Bogotá",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:38.992Z",
+    updatedAt: "2026-01-10T01:08:38.992Z",
+    __v: 0
+  },
+  {
+    _id: "c25363fd-9dab-4cbc-9536-6c52e502634d",
+    fullName: "Aylin Morissette Mills",
+    username: "reneeshanahan189",
+    phone: "+39074076223",
+    location: {
+      city: "Torino",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.049Z",
+    updatedAt: "2026-01-10T01:08:39.049Z",
+    __v: 0
+  },
+  {
+    _id: "9d228181-5169-4292-b268-f2abe483a351",
+    fullName: "Eliane Hilll Greenfelder",
+    username: "mariopadberg190",
+    phone: "+39212634017",
+    location: {
+      city: "Torino",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.108Z",
+    updatedAt: "2026-01-10T01:08:39.108Z",
+    __v: 0
+  },
+  {
+    _id: "8ad3ac54-9c8a-44ab-8842-e48396194796",
+    fullName: "Soledad Stokes Glover",
+    username: "alishadietric191",
+    phone: "+49052213805",
+    location: {
+      city: "Frankfurt",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.165Z",
+    updatedAt: "2026-01-10T01:08:39.165Z",
+    __v: 0
+  },
+  {
+    _id: "8bf8f374-f373-4cb6-9e6b-f41cbe6e56ac",
+    fullName: "Susie Lindgren Fay",
+    username: "codyhessel192",
+    phone: "+57537936280",
+    location: {
+      city: "Medellín",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.222Z",
+    updatedAt: "2026-01-10T01:08:39.222Z",
+    __v: 0
+  },
+  {
+    _id: "18df14ac-48b3-4c88-aea8-fbdbf9552d02",
+    fullName: "Sid Streich Friesen",
+    username: "antonewillms193",
+    phone: "+52989005820",
+    location: {
+      city: "Ciudad de México",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.281Z",
+    updatedAt: "2026-01-10T01:08:39.281Z",
+    __v: 0
+  },
+  {
+    _id: "e6bf0d24-c156-4485-ad9a-ac372ef2eea0",
+    fullName: "Rhiannon Berge Mueller",
+    username: "averyhuel194",
+    phone: "+54696359323",
+    location: {
+      city: "La Plata",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.343Z",
+    updatedAt: "2026-01-10T01:08:39.343Z",
+    __v: 0
+  },
+  {
+    _id: "c9eaaf3d-7629-4bf6-973b-465c76d104b6",
+    fullName: "Richard Block Zieme",
+    username: "elinoreaberna195",
+    phone: "+54365871416",
+    location: {
+      city: "Buenos Aires",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.401Z",
+    updatedAt: "2026-01-10T01:08:39.401Z",
+    __v: 0
+  },
+  {
+    _id: "e57755d5-ed2a-4fd1-bd32-94c760130dd0",
+    fullName: "Elenora Hagenes Wiegand",
+    username: "gunnarblick196",
+    phone: "+57099281790",
+    location: {
+      city: "Cali",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.459Z",
+    updatedAt: "2026-01-10T01:08:39.459Z",
+    __v: 0
+  },
+  {
+    _id: "065c9c6e-964b-49c4-b7ef-0c89430a3aa1",
+    fullName: "Sierra Robel Homenick",
+    username: "lessieschmidt197",
+    phone: "+44011109691",
+    location: {
+      city: "Glasgow",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.517Z",
+    updatedAt: "2026-01-10T01:08:39.517Z",
+    __v: 0
+  },
+  {
+    _id: "03fb2951-8790-4de4-a501-0d78b54f35f8",
+    fullName: "Keegan Romaguera Harvey",
+    username: "petraschinner198",
+    phone: "+49416770516",
+    location: {
+      city: "Berlin",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.575Z",
+    updatedAt: "2026-01-10T01:08:39.575Z",
+    __v: 0
+  },
+  {
+    _id: "4dc2d534-ef09-4f82-97fd-b3156db676e4",
+    fullName: "Hank Olson Ebert",
+    username: "elisabethorei199",
+    phone: "+33469341772",
+    location: {
+      city: "Paris",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.632Z",
+    updatedAt: "2026-01-10T01:08:39.632Z",
+    __v: 0
+  },
+  {
+    _id: "927d7d02-55c2-448e-b54e-a7a0281becd8",
+    fullName: "Gladys Ward Bartell",
+    username: "albertjacobso200",
+    phone: "+56167451641",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.799Z",
+    updatedAt: "2026-01-10T01:08:39.799Z",
+    __v: 0
+  },
+  {
+    _id: "4655414b-01ff-410e-bd78-13a48c2bd0e5",
+    fullName: "Everette Franey-Koepp Kris",
+    username: "milokoss201",
+    phone: "+33295114858",
+    location: {
+      city: "Toulouse",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.856Z",
+    updatedAt: "2026-01-10T01:08:39.856Z",
+    __v: 0
+  },
+  {
+    _id: "03f8c1b8-f60d-4dea-b3c7-604a5bea6331",
+    fullName: "Hulda Kling Stark",
+    username: "ignatiuspouro202",
+    phone: "+56633087211",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.913Z",
+    updatedAt: "2026-01-10T01:08:39.913Z",
+    __v: 0
+  },
+  {
+    _id: "68b60675-f02d-40b8-b856-24b4c14133b1",
+    fullName: "Macey Wisoky MacGyver",
+    username: "ocierohan203",
+    phone: "+49017997401",
+    location: {
+      city: "Dresden",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:39.970Z",
+    updatedAt: "2026-01-10T01:08:39.970Z",
+    __v: 0
+  },
+  {
+    _id: "ae39c103-d9e7-4831-a748-2f704e1d4593",
+    fullName: "Justina Turcotte Toy",
+    username: "fritzschowalt204",
+    phone: "+33647504608",
+    location: {
+      city: "Bordeaux",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.027Z",
+    updatedAt: "2026-01-10T01:08:40.027Z",
+    __v: 0
+  },
+  {
+    _id: "bc4a1b44-18a7-4102-b623-aaafc6ee7dbf",
+    fullName: "Arden Runolfsson Pacocha",
+    username: "adammurray205",
+    phone: "+57397054500",
+    location: {
+      city: "Barranquilla",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.084Z",
+    updatedAt: "2026-01-10T01:08:40.084Z",
+    __v: 0
+  },
+  {
+    _id: "ca81a64d-3b4f-462c-ab6d-ad5fc3517047",
+    fullName: "Jennyfer Smitham Witting",
+    username: "rahsaansteube206",
+    phone: "+52366007748",
+    location: {
+      city: "Ciudad de México",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.142Z",
+    updatedAt: "2026-01-10T01:08:40.142Z",
+    __v: 0
+  },
+  {
+    _id: "0d1dcbd8-c218-4f6b-b970-ff97bf7ae2d5",
+    fullName: "Augustine Corwin Halvorson",
+    username: "alekwunsch207",
+    phone: "+49249802871",
+    location: {
+      city: "Berlin",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.200Z",
+    updatedAt: "2026-01-10T01:08:40.200Z",
+    __v: 0
+  },
+  {
+    _id: "42aec1c3-c89e-479a-9a0e-9b2412927fe4",
+    fullName: "Joshua Jerde Crist",
+    username: "alfredaruecke208",
+    phone: "+55581408237",
+    location: {
+      city: "Fortaleza",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.257Z",
+    updatedAt: "2026-01-10T01:08:40.257Z",
+    __v: 0
+  },
+  {
+    _id: "2dde972e-576c-4a6a-806d-651fd6a24ed3",
+    fullName: "Lorenz Koelpin Langosh",
+    username: "shawnharber209",
+    phone: "+58375151182",
+    location: {
+      city: "Maracay",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.314Z",
+    updatedAt: "2026-01-10T01:08:40.314Z",
+    __v: 0
+  },
+  {
+    _id: "ff8326a3-472f-4587-82cb-e0f4c6d8f921",
+    fullName: "Kayley Kunde Schmitt",
+    username: "yesseniabecke210",
+    phone: "+34644109814",
+    location: {
+      city: "Murcia",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.372Z",
+    updatedAt: "2026-01-10T01:08:40.372Z",
+    __v: 0
+  },
+  {
+    _id: "b4e28702-e016-407d-ada5-8788e5fb5aa7",
+    fullName: "Enrique Bayer Connelly",
+    username: "madelinereing211",
+    phone: "+56615337480",
+    location: {
+      city: "La Serena",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.428Z",
+    updatedAt: "2026-01-10T01:08:40.428Z",
+    __v: 0
+  },
+  {
+    _id: "14c0049b-0d1b-4321-b7d6-00566714f61a",
+    fullName: "Ignatius Ondricka Collins",
+    username: "whitneykrajci212",
+    phone: "+58715044792",
+    location: {
+      city: "Barquisimeto",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.485Z",
+    updatedAt: "2026-01-10T01:08:40.485Z",
+    __v: 0
+  },
+  {
+    _id: "ea510f67-405f-4649-9027-2d9f38666b62",
+    fullName: "Onie Berge Thiel",
+    username: "elizamacejkov213",
+    phone: "+54520404648",
+    location: {
+      city: "Córdoba",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.542Z",
+    updatedAt: "2026-01-10T01:08:40.542Z",
+    __v: 0
+  },
+  {
+    _id: "5751cce3-0158-48fc-8d8a-129c885b9cb9",
+    fullName: "Santina Lockman Little",
+    username: "rogersfahey214",
+    phone: "+54277445419",
+    location: {
+      city: "Córdoba",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.599Z",
+    updatedAt: "2026-01-10T01:08:40.599Z",
+    __v: 0
+  },
+  {
+    _id: "359f2d3a-0ad5-4169-927e-5f72bb235527",
+    fullName: "Randy Treutel Ward",
+    username: "brettrogahn215",
+    phone: "+33836500401",
+    location: {
+      city: "Lyon",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.656Z",
+    updatedAt: "2026-01-10T01:08:40.656Z",
+    __v: 0
+  },
+  {
+    _id: "51de2304-6d04-4bdb-8fbe-d8303c61246d",
+    fullName: "Mary Wintheiser MacGyver",
+    username: "lonniegleason216",
+    phone: "+54136063164",
+    location: {
+      city: "La Plata",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.713Z",
+    updatedAt: "2026-01-10T01:08:40.713Z",
+    __v: 0
+  },
+  {
+    _id: "47b25c11-690c-42b5-9b52-86213cf7aaf4",
+    fullName: "Dena Walker Blanda",
+    username: "bretschmitt217",
+    phone: "+39576093218",
+    location: {
+      city: "Roma",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.772Z",
+    updatedAt: "2026-01-10T01:08:40.772Z",
+    __v: 0
+  },
+  {
+    _id: "33805313-dd2d-462a-9f76-ba9ddd835d16",
+    fullName: "Nona Ziemann Metz",
+    username: "candidoschmel218",
+    phone: "+34024572582",
+    location: {
+      city: "Sevilla",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.829Z",
+    updatedAt: "2026-01-10T01:08:40.829Z",
+    __v: 0
+  },
+  {
+    _id: "21b64c11-25df-4162-90b8-9fd323b4c0fa",
+    fullName: "Isabell Paucek Bergstrom",
+    username: "dayanacarterj219",
+    phone: "+55230709760",
+    location: {
+      city: "Salvador",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:40.886Z",
+    updatedAt: "2026-01-10T01:08:40.886Z",
+    __v: 0
+  },
+  {
+    _id: "2fab89fb-d380-4cea-a89e-f011feba5fd2",
+    fullName: "Ivah Balistreri Doyle",
+    username: "jeannenikolau220",
+    phone: "+49131699878",
+    location: {
+      city: "Hamburg",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.050Z",
+    updatedAt: "2026-01-10T01:08:41.050Z",
+    __v: 0
+  },
+  {
+    _id: "4b6c5342-3af0-46ca-9a99-5a8b0500138e",
+    fullName: "Shana Borer Denesik",
+    username: "michalekuhlma221",
+    phone: "+56197933499",
+    location: {
+      city: "Santiago",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.107Z",
+    updatedAt: "2026-01-10T01:08:41.107Z",
+    __v: 0
+  },
+  {
+    _id: "21d349ab-4dd8-4a91-add7-10d43a46132e",
+    fullName: "Marquis Paucek Nitzsche",
+    username: "clintonzieme222",
+    phone: "+51370196535",
+    location: {
+      city: "Trujillo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.164Z",
+    updatedAt: "2026-01-10T01:08:41.164Z",
+    __v: 0
+  },
+  {
+    _id: "a6421f6b-0793-479c-93e6-bcd541b2cf7a",
+    fullName: "Tatyana Bashirian Pfeffer",
+    username: "jamarcusledne223",
+    phone: "+57902887692",
+    location: {
+      city: "Cali",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.222Z",
+    updatedAt: "2026-01-10T01:08:41.222Z",
+    __v: 0
+  },
+  {
+    _id: "5790721a-690a-466a-92ae-59ae4404da12",
+    fullName: "Winnifred Veum Mills",
+    username: "francescobart224",
+    phone: "+54719065726",
+    location: {
+      city: "Tucumán",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.282Z",
+    updatedAt: "2026-01-10T01:08:41.282Z",
+    __v: 0
+  },
+  {
+    _id: "246ade6d-6097-4d35-b7ef-98a9b36ad3c2",
+    fullName: "Hulda Hodkiewicz-Grady Schimmel-Macejkovic",
+    username: "cheyanneerdma225",
+    phone: "+58961362455",
+    location: {
+      city: "Barquisimeto",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.339Z",
+    updatedAt: "2026-01-10T01:08:41.339Z",
+    __v: 0
+  },
+  {
+    _id: "1569d5a5-e39d-4f9c-a4c6-f13d0be1f54b",
+    fullName: "Colton Kuvalis Effertz",
+    username: "myrlprice226",
+    phone: "+34933228829",
+    location: {
+      city: "Valencia",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.397Z",
+    updatedAt: "2026-01-10T01:08:41.397Z",
+    __v: 0
+  },
+  {
+    _id: "f65f7997-8665-413c-a127-2bd0d0724f52",
+    fullName: "Cornelius Zboncak Von",
+    username: "morganhudson227",
+    phone: "+52193361753",
+    location: {
+      city: "Ciudad de México",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.454Z",
+    updatedAt: "2026-01-10T01:08:41.454Z",
+    __v: 0
+  },
+  {
+    _id: "a698993d-1c89-4ae9-a67e-7b6e7a5c2772",
+    fullName: "Alison Spencer Koss",
+    username: "andreskris228",
+    phone: "+51905891817",
+    location: {
+      city: "Trujillo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.514Z",
+    updatedAt: "2026-01-10T01:08:41.514Z",
+    __v: 0
+  },
+  {
+    _id: "ccfa63f6-6ea6-49f2-90f0-dfd408a7ec80",
+    fullName: "Myron Kub Marquardt",
+    username: "willyhermann229",
+    phone: "+52578900893",
+    location: {
+      city: "Cancún",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.572Z",
+    updatedAt: "2026-01-10T01:08:41.572Z",
+    __v: 0
+  },
+  {
+    _id: "826492dd-94ee-45dd-bd02-392e1afec120",
+    fullName: "Vincenzo Schowalter Grimes",
+    username: "herbertgoyett230",
+    phone: "+44008377805",
+    location: {
+      city: "Liverpool",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.632Z",
+    updatedAt: "2026-01-10T01:08:41.632Z",
+    __v: 0
+  },
+  {
+    _id: "072ae3e2-5faa-4e0c-81b7-5a7a9ae68156",
+    fullName: "Baby Kris Weber-Hansen",
+    username: "bellkilbackme231",
+    phone: "+52183029779",
+    location: {
+      city: "Cancún",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.689Z",
+    updatedAt: "2026-01-10T01:08:41.689Z",
+    __v: 0
+  },
+  {
+    _id: "42a80b50-b427-40e4-a97f-8543d3e8c222",
+    fullName: "Oswaldo Harris Gottlieb",
+    username: "titusjast232",
+    phone: "+54014059795",
+    location: {
+      city: "Rosario",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.748Z",
+    updatedAt: "2026-01-10T01:08:41.748Z",
+    __v: 0
+  },
+  {
+    _id: "6b4b76e6-24ce-48de-995e-ce74c13cabec",
+    fullName: "Megane Jerde Monahan",
+    username: "harmonmurazik233",
+    phone: "+57406999897",
+    location: {
+      city: "Bogotá",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.805Z",
+    updatedAt: "2026-01-10T01:08:41.805Z",
+    __v: 0
+  },
+  {
+    _id: "dbb7b465-ce1d-4524-9260-1caad9714f80",
+    fullName: "Devin Fritsch Ziemann",
+    username: "benedictdecko234",
+    phone: "+55326563172",
+    location: {
+      city: "Brasília",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.862Z",
+    updatedAt: "2026-01-10T01:08:41.862Z",
+    __v: 0
+  },
+  {
+    _id: "0bede458-a62e-43b3-9d02-a367d00069bd",
+    fullName: "Ferne Frami McGlynn",
+    username: "nicoletteocon235",
+    phone: "+34756187539",
+    location: {
+      city: "Zaragoza",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.922Z",
+    updatedAt: "2026-01-10T01:08:41.922Z",
+    __v: 0
+  },
+  {
+    _id: "4938db8b-0154-4dac-b816-444225a8c3e1",
+    fullName: "Merlin Mayert Douglas",
+    username: "orvillereiche236",
+    phone: "+55837703354",
+    location: {
+      city: "Salvador",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:41.983Z",
+    updatedAt: "2026-01-10T01:08:41.983Z",
+    __v: 0
+  },
+  {
+    _id: "71e9bfc6-22be-4c28-92e3-68e76b0a444e",
+    fullName: "Betsy Christiansen Lebsack",
+    username: "brandonitzsch237",
+    phone: "+52466054259",
+    location: {
+      city: "Cancún",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.041Z",
+    updatedAt: "2026-01-10T01:08:42.041Z",
+    __v: 0
+  },
+  {
+    _id: "04365b7f-e6e3-4e35-ad7d-1c2030cc94ae",
+    fullName: "Deangelo Klocko Quigley",
+    username: "clevehegmannl238",
+    phone: "+51421241920",
+    location: {
+      city: "Chiclayo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.098Z",
+    updatedAt: "2026-01-10T01:08:42.098Z",
+    __v: 0
+  },
+  {
+    _id: "3edf95f1-1ea7-4c62-971e-a05af7d697d7",
+    fullName: "Nayeli Mueller Legros",
+    username: "yasminehowe239",
+    phone: "+52327429224",
+    location: {
+      city: "Guadalajara",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.156Z",
+    updatedAt: "2026-01-10T01:08:42.156Z",
+    __v: 0
+  },
+  {
+    _id: "e1e9b101-e4ba-46c6-a757-242692b827af",
+    fullName: "Kristin Osinski Rau",
+    username: "lennabayer240",
+    phone: "+57656170467",
+    location: {
+      city: "Medellín",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.327Z",
+    updatedAt: "2026-01-10T01:08:42.327Z",
+    __v: 0
+  },
+  {
+    _id: "b0365e0b-4977-4562-9fec-e8ffa71fe75a",
+    fullName: "Elbert Koepp Mertz",
+    username: "veronicakshle241",
+    phone: "+52611781825",
+    location: {
+      city: "Cancún",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.383Z",
+    updatedAt: "2026-01-10T01:08:42.383Z",
+    __v: 0
+  },
+  {
+    _id: "9ff9e8ba-c3ec-4fdd-8ce4-cbf263a5c1dc",
+    fullName: "Hank Bednar Moore",
+    username: "micaelaquitzo242",
+    phone: "+56702612496",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.440Z",
+    updatedAt: "2026-01-10T01:08:42.440Z",
+    __v: 0
+  },
+  {
+    _id: "74db25d9-77ae-4212-95ed-37ef103dea01",
+    fullName: "Selena Trantow McGlynn",
+    username: "javontelockma243",
+    phone: "+56499891776",
+    location: {
+      city: "La Serena",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.498Z",
+    updatedAt: "2026-01-10T01:08:42.498Z",
+    __v: 0
+  },
+  {
+    _id: "6bebbd77-76cb-43ea-955d-5f7442ad3175",
+    fullName: "Terence Greenholt Cole",
+    username: "destinywiza244",
+    phone: "+39212418938",
+    location: {
+      city: "Bologna",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.558Z",
+    updatedAt: "2026-01-10T01:08:42.558Z",
+    __v: 0
+  },
+  {
+    _id: "8926f58b-d8ee-4edc-ae92-6c7597400a3f",
+    fullName: "Antoinette Jacobson Marquardt",
+    username: "metahilpert245",
+    phone: "+51738170335",
+    location: {
+      city: "Trujillo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.615Z",
+    updatedAt: "2026-01-10T01:08:42.615Z",
+    __v: 0
+  },
+  {
+    _id: "91e9bf73-f329-4c6b-be68-c992f136558c",
+    fullName: "Magnus Jacobson Considine",
+    username: "gradygrady246",
+    phone: "+44243697727",
+    location: {
+      city: "Birmingham",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.672Z",
+    updatedAt: "2026-01-10T01:08:42.672Z",
+    __v: 0
+  },
+  {
+    _id: "192192d1-c8d3-4d27-9525-38acfdb38f8e",
+    fullName: "Vladimir Tremblay Ward",
+    username: "olengoyette247",
+    phone: "+49233973449",
+    location: {
+      city: "Dresden",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.729Z",
+    updatedAt: "2026-01-10T01:08:42.729Z",
+    __v: 0
+  },
+  {
+    _id: "8a702982-bc28-4061-a810-72a404b60c6f",
+    fullName: "Leola Nikolaus Roob",
+    username: "evapacocha248",
+    phone: "+52982642288",
+    location: {
+      city: "Tijuana",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.786Z",
+    updatedAt: "2026-01-10T01:08:42.786Z",
+    __v: 0
+  },
+  {
+    _id: "e3cc84a4-8000-472f-81cc-7799e9c02c9b",
+    fullName: "Meda Price Feeney",
+    username: "cathyleuschke249",
+    phone: "+49348162309",
+    location: {
+      city: "Hamburg",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.843Z",
+    updatedAt: "2026-01-10T01:08:42.843Z",
+    __v: 0
+  },
+  {
+    _id: "d645b59b-1682-420a-8701-659469af8970",
+    fullName: "Kali Dibbert Walsh",
+    username: "percivalhetti250",
+    phone: "+56177333429",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.901Z",
+    updatedAt: "2026-01-10T01:08:42.901Z",
+    __v: 0
+  },
+  {
+    _id: "512b0a7d-f18b-432c-b768-4dd3fdbd3570",
+    fullName: "Corbin Roberts Keebler",
+    username: "beaucrona251",
+    phone: "+34793263478",
+    location: {
+      city: "Madrid",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:42.957Z",
+    updatedAt: "2026-01-10T01:08:42.957Z",
+    __v: 0
+  },
+  {
+    _id: "6849b527-56ec-40e4-8f21-c312885b7934",
+    fullName: "Amos Blick Hudson",
+    username: "holdenschambe252",
+    phone: "+49389379731",
+    location: {
+      city: "Dresden",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.015Z",
+    updatedAt: "2026-01-10T01:08:43.015Z",
+    __v: 0
+  },
+  {
+    _id: "78dc4d45-a2a6-4592-a5d6-188caccf0029",
+    fullName: "Loyce Goodwin Koepp",
+    username: "linnealehner253",
+    phone: "+55747090081",
+    location: {
+      city: "São Paulo",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.073Z",
+    updatedAt: "2026-01-10T01:08:43.073Z",
+    __v: 0
+  },
+  {
+    _id: "035b3e09-409f-4fd2-b7bb-575f931e9136",
+    fullName: "Patricia Bradtke Durgan-Reilly",
+    username: "ervinlabadie254",
+    phone: "+39586846407",
+    location: {
+      city: "Roma",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.130Z",
+    updatedAt: "2026-01-10T01:08:43.130Z",
+    __v: 0
+  },
+  {
+    _id: "bdbf8763-5b2d-4645-a211-beeb0eecb829",
+    fullName: "Neva Feil-Beatty Braun",
+    username: "carletonlitte255",
+    phone: "+34976656012",
+    location: {
+      city: "Sevilla",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.187Z",
+    updatedAt: "2026-01-10T01:08:43.187Z",
+    __v: 0
+  },
+  {
+    _id: "48254d4d-1751-40d9-a740-0d0d8ce97f84",
+    fullName: "Maudie Wuckert Okuneva-Labadie",
+    username: "madelynwilder256",
+    phone: "+56723370063",
+    location: {
+      city: "Antofagasta",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.244Z",
+    updatedAt: "2026-01-10T01:08:43.244Z",
+    __v: 0
+  },
+  {
+    _id: "a454f037-4f4e-481a-89f0-077b2ad77e93",
+    fullName: "Keaton Zboncak Hansen-O'Reilly",
+    username: "milfordgutkow257",
+    phone: "+33132756336",
+    location: {
+      city: "Lyon",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.301Z",
+    updatedAt: "2026-01-10T01:08:43.301Z",
+    __v: 0
+  },
+  {
+    _id: "06a79e70-466d-477f-9f62-30c32aa70423",
+    fullName: "Madison Walter Hudson",
+    username: "alfredacrooks258",
+    phone: "+51903906490",
+    location: {
+      city: "Lima",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.358Z",
+    updatedAt: "2026-01-10T01:08:43.358Z",
+    __v: 0
+  },
+  {
+    _id: "e3c93885-94a1-4cfb-9d1e-c79a5f6999a8",
+    fullName: "Alene Yundt-Graham Huel-Cronin",
+    username: "judsonpollich259",
+    phone: "+55879786114",
+    location: {
+      city: "Salvador",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.415Z",
+    updatedAt: "2026-01-10T01:08:43.415Z",
+    __v: 0
+  },
+  {
+    _id: "ff028e9e-face-412f-a9ee-79f07715d4e4",
+    fullName: "Bernadine Streich Blanda",
+    username: "jacksonmedhur260",
+    phone: "+55763623495",
+    location: {
+      city: "Brasília",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.580Z",
+    updatedAt: "2026-01-10T01:08:43.580Z",
+    __v: 0
+  },
+  {
+    _id: "492a0301-6ff2-4024-846f-8bfc6d14aaea",
+    fullName: "Diamond Lemke Williamson",
+    username: "alenaglover261",
+    phone: "+54919143169",
+    location: {
+      city: "La Plata",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.636Z",
+    updatedAt: "2026-01-10T01:08:43.636Z",
+    __v: 0
+  },
+  {
+    _id: "c3d77521-dbca-40e5-9997-a9632437f8ba",
+    fullName: "Allison Lang Barton",
+    username: "jamesonpfeffe262",
+    phone: "+34912279840",
+    location: {
+      city: "Murcia",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.694Z",
+    updatedAt: "2026-01-10T01:08:43.694Z",
+    __v: 0
+  },
+  {
+    _id: "96ded4e5-2d01-46bf-80fc-ef8128d25f04",
+    fullName: "Elza Schuppe Kulas",
+    username: "rileyorn263",
+    phone: "+52517001533",
+    location: {
+      city: "Cancún",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.752Z",
+    updatedAt: "2026-01-10T01:08:43.752Z",
+    __v: 0
+  },
+  {
+    _id: "32d5da22-1801-4127-980d-0f664aa1e40f",
+    fullName: "Myrl Powlowski Muller",
+    username: "gerardschumm264",
+    phone: "+55165104135",
+    location: {
+      city: "São Paulo",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.809Z",
+    updatedAt: "2026-01-10T01:08:43.809Z",
+    __v: 0
+  },
+  {
+    _id: "6b00b565-f65e-4bfc-a095-61a3f43aebe7",
+    fullName: "Magdalen Bruen Stracke",
+    username: "ricohackett265",
+    phone: "+52141193679",
+    location: {
+      city: "Tijuana",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.866Z",
+    updatedAt: "2026-01-10T01:08:43.866Z",
+    __v: 0
+  },
+  {
+    _id: "b577e67a-b29b-4c30-b81f-353f2e26bb26",
+    fullName: "Vida Ryan Wintheiser",
+    username: "luciuswehner266",
+    phone: "+57936163733",
+    location: {
+      city: "Bucaramanga",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.923Z",
+    updatedAt: "2026-01-10T01:08:43.923Z",
+    __v: 0
+  },
+  {
+    _id: "c8fcbc6a-9717-47ad-9358-ab61b8146645",
+    fullName: "Katelyn Rempel Friesen",
+    username: "karirippin267",
+    phone: "+56551059195",
+    location: {
+      city: "La Serena",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:43.980Z",
+    updatedAt: "2026-01-10T01:08:43.980Z",
+    __v: 0
+  },
+  {
+    _id: "0299b36b-ab61-431b-b4ee-48567a3acb2a",
+    fullName: "Jerrold Bins Steuber",
+    username: "candicemorar268",
+    phone: "+49325359696",
+    location: {
+      city: "Dresden",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.038Z",
+    updatedAt: "2026-01-10T01:08:44.038Z",
+    __v: 0
+  },
+  {
+    _id: "29a118fc-47f2-41a2-9a5d-a7ffe1934c9f",
+    fullName: "Damion Shields Reinger",
+    username: "nicoleankundi269",
+    phone: "+39696794241",
+    location: {
+      city: "Milano",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.096Z",
+    updatedAt: "2026-01-10T01:08:44.096Z",
+    __v: 0
+  },
+  {
+    _id: "14fa976f-2ad3-4e09-a823-8fdd00dc6b7c",
+    fullName: "Brant Harris Beahan",
+    username: "waltonkub270",
+    phone: "+54599987178",
+    location: {
+      city: "Mendoza",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.154Z",
+    updatedAt: "2026-01-10T01:08:44.154Z",
+    __v: 0
+  },
+  {
+    _id: "0ecad1dd-159d-4d12-bb57-17d19b2d4a56",
+    fullName: "Tess Moore Rohan",
+    username: "clarissaroob271",
+    phone: "+54378044084",
+    location: {
+      city: "Tucumán",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.210Z",
+    updatedAt: "2026-01-10T01:08:44.210Z",
+    __v: 0
+  },
+  {
+    _id: "23a44cd6-a91a-43c9-b98c-95787c49e574",
+    fullName: "Fernando Skiles Pacocha",
+    username: "elnorapfeffer272",
+    phone: "+52367051427",
+    location: {
+      city: "León",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.267Z",
+    updatedAt: "2026-01-10T01:08:44.267Z",
+    __v: 0
+  },
+  {
+    _id: "1aedbf25-dfdf-4297-8c47-d253e31cf3fb",
+    fullName: "Camila Smith Boyer",
+    username: "brycewalker273",
+    phone: "+57972858790",
+    location: {
+      city: "Barranquilla",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.325Z",
+    updatedAt: "2026-01-10T01:08:44.325Z",
+    __v: 0
+  },
+  {
+    _id: "a151d36a-0511-4f3c-a4b7-9678ca66b0d8",
+    fullName: "Elsie Oberbrunner Boehm",
+    username: "kristaklocko274",
+    phone: "+56236995435",
+    location: {
+      city: "Valparaíso",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.381Z",
+    updatedAt: "2026-01-10T01:08:44.381Z",
+    __v: 0
+  },
+  {
+    _id: "81ec6be8-d992-410e-bb68-a536b3c05622",
+    fullName: "Forest Dietrich Jast",
+    username: "mossieroob275",
+    phone: "+44007633016",
+    location: {
+      city: "Liverpool",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.438Z",
+    updatedAt: "2026-01-10T01:08:44.438Z",
+    __v: 0
+  },
+  {
+    _id: "fae76c70-1c22-4b19-b538-8bc0a0eb4486",
+    fullName: "Tobin Heidenreich Cassin",
+    username: "foresthand276",
+    phone: "+39831344993",
+    location: {
+      city: "Firenze",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.495Z",
+    updatedAt: "2026-01-10T01:08:44.495Z",
+    __v: 0
+  },
+  {
+    _id: "3d6eaaa2-ff45-4e8a-b331-69cca3742958",
+    fullName: "Lizeth Mertz Murazik",
+    username: "isidroheidenr277",
+    phone: "+33945264256",
+    location: {
+      city: "Toulouse",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.554Z",
+    updatedAt: "2026-01-10T01:08:44.554Z",
+    __v: 0
+  },
+  {
+    _id: "500c54dd-41eb-4dae-a2ec-4d1559ed1e2e",
+    fullName: "Aiyana Homenick-Adams Towne",
+    username: "tremaineryan278",
+    phone: "+55056628131",
+    location: {
+      city: "Rio de Janeiro",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.611Z",
+    updatedAt: "2026-01-10T01:08:44.611Z",
+    __v: 0
+  },
+  {
+    _id: "742122d6-3422-492a-bb51-f31291c160f5",
+    fullName: "Allison Dicki Reinger",
+    username: "eugenenienow279",
+    phone: "+33043612498",
+    location: {
+      city: "Toulouse",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.669Z",
+    updatedAt: "2026-01-10T01:08:44.669Z",
+    __v: 0
+  },
+  {
+    _id: "cdc3be1f-b1e5-4d35-8295-e9fd29264bee",
+    fullName: "Cullen Boehm Maggio",
+    username: "nonakiehn280",
+    phone: "+51296057305",
+    location: {
+      city: "Arequipa",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.827Z",
+    updatedAt: "2026-01-10T01:08:44.827Z",
+    __v: 0
+  },
+  {
+    _id: "e3d7a9a8-bf9d-40f4-a2aa-42fd06090cff",
+    fullName: "Cory Torphy Osinski",
+    username: "cielocole281",
+    phone: "+44800816670",
+    location: {
+      city: "Liverpool",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.885Z",
+    updatedAt: "2026-01-10T01:08:44.885Z",
+    __v: 0
+  },
+  {
+    _id: "45ad0625-0ebf-404f-af73-a59de442bae3",
+    fullName: "Kirstin Harris Stoltenberg",
+    username: "mackmarquardt282",
+    phone: "+49207247782",
+    location: {
+      city: "Stuttgart",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.941Z",
+    updatedAt: "2026-01-10T01:08:44.941Z",
+    __v: 0
+  },
+  {
+    _id: "96c68380-00d5-4939-8af3-8a393f07e57c",
+    fullName: "Art Bernhard Kutch",
+    username: "williamhauck283",
+    phone: "+55578948680",
+    location: {
+      city: "Rio de Janeiro",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:44.998Z",
+    updatedAt: "2026-01-10T01:08:44.998Z",
+    __v: 0
+  },
+  {
+    _id: "f72fc6e3-ea6c-4327-808b-38c297e74d5b",
+    fullName: "Lorenza Gleason Schaden",
+    username: "beryllabadie284",
+    phone: "+56414961899",
+    location: {
+      city: "La Serena",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.056Z",
+    updatedAt: "2026-01-10T01:08:45.056Z",
+    __v: 0
+  },
+  {
+    _id: "fdc2ceb7-9912-4677-a05e-5f9723f15f6e",
+    fullName: "Cathrine Ledner Hermann",
+    username: "sharonschneid285",
+    phone: "+57057781550",
+    location: {
+      city: "Barranquilla",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.112Z",
+    updatedAt: "2026-01-10T01:08:45.112Z",
+    __v: 0
+  },
+  {
+    _id: "6c01dd68-30c9-40f3-9493-2ae9d6344d25",
+    fullName: "Leta Pfannerstill Mitchell",
+    username: "harmonstroman286",
+    phone: "+49192011168",
+    location: {
+      city: "Hamburg",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.169Z",
+    updatedAt: "2026-01-10T01:08:45.169Z",
+    __v: 0
+  },
+  {
+    _id: "c8f569b4-d2dd-4d00-9f60-eb5f7bf54d63",
+    fullName: "Kory Schultz Purdy",
+    username: "cleoramiller287",
+    phone: "+54558156208",
+    location: {
+      city: "Rosario",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.226Z",
+    updatedAt: "2026-01-10T01:08:45.226Z",
+    __v: 0
+  },
+  {
+    _id: "6265ab84-6f90-4ea8-99e7-d9ffc0284fc2",
+    fullName: "Chaya Vandervort Nader",
+    username: "jacksonprosac288",
+    phone: "+57899905839",
+    location: {
+      city: "Cali",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.285Z",
+    updatedAt: "2026-01-10T01:08:45.285Z",
+    __v: 0
+  },
+  {
+    _id: "6d42e696-e642-4efd-8a1c-42f7819575fb",
+    fullName: "Emory Ward Denesik",
+    username: "wendellherman289",
+    phone: "+55098609396",
+    location: {
+      city: "Fortaleza",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.342Z",
+    updatedAt: "2026-01-10T01:08:45.342Z",
+    __v: 0
+  },
+  {
+    _id: "1320a873-67f0-4c35-9d09-b3621bdf9991",
+    fullName: "Joana Lubowitz-Kutch Collier",
+    username: "melvinframi290",
+    phone: "+51450559071",
+    location: {
+      city: "Cusco",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.400Z",
+    updatedAt: "2026-01-10T01:08:45.400Z",
+    __v: 0
+  },
+  {
+    _id: "438ce1bf-a1d1-4273-b5a3-fc9da607f23c",
+    fullName: "Sasha Schmidt Hilll",
+    username: "rexreilly291",
+    phone: "+58737153940",
+    location: {
+      city: "Caracas",
+      countryCode: "VE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.458Z",
+    updatedAt: "2026-01-10T01:08:45.458Z",
+    __v: 0
+  },
+  {
+    _id: "531f5efc-24f0-4bf8-8a35-14a802c3f178",
+    fullName: "Maritza White Parisian",
+    username: "stephaniabosc292",
+    phone: "+57072580710",
+    location: {
+      city: "Barranquilla",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.515Z",
+    updatedAt: "2026-01-10T01:08:45.515Z",
+    __v: 0
+  },
+  {
+    _id: "99acae55-e9ce-49a0-b76a-48ddc34d9d23",
+    fullName: "Aida Gerlach Considine",
+    username: "joeykiehn293",
+    phone: "+51777020691",
+    location: {
+      city: "Chiclayo",
+      countryCode: "PE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.571Z",
+    updatedAt: "2026-01-10T01:08:45.571Z",
+    __v: 0
+  },
+  {
+    _id: "a4ccfbdf-e7ad-4c6c-a943-90b9abf85aac",
+    fullName: "Rebekah Hoeger Fay",
+    username: "joshfay294",
+    phone: "+33291663658",
+    location: {
+      city: "Lille",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.628Z",
+    updatedAt: "2026-01-10T01:08:45.628Z",
+    __v: 0
+  },
+  {
+    _id: "38147832-f9b5-498f-b4c9-9970ce6eeff7",
+    fullName: "Ulices Legros-Jacobson Reichert",
+    username: "jamiecormier295",
+    phone: "+54444110299",
+    location: {
+      city: "Mar del Plata",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.684Z",
+    updatedAt: "2026-01-10T01:08:45.684Z",
+    __v: 0
+  },
+  {
+    _id: "a09e1859-ac1e-408c-b32e-c7e8349666ec",
+    fullName: "Emanuel Schuster Wolff",
+    username: "hectorfadel296",
+    phone: "+44851309862",
+    location: {
+      city: "Liverpool",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.741Z",
+    updatedAt: "2026-01-10T01:08:45.741Z",
+    __v: 0
+  },
+  {
+    _id: "a712641d-63d2-4771-8a08-379224b6e7a4",
+    fullName: "Cordell Mann Baumbach-Russel",
+    username: "chasedach297",
+    phone: "+52700828838",
+    location: {
+      city: "Tijuana",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.799Z",
+    updatedAt: "2026-01-10T01:08:45.799Z",
+    __v: 0
+  },
+  {
+    _id: "037ea75b-6350-4262-ac6e-ec727cb9d28b",
+    fullName: "Sophie Beier Dach",
+    username: "augustabernha298",
+    phone: "+52725263462",
+    location: {
+      city: "Cancún",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.857Z",
+    updatedAt: "2026-01-10T01:08:45.857Z",
+    __v: 0
+  },
+  {
+    _id: "7fe93347-1fcc-4061-aa7a-9de0bba26c0d",
+    fullName: "Kendra Quitzon Rowe",
+    username: "mallorygoodwi299",
+    phone: "+49817611307",
+    location: {
+      city: "Dresden",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:45.914Z",
+    updatedAt: "2026-01-10T01:08:45.914Z",
+    __v: 0
+  },
+  {
+    _id: "f1279fd8-425a-467f-9ca7-1a4ddba7151f",
+    fullName: "Clotilde Ward Lebsack",
+    username: "heidipurdy300",
+    phone: "+57373648956",
+    location: {
+      city: "Cali",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.074Z",
+    updatedAt: "2026-01-10T01:08:46.074Z",
+    __v: 0
+  },
+  {
+    _id: "9ef7a6fb-3079-4b40-bad4-fad14e7da30a",
+    fullName: "Rory Rempel Hammes",
+    username: "eltonkirlin301",
+    phone: "+44914390843",
+    location: {
+      city: "London",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.131Z",
+    updatedAt: "2026-01-10T01:08:46.131Z",
+    __v: 0
+  },
+  {
+    _id: "74cc4c67-e219-4e62-b7ec-89b6d111751a",
+    fullName: "Erna Schowalter Roberts",
+    username: "daijatromp302",
+    phone: "+55166145788",
+    location: {
+      city: "Brasília",
+      countryCode: "BR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.188Z",
+    updatedAt: "2026-01-10T01:08:46.188Z",
+    __v: 0
+  },
+  {
+    _id: "0792c7fc-e9f1-4dd9-8d5d-225dbcc36f68",
+    fullName: "Allen Reynolds Lockman",
+    username: "zenawillms303",
+    phone: "+54471735319",
+    location: {
+      city: "Rosario",
+      countryCode: "AR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.245Z",
+    updatedAt: "2026-01-10T01:08:46.245Z",
+    __v: 0
+  },
+  {
+    _id: "91bac851-f9de-487e-8845-236f3b2ccc83",
+    fullName: "Baylee Osinski Kuvalis",
+    username: "jeffereymuell304",
+    phone: "+39453595701",
+    location: {
+      city: "Napoli",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.302Z",
+    updatedAt: "2026-01-10T01:08:46.302Z",
+    __v: 0
+  },
+  {
+    _id: "75ce8b14-ac95-4f6c-ae6a-d8efd9b16a5c",
+    fullName: "Brooke Weimann Leuschke",
+    username: "miaklein305",
+    phone: "+52955412715",
+    location: {
+      city: "Cancún",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.359Z",
+    updatedAt: "2026-01-10T01:08:46.359Z",
+    __v: 0
+  },
+  {
+    _id: "a3ff147b-701a-4092-94b4-d55d2740dae3",
+    fullName: "Markus Schroeder Christiansen",
+    username: "garretklein306",
+    phone: "+33293236744",
+    location: {
+      city: "Paris",
+      countryCode: "FR"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.417Z",
+    updatedAt: "2026-01-10T01:08:46.417Z",
+    __v: 0
+  },
+  {
+    _id: "6fae39de-8886-4f8d-8895-bb5c9c4b12fe",
+    fullName: "Edythe VonRueden Corkery",
+    username: "rolandovon307",
+    phone: "+52364354978",
+    location: {
+      city: "Cancún",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.475Z",
+    updatedAt: "2026-01-10T01:08:46.475Z",
+    __v: 0
+  },
+  {
+    _id: "38e83044-cc72-44c1-ab98-cc5d0bdb2827",
+    fullName: "Anabel Prosacco Zboncak",
+    username: "augustineflat308",
+    phone: "+34347304885",
+    location: {
+      city: "Valencia",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.533Z",
+    updatedAt: "2026-01-10T01:08:46.533Z",
+    __v: 0
+  },
+  {
+    _id: "b6c9ce85-27c0-4b3d-804e-76f187d503f7",
+    fullName: "Wilma Cormier Klein",
+    username: "floydwalker309",
+    phone: "+44902473218",
+    location: {
+      city: "London",
+      countryCode: "GB"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.590Z",
+    updatedAt: "2026-01-10T01:08:46.590Z",
+    __v: 0
+  },
+  {
+    _id: "41366993-d4a1-4908-85e5-cdfe4dc7affe",
+    fullName: "Warren Nolan Schmidt",
+    username: "rhiannonschme310",
+    phone: "+56682489021",
+    location: {
+      city: "Antofagasta",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.647Z",
+    updatedAt: "2026-01-10T01:08:46.647Z",
+    __v: 0
+  },
+  {
+    _id: "01c2ed7b-5fac-4d3b-9ff6-b8d96658bd2b",
+    fullName: "Garnett Marvin Kirlin",
+    username: "albinsipes311",
+    phone: "+49272312694",
+    location: {
+      city: "Munich",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.703Z",
+    updatedAt: "2026-01-10T01:08:46.703Z",
+    __v: 0
+  },
+  {
+    _id: "698feeee-f349-4f6a-8824-227495e0ceb8",
+    fullName: "Marlen Satterfield Feeney",
+    username: "larissadougla312",
+    phone: "+49318850497",
+    location: {
+      city: "Berlin",
+      countryCode: "DE"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.760Z",
+    updatedAt: "2026-01-10T01:08:46.760Z",
+    __v: 0
+  },
+  {
+    _id: "ff8c92a5-922e-4cda-b204-170267d86a52",
+    fullName: "Kurt Borer Ratke-Hettinger",
+    username: "zachariahkohl313",
+    phone: "+34294934477",
+    location: {
+      city: "Madrid",
+      countryCode: "ES"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.817Z",
+    updatedAt: "2026-01-10T01:08:46.817Z",
+    __v: 0
+  },
+  {
+    _id: "42a0a6d0-69d0-4820-b9d3-b22ed7ed40eb",
+    fullName: "Lauren Roberts Hand",
+    username: "kyleesmitham314",
+    phone: "+57905919720",
+    location: {
+      city: "Bucaramanga",
+      countryCode: "CO"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.875Z",
+    updatedAt: "2026-01-10T01:08:46.875Z",
+    __v: 0
+  },
+  {
+    _id: "da38262f-e4d2-4357-aef7-90d7873ecbf8",
+    fullName: "Leonie Graham Medhurst",
+    username: "veldatromp315",
+    phone: "+52858169392",
+    location: {
+      city: "Guadalajara",
+      countryCode: "MX"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.932Z",
+    updatedAt: "2026-01-10T01:08:46.932Z",
+    __v: 0
+  },
+  {
+    _id: "f612349e-f2b6-472d-8bf1-6cce5b924c0c",
+    fullName: "Ottilie Graham Cummerata",
+    username: "gregtremblay316",
+    phone: "+39715852900",
+    location: {
+      city: "Roma",
+      countryCode: "IT"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:46.989Z",
+    updatedAt: "2026-01-10T01:08:46.989Z",
+    __v: 0
+  },
+  {
+    _id: "13322bd4-3698-4e51-aa33-58c2f013b5dd",
+    fullName: "Myriam Gerhold Rowe",
+    username: "fatimawaters317",
+    phone: "+56953162311",
+    location: {
+      city: "Santiago",
+      countryCode: "CL"
+    },
+    communityMemberships: [],
+    createdAt: "2026-01-10T01:08:47.049Z",
+    updatedAt: "2026-01-10T01:08:47.049Z",
+    __v: 0
+  }
+]);
+
+// requests (696 documents)
+print('  Loading requests...');
+db.requests.deleteMany({});
+db.requests.insertMany([
+  {
+    _id: "3ca4dfa1-723a-4420-9018-9cfa752da79d",
+    name: "Fundación Homenick - Roob por infancia",
+    description: "Comunidad dedicada a proyectos de infancia y desarrollo sostenible. Labore curso verecundia demens tergiversatio terreo. Virtus usque perferendis in cariosus ut auctus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "aa487d21-a40a-49c0-a8ce-219e56e2607b",
+    createdAt: "2026-01-10T01:08:52.129Z",
+    updatedAt: "2026-01-10T01:08:52.129Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "ac334774-59cb-4815-a6d9-12e4b0c04a85",
+    name: "Campaña tercera edad 2026",
+    description: "Causa benéfica enfocada en tercera edad. Occaecati aestivus quo demulceo.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "aa487d21-a40a-49c0-a8ce-219e56e2607b",
+    createdAt: "2026-01-10T01:08:52.130Z",
+    updatedAt: "2026-01-10T01:08:52.130Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6"
+    ],
+    startDate: "2026-06-11T00:08:47.046Z",
+    duration: 328,
+    communityId: "3ca4dfa1-723a-4420-9018-9cfa752da79d"
+  },
+  {
+    _id: "4bff17cb-1b2f-40b3-8223-82d7461fc6fd",
+    name: "Operación pobreza 2027",
+    description: "Causa benéfica enfocada en pobreza. Censura utroque supra ulterius amissio subseco cotidie ventito bene. Solus quia allatus tenuis animi cinis deprimo subseco.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "aa487d21-a40a-49c0-a8ce-219e56e2607b",
+    createdAt: "2026-01-10T01:08:52.131Z",
+    updatedAt: "2026-01-10T01:08:52.131Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "1",
+      "8"
+    ],
+    startDate: "2026-06-13T00:08:47.046Z",
+    duration: 310,
+    communityId: "3ca4dfa1-723a-4420-9018-9cfa752da79d"
+  },
+  {
+    _id: "f40443b5-c400-4b54-a7e1-4ea2f23b993f",
+    name: "Fundación Hammes - Macejkovic por alimentación",
+    description: "Comunidad dedicada a proyectos de alimentación y desarrollo sostenible. Celer stultus arto. Combibo labore claustrum autem cursus adduco vindico utrum in desipio.",
+    status: "approved",
+    reason: "",
+    userId: "6cb497eb-c391-443c-8e2e-0595b3aa56fe",
+    createdAt: "2026-01-10T01:08:52.203Z",
+    updatedAt: "2026-01-10T01:08:52.203Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "ddb44658-1b88-4164-8cb8-e3a8256a3803",
+    name: "Iniciativa infancia 2027",
+    description: "Causa benéfica enfocada en infancia. Aequus conturbo adstringo. Vesper sapiente aeternus stabilis optio synagoga repudiandae accusantium.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "6cb497eb-c391-443c-8e2e-0595b3aa56fe",
+    createdAt: "2026-01-10T01:08:52.204Z",
+    updatedAt: "2026-01-10T01:08:52.204Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13"
+    ],
+    startDate: "2026-06-02T00:08:47.110Z",
+    duration: 58,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "c9b0bf63-9c38-4625-bee7-cc42bf63b9f2",
+    name: "Movimiento salud 2027",
+    description: "Causa benéfica enfocada en salud. Cohaero tabernus totam arbitro. Arbustum curvo caelum cuius bis.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "6cb497eb-c391-443c-8e2e-0595b3aa56fe",
+    createdAt: "2026-01-10T01:08:52.205Z",
+    updatedAt: "2026-01-10T01:08:52.205Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "11"
+    ],
+    startDate: "2026-05-29T00:08:47.110Z",
+    duration: 120,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "4b1f3248-4c22-4b52-bedb-2d3f4a8181ba",
+    name: "Fundación Blick and Sons por educación",
+    description: "Comunidad dedicada a proyectos de educación y desarrollo sostenible. Totam vilis abduco defetiscor tego spes occaecati vilis vesica provident.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a6421f6b-0793-479c-93e6-bcd541b2cf7a",
+    createdAt: "2026-01-10T01:08:52.266Z",
+    updatedAt: "2026-01-10T01:08:52.266Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "7ab396f9-40df-4810-ac4c-c5f8d1e43667",
+    name: "Movimiento derechos humanos 2026",
+    description: "Causa benéfica enfocada en derechos humanos. Sumptus saepe tamdiu.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "a6421f6b-0793-479c-93e6-bcd541b2cf7a",
+    createdAt: "2026-01-10T01:08:52.267Z",
+    updatedAt: "2026-01-10T01:08:52.267Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "6"
+    ],
+    startDate: "2026-05-29T00:08:47.173Z",
+    duration: 319,
+    communityId: "4b1f3248-4c22-4b52-bedb-2d3f4a8181ba"
+  },
+  {
+    _id: "194dbf75-51ed-44df-a866-dd18b25967f3",
+    name: "Red Schneider - Wolff por educación",
+    description: "Comunidad dedicada a proyectos de educación y desarrollo sostenible. Cur corona xiphias.",
+    status: "approved",
+    reason: "",
+    userId: "e2317d46-311a-47e2-aef3-e2c5c948b47c",
+    createdAt: "2026-01-10T01:08:52.341Z",
+    updatedAt: "2026-01-10T01:08:52.341Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "fea0a206-4ee5-47bb-8bf2-f751e691eee3",
+    name: "Programa vivienda 2027",
+    description: "Causa benéfica enfocada en vivienda. Autus consequatur subvenio cauda charisma.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "e2317d46-311a-47e2-aef3-e2c5c948b47c",
+    createdAt: "2026-01-10T01:08:52.342Z",
+    updatedAt: "2026-01-10T01:08:52.342Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8"
+    ],
+    startDate: "2026-06-10T00:08:47.235Z",
+    duration: 110,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "f99e605d-2dad-4213-962f-fd1dc49f9e97",
+    name: "Red de apoyo salud 2027",
+    description: "Causa benéfica enfocada en salud. Subiungo solio thesis paulatim ulterius itaque confero verto solutio.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "e2317d46-311a-47e2-aef3-e2c5c948b47c",
+    createdAt: "2026-01-10T01:08:52.343Z",
+    updatedAt: "2026-01-10T01:08:52.343Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "6",
+      "4"
+    ],
+    startDate: "2026-03-31T00:08:47.235Z",
+    duration: 46,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "633fedc4-ea26-4314-bdc8-a23202779b72",
+    name: "Programa salud 2026",
+    description: "Causa benéfica enfocada en salud. Crustulum umerus aveho tracto pecco altus. Admiratio iste acies absconditus tredecim confido excepturi.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "e2317d46-311a-47e2-aef3-e2c5c948b47c",
+    createdAt: "2026-01-10T01:08:52.344Z",
+    updatedAt: "2026-01-10T01:08:52.344Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "11",
+      "3"
+    ],
+    startDate: "2026-02-24T01:08:47.235Z",
+    duration: 310,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "59fec8a9-f697-4c36-9470-839bf8af1bf8",
+    name: "Red Homenick, Shanahan and Macejkovic por discapac",
+    description: "Comunidad dedicada a proyectos de discapacidad y desarrollo sostenible. Callide cohibeo adipisci arma cunabula tutamen.",
+    status: "approved",
+    reason: "",
+    userId: "5c817b34-5cef-4a15-bae1-ed2749069ba3",
+    createdAt: "2026-01-10T01:08:52.403Z",
+    updatedAt: "2026-01-10T01:08:52.403Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "9822ef4b-54f7-40d8-8b9c-a11accc6307f",
+    name: "Acción solidaria salud 2026",
+    description: "Causa benéfica enfocada en salud. Validus tenetur adduco.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "5c817b34-5cef-4a15-bae1-ed2749069ba3",
+    createdAt: "2026-01-10T01:08:52.404Z",
+    updatedAt: "2026-01-10T01:08:52.404Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16"
+    ],
+    startDate: "2026-04-09T00:08:47.297Z",
+    duration: 54,
+    communityId: "59fec8a9-f697-4c36-9470-839bf8af1bf8"
+  },
+  {
+    _id: "f0b6ba5d-538e-4cd3-9606-66ca89146ddb",
+    name: "Asociación Tromp and Sons por refugiados",
+    description: "Comunidad dedicada a proyectos de refugiados y desarrollo sostenible. Debitis maiores thorax adeo vesco accommodo venio totam depopulo suadeo. Aperte defaeco tero defessus cilicium architecto umquam c",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "81ec6be8-d992-410e-bb68-a536b3c05622",
+    createdAt: "2026-01-10T01:08:52.464Z",
+    updatedAt: "2026-01-10T01:08:52.464Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "22fddb85-1a15-497b-b087-3aea0cc352ca",
+    name: "Jornada refugiados 2026",
+    description: "Causa benéfica enfocada en refugiados. Eaque aufero trepide aut pectus unus.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "81ec6be8-d992-410e-bb68-a536b3c05622",
+    createdAt: "2026-01-10T01:08:52.465Z",
+    updatedAt: "2026-01-10T01:08:52.465Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "8",
+      "10"
+    ],
+    startDate: "2026-05-22T00:08:47.360Z",
+    duration: 284,
+    communityId: "f0b6ba5d-538e-4cd3-9606-66ca89146ddb"
+  },
+  {
+    _id: "70d55ecf-7a0c-4caf-8e18-7fdc9fc9e093",
+    name: "Asociación Steuber, Crist and Oberbrunner por salu",
+    description: "Comunidad dedicada a proyectos de salud y desarrollo sostenible. Auditor calculus denego voveo carpo. Charisma corpus sint quis vestrum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "af9828a1-6632-4fa7-b025-79cec94bcc9b",
+    createdAt: "2026-01-10T01:08:52.526Z",
+    updatedAt: "2026-01-10T01:08:52.526Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "02dcac41-7b8b-4d7d-adb0-97adb4c9064b",
+    name: "Jornada infancia 2027",
+    description: "Causa benéfica enfocada en infancia. Vinum reprehenderit aperte iure commodo. Talio sapiente tumultus aeger quisquam tonsor vix talis.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "af9828a1-6632-4fa7-b025-79cec94bcc9b",
+    createdAt: "2026-01-10T01:08:52.527Z",
+    updatedAt: "2026-01-10T01:08:52.527Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "17",
+      "9"
+    ],
+    startDate: "2026-04-12T00:08:47.421Z",
+    duration: 297,
+    communityId: "70d55ecf-7a0c-4caf-8e18-7fdc9fc9e093"
+  },
+  {
+    _id: "29836075-caea-40db-9105-4da0bb9851e7",
+    name: "Movimiento alimentación 2026",
+    description: "Causa benéfica enfocada en alimentación. Vorago caecus viduo carmen cilicium sub antiquus aureus curvo admiratio.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "af9828a1-6632-4fa7-b025-79cec94bcc9b",
+    createdAt: "2026-01-10T01:08:52.528Z",
+    updatedAt: "2026-01-10T01:08:52.528Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "11",
+      "6"
+    ],
+    startDate: "2026-06-17T00:08:47.421Z",
+    duration: 151,
+    communityId: "70d55ecf-7a0c-4caf-8e18-7fdc9fc9e093"
+  },
+  {
+    _id: "236e1df7-3124-4b57-adbc-704483e42d69",
+    name: "Programa tercera edad 2027",
+    description: "Causa benéfica enfocada en tercera edad. Demergo velit adhaero vetus caste repudiandae tam.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "af9828a1-6632-4fa7-b025-79cec94bcc9b",
+    createdAt: "2026-01-10T01:08:52.529Z",
+    updatedAt: "2026-01-10T01:08:52.529Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "17",
+      "5"
+    ],
+    startDate: "2026-07-11T00:08:47.421Z",
+    duration: 145,
+    communityId: "70d55ecf-7a0c-4caf-8e18-7fdc9fc9e093"
+  },
+  {
+    _id: "0375876a-9c42-4b5a-b5b9-8a9340aca828",
+    name: "Comunidad Jerde, Von and Mann por alimentación",
+    description: "Comunidad dedicada a proyectos de alimentación y desarrollo sostenible. Ustilo usque aperiam conicio eaque infit. Quia trans aranea brevis utor ager ars vulnero cresco curriculum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "2fab89fb-d380-4cea-a89e-f011feba5fd2",
+    createdAt: "2026-01-10T01:08:52.590Z",
+    updatedAt: "2026-01-10T01:08:52.590Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "224d1352-e531-460f-adf6-ad29b0b5da3f",
+    name: "Operación igualdad de género 2027",
+    description: "Causa benéfica enfocada en igualdad de género. Atqui vestigium agnitio. Defessus victoria solutio totidem speculum sordeo.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "2fab89fb-d380-4cea-a89e-f011feba5fd2",
+    createdAt: "2026-01-10T01:08:52.591Z",
+    updatedAt: "2026-01-10T01:08:52.591Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2"
+    ],
+    startDate: "2026-04-22T00:08:47.482Z",
+    duration: 118,
+    communityId: "0375876a-9c42-4b5a-b5b9-8a9340aca828"
+  },
+  {
+    _id: "a40a77c2-1348-450a-a6dd-f483af38f5d0",
+    name: "Proyecto agua potable 2027",
+    description: "Causa benéfica enfocada en agua potable. Nesciunt toties denuo curis sint.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "2fab89fb-d380-4cea-a89e-f011feba5fd2",
+    createdAt: "2026-01-10T01:08:52.592Z",
+    updatedAt: "2026-01-10T01:08:52.592Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "11"
+    ],
+    startDate: "2026-04-17T00:08:47.482Z",
+    duration: 309,
+    communityId: "0375876a-9c42-4b5a-b5b9-8a9340aca828"
+  },
+  {
+    _id: "07740546-39c4-47ff-aa49-20870e727a7d",
+    name: "Asociación Emmerich, Russel and Vandervort por sal",
+    description: "Comunidad dedicada a proyectos de salud y desarrollo sostenible. Desino saepe vergo totam.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "4cd2f718-ad88-442e-b8df-42f343f00378",
+    createdAt: "2026-01-10T01:08:52.652Z",
+    updatedAt: "2026-01-10T01:08:52.652Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "03867884-8ead-4b08-9743-ada2b26e5e22",
+    name: "Red de apoyo vivienda 2027",
+    description: "Causa benéfica enfocada en vivienda. Defetiscor talus unde uberrime supplanto.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "4cd2f718-ad88-442e-b8df-42f343f00378",
+    createdAt: "2026-01-10T01:08:52.653Z",
+    updatedAt: "2026-01-10T01:08:52.653Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "7",
+      "9"
+    ],
+    startDate: "2026-03-02T01:08:47.544Z",
+    duration: 224,
+    communityId: "07740546-39c4-47ff-aa49-20870e727a7d"
+  },
+  {
+    _id: "e31621f1-74bb-45ec-af31-757af6f1e297",
+    name: "Jornada emergencias 2027",
+    description: "Causa benéfica enfocada en emergencias. Aestus vomica conturbo usus surgo ubi vir uxor textus.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "4cd2f718-ad88-442e-b8df-42f343f00378",
+    createdAt: "2026-01-10T01:08:52.654Z",
+    updatedAt: "2026-01-10T01:08:52.654Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "3",
+      "14"
+    ],
+    startDate: "2026-04-20T00:08:47.544Z",
+    duration: 88,
+    communityId: "07740546-39c4-47ff-aa49-20870e727a7d"
+  },
+  {
+    _id: "4ec5d166-7c08-4630-a76e-36acf33e3fbe",
+    name: "Asociación Corwin - Kuvalis por medio ambiente",
+    description: "Comunidad dedicada a proyectos de medio ambiente y desarrollo sostenible. Tolero super termes absconditus uterque crapula thesis patruus calamitas. Minus aufero sopor dolorum depereo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "d194e0bb-9717-4321-a9ca-9aa7bbc3534f",
+    createdAt: "2026-01-10T01:08:52.713Z",
+    updatedAt: "2026-01-10T01:08:52.713Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "b3c93cfb-d8eb-412d-b455-82756fa1b256",
+    name: "Movimiento salud 2026",
+    description: "Causa benéfica enfocada en salud. Pecto eveniet complectus aptus deleniti vesper. Laboriosam astrum decens commodi sustineo.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "d194e0bb-9717-4321-a9ca-9aa7bbc3534f",
+    createdAt: "2026-01-10T01:08:52.714Z",
+    updatedAt: "2026-01-10T01:08:52.714Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9"
+    ],
+    startDate: "2026-03-11T01:08:47.606Z",
+    duration: 119,
+    communityId: "4ec5d166-7c08-4630-a76e-36acf33e3fbe"
+  },
+  {
+    _id: "f21b3392-fb59-44cd-a82a-d5c32415c0ae",
+    name: "Fundación Kozey, Dare and Hintz por educación",
+    description: "Comunidad dedicada a proyectos de educación y desarrollo sostenible. Verbera conventus congregatio. Strues aequus adiuvo alo spiritus degenero.",
+    status: "approved",
+    reason: "",
+    userId: "1853aa28-7a81-4f2a-b4d8-ce394263acc4",
+    createdAt: "2026-01-10T01:08:52.775Z",
+    updatedAt: "2026-01-10T01:08:52.775Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "264d3754-17e6-4384-a7c7-3d81dbf3ecd3",
+    name: "Programa pobreza 2027",
+    description: "Causa benéfica enfocada en pobreza. Clibanus auxilium absque.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "1853aa28-7a81-4f2a-b4d8-ce394263acc4",
+    createdAt: "2026-01-10T01:08:52.777Z",
+    updatedAt: "2026-01-10T01:08:52.777Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "2",
+      "13"
+    ],
+    startDate: "2026-02-10T01:08:47.669Z",
+    duration: 36,
+    communityId: "f21b3392-fb59-44cd-a82a-d5c32415c0ae"
+  },
+  {
+    _id: "80740677-910c-4736-a5dc-1a2f95157a58",
+    name: "Grupo Hilpert LLC por pobreza",
+    description: "Comunidad dedicada a proyectos de pobreza y desarrollo sostenible. Supellex trepide cometes ea trepide sapiente tamdiu caste in tepesco.",
+    status: "approved",
+    reason: "",
+    userId: "cd59b1c9-f611-4e10-957e-80458902a9d7",
+    createdAt: "2026-01-10T01:08:52.850Z",
+    updatedAt: "2026-01-10T01:08:52.850Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "e69197db-aab4-48e1-b3ff-40bac4a46740",
+    name: "Operación pobreza 2026",
+    description: "Causa benéfica enfocada en pobreza. Paulatim creo natus aggero sustineo attollo eaque.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "cd59b1c9-f611-4e10-957e-80458902a9d7",
+    createdAt: "2026-01-10T01:08:52.851Z",
+    updatedAt: "2026-01-10T01:08:52.851Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8"
+    ],
+    startDate: "2026-07-31T00:08:47.731Z",
+    duration: 316,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "db7a8be2-9f76-4e23-9238-938618a56761",
+    name: "Red de apoyo igualdad de género 2026",
+    description: "Causa benéfica enfocada en igualdad de género. Usus aveho aurum sto claustrum umerus deprecator utor tempus vilitas.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "cd59b1c9-f611-4e10-957e-80458902a9d7",
+    createdAt: "2026-01-10T01:08:52.852Z",
+    updatedAt: "2026-01-10T01:08:52.852Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16"
+    ],
+    startDate: "2026-03-10T01:08:47.731Z",
+    duration: 83,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "571c340b-a651-478b-a5ce-7e18f40f2415",
+    name: "Operación agua potable 2026",
+    description: "Causa benéfica enfocada en agua potable. Quae surculus copia attollo calco.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "cd59b1c9-f611-4e10-957e-80458902a9d7",
+    createdAt: "2026-01-10T01:08:52.853Z",
+    updatedAt: "2026-01-10T01:08:52.853Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "13"
+    ],
+    startDate: "2026-03-22T01:08:47.731Z",
+    duration: 345,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "ff12b0ae-a3b8-431f-bd1d-c6b6800d7d6d",
+    name: "Fundación Dietrich - Waters por desarrollo sosteni",
+    description: "Comunidad dedicada a proyectos de desarrollo sostenible y desarrollo sostenible. Decretum adficio pecto crastinus appositus sursum subseco censura caelestis.",
+    status: "approved",
+    reason: "",
+    userId: "cfc3c9e5-7968-4452-918f-cfd3fc522f2d",
+    createdAt: "2026-01-10T01:08:52.913Z",
+    updatedAt: "2026-01-10T01:08:52.913Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "1f28ab0a-94a9-404b-9b85-9248953bc396",
+    name: "Proyecto alimentación 2026",
+    description: "Causa benéfica enfocada en alimentación. Creptio ex tamquam comburo voluntarius. Cotidie dignissimos inflammatio texo deprimo conitor hic crustulum tenax.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "cfc3c9e5-7968-4452-918f-cfd3fc522f2d",
+    createdAt: "2026-01-10T01:08:52.914Z",
+    updatedAt: "2026-01-10T01:08:52.914Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "16"
+    ],
+    startDate: "2026-05-09T00:08:47.793Z",
+    duration: 360,
+    communityId: "ff12b0ae-a3b8-431f-bd1d-c6b6800d7d6d"
+  },
+  {
+    _id: "6e5d9c7c-daec-4bb6-8eaf-3997a2d55022",
+    name: "Comunidad Kuhlman - Roob por agua potable",
+    description: "Comunidad dedicada a proyectos de agua potable y desarrollo sostenible. Bibo verus ceno defaeco tergum aveho canto.",
+    status: "approved",
+    reason: "",
+    userId: "037ea75b-6350-4262-ac6e-ec727cb9d28b",
+    createdAt: "2026-01-10T01:08:52.975Z",
+    updatedAt: "2026-01-10T01:08:52.975Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "78d78d19-da23-4d5b-ae83-b9600d3db65c",
+    name: "Proyecto igualdad de género 2027",
+    description: "Causa benéfica enfocada en igualdad de género. Substantia contigo totidem adipisci. Delibero usque amor quis admitto aperiam caute desolo speculum.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "037ea75b-6350-4262-ac6e-ec727cb9d28b",
+    createdAt: "2026-01-10T01:08:52.976Z",
+    updatedAt: "2026-01-10T01:08:52.976Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "6"
+    ],
+    startDate: "2026-03-04T01:08:47.856Z",
+    duration: 344,
+    communityId: "6e5d9c7c-daec-4bb6-8eaf-3997a2d55022"
+  },
+  {
+    _id: "4ba3fa1a-b301-4411-bd65-3498d6be0266",
+    name: "Programa salud 2026",
+    description: "Causa benéfica enfocada en salud. Colligo voluptatum truculenter aegrotatio arbustum voluptates denique demo maiores torqueo. Uxor thalassinus quibusdam.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "037ea75b-6350-4262-ac6e-ec727cb9d28b",
+    createdAt: "2026-01-10T01:08:52.977Z",
+    updatedAt: "2026-01-10T01:08:52.977Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "6"
+    ],
+    startDate: "2026-03-02T01:08:47.856Z",
+    duration: 84,
+    communityId: "6e5d9c7c-daec-4bb6-8eaf-3997a2d55022"
+  },
+  {
+    _id: "414d3e93-333b-4754-8f39-699a39a391fd",
+    name: "Asociación Daugherty Inc por derechos humanos",
+    description: "Comunidad dedicada a proyectos de derechos humanos y desarrollo sostenible. Vulgus creo nam soluta pauper ventosus apostolus perferendis depopulo crebro. Cohibeo libero damnatio perspiciatis suus adve",
+    status: "approved",
+    reason: "",
+    userId: "6d42e696-e642-4efd-8a1c-42f7819575fb",
+    createdAt: "2026-01-10T01:08:53.050Z",
+    updatedAt: "2026-01-10T01:08:53.050Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "671f25de-ea6c-4c90-8086-6e5172d78bdf",
+    name: "Jornada derechos humanos 2026",
+    description: "Causa benéfica enfocada en derechos humanos. Solus saepe umquam alo infit. Comminor vilis vicinus consectetur utroque delectus vester utilis.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "6d42e696-e642-4efd-8a1c-42f7819575fb",
+    createdAt: "2026-01-10T01:08:53.051Z",
+    updatedAt: "2026-01-10T01:08:53.051Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "10"
+    ],
+    startDate: "2026-03-12T01:08:47.919Z",
+    duration: 124,
+    communityId: "414d3e93-333b-4754-8f39-699a39a391fd"
+  },
+  {
+    _id: "1805d5c2-1e05-4872-84fb-3f0393ba0a57",
+    name: "Colectivo Ruecker, Halvorson and Hettinger por der",
+    description: "Comunidad dedicada a proyectos de derechos humanos y desarrollo sostenible. Solus custodia charisma calcar callide distinctio aperiam amplexus theca.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "7387cfe6-3799-4e7a-bf12-3e716bd7cdda",
+    createdAt: "2026-01-10T01:08:53.112Z",
+    updatedAt: "2026-01-10T01:08:53.112Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "b83cf256-f0ae-4974-ae52-eeca422beed3",
+    name: "Operación refugiados 2026",
+    description: "Causa benéfica enfocada en refugiados. Vitiosus voluptates voluptatum claustrum conforto capillus tum aedificium tubineus. Stultus talio toties cenaculum communis cibus.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "7387cfe6-3799-4e7a-bf12-3e716bd7cdda",
+    createdAt: "2026-01-10T01:08:53.113Z",
+    updatedAt: "2026-01-10T01:08:53.113Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "10"
+    ],
+    startDate: "2026-07-21T00:08:47.983Z",
+    duration: 308,
+    communityId: "1805d5c2-1e05-4872-84fb-3f0393ba0a57"
+  },
+  {
+    _id: "176f0954-dadb-4c45-b393-a2522af102ae",
+    name: "Campaña emergencias 2026",
+    description: "Causa benéfica enfocada en emergencias. Vero coniecto et vulticulus adicio coadunatio conculco tempore contego. Defluo antiquus terminatio territo cultellus ipsa summopere carpo tribuo damno.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "7387cfe6-3799-4e7a-bf12-3e716bd7cdda",
+    createdAt: "2026-01-10T01:08:53.114Z",
+    updatedAt: "2026-01-10T01:08:53.114Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7"
+    ],
+    startDate: "2026-05-25T00:08:47.983Z",
+    duration: 292,
+    communityId: "1805d5c2-1e05-4872-84fb-3f0393ba0a57"
+  },
+  {
+    _id: "64fdb809-b4cd-4e55-bb1a-86c813f41527",
+    name: "Acción solidaria derechos humanos 2027",
+    description: "Causa benéfica enfocada en derechos humanos. Voluptatem cohibeo decerno valeo voco agnosco amplitudo vesper deporto comminor. Textor speciosus consectetur terebro desino timidus debilito animi.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "7387cfe6-3799-4e7a-bf12-3e716bd7cdda",
+    createdAt: "2026-01-10T01:08:53.115Z",
+    updatedAt: "2026-01-10T01:08:53.115Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14"
+    ],
+    startDate: "2026-05-10T00:08:47.983Z",
+    duration: 228,
+    communityId: "1805d5c2-1e05-4872-84fb-3f0393ba0a57"
+  },
+  {
+    _id: "1a9d9e36-0bf0-42ca-a3da-446eb12b4eb6",
+    name: "Asociación Cartwright - Mosciski por tercera edad",
+    description: "Comunidad dedicada a proyectos de tercera edad y desarrollo sostenible. Illo textilis ventito baiulus tersus adamo. Asporto reiciendis denique decerno aperio calco conventus absconditus solio.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a68ff1aa-fe21-42a0-89fc-6de5b3348fec",
+    createdAt: "2026-01-10T01:08:53.174Z",
+    updatedAt: "2026-01-10T01:08:53.174Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "3f06a1ef-d9b7-457d-a7ce-19279ae1488f",
+    name: "Movimiento infancia 2027",
+    description: "Causa benéfica enfocada en infancia. Appono alter cunabula.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "a68ff1aa-fe21-42a0-89fc-6de5b3348fec",
+    createdAt: "2026-01-10T01:08:53.175Z",
+    updatedAt: "2026-01-10T01:08:53.175Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-05-04T00:08:48.045Z",
+    duration: 83,
+    communityId: "1a9d9e36-0bf0-42ca-a3da-446eb12b4eb6"
+  },
+  {
+    _id: "26e024f3-5778-469c-8e74-953d1f70532d",
+    name: "Operación alimentación 2026",
+    description: "Causa benéfica enfocada en alimentación. Atrocitas eos cunae sumptus aro cupiditas vesco.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "a68ff1aa-fe21-42a0-89fc-6de5b3348fec",
+    createdAt: "2026-01-10T01:08:53.175Z",
+    updatedAt: "2026-01-10T01:08:53.175Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "8"
+    ],
+    startDate: "2026-06-10T00:08:48.045Z",
+    duration: 145,
+    communityId: "1a9d9e36-0bf0-42ca-a3da-446eb12b4eb6"
+  },
+  {
+    _id: "325eaa73-7f12-45da-a8bc-11361b87539c",
+    name: "Fundación Labadie Inc por infancia",
+    description: "Comunidad dedicada a proyectos de infancia y desarrollo sostenible. Quis succedo depromo triumphus claustrum sponte abstergo.",
+    status: "approved",
+    reason: "",
+    userId: "af9828a1-6632-4fa7-b025-79cec94bcc9b",
+    createdAt: "2026-01-10T01:08:53.236Z",
+    updatedAt: "2026-01-10T01:08:53.236Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "1228dd62-3a88-4d41-9ca5-0dd644283c8d",
+    name: "Campaña educación 2027",
+    description: "Causa benéfica enfocada en educación. Tolero culpo vilicus charisma cuppedia conicio arguo minima alias. Quae ullam vulgus adversus quod quia adaugeo acceptus.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "af9828a1-6632-4fa7-b025-79cec94bcc9b",
+    createdAt: "2026-01-10T01:08:53.237Z",
+    updatedAt: "2026-01-10T01:08:53.237Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "10"
+    ],
+    startDate: "2026-05-31T00:08:48.108Z",
+    duration: 106,
+    communityId: "325eaa73-7f12-45da-a8bc-11361b87539c"
+  },
+  {
+    _id: "eaf1d275-8e09-4208-9058-f3876158a09d",
+    name: "Grupo Frami - Kuhic por salud",
+    description: "Comunidad dedicada a proyectos de salud y desarrollo sostenible. Coepi crebro vix libero expedita. Deserunt ascisco demulceo perspiciatis assumenda terebro umquam officia vir.",
+    status: "approved",
+    reason: "",
+    userId: "a4ccfbdf-e7ad-4c6c-a943-90b9abf85aac",
+    createdAt: "2026-01-10T01:08:53.298Z",
+    updatedAt: "2026-01-10T01:08:53.298Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "464a2a87-1772-4e78-a9cf-c6a771deba4e",
+    name: "Campaña pobreza 2026",
+    description: "Causa benéfica enfocada en pobreza. Curia curia approbo commemoro iusto odit conduco decerno aequitas. Turba sordeo tenetur solutio cupiditas ambitus.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "a4ccfbdf-e7ad-4c6c-a943-90b9abf85aac",
+    createdAt: "2026-01-10T01:08:53.300Z",
+    updatedAt: "2026-01-10T01:08:53.300Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "4"
+    ],
+    startDate: "2026-03-28T01:08:48.171Z",
+    duration: 258,
+    communityId: "eaf1d275-8e09-4208-9058-f3876158a09d"
+  },
+  {
+    _id: "74970f6d-25d8-4c48-b9a4-36abc744024b",
+    name: "Fundación Haag, Emmerich and Hermann por educación",
+    description: "Comunidad dedicada a proyectos de educación y desarrollo sostenible. Doloremque nobis suffragium desipio absconditus delibero coerceo sol crepusculum.",
+    status: "approved",
+    reason: "",
+    userId: "41366993-d4a1-4908-85e5-cdfe4dc7affe",
+    createdAt: "2026-01-10T01:08:53.360Z",
+    updatedAt: "2026-01-10T01:08:53.360Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "5c8e9f18-9ae6-4d74-a87c-4a308c330547",
+    name: "Red de apoyo vivienda 2026",
+    description: "Causa benéfica enfocada en vivienda. Tergum iure delinquo supra advoco deleniti causa.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "41366993-d4a1-4908-85e5-cdfe4dc7affe",
+    createdAt: "2026-01-10T01:08:53.361Z",
+    updatedAt: "2026-01-10T01:08:53.361Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6"
+    ],
+    startDate: "2026-03-10T01:08:48.232Z",
+    duration: 357,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "18a020dc-2731-4de1-ae75-b7f6d2cc191f",
+    name: "Grupo Franey Group por refugiados",
+    description: "Comunidad dedicada a proyectos de refugiados y desarrollo sostenible. Aer velociter vita quia commemoro odio acidus coruscus accusamus vigilo. Vestigium tubineus paulatim creta tepesco arcesso tolero ",
+    status: "approved",
+    reason: "",
+    userId: "f5788676-18b9-4009-9d9c-6e42d8a30087",
+    createdAt: "2026-01-10T01:08:53.422Z",
+    updatedAt: "2026-01-10T01:08:53.422Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "23200a95-e98c-4e9b-ac66-75c7fa1fc81a",
+    name: "Iniciativa desarrollo sostenible 2027",
+    description: "Causa benéfica enfocada en desarrollo sostenible. Caste ultra vix admoveo degusto. Spargo celo pecco infit aureus paulatim curso.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "f5788676-18b9-4009-9d9c-6e42d8a30087",
+    createdAt: "2026-01-10T01:08:53.423Z",
+    updatedAt: "2026-01-10T01:08:53.423Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "10"
+    ],
+    startDate: "2026-05-13T00:08:48.296Z",
+    duration: 185,
+    communityId: "18a020dc-2731-4de1-ae75-b7f6d2cc191f"
+  },
+  {
+    _id: "9cc0e2f9-1b13-479f-be29-d8ce17ed13dc",
+    name: "Red Pfannerstill - Goodwin por vivienda",
+    description: "Comunidad dedicada a proyectos de vivienda y desarrollo sostenible. Optio video timidus odio. Curiositas architecto adsidue.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fedc18bc-f476-48d5-abcd-05b79d20886c",
+    createdAt: "2026-01-10T01:08:53.484Z",
+    updatedAt: "2026-01-10T01:08:53.484Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "592b0f7b-30e0-4ae5-b667-648a9f70674b",
+    name: "Acción solidaria alimentación 2027",
+    description: "Causa benéfica enfocada en alimentación. Vulariter cupressus cresco.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "fedc18bc-f476-48d5-abcd-05b79d20886c",
+    createdAt: "2026-01-10T01:08:53.485Z",
+    updatedAt: "2026-01-10T01:08:53.485Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "1"
+    ],
+    startDate: "2026-03-29T01:08:48.359Z",
+    duration: 132,
+    communityId: "9cc0e2f9-1b13-479f-be29-d8ce17ed13dc"
+  },
+  {
+    _id: "0c8a5c66-7511-4297-869f-8fbd58273442",
+    name: "Campaña alimentación 2027",
+    description: "Causa benéfica enfocada en alimentación. Vereor collum laborum approbo vulgivagus verumtamen deinde.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "fedc18bc-f476-48d5-abcd-05b79d20886c",
+    createdAt: "2026-01-10T01:08:53.486Z",
+    updatedAt: "2026-01-10T01:08:53.486Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "2"
+    ],
+    startDate: "2026-07-01T00:08:48.359Z",
+    duration: 200,
+    communityId: "9cc0e2f9-1b13-479f-be29-d8ce17ed13dc"
+  },
+  {
+    _id: "7aebbc50-e02b-4c5c-ab15-24ead6377e78",
+    name: "Jornada medio ambiente 2026",
+    description: "Causa benéfica enfocada en medio ambiente. Defaeco iste spiritus theca capitulus minima creo adulatio. Vulgivagus advenio cariosus umbra ara blanditiis aranea ullam eos degusto.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "fedc18bc-f476-48d5-abcd-05b79d20886c",
+    createdAt: "2026-01-10T01:08:53.486Z",
+    updatedAt: "2026-01-10T01:08:53.486Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "10",
+      "1"
+    ],
+    startDate: "2026-04-05T00:08:48.359Z",
+    duration: 352,
+    communityId: "9cc0e2f9-1b13-479f-be29-d8ce17ed13dc"
+  },
+  {
+    _id: "bf2c4534-3cd1-4e02-84ee-e2a936d44b4d",
+    name: "Red Beatty Inc por derechos humanos",
+    description: "Comunidad dedicada a proyectos de derechos humanos y desarrollo sostenible. Nemo dedecor utpote conitor cotidie vergo quo carus id adversus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "39206045-d030-4601-babd-be2ad5ae4e54",
+    createdAt: "2026-01-10T01:08:53.545Z",
+    updatedAt: "2026-01-10T01:08:53.545Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "e6ae00ae-2cef-4e79-82f4-11481a4f4538",
+    name: "Red de apoyo igualdad de género 2027",
+    description: "Causa benéfica enfocada en igualdad de género. Virga adhaero avarus minus praesentium.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "39206045-d030-4601-babd-be2ad5ae4e54",
+    createdAt: "2026-01-10T01:08:53.546Z",
+    updatedAt: "2026-01-10T01:08:53.546Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "10"
+    ],
+    startDate: "2026-07-18T00:08:48.421Z",
+    duration: 325,
+    communityId: "bf2c4534-3cd1-4e02-84ee-e2a936d44b4d"
+  },
+  {
+    _id: "2cd69cf1-4970-414b-8ad0-3eb739ae4dc1",
+    name: "Acción solidaria salud 2027",
+    description: "Causa benéfica enfocada en salud. Solium utpote accusamus id censura umerus.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "39206045-d030-4601-babd-be2ad5ae4e54",
+    createdAt: "2026-01-10T01:08:53.547Z",
+    updatedAt: "2026-01-10T01:08:53.547Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "14"
+    ],
+    startDate: "2026-07-12T00:08:48.421Z",
+    duration: 347,
+    communityId: "bf2c4534-3cd1-4e02-84ee-e2a936d44b4d"
+  },
+  {
+    _id: "535b5377-8dd4-4518-b86b-a556b85740b6",
+    name: "Movimiento alimentación 2027",
+    description: "Causa benéfica enfocada en alimentación. Conicio amoveo cibo depulso atrocitas.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "39206045-d030-4601-babd-be2ad5ae4e54",
+    createdAt: "2026-01-10T01:08:53.548Z",
+    updatedAt: "2026-01-10T01:08:53.548Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9"
+    ],
+    startDate: "2026-05-11T00:08:48.421Z",
+    duration: 271,
+    communityId: "bf2c4534-3cd1-4e02-84ee-e2a936d44b4d"
+  },
+  {
+    _id: "e9ee1d40-abc3-4de8-999c-2b0648c82032",
+    name: "Colectivo Lakin Group por desarrollo sostenible",
+    description: "Comunidad dedicada a proyectos de desarrollo sostenible y desarrollo sostenible. Expedita aperio ara vox color quod defluo capto supra autem. Alioqui aliquam patruus exercitationem una unde vesper tot",
+    status: "approved",
+    reason: "",
+    userId: "8e6945b7-f50f-4fee-b44c-fbafbc04d837",
+    createdAt: "2026-01-10T01:08:53.607Z",
+    updatedAt: "2026-01-10T01:08:53.607Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "ae959082-bb96-40c0-9fe0-125c157bd198",
+    name: "Iniciativa derechos humanos 2026",
+    description: "Causa benéfica enfocada en derechos humanos. Templum vel deduco tantum coniecto arx colligo benigne.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "8e6945b7-f50f-4fee-b44c-fbafbc04d837",
+    createdAt: "2026-01-10T01:08:53.608Z",
+    updatedAt: "2026-01-10T01:08:53.608Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5"
+    ],
+    startDate: "2026-05-07T00:08:48.483Z",
+    duration: 188,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "677fb78c-bc04-47a3-8a13-beb840eba385",
+    name: "Movimiento refugiados 2026",
+    description: "Causa benéfica enfocada en refugiados. Odit quasi varius defetiscor sodalitas adduco magnam.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "8e6945b7-f50f-4fee-b44c-fbafbc04d837",
+    createdAt: "2026-01-10T01:08:53.609Z",
+    updatedAt: "2026-01-10T01:08:53.609Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8"
+    ],
+    startDate: "2026-07-22T00:08:48.483Z",
+    duration: 103,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "859adf08-698f-4e1a-af95-7a22a597959e",
+    name: "Asociación Abshire Group por alimentación",
+    description: "Comunidad dedicada a proyectos de alimentación y desarrollo sostenible. Quasi sortitus sumptus sponte alveus correptius compello vulgaris conturbo defessus. Decens neque conitor pectus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "d645b59b-1682-420a-8701-659469af8970",
+    createdAt: "2026-01-10T01:08:53.668Z",
+    updatedAt: "2026-01-10T01:08:53.668Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "0740fa3c-a6c0-40ee-a623-add5b0ec51ef",
+    name: "Proyecto salud 2026",
+    description: "Causa benéfica enfocada en salud. Convoco cura pectus socius arto fugit tribuo assumenda arbitro desipio. Autus aliqua inventore delinquo qui veritas.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "d645b59b-1682-420a-8701-659469af8970",
+    createdAt: "2026-01-10T01:08:53.669Z",
+    updatedAt: "2026-01-10T01:08:53.669Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12"
+    ],
+    startDate: "2026-05-27T00:08:48.545Z",
+    duration: 89,
+    communityId: "859adf08-698f-4e1a-af95-7a22a597959e"
+  },
+  {
+    _id: "09132c0b-4884-4501-8ffb-3ba71e36896a",
+    name: "Campaña tercera edad 2027",
+    description: "Causa benéfica enfocada en tercera edad. Conculco copiose totidem uterque conculco quia vado repudiandae cattus.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "d645b59b-1682-420a-8701-659469af8970",
+    createdAt: "2026-01-10T01:08:53.670Z",
+    updatedAt: "2026-01-10T01:08:53.670Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "2"
+    ],
+    startDate: "2026-06-02T00:08:48.545Z",
+    duration: 139,
+    communityId: "859adf08-698f-4e1a-af95-7a22a597959e"
+  },
+  {
+    _id: "c318ce80-0b25-40eb-b4e9-8bfe31b285d9",
+    name: "Red Mueller LLC por agua potable",
+    description: "Comunidad dedicada a proyectos de agua potable y desarrollo sostenible. Certus tabesco turpis bibo antiquus aperiam beneficium. Voluptates cuppedia truculenter delego conventus arca creptio angustus.",
+    status: "approved",
+    reason: "",
+    userId: "e06bfcff-2582-48a2-97b2-c343674916da",
+    createdAt: "2026-01-10T01:18:05.333Z",
+    updatedAt: "2026-01-10T01:18:05.333Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "ffb0e1a0-e44f-4f2e-bb44-95c9923d7ce0",
+    name: "Programa pobreza 2027",
+    description: "Causa benéfica enfocada en pobreza. Decerno reprehenderit demulceo adicio surculus confero creber crur fugit audax.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "e06bfcff-2582-48a2-97b2-c343674916da",
+    createdAt: "2026-01-10T01:18:05.334Z",
+    updatedAt: "2026-01-10T01:18:05.334Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "3"
+    ],
+    startDate: "2026-07-21T00:08:48.609Z",
+    duration: 197,
+    communityId: "c318ce80-0b25-40eb-b4e9-8bfe31b285d9"
+  },
+  {
+    _id: "b2d08727-9da2-4a6d-88c1-30098699a0e6",
+    name: "Colectivo McClure, Heller and Collins por derechos",
+    description: "Comunidad dedicada a proyectos de derechos humanos y desarrollo sostenible. Virgo textilis molestias somnus delinquo tam.",
+    status: "approved",
+    reason: "",
+    userId: "492a0301-6ff2-4024-846f-8bfc6d14aaea",
+    createdAt: "2026-01-10T01:08:53.791Z",
+    updatedAt: "2026-01-10T01:08:53.791Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "f5ac6d8a-0f9c-47a4-9c1d-039e2b2b473d",
+    name: "Acción solidaria discapacidad 2027",
+    description: "Causa benéfica enfocada en discapacidad. Agnitio dicta annus collum bellum fugiat explicabo spiculum. Coerceo sophismata auctor virtus.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "492a0301-6ff2-4024-846f-8bfc6d14aaea",
+    createdAt: "2026-01-10T01:08:53.791Z",
+    updatedAt: "2026-01-10T01:08:53.791Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13"
+    ],
+    startDate: "2026-02-14T01:08:48.671Z",
+    duration: 287,
+    communityId: "b2d08727-9da2-4a6d-88c1-30098699a0e6"
+  },
+  {
+    _id: "35e8ddc0-923b-4094-9fe8-bb5633908189",
+    name: "Grupo Ledner - Dickinson por discapacidad",
+    description: "Comunidad dedicada a proyectos de discapacidad y desarrollo sostenible. Sumptus spoliatio vulnero perferendis arguo cribro.",
+    status: "approved",
+    reason: "",
+    userId: "0d1d8c44-b4a5-4491-8c78-0112cc968666",
+    createdAt: "2026-01-10T01:08:53.854Z",
+    updatedAt: "2026-01-10T01:08:53.854Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "a0c8caaa-3bf1-40cb-b25c-d57d6a5a8073",
+    name: "Acción solidaria agua potable 2027",
+    description: "Causa benéfica enfocada en agua potable. Armarium quo corroboro.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "0d1d8c44-b4a5-4491-8c78-0112cc968666",
+    createdAt: "2026-01-10T01:08:53.854Z",
+    updatedAt: "2026-01-10T01:08:53.854Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11",
+      "1"
+    ],
+    startDate: "2026-04-26T00:08:48.734Z",
+    duration: 327,
+    communityId: "35e8ddc0-923b-4094-9fe8-bb5633908189"
+  },
+  {
+    _id: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2",
+    name: "Colectivo Padberg - Barton por derechos humanos",
+    description: "Comunidad dedicada a proyectos de derechos humanos y desarrollo sostenible. Nisi trepide adaugeo cognatus vorax conspergo. Corrumpo labore tibi absens viridis vitiosus atavus accedo ager doloremque.",
+    status: "approved",
+    reason: "",
+    userId: "e3cc84a4-8000-472f-81cc-7799e9c02c9b",
+    createdAt: "2026-01-10T01:08:53.916Z",
+    updatedAt: "2026-01-10T01:08:53.916Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "c138986c-dd06-441b-bf74-471aecc97ed9",
+    name: "Iniciativa igualdad de género 2027",
+    description: "Causa benéfica enfocada en igualdad de género. Argumentum tonsor sequi chirographum accendo perferendis auxilium audio aggero.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "e3cc84a4-8000-472f-81cc-7799e9c02c9b",
+    createdAt: "2026-01-10T01:08:53.917Z",
+    updatedAt: "2026-01-10T01:08:53.917Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14"
+    ],
+    startDate: "2026-02-28T01:08:48.798Z",
+    duration: 97,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "16c120c8-2d05-4e88-8a8b-8bb60caf75fb",
+    name: "Asociación Deckow, Monahan and Hand por igualdad d",
+    description: "Comunidad dedicada a proyectos de igualdad de género y desarrollo sostenible. Territo umbra altus tabernus cultura sollers. Corrigo ratione deinde urbs voluptatum crepusculum derideo terreo sui debiti",
+    status: "approved",
+    reason: "",
+    userId: "033a4ad6-ad36-41f2-b3ec-6e200004f6df",
+    createdAt: "2026-01-10T01:08:53.978Z",
+    updatedAt: "2026-01-10T01:08:53.978Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "aa23227d-86d5-442a-b761-a4fc453e21a0",
+    name: "Programa agua potable 2026",
+    description: "Causa benéfica enfocada en agua potable. Accusantium correptius ager.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "033a4ad6-ad36-41f2-b3ec-6e200004f6df",
+    createdAt: "2026-01-10T01:08:53.979Z",
+    updatedAt: "2026-01-10T01:08:53.979Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "4",
+      "7"
+    ],
+    startDate: "2026-07-29T00:08:48.859Z",
+    duration: 273,
+    communityId: "16c120c8-2d05-4e88-8a8b-8bb60caf75fb"
+  },
+  {
+    _id: "8f09139f-b7b8-4200-9285-ade40939febe",
+    name: "Comunidad Goldner - Bartoletti por infancia",
+    description: "Comunidad dedicada a proyectos de infancia y desarrollo sostenible. Tibi facere voluptatem dolorem. Cibo arto summisse aestas crudelis agnosco curis consectetur terra subito.",
+    status: "approved",
+    reason: "",
+    userId: "c3d77521-dbca-40e5-9997-a9632437f8ba",
+    createdAt: "2026-01-10T01:08:54.040Z",
+    updatedAt: "2026-01-10T01:08:54.040Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "1f8de157-deb8-4655-be53-d9cd7abe230c",
+    name: "Programa infancia 2027",
+    description: "Causa benéfica enfocada en infancia. Absens verus paulatim.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "c3d77521-dbca-40e5-9997-a9632437f8ba",
+    createdAt: "2026-01-10T01:08:54.041Z",
+    updatedAt: "2026-01-10T01:08:54.041Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "4"
+    ],
+    startDate: "2026-03-12T01:08:48.921Z",
+    duration: 80,
+    communityId: "8f09139f-b7b8-4200-9285-ade40939febe"
+  },
+  {
+    _id: "a10f4f85-e0c0-401f-84e3-fb0f6ce0b10d",
+    name: "Red de apoyo medio ambiente 2026",
+    description: "Causa benéfica enfocada en medio ambiente. Contabesco corporis beatus cibo aperte somniculosus tempora vilicus quis ager.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "c3d77521-dbca-40e5-9997-a9632437f8ba",
+    createdAt: "2026-01-10T01:08:54.042Z",
+    updatedAt: "2026-01-10T01:08:54.042Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "11",
+      "3"
+    ],
+    startDate: "2026-03-09T01:08:48.921Z",
+    duration: 40,
+    communityId: "8f09139f-b7b8-4200-9285-ade40939febe"
+  },
+  {
+    _id: "704a1a31-262d-4c1d-afdb-cbc8b59862bc",
+    name: "Comunidad Ruecker Group por vivienda",
+    description: "Comunidad dedicada a proyectos de vivienda y desarrollo sostenible. Temperantia adipiscor tricesimus. Abutor copiose coma vociferor.",
+    status: "approved",
+    reason: "",
+    userId: "f72fc6e3-ea6c-4327-808b-38c297e74d5b",
+    createdAt: "2026-01-10T01:08:54.103Z",
+    updatedAt: "2026-01-10T01:08:54.103Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "faab0888-c85f-49dd-b84f-1a321f98dba1",
+    name: "Operación vivienda 2026",
+    description: "Causa benéfica enfocada en vivienda. Defendo placeat utrimque textus comes dolores adimpleo aeger suffoco deduco.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "f72fc6e3-ea6c-4327-808b-38c297e74d5b",
+    createdAt: "2026-01-10T01:08:54.103Z",
+    updatedAt: "2026-01-10T01:08:54.103Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "13",
+      "3"
+    ],
+    startDate: "2026-05-03T00:08:48.985Z",
+    duration: 92,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "75857900-c0e1-4708-9acf-6b1437696560",
+    name: "Red Greenfelder LLC por refugiados",
+    description: "Comunidad dedicada a proyectos de refugiados y desarrollo sostenible. Quia animi tandem tubineus veniam.",
+    status: "approved",
+    reason: "",
+    userId: "abbb4afb-0c87-4ad3-8e76-b98bf3433e31",
+    createdAt: "2026-01-10T01:08:54.164Z",
+    updatedAt: "2026-01-10T01:08:54.164Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "107d1774-13ef-47ee-a289-30597d6aac99",
+    name: "Iniciativa medio ambiente 2026",
+    description: "Causa benéfica enfocada en medio ambiente. Pariatur abbas tubineus in vicinus amo tremo laborum delibero.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "abbb4afb-0c87-4ad3-8e76-b98bf3433e31",
+    createdAt: "2026-01-10T01:08:54.164Z",
+    updatedAt: "2026-01-10T01:08:54.164Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6"
+    ],
+    startDate: "2026-08-03T00:08:49.048Z",
+    duration: 66,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "2c108065-4904-4257-af66-b26da45e3a23",
+    name: "Acción solidaria refugiados 2026",
+    description: "Causa benéfica enfocada en refugiados. Asperiores quo acsi cruentus talus torqueo vomer terreo paulatim. Sunt sto pecco ambulo casus.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "abbb4afb-0c87-4ad3-8e76-b98bf3433e31",
+    createdAt: "2026-01-10T01:08:54.165Z",
+    updatedAt: "2026-01-10T01:08:54.165Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "14"
+    ],
+    startDate: "2026-06-21T00:08:49.048Z",
+    duration: 364,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "72f88f7d-2069-4730-8dda-027f81727378",
+    name: "Iniciativa refugiados 2027",
+    description: "Causa benéfica enfocada en refugiados. Porro turpis sufficio adsidue triduana torrens.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "abbb4afb-0c87-4ad3-8e76-b98bf3433e31",
+    createdAt: "2026-01-10T01:08:54.166Z",
+    updatedAt: "2026-01-10T01:08:54.166Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1",
+      "10",
+      "5"
+    ],
+    startDate: "2026-03-03T01:08:49.048Z",
+    duration: 343,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "64b1e590-bd32-4796-b49b-fc6cf1b92b0d",
+    name: "Comunidad Balistreri LLC por desarrollo sostenible",
+    description: "Comunidad dedicada a proyectos de desarrollo sostenible y desarrollo sostenible. Asper ascisco teneo. Adipiscor delectus stella tremo tum terga quod caste.",
+    status: "approved",
+    reason: "",
+    userId: "56d91884-81be-438d-bc55-4b6ac47a5f99",
+    createdAt: "2026-01-10T01:08:54.225Z",
+    updatedAt: "2026-01-10T01:08:54.225Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "e0f19dce-f32c-4b38-a743-fb97465b94f2",
+    name: "Operación derechos humanos 2026",
+    description: "Causa benéfica enfocada en derechos humanos. Laborum quaerat succurro vester sonitus vacuus decet vesco. Capio asper cruentus valeo.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "56d91884-81be-438d-bc55-4b6ac47a5f99",
+    createdAt: "2026-01-10T01:08:54.225Z",
+    updatedAt: "2026-01-10T01:08:54.225Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "6"
+    ],
+    startDate: "2026-08-03T00:08:49.110Z",
+    duration: 273,
+    communityId: "64b1e590-bd32-4796-b49b-fc6cf1b92b0d"
+  },
+  {
+    _id: "e864a5c7-719f-4552-a31e-f431d7ac8a46",
+    name: "Proyecto desarrollo sostenible 2027",
+    description: "Causa benéfica enfocada en desarrollo sostenible. Iusto amet certe laudantium cuius autem.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "56d91884-81be-438d-bc55-4b6ac47a5f99",
+    createdAt: "2026-01-10T01:08:54.226Z",
+    updatedAt: "2026-01-10T01:08:54.226Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "15",
+      "17"
+    ],
+    startDate: "2026-05-28T00:08:49.110Z",
+    duration: 299,
+    communityId: "64b1e590-bd32-4796-b49b-fc6cf1b92b0d"
+  },
+  {
+    _id: "755f7fea-0b24-46ce-bd48-6bcf54011462",
+    name: "Colectivo Turcotte LLC por salud",
+    description: "Comunidad dedicada a proyectos de salud y desarrollo sostenible. Denique varietas vulgo neque agnosco. Adopto voluptates balbus.",
+    status: "approved",
+    reason: "",
+    userId: "8ad3ac54-9c8a-44ab-8842-e48396194796",
+    createdAt: "2026-01-10T01:08:54.288Z",
+    updatedAt: "2026-01-10T01:08:54.288Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "2d54511f-8811-45ca-b05d-e8be0eeb1d93",
+    name: "Iniciativa vivienda 2027",
+    description: "Causa benéfica enfocada en vivienda. Temperantia tricesimus cicuta ustilo ciminatio occaecati turbo virtus distinctio amita. Possimus voluptate defleo calco comminor.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "8ad3ac54-9c8a-44ab-8842-e48396194796",
+    createdAt: "2026-01-10T01:08:54.289Z",
+    updatedAt: "2026-01-10T01:08:54.289Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "10",
+      "11"
+    ],
+    startDate: "2026-02-16T01:08:49.174Z",
+    duration: 196,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "0f71881a-d865-470d-8680-c9fc42aa654a",
+    name: "Iniciativa tercera edad 2027",
+    description: "Causa benéfica enfocada en tercera edad. Voluptate adeo triduana abutor vilicus. Turba sufficio aeneus sunt sonitus terror.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "8ad3ac54-9c8a-44ab-8842-e48396194796",
+    createdAt: "2026-01-10T01:08:54.290Z",
+    updatedAt: "2026-01-10T01:08:54.290Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "5",
+      "6"
+    ],
+    startDate: "2026-06-21T00:08:49.174Z",
+    duration: 48,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "df9e64c9-ad3a-40f1-8780-5b29facb41cc",
+    name: "Operación derechos humanos 2027",
+    description: "Causa benéfica enfocada en derechos humanos. Cauda soleo antiquus thorax tego tenus arcesso casso at thorax. Asper annus studio desolo vulticulus derideo chirographum.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "8ad3ac54-9c8a-44ab-8842-e48396194796",
+    createdAt: "2026-01-10T01:08:54.291Z",
+    updatedAt: "2026-01-10T01:08:54.291Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7"
+    ],
+    startDate: "2026-02-15T01:08:49.174Z",
+    duration: 208,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "19a73151-733f-4809-acfd-9d1d884f315c",
+    name: "Grupo Denesik LLC por discapacidad",
+    description: "Comunidad dedicada a proyectos de discapacidad y desarrollo sostenible. Utpote canto conatus degero vigilo. Valetudo volva trepide angelus cum volaticus comptus succurro.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "f27f8d4e-6c65-484e-8df1-323d77f37835",
+    createdAt: "2026-01-10T01:08:54.352Z",
+    updatedAt: "2026-01-10T01:08:54.352Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "efd61af6-7b39-4c4f-8c62-f3319bcb052d",
+    name: "Campaña educación 2027",
+    description: "Causa benéfica enfocada en educación. Thema decet tepidus tergum. Absens sint totam delibero spectaculum alias ceno.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "f27f8d4e-6c65-484e-8df1-323d77f37835",
+    createdAt: "2026-01-10T01:08:54.353Z",
+    updatedAt: "2026-01-10T01:08:54.353Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "17"
+    ],
+    startDate: "2026-05-30T00:08:49.236Z",
+    duration: 55,
+    communityId: "19a73151-733f-4809-acfd-9d1d884f315c"
+  },
+  {
+    _id: "fdc6e081-3568-4ea5-9f70-07cd05d8880e",
+    name: "Proyecto educación 2027",
+    description: "Causa benéfica enfocada en educación. Uter centum cuius conservo culpo adsum.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "f27f8d4e-6c65-484e-8df1-323d77f37835",
+    createdAt: "2026-01-10T01:08:54.353Z",
+    updatedAt: "2026-01-10T01:08:54.353Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "14"
+    ],
+    startDate: "2026-02-10T01:08:49.236Z",
+    duration: 59,
+    communityId: "19a73151-733f-4809-acfd-9d1d884f315c"
+  },
+  {
+    _id: "a6696abe-205d-4437-b916-9035cba319ae",
+    name: "Acción solidaria emergencias 2027",
+    description: "Causa benéfica enfocada en emergencias. Amiculum deduco ara iusto vereor. Tametsi dolores tres vero.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "f27f8d4e-6c65-484e-8df1-323d77f37835",
+    createdAt: "2026-01-10T01:08:54.354Z",
+    updatedAt: "2026-01-10T01:08:54.354Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12"
+    ],
+    startDate: "2026-07-23T00:08:49.236Z",
+    duration: 310,
+    communityId: "19a73151-733f-4809-acfd-9d1d884f315c"
+  },
+  {
+    _id: "fc1fe7fd-3f48-4e7f-9ce1-562bf5010010",
+    name: "Red Abernathy - Halvorson por vivienda",
+    description: "Comunidad dedicada a proyectos de vivienda y desarrollo sostenible. Cattus sono defleo derelinquo solvo adipiscor eum defleo vilitas. Voluptas beneficium thesaurus tres.",
+    status: "approved",
+    reason: "",
+    userId: "7daf40f0-931a-493e-bf61-e3f128a366ff",
+    createdAt: "2026-01-10T01:08:54.412Z",
+    updatedAt: "2026-01-10T01:08:54.412Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "3ffeea92-667f-4b6d-92ba-e97b953d3dcc",
+    name: "Acción solidaria discapacidad 2026",
+    description: "Causa benéfica enfocada en discapacidad. Debeo adulescens denuo decumbo voro confugo substantia aegrus totus.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "7daf40f0-931a-493e-bf61-e3f128a366ff",
+    createdAt: "2026-01-10T01:08:54.413Z",
+    updatedAt: "2026-01-10T01:08:54.413Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13"
+    ],
+    startDate: "2026-04-30T00:08:49.300Z",
+    duration: 179,
+    communityId: "fc1fe7fd-3f48-4e7f-9ce1-562bf5010010"
+  },
+  {
+    _id: "5c17b8ef-9979-4497-b3b2-7eef3f7624be",
+    name: "Campaña salud 2026",
+    description: "Causa benéfica enfocada en salud. Cupiditate vilitas pecus impedit demum vilicus aggero.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "7daf40f0-931a-493e-bf61-e3f128a366ff",
+    createdAt: "2026-01-10T01:08:54.414Z",
+    updatedAt: "2026-01-10T01:08:54.414Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4"
+    ],
+    startDate: "2026-03-05T01:08:49.300Z",
+    duration: 296,
+    communityId: "fc1fe7fd-3f48-4e7f-9ce1-562bf5010010"
+  },
+  {
+    _id: "4250cd4a-304b-4672-820d-822293fef97b",
+    name: "Grupo Carroll and Sons por vivienda",
+    description: "Comunidad dedicada a proyectos de vivienda y desarrollo sostenible. Ante tamisium uxor bonus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "4655414b-01ff-410e-bd78-13a48c2bd0e5",
+    createdAt: "2026-01-10T01:08:54.475Z",
+    updatedAt: "2026-01-10T01:08:54.475Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "a36b5023-ec8e-4550-835a-29f8f3e32917",
+    name: "Operación educación 2027",
+    description: "Causa benéfica enfocada en educación. Succurro utroque arbustum.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "4655414b-01ff-410e-bd78-13a48c2bd0e5",
+    createdAt: "2026-01-10T01:08:54.476Z",
+    updatedAt: "2026-01-10T01:08:54.476Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12"
+    ],
+    startDate: "2026-02-28T01:08:49.362Z",
+    duration: 265,
+    communityId: "4250cd4a-304b-4672-820d-822293fef97b"
+  },
+  {
+    _id: "16607073-d96e-4f1e-871e-74f36ba8d24a",
+    name: "Movimiento refugiados 2026",
+    description: "Causa benéfica enfocada en refugiados. Spiculum absens utilis inventore somnus cursim vesica administratio. Tribuo totidem combibo corpus.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "4655414b-01ff-410e-bd78-13a48c2bd0e5",
+    createdAt: "2026-01-10T01:08:54.477Z",
+    updatedAt: "2026-01-10T01:08:54.477Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "13"
+    ],
+    startDate: "2026-08-03T00:08:49.362Z",
+    duration: 323,
+    communityId: "4250cd4a-304b-4672-820d-822293fef97b"
+  },
+  {
+    _id: "7835ec3e-3571-4dd8-830a-eade12e3c826",
+    name: "Acción solidaria salud 2027",
+    description: "Causa benéfica enfocada en salud. Sint ars assumenda sonitus amo canonicus.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "4655414b-01ff-410e-bd78-13a48c2bd0e5",
+    createdAt: "2026-01-10T01:08:54.477Z",
+    updatedAt: "2026-01-10T01:08:54.477Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "8"
+    ],
+    startDate: "2026-04-09T00:08:49.362Z",
+    duration: 119,
+    communityId: "4250cd4a-304b-4672-820d-822293fef97b"
+  },
+  {
+    _id: "10e2fc60-1478-4d69-8183-cd9071d88da9",
+    name: "Fundación Haley Group por desarrollo sostenible",
+    description: "Comunidad dedicada a proyectos de desarrollo sostenible y desarrollo sostenible. Cimentarius vergo umquam eius utrimque degenero cogo. Error thorax delectus adfero ager adsuesco suscipio textilis.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "4c5e3cf4-de52-4ead-be37-be914f0aaef9",
+    createdAt: "2026-01-10T01:08:54.538Z",
+    updatedAt: "2026-01-10T01:08:54.538Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "55d28391-6fab-4587-84c0-ddf90aac5db1",
+    name: "Movimiento infancia 2026",
+    description: "Causa benéfica enfocada en infancia. Adamo tener vulariter conicio timor valetudo aro. Cohibeo tremo concedo defero atrox.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "4c5e3cf4-de52-4ead-be37-be914f0aaef9",
+    createdAt: "2026-01-10T01:08:54.539Z",
+    updatedAt: "2026-01-10T01:08:54.539Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8"
+    ],
+    startDate: "2026-04-03T00:08:49.425Z",
+    duration: 363,
+    communityId: "10e2fc60-1478-4d69-8183-cd9071d88da9"
+  },
+  {
+    _id: "1b88dafd-4b9c-4c73-8ea4-89b5472a180d",
+    name: "Iniciativa emergencias 2027",
+    description: "Causa benéfica enfocada en emergencias. Vomer suus advoco comis tot.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "4c5e3cf4-de52-4ead-be37-be914f0aaef9",
+    createdAt: "2026-01-10T01:08:54.540Z",
+    updatedAt: "2026-01-10T01:08:54.540Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-08-07T00:08:49.425Z",
+    duration: 109,
+    communityId: "10e2fc60-1478-4d69-8183-cd9071d88da9"
+  },
+  {
+    _id: "a08d7cc8-6a85-4045-81d4-530d8b9d9bee",
+    name: "Colectivo Braun - Gutmann por educación",
+    description: "Comunidad dedicada a proyectos de educación y desarrollo sostenible. Tot colligo credo advenio.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "742122d6-3422-492a-bb51-f31291c160f5",
+    createdAt: "2026-01-10T01:08:54.600Z",
+    updatedAt: "2026-01-10T01:08:54.600Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "eb41ab76-baf8-49a3-a75c-4f93e8fce0c1",
+    name: "Programa salud 2027",
+    description: "Causa benéfica enfocada en salud. Viridis provident conor ultio tutis crinis vilitas vehemens amitto. Vereor antea appello despecto temptatio cubitum.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "742122d6-3422-492a-bb51-f31291c160f5",
+    createdAt: "2026-01-10T01:08:54.601Z",
+    updatedAt: "2026-01-10T01:08:54.601Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "11"
+    ],
+    startDate: "2026-06-04T00:08:49.487Z",
+    duration: 340,
+    communityId: "a08d7cc8-6a85-4045-81d4-530d8b9d9bee"
+  },
+  {
+    _id: "a89db047-2d69-497d-ae36-a67bb2143a05",
+    name: "Iniciativa agua potable 2027",
+    description: "Causa benéfica enfocada en agua potable. Verbum sub debitis cimentarius.",
+    status: "rejected",
+    reason: "Rejected as part of community request.",
+    userId: "742122d6-3422-492a-bb51-f31291c160f5",
+    createdAt: "2026-01-10T01:08:54.602Z",
+    updatedAt: "2026-01-10T01:08:54.602Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15"
+    ],
+    startDate: "2026-03-11T01:08:49.487Z",
+    duration: 335,
+    communityId: "a08d7cc8-6a85-4045-81d4-530d8b9d9bee"
+  },
+  {
+    _id: "b0e6482e-e6ca-413a-a9d1-cd43d8b1d019",
+    name: "Fundación Schumm Inc por infancia",
+    description: "Comunidad dedicada a proyectos de infancia y desarrollo sostenible. Laboriosam suffoco culpo mollitia antiquus.",
+    status: "approved",
+    reason: "",
+    userId: "a712641d-63d2-4771-8a08-379224b6e7a4",
+    createdAt: "2026-01-10T01:08:54.663Z",
+    updatedAt: "2026-01-10T01:08:54.663Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "359b763f-aba1-45e5-b42d-7095d48e8817",
+    name: "Proyecto desarrollo sostenible 2027",
+    description: "Causa benéfica enfocada en desarrollo sostenible. Incidunt stultus sponte autem carbo strenuus clarus ventus vilis. Adulescens cenaculum vero.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "a712641d-63d2-4771-8a08-379224b6e7a4",
+    createdAt: "2026-01-10T01:08:54.664Z",
+    updatedAt: "2026-01-10T01:08:54.664Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11"
+    ],
+    startDate: "2026-06-12T00:08:49.549Z",
+    duration: 198,
+    communityId: "b0e6482e-e6ca-413a-a9d1-cd43d8b1d019"
+  },
+  {
+    _id: "fab59f8b-a0be-4a59-b77b-df968b1d5cc9",
+    name: "Proyecto refugiados 2026",
+    description: "Causa benéfica enfocada en refugiados. Alii crepusculum copiose traho paulatim solvo umbra. Adsidue taedium torrens casus cupiditas capillus confido arbitro ex adficio.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "a712641d-63d2-4771-8a08-379224b6e7a4",
+    createdAt: "2026-01-10T01:08:54.664Z",
+    updatedAt: "2026-01-10T01:08:54.664Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7"
+    ],
+    startDate: "2026-02-28T01:08:49.549Z",
+    duration: 154,
+    communityId: "b0e6482e-e6ca-413a-a9d1-cd43d8b1d019"
+  },
+  {
+    _id: "d503946f-fde7-4003-8803-26b6917f80bc",
+    name: "Colectivo Schoen, Herman and Christiansen por infa",
+    description: "Comunidad dedicada a proyectos de infancia y desarrollo sostenible. Assumenda ademptio numquam incidunt optio. Id vicinus admoveo.",
+    status: "approved",
+    reason: "",
+    userId: "93631d92-8986-4c35-9f11-1ecb0ae4314c",
+    createdAt: "2026-01-10T01:08:54.725Z",
+    updatedAt: "2026-01-10T01:08:54.725Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "6cc89a72-1060-48cc-ad17-f0d29a161bb4",
+    name: "Movimiento agua potable 2026",
+    description: "Causa benéfica enfocada en agua potable. Aptus conor excepturi varius iusto antea debeo.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "93631d92-8986-4c35-9f11-1ecb0ae4314c",
+    createdAt: "2026-01-10T01:08:54.726Z",
+    updatedAt: "2026-01-10T01:08:54.726Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "3",
+      "13"
+    ],
+    startDate: "2026-02-21T01:08:49.613Z",
+    duration: 191,
+    communityId: "d503946f-fde7-4003-8803-26b6917f80bc"
+  },
+  {
+    _id: "8415a9d0-4ff7-4772-9b9c-2a82d4459d7b",
+    name: "Acción solidaria medio ambiente 2027",
+    description: "Causa benéfica enfocada en medio ambiente. Suus cognomen stabilis soleo. Ventosus maxime vehemens ustulo arx thermae aliqua.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "93631d92-8986-4c35-9f11-1ecb0ae4314c",
+    createdAt: "2026-01-10T01:08:54.726Z",
+    updatedAt: "2026-01-10T01:08:54.726Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "5",
+      "6"
+    ],
+    startDate: "2026-04-23T00:08:49.613Z",
+    duration: 281,
+    communityId: "d503946f-fde7-4003-8803-26b6917f80bc"
+  },
+  {
+    _id: "8d74cf78-23dc-428c-8d1f-17706d705e38",
+    name: "Fundación Kessler - Quitzon por refugiados",
+    description: "Comunidad dedicada a proyectos de refugiados y desarrollo sostenible. Collum inflammatio tabesco compello.",
+    status: "approved",
+    reason: "",
+    userId: "8ed0b0c2-abe5-4271-a27e-2bd4b2e0fed1",
+    createdAt: "2026-01-10T01:08:54.790Z",
+    updatedAt: "2026-01-10T01:08:54.790Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "4eda66c3-dd3c-45fb-9502-c77479e740ad",
+    name: "Programa refugiados 2026",
+    description: "Causa benéfica enfocada en refugiados. Vos laboriosam asporto corrupti subvenio tantum consequuntur textilis attero. Sit cibo vae.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "8ed0b0c2-abe5-4271-a27e-2bd4b2e0fed1",
+    createdAt: "2026-01-10T01:08:54.790Z",
+    updatedAt: "2026-01-10T01:08:54.790Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "2",
+      "10"
+    ],
+    startDate: "2026-02-14T01:08:49.673Z",
+    duration: 144,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "87d278db-7765-4b53-915e-80570495f8f6",
+    name: "Iniciativa derechos humanos 2026",
+    description: "Causa benéfica enfocada en derechos humanos. Averto stipes alienus curo derelinquo. Adduco correptius adulescens vado.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "8ed0b0c2-abe5-4271-a27e-2bd4b2e0fed1",
+    createdAt: "2026-01-10T01:08:54.791Z",
+    updatedAt: "2026-01-10T01:08:54.791Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "15"
+    ],
+    startDate: "2026-06-01T00:08:49.674Z",
+    duration: 267,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "08786032-b699-42c1-9fca-d6d42a6a690b",
+    name: "Proyecto medio ambiente 2026",
+    description: "Causa benéfica enfocada en medio ambiente. Provident ago curo arto vulgo modi. Succurro derideo denego dolorum aedificium comburo ultio.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "8ed0b0c2-abe5-4271-a27e-2bd4b2e0fed1",
+    createdAt: "2026-01-10T01:08:54.792Z",
+    updatedAt: "2026-01-10T01:08:54.792Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "13",
+      "9"
+    ],
+    startDate: "2026-07-01T00:08:49.674Z",
+    duration: 193,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "6248649e-68f2-414b-afd7-a9b90da2ace4",
+    name: "Comunidad Rogahn - Champlin por tercera edad",
+    description: "Comunidad dedicada a proyectos de tercera edad y desarrollo sostenible. Est a cupiditas civitas crur astrum vomito cavus temperantia.",
+    status: "pending",
+    userId: "120066e5-f8d0-40eb-b3fd-8d1512cd95f3",
+    createdAt: "2026-01-10T01:08:49.745Z",
+    updatedAt: "2026-01-10T01:08:49.745Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "306204fe-43e5-46c8-9c4d-d1d7a790bd2c",
+    name: "Movimiento educación 2027",
+    description: "Causa benéfica enfocada en educación. Conatus cursus testimonium sub corporis voco celebrer adinventitias. Alioqui animus conculco conatus tergeo alter pax speciosus.",
+    status: "pending",
+    userId: "120066e5-f8d0-40eb-b3fd-8d1512cd95f3",
+    createdAt: "2026-01-10T01:08:49.746Z",
+    updatedAt: "2026-01-10T01:08:49.746Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1",
+      "3"
+    ],
+    startDate: "2026-05-10T00:08:49.737Z",
+    duration: 156,
+    communityId: "6248649e-68f2-414b-afd7-a9b90da2ace4"
+  },
+  {
+    _id: "fcc7bdc2-3cff-4f40-8537-bc859a00e849",
+    name: "Acción solidaria vivienda 2026",
+    description: "Causa benéfica enfocada en vivienda. Vicissitudo stella deporto cubo vinco agnitio verbera viridis vulgivagus. Officiis laboriosam rem delectatio vulgo cilicium.",
+    status: "pending",
+    userId: "120066e5-f8d0-40eb-b3fd-8d1512cd95f3",
+    createdAt: "2026-01-10T01:08:49.747Z",
+    updatedAt: "2026-01-10T01:08:49.747Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "14",
+      "10"
+    ],
+    startDate: "2026-06-03T00:08:49.737Z",
+    duration: 356,
+    communityId: "6248649e-68f2-414b-afd7-a9b90da2ace4"
+  },
+  {
+    _id: "77325730-41d5-41b1-ab5a-5a5d239c039d",
+    name: "Colectivo Bode LLC por vivienda",
+    description: "Comunidad dedicada a proyectos de vivienda y desarrollo sostenible. Communis velum aestus peccatus volubilis aer coadunatio dicta.",
+    status: "approved",
+    reason: "",
+    userId: "15acc880-f861-4dc2-a4ca-6d04ddf485a3",
+    createdAt: "2026-01-10T01:08:54.917Z",
+    updatedAt: "2026-01-10T01:08:54.917Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "1f2f4809-faa3-49c7-9fa0-d3388a2863dc",
+    name: "Acción solidaria salud 2027",
+    description: "Causa benéfica enfocada en salud. Stips tamdiu velut acidus centum. Audacia atque tener.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "15acc880-f861-4dc2-a4ca-6d04ddf485a3",
+    createdAt: "2026-01-10T01:08:54.918Z",
+    updatedAt: "2026-01-10T01:08:54.918Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "5",
+      "4"
+    ],
+    startDate: "2026-07-15T00:08:49.800Z",
+    duration: 249,
+    communityId: "77325730-41d5-41b1-ab5a-5a5d239c039d"
+  },
+  {
+    _id: "de8badd0-735a-40e8-ba26-26d0491a7de5",
+    name: "Colectivo Kemmer - Gleichner por discapacidad",
+    description: "Comunidad dedicada a proyectos de discapacidad y desarrollo sostenible. Numquam vivo tamquam.",
+    status: "pending",
+    userId: "096ab8b6-0ced-4368-a38f-c75594679d9e",
+    createdAt: "2026-01-10T01:08:49.871Z",
+    updatedAt: "2026-01-10T01:08:49.871Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "72328524-e430-4dbd-8aeb-0132be9f8fa5",
+    name: "Red de apoyo agua potable 2027",
+    description: "Causa benéfica enfocada en agua potable. Benigne sordeo censura corrumpo cum vinum. Veritas appello cetera.",
+    status: "pending",
+    userId: "096ab8b6-0ced-4368-a38f-c75594679d9e",
+    createdAt: "2026-01-10T01:08:49.872Z",
+    updatedAt: "2026-01-10T01:08:49.872Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "8",
+      "1"
+    ],
+    startDate: "2026-03-12T01:08:49.862Z",
+    duration: 325,
+    communityId: "de8badd0-735a-40e8-ba26-26d0491a7de5"
+  },
+  {
+    _id: "09948fe3-00f4-44e2-a474-e2239451e076",
+    name: "Campaña infancia 2026",
+    description: "Causa benéfica enfocada en infancia. Venustas vero tripudio compello consuasor sequi. Stillicidium creptio vallum vulgivagus ventus asper repudiandae cetera cursim vapulus.",
+    status: "pending",
+    userId: "096ab8b6-0ced-4368-a38f-c75594679d9e",
+    createdAt: "2026-01-10T01:08:49.873Z",
+    updatedAt: "2026-01-10T01:08:49.873Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9"
+    ],
+    startDate: "2026-03-25T01:08:49.862Z",
+    duration: 104,
+    communityId: "de8badd0-735a-40e8-ba26-26d0491a7de5"
+  },
+  {
+    _id: "56de6147-ae45-4ead-8860-5f9202a41337",
+    name: "Colectivo Lang Group por agua potable",
+    description: "Comunidad dedicada a proyectos de agua potable y desarrollo sostenible. Suppellex cumque conforto tonsor.",
+    status: "approved",
+    reason: "",
+    userId: "0e36d1da-053d-4a57-a16a-d93bccfbd085",
+    createdAt: "2026-01-10T01:08:55.043Z",
+    updatedAt: "2026-01-10T01:08:55.043Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "c1b193b7-1fa9-42a6-9b7e-b57e2a50fc5e",
+    name: "Jornada derechos humanos 2027",
+    description: "Causa benéfica enfocada en derechos humanos. Deficio creta traho. Sursum ullam voluptatem adicio defessus adimpleo textus ante cerno ultra.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "0e36d1da-053d-4a57-a16a-d93bccfbd085",
+    createdAt: "2026-01-10T01:08:55.043Z",
+    updatedAt: "2026-01-10T01:08:55.043Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12"
+    ],
+    startDate: "2026-06-12T00:08:49.924Z",
+    duration: 311,
+    communityId: "56de6147-ae45-4ead-8860-5f9202a41337"
+  },
+  {
+    _id: "53b4db1b-2976-4b34-96ab-e6a05bbc3feb",
+    name: "Fundación Weissnat, Bergnaum and Rodriguez por viv",
+    description: "Comunidad dedicada a proyectos de vivienda y desarrollo sostenible. Urbs mollitia tui ultra hic. Accusator conscendo cenaculum peccatus sonitus facilis cinis.",
+    status: "pending",
+    userId: "e7b8e274-ef7f-420f-a922-d2968d16485c",
+    createdAt: "2026-01-10T01:08:49.995Z",
+    updatedAt: "2026-01-10T01:08:49.995Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "bc276364-3996-4579-8847-770de2aa35a6",
+    name: "Iniciativa pobreza 2026",
+    description: "Causa benéfica enfocada en pobreza. Audax taedium arbor coepi coruscus vinculum sortitus curia curia temeritas.",
+    status: "pending",
+    userId: "e7b8e274-ef7f-420f-a922-d2968d16485c",
+    createdAt: "2026-01-10T01:08:49.996Z",
+    updatedAt: "2026-01-10T01:08:49.996Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16"
+    ],
+    startDate: "2026-08-02T00:08:49.986Z",
+    duration: 265,
+    communityId: "53b4db1b-2976-4b34-96ab-e6a05bbc3feb"
+  },
+  {
+    _id: "96785809-5713-493f-a101-5b45baa3c324",
+    name: "Operación medio ambiente 2027",
+    description: "Causa benéfica enfocada en medio ambiente. Centum audacia tactus synagoga tardus vaco.",
+    status: "pending",
+    userId: "e7b8e274-ef7f-420f-a922-d2968d16485c",
+    createdAt: "2026-01-10T01:08:49.996Z",
+    updatedAt: "2026-01-10T01:08:49.996Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "3",
+      "6"
+    ],
+    startDate: "2026-04-16T00:08:49.986Z",
+    duration: 213,
+    communityId: "53b4db1b-2976-4b34-96ab-e6a05bbc3feb"
+  },
+  {
+    _id: "3749bd0c-e2e0-4fc5-bc69-17aee53b18da",
+    name: "Jornada refugiados 2026",
+    description: "Causa benéfica enfocada en refugiados. Sursum amoveo coniecto unde tribuo cibo. Terminatio nihil defero aeneus coniecto alii demonstro acies illo culpa.",
+    status: "pending",
+    userId: "e7b8e274-ef7f-420f-a922-d2968d16485c",
+    createdAt: "2026-01-10T01:08:49.997Z",
+    updatedAt: "2026-01-10T01:08:49.997Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2"
+    ],
+    startDate: "2026-07-08T00:08:49.986Z",
+    duration: 181,
+    communityId: "53b4db1b-2976-4b34-96ab-e6a05bbc3feb"
+  },
+  {
+    _id: "ffd549f5-15c9-49bb-938e-709c570a5acf",
+    name: "Asociación Witting and Sons por pobreza",
+    description: "Comunidad dedicada a proyectos de pobreza y desarrollo sostenible. Perferendis omnis sopor suscipit corrigo averto volubilis desino cetera. Cursim vilicus depopulo tutis teres cohibeo audax tardus id ",
+    status: "approved",
+    reason: "",
+    userId: "c3d77521-dbca-40e5-9997-a9632437f8ba",
+    createdAt: "2026-01-10T01:08:55.167Z",
+    updatedAt: "2026-01-10T01:08:55.167Z",
+    __v: 0,
+    type: "community"
+  },
+  {
+    _id: "079ff6a0-dd68-473e-af94-685d6e5dcefd",
+    name: "Iniciativa tercera edad 2026",
+    description: "Causa benéfica enfocada en tercera edad. Aegrotatio depulso adinventitias deinde vulnero.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "c3d77521-dbca-40e5-9997-a9632437f8ba",
+    createdAt: "2026-01-10T01:08:55.168Z",
+    updatedAt: "2026-01-10T01:08:55.168Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "3"
+    ],
+    startDate: "2026-08-06T00:08:50.050Z",
+    duration: 183,
+    communityId: "ffd549f5-15c9-49bb-938e-709c570a5acf"
+  },
+  {
+    _id: "693b500e-5e2f-4e8e-a103-ef58f80cf331",
+    name: "Movimiento igualdad de género 2027",
+    description: "Causa benéfica enfocada en igualdad de género. Deprimo arx arcesso cognatus vulariter. Derideo cognomen conventus comptus causa.",
+    status: "approved",
+    reason: "Approved as part of community request.",
+    userId: "c3d77521-dbca-40e5-9997-a9632437f8ba",
+    createdAt: "2026-01-10T01:08:55.169Z",
+    updatedAt: "2026-01-10T01:08:55.169Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "3"
+    ],
+    startDate: "2026-04-13T00:08:50.050Z",
+    duration: 136,
+    communityId: "ffd549f5-15c9-49bb-938e-709c570a5acf"
+  },
+  {
+    _id: "42d1193a-913b-4f7f-95f6-2edd6ec7f3ee",
+    name: "Movimiento infancia 2026",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Adopto eligendi arcus vacuus textilis abduco tertius vorago sui. Cultura tergiversatio coepi tutis reiciendis arma agnosco condico.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "7fe93347-1fcc-4061-aa7a-9de0bba26c0d",
+    createdAt: "2026-01-10T01:09:12.069Z",
+    updatedAt: "2026-01-10T01:09:12.069Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11",
+      "15"
+    ],
+    startDate: "2026-03-22T01:08:57.242Z",
+    duration: 308,
+    communityId: "eaf1d275-8e09-4208-9058-f3876158a09d"
+  },
+  {
+    _id: "c8bbdfdf-9dbd-4157-a7e4-b41fdd4e238b",
+    name: "Proyecto salud 2027",
+    description: "Causa benéfica para apoyar iniciativas de salud. Deleo arbitro copiose. Ea accendo annus vinitor nisi tres.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "b4e28702-e016-407d-ada5-8788e5fb5aa7",
+    createdAt: "2026-01-10T01:09:12.131Z",
+    updatedAt: "2026-01-10T01:09:12.131Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5",
+      "8",
+      "12"
+    ],
+    startDate: "2026-04-04T00:08:57.308Z",
+    duration: 119,
+    communityId: "35e8ddc0-923b-4094-9fe8-bb5633908189"
+  },
+  {
+    _id: "bd46aea8-a00e-4160-9b4b-6cb295b60d7c",
+    name: "Proyecto agua potable 2027",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Bis terreo valens claudeo doloribus adulescens.",
+    status: "approved",
+    reason: "",
+    userId: "0299b36b-ab61-431b-b4ee-48567a3acb2a",
+    createdAt: "2026-01-10T01:09:12.193Z",
+    updatedAt: "2026-01-10T01:09:12.193Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-03-31T00:08:57.370Z",
+    duration: 199,
+    communityId: "ffd549f5-15c9-49bb-938e-709c570a5acf"
+  },
+  {
+    _id: "670b4ec0-531d-45db-aac8-94863cd21db3",
+    name: "Acción solidaria salud 2026",
+    description: "Causa benéfica para apoyar iniciativas de salud. Cetera vix asporto accendo socius.",
+    status: "approved",
+    reason: "",
+    userId: "4f83702c-cf3b-47be-aecf-e644cd300981",
+    createdAt: "2026-01-10T01:09:12.256Z",
+    updatedAt: "2026-01-10T01:09:12.256Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "16",
+      "17"
+    ],
+    startDate: "2026-05-23T00:08:57.432Z",
+    duration: 324,
+    communityId: "59fec8a9-f697-4c36-9470-839bf8af1bf8"
+  },
+  {
+    _id: "ff208f47-ed5b-4e73-aafe-7e6b3cb76a9f",
+    name: "Iniciativa emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Audax sapiente curriculum.",
+    status: "approved",
+    reason: "",
+    userId: "03fb2951-8790-4de4-a501-0d78b54f35f8",
+    createdAt: "2026-01-10T01:09:12.317Z",
+    updatedAt: "2026-01-10T01:09:12.317Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "4"
+    ],
+    startDate: "2026-02-11T01:08:57.495Z",
+    duration: 318,
+    communityId: "eaf1d275-8e09-4208-9058-f3876158a09d"
+  },
+  {
+    _id: "9b020d18-6493-4715-bc39-08aac4a5f650",
+    name: "Movimiento desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Usus magnam explicabo. Armarium vicissitudo anser.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "6fae39de-8886-4f8d-8895-bb5c9c4b12fe",
+    createdAt: "2026-01-10T01:09:12.380Z",
+    updatedAt: "2026-01-10T01:09:12.380Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "6",
+      "15"
+    ],
+    startDate: "2026-03-16T01:08:57.556Z",
+    duration: 65,
+    communityId: "56de6147-ae45-4ead-8860-5f9202a41337"
+  },
+  {
+    _id: "9baf1f0c-0d9d-4e48-a9da-b456ff0f0ba7",
+    name: "Campaña refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Calamitas defleo aspernatur. Velit denique cupio adflicto decimus ullus compono alo iste aiunt.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "2a07e34d-13b3-440a-80bf-050d8a21282d",
+    createdAt: "2026-01-10T01:09:12.442Z",
+    updatedAt: "2026-01-10T01:09:12.442Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9"
+    ],
+    startDate: "2026-04-02T00:08:57.618Z",
+    duration: 182,
+    communityId: "16c120c8-2d05-4e88-8a8b-8bb60caf75fb"
+  },
+  {
+    _id: "2a9169d8-15a4-41b2-b5d8-1297f81347b1",
+    name: "Iniciativa derechos humanos 2026",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Velociter deorsum summisse arguo. Supra utrimque minus degusto nostrum ara.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "1853aa28-7a81-4f2a-b4d8-ce394263acc4",
+    createdAt: "2026-01-10T01:09:12.504Z",
+    updatedAt: "2026-01-10T01:09:12.504Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "4"
+    ],
+    startDate: "2026-04-27T00:08:57.680Z",
+    duration: 69,
+    communityId: "16c120c8-2d05-4e88-8a8b-8bb60caf75fb"
+  },
+  {
+    _id: "2e451c0e-8879-4c82-8e58-6e2a0ea8ea1c",
+    name: "Campaña derechos humanos 2026",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Dolores velut defungo commodi surgo vis confugo. Audeo advoco cicuta caveo commemoro considero.",
+    status: "pending",
+    userId: "a23bcec6-7f6b-4c89-a671-471d109e8efd",
+    createdAt: "2026-01-10T01:08:57.755Z",
+    updatedAt: "2026-01-10T01:08:57.755Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6"
+    ],
+    startDate: "2026-04-25T00:08:57.742Z",
+    duration: 277,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "028db33a-bf65-41b8-bacd-26facd917d95",
+    name: "Movimiento medio ambiente 2027",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Alioqui voluntarius comprehendo agnosco vere clementia acquiro. Circumvenio quisquam alius adopto astrum voluptas claro tui.",
+    status: "approved",
+    reason: "",
+    userId: "42aec1c3-c89e-479a-9a0e-9b2412927fe4",
+    createdAt: "2026-01-10T01:09:12.629Z",
+    updatedAt: "2026-01-10T01:09:12.629Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "10"
+    ],
+    startDate: "2026-05-24T00:08:57.805Z",
+    duration: 51,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "3ae210cf-b154-4d26-b97f-a4ad92235d88",
+    name: "Programa salud 2027",
+    description: "Causa benéfica para apoyar iniciativas de salud. Coepi theologus aspicio annus sui delinquo canto molestias vulpes ventosus. Admoneo bonus demo umerus patria tendo vergo versus thorax tantillus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "2390ddf4-68f0-4741-bec2-ecb6d5020ac8",
+    createdAt: "2026-01-10T01:09:12.691Z",
+    updatedAt: "2026-01-10T01:09:12.691Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "3"
+    ],
+    startDate: "2026-03-29T01:08:57.868Z",
+    duration: 196,
+    communityId: "8f09139f-b7b8-4200-9285-ade40939febe"
+  },
+  {
+    _id: "1281737b-03c0-42e8-9cff-72081364a3ae",
+    name: "Movimiento medio ambiente 2027",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Trado stips tersus tam titulus certe volup.",
+    status: "approved",
+    reason: "",
+    userId: "4938db8b-0154-4dac-b816-444225a8c3e1",
+    createdAt: "2026-01-10T01:09:12.752Z",
+    updatedAt: "2026-01-10T01:09:12.752Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5"
+    ],
+    startDate: "2026-06-05T00:08:57.931Z",
+    duration: 105,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "3d50b14c-61c9-4825-80fd-2ac8d2c1474a",
+    name: "Red de apoyo discapacidad 2026",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Conicio stillicidium asperiores vigilo reiciendis dolorem fuga cruentus sollers contra.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "361bcf9f-508a-4d70-8d1a-7f8963ddd29c",
+    createdAt: "2026-01-10T01:09:12.813Z",
+    updatedAt: "2026-01-10T01:09:12.813Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5"
+    ],
+    startDate: "2026-06-22T00:08:57.994Z",
+    duration: 147,
+    communityId: "59fec8a9-f697-4c36-9470-839bf8af1bf8"
+  },
+  {
+    _id: "a7dad6a6-8b66-44a8-bde9-d5a5baaf2889",
+    name: "Movimiento igualdad de género 2027",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Tersus centum reiciendis angulus cupressus stella ancilla balbus. Omnis quod vix numquam demergo consequuntur ter caput deorsum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "500c54dd-41eb-4dae-a2ec-4d1559ed1e2e",
+    createdAt: "2026-01-10T01:09:12.876Z",
+    updatedAt: "2026-01-10T01:09:12.876Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "11"
+    ],
+    startDate: "2026-08-04T00:08:58.056Z",
+    duration: 68,
+    communityId: "414d3e93-333b-4754-8f39-699a39a391fd"
+  },
+  {
+    _id: "41d05331-2237-4ac2-a373-1ad7d6bdf06a",
+    name: "Red de apoyo medio ambiente 2027",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. In cito crudelis amoveo urbs contra arcesso amita universe tergiversatio.",
+    status: "approved",
+    reason: "",
+    userId: "ade31128-b25c-494f-b271-90c83a107409",
+    createdAt: "2026-01-10T01:09:12.938Z",
+    updatedAt: "2026-01-10T01:09:12.938Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5",
+      "3",
+      "6"
+    ],
+    startDate: "2026-03-30T00:08:58.119Z",
+    duration: 156,
+    communityId: "35e8ddc0-923b-4094-9fe8-bb5633908189"
+  },
+  {
+    _id: "bb7b904b-f60b-4f80-8d7a-a96cce6f8295",
+    name: "Programa alimentación 2026",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Inflammatio contabesco quia aiunt rem.",
+    status: "approved",
+    reason: "",
+    userId: "052dcb7c-2784-429c-afeb-07484016427b",
+    createdAt: "2026-01-10T01:09:13.001Z",
+    updatedAt: "2026-01-10T01:09:13.001Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16"
+    ],
+    startDate: "2026-03-06T01:08:58.182Z",
+    duration: 128,
+    communityId: "16c120c8-2d05-4e88-8a8b-8bb60caf75fb"
+  },
+  {
+    _id: "3f3c0be5-89ed-4f08-b338-e708c855b544",
+    name: "Operación emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Armarium commodo deleo.",
+    status: "pending",
+    userId: "0d1d8c44-b4a5-4491-8c78-0112cc968666",
+    createdAt: "2026-01-10T01:08:58.257Z",
+    updatedAt: "2026-01-10T01:08:58.257Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1"
+    ],
+    startDate: "2026-02-12T01:08:58.244Z",
+    duration: 55,
+    communityId: "8f09139f-b7b8-4200-9285-ade40939febe"
+  },
+  {
+    _id: "ad560363-2254-4ea5-be21-6b34694c915d",
+    name: "Jornada emergencias 2026",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Vulnero artificiose defendo uterque utroque termes ater terebro.",
+    status: "approved",
+    reason: "",
+    userId: "6265ab84-6f90-4ea8-99e7-d9ffc0284fc2",
+    createdAt: "2026-01-10T01:09:13.125Z",
+    updatedAt: "2026-01-10T01:09:13.125Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5",
+      "2",
+      "3"
+    ],
+    startDate: "2026-06-09T00:08:58.308Z",
+    duration: 44,
+    communityId: "56de6147-ae45-4ead-8860-5f9202a41337"
+  },
+  {
+    _id: "867f4384-3128-46be-a72e-a9a85765e854",
+    name: "Movimiento salud 2027",
+    description: "Causa benéfica para apoyar iniciativas de salud. Stips summa thermae similique cognomen convoco fugiat tergiversatio vere ter. Anser vomito arbitro sint.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "2fc70400-2910-421a-9a83-25e51d4732f9",
+    createdAt: "2026-01-10T01:09:13.187Z",
+    updatedAt: "2026-01-10T01:09:13.187Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "15"
+    ],
+    startDate: "2026-07-31T00:08:58.370Z",
+    duration: 160,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "4cd8a6cd-db51-49cd-98ff-c0216f416296",
+    name: "Operación infancia 2027",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Ars deleo suasoria aggredior ambulo.",
+    status: "approved",
+    reason: "",
+    userId: "d138254d-4228-4e2b-8055-f8058f23a680",
+    createdAt: "2026-01-10T01:09:13.249Z",
+    updatedAt: "2026-01-10T01:09:13.249Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "11",
+      "7"
+    ],
+    startDate: "2026-04-16T00:08:58.433Z",
+    duration: 273,
+    communityId: "16c120c8-2d05-4e88-8a8b-8bb60caf75fb"
+  },
+  {
+    _id: "53f9ae7f-93a0-4444-afd4-4469eb46bb3f",
+    name: "Proyecto tercera edad 2026",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Debeo comminor depromo adopto spoliatio surculus.",
+    status: "approved",
+    reason: "",
+    userId: "01c2ed7b-5fac-4d3b-9ff6-b8d96658bd2b",
+    createdAt: "2026-01-10T01:09:13.312Z",
+    updatedAt: "2026-01-10T01:09:13.312Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "11"
+    ],
+    startDate: "2026-07-07T00:08:58.493Z",
+    duration: 248,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "06066711-7ae6-4657-8b04-041ee972a014",
+    name: "Jornada pobreza 2027",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Vesper canis placeat.",
+    status: "approved",
+    reason: "",
+    userId: "4098679e-78df-4556-ae8b-9f129f4f09a6",
+    createdAt: "2026-01-10T01:09:13.375Z",
+    updatedAt: "2026-01-10T01:09:13.375Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12"
+    ],
+    startDate: "2026-04-11T00:08:58.556Z",
+    duration: 167,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "271e25ef-c6f5-4fe6-95b7-9e195b88fd7e",
+    name: "Iniciativa desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Canonicus umbra enim deleo.",
+    status: "approved",
+    reason: "",
+    userId: "074f7ac2-175a-4ba8-891d-b9cad85795ec",
+    createdAt: "2026-01-10T01:09:13.436Z",
+    updatedAt: "2026-01-10T01:09:13.436Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "8"
+    ],
+    startDate: "2026-04-06T00:08:58.620Z",
+    duration: 181,
+    communityId: "64b1e590-bd32-4796-b49b-fc6cf1b92b0d"
+  },
+  {
+    _id: "3bd81c35-cf97-4956-8ae0-cb228c69f21f",
+    name: "Movimiento refugiados 2027",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Neque ago tero canto degenero ullus celo vobis addo voluptates. Tracto cumque thymum synagoga tot utrimque.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ade31128-b25c-494f-b271-90c83a107409",
+    createdAt: "2026-01-10T01:09:13.499Z",
+    updatedAt: "2026-01-10T01:09:13.499Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "14"
+    ],
+    startDate: "2026-02-20T01:08:58.682Z",
+    duration: 361,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "b0029ac4-67f5-45a9-8278-42833a59be05",
+    name: "Jornada infancia 2026",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Dignissimos certus cimentarius vomito.",
+    status: "approved",
+    reason: "",
+    userId: "6b4b76e6-24ce-48de-995e-ce74c13cabec",
+    createdAt: "2026-01-10T01:09:13.562Z",
+    updatedAt: "2026-01-10T01:09:13.562Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "3"
+    ],
+    startDate: "2026-04-30T00:08:58.745Z",
+    duration: 301,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "3ad6c562-c47b-4db3-8038-3c17199902ea",
+    name: "Operación igualdad de género 2026",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Caveo antiquus angustus curto. Adeo aetas suasoria abscido quisquam provident ambitus supplanto tego.",
+    status: "approved",
+    reason: "",
+    userId: "ccfa63f6-6ea6-49f2-90f0-dfd408a7ec80",
+    createdAt: "2026-01-10T01:09:13.625Z",
+    updatedAt: "2026-01-10T01:09:13.625Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "2"
+    ],
+    startDate: "2026-04-30T00:08:58.807Z",
+    duration: 126,
+    communityId: "77325730-41d5-41b1-ab5a-5a5d239c039d"
+  },
+  {
+    _id: "6e76f385-9e63-4868-8423-56e9bfd412fa",
+    name: "Operación alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Terreo ascisco spectaculum compono saepe antea canis vero summa.",
+    status: "approved",
+    reason: "",
+    userId: "93631d92-8986-4c35-9f11-1ecb0ae4314c",
+    createdAt: "2026-01-10T01:09:13.687Z",
+    updatedAt: "2026-01-10T01:09:13.687Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "3"
+    ],
+    startDate: "2026-04-13T00:08:58.868Z",
+    duration: 340,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "324b4234-a838-42e3-8148-8defa5860fe6",
+    name: "Jornada discapacidad 2026",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Vulticulus facere consequuntur crinis paulatim vomica super vallum umquam. Cervus aequitas adamo tamisium adeo amiculum summopere magnam copia c",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "4ec53b63-2363-4528-885c-c97c95d32102",
+    createdAt: "2026-01-10T01:09:13.751Z",
+    updatedAt: "2026-01-10T01:09:13.751Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "8",
+      "10"
+    ],
+    startDate: "2026-07-18T00:08:58.931Z",
+    duration: 300,
+    communityId: "f21b3392-fb59-44cd-a82a-d5c32415c0ae"
+  },
+  {
+    _id: "4635beea-9945-4c1b-a3d2-807dbb79ba4f",
+    name: "Red de apoyo desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Demoror defluo voluptatum despecto tripudio dolores.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "359f2d3a-0ad5-4169-927e-5f72bb235527",
+    createdAt: "2026-01-10T01:09:13.812Z",
+    updatedAt: "2026-01-10T01:09:13.812Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1",
+      "8",
+      "6"
+    ],
+    startDate: "2026-07-19T00:08:58.994Z",
+    duration: 245,
+    communityId: "f21b3392-fb59-44cd-a82a-d5c32415c0ae"
+  },
+  {
+    _id: "1e6d5d2e-3d59-4c9f-a574-1a36ecd7882a",
+    name: "Campaña derechos humanos 2027",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Suggero solvo dens testimonium patruus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a23bcec6-7f6b-4c89-a671-471d109e8efd",
+    createdAt: "2026-01-10T01:09:13.873Z",
+    updatedAt: "2026-01-10T01:09:13.873Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "8",
+      "16"
+    ],
+    startDate: "2026-02-24T01:08:59.058Z",
+    duration: 212,
+    communityId: "d503946f-fde7-4003-8803-26b6917f80bc"
+  },
+  {
+    _id: "a43062fa-1abe-45a4-8de5-eae957b5a89e",
+    name: "Programa desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Amissio conitor terebro.",
+    status: "approved",
+    reason: "",
+    userId: "87ee6a45-1964-42b0-8ffa-bc1694aad4b8",
+    createdAt: "2026-01-10T01:09:13.935Z",
+    updatedAt: "2026-01-10T01:09:13.935Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "13"
+    ],
+    startDate: "2026-07-27T00:08:59.120Z",
+    duration: 292,
+    communityId: "ff12b0ae-a3b8-431f-bd1d-c6b6800d7d6d"
+  },
+  {
+    _id: "024551bd-08d1-4957-be2a-736bcc8ef6d3",
+    name: "Jornada alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Ut aptus verto adhaero. Commodi sub degusto.",
+    status: "approved",
+    reason: "",
+    userId: "0299b36b-ab61-431b-b4ee-48567a3acb2a",
+    createdAt: "2026-01-10T01:09:13.997Z",
+    updatedAt: "2026-01-10T01:09:13.997Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "5"
+    ],
+    startDate: "2026-02-11T01:08:59.183Z",
+    duration: 324,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "0bab6e29-00e2-4ad9-9709-7a58064f7ce7",
+    name: "Campaña vivienda 2026",
+    description: "Causa benéfica para apoyar iniciativas de vivienda. Pectus deorsum vulnus valeo repellendus alveus deprecator qui. Confugo labore summisse vulgivagus tracto ulciscor clam supplanto teres argumentum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a151d36a-0511-4f3c-a4b7-9678ca66b0d8",
+    createdAt: "2026-01-10T01:09:14.058Z",
+    updatedAt: "2026-01-10T01:09:14.058Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "11",
+      "4"
+    ],
+    startDate: "2026-07-21T00:08:59.245Z",
+    duration: 299,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "24373c13-5984-4061-8cc7-e7c8263f5b42",
+    name: "Proyecto alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Uredo sum tutis fuga thorax caries cubitum arma calculus. Audax officiis suppellex caritas balbus aer cinis tepesco assumenda surculus.",
+    status: "approved",
+    reason: "",
+    userId: "0a9397f0-b22a-4a6d-8cd7-a998b93cdc55",
+    createdAt: "2026-01-10T01:09:14.121Z",
+    updatedAt: "2026-01-10T01:09:14.121Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "7"
+    ],
+    startDate: "2026-02-11T01:08:59.307Z",
+    duration: 58,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "b69662e8-b813-433a-bbef-4ea253790689",
+    name: "Campaña igualdad de género 2027",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Temperantia ocer valde cohibeo adopto clarus desparatus cubo thesaurus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "e3d7a9a8-bf9d-40f4-a2aa-42fd06090cff",
+    createdAt: "2026-01-10T01:09:14.183Z",
+    updatedAt: "2026-01-10T01:09:14.183Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7"
+    ],
+    startDate: "2026-07-28T00:08:59.369Z",
+    duration: 134,
+    communityId: "eaf1d275-8e09-4208-9058-f3876158a09d"
+  },
+  {
+    _id: "d03469d2-1b17-4242-b858-34cecf3164ba",
+    name: "Iniciativa emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Vesper tantillus civitas provident tres.",
+    status: "approved",
+    reason: "",
+    userId: "792cb878-d538-42e3-a036-0b7ba1893e8a",
+    createdAt: "2026-01-10T01:09:14.246Z",
+    updatedAt: "2026-01-10T01:09:14.246Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16"
+    ],
+    startDate: "2026-06-02T00:08:59.431Z",
+    duration: 342,
+    communityId: "325eaa73-7f12-45da-a8bc-11361b87539c"
+  },
+  {
+    _id: "cc89db0a-3df0-4fb2-bebb-154de0cbd035",
+    name: "Movimiento igualdad de género 2027",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Tricesimus valetudo vester solitudo capillus beatus complectus vulariter perspiciatis aperio. Viriliter antiquus curo peccatus catena.",
+    status: "approved",
+    reason: "",
+    userId: "052dcb7c-2784-429c-afeb-07484016427b",
+    createdAt: "2026-01-10T01:09:14.308Z",
+    updatedAt: "2026-01-10T01:09:14.308Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8"
+    ],
+    startDate: "2026-06-09T00:08:59.494Z",
+    duration: 108,
+    communityId: "f21b3392-fb59-44cd-a82a-d5c32415c0ae"
+  },
+  {
+    _id: "bae8f195-ef7b-476f-96cc-1e273a8dc8de",
+    name: "Movimiento vivienda 2027",
+    description: "Causa benéfica para apoyar iniciativas de vivienda. Vulgaris bellicus audentia et aggero apud. Alo defessus decens aequus denuo quaerat.",
+    status: "approved",
+    reason: "",
+    userId: "826492dd-94ee-45dd-bd02-392e1afec120",
+    createdAt: "2026-01-10T01:09:14.371Z",
+    updatedAt: "2026-01-10T01:09:14.371Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "2"
+    ],
+    startDate: "2026-06-11T00:08:59.556Z",
+    duration: 234,
+    communityId: "18a020dc-2731-4de1-ae75-b7f6d2cc191f"
+  },
+  {
+    _id: "12b7ca50-6df0-4010-9553-9b112c30cf5b",
+    name: "Campaña infancia 2027",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Aliquid urbanus ducimus subseco.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "4b6c5342-3af0-46ca-9a99-5a8b0500138e",
+    createdAt: "2026-01-10T01:09:14.433Z",
+    updatedAt: "2026-01-10T01:09:14.433Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "15",
+      "2"
+    ],
+    startDate: "2026-03-24T01:08:59.617Z",
+    duration: 85,
+    communityId: "b2d08727-9da2-4a6d-88c1-30098699a0e6"
+  },
+  {
+    _id: "52d63d51-612c-4a6b-9cdb-164747bcfede",
+    name: "Campaña medio ambiente 2027",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Aperiam talio sulum stillicidium sordeo acerbitas tabgo delinquo volup.",
+    status: "approved",
+    reason: "",
+    userId: "385d9dcc-6343-4501-ab2d-44f481276fc1",
+    createdAt: "2026-01-10T01:09:14.496Z",
+    updatedAt: "2026-01-10T01:09:14.496Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "4"
+    ],
+    startDate: "2026-07-02T00:08:59.679Z",
+    duration: 58,
+    communityId: "fc1fe7fd-3f48-4e7f-9ce1-562bf5010010"
+  },
+  {
+    _id: "debed4e8-42ff-4f48-b739-b22aff8c5fec",
+    name: "Proyecto infancia 2027",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Calcar spero circumvenio.",
+    status: "approved",
+    reason: "",
+    userId: "71e9bfc6-22be-4c28-92e3-68e76b0a444e",
+    createdAt: "2026-01-10T01:09:14.559Z",
+    updatedAt: "2026-01-10T01:09:14.559Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9"
+    ],
+    startDate: "2026-04-30T00:08:59.741Z",
+    duration: 246,
+    communityId: "414d3e93-333b-4754-8f39-699a39a391fd"
+  },
+  {
+    _id: "ede468a9-7e3b-4504-a492-88f7979f5896",
+    name: "Operación tercera edad 2027",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Trucido aegrotatio vetus atqui stultus suscipit.",
+    status: "approved",
+    reason: "",
+    userId: "0a9397f0-b22a-4a6d-8cd7-a998b93cdc55",
+    createdAt: "2026-01-10T01:09:14.620Z",
+    updatedAt: "2026-01-10T01:09:14.620Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "7",
+      "1"
+    ],
+    startDate: "2026-03-10T01:08:59.804Z",
+    duration: 221,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "61fdb887-9b33-4c3e-a468-f2d427ea13f0",
+    name: "Operación medio ambiente 2027",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Velit aeger depromo aliquid talis. Absque cervus temperantia voluptate culpa nam vomer clementia stips.",
+    status: "approved",
+    reason: "",
+    userId: "e3c93885-94a1-4cfb-9d1e-c79a5f6999a8",
+    createdAt: "2026-01-10T01:09:14.683Z",
+    updatedAt: "2026-01-10T01:09:14.683Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10"
+    ],
+    startDate: "2026-08-08T00:08:59.867Z",
+    duration: 283,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "a7157784-fa8b-4468-8266-1e7bb9c17d38",
+    name: "Acción solidaria agua potable 2026",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Vindico statua vado antepono urbs.",
+    status: "pending",
+    userId: "9ee0e99b-d9a0-4a3b-ab45-6b258c46efc0",
+    createdAt: "2026-01-10T01:08:59.940Z",
+    updatedAt: "2026-01-10T01:08:59.940Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "11"
+    ],
+    startDate: "2026-03-09T01:08:59.928Z",
+    duration: 313,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "d4f00751-42f8-4731-93b1-f899f44f6f67",
+    name: "Jornada alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Consuasor subvenio correptius ipsa aspicio tergiversatio tempus cilicium arbitro. Nesciunt cui celebrer censura unde colo acervus solus adfectus",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "10c94659-dd4f-45ab-bbf3-b959f911e11a",
+    createdAt: "2026-01-10T01:09:14.807Z",
+    updatedAt: "2026-01-10T01:09:14.807Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "12"
+    ],
+    startDate: "2026-03-05T01:08:59.991Z",
+    duration: 264,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "3b0e260d-8165-4a2a-98ab-9e10746bd67d",
+    name: "Campaña tercera edad 2026",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Acerbitas cometes capio acceptus ad caput.",
+    status: "approved",
+    reason: "",
+    userId: "0ede81ca-3c50-40b8-9b63-acab6b8323a4",
+    createdAt: "2026-01-10T01:09:14.870Z",
+    updatedAt: "2026-01-10T01:09:14.870Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-04-19T00:09:00.053Z",
+    duration: 248,
+    communityId: "ff12b0ae-a3b8-431f-bd1d-c6b6800d7d6d"
+  },
+  {
+    _id: "4e096635-0042-4c76-8a9f-d5fce0b35467",
+    name: "Red de apoyo discapacidad 2027",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Validus ad aestivus pauper.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "45ad0625-0ebf-404f-af73-a59de442bae3",
+    createdAt: "2026-01-10T01:09:14.932Z",
+    updatedAt: "2026-01-10T01:09:14.932Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "13"
+    ],
+    startDate: "2026-03-08T01:09:00.116Z",
+    duration: 168,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "009e3852-b5d4-48de-9e50-e5d09d220fbb",
+    name: "Programa tercera edad 2027",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Comis desolo coniecto acceptus commodo.",
+    status: "approved",
+    reason: "",
+    userId: "e76bfa3e-2da5-4505-8071-68bcc558c6b1",
+    createdAt: "2026-01-10T01:09:14.993Z",
+    updatedAt: "2026-01-10T01:09:14.993Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13"
+    ],
+    startDate: "2026-05-09T00:09:00.178Z",
+    duration: 255,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "3949796e-57fd-479c-9f1e-a044077f4f23",
+    name: "Iniciativa alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Spiculum antepono sumptus arto bellicus sortitus. Currus vilicus bis acidus comes theologus ulciscor curvo.",
+    status: "approved",
+    reason: "",
+    userId: "f1db4524-1c56-4c15-b4cb-eff82c326efb",
+    createdAt: "2026-01-10T01:09:15.055Z",
+    updatedAt: "2026-01-10T01:09:15.055Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "7",
+      "14"
+    ],
+    startDate: "2026-06-11T00:09:00.240Z",
+    duration: 156,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "36044781-f6ed-439c-85a5-c116505f2075",
+    name: "Acción solidaria discapacidad 2026",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Thorax tricesimus volva infit concedo. Amita cattus advenio tui carus armarium confugo aspicio cornu spiritus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "14fa976f-2ad3-4e09-a823-8fdd00dc6b7c",
+    createdAt: "2026-01-10T01:09:15.117Z",
+    updatedAt: "2026-01-10T01:09:15.117Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1",
+      "13"
+    ],
+    startDate: "2026-05-17T00:09:00.302Z",
+    duration: 194,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "a8548a00-046d-4aa4-b14f-d768037fc79b",
+    name: "Proyecto igualdad de género 2027",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Via vaco nesciunt appello titulus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "81ec6be8-d992-410e-bb68-a536b3c05622",
+    createdAt: "2026-01-10T01:09:15.180Z",
+    updatedAt: "2026-01-10T01:09:15.180Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "15"
+    ],
+    startDate: "2026-02-17T01:09:00.364Z",
+    duration: 73,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "bf9d0a0f-d26c-4a73-9757-1027fab010e3",
+    name: "Acción solidaria refugiados 2027",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Thesis theca tondeo cicuta at administratio contigo tantillus desino. Aperte perferendis ago surgo succurro crastinus verus nihil vociferor.",
+    status: "approved",
+    reason: "",
+    userId: "42631dfb-1ee7-4d54-9547-7f7473232933",
+    createdAt: "2026-01-10T01:09:15.242Z",
+    updatedAt: "2026-01-10T01:09:15.242Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "15",
+      "17"
+    ],
+    startDate: "2026-06-24T00:09:00.425Z",
+    duration: 330,
+    communityId: "77325730-41d5-41b1-ab5a-5a5d239c039d"
+  },
+  {
+    _id: "83e80079-60ec-4c10-89e8-c855c98cc947",
+    name: "Red de apoyo salud 2026",
+    description: "Causa benéfica para apoyar iniciativas de salud. Theatrum tremo eveniet cornu pariatur tribuo tonsor vilitas chirographum. Crustulum tenetur aqua.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "42aec1c3-c89e-479a-9a0e-9b2412927fe4",
+    createdAt: "2026-01-10T01:09:15.303Z",
+    updatedAt: "2026-01-10T01:09:15.303Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10"
+    ],
+    startDate: "2026-03-23T01:09:00.488Z",
+    duration: 143,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "4812dff5-c964-49f0-9e69-af3c395cc02c",
+    name: "Programa pobreza 2026",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Vinco defetiscor terebro magnam conventus laudantium iure cupiditate. Sono ultra vita.",
+    status: "approved",
+    reason: "",
+    userId: "db9c54e0-c0f6-4d5c-bea1-6db5a557ab82",
+    createdAt: "2026-01-10T01:09:15.365Z",
+    updatedAt: "2026-01-10T01:09:15.365Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9"
+    ],
+    startDate: "2026-05-28T00:09:00.551Z",
+    duration: 120,
+    communityId: "ffd549f5-15c9-49bb-938e-709c570a5acf"
+  },
+  {
+    _id: "24b1eaa5-277c-4f34-9f18-bc90b170d6fd",
+    name: "Campaña derechos humanos 2027",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Repellendus volva tamdiu.",
+    status: "pending",
+    userId: "0ecad1dd-159d-4d12-bb57-17d19b2d4a56",
+    createdAt: "2026-01-10T01:09:00.626Z",
+    updatedAt: "2026-01-10T01:09:00.626Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "16"
+    ],
+    startDate: "2026-06-03T00:09:00.613Z",
+    duration: 277,
+    communityId: "ffd549f5-15c9-49bb-938e-709c570a5acf"
+  },
+  {
+    _id: "14bcd9c1-4199-4578-98c9-ac25ee169cbc",
+    name: "Campaña agua potable 2027",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Adipiscor cruentus amoveo magni cultura comitatus vomer ciminatio expedita approbo. Tego ulciscor tumultus iste apto degero.",
+    status: "approved",
+    reason: "",
+    userId: "87d984f6-861b-408d-bd95-de5c08c788e0",
+    createdAt: "2026-01-10T01:09:15.491Z",
+    updatedAt: "2026-01-10T01:09:15.491Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1"
+    ],
+    startDate: "2026-03-13T01:09:00.675Z",
+    duration: 52,
+    communityId: "35e8ddc0-923b-4094-9fe8-bb5633908189"
+  },
+  {
+    _id: "711160a9-f462-439d-b665-2531ed225c94",
+    name: "Acción solidaria discapacidad 2026",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Ulciscor somnus absorbeo crur animus. Alveus magnam clam color quis denuncio.",
+    status: "approved",
+    reason: "",
+    userId: "03ad56fd-3d10-4b7d-b866-d8da7f791ce2",
+    createdAt: "2026-01-10T01:09:15.552Z",
+    updatedAt: "2026-01-10T01:09:15.552Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11",
+      "6",
+      "12"
+    ],
+    startDate: "2026-04-28T00:09:00.737Z",
+    duration: 355,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "3c7fadc2-01a0-47b0-b855-e2b643cc8b84",
+    name: "Red de apoyo emergencias 2026",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Deprimo pel curso custodia territo supra absens crebro ventus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "75ce8b14-ac95-4f6c-ae6a-d8efd9b16a5c",
+    createdAt: "2026-01-10T01:09:15.617Z",
+    updatedAt: "2026-01-10T01:09:15.617Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "7"
+    ],
+    startDate: "2026-08-04T00:09:00.800Z",
+    duration: 132,
+    communityId: "18a020dc-2731-4de1-ae75-b7f6d2cc191f"
+  },
+  {
+    _id: "d71773b5-2681-4da1-af0b-7ae64f03b07d",
+    name: "Operación agua potable 2026",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Tempus vallum adnuo delectus.",
+    status: "approved",
+    reason: "",
+    userId: "f1db4524-1c56-4c15-b4cb-eff82c326efb",
+    createdAt: "2026-01-10T01:09:15.678Z",
+    updatedAt: "2026-01-10T01:09:15.678Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "1",
+      "7"
+    ],
+    startDate: "2026-04-03T00:09:00.862Z",
+    duration: 112,
+    communityId: "eaf1d275-8e09-4208-9058-f3876158a09d"
+  },
+  {
+    _id: "3f720030-b0e2-4164-8b96-dde1fc8a194a",
+    name: "Iniciativa desarrollo sostenible 2027",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Patior ademptio aperio auctor volup cilicium desino vereor tibi suffragium.",
+    status: "approved",
+    reason: "",
+    userId: "81ec6be8-d992-410e-bb68-a536b3c05622",
+    createdAt: "2026-01-10T01:09:15.740Z",
+    updatedAt: "2026-01-10T01:09:15.740Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "11",
+      "16"
+    ],
+    startDate: "2026-04-21T00:09:00.925Z",
+    duration: 293,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "8e5a8aba-4a76-4ed9-809a-fd5cf296ce97",
+    name: "Programa salud 2027",
+    description: "Causa benéfica para apoyar iniciativas de salud. Crustulum vomica aperte magnam calco sollicito atrocitas bos.",
+    status: "approved",
+    reason: "",
+    userId: "0e36d1da-053d-4a57-a16a-d93bccfbd085",
+    createdAt: "2026-01-10T01:09:15.802Z",
+    updatedAt: "2026-01-10T01:09:15.802Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "9"
+    ],
+    startDate: "2026-06-24T00:09:00.988Z",
+    duration: 168,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "539494bb-77ec-481d-9cfe-dfdb446a3c92",
+    name: "Red de apoyo salud 2026",
+    description: "Causa benéfica para apoyar iniciativas de salud. Delectatio dedico quisquam cauda vespillo peccatus aiunt aegrotatio.",
+    status: "pending",
+    userId: "15acc880-f861-4dc2-a4ca-6d04ddf485a3",
+    createdAt: "2026-01-10T01:09:01.063Z",
+    updatedAt: "2026-01-10T01:09:01.063Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4"
+    ],
+    startDate: "2026-08-05T00:09:01.051Z",
+    duration: 290,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "44c97fe4-d536-4b5d-aa4f-e86e7f96046f",
+    name: "Iniciativa discapacidad 2027",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Valetudo amplitudo hic atque advoco blandior adulatio sulum confido chirographum. Conitor officiis optio theatrum armarium dicta totam.",
+    status: "approved",
+    reason: "",
+    userId: "1509ee0c-96c0-42bb-8fd0-853457b2e888",
+    createdAt: "2026-01-10T01:09:15.927Z",
+    updatedAt: "2026-01-10T01:09:15.927Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "5",
+      "12"
+    ],
+    startDate: "2026-02-18T01:09:01.114Z",
+    duration: 58,
+    communityId: "35e8ddc0-923b-4094-9fe8-bb5633908189"
+  },
+  {
+    _id: "fbe29ecf-e6d9-4a56-9d56-509621fb93e3",
+    name: "Operación derechos humanos 2027",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Voro assumenda eos ago vespillo tero vir animadverto universe.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "bc4a1b44-18a7-4102-b623-aaafc6ee7dbf",
+    createdAt: "2026-01-10T01:09:15.989Z",
+    updatedAt: "2026-01-10T01:09:15.989Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "5",
+      "9"
+    ],
+    startDate: "2026-07-28T00:09:01.176Z",
+    duration: 125,
+    communityId: "b0e6482e-e6ca-413a-a9d1-cd43d8b1d019"
+  },
+  {
+    _id: "e213a488-3dbd-473b-b8ab-5db7a2cc7218",
+    name: "Jornada pobreza 2027",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Utrum cunabula mollitia virgo dedecor contabesco tactus attonbitus pectus. Argumentum distinctio atqui animadverto eius.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "35461096-7f5d-46e8-80fa-67113a1dc7ed",
+    createdAt: "2026-01-10T01:09:16.052Z",
+    updatedAt: "2026-01-10T01:09:16.052Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "9",
+      "6"
+    ],
+    startDate: "2026-03-01T01:09:01.238Z",
+    duration: 150,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "700fc811-ea8a-4069-aea4-988287e82e8f",
+    name: "Operación vivienda 2027",
+    description: "Causa benéfica para apoyar iniciativas de vivienda. Mollitia defero pel caries vita atque caritas.",
+    status: "approved",
+    reason: "",
+    userId: "29a118fc-47f2-41a2-9a5d-a7ffe1934c9f",
+    createdAt: "2026-01-10T01:09:16.115Z",
+    updatedAt: "2026-01-10T01:09:16.115Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "6",
+      "2"
+    ],
+    startDate: "2026-07-21T00:09:01.300Z",
+    duration: 364,
+    communityId: "eaf1d275-8e09-4208-9058-f3876158a09d"
+  },
+  {
+    _id: "cb1817d3-3a97-45ea-9d4e-05b239cbc564",
+    name: "Acción solidaria salud 2027",
+    description: "Causa benéfica para apoyar iniciativas de salud. Surgo nisi reiciendis cupio tergeo admiratio cervus cunabula.",
+    status: "approved",
+    reason: "",
+    userId: "dbb7b465-ce1d-4524-9260-1caad9714f80",
+    createdAt: "2026-01-10T01:09:16.179Z",
+    updatedAt: "2026-01-10T01:09:16.179Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5",
+      "4"
+    ],
+    startDate: "2026-06-27T00:09:01.362Z",
+    duration: 210,
+    communityId: "b2d08727-9da2-4a6d-88c1-30098699a0e6"
+  },
+  {
+    _id: "7e390ff8-f75a-4470-8eaf-bfc5885645bd",
+    name: "Red de apoyo tercera edad 2027",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Vulnero attollo fugit capillus brevis vester animus dolorum. Teres abutor baiulus ustilo similique apto tandem aegrus quos.",
+    status: "approved",
+    reason: "",
+    userId: "385d9dcc-6343-4501-ab2d-44f481276fc1",
+    createdAt: "2026-01-10T01:09:16.242Z",
+    updatedAt: "2026-01-10T01:09:16.242Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14"
+    ],
+    startDate: "2026-07-05T00:09:01.425Z",
+    duration: 77,
+    communityId: "d503946f-fde7-4003-8803-26b6917f80bc"
+  },
+  {
+    _id: "235aba60-6ab7-4ca9-9234-cffa264ef2d8",
+    name: "Acción solidaria tercera edad 2027",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Vomica approbo ars defero deprecator tantum clarus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "80289107-eec3-4b5e-9745-f5b6924aee62",
+    createdAt: "2026-01-10T01:09:16.305Z",
+    updatedAt: "2026-01-10T01:09:16.305Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11",
+      "5"
+    ],
+    startDate: "2026-03-16T01:09:01.488Z",
+    duration: 125,
+    communityId: "ff12b0ae-a3b8-431f-bd1d-c6b6800d7d6d"
+  },
+  {
+    _id: "5fb52964-b3b6-42c7-a27d-d74b52a033df",
+    name: "Iniciativa emergencias 2026",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Tempora voluptas video succurro calculus thymbra.",
+    status: "approved",
+    reason: "",
+    userId: "8469f7db-e45a-4752-83b8-b7763b37e95a",
+    createdAt: "2026-01-10T01:09:16.365Z",
+    updatedAt: "2026-01-10T01:09:16.365Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "6",
+      "9"
+    ],
+    startDate: "2026-05-03T00:09:01.551Z",
+    duration: 247,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "6d816895-0443-4fa1-b8f7-5bf1a58c57c3",
+    name: "Proyecto pobreza 2026",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Textus beatae verto beneficium stips adhaero civitas.",
+    status: "approved",
+    reason: "",
+    userId: "91e9bf73-f329-4c6b-be68-c992f136558c",
+    createdAt: "2026-01-10T01:09:16.427Z",
+    updatedAt: "2026-01-10T01:09:16.427Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "2",
+      "6"
+    ],
+    startDate: "2026-07-22T00:09:01.612Z",
+    duration: 83,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "2a08d0e0-f55f-489a-a360-a5ce4b12d192",
+    name: "Red de apoyo medio ambiente 2027",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Consectetur audax pecto arcesso tardus. Xiphias crur arbustum.",
+    status: "pending",
+    userId: "02c19ca9-b0cf-4108-87b4-f8a2b5809ef0",
+    createdAt: "2026-01-10T01:09:01.687Z",
+    updatedAt: "2026-01-10T01:09:01.687Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "3"
+    ],
+    startDate: "2026-06-28T00:09:01.675Z",
+    duration: 71,
+    communityId: "56de6147-ae45-4ead-8860-5f9202a41337"
+  },
+  {
+    _id: "ac746885-7959-4740-801f-26152a5946e1",
+    name: "Iniciativa igualdad de género 2026",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Contego vapulus iusto.",
+    status: "approved",
+    reason: "",
+    userId: "9d1fe85d-cd95-461b-ba51-87c17fed78c7",
+    createdAt: "2026-01-10T01:09:16.552Z",
+    updatedAt: "2026-01-10T01:09:16.552Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "7"
+    ],
+    startDate: "2026-08-01T00:09:01.737Z",
+    duration: 31,
+    communityId: "35e8ddc0-923b-4094-9fe8-bb5633908189"
+  },
+  {
+    _id: "30370111-8748-49b5-a399-12f1ac6e98c2",
+    name: "Campaña igualdad de género 2027",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Celo earum claudeo cultellus. Exercitationem sustineo admitto victus eum tibi enim amo.",
+    status: "approved",
+    reason: "",
+    userId: "826492dd-94ee-45dd-bd02-392e1afec120",
+    createdAt: "2026-01-10T01:09:16.614Z",
+    updatedAt: "2026-01-10T01:09:16.614Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "8"
+    ],
+    startDate: "2026-05-15T00:09:01.799Z",
+    duration: 323,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "d34be54b-0eaf-4aaf-8475-840944cffc7d",
+    name: "Programa tercera edad 2026",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Vomer appositus despecto acidus defendo. Vita tolero spargo ventito correptius spiritus ancilla peccatus.",
+    status: "pending",
+    userId: "bdbf8763-5b2d-4645-a211-beeb0eecb829",
+    createdAt: "2026-01-10T01:09:01.874Z",
+    updatedAt: "2026-01-10T01:09:01.874Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11"
+    ],
+    startDate: "2026-05-28T00:09:01.862Z",
+    duration: 113,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "6af8dd3f-a974-4308-b999-72ed4f44990a",
+    name: "Movimiento pobreza 2026",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Eius vociferor cimentarius tenax approbo adinventitias dens ulciscor. Tersus capto tergum ratione cumque totam tepidus coma totam cohibeo.",
+    status: "approved",
+    reason: "",
+    userId: "fedc18bc-f476-48d5-abcd-05b79d20886c",
+    createdAt: "2026-01-10T01:09:16.735Z",
+    updatedAt: "2026-01-10T01:09:16.735Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4"
+    ],
+    startDate: "2026-06-08T00:09:01.924Z",
+    duration: 62,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "ded5f20f-7b1b-4ccf-afa2-60f2638c4025",
+    name: "Iniciativa alimentación 2026",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Acceptus universe maiores. Defero quod canonicus causa tempus apud.",
+    status: "approved",
+    reason: "",
+    userId: "3d6eaaa2-ff45-4e8a-b331-69cca3742958",
+    createdAt: "2026-01-10T01:09:16.799Z",
+    updatedAt: "2026-01-10T01:09:16.799Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "5"
+    ],
+    startDate: "2026-06-17T00:09:01.986Z",
+    duration: 323,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "6d02eb0c-9131-40b6-98c5-baa7c415eaa6",
+    name: "Acción solidaria infancia 2026",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Vetus confero amiculum conforto corrumpo abscido nam. Aliquid totus vester capio officia altus communis.",
+    status: "approved",
+    reason: "",
+    userId: "ff257735-ce42-4717-93de-bea73c953442",
+    createdAt: "2026-01-10T01:09:16.861Z",
+    updatedAt: "2026-01-10T01:09:16.861Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14"
+    ],
+    startDate: "2026-02-21T01:09:02.047Z",
+    duration: 212,
+    communityId: "8f09139f-b7b8-4200-9285-ade40939febe"
+  },
+  {
+    _id: "1e876c3d-7d5a-4a11-b304-313b867db9be",
+    name: "Jornada refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Vir quia vinco beatae titulus adinventitias vitiosus temeritas iusto commodo. Certe comitatus aspicio excepturi candidus sursum vigilo thalassinus",
+    status: "pending",
+    userId: "7652eb8d-09e6-44ff-af59-15713c0afacb",
+    createdAt: "2026-01-10T01:09:02.122Z",
+    updatedAt: "2026-01-10T01:09:02.122Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "15"
+    ],
+    startDate: "2026-05-26T00:09:02.110Z",
+    duration: 322,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "9c23ef9e-7709-466a-950f-c3f27bc986d3",
+    name: "Operación desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Impedit ascisco vos cornu peior defluo patruus subnecto suscipio eos. Curso curo subvenio autus vita cerno quasi.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "0d1d8c44-b4a5-4491-8c78-0112cc968666",
+    createdAt: "2026-01-10T01:09:16.986Z",
+    updatedAt: "2026-01-10T01:09:16.986Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2"
+    ],
+    startDate: "2026-05-06T00:09:02.174Z",
+    duration: 360,
+    communityId: "b0e6482e-e6ca-413a-a9d1-cd43d8b1d019"
+  },
+  {
+    _id: "da72c044-793a-4d1f-a780-a2bd065c8870",
+    name: "Acción solidaria desarrollo sostenible 2027",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Creo vorago depulso circumvenio teneo capio iure advenio ex caterva.",
+    status: "approved",
+    reason: "",
+    userId: "e1e9b101-e4ba-46c6-a757-242692b827af",
+    createdAt: "2026-01-10T01:09:17.049Z",
+    updatedAt: "2026-01-10T01:09:17.049Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17"
+    ],
+    startDate: "2026-07-16T00:09:02.237Z",
+    duration: 301,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "299a2b72-9f0e-470c-a3d0-5cc3d8219608",
+    name: "Programa medio ambiente 2026",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Adopto suspendo comparo conscendo commodo reiciendis aegrus trado adeptio. Urbs atrocitas alioqui corona balbus.",
+    status: "approved",
+    reason: "",
+    userId: "1c943f5d-1923-4361-adfc-5d43b1be653f",
+    createdAt: "2026-01-10T01:09:17.112Z",
+    updatedAt: "2026-01-10T01:09:17.112Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2"
+    ],
+    startDate: "2026-02-21T01:09:02.300Z",
+    duration: 110,
+    communityId: "b0e6482e-e6ca-413a-a9d1-cd43d8b1d019"
+  },
+  {
+    _id: "28b68b2a-185c-4a07-9750-5b43106faa19",
+    name: "Acción solidaria emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Odio desidero cresco crudelis bardus. Administratio minima tamdiu aduro tubineus.",
+    status: "approved",
+    reason: "",
+    userId: "826492dd-94ee-45dd-bd02-392e1afec120",
+    createdAt: "2026-01-10T01:09:17.173Z",
+    updatedAt: "2026-01-10T01:09:17.173Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "7",
+      "9"
+    ],
+    startDate: "2026-06-14T00:09:02.362Z",
+    duration: 237,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "b20985ca-ebf1-4515-bd09-de93cd6e689d",
+    name: "Programa salud 2026",
+    description: "Causa benéfica para apoyar iniciativas de salud. Celebrer degero socius vinco. Umbra autem conventus charisma.",
+    status: "approved",
+    reason: "",
+    userId: "16e5303f-c583-42f7-ac3f-272d209dc227",
+    createdAt: "2026-01-10T01:09:17.236Z",
+    updatedAt: "2026-01-10T01:09:17.236Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "2"
+    ],
+    startDate: "2026-05-03T00:09:02.425Z",
+    duration: 203,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "edd0b0a1-f88f-4a6a-8b0d-5c86c4b3d2ff",
+    name: "Jornada educación 2027",
+    description: "Causa benéfica para apoyar iniciativas de educación. Atque triumphus bene tamdiu. Thermae deludo thermae pecus omnis clamo amissio sublime advoco aliquid.",
+    status: "approved",
+    reason: "",
+    userId: "500cd7aa-5e9c-40bd-aee5-4d0646e9c529",
+    createdAt: "2026-01-10T01:09:17.299Z",
+    updatedAt: "2026-01-10T01:09:17.299Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "1",
+      "2"
+    ],
+    startDate: "2026-03-06T01:09:02.488Z",
+    duration: 89,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "4a85f754-1780-488b-a8f6-16b705b515d8",
+    name: "Jornada emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Corona caelum adulatio chirographum adhuc articulus arma vir vinco. Cavus utor tamquam.",
+    status: "approved",
+    reason: "",
+    userId: "f0e8e38b-e643-44b0-885a-64038bb25291",
+    createdAt: "2026-01-10T01:09:17.361Z",
+    updatedAt: "2026-01-10T01:09:17.361Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "13",
+      "12"
+    ],
+    startDate: "2026-02-15T01:09:02.551Z",
+    duration: 98,
+    communityId: "325eaa73-7f12-45da-a8bc-11361b87539c"
+  },
+  {
+    _id: "614f89ce-9579-4d3e-946a-f3932044930d",
+    name: "Proyecto infancia 2027",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Temeritas tolero animus spero vomica cruentus virtus.",
+    status: "pending",
+    userId: "ff257735-ce42-4717-93de-bea73c953442",
+    createdAt: "2026-01-10T01:09:02.627Z",
+    updatedAt: "2026-01-10T01:09:02.627Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7"
+    ],
+    startDate: "2026-04-18T00:09:02.615Z",
+    duration: 93,
+    communityId: "ff12b0ae-a3b8-431f-bd1d-c6b6800d7d6d"
+  },
+  {
+    _id: "0e0a4b6d-d038-43d6-8122-49e07a2c5b4d",
+    name: "Red de apoyo educación 2027",
+    description: "Causa benéfica para apoyar iniciativas de educación. Veritatis candidus totidem paulatim inflammatio ademptio aeneus veniam patria suadeo.",
+    status: "approved",
+    reason: "",
+    userId: "04f8eef9-b1f1-4b7f-83aa-b5191460b73c",
+    createdAt: "2026-01-10T01:09:17.485Z",
+    updatedAt: "2026-01-10T01:09:17.485Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4"
+    ],
+    startDate: "2026-05-28T00:09:02.676Z",
+    duration: 65,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "13f7e205-416e-492a-887e-8e876eb9742d",
+    name: "Jornada infancia 2026",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Alter dolore damnatio odio aufero.",
+    status: "pending",
+    userId: "438ce1bf-a1d1-4273-b5a3-fc9da607f23c",
+    createdAt: "2026-01-10T01:09:02.750Z",
+    updatedAt: "2026-01-10T01:09:02.750Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "4",
+      "15"
+    ],
+    startDate: "2026-03-18T01:09:02.738Z",
+    duration: 257,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "bcd5d8b6-60bd-4964-8fc2-730e797f6bb6",
+    name: "Iniciativa salud 2027",
+    description: "Causa benéfica para apoyar iniciativas de salud. Thalassinus comitatus subiungo earum enim subito ustulo dignissimos atavus.",
+    status: "approved",
+    reason: "",
+    userId: "5ae4afb8-65b8-4218-ae70-51cc5d79dd24",
+    createdAt: "2026-01-10T01:09:17.610Z",
+    updatedAt: "2026-01-10T01:09:17.610Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "12",
+      "9"
+    ],
+    startDate: "2026-05-10T00:09:02.800Z",
+    duration: 84,
+    communityId: "fc1fe7fd-3f48-4e7f-9ce1-562bf5010010"
+  },
+  {
+    _id: "93eaef10-508e-4580-85b0-f083be061c32",
+    name: "Iniciativa discapacidad 2026",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Crudelis surgo civitas delego.",
+    status: "approved",
+    reason: "",
+    userId: "10c94659-dd4f-45ab-bbf3-b959f911e11a",
+    createdAt: "2026-01-10T01:09:17.674Z",
+    updatedAt: "2026-01-10T01:09:17.674Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-05-17T00:09:02.862Z",
+    duration: 271,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "e91f32f4-7a65-40de-b1ff-3296829d1d44",
+    name: "Campaña pobreza 2026",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Et denuo totam verbum advoco bestia comitatus minima avarus urbanus. Conduco odio suppellex velit creo vehemens.",
+    status: "pending",
+    userId: "11c5d45f-ffa1-41d7-b6de-b2b52f14af04",
+    createdAt: "2026-01-10T01:09:02.937Z",
+    updatedAt: "2026-01-10T01:09:02.937Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10"
+    ],
+    startDate: "2026-03-02T01:09:02.925Z",
+    duration: 260,
+    communityId: "fc1fe7fd-3f48-4e7f-9ce1-562bf5010010"
+  },
+  {
+    _id: "5427a22a-94a4-4695-8bbb-b27aefa79324",
+    name: "Movimiento agua potable 2026",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Libero candidus debitis avaritia.",
+    status: "approved",
+    reason: "",
+    userId: "0a3eae0d-02e8-472b-9b9d-772b33c68217",
+    createdAt: "2026-01-10T01:09:17.797Z",
+    updatedAt: "2026-01-10T01:09:17.797Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "16"
+    ],
+    startDate: "2026-04-29T00:09:02.988Z",
+    duration: 341,
+    communityId: "64b1e590-bd32-4796-b49b-fc6cf1b92b0d"
+  },
+  {
+    _id: "002883bb-493c-4391-8346-6c225c488736",
+    name: "Red de apoyo refugiados 2027",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Dedecor amor cena iure.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "d194e0bb-9717-4321-a9ca-9aa7bbc3534f",
+    createdAt: "2026-01-10T01:09:17.862Z",
+    updatedAt: "2026-01-10T01:09:17.862Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5"
+    ],
+    startDate: "2026-06-30T00:09:03.050Z",
+    duration: 257,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "69068059-2fc9-41da-8b89-baf291fd62a0",
+    name: "Operación vivienda 2027",
+    description: "Causa benéfica para apoyar iniciativas de vivienda. Abbas laboriosam tantillus vitae cariosus. Avarus appositus cum vir convoco dolore administratio.",
+    status: "approved",
+    reason: "",
+    userId: "da38262f-e4d2-4357-aef7-90d7873ecbf8",
+    createdAt: "2026-01-10T01:09:17.924Z",
+    updatedAt: "2026-01-10T01:09:17.924Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "11"
+    ],
+    startDate: "2026-04-19T00:09:03.112Z",
+    duration: 265,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "91a0442c-3256-4399-9fdc-701c22015191",
+    name: "Red de apoyo refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Explicabo accommodo vilicus tenetur clementia textus suasoria laudantium.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "4c5e3cf4-de52-4ead-be37-be914f0aaef9",
+    createdAt: "2026-01-10T01:09:17.987Z",
+    updatedAt: "2026-01-10T01:09:17.987Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "17"
+    ],
+    startDate: "2026-07-04T00:09:03.174Z",
+    duration: 283,
+    communityId: "59fec8a9-f697-4c36-9470-839bf8af1bf8"
+  },
+  {
+    _id: "b63b9184-cea9-471f-b049-6f242d55b51f",
+    name: "Operación emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Volva catena quas tubineus aveho tandem.",
+    status: "approved",
+    reason: "",
+    userId: "c9eaaf3d-7629-4bf6-973b-465c76d104b6",
+    createdAt: "2026-01-10T01:09:18.051Z",
+    updatedAt: "2026-01-10T01:09:18.051Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "4"
+    ],
+    startDate: "2026-08-08T00:09:03.236Z",
+    duration: 86,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "36a729b3-cecb-4897-9a1c-2cc9abee5687",
+    name: "Operación desarrollo sostenible 2027",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Creo eaque teneo. Iure cetera abscido sono quasi votum ancilla aurum inventore.",
+    status: "approved",
+    reason: "",
+    userId: "99acae55-e9ce-49a0-b76a-48ddc34d9d23",
+    createdAt: "2026-01-10T01:09:18.113Z",
+    updatedAt: "2026-01-10T01:09:18.113Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "15"
+    ],
+    startDate: "2026-08-06T00:09:03.297Z",
+    duration: 191,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "58148c22-faae-44f7-8fc6-8471db804e55",
+    name: "Campaña infancia 2027",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Appello timor pauper admoveo tergum reprehenderit.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "e6bf0d24-c156-4485-ad9a-ac372ef2eea0",
+    createdAt: "2026-01-10T01:09:18.175Z",
+    updatedAt: "2026-01-10T01:09:18.175Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "17",
+      "14"
+    ],
+    startDate: "2026-06-07T00:09:03.361Z",
+    duration: 185,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "598feb24-9c39-4a1a-a30c-ba8d20420ba5",
+    name: "Operación refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Architecto optio delectus audax subvenio illum.",
+    status: "approved",
+    reason: "",
+    userId: "052dcb7c-2784-429c-afeb-07484016427b",
+    createdAt: "2026-01-10T01:09:18.235Z",
+    updatedAt: "2026-01-10T01:09:18.235Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10"
+    ],
+    startDate: "2026-02-21T01:09:03.424Z",
+    duration: 100,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "d02e5c54-cbc1-4a36-b37c-59497edeef4e",
+    name: "Proyecto medio ambiente 2026",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Communis texo vulnero supra numquam.",
+    status: "approved",
+    reason: "",
+    userId: "4655414b-01ff-410e-bd78-13a48c2bd0e5",
+    createdAt: "2026-01-10T01:09:18.299Z",
+    updatedAt: "2026-01-10T01:09:18.299Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5"
+    ],
+    startDate: "2026-03-15T01:09:03.487Z",
+    duration: 171,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "784cd748-8521-438b-a58e-4ebd3aa9b179",
+    name: "Programa salud 2027",
+    description: "Causa benéfica para apoyar iniciativas de salud. Antiquus ultio velit territo caveo attonbitus veritatis vereor.",
+    status: "pending",
+    userId: "21b64c11-25df-4162-90b8-9fd323b4c0fa",
+    createdAt: "2026-01-10T01:09:03.562Z",
+    updatedAt: "2026-01-10T01:09:03.562Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "10"
+    ],
+    startDate: "2026-06-07T00:09:03.550Z",
+    duration: 271,
+    communityId: "8f09139f-b7b8-4200-9285-ade40939febe"
+  },
+  {
+    _id: "f60bc9f1-76ac-4233-b5b5-e2a63c6dcfc6",
+    name: "Campaña igualdad de género 2027",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Viscus desipio dicta clementia candidus ventito chirographum. Cuppedia curia ipsa vulariter.",
+    status: "approved",
+    reason: "",
+    userId: "f7bbd43a-4c83-4216-9248-096673daf498",
+    createdAt: "2026-01-10T01:09:18.423Z",
+    updatedAt: "2026-01-10T01:09:18.423Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13"
+    ],
+    startDate: "2026-03-14T01:09:03.613Z",
+    duration: 281,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "4c2dc5b3-6529-4e0f-bc08-5a3f90bbf6a5",
+    name: "Iniciativa educación 2027",
+    description: "Causa benéfica para apoyar iniciativas de educación. Aedificium virga distinctio speciosus bonus adstringo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "065c9c6e-964b-49c4-b7ef-0c89430a3aa1",
+    createdAt: "2026-01-10T01:09:18.485Z",
+    updatedAt: "2026-01-10T01:09:18.485Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "11",
+      "1"
+    ],
+    startDate: "2026-05-22T00:09:03.676Z",
+    duration: 222,
+    communityId: "59fec8a9-f697-4c36-9470-839bf8af1bf8"
+  },
+  {
+    _id: "c9124372-a145-4833-a10e-c0eb3772b188",
+    name: "Acción solidaria igualdad de género 2027",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Comitatus conqueror utpote. Iste certe auctor agnitio delectus coniuratio decumbo crux.",
+    status: "approved",
+    reason: "",
+    userId: "96c68380-00d5-4939-8af3-8a393f07e57c",
+    createdAt: "2026-01-10T01:09:18.548Z",
+    updatedAt: "2026-01-10T01:09:18.548Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "4",
+      "6"
+    ],
+    startDate: "2026-02-19T01:09:03.738Z",
+    duration: 223,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "6977bda9-1875-4b7a-a47d-040fdf422c2e",
+    name: "Jornada agua potable 2027",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Capto timor correptius cogo. Usus cruentus considero.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ff8326a3-472f-4587-82cb-e0f4c6d8f921",
+    createdAt: "2026-01-10T01:09:18.609Z",
+    updatedAt: "2026-01-10T01:09:18.609Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "10"
+    ],
+    startDate: "2026-06-20T00:09:03.800Z",
+    duration: 31,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "3c2983e6-b26d-44fc-87ee-0534ceba543c",
+    name: "Programa medio ambiente 2026",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Sustineo perferendis suasoria adipiscor una condico crastinus sursum apostolus. Verbum cerno quia dicta supellex adinventitias stella suppelle",
+    status: "approved",
+    reason: "",
+    userId: "e57755d5-ed2a-4fd1-bd32-94c760130dd0",
+    createdAt: "2026-01-10T01:09:18.671Z",
+    updatedAt: "2026-01-10T01:09:18.671Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17"
+    ],
+    startDate: "2026-03-22T01:09:03.863Z",
+    duration: 76,
+    communityId: "16c120c8-2d05-4e88-8a8b-8bb60caf75fb"
+  },
+  {
+    _id: "95200c1a-2cd9-4622-a808-82d99e29a931",
+    name: "Campaña alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Succurro laborum creo tabernus tabesco thesaurus tunc crustulum quas provident. Peccatus viscus depono deserunt summisse thymbra accendo.",
+    status: "approved",
+    reason: "",
+    userId: "438ce1bf-a1d1-4273-b5a3-fc9da607f23c",
+    createdAt: "2026-01-10T01:09:18.733Z",
+    updatedAt: "2026-01-10T01:09:18.733Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "4"
+    ],
+    startDate: "2026-03-17T01:09:03.926Z",
+    duration: 94,
+    communityId: "ff12b0ae-a3b8-431f-bd1d-c6b6800d7d6d"
+  },
+  {
+    _id: "f3de8dd0-e18e-4469-8398-86ade50abade",
+    name: "Campaña emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Adiuvo solio aptus absconditus laudantium id cohibeo vae. Totus vita avarus tam amplus vero virtus.",
+    status: "approved",
+    reason: "",
+    userId: "cbd3b884-ebe4-4101-9fe0-7358fd2d6062",
+    createdAt: "2026-01-10T01:09:18.796Z",
+    updatedAt: "2026-01-10T01:09:18.796Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "10",
+      "8"
+    ],
+    startDate: "2026-02-12T01:09:03.988Z",
+    duration: 159,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "1dfe40a7-009c-49c2-801c-f0b101a4f5ef",
+    name: "Jornada refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Sustineo venia tristis. Sollicito ascisco deprecator teres censura ante coadunatio vulgaris.",
+    status: "pending",
+    userId: "d3d7ae60-e964-49aa-9767-88c9acbcedc7",
+    createdAt: "2026-01-10T01:09:04.061Z",
+    updatedAt: "2026-01-10T01:09:04.061Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "4"
+    ],
+    startDate: "2026-04-05T00:09:04.049Z",
+    duration: 183,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "b7afed8c-aa2c-4ebd-a108-402df044b3d7",
+    name: "Acción solidaria pobreza 2026",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Conitor civis colo viduo antiquus thorax.",
+    status: "approved",
+    reason: "",
+    userId: "8926f58b-d8ee-4edc-ae92-6c7597400a3f",
+    createdAt: "2026-01-10T01:09:18.921Z",
+    updatedAt: "2026-01-10T01:09:18.921Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4"
+    ],
+    startDate: "2026-03-30T00:09:04.111Z",
+    duration: 198,
+    communityId: "64b1e590-bd32-4796-b49b-fc6cf1b92b0d"
+  },
+  {
+    _id: "3dcaf843-bc17-41ae-a781-ab0feeb7260c",
+    name: "Iniciativa tercera edad 2027",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Argentum viduo claustrum alveus video. Adulatio supplanto sodalitas blandior deporto.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "5790721a-690a-466a-92ae-59ae4404da12",
+    createdAt: "2026-01-10T01:09:18.985Z",
+    updatedAt: "2026-01-10T01:09:18.985Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "14"
+    ],
+    startDate: "2026-05-15T00:09:04.173Z",
+    duration: 154,
+    communityId: "6e5d9c7c-daec-4bb6-8eaf-3997a2d55022"
+  },
+  {
+    _id: "613285a4-93bf-4bf2-9523-4bce5d04d341",
+    name: "Campaña salud 2026",
+    description: "Causa benéfica para apoyar iniciativas de salud. Repellendus commodi distinctio.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "8926f58b-d8ee-4edc-ae92-6c7597400a3f",
+    createdAt: "2026-01-10T01:09:19.046Z",
+    updatedAt: "2026-01-10T01:09:19.046Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11",
+      "13",
+      "5"
+    ],
+    startDate: "2026-06-10T00:09:04.234Z",
+    duration: 121,
+    communityId: "f21b3392-fb59-44cd-a82a-d5c32415c0ae"
+  },
+  {
+    _id: "3eb4741f-6c4a-4765-941e-805207c04e77",
+    name: "Iniciativa derechos humanos 2027",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Arbustum synagoga attero cubo voveo confugo ubi cura deprecator. Ipsa abscido curatio casso centum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "96c68380-00d5-4939-8af3-8a393f07e57c",
+    createdAt: "2026-01-10T01:09:19.110Z",
+    updatedAt: "2026-01-10T01:09:19.110Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "14"
+    ],
+    startDate: "2026-03-03T01:09:04.296Z",
+    duration: 217,
+    communityId: "325eaa73-7f12-45da-a8bc-11361b87539c"
+  },
+  {
+    _id: "1ffd33db-ac64-48cd-b6fb-44ea3f09f2eb",
+    name: "Campaña vivienda 2026",
+    description: "Causa benéfica para apoyar iniciativas de vivienda. Cerno autus ocer vir dolorem brevis tum. Alveus damnatio correptius comparo altus aperte.",
+    status: "pending",
+    userId: "033a4ad6-ad36-41f2-b3ec-6e200004f6df",
+    createdAt: "2026-01-10T01:09:04.373Z",
+    updatedAt: "2026-01-10T01:09:04.373Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "4",
+      "9"
+    ],
+    startDate: "2026-05-27T00:09:04.359Z",
+    duration: 141,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "19cd72fc-8677-4ec9-b1f0-8f98cd763c57",
+    name: "Programa discapacidad 2026",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Pecco occaecati tamen talio sollicito. Candidus enim blanditiis succedo nisi pecus tamen.",
+    status: "pending",
+    userId: "1cbb1275-8bef-4a50-ae0b-deef074bdb0b",
+    createdAt: "2026-01-10T01:09:04.434Z",
+    updatedAt: "2026-01-10T01:09:04.434Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "16"
+    ],
+    startDate: "2026-02-22T01:09:04.422Z",
+    duration: 109,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "2335c251-34fc-4520-a825-0b41b728d24e",
+    name: "Movimiento agua potable 2027",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Addo aptus porro vilis terra cuppedia saepe. Velum volaticus constans callide spero alter voluntarius voluptatem.",
+    status: "approved",
+    reason: "",
+    userId: "512b0a7d-f18b-432c-b768-4dd3fdbd3570",
+    createdAt: "2026-01-10T01:09:19.296Z",
+    updatedAt: "2026-01-10T01:09:19.296Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "16"
+    ],
+    startDate: "2026-06-07T00:09:04.486Z",
+    duration: 215,
+    communityId: "eaf1d275-8e09-4208-9058-f3876158a09d"
+  },
+  {
+    _id: "a3cdea53-1d8a-490c-bbe2-d6d082d47177",
+    name: "Acción solidaria refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Cunae tantillus alo tenus voluptatibus. Acerbitas verto modi ea catena trado odit quas tollo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "80289107-eec3-4b5e-9745-f5b6924aee62",
+    createdAt: "2026-01-10T01:09:19.358Z",
+    updatedAt: "2026-01-10T01:09:19.358Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "3"
+    ],
+    startDate: "2026-05-08T00:09:04.548Z",
+    duration: 119,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "e894401c-669a-4b17-9278-2202ef90fbb4",
+    name: "Red de apoyo tercera edad 2027",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Distinctio utroque aqua amissio vulariter omnis pax verus credo amoveo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "438ce1bf-a1d1-4273-b5a3-fc9da607f23c",
+    createdAt: "2026-01-10T01:09:19.421Z",
+    updatedAt: "2026-01-10T01:09:19.421Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11",
+      "9"
+    ],
+    startDate: "2026-08-03T00:09:04.609Z",
+    duration: 107,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "16bf83c1-a87a-428d-992a-b0a4a82d2e73",
+    name: "Campaña medio ambiente 2026",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Cariosus convoco turbo valde damnatio temptatio sopor constans minus.",
+    status: "pending",
+    userId: "23a9fa4c-8f59-43d1-98f6-8a29194fb52e",
+    createdAt: "2026-01-10T01:09:04.688Z",
+    updatedAt: "2026-01-10T01:09:04.688Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "8",
+      "11"
+    ],
+    startDate: "2026-03-09T01:09:04.672Z",
+    duration: 175,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "621a18fb-1c46-4b59-877c-8a1d7efadcda",
+    name: "Operación emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Voluptatem thesis quae subseco cedo tepidus acsi.",
+    status: "approved",
+    reason: "",
+    userId: "0a9397f0-b22a-4a6d-8cd7-a998b93cdc55",
+    createdAt: "2026-01-10T01:09:19.549Z",
+    updatedAt: "2026-01-10T01:09:19.549Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1"
+    ],
+    startDate: "2026-05-30T00:09:04.734Z",
+    duration: 224,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "99a9cda6-86db-4b84-beca-cd86458cbf2e",
+    name: "Programa refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Asperiores agnitio voluptatibus adimpleo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "356f0b45-a054-4f06-aaa1-cb66fc5ce267",
+    createdAt: "2026-01-10T01:09:19.611Z",
+    updatedAt: "2026-01-10T01:09:19.611Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "3",
+      "12"
+    ],
+    startDate: "2026-06-08T00:09:04.794Z",
+    duration: 334,
+    communityId: "b2d08727-9da2-4a6d-88c1-30098699a0e6"
+  },
+  {
+    _id: "aade7f7f-e197-4b80-9912-11325852e4cb",
+    name: "Movimiento infancia 2027",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Cado deleo cruentus tempus. Tardus bene atque armarium cohors laudantium thymbra tollo.",
+    status: "pending",
+    userId: "6b00b565-f65e-4bfc-a095-61a3f43aebe7",
+    createdAt: "2026-01-10T01:09:04.875Z",
+    updatedAt: "2026-01-10T01:09:04.875Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "6"
+    ],
+    startDate: "2026-03-21T01:09:04.856Z",
+    duration: 224,
+    communityId: "77325730-41d5-41b1-ab5a-5a5d239c039d"
+  },
+  {
+    _id: "9520fbae-c469-459e-af20-d066d34a8376",
+    name: "Movimiento desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Similique approbo vomica tenuis arcesso brevis conqueror caecus. Adipisci vero altus illo.",
+    status: "approved",
+    reason: "",
+    userId: "93631d92-8986-4c35-9f11-1ecb0ae4314c",
+    createdAt: "2026-01-10T01:09:19.736Z",
+    updatedAt: "2026-01-10T01:09:19.736Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "1",
+      "2"
+    ],
+    startDate: "2026-04-09T00:09:04.919Z",
+    duration: 40,
+    communityId: "ff12b0ae-a3b8-431f-bd1d-c6b6800d7d6d"
+  },
+  {
+    _id: "565a7320-4beb-4863-9b1d-4db05184e986",
+    name: "Acción solidaria alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Conicio dolorum vulnero decipio cilicium vallum adipiscor texo labore.",
+    status: "pending",
+    userId: "4098679e-78df-4556-ae8b-9f129f4f09a6",
+    createdAt: "2026-01-10T01:09:04.994Z",
+    updatedAt: "2026-01-10T01:09:04.994Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "9"
+    ],
+    startDate: "2026-04-18T00:09:04.981Z",
+    duration: 334,
+    communityId: "fc1fe7fd-3f48-4e7f-9ce1-562bf5010010"
+  },
+  {
+    _id: "9e78e393-18a4-45b2-a71c-56f2a9023c56",
+    name: "Acción solidaria discapacidad 2026",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Admoneo confero voluptatum commemoro cuius delicate adamo voluptatibus acsi supellex.",
+    status: "approved",
+    reason: "",
+    userId: "03f8c1b8-f60d-4dea-b3c7-604a5bea6331",
+    createdAt: "2026-01-10T01:09:19.859Z",
+    updatedAt: "2026-01-10T01:09:19.859Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10"
+    ],
+    startDate: "2026-03-08T01:09:05.044Z",
+    duration: 37,
+    communityId: "eaf1d275-8e09-4208-9058-f3876158a09d"
+  },
+  {
+    _id: "c8f2f577-388a-44db-bea3-aedd3e5988d2",
+    name: "Campaña desarrollo sostenible 2027",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Vacuus sunt attonbitus atque cunabula desparatus brevis claudeo.",
+    status: "approved",
+    reason: "",
+    userId: "318272a9-3bee-4c66-b450-d73b8d505c27",
+    createdAt: "2026-01-10T01:09:19.924Z",
+    updatedAt: "2026-01-10T01:09:19.924Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10"
+    ],
+    startDate: "2026-03-15T01:09:05.108Z",
+    duration: 136,
+    communityId: "59fec8a9-f697-4c36-9470-839bf8af1bf8"
+  },
+  {
+    _id: "1b4086a2-6987-4146-8c33-96ed0983ce1b",
+    name: "Acción solidaria igualdad de género 2026",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Tunc valeo velum taceo concedo alii argumentum explicabo aperio qui.",
+    status: "approved",
+    reason: "",
+    userId: "d25ff7a6-b97e-4262-bbde-afcef1c6db02",
+    createdAt: "2026-01-10T01:09:19.983Z",
+    updatedAt: "2026-01-10T01:09:19.983Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "4"
+    ],
+    startDate: "2026-04-22T00:09:05.171Z",
+    duration: 316,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "e7ee9517-b294-40ce-a4b4-043d24c4d754",
+    name: "Jornada derechos humanos 2026",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Sperno stabilis tactus voluptatum votum. Quis adimpleo mollitia verbera arceo uberrime vinum brevis.",
+    status: "pending",
+    userId: "45ad0625-0ebf-404f-af73-a59de442bae3",
+    createdAt: "2026-01-10T01:09:05.247Z",
+    updatedAt: "2026-01-10T01:09:05.247Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "15",
+      "17"
+    ],
+    startDate: "2026-03-19T01:09:05.233Z",
+    duration: 131,
+    communityId: "b2d08727-9da2-4a6d-88c1-30098699a0e6"
+  },
+  {
+    _id: "9502be00-2ce7-4bd4-8490-ceee76d52d62",
+    name: "Jornada infancia 2026",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Uredo solus soluta utpote tenus sulum coniuratio vomica tergo.",
+    status: "approved",
+    reason: "",
+    userId: "ade31128-b25c-494f-b271-90c83a107409",
+    createdAt: "2026-01-10T01:09:20.108Z",
+    updatedAt: "2026-01-10T01:09:20.108Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14"
+    ],
+    startDate: "2026-04-10T00:09:05.296Z",
+    duration: 306,
+    communityId: "18a020dc-2731-4de1-ae75-b7f6d2cc191f"
+  },
+  {
+    _id: "aca251f7-0ca5-4b2f-b224-c2e3258d5c3e",
+    name: "Acción solidaria refugiados 2027",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Deficio cumque vulgus umerus cruentus inventore vinculum viscus xiphias spiritus. Depono ubi campana.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "51283d7d-b2f3-468e-8ba1-f86023536979",
+    createdAt: "2026-01-10T01:09:20.171Z",
+    updatedAt: "2026-01-10T01:09:20.171Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "11"
+    ],
+    startDate: "2026-04-08T00:09:05.358Z",
+    duration: 44,
+    communityId: "325eaa73-7f12-45da-a8bc-11361b87539c"
+  },
+  {
+    _id: "fff74f2a-ae9e-4efe-8766-9e66e7de4108",
+    name: "Proyecto infancia 2026",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Villa cubitum ubi deduco dolorum tabella maiores deprimo facere. Coerceo aranea cribro patruus amissio angustus commemoro.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fae76c70-1c22-4b19-b538-8bc0a0eb4486",
+    createdAt: "2026-01-10T01:09:20.233Z",
+    updatedAt: "2026-01-10T01:09:20.233Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "4",
+      "3"
+    ],
+    startDate: "2026-05-04T00:09:05.419Z",
+    duration: 137,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "9b2d68be-9b19-4122-8a45-7b5173a75f3b",
+    name: "Iniciativa discapacidad 2026",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Texo usque aspernatur vitiosus cibus cibus ascisco adiuvo torqueo.",
+    status: "approved",
+    reason: "",
+    userId: "a3ff147b-701a-4092-94b4-d55d2740dae3",
+    createdAt: "2026-01-10T01:09:20.294Z",
+    updatedAt: "2026-01-10T01:09:20.294Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5"
+    ],
+    startDate: "2026-06-21T00:09:05.481Z",
+    duration: 318,
+    communityId: "77325730-41d5-41b1-ab5a-5a5d239c039d"
+  },
+  {
+    _id: "f479bfd2-b3ce-477d-be11-c1321fdfc8c6",
+    name: "Jornada infancia 2026",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Stultus tamen solutio aliquam trans aer pecus vacuus labore patrocinor.",
+    status: "approved",
+    reason: "",
+    userId: "7652eb8d-09e6-44ff-af59-15713c0afacb",
+    createdAt: "2026-01-10T01:09:20.357Z",
+    updatedAt: "2026-01-10T01:09:20.357Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9"
+    ],
+    startDate: "2026-05-12T00:09:05.544Z",
+    duration: 67,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "29a2ad4e-2b24-4bed-8d7b-1cefddf76367",
+    name: "Operación discapacidad 2027",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Consequatur vito defendo deorsum utrum. Voluntarius spero cultura combibo tardus.",
+    status: "pending",
+    userId: "6bebbd77-76cb-43ea-955d-5f7442ad3175",
+    createdAt: "2026-01-10T01:09:05.619Z",
+    updatedAt: "2026-01-10T01:09:05.619Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "13",
+      "17"
+    ],
+    startDate: "2026-06-23T00:09:05.607Z",
+    duration: 51,
+    communityId: "eaf1d275-8e09-4208-9058-f3876158a09d"
+  },
+  {
+    _id: "58064a9e-96a9-45f6-a5ae-745117cc21d5",
+    name: "Iniciativa discapacidad 2027",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Admiratio utpote casus sperno.",
+    status: "approved",
+    reason: "",
+    userId: "4655414b-01ff-410e-bd78-13a48c2bd0e5",
+    createdAt: "2026-01-10T01:09:20.481Z",
+    updatedAt: "2026-01-10T01:09:20.481Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17"
+    ],
+    startDate: "2026-02-23T01:09:05.669Z",
+    duration: 246,
+    communityId: "fc1fe7fd-3f48-4e7f-9ce1-562bf5010010"
+  },
+  {
+    _id: "c4955121-fccf-441b-a89b-59fb652856da",
+    name: "Movimiento derechos humanos 2027",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Tersus tolero cultura vero coadunatio verto quod vivo.",
+    status: "approved",
+    reason: "",
+    userId: "037464c8-6064-47fe-80ba-45b51c7dac60",
+    createdAt: "2026-01-10T01:09:20.543Z",
+    updatedAt: "2026-01-10T01:09:20.543Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-06-10T00:09:05.732Z",
+    duration: 301,
+    communityId: "d503946f-fde7-4003-8803-26b6917f80bc"
+  },
+  {
+    _id: "5ce523be-cf0d-4e2c-98d6-b8aa73a60187",
+    name: "Proyecto salud 2027",
+    description: "Causa benéfica para apoyar iniciativas de salud. Error suppono aestus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "0a3eae0d-02e8-472b-9b9d-772b33c68217",
+    createdAt: "2026-01-10T01:09:20.606Z",
+    updatedAt: "2026-01-10T01:09:20.606Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-06-17T00:09:05.794Z",
+    duration: 203,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "703d1691-13e4-4a2f-ba33-4d0d526a762c",
+    name: "Operación desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Tremo vitae quidem uredo coerceo dedecor asperiores vilitas placeat pectus. Crebro dedecor curatio textor venio abstergo consectetur so",
+    status: "approved",
+    reason: "",
+    userId: "a6421f6b-0793-479c-93e6-bcd541b2cf7a",
+    createdAt: "2026-01-10T01:09:20.667Z",
+    updatedAt: "2026-01-10T01:09:20.667Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-06-01T00:09:05.856Z",
+    duration: 282,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "efb8828b-3259-4f39-aabc-7584fb83b80d",
+    name: "Acción solidaria derechos humanos 2027",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Delinquo sufficio balbus territo voveo titulus.",
+    status: "approved",
+    reason: "",
+    userId: "91bac851-f9de-487e-8845-236f3b2ccc83",
+    createdAt: "2026-01-10T01:09:20.730Z",
+    updatedAt: "2026-01-10T01:09:20.730Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-02-13T01:09:05.920Z",
+    duration: 248,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "d4d738fe-26e3-4f65-9f76-ce76bc85e0f4",
+    name: "Iniciativa igualdad de género 2026",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Circumvenio tantillus ara cornu corporis. Stultus tactus assentator verumtamen tego quisquam calamitas aperte accendo.",
+    status: "approved",
+    reason: "",
+    userId: "e882b5d5-2ec9-46c4-abb8-8143b657cab7",
+    createdAt: "2026-01-10T01:09:20.792Z",
+    updatedAt: "2026-01-10T01:09:20.792Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "7"
+    ],
+    startDate: "2026-08-07T00:09:05.982Z",
+    duration: 256,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "cf0b0f8a-8db0-474f-ba94-83e130f40005",
+    name: "Operación alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Cunabula textilis universe tabernus delicate defleo.",
+    status: "approved",
+    reason: "",
+    userId: "037464c8-6064-47fe-80ba-45b51c7dac60",
+    createdAt: "2026-01-10T01:09:20.856Z",
+    updatedAt: "2026-01-10T01:09:20.856Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "14",
+      "13"
+    ],
+    startDate: "2026-06-29T00:09:06.043Z",
+    duration: 82,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "1e82a478-470a-4f67-b7e7-ba47861bdeb4",
+    name: "Red de apoyo pobreza 2026",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Vulgo nesciunt eveniet paulatim combibo tenetur vulticulus bibo quos.",
+    status: "approved",
+    reason: "",
+    userId: "9e535df7-9710-43b6-bec5-5cb86e4255bc",
+    createdAt: "2026-01-10T01:09:20.918Z",
+    updatedAt: "2026-01-10T01:09:20.918Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "5"
+    ],
+    startDate: "2026-04-18T00:09:06.106Z",
+    duration: 80,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "1df94865-6ac3-4b01-b861-7f579053a620",
+    name: "Operación infancia 2026",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Vinitor sunt qui tergum velociter curso viscus via somniculosus suffoco.",
+    status: "approved",
+    reason: "",
+    userId: "cdc3be1f-b1e5-4d35-8295-e9fd29264bee",
+    createdAt: "2026-01-10T01:09:20.981Z",
+    updatedAt: "2026-01-10T01:09:20.981Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "11"
+    ],
+    startDate: "2026-02-28T01:09:06.168Z",
+    duration: 258,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "042bc216-76bd-4ef5-91ab-6cac13f52b0d",
+    name: "Campaña salud 2026",
+    description: "Causa benéfica para apoyar iniciativas de salud. Solvo agnosco consectetur vicissitudo derelinquo. Suffragium cornu congregatio suadeo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "23a44cd6-a91a-43c9-b98c-95787c49e574",
+    createdAt: "2026-01-10T01:09:21.042Z",
+    updatedAt: "2026-01-10T01:09:21.042Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "3"
+    ],
+    startDate: "2026-05-11T00:09:06.230Z",
+    duration: 226,
+    communityId: "d503946f-fde7-4003-8803-26b6917f80bc"
+  },
+  {
+    _id: "7539b0aa-7c91-4abb-8cd5-563fe2354af9",
+    name: "Jornada educación 2026",
+    description: "Causa benéfica para apoyar iniciativas de educación. Tamdiu tero socius comparo turbo ascisco amita sum trado.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "d0e41b0f-d8bc-4469-bd6f-2fd68ba88fc2",
+    createdAt: "2026-01-10T01:09:21.105Z",
+    updatedAt: "2026-01-10T01:09:21.105Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17"
+    ],
+    startDate: "2026-05-17T00:09:06.293Z",
+    duration: 352,
+    communityId: "77325730-41d5-41b1-ab5a-5a5d239c039d"
+  },
+  {
+    _id: "ba60c920-2215-4aed-81fc-937b1476ece3",
+    name: "Iniciativa desarrollo sostenible 2027",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Arbitro summa cena quam ambitus carus acies necessitatibus.",
+    status: "approved",
+    reason: "",
+    userId: "a070baeb-962d-46e1-9948-3078ef6bce71",
+    createdAt: "2026-01-10T01:09:21.167Z",
+    updatedAt: "2026-01-10T01:09:21.167Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "12",
+      "8"
+    ],
+    startDate: "2026-07-12T00:09:06.354Z",
+    duration: 47,
+    communityId: "325eaa73-7f12-45da-a8bc-11361b87539c"
+  },
+  {
+    _id: "346c21be-5b98-4e94-a04b-17707cbe9e47",
+    name: "Proyecto igualdad de género 2027",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Comburo constans temperantia blandior. Aeternus stella decimus armarium doloremque quia attonbitus sopor curatio civitas.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "0d1dcbd8-c218-4f6b-b970-ff97bf7ae2d5",
+    createdAt: "2026-01-10T01:09:21.231Z",
+    updatedAt: "2026-01-10T01:09:21.231Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "8",
+      "11"
+    ],
+    startDate: "2026-02-28T01:09:06.417Z",
+    duration: 257,
+    communityId: "325eaa73-7f12-45da-a8bc-11361b87539c"
+  },
+  {
+    _id: "ff627983-492d-46c9-ae24-ca45d9512f7f",
+    name: "Iniciativa agua potable 2027",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Calculus voveo quaerat praesentium delectatio.",
+    status: "approved",
+    reason: "",
+    userId: "e3d7a9a8-bf9d-40f4-a2aa-42fd06090cff",
+    createdAt: "2026-01-10T01:09:21.293Z",
+    updatedAt: "2026-01-10T01:09:21.293Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "2"
+    ],
+    startDate: "2026-03-09T01:09:06.480Z",
+    duration: 216,
+    communityId: "f40443b5-c400-4b54-a7e1-4ea2f23b993f"
+  },
+  {
+    _id: "485d35d7-266b-4efc-9c9e-4df8b681acaa",
+    name: "Proyecto derechos humanos 2026",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Succurro casus comburo villa conspergo autus autem suppellex textus quidem.",
+    status: "approved",
+    reason: "",
+    userId: "c8fcbc6a-9717-47ad-9358-ab61b8146645",
+    createdAt: "2026-01-10T01:09:21.355Z",
+    updatedAt: "2026-01-10T01:09:21.355Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6"
+    ],
+    startDate: "2026-08-04T00:09:06.542Z",
+    duration: 32,
+    communityId: "b2d08727-9da2-4a6d-88c1-30098699a0e6"
+  },
+  {
+    _id: "e79eaa0f-df62-4bce-8155-c28e26df459c",
+    name: "Proyecto tercera edad 2027",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Triduana comis somnus audentia super spiculum deripio. Abduco admoneo tabesco angelus tot repudiandae.",
+    status: "approved",
+    reason: "",
+    userId: "4098679e-78df-4556-ae8b-9f129f4f09a6",
+    createdAt: "2026-01-10T01:09:21.417Z",
+    updatedAt: "2026-01-10T01:09:21.417Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "14",
+      "15"
+    ],
+    startDate: "2026-04-07T00:09:06.606Z",
+    duration: 149,
+    communityId: "6e5d9c7c-daec-4bb6-8eaf-3997a2d55022"
+  },
+  {
+    _id: "c54b6604-1f85-4443-9475-bd08f9172fc5",
+    name: "Proyecto agua potable 2027",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Ciminatio sursum distinctio corona aurum appositus.",
+    status: "approved",
+    reason: "",
+    userId: "42aec1c3-c89e-479a-9a0e-9b2412927fe4",
+    createdAt: "2026-01-10T01:09:21.480Z",
+    updatedAt: "2026-01-10T01:09:21.480Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11",
+      "9"
+    ],
+    startDate: "2026-03-18T01:09:06.669Z",
+    duration: 218,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "4faac248-62fe-45d3-8b4b-54cdc2564112",
+    name: "Acción solidaria desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Dolorum articulus terga civitas tum debilito defungo sollicito omnis.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "cf036bd8-d92d-41a1-a3e4-dc23f24ce914",
+    createdAt: "2026-01-10T01:09:21.541Z",
+    updatedAt: "2026-01-10T01:09:21.541Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "14",
+      "9"
+    ],
+    startDate: "2026-03-12T01:09:06.732Z",
+    duration: 169,
+    communityId: "35e8ddc0-923b-4094-9fe8-bb5633908189"
+  },
+  {
+    _id: "afba37b2-cf23-441c-8c63-76193adecef3",
+    name: "Red de apoyo vivienda 2027",
+    description: "Causa benéfica para apoyar iniciativas de vivienda. Cuius facilis una. Repudiandae tandem sufficio vulticulus sublime venia.",
+    status: "approved",
+    reason: "",
+    userId: "6b00b565-f65e-4bfc-a095-61a3f43aebe7",
+    createdAt: "2026-01-10T01:09:21.605Z",
+    updatedAt: "2026-01-10T01:09:21.605Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "16"
+    ],
+    startDate: "2026-06-11T00:09:06.794Z",
+    duration: 51,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "420a2758-cd2c-4afb-bc2e-a0af61c24a52",
+    name: "Jornada pobreza 2027",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Comis eos vulgivagus tero capio. Vulgo cognatus vinitor dicta talio despecto eum pectus teres.",
+    status: "pending",
+    userId: "f7bbd43a-4c83-4216-9248-096673daf498",
+    createdAt: "2026-01-10T01:09:06.868Z",
+    updatedAt: "2026-01-10T01:09:06.868Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5",
+      "11",
+      "14"
+    ],
+    startDate: "2026-07-27T00:09:06.856Z",
+    duration: 174,
+    communityId: "8d74cf78-23dc-428c-8d1f-17706d705e38"
+  },
+  {
+    _id: "d5d71ed0-7956-472e-b5a5-71f4ac84cb46",
+    name: "Iniciativa educación 2027",
+    description: "Causa benéfica para apoyar iniciativas de educación. Caste vesco occaecati turpis aperte voluptates urbanus necessitatibus. Cariosus strenuus urbanus error cum agnosco utpote impedit ara volo.",
+    status: "approved",
+    reason: "",
+    userId: "359f2d3a-0ad5-4169-927e-5f72bb235527",
+    createdAt: "2026-01-10T01:09:21.729Z",
+    updatedAt: "2026-01-10T01:09:21.729Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1",
+      "17",
+      "4"
+    ],
+    startDate: "2026-07-15T00:09:06.920Z",
+    duration: 218,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "9de57a55-d9d2-40e5-880a-04e6c7045088",
+    name: "Iniciativa igualdad de género 2026",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Verumtamen bonus rem.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "0da92fd0-63b4-4aa0-9ef7-3c6d66300703",
+    createdAt: "2026-01-10T01:09:21.791Z",
+    updatedAt: "2026-01-10T01:09:21.791Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6"
+    ],
+    startDate: "2026-05-10T00:09:06.983Z",
+    duration: 98,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "e3209f9f-e0cc-48d6-961a-4178abbd25bc",
+    name: "Proyecto derechos humanos 2026",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Voluptatibus corona benigne velociter tergo agnosco currus curatio communis abduco.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "e1c5d272-595c-42d6-920a-6a746e879e73",
+    createdAt: "2026-01-10T01:09:21.853Z",
+    updatedAt: "2026-01-10T01:09:21.853Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "16"
+    ],
+    startDate: "2026-07-20T00:09:07.045Z",
+    duration: 265,
+    communityId: "325eaa73-7f12-45da-a8bc-11361b87539c"
+  },
+  {
+    _id: "10653446-f68d-4b1e-a204-185e5acd5564",
+    name: "Jornada pobreza 2026",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Advoco coaegresco argentum thymbra.",
+    status: "approved",
+    reason: "",
+    userId: "ff8326a3-472f-4587-82cb-e0f4c6d8f921",
+    createdAt: "2026-01-10T01:09:21.916Z",
+    updatedAt: "2026-01-10T01:09:21.916Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9"
+    ],
+    startDate: "2026-05-01T00:09:07.108Z",
+    duration: 218,
+    communityId: "b2d08727-9da2-4a6d-88c1-30098699a0e6"
+  },
+  {
+    _id: "a3a7b1cd-ae8e-45ab-b8af-9fb9ee11c5ac",
+    name: "Jornada emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Vinco tenax venustas incidunt torqueo tenetur atqui.",
+    status: "pending",
+    userId: "5790721a-690a-466a-92ae-59ae4404da12",
+    createdAt: "2026-01-10T01:09:07.182Z",
+    updatedAt: "2026-01-10T01:09:07.182Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "1"
+    ],
+    startDate: "2026-04-14T00:09:07.170Z",
+    duration: 320,
+    communityId: "b2d08727-9da2-4a6d-88c1-30098699a0e6"
+  },
+  {
+    _id: "b9d9870d-347e-4bf6-865d-82e7d7f71d32",
+    name: "Movimiento vivienda 2027",
+    description: "Causa benéfica para apoyar iniciativas de vivienda. Damno suadeo claro tabella. Vulgivagus super crustulum antiquus patrocinor depereo aestas stabilis laudantium una.",
+    status: "approved",
+    reason: "",
+    userId: "23a44cd6-a91a-43c9-b98c-95787c49e574",
+    createdAt: "2026-01-10T01:09:22.039Z",
+    updatedAt: "2026-01-10T01:09:22.039Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "1",
+      "15"
+    ],
+    startDate: "2026-03-15T01:09:07.231Z",
+    duration: 203,
+    communityId: "ff12b0ae-a3b8-431f-bd1d-c6b6800d7d6d"
+  },
+  {
+    _id: "2e765e05-0084-46e2-b852-ea4b913872c8",
+    name: "Acción solidaria educación 2026",
+    description: "Causa benéfica para apoyar iniciativas de educación. Amo argentum vulgus arbustum peior. Victus canis adfectus solus denuo clibanus.",
+    status: "approved",
+    reason: "",
+    userId: "1853aa28-7a81-4f2a-b4d8-ce394263acc4",
+    createdAt: "2026-01-10T01:09:22.101Z",
+    updatedAt: "2026-01-10T01:09:22.101Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "3"
+    ],
+    startDate: "2026-07-04T00:09:07.294Z",
+    duration: 61,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "94a8e66c-f875-4ce6-85f3-3f2f98f748c7",
+    name: "Jornada medio ambiente 2026",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Supplanto ipsam creptio benevolentia.",
+    status: "approved",
+    reason: "",
+    userId: "bcee7b18-303f-4d94-a515-1ce21533bd9d",
+    createdAt: "2026-01-10T01:09:22.162Z",
+    updatedAt: "2026-01-10T01:09:22.162Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "8"
+    ],
+    startDate: "2026-04-27T00:09:07.358Z",
+    duration: 332,
+    communityId: "35e8ddc0-923b-4094-9fe8-bb5633908189"
+  },
+  {
+    _id: "8fff8c2d-dd7b-44d0-858a-72239702aa4b",
+    name: "Jornada desarrollo sostenible 2027",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Cunctatio alioqui culpo aliquam dolor cruentus. Quaerat corrumpo inventore corroboro votum animus cetera suppellex.",
+    status: "approved",
+    reason: "",
+    userId: "fedc18bc-f476-48d5-abcd-05b79d20886c",
+    createdAt: "2026-01-10T01:09:22.224Z",
+    updatedAt: "2026-01-10T01:09:22.224Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "8",
+      "6"
+    ],
+    startDate: "2026-04-20T00:09:07.419Z",
+    duration: 338,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "6f222e8e-b60e-4287-99a9-464448a77e68",
+    name: "Campaña derechos humanos 2026",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Vere curtus non asper deripio quibusdam degenero amo.",
+    status: "pending",
+    userId: "9e535df7-9710-43b6-bec5-5cb86e4255bc",
+    createdAt: "2026-01-10T01:09:07.495Z",
+    updatedAt: "2026-01-10T01:09:07.495Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "2"
+    ],
+    startDate: "2026-02-13T01:09:07.482Z",
+    duration: 356,
+    communityId: "194dbf75-51ed-44df-a866-dd18b25967f3"
+  },
+  {
+    _id: "99973686-fc26-4afb-8ce6-70e5e0d55b14",
+    name: "Jornada agua potable 2027",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Attollo defero uredo soleo cur desino accendo. Cura depulso amplexus reiciendis aperte patria quisquam.",
+    status: "pending",
+    userId: "f7bbd43a-4c83-4216-9248-096673daf498",
+    createdAt: "2026-01-10T01:09:07.557Z",
+    updatedAt: "2026-01-10T01:09:07.557Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3",
+      "10"
+    ],
+    startDate: "2026-03-24T01:09:07.545Z",
+    duration: 121,
+    communityId: "8f09139f-b7b8-4200-9285-ade40939febe"
+  },
+  {
+    _id: "b2b65486-f29c-4d6f-aa65-634f808d8b4f",
+    name: "Red de apoyo tercera edad 2027",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Vae addo nobis. Cogo accusator verbum vesper stips cado deporto cras auctor.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "8a702982-bc28-4061-a810-72a404b60c6f",
+    createdAt: "2026-01-10T01:09:22.412Z",
+    updatedAt: "2026-01-10T01:09:22.412Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11",
+      "2",
+      "3"
+    ],
+    startDate: "2026-05-17T00:09:07.607Z",
+    duration: 339,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "b9d2a956-208f-48fc-8a34-79f3f10f3f3b",
+    name: "Iniciativa derechos humanos 2026",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Ipsum accedo tristis cohibeo cupiditate adsum amoveo a conforto summopere. Ante explicabo conturbo valetudo adsidue catena sint vinculum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "065c9c6e-964b-49c4-b7ef-0c89430a3aa1",
+    createdAt: "2026-01-10T01:09:22.473Z",
+    updatedAt: "2026-01-10T01:09:22.473Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4"
+    ],
+    startDate: "2026-05-08T00:09:07.669Z",
+    duration: 288,
+    communityId: "64b1e590-bd32-4796-b49b-fc6cf1b92b0d"
+  },
+  {
+    _id: "bc9c4e7c-04ba-4d7e-abb2-17c9788cef11",
+    name: "Proyecto derechos humanos 2026",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Depulso ager addo turpis comitatus cervus.",
+    status: "pending",
+    userId: "9d1fe85d-cd95-461b-ba51-87c17fed78c7",
+    createdAt: "2026-01-10T01:09:07.744Z",
+    updatedAt: "2026-01-10T01:09:07.744Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "5",
+      "13"
+    ],
+    startDate: "2026-06-25T00:09:07.731Z",
+    duration: 144,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "a0a7f366-8748-4bd8-a066-207340369666",
+    name: "Programa infancia 2027",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Comedo omnis possimus vulnero cumque umbra reprehenderit abduco. Trado stipes cometes spes pel.",
+    status: "approved",
+    reason: "",
+    userId: "385d9dcc-6343-4501-ab2d-44f481276fc1",
+    createdAt: "2026-01-10T01:09:22.598Z",
+    updatedAt: "2026-01-10T01:09:22.598Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "17"
+    ],
+    startDate: "2026-03-09T01:09:07.793Z",
+    duration: 350,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "53081cd8-d612-47b9-98e0-d181da7cebe5",
+    name: "Proyecto pobreza 2027",
+    description: "Causa benéfica para apoyar iniciativas de pobreza. Tardus solus currus error.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "361bcf9f-508a-4d70-8d1a-7f8963ddd29c",
+    createdAt: "2026-01-10T01:09:22.660Z",
+    updatedAt: "2026-01-10T01:09:22.660Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15"
+    ],
+    startDate: "2026-02-26T01:09:07.855Z",
+    duration: 268,
+    communityId: "56de6147-ae45-4ead-8860-5f9202a41337"
+  },
+  {
+    _id: "0dd26d2b-25aa-4dd7-8622-d2d6ba317a8a",
+    name: "Proyecto medio ambiente 2027",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Dolorem voluptate arto repellat coaegresco adfero decretum.",
+    status: "approved",
+    reason: "",
+    userId: "9ef7a6fb-3079-4b40-bad4-fad14e7da30a",
+    createdAt: "2026-01-10T01:09:22.723Z",
+    updatedAt: "2026-01-10T01:09:22.723Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "2",
+      "4"
+    ],
+    startDate: "2026-03-09T01:09:07.917Z",
+    duration: 69,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "c284f569-af1b-4a92-b37d-6f4f5b0715f7",
+    name: "Campaña educación 2027",
+    description: "Causa benéfica para apoyar iniciativas de educación. Charisma vaco ventus confugo atque ambulo.",
+    status: "approved",
+    reason: "",
+    userId: "f1279fd8-425a-467f-9ca7-1a4ddba7151f",
+    createdAt: "2026-01-10T01:09:22.785Z",
+    updatedAt: "2026-01-10T01:09:22.785Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13"
+    ],
+    startDate: "2026-03-25T01:09:07.978Z",
+    duration: 298,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "b2364448-ac9d-45a2-a99c-e422d455dd8f",
+    name: "Iniciativa medio ambiente 2027",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Caveo tardus curso suspendo ocer suasoria deripio accendo aperiam.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "037464c8-6064-47fe-80ba-45b51c7dac60",
+    createdAt: "2026-01-10T01:09:22.846Z",
+    updatedAt: "2026-01-10T01:09:22.846Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "4",
+      "12"
+    ],
+    startDate: "2026-04-06T00:09:08.040Z",
+    duration: 33,
+    communityId: "8f09139f-b7b8-4200-9285-ade40939febe"
+  },
+  {
+    _id: "aec16c75-eda7-42fb-98b9-762532d81247",
+    name: "Acción solidaria igualdad de género 2026",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Benigne apparatus adhuc bos appositus veritatis asporto titulus.",
+    status: "approved",
+    reason: "",
+    userId: "02c19ca9-b0cf-4108-87b4-f8a2b5809ef0",
+    createdAt: "2026-01-10T01:09:22.909Z",
+    updatedAt: "2026-01-10T01:09:22.909Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1",
+      "4",
+      "9"
+    ],
+    startDate: "2026-08-06T00:09:08.102Z",
+    duration: 36,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "73951d30-67a2-4831-98c1-5c3f50a3b3ab",
+    name: "Movimiento alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Summa terminatio aut cultura beatae qui depereo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "91bac851-f9de-487e-8845-236f3b2ccc83",
+    createdAt: "2026-01-10T01:09:22.971Z",
+    updatedAt: "2026-01-10T01:09:22.971Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "1"
+    ],
+    startDate: "2026-07-26T00:09:08.165Z",
+    duration: 160,
+    communityId: "56de6147-ae45-4ead-8860-5f9202a41337"
+  },
+  {
+    _id: "b29a23bc-1bc1-4e98-b473-8626e120f64c",
+    name: "Acción solidaria desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Verecundia veniam vitae carmen thesaurus aperte callide. Vinum suus viridis incidunt cometes.",
+    status: "approved",
+    reason: "",
+    userId: "91e9bf73-f329-4c6b-be68-c992f136558c",
+    createdAt: "2026-01-10T01:09:23.032Z",
+    updatedAt: "2026-01-10T01:09:23.032Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "15",
+      "7"
+    ],
+    startDate: "2026-07-14T00:09:08.227Z",
+    duration: 358,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "d910efe6-e25c-4690-880a-c5d087c49e8c",
+    name: "Proyecto refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Eum tardus defendo unus audacia fugiat.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ade31128-b25c-494f-b271-90c83a107409",
+    createdAt: "2026-01-10T01:09:23.093Z",
+    updatedAt: "2026-01-10T01:09:23.093Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "1",
+      "11"
+    ],
+    startDate: "2026-07-12T00:09:08.289Z",
+    duration: 135,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "0818f1eb-bd5a-45a6-9a61-4bf0aa4e6eee",
+    name: "Movimiento desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Suppono xiphias careo.",
+    status: "pending",
+    userId: "ccfa63f6-6ea6-49f2-90f0-dfd408a7ec80",
+    createdAt: "2026-01-10T01:09:08.363Z",
+    updatedAt: "2026-01-10T01:09:08.363Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5"
+    ],
+    startDate: "2026-03-02T01:09:08.351Z",
+    duration: 30,
+    communityId: "414d3e93-333b-4754-8f39-699a39a391fd"
+  },
+  {
+    _id: "77d31ed6-e4c5-460b-9342-6a4b05efcd40",
+    name: "Jornada educación 2027",
+    description: "Causa benéfica para apoyar iniciativas de educación. Degero architecto aestus canis.",
+    status: "approved",
+    reason: "",
+    userId: "4655414b-01ff-410e-bd78-13a48c2bd0e5",
+    createdAt: "2026-01-10T01:09:23.217Z",
+    updatedAt: "2026-01-10T01:09:23.217Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "14",
+      "9",
+      "7"
+    ],
+    startDate: "2026-03-23T01:09:08.414Z",
+    duration: 302,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "ad535d5a-edfe-4ea5-9aab-f41b99eb3ba4",
+    name: "Movimiento alimentación 2027",
+    description: "Causa benéfica para apoyar iniciativas de alimentación. Tamquam decimus cur.",
+    status: "approved",
+    reason: "",
+    userId: "a68ff1aa-fe21-42a0-89fc-6de5b3348fec",
+    createdAt: "2026-01-10T01:09:23.279Z",
+    updatedAt: "2026-01-10T01:09:23.279Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "11",
+      "6"
+    ],
+    startDate: "2026-03-15T01:09:08.476Z",
+    duration: 183,
+    communityId: "59fec8a9-f697-4c36-9470-839bf8af1bf8"
+  },
+  {
+    _id: "4b52e22b-2363-44f8-a9fd-b54efa6585f8",
+    name: "Acción solidaria emergencias 2027",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Cura adficio veritas derideo demergo dolorum theca tempore approbo. Appositus adiuvo umerus tyrannus appello deleniti tracto voluntarius.",
+    status: "approved",
+    reason: "",
+    userId: "38e83044-cc72-44c1-ab98-cc5d0bdb2827",
+    createdAt: "2026-01-10T01:09:23.341Z",
+    updatedAt: "2026-01-10T01:09:23.341Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "6",
+      "3"
+    ],
+    startDate: "2026-03-31T00:09:08.540Z",
+    duration: 42,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "195b365a-4f6c-4303-8df6-ee2314cd8b26",
+    name: "Programa salud 2026",
+    description: "Causa benéfica para apoyar iniciativas de salud. Sunt subito tametsi architecto iure doloribus vespillo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "d25ff7a6-b97e-4262-bbde-afcef1c6db02",
+    createdAt: "2026-01-10T01:09:23.404Z",
+    updatedAt: "2026-01-10T01:09:23.404Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "17",
+      "14"
+    ],
+    startDate: "2026-07-25T00:09:08.603Z",
+    duration: 81,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "86a9afe5-c341-469a-9275-a03dba53fcd3",
+    name: "Programa salud 2026",
+    description: "Causa benéfica para apoyar iniciativas de salud. Claro cras agnitio temptatio abundans.",
+    status: "approved",
+    reason: "",
+    userId: "1cd8497e-1826-40d9-8ca8-c7e792797a24",
+    createdAt: "2026-01-10T01:09:23.466Z",
+    updatedAt: "2026-01-10T01:09:23.466Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "5"
+    ],
+    startDate: "2026-02-13T01:09:08.666Z",
+    duration: 362,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "3bf67a10-6a43-48f7-b17f-6c0f8b3292b2",
+    name: "Iniciativa medio ambiente 2027",
+    description: "Causa benéfica para apoyar iniciativas de medio ambiente. Adulatio vulariter magni vitiosus accusator uter debilito.",
+    status: "approved",
+    reason: "",
+    userId: "a6421f6b-0793-479c-93e6-bcd541b2cf7a",
+    createdAt: "2026-01-10T01:09:23.529Z",
+    updatedAt: "2026-01-10T01:09:23.529Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "5",
+      "15"
+    ],
+    startDate: "2026-06-11T00:09:08.728Z",
+    duration: 219,
+    communityId: "74970f6d-25d8-4c48-b9a4-36abc744024b"
+  },
+  {
+    _id: "134c7020-3221-4bf6-853f-be1f355712c5",
+    name: "Acción solidaria agua potable 2026",
+    description: "Causa benéfica para apoyar iniciativas de agua potable. Suggero nam vado cum tubineus vix corporis terror cornu condico. Cui ustulo delectatio auxilium minus bellicus sustineo amita.",
+    status: "approved",
+    reason: "",
+    userId: "8926f58b-d8ee-4edc-ae92-6c7597400a3f",
+    createdAt: "2026-01-10T01:09:23.590Z",
+    updatedAt: "2026-01-10T01:09:23.590Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12"
+    ],
+    startDate: "2026-04-04T00:09:08.790Z",
+    duration: 252,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "3138f409-ec12-400c-b5c5-3951fc16d3cd",
+    name: "Campaña refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Beatae enim apto aetas coniuratio vomer.",
+    status: "approved",
+    reason: "",
+    userId: "3edf95f1-1ea7-4c62-971e-a05af7d697d7",
+    createdAt: "2026-01-10T01:09:23.653Z",
+    updatedAt: "2026-01-10T01:09:23.653Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "12",
+      "5",
+      "2"
+    ],
+    startDate: "2026-05-31T00:09:08.868Z",
+    duration: 161,
+    communityId: "755f7fea-0b24-46ce-bd48-6bcf54011462"
+  },
+  {
+    _id: "a1d40d02-a3ec-4c4f-ab37-d2fac870d3e5",
+    name: "Operación derechos humanos 2026",
+    description: "Causa benéfica para apoyar iniciativas de derechos humanos. Cupio nobis totidem venustas aetas fuga utrimque sub.",
+    status: "approved",
+    reason: "",
+    userId: "bc4a1b44-18a7-4102-b623-aaafc6ee7dbf",
+    createdAt: "2026-01-10T01:09:23.716Z",
+    updatedAt: "2026-01-10T01:09:23.716Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13",
+      "7"
+    ],
+    startDate: "2026-06-30T00:09:08.930Z",
+    duration: 112,
+    communityId: "8f09139f-b7b8-4200-9285-ade40939febe"
+  },
+  {
+    _id: "f3aa318b-8ade-4d62-b7d2-676e173d2def",
+    name: "Jornada desarrollo sostenible 2026",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Curriculum angelus ultra conitor conduco victoria aurum voluntarius conspergo. Sequi curis attero.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "41e61a7b-d324-4c1d-ace6-887564d10384",
+    createdAt: "2026-01-10T01:09:23.779Z",
+    updatedAt: "2026-01-10T01:09:23.779Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "16",
+      "14"
+    ],
+    startDate: "2026-04-27T00:09:08.991Z",
+    duration: 73,
+    communityId: "56de6147-ae45-4ead-8860-5f9202a41337"
+  },
+  {
+    _id: "707dac7c-a406-4eab-87dc-4b408bd4289e",
+    name: "Acción solidaria refugiados 2026",
+    description: "Causa benéfica para apoyar iniciativas de refugiados. Defero sponte triduana ancilla adeo sequi.",
+    status: "approved",
+    reason: "",
+    userId: "9ff9e8ba-c3ec-4fdd-8ce4-cbf263a5c1dc",
+    createdAt: "2026-01-10T01:09:23.840Z",
+    updatedAt: "2026-01-10T01:09:23.840Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "15",
+      "8"
+    ],
+    startDate: "2026-02-16T01:09:09.053Z",
+    duration: 265,
+    communityId: "75857900-c0e1-4708-9acf-6b1437696560"
+  },
+  {
+    _id: "2b761eaa-c8fc-4380-9e6b-3dd93640ac29",
+    name: "Iniciativa educación 2026",
+    description: "Causa benéfica para apoyar iniciativas de educación. Voco asporto quo spes caelestis cauda curtus. Admoneo patria clibanus vulgo vivo.",
+    status: "approved",
+    reason: "",
+    userId: "33805313-dd2d-462a-9f76-ba9ddd835d16",
+    createdAt: "2026-01-10T01:09:23.903Z",
+    updatedAt: "2026-01-10T01:09:23.903Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "3"
+    ],
+    startDate: "2026-06-25T00:09:09.115Z",
+    duration: 88,
+    communityId: "414d3e93-333b-4754-8f39-699a39a391fd"
+  },
+  {
+    _id: "289918d9-e099-44d6-b5cb-1de6da3c164a",
+    name: "Jornada vivienda 2026",
+    description: "Causa benéfica para apoyar iniciativas de vivienda. Velut nemo sunt abscido solus spectaculum trucido succedo tot creta.",
+    status: "approved",
+    reason: "",
+    userId: "a5d930a4-808e-4ec1-86ef-be0e26bf47e0",
+    createdAt: "2026-01-10T01:09:23.963Z",
+    updatedAt: "2026-01-10T01:09:23.963Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "11",
+      "4",
+      "12"
+    ],
+    startDate: "2026-02-14T01:09:09.179Z",
+    duration: 139,
+    communityId: "18a020dc-2731-4de1-ae75-b7f6d2cc191f"
+  },
+  {
+    _id: "291da3f5-10c6-4339-95fa-be86c9273497",
+    name: "Campaña infancia 2026",
+    description: "Causa benéfica para apoyar iniciativas de infancia. Usus defessus commodo bestia patior debitis confugo.",
+    status: "pending",
+    userId: "9d228181-5169-4292-b268-f2abe483a351",
+    createdAt: "2026-01-10T01:09:09.253Z",
+    updatedAt: "2026-01-10T01:09:09.253Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "2",
+      "16",
+      "12"
+    ],
+    startDate: "2026-08-02T00:09:09.242Z",
+    duration: 118,
+    communityId: "77325730-41d5-41b1-ab5a-5a5d239c039d"
+  },
+  {
+    _id: "ba9f704e-1213-4c76-a341-1fe43f0003b5",
+    name: "Acción solidaria igualdad de género 2027",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Vilis denuncio traho.",
+    status: "approved",
+    reason: "",
+    userId: "8e6945b7-f50f-4fee-b44c-fbafbc04d837",
+    createdAt: "2026-01-10T01:09:24.089Z",
+    updatedAt: "2026-01-10T01:09:24.089Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "4",
+      "2",
+      "17"
+    ],
+    startDate: "2026-05-04T00:09:09.304Z",
+    duration: 313,
+    communityId: "e9ee1d40-abc3-4de8-999c-2b0648c82032"
+  },
+  {
+    _id: "850d6048-87ee-4552-84c4-2f3aa78688b4",
+    name: "Acción solidaria tercera edad 2026",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Accusamus tutis volup vinco atrocitas ulciscor cogito alii. Demergo coepi vito doloribus succurro crustulum calcar apparatus.",
+    status: "approved",
+    reason: "",
+    userId: "42a0a6d0-69d0-4820-b9d3-b22ed7ed40eb",
+    createdAt: "2026-01-10T01:09:24.152Z",
+    updatedAt: "2026-01-10T01:09:24.152Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "8",
+      "11"
+    ],
+    startDate: "2026-07-30T00:09:09.367Z",
+    duration: 129,
+    communityId: "77325730-41d5-41b1-ab5a-5a5d239c039d"
+  },
+  {
+    _id: "78695f93-7b26-4929-bedc-a1dd3cebe0bf",
+    name: "Programa salud 2027",
+    description: "Causa benéfica para apoyar iniciativas de salud. Versus arceo consequatur coruscus esse voluptates aliqua caste.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "b8e756ea-9090-467a-a548-e3e61ae62066",
+    createdAt: "2026-01-10T01:09:24.215Z",
+    updatedAt: "2026-01-10T01:09:24.215Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "13"
+    ],
+    startDate: "2026-02-28T01:09:09.429Z",
+    duration: 41,
+    communityId: "80740677-910c-4736-a5dc-1a2f95157a58"
+  },
+  {
+    _id: "1eddd6d8-4f06-4b9b-8c33-ceaf62d6d930",
+    name: "Acción solidaria tercera edad 2027",
+    description: "Causa benéfica para apoyar iniciativas de tercera edad. Desipio creber soluta conor tremo tenax decor cura cresco.",
+    status: "approved",
+    reason: "",
+    userId: "0792c7fc-e9f1-4dd9-8d5d-225dbcc36f68",
+    createdAt: "2026-01-10T01:09:24.278Z",
+    updatedAt: "2026-01-10T01:09:24.278Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "16"
+    ],
+    startDate: "2026-05-27T00:09:09.492Z",
+    duration: 121,
+    communityId: "56de6147-ae45-4ead-8860-5f9202a41337"
+  },
+  {
+    _id: "65317f3e-3d22-4d2a-b6ac-d91bb27bf24f",
+    name: "Acción solidaria emergencias 2026",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Tempus tabesco caste.",
+    status: "approved",
+    reason: "",
+    userId: "11c5d45f-ffa1-41d7-b6de-b2b52f14af04",
+    createdAt: "2026-01-10T01:09:24.341Z",
+    updatedAt: "2026-01-10T01:09:24.341Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "15",
+      "12"
+    ],
+    startDate: "2026-02-23T01:09:09.555Z",
+    duration: 131,
+    communityId: "6e5d9c7c-daec-4bb6-8eaf-3997a2d55022"
+  },
+  {
+    _id: "d30f6e54-0df3-4ba8-9ce7-b4d13c7c307e",
+    name: "Jornada igualdad de género 2026",
+    description: "Causa benéfica para apoyar iniciativas de igualdad de género. Creo viridis callide depromo. Est commodo conspergo adhuc argentum debitis.",
+    status: "pending",
+    userId: "698feeee-f349-4f6a-8824-227495e0ceb8",
+    createdAt: "2026-01-10T01:09:09.630Z",
+    updatedAt: "2026-01-10T01:09:09.630Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "17",
+      "6"
+    ],
+    startDate: "2026-03-15T01:09:09.618Z",
+    duration: 50,
+    communityId: "325eaa73-7f12-45da-a8bc-11361b87539c"
+  },
+  {
+    _id: "a7a81dbd-d946-4917-ab84-5ba3fde5349c",
+    name: "Red de apoyo salud 2026",
+    description: "Causa benéfica para apoyar iniciativas de salud. Consequuntur spero victoria candidus. Suffragium aut comitatus degenero bibo quos vis aetas altus tener.",
+    status: "approved",
+    reason: "",
+    userId: "05384bd4-bf7b-45af-9151-d7a59b006dd5",
+    createdAt: "2026-01-10T01:09:24.465Z",
+    updatedAt: "2026-01-10T01:09:24.465Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "7",
+      "16"
+    ],
+    startDate: "2026-03-14T01:09:09.680Z",
+    duration: 311,
+    communityId: "f21b3392-fb59-44cd-a82a-d5c32415c0ae"
+  },
+  {
+    _id: "b1d34b4e-dbfa-4a63-b8ed-74d454227b46",
+    name: "Movimiento discapacidad 2027",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Clarus advoco spiritus similique adiuvo aegre vitiosus. Texo ipsum deprecator spes alter causa aduro celo.",
+    status: "approved",
+    reason: "",
+    userId: "f1db4524-1c56-4c15-b4cb-eff82c326efb",
+    createdAt: "2026-01-10T01:09:24.527Z",
+    updatedAt: "2026-01-10T01:09:24.527Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "7",
+      "17",
+      "1"
+    ],
+    startDate: "2026-07-07T00:09:09.742Z",
+    duration: 341,
+    communityId: "704a1a31-262d-4c1d-afdb-cbc8b59862bc"
+  },
+  {
+    _id: "6f7a4b1c-ed49-4eb7-8de2-d6ce69127de5",
+    name: "Campaña educación 2026",
+    description: "Causa benéfica para apoyar iniciativas de educación. Cursus aureus defero aperio cultellus denego conatus urbs.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "e06bfcff-2582-48a2-97b2-c343674916da",
+    createdAt: "2026-01-10T01:09:24.588Z",
+    updatedAt: "2026-01-10T01:09:24.588Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "9",
+      "12"
+    ],
+    startDate: "2026-05-13T00:09:09.804Z",
+    duration: 204,
+    communityId: "6e5d9c7c-daec-4bb6-8eaf-3997a2d55022"
+  },
+  {
+    _id: "3bf01bac-0a77-4316-9598-e8ba1cb84399",
+    name: "Operación emergencias 2026",
+    description: "Causa benéfica para apoyar iniciativas de emergencias. Perspiciatis thesaurus carpo defero. Tripudio chirographum demum tui strenuus ter distinctio asper ademptio.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "78dc4d45-a2a6-4592-a5d6-188caccf0029",
+    createdAt: "2026-01-10T01:09:24.651Z",
+    updatedAt: "2026-01-10T01:09:24.651Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "3",
+      "12"
+    ],
+    startDate: "2026-03-31T00:09:09.866Z",
+    duration: 31,
+    communityId: "b0e6482e-e6ca-413a-a9d1-cd43d8b1d019"
+  },
+  {
+    _id: "48d99e4d-e84a-493e-80b3-54d2ec19a3c5",
+    name: "Acción solidaria discapacidad 2027",
+    description: "Causa benéfica para apoyar iniciativas de discapacidad. Aduro turba impedit.",
+    status: "approved",
+    reason: "",
+    userId: "33c89fa3-a2e8-46d1-8a21-eadab035cc34",
+    createdAt: "2026-01-10T01:09:24.712Z",
+    updatedAt: "2026-01-10T01:09:24.712Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "15",
+      "1"
+    ],
+    startDate: "2026-05-17T00:09:09.929Z",
+    duration: 220,
+    communityId: "d3990db2-a997-41b1-8ee9-3d7e0b5326f2"
+  },
+  {
+    _id: "5bb9ed0f-ed3a-4820-b0d8-082f817b12b2",
+    name: "Movimiento desarrollo sostenible 2027",
+    description: "Causa benéfica para apoyar iniciativas de desarrollo sostenible. Deficio abundans audeo adicio. Quaerat paens creo claudeo annus valeo via terra conspergo mollitia.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a799f2e7-da90-4655-9f4c-b45b3137ddbe",
+    createdAt: "2026-01-10T01:09:24.774Z",
+    updatedAt: "2026-01-10T01:09:24.774Z",
+    __v: 0,
+    type: "cause",
+    ods: [
+      "10",
+      "3"
+    ],
+    startDate: "2026-04-14T00:09:09.991Z",
+    duration: 364,
+    communityId: "64b1e590-bd32-4796-b49b-fc6cf1b92b0d"
+  },
+  {
+    _id: "02f7edce-d25a-473f-a8f9-6af922858676",
+    name: "Movimiento medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Decipio cunctatio cura anser vorago.",
+    status: "approved",
+    reason: "",
+    userId: "8e6945b7-f50f-4fee-b44c-fbafbc04d837",
+    createdAt: "2026-01-10T01:10:00.443Z",
+    updatedAt: "2026-01-10T01:10:00.443Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 316,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 46,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - medio ambiente",
+        description: "Evento presencial para medio ambiente. Solutio officia charisma thymum vomica celer temperantia ter comis eligendi. Argentum distinctio patruus vulariter ars.",
+        initialDate: "2026-07-15T00:09:26.852Z",
+        place: {
+          direction: "831 E State Street, 705",
+          city: "Liverpool",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - vivienda",
+        description: "Evento presencial para vivienda. Advenio adamo votum officia. Facilis uxor ciminatio corona amissio considero occaecati.",
+        initialDate: "2026-05-01T00:09:26.852Z",
+        place: {
+          direction: "94867 Bins Trafficway, 40154",
+          city: "León",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "bae8f195-ef7b-476f-96cc-1e273a8dc8de"
+  },
+  {
+    _id: "5ae33b82-9ae5-45a6-b987-31109228aed5",
+    name: "Acción solidaria alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Itaque confero suffragium sufficio cerno sub aetas. Amo tergeo tergeo subiungo demoror supellex tamisium aequitas.",
+    status: "approved",
+    reason: "",
+    userId: "fdc2ceb7-9912-4677-a05e-5f9723f15f6e",
+    createdAt: "2026-01-10T01:10:00.642Z",
+    updatedAt: "2026-01-10T01:10:00.642Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 59,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 990,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Solus cunae deduco sub absorbeo contigo confido nostrum stillicidium.",
+        initialDate: "2026-04-17T00:09:27.044Z",
+        place: {
+          direction: "604 Warren Road, 6927",
+          city: "Napoli",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Reunión de coordinación - refugiados",
+        description: "Evento presencial para refugiados. Conservo aduro labore.",
+        initialDate: "2026-03-13T01:09:27.044Z",
+        place: {
+          direction: "497 Hall Lane, 7537",
+          city: "Valencia",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "598feb24-9c39-4a1a-a30c-ba8d20420ba5"
+  },
+  {
+    _id: "5588107b-9b3e-401f-8464-8b1b461e5d13",
+    name: "Operación desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Suggero cuppedia virgo contabesco carus super vulpes canonicus depereo. Statim spero abscido velut vero audio.",
+    status: "approved",
+    reason: "",
+    userId: "1c943f5d-1923-4361-adfc-5d43b1be653f",
+    createdAt: "2026-01-10T01:10:00.704Z",
+    updatedAt: "2026-01-10T01:10:00.704Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 708,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 425,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 82,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Vitiosus baiulus turbo desipio aranea.",
+        initialDate: "2026-03-01T01:09:27.106Z",
+        place: {
+          direction: "9305 Eliza Freeway, 72370",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "77d31ed6-e4c5-460b-9342-6a4b05efcd40"
+  },
+  {
+    _id: "f84828bf-725c-4ea0-a452-ad3c814e2b3f",
+    name: "Campaña vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Aeger quia aedificium video cetera culpo. Comprehendo tricesimus deleniti assentator varius cultellus victus convoco.",
+    status: "approved",
+    reason: "",
+    userId: "6c01dd68-30c9-40f3-9493-2ae9d6344d25",
+    createdAt: "2026-01-10T01:10:00.890Z",
+    updatedAt: "2026-01-10T01:10:00.890Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 535,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 885,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - discapacidad",
+        description: "Evento presencial para discapacidad. Depraedor coma sodalitas aureus consuasor aspicio cornu abstergo.",
+        initialDate: "2026-04-19T00:09:27.294Z",
+        place: {
+          direction: "5925 The Laurels, 32656",
+          city: "Torino",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "4cd8a6cd-db51-49cd-98ff-c0216f416296"
+  },
+  {
+    _id: "df3e03b9-2ca3-4ddd-98e0-d2e7f439b972",
+    name: "Campaña pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Tamisium suffoco rerum verto curo convoco.",
+    status: "approved",
+    reason: "",
+    userId: "207025f2-5340-473c-bf9c-447cc2e51e8e",
+    createdAt: "2026-01-10T01:10:00.952Z",
+    updatedAt: "2026-01-10T01:10:00.952Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 746,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 539,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 297,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Confido cruentus verbum at tabula usque statim tolero porro admiratio.",
+        initialDate: "2026-01-20T01:09:27.356Z",
+        place: {
+          direction: "54373 N Cedar Street, 2530",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Reunión de coordinación - agua potable",
+        description: "Evento presencial para agua potable. Suadeo stultus circumvenio degero.",
+        initialDate: "2026-07-14T00:09:27.356Z",
+        place: {
+          direction: "9356 Hills Camp, 517",
+          city: "Firenze",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "36a729b3-cecb-4897-9a1c-2cc9abee5687"
+  },
+  {
+    _id: "7a101ab3-42d1-4e0f-8959-7e83d6bbb947",
+    name: "Jornada salud 2027",
+    description: "Acción concreta para salud con objetivos cuantificables. Adipisci aureus amita succedo dolor crinis.",
+    status: "approved",
+    reason: "",
+    userId: "2f18d090-2db0-4634-b537-3a7c4de8db19",
+    createdAt: "2026-01-10T01:10:01.075Z",
+    updatedAt: "2026-01-10T01:10:01.075Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 663,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Ipsum animi custodia surculus suscipio crustulum vilicus corporis patruus traho. Soleo theologus ago tam terminatio doloremque tredecim cotidie.",
+        initialDate: "2026-01-19T01:09:27.481Z",
+        place: {
+          direction: "921 Valentin Plain, 19600",
+          city: "La Plata",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Evento benéfico - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Neque aranea cribro.",
+        initialDate: "2026-03-09T01:09:27.481Z",
+        place: {
+          direction: "7252 Maple Drive, 95451",
+          city: "Málaga",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "61fdb887-9b33-4c3e-a468-f2d427ea13f0"
+  },
+  {
+    _id: "378015b9-3ccf-4181-bbe2-beea964de26c",
+    name: "Campaña educación 2027",
+    description: "Acción concreta para educación con objetivos cuantificables. Communis strenuus cultellus surgo eum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "6fae39de-8886-4f8d-8895-bb5c9c4b12fe",
+    createdAt: "2026-01-10T01:10:01.261Z",
+    updatedAt: "2026-01-10T01:10:01.261Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 59,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - discapacidad",
+        description: "Evento presencial para discapacidad. Adopto vicinus arguo vox ante tam. Tendo confido autus subnecto cubo video audio.",
+        initialDate: "2026-01-27T01:09:27.668Z",
+        place: {
+          direction: "3874 E Park Avenue, 4022",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      },
+      {
+        name: "Jornada solidaria - vivienda",
+        description: "Evento presencial para vivienda. Compello coniuratio aliquam. Asporto commodi decor tantillus ipsa.",
+        initialDate: "2026-03-04T01:09:27.668Z",
+        place: {
+          direction: "919 Friesen Ways, 8671",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "711160a9-f462-439d-b665-2531ed225c94"
+  },
+  {
+    _id: "3a3e503c-87b0-4e7a-8312-25d4c170faff",
+    name: "Iniciativa refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Aedificium delinquo approbo delego beneficium accusamus vis talis contra vilicus.",
+    status: "approved",
+    reason: "",
+    userId: "ea1e6178-0abb-4936-a322-9e2de2c1d4d4",
+    createdAt: "2026-01-10T01:10:01.389Z",
+    updatedAt: "2026-01-10T01:10:01.389Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 543,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 261,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - tercera edad",
+        description: "Evento presencial para tercera edad. Decens supplanto advoco truculenter.",
+        initialDate: "2026-04-18T00:09:27.793Z",
+        place: {
+          direction: "749 Lynch Track, 3866",
+          city: "Bogotá",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "a43062fa-1abe-45a4-8de5-eae957b5a89e"
+  },
+  {
+    _id: "aedd8912-1833-483e-826e-955de9e4f558",
+    name: "Operación vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Carbo supellex suppellex caecus voluptatibus collum.",
+    status: "approved",
+    reason: "",
+    userId: "d194e0bb-9717-4321-a9ca-9aa7bbc3534f",
+    createdAt: "2026-01-10T01:10:01.451Z",
+    updatedAt: "2026-01-10T01:10:01.451Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 98,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - refugiados",
+        description: "Evento presencial para refugiados. Utpote angustus tristis vapulus. Ara bellum coniecto amoveo pecus tot.",
+        initialDate: "2026-01-19T01:09:27.855Z",
+        place: {
+          direction: "6969 Amely Greens, 1530",
+          city: "Hamburg",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "9520fbae-c469-459e-af20-d066d34a8376"
+  },
+  {
+    _id: "f90eb5b5-0c44-4543-b0d8-5ded6d21ae5c",
+    name: "Jornada refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Constans vomer antepono alii bardus.",
+    status: "approved",
+    reason: "",
+    userId: "492a0301-6ff2-4024-846f-8bfc6d14aaea",
+    createdAt: "2026-01-10T01:10:01.513Z",
+    updatedAt: "2026-01-10T01:10:01.513Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 676,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 260,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 871,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - alimentación",
+        description: "Evento presencial para alimentación. Benevolentia utpote currus umerus theologus comminor tempora. Deputo alienus bene annus.",
+        initialDate: "2026-07-04T00:09:27.918Z",
+        place: {
+          direction: "7745 Will Crossing, 99124",
+          city: "Guadalajara",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Reunión de coordinación - alimentación",
+        description: "Evento presencial para alimentación. Arbustum vallum vado astrum.",
+        initialDate: "2026-06-02T00:09:27.918Z",
+        place: {
+          direction: "2855 Georgianna Rapid, 539",
+          city: "Liverpool",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "1e82a478-470a-4f67-b7e7-ba47861bdeb4"
+  },
+  {
+    _id: "551704b6-194e-4cfb-a11a-88e15fa96de6",
+    name: "Operación tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Vito cribro adfero. Tripudio aegrus tego demens.",
+    status: "approved",
+    reason: "",
+    userId: "d00e797c-8f90-4199-add4-a2beac966d70",
+    createdAt: "2026-01-10T01:10:01.575Z",
+    updatedAt: "2026-01-10T01:10:01.575Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 790,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Veritas tabella verus temperantia.",
+        initialDate: "2026-02-09T01:09:27.982Z",
+        place: {
+          direction: "8705 Fore Street, 63578",
+          city: "Maracaibo",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Encuentro comunitario - vivienda",
+        description: "Evento presencial para vivienda. Subiungo culpo denuncio attollo summisse. Caries earum coruscus vomer varietas bestia universe carmen.",
+        initialDate: "2026-04-27T00:09:27.982Z",
+        place: {
+          direction: "47914 Springfield Close, 29422",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "598feb24-9c39-4a1a-a30c-ba8d20420ba5"
+  },
+  {
+    _id: "26f243d3-6ef6-4318-a598-d16d7a306465",
+    name: "Acción solidaria discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Solutio vicissitudo adeo taceo similique vacuus.",
+    status: "approved",
+    reason: "",
+    userId: "01c2ed7b-5fac-4d3b-9ff6-b8d96658bd2b",
+    createdAt: "2026-01-10T01:10:01.637Z",
+    updatedAt: "2026-01-10T01:10:01.637Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 279,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 161,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 843,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - infancia",
+        description: "Evento presencial para infancia. Stultus desparatus demonstro. Amita ventosus spero socius.",
+        initialDate: "2026-04-28T00:09:28.045Z",
+        place: {
+          direction: "2836 Maple Road, 77974",
+          city: "Hamburg",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - pobreza",
+        description: "Evento presencial para pobreza. Tantum corpus suus thorax cresco animi veritas admitto.",
+        initialDate: "2026-05-16T00:09:28.045Z",
+        place: {
+          direction: "40076 Prospect Street, 986",
+          city: "Buenos Aires",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "61fdb887-9b33-4c3e-a468-f2d427ea13f0"
+  },
+  {
+    _id: "a241925a-e31e-4ea1-9bb6-f9722211307a",
+    name: "Operación refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Cernuus capto creptio. Depopulo natus aureus subvenio adsum.",
+    status: "approved",
+    reason: "",
+    userId: "04fd3f5a-c78d-40f3-aa4d-fd80c4a138a1",
+    createdAt: "2026-01-10T01:10:01.700Z",
+    updatedAt: "2026-01-10T01:10:01.700Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 634,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - emergencias",
+        description: "Evento presencial para emergencias. Vilis agnitio speciosus vomica quas deduco cibus vomito terebro balbus.",
+        initialDate: "2026-04-13T00:09:28.107Z",
+        place: {
+          direction: "776 Gleichner Loaf, 695",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Reunión de coordinación - tercera edad",
+        description: "Evento presencial para tercera edad. Velit pecco adeo quo derideo sit sollers confido aestivus capio. Thesaurus substantia utroque canonicus collum constans vallum bestia tredecim.",
+        initialDate: "2026-05-24T00:09:28.107Z",
+        place: {
+          direction: "6638 S Grand Avenue, 79622",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "c284f569-af1b-4a92-b37d-6f4f5b0715f7"
+  },
+  {
+    _id: "8a1485da-5a70-4444-9c63-81ac4ab30fd6",
+    name: "Operación derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Quasi toties comptus villa nulla alias. Defetiscor consequuntur et cruciamentum angustus nesciunt.",
+    status: "approved",
+    reason: "",
+    userId: "38fd508a-33eb-4d2f-9567-175e7f0356f1",
+    createdAt: "2026-01-10T01:10:01.761Z",
+    updatedAt: "2026-01-10T01:10:01.761Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 394,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Turbo adduco creptio. Barba depereo utrum desolo patria claro illo deprimo.",
+        initialDate: "2026-02-09T01:09:28.169Z",
+        place: {
+          direction: "1462 Rutherford Ville, 72280",
+          city: "Lyon",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - derechos humanos",
+        description: "Evento presencial para derechos humanos. Cursim suppellex terror sponte.",
+        initialDate: "2026-06-03T00:09:28.169Z",
+        place: {
+          direction: "774 Herzog Knoll, 2423",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "850d6048-87ee-4552-84c4-2f3aa78688b4"
+  },
+  {
+    _id: "4af092cb-b602-4dea-8240-e1e1a3bec7a1",
+    name: "Red de apoyo discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Varius vesco torrens arbor audax casus summa claudeo neque. Caries auctor animadverto certus alienus villa spero bene.",
+    status: "approved",
+    reason: "",
+    userId: "074f7ac2-175a-4ba8-891d-b9cad85795ec",
+    createdAt: "2026-01-10T01:10:01.822Z",
+    updatedAt: "2026-01-10T01:10:01.822Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 466,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Pariatur adnuo beatus verecundia ambitus. Unus crustulum sopor celo thymum taceo omnis.",
+        initialDate: "2026-02-08T01:09:28.231Z",
+        place: {
+          direction: "450 Church View, 1688",
+          city: "Bristol",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "06066711-7ae6-4657-8b04-041ee972a014"
+  },
+  {
+    _id: "fdb7a395-5bfe-4c9e-b5d3-bc8cb9e701d7",
+    name: "Campaña agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Contabesco uxor absum torrens tabernus aspernatur strues. Ex defetiscor capillus adimpleo creta depono aeternus.",
+    status: "approved",
+    reason: "",
+    userId: "d00e797c-8f90-4199-add4-a2beac966d70",
+    createdAt: "2026-01-10T01:10:01.884Z",
+    updatedAt: "2026-01-10T01:10:01.884Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 229,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 37,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 230,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Vobis cupio nobis coruscus taceo demens trucido comedo crudelis tabella.",
+        initialDate: "2026-05-12T00:09:28.295Z",
+        place: {
+          direction: "9960 Jaskolski Spring, 509",
+          city: "Cancún",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "41d05331-2237-4ac2-a373-1ad7d6bdf06a"
+  },
+  {
+    _id: "6596a8f6-ce4c-46bd-99e4-c521438d161c",
+    name: "Operación discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Ullus abutor damnatio consequuntur quo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "1320a873-67f0-4c35-9d09-b3621bdf9991",
+    createdAt: "2026-01-10T01:10:02.010Z",
+    updatedAt: "2026-01-10T01:10:02.010Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 494,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - agua potable",
+        description: "Evento presencial para agua potable. Caecus aequus suscipio pax. Caelum volutabrum excepturi vulgo varietas.",
+        initialDate: "2026-03-17T01:09:28.421Z",
+        place: {
+          direction: "40933 Lindgren Harbor, 5917",
+          city: "Valencia",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Evento benéfico - medio ambiente",
+        description: "Evento presencial para medio ambiente. Tergiversatio adimpleo cognomen solum certe ustilo. Ratione audeo uterque.",
+        initialDate: "2026-03-19T01:09:28.421Z",
+        place: {
+          direction: "7068 Bergnaum Causeway, 3806",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "289918d9-e099-44d6-b5cb-1de6da3c164a"
+  },
+  {
+    _id: "f1326ad3-bbb5-492c-ae47-7cd07099e5ed",
+    name: "Jornada refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Commodi benigne solum aveho utrum conculco veritas alienus pecus. Corrumpo adflicto pecus ater.",
+    status: "pending",
+    userId: "21b64c11-25df-4162-90b8-9fd323b4c0fa",
+    createdAt: "2026-01-10T01:09:28.559Z",
+    updatedAt: "2026-01-10T01:09:28.559Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 696,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 300,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 46,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Colo tantum apparatus nam aveho dolorum. Aspernatur defluo eveniet vinco totus.",
+        initialDate: "2026-06-08T00:09:28.548Z",
+        place: {
+          direction: "54149 McGlynn Club, 758",
+          city: "Salvador",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "93eaef10-508e-4580-85b0-f083be061c32"
+  },
+  {
+    _id: "1170806e-1260-4907-a796-548139efa516",
+    name: "Jornada agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Infit circumvenio sollers acidus velut suggero vindico.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fedc18bc-f476-48d5-abcd-05b79d20886c",
+    createdAt: "2026-01-10T01:10:02.208Z",
+    updatedAt: "2026-01-10T01:10:02.208Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 511,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Vomica adamo pauper textus somniculosus sollicito spero contra. Cubo voluptatum sono demonstro conspergo versus annus suppellex deprecator.",
+        initialDate: "2026-02-20T01:09:28.612Z",
+        place: {
+          direction: "8699 Washington Road, 172",
+          city: "Tucumán",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "edd0b0a1-f88f-4a6a-8b0d-5c86c4b3d2ff"
+  },
+  {
+    _id: "e648816f-d5ba-4437-8d88-cc4a74fb33f6",
+    name: "Acción solidaria agua potable 2027",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Vae amet decimus curtus stultus. Canonicus asper mollitia dedecor quidem carpo thermae basium amplexus.",
+    status: "approved",
+    reason: "",
+    userId: "a799f2e7-da90-4655-9f4c-b45b3137ddbe",
+    createdAt: "2026-01-10T01:10:02.269Z",
+    updatedAt: "2026-01-10T01:10:02.269Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 190,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 184,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - medio ambiente",
+        description: "Evento presencial para medio ambiente. Communis cursim corroboro aeneus convoco stultus.",
+        initialDate: "2026-05-04T00:09:28.673Z",
+        place: {
+          direction: "773 Feil Locks, 793",
+          city: "Marseille",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Taller formativo - pobreza",
+        description: "Evento presencial para pobreza. Cupressus adstringo synagoga campana credo strenuus placeat.",
+        initialDate: "2026-05-27T00:09:28.674Z",
+        place: {
+          direction: "2603 Wisozk Corners, 227",
+          city: "Paris",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "3138f409-ec12-400c-b5c5-3951fc16d3cd"
+  },
+  {
+    _id: "54b2ca5c-e08b-44c4-8290-355752726835",
+    name: "Red de apoyo discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Omnis vaco casus delego adflicto taceo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "d0e41b0f-d8bc-4469-bd6f-2fd68ba88fc2",
+    createdAt: "2026-01-10T01:10:02.771Z",
+    updatedAt: "2026-01-10T01:10:02.771Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 428,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 421,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - vivienda",
+        description: "Evento presencial para vivienda. Blanditiis cruciamentum cometes expedita solitudo deorsum confero. Vinum trucido tergum.",
+        initialDate: "2026-04-26T00:09:29.174Z",
+        place: {
+          direction: "237 4th Street, 5119",
+          city: "London",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Convoco arguo tero traho cerno tergo desino adamo urbs curatio.",
+        initialDate: "2026-05-11T00:09:29.174Z",
+        place: {
+          direction: "54467 Fourth Avenue, 7154",
+          city: "Fortaleza",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "28b68b2a-185c-4a07-9750-5b43106faa19"
+  },
+  {
+    _id: "519f174f-4ec9-4410-b429-b45b3c66e65a",
+    name: "Proyecto derechos humanos 2027",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Ipsa adamo condico quisquam vobis.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "74db25d9-77ae-4212-95ed-37ef103dea01",
+    createdAt: "2026-01-10T01:10:02.834Z",
+    updatedAt: "2026-01-10T01:10:02.834Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 759,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 368,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Viriliter socius comburo volo theca.",
+        initialDate: "2026-03-09T01:09:29.237Z",
+        place: {
+          direction: "6415 South Avenue, 523",
+          city: "Napoli",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "b29a23bc-1bc1-4e98-b473-8626e120f64c"
+  },
+  {
+    _id: "8ed620c1-fb1e-47dd-8f7a-002231c4d2ea",
+    name: "Red de apoyo derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Campana delectatio urbs conqueror contra omnis.",
+    status: "approved",
+    reason: "",
+    userId: "abbb4afb-0c87-4ad3-8e76-b98bf3433e31",
+    createdAt: "2026-01-10T01:10:02.961Z",
+    updatedAt: "2026-01-10T01:10:02.961Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 849,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 582,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 418,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - derechos humanos",
+        description: "Evento presencial para derechos humanos. Vehemens textor deleniti rem acquiro adipisci acies acquiro eum ventito.",
+        initialDate: "2026-04-20T00:09:29.362Z",
+        place: {
+          direction: "2400 Cartwright Wall, 13944",
+          city: "Birmingham",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "2e765e05-0084-46e2-b852-ea4b913872c8"
+  },
+  {
+    _id: "6b0d414d-85ad-4b3f-88ba-fec77e312316",
+    name: "Movimiento desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Ulterius appono caelum voco crepusculum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "3dd93241-5fd3-42d3-b1c3-dcace5afa5f6",
+    createdAt: "2026-01-10T01:10:03.021Z",
+    updatedAt: "2026-01-10T01:10:03.021Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 145,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 397,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 491,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Terebro animus fugiat templum contra arto brevis reprehenderit arto. Vulnus vetus clarus vesica tondeo aetas tergiversatio calcar tepidus vos.",
+        initialDate: "2026-04-23T00:09:29.425Z",
+        place: {
+          direction: "759 St Mary's Close, 55548",
+          city: "Ciudad de México",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Evento benéfico - pobreza",
+        description: "Evento presencial para pobreza. Custodia contego adduco voluptas barba accusantium suffragium careo cuppedia defleo. Aduro adsuesco vos adfero basium accendo hic crustulum.",
+        initialDate: "2026-03-06T01:09:29.425Z",
+        place: {
+          direction: "9359 Mosciski Shores, 348",
+          city: "Buenos Aires",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "6d02eb0c-9131-40b6-98c5-baa7c415eaa6"
+  },
+  {
+    _id: "7cb78f90-acf1-4012-adbc-2211439cfc2b",
+    name: "Operación alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Alioqui clamo conicio cogo ut casso carus complectus delicate tui.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "9ee0e99b-d9a0-4a3b-ab45-6b258c46efc0",
+    createdAt: "2026-01-10T01:10:03.145Z",
+    updatedAt: "2026-01-10T01:10:03.145Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 968,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Capillus totidem depulso commodo calculus civitas cupiditate trucido.",
+        initialDate: "2026-06-29T00:09:29.549Z",
+        place: {
+          direction: "514 Forest Avenue, 503",
+          city: "Bucaramanga",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "a1d40d02-a3ec-4c4f-ab37-d2fac870d3e5"
+  },
+  {
+    _id: "2f4e8275-c3a1-49ac-85f6-347c7498fbe3",
+    name: "Acción solidaria vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Cui curo hic quos magnam conitor cumque cur cupiditas sto.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fedc18bc-f476-48d5-abcd-05b79d20886c",
+    createdAt: "2026-01-10T01:10:03.208Z",
+    updatedAt: "2026-01-10T01:10:03.208Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 966,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 134,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 316,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - alimentación",
+        description: "Evento presencial para alimentación. Curriculum crux audax vestrum synagoga ventus vestigium damnatio clementia apparatus. Defero dedecor bestia pecus auctor apostolus officiis.",
+        initialDate: "2026-01-24T01:09:29.611Z",
+        place: {
+          direction: "302 Brian Ranch, 38430",
+          city: "Lyon",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Reunión de coordinación - discapacidad",
+        description: "Evento presencial para discapacidad. Tollo cruciamentum tutamen thymum tutamen aufero amplexus vos corpus solvo. Desipio amo tutis arca appello vesica distinctio adopto.",
+        initialDate: "2026-03-26T01:09:29.611Z",
+        place: {
+          direction: "40947 Clarence Road, 3521",
+          city: "Mar del Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "a7a81dbd-d946-4917-ab84-5ba3fde5349c"
+  },
+  {
+    _id: "a68682b8-ec5a-484c-83bf-856e55059688",
+    name: "Red de apoyo medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Totam caelum doloremque abscido pauci pax sonitus considero dapifer.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "c126d300-8a74-4b40-aa70-32eb9576aa48",
+    createdAt: "2026-01-10T01:10:03.270Z",
+    updatedAt: "2026-01-10T01:10:03.270Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 769,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 49,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 513,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Cattus tabella armarium.",
+        initialDate: "2026-04-09T00:09:29.673Z",
+        place: {
+          direction: "892 Lockman Keys, 718",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Encuentro comunitario - emergencias",
+        description: "Evento presencial para emergencias. Spargo stipes apostolus vomer concido claro pauci.",
+        initialDate: "2026-05-27T00:09:29.673Z",
+        place: {
+          direction: "781 N Broad Street, 186",
+          city: "Chiclayo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "3ad6c562-c47b-4db3-8038-3c17199902ea"
+  },
+  {
+    _id: "321917b5-f671-47c9-b2e3-6dc5873d3612",
+    name: "Operación agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Verbera cresco totidem tergiversatio candidus commemoro adaugeo modi. Sed comburo minima degusto.",
+    status: "pending",
+    userId: "23a44cd6-a91a-43c9-b98c-95787c49e574",
+    createdAt: "2026-01-10T01:09:29.745Z",
+    updatedAt: "2026-01-10T01:09:29.745Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 646,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 227,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 839,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - emergencias",
+        description: "Evento presencial para emergencias. Impedit cresco ver placeat.",
+        initialDate: "2026-05-03T00:09:29.735Z",
+        place: {
+          direction: "47059 Hazel Grove, 7533",
+          city: "Paris",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Taller formativo - igualdad de género",
+        description: "Evento presencial para igualdad de género. Sub adhaero summisse campana tibi adipiscor. Aedificium victoria solutio doloribus natus minus repellendus tertius combibo amita.",
+        initialDate: "2026-05-29T00:09:29.735Z",
+        place: {
+          direction: "431 Mayer Lights, 2054",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "efb8828b-3259-4f39-aabc-7584fb83b80d"
+  },
+  {
+    _id: "6357ca9f-9b4a-457d-b589-d57df6a59fed",
+    name: "Proyecto emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Solutio vesper stillicidium coma tremo alias creo. Quasi vomica careo conventus defaeco.",
+    status: "pending",
+    userId: "33c89fa3-a2e8-46d1-8a21-eadab035cc34",
+    createdAt: "2026-01-10T01:09:29.807Z",
+    updatedAt: "2026-01-10T01:09:29.807Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 303,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 32,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 763,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - vivienda",
+        description: "Evento presencial para vivienda. Cur beatus bardus vesica deleniti nisi caelum.",
+        initialDate: "2026-06-20T00:09:29.797Z",
+        place: {
+          direction: "725 Main Street W, 198",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Evento benéfico - infancia",
+        description: "Evento presencial para infancia. Vesco cunabula accedo adicio minima colo speculum desolo. Thesaurus labore solus testimonium.",
+        initialDate: "2026-04-07T00:09:29.797Z",
+        place: {
+          direction: "9118 Reinger Fields, 57504",
+          city: "Antofagasta",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "bae8f195-ef7b-476f-96cc-1e273a8dc8de"
+  },
+  {
+    _id: "b8aa4a29-3862-4627-8672-7b6027114146",
+    name: "Operación discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Venia vinum amiculum apto angulus laborum libero vallum volutabrum accusamus.",
+    status: "approved",
+    reason: "",
+    userId: "4cd2f718-ad88-442e-b8df-42f343f00378",
+    createdAt: "2026-01-10T01:10:03.459Z",
+    updatedAt: "2026-01-10T01:10:03.459Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 873,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Est exercitationem calco degenero degero nobis cumque voluptatem acidus abeo. Vulticulus campana vigor taedium vereor consuasor textor esse pecco abbas.",
+        initialDate: "2026-03-01T01:09:29.860Z",
+        place: {
+          direction: "2219 Williamson Hills, 39387",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Reunión de coordinación - igualdad de género",
+        description: "Evento presencial para igualdad de género. Adfectus caritas ustulo adfero venio concedo molestias. Vulgaris collum vinum.",
+        initialDate: "2026-07-09T00:09:29.860Z",
+        place: {
+          direction: "216 Hobart Parkways, 762",
+          city: "Buenos Aires",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "a43062fa-1abe-45a4-8de5-eae957b5a89e"
+  },
+  {
+    _id: "7a7ba685-e3be-41dc-8bd2-e50c820af07e",
+    name: "Iniciativa derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Ascisco deduco strues coepi.",
+    status: "approved",
+    reason: "",
+    userId: "18df14ac-48b3-4c88-aea8-fbdbf9552d02",
+    createdAt: "2026-01-10T01:10:03.587Z",
+    updatedAt: "2026-01-10T01:10:03.587Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 791,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - derechos humanos",
+        description: "Evento presencial para derechos humanos. Tabella coma aegrotatio umerus utroque audacia strues clementia valeo.",
+        initialDate: "2026-02-28T01:09:29.983Z",
+        place: {
+          direction: "91082 Oxford Street, 786",
+          city: "Arequipa",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "53f9ae7f-93a0-4444-afd4-4469eb46bb3f"
+  },
+  {
+    _id: "0f932ec4-fc08-4602-a8e6-a2a977903a07",
+    name: "Jornada infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Voluptatem vestrum curiositas cernuus deleo inventore. Abeo ver apparatus vado cetera est tamisium defluo perferendis.",
+    status: "pending",
+    userId: "2fc70400-2910-421a-9a83-25e51d4732f9",
+    createdAt: "2026-01-10T01:09:30.056Z",
+    updatedAt: "2026-01-10T01:09:30.056Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 347,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 275,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - alimentación",
+        description: "Evento presencial para alimentación. Cras vespillo aperte ventito video tenus aequus adamo cena audio.",
+        initialDate: "2026-07-07T00:09:30.046Z",
+        place: {
+          direction: "274 Franco Parkway, 2299",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "3c2983e6-b26d-44fc-87ee-0534ceba543c"
+  },
+  {
+    _id: "dd45833a-b940-4196-b5ad-51889854413e",
+    name: "Movimiento salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Delicate confero substantia illum ulciscor optio acsi terra trado. Depopulo victoria abutor claro dapifer aureus.",
+    status: "approved",
+    reason: "",
+    userId: "87ee6a45-1964-42b0-8ffa-bc1694aad4b8",
+    createdAt: "2026-01-10T01:10:03.711Z",
+    updatedAt: "2026-01-10T01:10:03.711Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 368,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 406,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Demonstro tres architecto tenax theca porro balbus amiculum deficio. Tamquam ipsum aureus abbas vir valeo tutamen bellicus succedo delectatio.",
+        initialDate: "2026-03-11T01:09:30.108Z",
+        place: {
+          direction: "76966 Quigley Burg, 60596",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Taller formativo - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Cilicium valens torqueo atqui ter accusantium ara. Illo sunt calculus spiritus absum expedita asperiores utrimque.",
+        initialDate: "2026-06-09T00:09:30.108Z",
+        place: {
+          direction: "6846 Bartell Lock, 4115",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "d03469d2-1b17-4242-b858-34cecf3164ba"
+  },
+  {
+    _id: "7090d39f-a4b1-4464-8182-c96c24ccf9ea",
+    name: "Proyecto medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Tyrannus aeneus vulticulus. Atrocitas itaque cerno totidem amor adopto maxime deserunt amet quia.",
+    status: "approved",
+    reason: "",
+    userId: "e82824b5-fb2d-4fbd-93c1-44591a01e3d8",
+    createdAt: "2026-01-10T01:10:03.773Z",
+    updatedAt: "2026-01-10T01:10:03.773Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 553,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - alimentación",
+        description: "Evento presencial para alimentación. Vaco demitto defetiscor antepono urbs attero clarus vereor. Tardus suppono vobis aliquid voluntarius aperte blanditiis carus nostrum vindico.",
+        initialDate: "2026-03-13T01:09:30.171Z",
+        place: {
+          direction: "657 Paxton Circles, 511",
+          city: "Birmingham",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "06066711-7ae6-4657-8b04-041ee972a014"
+  },
+  {
+    _id: "44b309be-dc23-4c22-ab91-28c9dbe82033",
+    name: "Iniciativa emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Clibanus tabella annus. Sperno vinum degusto doloremque sono tempora.",
+    status: "approved",
+    reason: "",
+    userId: "6265ab84-6f90-4ea8-99e7-d9ffc0284fc2",
+    createdAt: "2026-01-10T01:10:03.835Z",
+    updatedAt: "2026-01-10T01:10:03.835Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 312,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - infancia",
+        description: "Evento presencial para infancia. Sunt ancilla acies turba tutis vomer corrigo.",
+        initialDate: "2026-07-08T00:09:30.234Z",
+        place: {
+          direction: "3610 Haag Forge, 61675",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "0e0a4b6d-d038-43d6-8122-49e07a2c5b4d"
+  },
+  {
+    _id: "b33dc04b-c571-418f-8c48-9882760b7464",
+    name: "Campaña infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Calculus quia quos angustus tergeo demitto baiulus succurro cohaero.",
+    status: "approved",
+    reason: "",
+    userId: "8e6945b7-f50f-4fee-b44c-fbafbc04d837",
+    createdAt: "2026-01-10T01:10:03.900Z",
+    updatedAt: "2026-01-10T01:10:03.900Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 806,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 21,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - agua potable",
+        description: "Evento presencial para agua potable. Vado adulescens coerceo tyrannus voveo.",
+        initialDate: "2026-02-17T01:09:30.297Z",
+        place: {
+          direction: "762 Enrique Divide, 6268",
+          city: "Málaga",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "2335c251-34fc-4520-a825-0b41b728d24e"
+  },
+  {
+    _id: "1ead7b34-ff8a-4119-9e54-9b52be41949b",
+    name: "Iniciativa refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Voluptate truculenter curtus adaugeo aiunt at caelum. Ciminatio optio peccatus earum defendo agnitio amoveo cui.",
+    status: "approved",
+    reason: "",
+    userId: "a4ccfbdf-e7ad-4c6c-a943-90b9abf85aac",
+    createdAt: "2026-01-10T01:10:03.961Z",
+    updatedAt: "2026-01-10T01:10:03.961Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 925,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - vivienda",
+        description: "Evento presencial para vivienda. Carmen ago minima vapulus candidus alii utique sono cupiditate. Caelum tempus taedium cubitum.",
+        initialDate: "2026-04-30T00:09:30.359Z",
+        place: {
+          direction: "5061 Daniel Parks, 4429",
+          city: "Liverpool",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "69068059-2fc9-41da-8b89-baf291fd62a0"
+  },
+  {
+    _id: "c9ee88e3-4aff-4311-88d5-89af15cde882",
+    name: "Jornada refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Aeger congregatio alioqui tamdiu suscipit adduco tergo caterva deduco color. Uxor patior crapula impedit vinitor ipsam pecus denego.",
+    status: "pending",
+    userId: "2ba5de2c-73b6-4756-b73a-2e7f67483645",
+    createdAt: "2026-01-10T01:09:30.430Z",
+    updatedAt: "2026-01-10T01:09:30.430Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 92,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 573,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Convoco atqui cras deleo dolorem. Titulus voluptatum corpus.",
+        initialDate: "2026-06-21T00:09:30.420Z",
+        place: {
+          direction: "86351 Willow Road, 224",
+          city: "Mendoza",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "efb8828b-3259-4f39-aabc-7584fb83b80d"
+  },
+  {
+    _id: "877e84c3-80fd-43a0-ad05-0b41fd4551b6",
+    name: "Operación refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Creptio praesentium voro defero claro caecus vulgus.",
+    status: "pending",
+    userId: "35461096-7f5d-46e8-80fa-67113a1dc7ed",
+    createdAt: "2026-01-10T01:09:30.493Z",
+    updatedAt: "2026-01-10T01:09:30.493Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 411,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 677,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 136,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - refugiados",
+        description: "Evento presencial para refugiados. Abbas speciosus absorbeo terga agnitio et calamitas.",
+        initialDate: "2026-07-13T00:09:30.483Z",
+        place: {
+          direction: "13788 Jack Cliffs, 5358",
+          city: "Frankfurt",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Reunión de coordinación - tercera edad",
+        description: "Evento presencial para tercera edad. Aegre comburo sto reprehenderit cattus capio conturbo absconditus termes. Vestrum ambitus subvenio adsuesco deprimo inflammatio culpa color arcus.",
+        initialDate: "2026-05-16T00:09:30.483Z",
+        place: {
+          direction: "9964 Clair Alley, 750",
+          city: "Cologne",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "6e76f385-9e63-4868-8423-56e9bfd412fa"
+  },
+  {
+    _id: "1561737b-8ec2-4a14-8fe1-c44d2b767ebf",
+    name: "Movimiento tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Acies bestia debitis aspicio cum appello basium totam copia ascit. Audacia recusandae patrocinor tenetur crux vilicus copiose canis.",
+    status: "approved",
+    reason: "",
+    userId: "a698993d-1c89-4ae9-a67e-7b6e7a5c2772",
+    createdAt: "2026-01-10T01:10:04.210Z",
+    updatedAt: "2026-01-10T01:10:04.210Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 25,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - alimentación",
+        description: "Evento presencial para alimentación. Aggredior cubitum adsidue abundans censura arto stips.",
+        initialDate: "2026-04-21T00:09:30.610Z",
+        place: {
+          direction: "6622 Kira Lane, 456",
+          city: "Tucumán",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "6e76f385-9e63-4868-8423-56e9bfd412fa"
+  },
+  {
+    _id: "d2faa944-0dfb-42b0-9851-5d998da6176e",
+    name: "Movimiento medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Sollers somniculosus animadverto commodo thermae acer.",
+    status: "approved",
+    reason: "",
+    userId: "ccfa63f6-6ea6-49f2-90f0-dfd408a7ec80",
+    createdAt: "2026-01-10T01:10:04.335Z",
+    updatedAt: "2026-01-10T01:10:04.335Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 321,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - vivienda",
+        description: "Evento presencial para vivienda. Cuppedia sperno apostolus concido civitas degusto coadunatio. Illo amor corrigo.",
+        initialDate: "2026-02-24T01:09:30.734Z",
+        place: {
+          direction: "603 Brekke Freeway, 65766",
+          city: "Maracaibo",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "3949796e-57fd-479c-9f1e-a044077f4f23"
+  },
+  {
+    _id: "95c72997-c1d4-4a58-b749-861cd0b22125",
+    name: "Proyecto derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Tutis confero degenero vicinus arceo nihil crux.",
+    status: "approved",
+    reason: "",
+    userId: "03fb2951-8790-4de4-a501-0d78b54f35f8",
+    createdAt: "2026-01-10T01:10:04.460Z",
+    updatedAt: "2026-01-10T01:10:04.460Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 174,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 40,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 234,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - infancia",
+        description: "Evento presencial para infancia. Adflicto aegrotatio balbus vulpes doloribus aestas dolor territo eum. Tracto cubo bardus.",
+        initialDate: "2026-05-19T00:09:30.859Z",
+        place: {
+          direction: "3458 Rachel Flat, 226",
+          city: "La Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "d4d738fe-26e3-4f65-9f76-ce76bc85e0f4"
+  },
+  {
+    _id: "abc6f5b6-c2cc-4122-bf2b-7c42bbd5ce0e",
+    name: "Proyecto tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Carpo coepi angulus cur mollitia cunae ciminatio aiunt vallum.",
+    status: "approved",
+    reason: "",
+    userId: "8ad3ac54-9c8a-44ab-8842-e48396194796",
+    createdAt: "2026-01-10T01:10:04.522Z",
+    updatedAt: "2026-01-10T01:10:04.522Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 372,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 314,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 54,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - agua potable",
+        description: "Evento presencial para agua potable. Unde optio arbitro creo via ancilla. Bibo vitae carmen.",
+        initialDate: "2026-05-18T00:09:30.920Z",
+        place: {
+          direction: "4337 Korbin Union, 854",
+          city: "Nice",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "c9124372-a145-4833-a10e-c0eb3772b188"
+  },
+  {
+    _id: "c9f492f9-e0e1-4279-ad33-9b40cd9cc632",
+    name: "Iniciativa discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Adfero thesaurus sub cohibeo astrum tametsi cum vere apto.",
+    status: "approved",
+    reason: "",
+    userId: "e8dde852-dc91-4c4d-ad49-f8d2a5adec14",
+    createdAt: "2026-01-10T01:10:04.583Z",
+    updatedAt: "2026-01-10T01:10:04.583Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 23,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 27,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 130,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - discapacidad",
+        description: "Evento presencial para discapacidad. Abundans valeo deduco summa delectus fugit surculus infit urbs.",
+        initialDate: "2026-06-25T00:09:30.983Z",
+        place: {
+          direction: "647 E 2nd Street, 4466",
+          city: "Barquisimeto",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "44c97fe4-d536-4b5d-aa4f-e86e7f96046f"
+  },
+  {
+    _id: "1e1adabb-2f33-44e0-8986-b55c3d7becac",
+    name: "Campaña educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Soleo verbera constans advoco complectus. Adnuo vos absorbeo tabernus dolorem tabgo.",
+    status: "approved",
+    reason: "",
+    userId: "51de2304-6d04-4bdb-8fbe-d8303c61246d",
+    createdAt: "2026-01-10T01:10:04.646Z",
+    updatedAt: "2026-01-10T01:10:04.646Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 822,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - vivienda",
+        description: "Evento presencial para vivienda. Amissio deleo deleniti conscendo celo conqueror deorsum rem.",
+        initialDate: "2026-04-15T00:09:31.045Z",
+        place: {
+          direction: "2335 Ava Common, 521",
+          city: "Málaga",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "3b0e260d-8165-4a2a-98ab-9e10746bd67d"
+  },
+  {
+    _id: "519662ce-8a00-40a3-8255-a8fb2af6e46a",
+    name: "Movimiento infancia 2026",
+    description: "Acción concreta para infancia con objetivos cuantificables. Admitto civis repudiandae. Vespillo debilito absconditus aveho arto repudiandae artificiose inventore demulceo dicta.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a151d36a-0511-4f3c-a4b7-9678ca66b0d8",
+    createdAt: "2026-01-10T01:10:04.768Z",
+    updatedAt: "2026-01-10T01:10:04.768Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 681,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 998,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 147,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - tercera edad",
+        description: "Evento presencial para tercera edad. Ventosus demulceo vergo careo vomito.",
+        initialDate: "2026-05-27T00:09:31.170Z",
+        place: {
+          direction: "2845 Myrna Greens, 1831",
+          city: "Córdoba",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Jornada solidaria - pobreza",
+        description: "Evento presencial para pobreza. Accommodo consuasor cogito sapiente.",
+        initialDate: "2026-07-09T00:09:31.170Z",
+        place: {
+          direction: "56515 Sandy Lane, 320",
+          city: "Córdoba",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "9e78e393-18a4-45b2-a71c-56f2a9023c56"
+  },
+  {
+    _id: "8ecd2532-cc0d-46ee-a766-b1cb61294025",
+    name: "Acción solidaria infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Libero amiculum aggero adhuc doloribus cuius.",
+    status: "approved",
+    reason: "",
+    userId: "512b0a7d-f18b-432c-b768-4dd3fdbd3570",
+    createdAt: "2026-01-10T01:10:04.831Z",
+    updatedAt: "2026-01-10T01:10:04.831Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 440,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - medio ambiente",
+        description: "Evento presencial para medio ambiente. Ventus sono utrimque sperno decet assumenda laudantium advoco alveus. Averto currus aranea calco clibanus averto ipsam vox tergiversatio.",
+        initialDate: "2026-01-19T01:09:31.234Z",
+        place: {
+          direction: "73753 N Division Street, 6021",
+          city: "León",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - vivienda",
+        description: "Evento presencial para vivienda. Universe claudeo speciosus tollo alioqui validus.",
+        initialDate: "2026-04-02T00:09:31.234Z",
+        place: {
+          direction: "172 Laurianne Keys, 5014",
+          city: "Lille",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "4a85f754-1780-488b-a8f6-16b705b515d8"
+  },
+  {
+    _id: "2e5fb1b9-ceb9-4fe9-ac7f-d478e232f7a0",
+    name: "Red de apoyo vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Deinde denique ascit. Subseco crudelis animadverto.",
+    status: "approved",
+    reason: "",
+    userId: "91e9bf73-f329-4c6b-be68-c992f136558c",
+    createdAt: "2026-01-10T01:10:04.893Z",
+    updatedAt: "2026-01-10T01:10:04.893Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 841,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 808,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - agua potable",
+        description: "Evento presencial para agua potable. Articulus curtus caterva vos.",
+        initialDate: "2026-04-20T00:09:31.296Z",
+        place: {
+          direction: "769 Ward Tunnel, 9952",
+          city: "Milano",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "95200c1a-2cd9-4622-a808-82d99e29a931"
+  },
+  {
+    _id: "9c4e15ea-682c-45a8-99dc-123bc5b42249",
+    name: "Operación igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Paens cubo clam arceo tamisium quia delibero coniecto reiciendis defessus. Carcer urbs subnecto cogito tenax saepe attero vicinus ",
+    status: "pending",
+    userId: "4dc2d534-ef09-4f82-97fd-b3156db676e4",
+    createdAt: "2026-01-10T01:09:31.369Z",
+    updatedAt: "2026-01-10T01:09:31.369Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 907,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 627,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - pobreza",
+        description: "Evento presencial para pobreza. Tracto ad denique optio thema tabesco vitium aufero.",
+        initialDate: "2026-07-01T00:09:31.359Z",
+        place: {
+          direction: "601 Weissnat Way, 1398",
+          city: "Bologna",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "95200c1a-2cd9-4622-a808-82d99e29a931"
+  },
+  {
+    _id: "bd8e158d-456b-40a1-bdb2-7fcbf758cbaa",
+    name: "Iniciativa alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Coadunatio unus cultellus vinitor.",
+    status: "approved",
+    reason: "",
+    userId: "ea510f67-405f-4649-9027-2d9f38666b62",
+    createdAt: "2026-01-10T01:10:05.017Z",
+    updatedAt: "2026-01-10T01:10:05.017Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 187,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - emergencias",
+        description: "Evento presencial para emergencias. Terebro viscus contabesco adopto delinquo strenuus claustrum beneficium. Agnitio ars calcar acer coruscus dolor sonitus.",
+        initialDate: "2026-02-27T01:09:31.421Z",
+        place: {
+          direction: "8302 Jaden Ways, 9459",
+          city: "Firenze",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Taller formativo - medio ambiente",
+        description: "Evento presencial para medio ambiente. Possimus casus contego asper suasoria caterva quod vel.",
+        initialDate: "2026-05-17T00:09:31.421Z",
+        place: {
+          direction: "96882 Cleora Mountains, 809",
+          city: "Bologna",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "48d99e4d-e84a-493e-80b3-54d2ec19a3c5"
+  },
+  {
+    _id: "0413aa2e-8391-4f2c-a46e-57c8ee2bfdad",
+    name: "Red de apoyo tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Asporto caterva crur suscipit stillicidium depereo sequi cruentus agnitio corrupti.",
+    status: "approved",
+    reason: "",
+    userId: "9ef7a6fb-3079-4b40-bad4-fad14e7da30a",
+    createdAt: "2026-01-10T01:10:05.079Z",
+    updatedAt: "2026-01-10T01:10:05.079Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 162,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - infancia",
+        description: "Evento presencial para infancia. Cunae nam eligendi fugiat amissio vulgus compello titulus.",
+        initialDate: "2026-03-04T01:09:31.484Z",
+        place: {
+          direction: "7028 The Hawthorns, 273",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Jornada solidaria - salud",
+        description: "Evento presencial para salud. Vomica cauda tot compello caute aetas audacia coaegresco delibero. Tum usitas audeo comparo.",
+        initialDate: "2026-04-18T00:09:31.484Z",
+        place: {
+          direction: "659 Frederic Greens, 839",
+          city: "León",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "485d35d7-266b-4efc-9c9e-4df8b681acaa"
+  },
+  {
+    _id: "1aaa3374-0757-4de6-bc9c-1e91a441ef34",
+    name: "Acción solidaria vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Tabesco argumentum defungo thesis certe demo cuppedia.",
+    status: "approved",
+    reason: "",
+    userId: "dec6ac04-b4f3-4eac-9541-4bb4be337c6c",
+    createdAt: "2026-01-10T01:10:05.140Z",
+    updatedAt: "2026-01-10T01:10:05.140Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 656,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - educación",
+        description: "Evento presencial para educación. Minima patruus antepono ascisco vobis unus viridis cribro dolore. Cras adeptio aestivus accendo abduco contra vereor nesciunt.",
+        initialDate: "2026-01-22T01:09:31.546Z",
+        place: {
+          direction: "858 Main, 339",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "ded5f20f-7b1b-4ccf-afa2-60f2638c4025"
+  },
+  {
+    _id: "8296f750-1572-444b-b11c-01c8fd1fd911",
+    name: "Programa refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Curto umbra curiositas peccatus.",
+    status: "approved",
+    reason: "",
+    userId: "7ad9bad6-47d6-4261-8f17-c64e1f6d0a33",
+    createdAt: "2026-01-10T01:10:05.203Z",
+    updatedAt: "2026-01-10T01:10:05.203Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 479,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - agua potable",
+        description: "Evento presencial para agua potable. Debeo pauper aliquam substantia patria vapulus.",
+        initialDate: "2026-03-09T01:09:31.609Z",
+        place: {
+          direction: "98949 Kathlyn Mall, 990",
+          city: "Arequipa",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "30370111-8748-49b5-a399-12f1ac6e98c2"
+  },
+  {
+    _id: "a4923d3e-484d-406f-891a-36a9516be43a",
+    name: "Iniciativa emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Cresco uberrime venia iusto curvo talio arma facilis.",
+    status: "approved",
+    reason: "",
+    userId: "bc4a1b44-18a7-4102-b623-aaafc6ee7dbf",
+    createdAt: "2026-01-10T01:10:05.265Z",
+    updatedAt: "2026-01-10T01:10:05.265Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 671,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - agua potable",
+        description: "Evento presencial para agua potable. Necessitatibus suggero aiunt asporto abscido ipsa. Una considero tempore admoveo campana numquam.",
+        initialDate: "2026-04-07T00:09:31.671Z",
+        place: {
+          direction: "4247 Tom Rapid, 919",
+          city: "Glasgow",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - emergencias",
+        description: "Evento presencial para emergencias. Accusator sumptus cumque despecto facilis caput inventore. Undique subnecto ambitus adflicto tego curto abeo.",
+        initialDate: "2026-05-07T00:09:31.671Z",
+        place: {
+          direction: "41251 Hegmann Motorway, 25636",
+          city: "Manchester",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "06066711-7ae6-4657-8b04-041ee972a014"
+  },
+  {
+    _id: "df5441d6-8122-4c0c-9082-29aeb45852d3",
+    name: "Operación tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Patruus adfectus admoveo textus totus minus cedo barba. Aeneus corporis coniecto auxilium ait utique voluptate tero.",
+    status: "approved",
+    reason: "",
+    userId: "b183994d-26d8-4217-96aa-c24d5c20f9d3",
+    createdAt: "2026-01-10T01:10:05.329Z",
+    updatedAt: "2026-01-10T01:10:05.329Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 713,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - infancia",
+        description: "Evento presencial para infancia. Animus deleniti valetudo viriliter xiphias commodi curso dolorem dolores corpus.",
+        initialDate: "2026-01-29T01:09:31.733Z",
+        place: {
+          direction: "41893 Donnelly Neck, 8046",
+          city: "Caracas",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "bae8f195-ef7b-476f-96cc-1e273a8dc8de"
+  },
+  {
+    _id: "5783916a-c655-4110-99e4-3b6ac61de598",
+    name: "Acción solidaria discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Capitulus caveo atrocitas carbo vetus nobis una trucido vae.",
+    status: "approved",
+    reason: "",
+    userId: "46539a58-76f5-4324-be5c-8ff042b3c821",
+    createdAt: "2026-01-10T01:10:05.391Z",
+    updatedAt: "2026-01-10T01:10:05.391Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 380,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 435,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 794,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - alimentación",
+        description: "Evento presencial para alimentación. Comptus usus cursim usque.",
+        initialDate: "2026-05-02T00:09:31.795Z",
+        place: {
+          direction: "4456 Talbot Road, 46311",
+          city: "Manchester",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "9502be00-2ce7-4bd4-8490-ceee76d52d62"
+  },
+  {
+    _id: "8fa4309e-fb8d-4809-a1cd-f2fbde9a8cb6",
+    name: "Campaña educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Utroque recusandae adicio.",
+    status: "approved",
+    reason: "",
+    userId: "ade31128-b25c-494f-b271-90c83a107409",
+    createdAt: "2026-01-10T01:10:05.515Z",
+    updatedAt: "2026-01-10T01:10:05.515Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 363,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 210,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 116,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - discapacidad",
+        description: "Evento presencial para discapacidad. Audio adinventitias color aggredior adsuesco deleo cariosus. Thesis speciosus labore aurum videlicet curis delego articulus.",
+        initialDate: "2026-02-17T01:09:31.919Z",
+        place: {
+          direction: "568 Keven Course, 5295",
+          city: "Milano",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Reunión de coordinación - salud",
+        description: "Evento presencial para salud. Sui apud defero.",
+        initialDate: "2026-04-30T00:09:31.919Z",
+        place: {
+          direction: "414 The Ridgeway, 162",
+          city: "Trujillo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "93eaef10-508e-4580-85b0-f083be061c32"
+  },
+  {
+    _id: "d708f7f9-aacb-485b-9efc-59fd2fa720ef",
+    name: "Movimiento vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Blandior aequus beneficium vallum odit utrimque. Tyrannus vinco delinquo celebrer.",
+    status: "approved",
+    reason: "",
+    userId: "03f8c1b8-f60d-4dea-b3c7-604a5bea6331",
+    createdAt: "2026-01-10T01:10:05.578Z",
+    updatedAt: "2026-01-10T01:10:05.578Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 418,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - alimentación",
+        description: "Evento presencial para alimentación. Tabesco basium centum torqueo una.",
+        initialDate: "2026-03-22T01:09:31.981Z",
+        place: {
+          direction: "587 Schultz Road, 4200",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "0dd26d2b-25aa-4dd7-8622-d2d6ba317a8a"
+  },
+  {
+    _id: "3cd4f60b-25db-4d83-85e2-14957da9c97a",
+    name: "Movimiento infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Virga viduo facilis cuppedia ascit labore alter depraedor. Uberrime argentum atrox.",
+    status: "approved",
+    reason: "",
+    userId: "b183994d-26d8-4217-96aa-c24d5c20f9d3",
+    createdAt: "2026-01-10T01:10:05.702Z",
+    updatedAt: "2026-01-10T01:10:05.702Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 111,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 38,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 561,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - medio ambiente",
+        description: "Evento presencial para medio ambiente. Arca minima id dolor veniam vulgus. Sit cedo reiciendis accusamus altus tertius aiunt triduana.",
+        initialDate: "2026-01-26T01:09:32.103Z",
+        place: {
+          direction: "305 N Broad Street, 882",
+          city: "Tijuana",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Reunión de coordinación - alimentación",
+        description: "Evento presencial para alimentación. Vesper vito apostolus pauper ullam nisi iusto amplexus. Dolor templum tyrannus tempus vae argentum tenus studio soleo.",
+        initialDate: "2026-04-30T00:09:32.103Z",
+        place: {
+          direction: "63032 River Road, 636",
+          city: "Santiago",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "c8f2f577-388a-44db-bea3-aedd3e5988d2"
+  },
+  {
+    _id: "108ba395-30a1-45e5-ba15-94cc8e72d0d6",
+    name: "Proyecto igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Textilis voluptatum comburo nobis caste cedo.",
+    status: "approved",
+    reason: "",
+    userId: "92a26b71-7d12-45d6-9604-6e826295d2a0",
+    createdAt: "2026-01-10T01:10:05.890Z",
+    updatedAt: "2026-01-10T01:10:05.890Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 840,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 547,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - pobreza",
+        description: "Evento presencial para pobreza. Creo sodalitas tutamen.",
+        initialDate: "2026-06-24T00:09:32.290Z",
+        place: {
+          direction: "15368 N Broadway Street, 4225",
+          city: "Buenos Aires",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Aeneus tutis desidero ad temptatio trado pecus. Crepusculum depopulo quae caelum coadunatio degenero vero.",
+        initialDate: "2026-07-13T00:09:32.290Z",
+        place: {
+          direction: "73574 Brandt Underpass, 930",
+          city: "Napoli",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "0dd26d2b-25aa-4dd7-8622-d2d6ba317a8a"
+  },
+  {
+    _id: "87414df4-e13b-44f7-968f-014ec7bc5bc4",
+    name: "Operación alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Conqueror deprimo viscus. Spectaculum ventus itaque.",
+    status: "pending",
+    userId: "f72fc6e3-ea6c-4327-808b-38c297e74d5b",
+    createdAt: "2026-01-10T01:09:32.361Z",
+    updatedAt: "2026-01-10T01:09:32.361Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 835,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - tercera edad",
+        description: "Evento presencial para tercera edad. Degenero audacia expedita atavus arto sponte acquiro sodalitas.",
+        initialDate: "2026-06-26T00:09:32.352Z",
+        place: {
+          direction: "1578 Damon Alley, 9236",
+          city: "Ciudad de México",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "14bcd9c1-4199-4578-98c9-ac25ee169cbc"
+  },
+  {
+    _id: "097f460f-ec12-4d67-85f1-00082138af4f",
+    name: "Acción solidaria emergencias 2027",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Ventus catena antiquus talio universe bellicus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "8652eff5-7c8d-4370-8039-539fa50d2cc7",
+    createdAt: "2026-01-10T01:10:06.014Z",
+    updatedAt: "2026-01-10T01:10:06.014Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 930,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 632,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - salud",
+        description: "Evento presencial para salud. Degero pecus thalassinus valde in alo succurro. Eos armarium ambulo creptio.",
+        initialDate: "2026-01-19T01:09:32.414Z",
+        place: {
+          direction: "11594 Estel Ports, 43962",
+          city: "Berlin",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "ded5f20f-7b1b-4ccf-afa2-60f2638c4025"
+  },
+  {
+    _id: "1a1e1b67-879d-4d36-98eb-d75a4ca74c16",
+    name: "Proyecto educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Coruscus fuga cimentarius benigne crinis bellicus. Synagoga cohibeo spero adicio.",
+    status: "approved",
+    reason: "",
+    userId: "9ef7a6fb-3079-4b40-bad4-fad14e7da30a",
+    createdAt: "2026-01-10T01:10:06.077Z",
+    updatedAt: "2026-01-10T01:10:06.077Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 745,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Arx odio textilis volubilis cupressus tumultus acsi anser.",
+        initialDate: "2026-05-07T00:09:32.477Z",
+        place: {
+          direction: "9704 Elm Close, 467",
+          city: "Guadalajara",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "5427a22a-94a4-4695-8bbb-b27aefa79324"
+  },
+  {
+    _id: "2ceab09c-dd58-43e1-bfbe-e500f9562fcd",
+    name: "Jornada derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Unde vinum utpote. Tolero iste aspernatur provident audacia audax amissio.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "3dd93241-5fd3-42d3-b1c3-dcace5afa5f6",
+    createdAt: "2026-01-10T01:10:06.138Z",
+    updatedAt: "2026-01-10T01:10:06.138Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 330,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 394,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Confido turpis colligo stips possimus.",
+        initialDate: "2026-04-27T00:09:32.539Z",
+        place: {
+          direction: "1030 O'Hara View, 8335",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Encuentro comunitario - refugiados",
+        description: "Evento presencial para refugiados. Suffragium constans vinco inflammatio defetiscor ipsam maiores crebro. Accusator astrum canonicus ultio illo temporibus cotidie vociferor alii.",
+        initialDate: "2026-03-30T00:09:32.539Z",
+        place: {
+          direction: "488 Herman Cliffs, 15599",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "289918d9-e099-44d6-b5cb-1de6da3c164a"
+  },
+  {
+    _id: "bee94f9f-5d15-4541-a31b-f4f48d969cbe",
+    name: "Operación educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Temperantia tamen cinis distinctio cavus quam decens. Deserunt amplexus pariatur aufero curso calculus alter timor thorax.",
+    status: "approved",
+    reason: "",
+    userId: "68b60675-f02d-40b8-b856-24b4c14133b1",
+    createdAt: "2026-01-10T01:10:06.201Z",
+    updatedAt: "2026-01-10T01:10:06.201Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 917,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - tercera edad",
+        description: "Evento presencial para tercera edad. Tenax odio fugit suggero territo decumbo vulgivagus pecco solum.",
+        initialDate: "2026-03-20T01:09:32.601Z",
+        place: {
+          direction: "51998 Ebert Walks, 2902",
+          city: "Barranquilla",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Encuentro comunitario - infancia",
+        description: "Evento presencial para infancia. Pecus natus usus.",
+        initialDate: "2026-04-11T00:09:32.601Z",
+        place: {
+          direction: "42937 N Water Street, 1178",
+          city: "Salvador",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "a1d40d02-a3ec-4c4f-ab37-d2fac870d3e5"
+  },
+  {
+    _id: "6f1a6040-cfd8-4363-839a-ea158e23836a",
+    name: "Operación tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Accendo doloremque sursum dolore avaritia dolor repudiandae. Bene videlicet trado.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "e8dde852-dc91-4c4d-ad49-f8d2a5adec14",
+    createdAt: "2026-01-10T01:10:06.263Z",
+    updatedAt: "2026-01-10T01:10:06.263Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 233,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 910,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 473,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - discapacidad",
+        description: "Evento presencial para discapacidad. Adfectus argentum laudantium. Cunae reiciendis arbitro.",
+        initialDate: "2026-04-26T00:09:32.662Z",
+        place: {
+          direction: "49163 E Church Street, 456",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "ded5f20f-7b1b-4ccf-afa2-60f2638c4025"
+  },
+  {
+    _id: "047c5c86-85c2-48e1-9075-6d66d9272170",
+    name: "Movimiento alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Cui denego artificiose addo sit termes summisse ventosus aranea.",
+    status: "pending",
+    userId: "6cb497eb-c391-443c-8e2e-0595b3aa56fe",
+    createdAt: "2026-01-10T01:09:32.735Z",
+    updatedAt: "2026-01-10T01:09:32.735Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 422,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 380,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 935,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - pobreza",
+        description: "Evento presencial para pobreza. Auctor admoneo voluptate cresco valetudo claustrum acsi uberrime.",
+        initialDate: "2026-04-23T00:09:32.725Z",
+        place: {
+          direction: "532 Hintz Camp, 59042",
+          city: "La Plata",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Evento benéfico - refugiados",
+        description: "Evento presencial para refugiados. Casso delinquo quidem demoror casso harum calcar terga universe animi. Suscipit condico usitas commodi toties.",
+        initialDate: "2026-04-19T00:09:32.725Z",
+        place: {
+          direction: "8415 Stanton Gateway, 7944",
+          city: "Lyon",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "b29a23bc-1bc1-4e98-b473-8626e120f64c"
+  },
+  {
+    _id: "8de028df-15c8-4cfb-984a-613de40af240",
+    name: "Movimiento agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Decumbo contego acidus confugo angulus molestiae cariosus suppellex.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "2390ddf4-68f0-4741-bec2-ecb6d5020ac8",
+    createdAt: "2026-01-10T01:10:06.388Z",
+    updatedAt: "2026-01-10T01:10:06.388Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 88,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - derechos humanos",
+        description: "Evento presencial para derechos humanos. Suffragium vobis aegrotatio vulgo utilis subvenio vitae antiquus acies. Consequuntur thalassinus curvo corrumpo absconditus suggero allatus comprehendo minima ",
+        initialDate: "2026-04-19T00:09:32.787Z",
+        place: {
+          direction: "542 Selmer Oval, 90449",
+          city: "Cali",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "ad560363-2254-4ea5-be21-6b34694c915d"
+  },
+  {
+    _id: "3840ac34-3e3b-4333-bf62-6dce889d9b5a",
+    name: "Proyecto pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Condico confido adnuo abscido cognatus universe capitulus pauci corrigo.",
+    status: "approved",
+    reason: "",
+    userId: "de408f4c-4c27-48a4-aa49-26ec362d5c18",
+    createdAt: "2026-01-10T01:10:06.452Z",
+    updatedAt: "2026-01-10T01:10:06.452Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 958,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - agua potable",
+        description: "Evento presencial para agua potable. Tempore venustas civitas angulus incidunt tabesco angustus alter dolores.",
+        initialDate: "2026-01-29T01:09:32.848Z",
+        place: {
+          direction: "912 Highland Avenue, 64844",
+          city: "Caracas",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "a1d40d02-a3ec-4c4f-ab37-d2fac870d3e5"
+  },
+  {
+    _id: "28f6ee0f-47c4-4ba4-98d3-93b565559d0b",
+    name: "Iniciativa agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Viriliter civis crur cum angustus iure minima debeo tamisium.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "12385c99-040b-42d0-8bb1-0032be58c2ea",
+    createdAt: "2026-01-10T01:10:06.517Z",
+    updatedAt: "2026-01-10T01:10:06.517Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 245,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 287,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 586,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - refugiados",
+        description: "Evento presencial para refugiados. Auditor arbustum caste.",
+        initialDate: "2026-02-14T01:09:32.911Z",
+        place: {
+          direction: "250 Kelsi Road, 9896",
+          city: "Glasgow",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Ascit patrocinor solitudo aveho tui. Ago crudelis astrum amet acquiro valetudo decumbo supplanto.",
+        initialDate: "2026-03-31T00:09:32.911Z",
+        place: {
+          direction: "771 Jedidiah Cape, 39672",
+          city: "Tijuana",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "1281737b-03c0-42e8-9cff-72081364a3ae"
+  },
+  {
+    _id: "61f96129-120c-4f94-b10a-bf092edf2134",
+    name: "Programa discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Repellendus decipio cogito creber. Statua clarus cuppedia atque.",
+    status: "approved",
+    reason: "",
+    userId: "0d965b81-151e-4d3d-b76e-353f8c62f04c",
+    createdAt: "2026-01-10T01:10:06.578Z",
+    updatedAt: "2026-01-10T01:10:06.578Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 172,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - tercera edad",
+        description: "Evento presencial para tercera edad. Adipisci aestivus tersus vomer.",
+        initialDate: "2026-06-16T00:09:32.975Z",
+        place: {
+          direction: "1968 Gutmann Points, 55128",
+          city: "Maracay",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "a1d40d02-a3ec-4c4f-ab37-d2fac870d3e5"
+  },
+  {
+    _id: "8f01e23a-67ef-4c8e-85d1-f723a0e89658",
+    name: "Campaña tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Angelus vulnero correptius vomito enim coerceo ullam summa adsuesco sumo. Molestias vos esse.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ff8326a3-472f-4587-82cb-e0f4c6d8f921",
+    createdAt: "2026-01-10T01:10:06.640Z",
+    updatedAt: "2026-01-10T01:10:06.640Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 512,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 634,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 263,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - derechos humanos",
+        description: "Evento presencial para derechos humanos. Despecto altus magni cattus crepusculum.",
+        initialDate: "2026-04-14T00:09:33.038Z",
+        place: {
+          direction: "49909 Rhiannon Fields, 8452",
+          city: "Glasgow",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "14bcd9c1-4199-4578-98c9-ac25ee169cbc"
+  },
+  {
+    _id: "448d32ec-1d1f-4540-a72d-77d37f6f8463",
+    name: "Operación educación 2027",
+    description: "Acción concreta para educación con objetivos cuantificables. Sed speciosus valde blanditiis itaque tamquam viriliter acsi. Ustulo approbo validus carpo vilicus arca cruciamentum clementia benigne.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "5ae4afb8-65b8-4218-ae70-51cc5d79dd24",
+    createdAt: "2026-01-10T01:10:06.702Z",
+    updatedAt: "2026-01-10T01:10:06.702Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 957,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 473,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - derechos humanos",
+        description: "Evento presencial para derechos humanos. Ascisco venio pecus tubineus.",
+        initialDate: "2026-02-14T01:09:33.100Z",
+        place: {
+          direction: "9589 The Ridings, 9283",
+          city: "La Serena",
+          countryCode: "CL"
+        }
+      },
+      {
+        name: "Taller formativo - agua potable",
+        description: "Evento presencial para agua potable. Territo bis trans stabilis adhaero.",
+        initialDate: "2026-02-06T01:09:33.100Z",
+        place: {
+          direction: "417 Anderson Village, 845",
+          city: "Caracas",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "93eaef10-508e-4580-85b0-f083be061c32"
+  },
+  {
+    _id: "4f997f6e-ecd0-45ca-bee6-bdb6c4d219ce",
+    name: "Acción solidaria medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Ars blanditiis angustus.",
+    status: "approved",
+    reason: "",
+    userId: "f0e8e38b-e643-44b0-885a-64038bb25291",
+    createdAt: "2026-01-10T01:10:06.762Z",
+    updatedAt: "2026-01-10T01:10:06.762Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 273,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 707,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - agua potable",
+        description: "Evento presencial para agua potable. Decumbo averto vulnero claustrum careo tendo commemoro.",
+        initialDate: "2026-05-17T00:09:33.162Z",
+        place: {
+          direction: "95732 Alden Rapids, 5526",
+          city: "Arequipa",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "299a2b72-9f0e-470c-a3d0-5cc3d8219608"
+  },
+  {
+    _id: "f8a4b411-c966-4d4a-a51e-7ad1606da912",
+    name: "Programa pobreza 2026",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Tero combibo vitiosus tamquam.",
+    status: "approved",
+    reason: "",
+    userId: "a2805777-df7c-4e8a-be38-65e87d43cb2e",
+    createdAt: "2026-01-10T01:10:06.825Z",
+    updatedAt: "2026-01-10T01:10:06.825Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 22,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 207,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Cenaculum cunae verto. Debitis argentum delectus pauci deinde veniam creo conspergo.",
+        initialDate: "2026-02-03T01:09:33.223Z",
+        place: {
+          direction: "260 Arely Ramp, 35143",
+          city: "Málaga",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Tollo cuius cervus aetas confero.",
+        initialDate: "2026-02-22T01:09:33.223Z",
+        place: {
+          direction: "383 7th Avenue, 787",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "271e25ef-c6f5-4fe6-95b7-9e195b88fd7e"
+  },
+  {
+    _id: "5badc889-8008-41e3-94a7-7d9f102c4d28",
+    name: "Proyecto refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Aperiam terreo stultus aperiam clarus teres urbs.",
+    status: "approved",
+    reason: "",
+    userId: "0bede458-a62e-43b3-9d02-a367d00069bd",
+    createdAt: "2026-01-10T01:10:06.951Z",
+    updatedAt: "2026-01-10T01:10:06.951Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 321,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 63,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - tercera edad",
+        description: "Evento presencial para tercera edad. Tener aro voluptas teres ocer desidero adeptio asperiores.",
+        initialDate: "2026-01-29T01:09:33.349Z",
+        place: {
+          direction: "18405 Hawthorn Avenue, 989",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "69068059-2fc9-41da-8b89-baf291fd62a0"
+  },
+  {
+    _id: "1b7d9770-5e07-455e-9770-060f536f7329",
+    name: "Iniciativa derechos humanos 2027",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Color cenaculum sono territo thymbra terra versus eum molestias aegrotatio.",
+    status: "approved",
+    reason: "",
+    userId: "a19ccc78-1efd-4fde-856e-45f48a415918",
+    createdAt: "2026-01-10T01:10:07.012Z",
+    updatedAt: "2026-01-10T01:10:07.012Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 739,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 224,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 824,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Sulum possimus modi optio caecus adsum studio tergo. Calamitas caveo annus vox claudeo.",
+        initialDate: "2026-06-07T00:09:33.413Z",
+        place: {
+          direction: "436 Chestnut Close, 967",
+          city: "Mendoza",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Encuentro comunitario - tercera edad",
+        description: "Evento presencial para tercera edad. Derelinquo libero textilis decumbo.",
+        initialDate: "2026-03-29T01:09:33.413Z",
+        place: {
+          direction: "30030 Main Street W, 21571",
+          city: "Bogotá",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "4a85f754-1780-488b-a8f6-16b705b515d8"
+  },
+  {
+    _id: "4ea2daf9-3d14-4e3d-b867-ae378e258755",
+    name: "Proyecto refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Vilicus confero calculus viscus facilis.",
+    status: "approved",
+    reason: "",
+    userId: "7ad9bad6-47d6-4261-8f17-c64e1f6d0a33",
+    createdAt: "2026-01-10T01:10:07.075Z",
+    updatedAt: "2026-01-10T01:10:07.075Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 949,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 634,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 917,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - vivienda",
+        description: "Evento presencial para vivienda. Sapiente collum iure arbor volo animi. Depromo error velit.",
+        initialDate: "2026-02-04T01:09:33.474Z",
+        place: {
+          direction: "21570 Marcia Common, 94697",
+          city: "Cancún",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Jornada solidaria - medio ambiente",
+        description: "Evento presencial para medio ambiente. Copia ante vorago.",
+        initialDate: "2026-04-23T00:09:33.474Z",
+        place: {
+          direction: "703 Wilderman Shore, 7759",
+          city: "Tucumán",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "9b2d68be-9b19-4122-8a45-7b5173a75f3b"
+  },
+  {
+    _id: "f150ba83-f41e-43f9-a1c3-40c2c7972ed5",
+    name: "Jornada salud 2027",
+    description: "Acción concreta para salud con objetivos cuantificables. Uredo timor ver thermae vespillo theatrum aequus.",
+    status: "approved",
+    reason: "",
+    userId: "2390ddf4-68f0-4741-bec2-ecb6d5020ac8",
+    createdAt: "2026-01-10T01:10:07.201Z",
+    updatedAt: "2026-01-10T01:10:07.201Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 944,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - discapacidad",
+        description: "Evento presencial para discapacidad. Dolorem sequi agnitio vis ver aiunt pauci verus sollicito tum. Vinculum temeritas atavus voluptatem consectetur degusto depulso corona.",
+        initialDate: "2026-04-07T00:09:33.600Z",
+        place: {
+          direction: "287 W Washington Avenue, 65167",
+          city: "Paris",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Evento benéfico - pobreza",
+        description: "Evento presencial para pobreza. Casso amplexus abutor convoco. Soleo combibo tergo eveniet vorax deserunt triduana acer.",
+        initialDate: "2026-04-18T00:09:33.600Z",
+        place: {
+          direction: "56397 Tevin Skyway, 42792",
+          city: "Cusco",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "28b68b2a-185c-4a07-9750-5b43106faa19"
+  },
+  {
+    _id: "cea20331-ba46-4452-9fb0-2bcf3deed1a2",
+    name: "Red de apoyo derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Sulum vulgus excepturi arbor. Certe pel venustas ait curtus vulpes considero thermae.",
+    status: "approved",
+    reason: "",
+    userId: "4dc2d534-ef09-4f82-97fd-b3156db676e4",
+    createdAt: "2026-01-10T01:10:07.263Z",
+    updatedAt: "2026-01-10T01:10:07.263Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 210,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - alimentación",
+        description: "Evento presencial para alimentación. Undique non vitiosus accendo sub color. Corrupti deduco verto alii crur accusamus aureus sulum expedita aveho.",
+        initialDate: "2026-02-21T01:09:33.663Z",
+        place: {
+          direction: "714 Waverley Road, 814",
+          city: "Zaragoza",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "8fff8c2d-dd7b-44d0-858a-72239702aa4b"
+  },
+  {
+    _id: "f8db073f-77ed-4113-8fcf-76a88556549e",
+    name: "Movimiento tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Coniecto vobis tergiversatio. Aer concido aspicio.",
+    status: "approved",
+    reason: "",
+    userId: "0da92fd0-63b4-4aa0-9ef7-3c6d66300703",
+    createdAt: "2026-01-10T01:10:07.325Z",
+    updatedAt: "2026-01-10T01:10:07.325Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 194,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - emergencias",
+        description: "Evento presencial para emergencias. Concedo comes torqueo cunae tum quas aperio statua. Vito deporto odit in validus tersus aegrus culpa.",
+        initialDate: "2026-05-16T00:09:33.726Z",
+        place: {
+          direction: "47971 Kingfisher Close, 647",
+          city: "Mar del Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "efb8828b-3259-4f39-aabc-7584fb83b80d"
+  },
+  {
+    _id: "084b95f5-dd74-42b7-9ea4-aedee62c86ea",
+    name: "Acción solidaria desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Sol attonbitus custodia velut versus.",
+    status: "approved",
+    reason: "",
+    userId: "41366993-d4a1-4908-85e5-cdfe4dc7affe",
+    createdAt: "2026-01-10T01:10:07.387Z",
+    updatedAt: "2026-01-10T01:10:07.387Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 962,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 872,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 971,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - alimentación",
+        description: "Evento presencial para alimentación. Thorax cena traho timidus voluptates.",
+        initialDate: "2026-05-05T00:09:33.789Z",
+        place: {
+          direction: "2405 Parker Mount, 204",
+          city: "Napoli",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Evento benéfico - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Quam versus coniecto. Conforto amaritudo termes conturbo cuppedia explicabo uxor vigilo solvo.",
+        initialDate: "2026-07-01T00:09:33.789Z",
+        place: {
+          direction: "8654 Ryan Highway, 2745",
+          city: "Milano",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "3b0e260d-8165-4a2a-98ab-9e10746bd67d"
+  },
+  {
+    _id: "3edd2d17-5c5c-4e7a-9748-0e00afdb9f8c",
+    name: "Acción solidaria emergencias 2027",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Tubineus voluptatum vobis tracto admitto curto xiphias tunc. Sol recusandae xiphias quis cernuus succedo arca vinum sumo.",
+    status: "approved",
+    reason: "",
+    userId: "e3c93885-94a1-4cfb-9d1e-c79a5f6999a8",
+    createdAt: "2026-01-10T01:10:07.511Z",
+    updatedAt: "2026-01-10T01:10:07.511Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 901,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 916,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 805,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - pobreza",
+        description: "Evento presencial para pobreza. Aufero territo beneficium tepesco magni ciminatio complectus animi. Vesco voluptatem tantum comburo vitium.",
+        initialDate: "2026-02-19T01:09:33.915Z",
+        place: {
+          direction: "35869 Kings Highway, 8485",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Spiculum provident clementia conor. Possimus bardus velum terebro ulciscor modi acceptus tutamen aranea.",
+        initialDate: "2026-05-15T00:09:33.915Z",
+        place: {
+          direction: "778 Wehner Harbor, 77550",
+          city: "Valencia",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "debed4e8-42ff-4f48-b739-b22aff8c5fec"
+  },
+  {
+    _id: "2254b301-6bc9-4ece-945f-8d4f05fd69b4",
+    name: "Jornada tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Absum tondeo eos universe amor suggero sortitus sodalitas verumtamen vicinus.",
+    status: "approved",
+    reason: "",
+    userId: "1cbb1275-8bef-4a50-ae0b-deef074bdb0b",
+    createdAt: "2026-01-10T01:10:07.635Z",
+    updatedAt: "2026-01-10T01:10:07.635Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 234,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 157,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 338,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Tabernus peccatus valetudo carmen. Sui solutio terebro clibanus ventito laudantium.",
+        initialDate: "2026-02-09T01:09:34.040Z",
+        place: {
+          direction: "7204 Gloucester Road, 138",
+          city: "Chiclayo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "bd46aea8-a00e-4160-9b4b-6cb295b60d7c"
+  },
+  {
+    _id: "2c5e827a-e706-4742-9916-dbc9cebf8dbc",
+    name: "Jornada discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Quo coruscus sunt deprimo decor aequus. Creo apud animadverto usus pecto curo tabella deripio.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "318272a9-3bee-4c66-b450-d73b8d505c27",
+    createdAt: "2026-01-10T01:10:07.699Z",
+    updatedAt: "2026-01-10T01:10:07.699Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 147,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 216,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - tercera edad",
+        description: "Evento presencial para tercera edad. Vivo corpus corona.",
+        initialDate: "2026-03-28T01:09:34.102Z",
+        place: {
+          direction: "7287 Pacocha Glen, 22439",
+          city: "Trujillo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "703d1691-13e4-4a2f-ba33-4d0d526a762c"
+  },
+  {
+    _id: "16b52e60-8000-4550-aecf-faaf0a247423",
+    name: "Acción solidaria medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Vacuus deinde benevolentia aliqua crastinus quaerat exercitationem.",
+    status: "approved",
+    reason: "",
+    userId: "035b3e09-409f-4fd2-b7bb-575f931e9136",
+    createdAt: "2026-01-10T01:10:07.761Z",
+    updatedAt: "2026-01-10T01:10:07.761Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 392,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 801,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 858,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - alimentación",
+        description: "Evento presencial para alimentación. Beatae statua curis caute velut admitto.",
+        initialDate: "2026-04-02T00:09:34.165Z",
+        place: {
+          direction: "4743 W Jefferson Street, 1635",
+          city: "São Paulo",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Taller formativo - discapacidad",
+        description: "Evento presencial para discapacidad. Defaeco amplitudo aequus coadunatio umquam deripio minus. Attollo degusto curiositas solutio.",
+        initialDate: "2026-05-14T00:09:34.165Z",
+        place: {
+          direction: "5027 E Cedar Street, 3803",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "77d31ed6-e4c5-460b-9342-6a4b05efcd40"
+  },
+  {
+    _id: "58b82f3d-aeaa-4c4a-bbd2-0b2726ac8e71",
+    name: "Campaña igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Tenetur attero vomer synagoga creta sui adsuesco.",
+    status: "approved",
+    reason: "",
+    userId: "492a0301-6ff2-4024-846f-8bfc6d14aaea",
+    createdAt: "2026-01-10T01:10:08.010Z",
+    updatedAt: "2026-01-10T01:10:08.010Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 531,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Adsidue vel exercitationem assumenda repellendus vis substantia. Vociferor spes titulus.",
+        initialDate: "2026-06-09T00:09:34.414Z",
+        place: {
+          direction: "404 Lyla Plains, 3629",
+          city: "Rio de Janeiro",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Reunión de coordinación - salud",
+        description: "Evento presencial para salud. Ustulo sperno animi.",
+        initialDate: "2026-02-21T01:09:34.414Z",
+        place: {
+          direction: "529 E Central Avenue, 280",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "b9d9870d-347e-4bf6-865d-82e7d7f71d32"
+  },
+  {
+    _id: "dc2020ce-52dc-4a77-ba6b-c9f24f4c561f",
+    name: "Jornada refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Spiritus amita videlicet temeritas paulatim sophismata.",
+    status: "pending",
+    userId: "15acc880-f861-4dc2-a4ca-6d04ddf485a3",
+    createdAt: "2026-01-10T01:09:34.486Z",
+    updatedAt: "2026-01-10T01:09:34.486Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 55,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - pobreza",
+        description: "Evento presencial para pobreza. Urbanus cruciamentum thesis substantia cerno debilito attero verus.",
+        initialDate: "2026-04-19T00:09:34.477Z",
+        place: {
+          direction: "316 Washington Road, 84891",
+          city: "Toulouse",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - pobreza",
+        description: "Evento presencial para pobreza. Careo crinis tersus traho bellicus carbo avarus argentum corona surculus. Concedo voluntarius adipisci aestus aestus ipsam.",
+        initialDate: "2026-04-27T00:09:34.477Z",
+        place: {
+          direction: "6058 Heller Via, 26967",
+          city: "Napoli",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "c54b6604-1f85-4443-9475-bd08f9172fc5"
+  },
+  {
+    _id: "3cf99cb6-6a4f-42d5-84d3-d99a55580df3",
+    name: "Proyecto educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Caterva trucido aeger dapifer possimus cupiditas amoveo compono spiritus capio.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ccfa63f6-6ea6-49f2-90f0-dfd408a7ec80",
+    createdAt: "2026-01-10T01:10:08.134Z",
+    updatedAt: "2026-01-10T01:10:08.134Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 317,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - pobreza",
+        description: "Evento presencial para pobreza. Stabilis alo ascisco crebro solutio consuasor volutabrum velum unus.",
+        initialDate: "2026-04-30T00:09:34.539Z",
+        place: {
+          direction: "430 N Jackson Street, 562",
+          city: "Cusco",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "bb7b904b-f60b-4f80-8d7a-a96cce6f8295"
+  },
+  {
+    _id: "bdf56bb3-7aef-4139-8f54-917c2349c539",
+    name: "Proyecto agua potable 2027",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Corporis arbitro articulus.",
+    status: "approved",
+    reason: "",
+    userId: "b183994d-26d8-4217-96aa-c24d5c20f9d3",
+    createdAt: "2026-01-10T01:10:08.197Z",
+    updatedAt: "2026-01-10T01:10:08.197Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 816,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 188,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - vivienda",
+        description: "Evento presencial para vivienda. Attonbitus cultura ciminatio succedo crustulum. Cognatus aranea stips demo collum aperio aeger solutio anser.",
+        initialDate: "2026-01-29T01:09:34.602Z",
+        place: {
+          direction: "38559 West Hills, 99522",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      },
+      {
+        name: "Encuentro comunitario - refugiados",
+        description: "Evento presencial para refugiados. Triduana tempore ea. Allatus sonitus spargo utpote.",
+        initialDate: "2026-05-03T00:09:34.602Z",
+        place: {
+          direction: "56115 Jefferson Avenue, 94568",
+          city: "Rosario",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "4a85f754-1780-488b-a8f6-16b705b515d8"
+  },
+  {
+    _id: "e3b0306c-d2bf-469c-8373-c3577cb8144e",
+    name: "Iniciativa emergencias 2027",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Credo dedico tutamen cubitum stips amplus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ade31128-b25c-494f-b271-90c83a107409",
+    createdAt: "2026-01-10T01:10:08.259Z",
+    updatedAt: "2026-01-10T01:10:08.259Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 344,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Verbum suppellex ascit architecto.",
+        initialDate: "2026-03-01T01:09:34.663Z",
+        place: {
+          direction: "97782 O'Conner Lakes, 372",
+          city: "London",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "134c7020-3221-4bf6-853f-be1f355712c5"
+  },
+  {
+    _id: "a1f1931e-45f1-4472-a570-30a66fbceff8",
+    name: "Acción solidaria emergencias 2027",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Despecto valens deorsum crinis conqueror.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "356f0b45-a054-4f06-aaa1-cb66fc5ce267",
+    createdAt: "2026-01-10T01:10:08.321Z",
+    updatedAt: "2026-01-10T01:10:08.321Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 209,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - igualdad de género",
+        description: "Evento presencial para igualdad de género. Versus defendo theologus valens crur dolore adstringo. Concedo alias laudantium sint repudiandae ubi uterque assumenda ait.",
+        initialDate: "2026-05-18T00:09:34.726Z",
+        place: {
+          direction: "346 Bernhard Radial, 5962",
+          city: "Manchester",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "3ad6c562-c47b-4db3-8038-3c17199902ea"
+  },
+  {
+    _id: "d033a50c-a9ba-4117-9ddb-c5d6162d34c7",
+    name: "Programa educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Tutis xiphias cernuus terga vulariter. Crinis assentator verus terreo varius surculus patior sto vester creator.",
+    status: "approved",
+    reason: "",
+    userId: "035b3e09-409f-4fd2-b7bb-575f931e9136",
+    createdAt: "2026-01-10T01:10:08.381Z",
+    updatedAt: "2026-01-10T01:10:08.381Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 873,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 994,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 88,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - infancia",
+        description: "Evento presencial para infancia. Custodia ambulo amitto denuncio absorbeo alias recusandae. Quae deputo utrum bestia via avarus.",
+        initialDate: "2026-01-18T01:09:34.788Z",
+        place: {
+          direction: "858 Spencer Meadows, 9005",
+          city: "Tijuana",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "58064a9e-96a9-45f6-a5ae-745117cc21d5"
+  },
+  {
+    _id: "77db29ce-d35b-4849-a640-b91aa6c62d77",
+    name: "Programa discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Quis ambulo delectatio turbo statim arca tardus. Taedium maiores non absens crux votum custodia usus.",
+    status: "approved",
+    reason: "",
+    userId: "139c63a5-9149-4c64-b2c6-623530211796",
+    createdAt: "2026-01-10T01:10:08.631Z",
+    updatedAt: "2026-01-10T01:10:08.631Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 176,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - refugiados",
+        description: "Evento presencial para refugiados. Tempora pax creber praesentium.",
+        initialDate: "2026-05-25T00:09:35.038Z",
+        place: {
+          direction: "37364 Canal Street, 57585",
+          city: "Frankfurt",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "10653446-f68d-4b1e-a204-185e5acd5564"
+  },
+  {
+    _id: "67a01991-2499-46e3-9ad3-f4d4d30e7f08",
+    name: "Proyecto discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Adnuo bos cubitum conitor terror libero demonstro beatae.",
+    status: "approved",
+    reason: "",
+    userId: "ea510f67-405f-4649-9027-2d9f38666b62",
+    createdAt: "2026-01-10T01:10:08.694Z",
+    updatedAt: "2026-01-10T01:10:08.694Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 112,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - igualdad de género",
+        description: "Evento presencial para igualdad de género. Aperio curso tamen corporis valeo. Comptus caecus solvo taceo ager arceo aestus defero.",
+        initialDate: "2026-03-05T01:09:35.099Z",
+        place: {
+          direction: "60292 Turner Ferry, 41569",
+          city: "Lille",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Taller formativo - derechos humanos",
+        description: "Evento presencial para derechos humanos. Summisse cultellus carcer ipsa deporto ut adversus eligendi crux consequuntur.",
+        initialDate: "2026-04-24T00:09:35.099Z",
+        place: {
+          direction: "1781 Moore Fork, 9707",
+          city: "Chiclayo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "f60bc9f1-76ac-4233-b5b5-e2a63c6dcfc6"
+  },
+  {
+    _id: "252d098f-91a3-4b74-a8dd-f313be3c43cb",
+    name: "Programa alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Somniculosus nobis benigne eum terga celer deprecator cultura.",
+    status: "approved",
+    reason: "",
+    userId: "207025f2-5340-473c-bf9c-447cc2e51e8e",
+    createdAt: "2026-01-10T01:10:08.756Z",
+    updatedAt: "2026-01-10T01:10:08.756Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 411,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 664,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - medio ambiente",
+        description: "Evento presencial para medio ambiente. Summa nisi carbo curia tolero aegrus caput conservo. Speculum apud acsi decet admoveo incidunt colligo tyrannus admoveo velociter.",
+        initialDate: "2026-05-09T00:09:35.162Z",
+        place: {
+          direction: "235 State Street, 22146",
+          city: "Zaragoza",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "299a2b72-9f0e-470c-a3d0-5cc3d8219608"
+  },
+  {
+    _id: "e261a89c-74b3-4e4c-b472-6628c6a0d37b",
+    name: "Programa tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Strenuus dolore nostrum aestas concedo laboriosam.",
+    status: "approved",
+    reason: "",
+    userId: "207025f2-5340-473c-bf9c-447cc2e51e8e",
+    createdAt: "2026-01-10T01:10:08.944Z",
+    updatedAt: "2026-01-10T01:10:08.944Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 994,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 17,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 52,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Aranea expedita uter utilis.",
+        initialDate: "2026-02-13T01:09:35.348Z",
+        place: {
+          direction: "756 E 9th Street, 829",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "10653446-f68d-4b1e-a204-185e5acd5564"
+  },
+  {
+    _id: "b65872b2-24ff-426b-946d-4b6d46b1bb5c",
+    name: "Jornada igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Demens ultio capio solus adhaero labore casus canonicus.",
+    status: "approved",
+    reason: "",
+    userId: "a6a9fd9e-d555-4ba9-8074-8d17be3e341d",
+    createdAt: "2026-01-10T01:10:09.069Z",
+    updatedAt: "2026-01-10T01:10:09.069Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 226,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 891,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - educación",
+        description: "Evento presencial para educación. Valetudo aro veniam. Crudelis color dapifer aeger taceo subito.",
+        initialDate: "2026-04-01T00:09:35.473Z",
+        place: {
+          direction: "49362 Union Street, 946",
+          city: "Stuttgart",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Encuentro comunitario - vivienda",
+        description: "Evento presencial para vivienda. Temeritas cilicium cavus animadverto amicitia caterva amaritudo coadunatio cultura. Sto conicio adsum.",
+        initialDate: "2026-05-26T00:09:35.473Z",
+        place: {
+          direction: "10259 Murazik Mission, 679",
+          city: "Bristol",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "3ad6c562-c47b-4db3-8038-3c17199902ea"
+  },
+  {
+    _id: "2bc7437f-d2ed-433c-91c2-c802863e8beb",
+    name: "Campaña vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Crebro calamitas quasi subseco sumo annus contego admoneo adnuo.",
+    status: "approved",
+    reason: "",
+    userId: "cf287776-41e3-45b1-8f25-04a1e5d5941f",
+    createdAt: "2026-01-10T01:10:09.130Z",
+    updatedAt: "2026-01-10T01:10:09.130Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 820,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 592,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 56,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - refugiados",
+        description: "Evento presencial para refugiados. Usus suscipit adopto veniam cavus similique veritatis enim facere.",
+        initialDate: "2026-03-15T01:09:35.536Z",
+        place: {
+          direction: "9506 Kylee Loaf, 410",
+          city: "Marseille",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "c54b6604-1f85-4443-9475-bd08f9172fc5"
+  },
+  {
+    _id: "ee52172f-40ec-49be-8503-6096b6652c92",
+    name: "Movimiento igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Maiores trans aestas virga eaque caveo ubi. Auctus deleniti aut aegre antiquus thema solio trans.",
+    status: "pending",
+    userId: "c25363fd-9dab-4cbc-9536-6c52e502634d",
+    createdAt: "2026-01-10T01:09:35.732Z",
+    updatedAt: "2026-01-10T01:09:35.732Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 198,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 435,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 910,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - agua potable",
+        description: "Evento presencial para agua potable. Color aetas amor cado curvo deporto sol cupiditas tabesco viscus.",
+        initialDate: "2026-05-17T00:09:35.722Z",
+        place: {
+          direction: "329 Elena Neck, 5861",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      },
+      {
+        name: "Jornada solidaria - medio ambiente",
+        description: "Evento presencial para medio ambiente. Succurro illo autus deprimo deinde volva apto combibo suasoria ceno.",
+        initialDate: "2026-06-25T00:09:35.722Z",
+        place: {
+          direction: "67192 Hazle Inlet, 74203",
+          city: "Barquisimeto",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "95200c1a-2cd9-4622-a808-82d99e29a931"
+  },
+  {
+    _id: "49db36c6-64c6-4be4-8f81-3211d2943aba",
+    name: "Movimiento derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Spoliatio tabula succedo capto aspernatur.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "9ff9e8ba-c3ec-4fdd-8ce4-cbf263a5c1dc",
+    createdAt: "2026-01-10T01:10:09.380Z",
+    updatedAt: "2026-01-10T01:10:09.380Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 188,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 668,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Catena volaticus teres talio.",
+        initialDate: "2026-06-19T00:09:35.785Z",
+        place: {
+          direction: "84329 Heron Close, 9050",
+          city: "La Serena",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "d5d71ed0-7956-472e-b5a5-71f4ac84cb46"
+  },
+  {
+    _id: "fdf475c5-d4ce-457c-89b3-18bd1b0b78aa",
+    name: "Acción solidaria agua potable 2027",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Succedo defaeco angustus decipio. Adficio administratio virtus balbus statua claustrum coniecto traho absum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ddb262e5-2aa9-45be-9de1-1e453313b9c9",
+    createdAt: "2026-01-10T01:10:09.443Z",
+    updatedAt: "2026-01-10T01:10:09.443Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 870,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - refugiados",
+        description: "Evento presencial para refugiados. Doloribus spiritus arto.",
+        initialDate: "2026-04-07T00:09:35.849Z",
+        place: {
+          direction: "4833 Kestrel Close, 8976",
+          city: "Valencia",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Encuentro comunitario - refugiados",
+        description: "Evento presencial para refugiados. Architecto assumenda triumphus vulnero conduco vos. Taceo vilicus alioqui.",
+        initialDate: "2026-05-21T00:09:35.849Z",
+        place: {
+          direction: "782 S Lincoln Street, 531",
+          city: "Birmingham",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "4b52e22b-2363-44f8-a9fd-b54efa6585f8"
+  },
+  {
+    _id: "3d1a925a-ea33-415d-b524-7036c6f89fb1",
+    name: "Red de apoyo refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Earum asporto argentum.",
+    status: "approved",
+    reason: "",
+    userId: "316cac7f-4dce-4a7a-a73b-fc53dafe9716",
+    createdAt: "2026-01-10T01:10:09.565Z",
+    updatedAt: "2026-01-10T01:10:09.565Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 415,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 13,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 774,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - pobreza",
+        description: "Evento presencial para pobreza. Defetiscor crustulum claro charisma cavus votum bis vicinus spero. Cauda antiquus tempora stipes.",
+        initialDate: "2026-04-20T00:09:35.975Z",
+        place: {
+          direction: "88898 Hegmann Views, 323",
+          city: "Milano",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "53f9ae7f-93a0-4444-afd4-4469eb46bb3f"
+  },
+  {
+    _id: "50e1f4bb-6567-4103-8795-94dee8aafa90",
+    name: "Acción solidaria vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Acquiro sublime thesaurus.",
+    status: "approved",
+    reason: "",
+    userId: "531f5efc-24f0-4bf8-8a35-14a802c3f178",
+    createdAt: "2026-01-10T01:10:09.626Z",
+    updatedAt: "2026-01-10T01:10:09.626Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 739,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 429,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 907,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Clamo derelinquo praesentium adduco. Coaegresco consectetur cura comprehendo utroque impedit eaque vinitor demonstro abscido.",
+        initialDate: "2026-03-10T01:09:36.038Z",
+        place: {
+          direction: "5876 5th Avenue, 524",
+          city: "Nice",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Encuentro comunitario - alimentación",
+        description: "Evento presencial para alimentación. Virga stips canto audeo perspiciatis. Ambulo voveo vulpes quos animus enim comprehendo amet degenero.",
+        initialDate: "2026-01-19T01:09:36.038Z",
+        place: {
+          direction: "3284 Priory Road, 2880",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "299a2b72-9f0e-470c-a3d0-5cc3d8219608"
+  },
+  {
+    _id: "b122d25d-101f-4fa7-921f-16ae7a39e3c4",
+    name: "Proyecto medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Veritas solutio tunc.",
+    status: "approved",
+    reason: "",
+    userId: "47b25c11-690c-42b5-9b52-86213cf7aaf4",
+    createdAt: "2026-01-10T01:10:09.688Z",
+    updatedAt: "2026-01-10T01:10:09.688Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 213,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 273,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - alimentación",
+        description: "Evento presencial para alimentación. Vulgivagus tremo tendo fugiat sublime et bibo crastinus suspendo delinquo. Solio culpo pax.",
+        initialDate: "2026-03-05T01:09:36.100Z",
+        place: {
+          direction: "4211 Sycamore Street, 17863",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "cc89db0a-3df0-4fb2-bebb-154de0cbd035"
+  },
+  {
+    _id: "9c2656ad-74b2-47c1-a7a1-e7a35e05e1f5",
+    name: "Campaña vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Nam adficio nemo summisse adeo sonitus constans tyrannus baiulus cupio. Ducimus coaegresco consuasor cetera.",
+    status: "approved",
+    reason: "",
+    userId: "33805313-dd2d-462a-9f76-ba9ddd835d16",
+    createdAt: "2026-01-10T01:10:09.750Z",
+    updatedAt: "2026-01-10T01:10:09.750Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 858,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 758,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 671,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - vivienda",
+        description: "Evento presencial para vivienda. Stabilis placeat sono. Thesaurus adopto veniam termes.",
+        initialDate: "2026-04-27T00:09:36.161Z",
+        place: {
+          direction: "4414 Meadow Drive, 35597",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "6d02eb0c-9131-40b6-98c5-baa7c415eaa6"
+  },
+  {
+    _id: "e846f679-4fdf-4122-91db-0aa9f6f8d741",
+    name: "Proyecto salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Spiculum adnuo venustas.",
+    status: "approved",
+    reason: "",
+    userId: "9ff9e8ba-c3ec-4fdd-8ce4-cbf263a5c1dc",
+    createdAt: "2026-01-10T01:10:09.812Z",
+    updatedAt: "2026-01-10T01:10:09.812Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 897,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - derechos humanos",
+        description: "Evento presencial para derechos humanos. Crastinus creber curo attollo benigne.",
+        initialDate: "2026-01-25T01:09:36.223Z",
+        place: {
+          direction: "7604 Fay Flat, 798",
+          city: "Marseille",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "2335c251-34fc-4520-a825-0b41b728d24e"
+  },
+  {
+    _id: "40338035-c8da-4fea-b0c2-4b2125a76bcd",
+    name: "Proyecto alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Debitis utpote vigilo.",
+    status: "approved",
+    reason: "",
+    userId: "15acc880-f861-4dc2-a4ca-6d04ddf485a3",
+    createdAt: "2026-01-10T01:10:09.936Z",
+    updatedAt: "2026-01-10T01:10:09.936Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 137,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - educación",
+        description: "Evento presencial para educación. Damnatio crinis conduco crudelis videlicet ut consequuntur. Aperiam teneo cohibeo uredo cariosus.",
+        initialDate: "2026-05-17T00:09:36.349Z",
+        place: {
+          direction: "3491 Stamm Fork, 819",
+          city: "Mar del Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "1eddd6d8-4f06-4b9b-8c33-ceaf62d6d930"
+  },
+  {
+    _id: "17eea99e-5ae3-48b6-805d-cb856e551480",
+    name: "Operación tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Trado corrumpo delectus. Adipisci alioqui aestas admoneo voluptates vulpes curvo adulescens denuo textilis.",
+    status: "approved",
+    reason: "",
+    userId: "42aec1c3-c89e-479a-9a0e-9b2412927fe4",
+    createdAt: "2026-01-10T01:10:09.997Z",
+    updatedAt: "2026-01-10T01:10:09.997Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 949,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 874,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 985,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Decumbo thorax celo acervus sollers.",
+        initialDate: "2026-05-24T00:09:36.410Z",
+        place: {
+          direction: "65687 Yost Estates, 422",
+          city: "Tijuana",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "06066711-7ae6-4657-8b04-041ee972a014"
+  },
+  {
+    _id: "61344991-4853-4c0b-aa2f-217507d89de4",
+    name: "Movimiento vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Taedium vitium stillicidium caecus angustus corrumpo auctus amplitudo asperiores adipiscor.",
+    status: "approved",
+    reason: "",
+    userId: "f27f8d4e-6c65-484e-8df1-323d77f37835",
+    createdAt: "2026-01-10T01:10:10.061Z",
+    updatedAt: "2026-01-10T01:10:10.061Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 211,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 683,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - agua potable",
+        description: "Evento presencial para agua potable. Verumtamen conspergo valeo aro coniecto coruscus clam spero.",
+        initialDate: "2026-01-28T01:09:36.473Z",
+        place: {
+          direction: "4824 Vandervort Inlet, 7356",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "d5d71ed0-7956-472e-b5a5-71f4ac84cb46"
+  },
+  {
+    _id: "250f3ff7-2a77-439d-bb79-df8fee7b0590",
+    name: "Movimiento refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Creber vetus crinis degenero suscipit delibero synagoga urbs.",
+    status: "approved",
+    reason: "",
+    userId: "03fb2951-8790-4de4-a501-0d78b54f35f8",
+    createdAt: "2026-01-10T01:10:10.186Z",
+    updatedAt: "2026-01-10T01:10:10.186Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 975,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - discapacidad",
+        description: "Evento presencial para discapacidad. Calco cimentarius in tricesimus. Umquam aetas delego ducimus candidus.",
+        initialDate: "2026-03-11T01:09:36.597Z",
+        place: {
+          direction: "672 W Grand Avenue, 397",
+          city: "Glasgow",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "1281737b-03c0-42e8-9cff-72081364a3ae"
+  },
+  {
+    _id: "859e836b-7037-4226-a323-db8b9044bba2",
+    name: "Red de apoyo alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Earum laborum custodia pauper custodia tergeo concido cado.",
+    status: "approved",
+    reason: "",
+    userId: "ff8326a3-472f-4587-82cb-e0f4c6d8f921",
+    createdAt: "2026-01-10T01:10:10.248Z",
+    updatedAt: "2026-01-10T01:10:10.248Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 509,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - vivienda",
+        description: "Evento presencial para vivienda. Theatrum uberrime videlicet. Solitudo voluptate corpus.",
+        initialDate: "2026-05-22T00:09:36.660Z",
+        place: {
+          direction: "36998 The Maltings, 1170",
+          city: "Córdoba",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Jornada solidaria - tercera edad",
+        description: "Evento presencial para tercera edad. Demonstro via aetas ipsa vel adulatio. Tempus tamdiu vociferor.",
+        initialDate: "2026-05-20T00:09:36.660Z",
+        place: {
+          direction: "3069 Murphy Views, 30422",
+          city: "Firenze",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "028db33a-bf65-41b8-bacd-26facd917d95"
+  },
+  {
+    _id: "0c32ee86-06c3-4734-84c8-c94e43c8239a",
+    name: "Movimiento igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Talis culpo creo atavus conor pecus cum. Claustrum patria commodi dolore textor cunae.",
+    status: "approved",
+    reason: "",
+    userId: "68b60675-f02d-40b8-b856-24b4c14133b1",
+    createdAt: "2026-01-10T01:10:10.372Z",
+    updatedAt: "2026-01-10T01:10:10.372Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 342,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 261,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 664,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - vivienda",
+        description: "Evento presencial para vivienda. Suffoco audentia villa traho approbo antea conforto.",
+        initialDate: "2026-07-05T00:09:36.785Z",
+        place: {
+          direction: "6970 Schmidt Ramp, 9116",
+          city: "Nice",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Taller formativo - alimentación",
+        description: "Evento presencial para alimentación. Tergeo turpis surculus consequuntur defessus cultura benevolentia vae tego.",
+        initialDate: "2026-06-20T00:09:36.785Z",
+        place: {
+          direction: "135 Farm Close, 610",
+          city: "Bristol",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "8e5a8aba-4a76-4ed9-809a-fd5cf296ce97"
+  },
+  {
+    _id: "9d2163f2-5413-41a0-b772-5da1c70a4b1b",
+    name: "Campaña pobreza 2026",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Ventosus tollo vitium uter cibus. Viscus conventus arbitro.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "42a0a6d0-69d0-4820-b9d3-b22ed7ed40eb",
+    createdAt: "2026-01-10T01:10:10.435Z",
+    updatedAt: "2026-01-10T01:10:10.435Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 434,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - tercera edad",
+        description: "Evento presencial para tercera edad. Reprehenderit sonitus sordeo averto omnis vicinus vae ea ceno auditor. Alo sui asperiores.",
+        initialDate: "2026-05-09T00:09:36.848Z",
+        place: {
+          direction: "61200 Murray Spurs, 10842",
+          city: "Bogotá",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Encuentro comunitario - vivienda",
+        description: "Evento presencial para vivienda. Angulus sono avarus video demonstro consequuntur pauci talis. Doloribus fugit tertius volo chirographum creta corrumpo.",
+        initialDate: "2026-04-10T00:09:36.848Z",
+        place: {
+          direction: "30044 Lindgren Neck, 14053",
+          city: "Bristol",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "efb8828b-3259-4f39-aabc-7584fb83b80d"
+  },
+  {
+    _id: "176e5daf-9347-4b94-bbd0-185012c4a6b7",
+    name: "Proyecto vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Temeritas decens somniculosus adnuo ars aliquid. Ad architecto vigor earum caute textilis vulariter ultio.",
+    status: "approved",
+    reason: "",
+    userId: "c3d77521-dbca-40e5-9997-a9632437f8ba",
+    createdAt: "2026-01-10T01:10:10.496Z",
+    updatedAt: "2026-01-10T01:10:10.496Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 219,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 949,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - discapacidad",
+        description: "Evento presencial para discapacidad. Acer ventito crinis aperte complectus solvo desipio vulariter. Varius decens cupiditate amoveo.",
+        initialDate: "2026-04-19T00:09:36.910Z",
+        place: {
+          direction: "7741 Rippin Stravenue, 6074",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Sperno suspendo curatio ater.",
+        initialDate: "2026-06-12T00:09:36.910Z",
+        place: {
+          direction: "141 W Lake Street, 79911",
+          city: "Barquisimeto",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "670b4ec0-531d-45db-aac8-94863cd21db3"
+  },
+  {
+    _id: "534c1a3d-1141-4ded-940b-6aeeb218c1e8",
+    name: "Operación igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Turba tabesco nostrum dolorum depraedor truculenter absconditus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "531f5efc-24f0-4bf8-8a35-14a802c3f178",
+    createdAt: "2026-01-10T01:10:10.557Z",
+    updatedAt: "2026-01-10T01:10:10.557Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 436,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - emergencias",
+        description: "Evento presencial para emergencias. Thesis colligo utroque caelestis vulgo currus aut.",
+        initialDate: "2026-02-17T01:09:36.972Z",
+        place: {
+          direction: "3065 Harber Hills, 73439",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      },
+      {
+        name: "Reunión de coordinación - salud",
+        description: "Evento presencial para salud. Voro acies trepide quis celebrer vel ventosus.",
+        initialDate: "2026-02-27T01:09:36.972Z",
+        place: {
+          direction: "908 Jaskolski Key, 660",
+          city: "Birmingham",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "1eddd6d8-4f06-4b9b-8c33-ceaf62d6d930"
+  },
+  {
+    _id: "a585aa25-a0f2-4a85-816c-cba65e4217d4",
+    name: "Red de apoyo derechos humanos 2027",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Vel adinventitias communis despecto teneo demoror concedo accommodo. Coadunatio sapiente cibo certe claustrum.",
+    status: "approved",
+    reason: "",
+    userId: "40500af5-7c45-44c0-bd3c-698879234871",
+    createdAt: "2026-01-10T01:10:10.621Z",
+    updatedAt: "2026-01-10T01:10:10.621Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 877,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - emergencias",
+        description: "Evento presencial para emergencias. Vulgo contra voluptatibus cruciamentum soluta antiquus.",
+        initialDate: "2026-06-26T00:09:37.034Z",
+        place: {
+          direction: "8222 Quarry Road, 47143",
+          city: "Valencia",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "9b2d68be-9b19-4122-8a45-7b5173a75f3b"
+  },
+  {
+    _id: "b79a98ab-c9f9-4d3b-a96e-6253c6fb7915",
+    name: "Acción solidaria derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Tempora stella ager.",
+    status: "pending",
+    userId: "a09e1859-ac1e-408c-b32e-c7e8349666ec",
+    createdAt: "2026-01-10T01:09:37.106Z",
+    updatedAt: "2026-01-10T01:09:37.106Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 761,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 337,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - refugiados",
+        description: "Evento presencial para refugiados. Tabgo colo quibusdam viriliter theatrum harum. Sollers asporto tondeo amor arceo expedita.",
+        initialDate: "2026-03-14T01:09:37.096Z",
+        place: {
+          direction: "9797 Hazel Grove, 493",
+          city: "Salvador",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "afba37b2-cf23-441c-8c63-76193adecef3"
+  },
+  {
+    _id: "0d261ce4-6bca-4d75-980e-7d6adbee5dbf",
+    name: "Iniciativa igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Sed tolero vereor advoco conventus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a799f2e7-da90-4655-9f4c-b45b3137ddbe",
+    createdAt: "2026-01-10T01:10:10.746Z",
+    updatedAt: "2026-01-10T01:10:10.746Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 534,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 828,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 155,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - vivienda",
+        description: "Evento presencial para vivienda. Civitas velociter adimpleo adsidue claudeo tabesco subiungo.",
+        initialDate: "2026-01-29T01:09:37.159Z",
+        place: {
+          direction: "5189 Avenue Road, 6962",
+          city: "Firenze",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "028db33a-bf65-41b8-bacd-26facd917d95"
+  },
+  {
+    _id: "7712ce04-0968-473e-b3f7-ae83213c4172",
+    name: "Acción solidaria emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Copia quae molestias. Verus ter bis ipsum caput carbo texo quidem.",
+    status: "approved",
+    reason: "",
+    userId: "03f81753-1a0d-4bbe-b4d4-8f6481201dbb",
+    createdAt: "2026-01-10T01:10:10.807Z",
+    updatedAt: "2026-01-10T01:10:10.807Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 487,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 341,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - igualdad de género",
+        description: "Evento presencial para igualdad de género. Defessus antea amiculum barba. Victus brevis spiritus blanditiis.",
+        initialDate: "2026-02-06T01:09:37.222Z",
+        place: {
+          direction: "2671 New Road, 76582",
+          city: "Antofagasta",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "b7afed8c-aa2c-4ebd-a108-402df044b3d7"
+  },
+  {
+    _id: "1a043aa8-ffbe-4f47-9208-cf526af565f2",
+    name: "Campaña infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Titulus ater agnosco suffoco.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a19ccc78-1efd-4fde-856e-45f48a415918",
+    createdAt: "2026-01-10T01:10:10.869Z",
+    updatedAt: "2026-01-10T01:10:10.869Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 584,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - refugiados",
+        description: "Evento presencial para refugiados. Viscus ascit utor amaritudo.",
+        initialDate: "2026-03-17T01:09:37.285Z",
+        place: {
+          direction: "386 Jovan Manor, 31851",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Jornada solidaria - discapacidad",
+        description: "Evento presencial para discapacidad. Ascisco balbus uxor conservo censura cupressus. Capitulus crapula quos facilis copiose bellicus cuppedia amiculum consectetur.",
+        initialDate: "2026-03-09T01:09:37.286Z",
+        place: {
+          direction: "285 Avenue Road, 88799",
+          city: "Firenze",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "b9d9870d-347e-4bf6-865d-82e7d7f71d32"
+  },
+  {
+    _id: "6e5a4120-ae8b-4a0c-93ff-51cac5958b69",
+    name: "Acción solidaria refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Utilis nisi tripudio tibi aro suus. Usque natus ea tunc temperantia benigne cursus accusantium audax ventito.",
+    status: "approved",
+    reason: "",
+    userId: "74cc4c67-e219-4e62-b7ec-89b6d111751a",
+    createdAt: "2026-01-10T01:10:10.931Z",
+    updatedAt: "2026-01-10T01:10:10.931Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 313,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 624,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Adaugeo tenus terminatio clamo.",
+        initialDate: "2026-03-21T01:09:37.347Z",
+        place: {
+          direction: "119 Friesen Streets, 57418",
+          city: "Caracas",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Reunión de coordinación - refugiados",
+        description: "Evento presencial para refugiados. Vinculum curto reiciendis crux subiungo paens.",
+        initialDate: "2026-02-28T01:09:37.347Z",
+        place: {
+          direction: "4389 Palma Divide, 384",
+          city: "Valencia",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "3c2983e6-b26d-44fc-87ee-0534ceba543c"
+  },
+  {
+    _id: "a127ea41-729a-443e-940e-8a48058b6053",
+    name: "Acción solidaria refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Itaque patrocinor sollers nobis texo auxilium bonus comitatus quasi tardus. Aliquam deleo conspergo communis vilis arbitro modi spes comis",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ff028e9e-face-412f-a9ee-79f07715d4e4",
+    createdAt: "2026-01-10T01:10:10.994Z",
+    updatedAt: "2026-01-10T01:10:10.994Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 89,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - alimentación",
+        description: "Evento presencial para alimentación. Vulpes deludo tondeo ait aetas.",
+        initialDate: "2026-04-24T00:09:37.409Z",
+        place: {
+          direction: "189 Windmill Close, 990",
+          city: "Bordeaux",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "024551bd-08d1-4957-be2a-736bcc8ef6d3"
+  },
+  {
+    _id: "be45d628-fb61-444a-ab6b-4d98c13f1f70",
+    name: "Proyecto desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Fugiat deporto tamdiu.",
+    status: "approved",
+    reason: "",
+    userId: "fff6e00e-9062-4e78-a2c2-a006d2bffce3",
+    createdAt: "2026-01-10T01:10:11.057Z",
+    updatedAt: "2026-01-10T01:10:11.057Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 325,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - alimentación",
+        description: "Evento presencial para alimentación. Universe esse assumenda aqua quis molestias deserunt apostolus vereor.",
+        initialDate: "2026-06-02T00:09:37.470Z",
+        place: {
+          direction: "291 Josiane Shores, 438",
+          city: "Maracaibo",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "95200c1a-2cd9-4622-a808-82d99e29a931"
+  },
+  {
+    _id: "6031ca59-a487-4572-8abc-84ce1370d6c6",
+    name: "Proyecto desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Statua careo voluptate desipio minima cinis curiositas.",
+    status: "approved",
+    reason: "",
+    userId: "f65f7997-8665-413c-a127-2bd0d0724f52",
+    createdAt: "2026-01-10T01:10:11.182Z",
+    updatedAt: "2026-01-10T01:10:11.182Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 516,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - refugiados",
+        description: "Evento presencial para refugiados. Alveus clam architecto.",
+        initialDate: "2026-06-22T00:09:37.592Z",
+        place: {
+          direction: "161 Simonis Valleys, 440",
+          city: "Rosario",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "485d35d7-266b-4efc-9c9e-4df8b681acaa"
+  },
+  {
+    _id: "56d15918-d457-45da-83ef-8adbc177aeb0",
+    name: "Campaña emergencias 2027",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Dapifer vindico adinventitias arcesso cui varius hic cohors ager decet.",
+    status: "approved",
+    reason: "",
+    userId: "5790721a-690a-466a-92ae-59ae4404da12",
+    createdAt: "2026-01-10T01:10:11.246Z",
+    updatedAt: "2026-01-10T01:10:11.246Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 62,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - emergencias",
+        description: "Evento presencial para emergencias. Utique caries tripudio cubicularis. Consequuntur bene omnis vapulus incidunt.",
+        initialDate: "2026-03-30T00:09:37.654Z",
+        place: {
+          direction: "3901 Pamela Hill, 490",
+          city: "Valencia",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "2e765e05-0084-46e2-b852-ea4b913872c8"
+  },
+  {
+    _id: "fd93c324-a17e-4510-a4a5-e97460c29989",
+    name: "Red de apoyo derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Congregatio caries blandior amissio quidem vir desidero statua concedo villa.",
+    status: "approved",
+    reason: "",
+    userId: "d8c00305-7f6d-441a-8e31-80698fe62d05",
+    createdAt: "2026-01-10T01:10:11.314Z",
+    updatedAt: "2026-01-10T01:10:11.314Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 984,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 169,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Tremo sponte cruentus ipsum aequitas calco.",
+        initialDate: "2026-02-13T01:09:37.717Z",
+        place: {
+          direction: "5642 S 4th Street, 809",
+          city: "Glasgow",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "cc89db0a-3df0-4fb2-bebb-154de0cbd035"
+  },
+  {
+    _id: "cc42d44b-9f0e-402a-9e48-f5eef63653a4",
+    name: "Campaña refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Clarus vicinus verumtamen campana aliquam deprimo.",
+    status: "approved",
+    reason: "",
+    userId: "6849b527-56ec-40e4-8f21-c312885b7934",
+    createdAt: "2026-01-10T01:10:11.448Z",
+    updatedAt: "2026-01-10T01:10:11.448Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 977,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 82,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 759,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - discapacidad",
+        description: "Evento presencial para discapacidad. Solio patruus despecto cilicium.",
+        initialDate: "2026-07-01T00:09:37.841Z",
+        place: {
+          direction: "364 Kaitlyn Lights, 334",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      },
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Hic bellum vesco venia cohors thymbra aeternus. Totidem vitae quam alveus demergo tepidus officiis tenetur.",
+        initialDate: "2026-03-03T01:09:37.841Z",
+        place: {
+          direction: "4256 Cremin Centers, 26359",
+          city: "Santiago",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "bf9d0a0f-d26c-4a73-9757-1027fab010e3"
+  },
+  {
+    _id: "dfc48582-b52c-48a2-b235-2c2d3c44f105",
+    name: "Iniciativa desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Tactus umquam pecco tertius. Pauci laboriosam alii aeternus callide excepturi adversus decet corrupti.",
+    status: "approved",
+    reason: "",
+    userId: "792cb878-d538-42e3-a036-0b7ba1893e8a",
+    createdAt: "2026-01-10T01:10:11.510Z",
+    updatedAt: "2026-01-10T01:10:11.510Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 601,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 910,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 231,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - tercera edad",
+        description: "Evento presencial para tercera edad. Defero triumphus tepesco articulus.",
+        initialDate: "2026-02-14T01:09:37.904Z",
+        place: {
+          direction: "719 Winston Meadow, 8181",
+          city: "Frankfurt",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "598feb24-9c39-4a1a-a30c-ba8d20420ba5"
+  },
+  {
+    _id: "a73f0598-9655-4d49-96b2-36027201bf45",
+    name: "Campaña derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Varius uterque verto auxilium pauci adulatio debitis benigne alias. Ut tamdiu cruciamentum cunabula veritatis accusator thema.",
+    status: "approved",
+    reason: "",
+    userId: "71e9bfc6-22be-4c28-92e3-68e76b0a444e",
+    createdAt: "2026-01-10T01:10:11.632Z",
+    updatedAt: "2026-01-10T01:10:11.632Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 772,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 818,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 653,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - discapacidad",
+        description: "Evento presencial para discapacidad. Conqueror patruus cicuta comminor sollicito tenax in verto arcus.",
+        initialDate: "2026-04-16T00:09:38.028Z",
+        place: {
+          direction: "362 Nader Point, 521",
+          city: "Birmingham",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Encuentro comunitario - salud",
+        description: "Evento presencial para salud. Vere totam aperiam decor thermae balbus.",
+        initialDate: "2026-02-10T01:09:38.028Z",
+        place: {
+          direction: "4326 Rae Mall, 371",
+          city: "Toulouse",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "bf9d0a0f-d26c-4a73-9757-1027fab010e3"
+  },
+  {
+    _id: "7899754f-4988-4b4f-9d25-627ab6322920",
+    name: "Jornada educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Convoco arbor necessitatibus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "2ba5de2c-73b6-4756-b73a-2e7f67483645",
+    createdAt: "2026-01-10T01:10:11.758Z",
+    updatedAt: "2026-01-10T01:10:11.758Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 459,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 190,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - alimentación",
+        description: "Evento presencial para alimentación. Summisse ut tubineus unus.",
+        initialDate: "2026-03-20T01:09:38.153Z",
+        place: {
+          direction: "3328 Johnson Gardens, 66604",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Taller formativo - pobreza",
+        description: "Evento presencial para pobreza. Universe solitudo non. Aurum artificiose voluptatum adiuvo cimentarius desidero tergo.",
+        initialDate: "2026-05-07T00:09:38.153Z",
+        place: {
+          direction: "40716 W Pine Street, 1833",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "b7afed8c-aa2c-4ebd-a108-402df044b3d7"
+  },
+  {
+    _id: "c86f8d63-6db0-4fdf-a82b-00cde303131b",
+    name: "Proyecto discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Sordeo tam temperantia architecto. Adeptio pecco spero verecundia accendo ducimus unus absum.",
+    status: "approved",
+    reason: "",
+    userId: "b8e756ea-9090-467a-a548-e3e61ae62066",
+    createdAt: "2026-01-10T01:10:11.824Z",
+    updatedAt: "2026-01-10T01:10:11.824Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 684,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 493,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 168,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - medio ambiente",
+        description: "Evento presencial para medio ambiente. Conicio veritas termes acquiro. Solvo combibo viridis verbera vae utroque laudantium cubitum.",
+        initialDate: "2026-03-08T01:09:38.216Z",
+        place: {
+          direction: "447 W Jefferson Street, 3110",
+          city: "Puebla",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Utique stultus aqua summopere.",
+        initialDate: "2026-04-22T00:09:38.216Z",
+        place: {
+          direction: "156 Powlowski Expressway, 99616",
+          city: "Dresden",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "c4955121-fccf-441b-a89b-59fb652856da"
+  },
+  {
+    _id: "5063301d-c44c-482b-a098-2f6abdfb83a2",
+    name: "Campaña igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Pecus denique molestiae cornu.",
+    status: "approved",
+    reason: "",
+    userId: "cf287776-41e3-45b1-8f25-04a1e5d5941f",
+    createdAt: "2026-01-10T01:10:11.898Z",
+    updatedAt: "2026-01-10T01:10:11.898Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 447,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 302,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - derechos humanos",
+        description: "Evento presencial para derechos humanos. Denego aetas sol civitas temptatio auditor urbs cum sunt corrumpo.",
+        initialDate: "2026-06-25T00:09:38.279Z",
+        place: {
+          direction: "59961 Ray Row, 358",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "ad535d5a-edfe-4ea5-9aab-f41b99eb3ba4"
+  },
+  {
+    _id: "6cab7bf5-290b-42fb-ac75-7f62cd63fe54",
+    name: "Operación infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Adflicto asper vulgo calculus decumbo conatus amplus custodia corporis.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fe88acb1-2994-4b48-9e4c-8c7390ebe23c",
+    createdAt: "2026-01-10T01:10:11.963Z",
+    updatedAt: "2026-01-10T01:10:11.963Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 414,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 455,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 638,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - emergencias",
+        description: "Evento presencial para emergencias. Aqua circumvenio supra vulnero cruentus surgo.",
+        initialDate: "2026-01-26T01:09:38.342Z",
+        place: {
+          direction: "3282 Mason Overpass, 1990",
+          city: "Toulouse",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Taller formativo - medio ambiente",
+        description: "Evento presencial para medio ambiente. Suus succedo utrimque confido cupressus celebrer.",
+        initialDate: "2026-02-17T01:09:38.342Z",
+        place: {
+          direction: "98638 Barton Road, 18680",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "36a729b3-cecb-4897-9a1c-2cc9abee5687"
+  },
+  {
+    _id: "9658ecb8-2bf6-4936-9556-d01eb0070f8b",
+    name: "Programa educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Assumenda molestias terebro pauper defendo desolo inventore bestia titulus depromo.",
+    status: "pending",
+    userId: "c87fcb53-1ee4-4b69-9d7d-a2c4af968fbe",
+    createdAt: "2026-01-10T01:09:38.414Z",
+    updatedAt: "2026-01-10T01:09:38.414Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 672,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - emergencias",
+        description: "Evento presencial para emergencias. Conforto utpote vehemens laboriosam commodo suggero vulgaris. Decens vulpes verto terror crinis statua canto tamisium.",
+        initialDate: "2026-02-28T01:09:38.404Z",
+        place: {
+          direction: "233 Jena Track, 1938",
+          city: "Nice",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "3c2983e6-b26d-44fc-87ee-0534ceba543c"
+  },
+  {
+    _id: "57e1a752-afc5-42fe-bb41-62690fecc04e",
+    name: "Red de apoyo alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Comptus strenuus sono cotidie. Alius iste attonbitus culpo crustulum non labore alienus.",
+    status: "approved",
+    reason: "",
+    userId: "e3d7a9a8-bf9d-40f4-a2aa-42fd06090cff",
+    createdAt: "2026-01-10T01:10:12.090Z",
+    updatedAt: "2026-01-10T01:10:12.090Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 498,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 269,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - derechos humanos",
+        description: "Evento presencial para derechos humanos. Usitas conculco confugo aliqua vesco adinventitias venio.",
+        initialDate: "2026-01-22T01:09:38.467Z",
+        place: {
+          direction: "80409 Manchester Road, 7231",
+          city: "Arequipa",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "da72c044-793a-4d1f-a780-a2bd065c8870"
+  },
+  {
+    _id: "ed90e163-aa42-4d58-a08b-4d6e4ed04f1f",
+    name: "Campaña igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Consequatur cornu acervus pecto currus molestiae ut tutamen.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "39206045-d030-4601-babd-be2ad5ae4e54",
+    createdAt: "2026-01-10T01:10:12.162Z",
+    updatedAt: "2026-01-10T01:10:12.162Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 949,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - medio ambiente",
+        description: "Evento presencial para medio ambiente. Curatio sufficio conqueror. Cura temporibus alienus surculus centum commemoro tersus ustulo distinctio.",
+        initialDate: "2026-06-25T00:09:38.530Z",
+        place: {
+          direction: "65910 Effertz Viaduct, 31241",
+          city: "London",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Magnam eos turpis timor. Dignissimos debilito comburo.",
+        initialDate: "2026-04-24T00:09:38.530Z",
+        place: {
+          direction: "9984 Hudson View, 297",
+          city: "Bordeaux",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "711160a9-f462-439d-b665-2531ed225c94"
+  },
+  {
+    _id: "6466990c-d21c-445a-9b36-9426db732ab9",
+    name: "Acción solidaria educación 2027",
+    description: "Acción concreta para educación con objetivos cuantificables. Optio inflammatio maiores voluptatem templum quia fugiat valetudo. Confido undique sperno aveho tunc usque centum comes maxime.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "9ff9e8ba-c3ec-4fdd-8ce4-cbf263a5c1dc",
+    createdAt: "2026-01-10T01:10:12.346Z",
+    updatedAt: "2026-01-10T01:10:12.346Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 577,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - medio ambiente",
+        description: "Evento presencial para medio ambiente. Stips collum sumptus sapiente tubineus arca. Vox sub stabilis votum ceno valde caritas aperte.",
+        initialDate: "2026-04-03T00:09:38.717Z",
+        place: {
+          direction: "4851 W Pine Street, 166",
+          city: "Cancún",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Evento benéfico - infancia",
+        description: "Evento presencial para infancia. Totidem tametsi incidunt curiositas. Crapula ceno vox depono ciminatio trepide solvo conqueror vado carus.",
+        initialDate: "2026-01-23T01:09:38.717Z",
+        place: {
+          direction: "204 Verdie Plain, 265",
+          city: "Cancún",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "850d6048-87ee-4552-84c4-2f3aa78688b4"
+  },
+  {
+    _id: "557c46bb-dc53-43b1-9f6c-20ebdc238f8b",
+    name: "Movimiento educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Aestivus esse tolero tribuo fugiat vestrum arcus eum absque trucido.",
+    status: "pending",
+    userId: "207025f2-5340-473c-bf9c-447cc2e51e8e",
+    createdAt: "2026-01-10T01:09:38.852Z",
+    updatedAt: "2026-01-10T01:09:38.852Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 876,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - agua potable",
+        description: "Evento presencial para agua potable. Et ipsa trucido blanditiis vix crux degenero acquiro. Usque vinitor curo tricesimus utilis solutio quis adimpleo xiphias cupio.",
+        initialDate: "2026-06-28T00:09:38.841Z",
+        place: {
+          direction: "3558 Charles Street, 712",
+          city: "Trujillo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "77d31ed6-e4c5-460b-9342-6a4b05efcd40"
+  },
+  {
+    _id: "0501befb-3dbc-4c7c-9fc2-3fc1cfb2d616",
+    name: "Red de apoyo tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Cunctatio cruciamentum amita exercitationem consequuntur depraedor vicissitudo accusator amor villa. Acidus subvenio vero antea culpo ve",
+    status: "approved",
+    reason: "",
+    userId: "bcee7b18-303f-4d94-a515-1ce21533bd9d",
+    createdAt: "2026-01-10T01:10:12.533Z",
+    updatedAt: "2026-01-10T01:10:12.533Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 602,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - agua potable",
+        description: "Evento presencial para agua potable. Calamitas conspergo patruus damno supra stultus dignissimos accommodo. Delinquo quam casso et conatus subnecto aperio varietas vero sulum.",
+        initialDate: "2026-05-03T00:09:38.903Z",
+        place: {
+          direction: "377 The Poplars, 4230",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Trepide aegrus defungo speciosus sollers aequitas vere.",
+        initialDate: "2026-03-14T01:09:38.903Z",
+        place: {
+          direction: "711 Klocko Spur, 35659",
+          city: "Barquisimeto",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "debed4e8-42ff-4f48-b739-b22aff8c5fec"
+  },
+  {
+    _id: "1f4108ab-23cc-4d05-b82c-ed234a0499a2",
+    name: "Operación agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Agnosco sum caste cunabula alius copiose supplanto cenaculum. Corrupti ipsa cogito.",
+    status: "approved",
+    reason: "",
+    userId: "a4ccfbdf-e7ad-4c6c-a943-90b9abf85aac",
+    createdAt: "2026-01-10T01:10:12.595Z",
+    updatedAt: "2026-01-10T01:10:12.595Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 469,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - salud",
+        description: "Evento presencial para salud. Advenio cerno canonicus universe repudiandae tempora.",
+        initialDate: "2026-07-14T00:09:38.965Z",
+        place: {
+          direction: "6676 Mulberry Street, 86654",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "c284f569-af1b-4a92-b37d-6f4f5b0715f7"
+  },
+  {
+    _id: "13ec2dce-0471-477d-a5f2-302393139d4e",
+    name: "Acción solidaria educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Coaegresco molestias compono iusto adeptio utilis tres. Patior tego repudiandae suscipit.",
+    status: "approved",
+    reason: "",
+    userId: "21d349ab-4dd8-4a91-add7-10d43a46132e",
+    createdAt: "2026-01-10T01:10:12.659Z",
+    updatedAt: "2026-01-10T01:10:12.659Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 424,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 553,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - pobreza",
+        description: "Evento presencial para pobreza. Argumentum officia theatrum corrupti vinco tempus facere amitto calculus voco.",
+        initialDate: "2026-06-02T00:09:39.028Z",
+        place: {
+          direction: "669 Lake Avenue, 9339",
+          city: "Hamburg",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Jornada solidaria - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Spiculum cognatus copiose suscipit amor virtus.",
+        initialDate: "2026-06-08T00:09:39.028Z",
+        place: {
+          direction: "191 Abbigail Loaf, 83402",
+          city: "Barranquilla",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "1df94865-6ac3-4b01-b861-7f579053a620"
+  },
+  {
+    _id: "f848757c-65d4-4591-aa45-7f6c11f52bbd",
+    name: "Red de apoyo vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Vere tumultus inflammatio utpote aedificium. Est celo thema vero admoveo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a9639f72-f2ff-4740-b536-df9225b8e5a7",
+    createdAt: "2026-01-10T01:10:12.721Z",
+    updatedAt: "2026-01-10T01:10:12.721Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 209,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 361,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - educación",
+        description: "Evento presencial para educación. Thermae sub pauper error adamo coruscus blandior curvo ea antepono.",
+        initialDate: "2026-05-09T00:09:39.090Z",
+        place: {
+          direction: "5786 8th Avenue, 9567",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "ff208f47-ed5b-4e73-aafe-7e6b3cb76a9f"
+  },
+  {
+    _id: "be4c13ec-0ee7-47c7-bc91-c5b14e2060f0",
+    name: "Acción solidaria tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Veritatis decretum tabula beneficium socius termes dapifer.",
+    status: "approved",
+    reason: "",
+    userId: "9d1fe85d-cd95-461b-ba51-87c17fed78c7",
+    createdAt: "2026-01-10T01:10:12.784Z",
+    updatedAt: "2026-01-10T01:10:12.784Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 227,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - discapacidad",
+        description: "Evento presencial para discapacidad. Amaritudo adstringo tergiversatio. Viscus ullus officia virgo concedo.",
+        initialDate: "2026-04-22T00:09:39.153Z",
+        place: {
+          direction: "388 S Elm Street, 32103",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "8fff8c2d-dd7b-44d0-858a-72239702aa4b"
+  },
+  {
+    _id: "a5abed31-6ba5-4554-b5e9-d229cf9206e3",
+    name: "Movimiento igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Deinde suus sono adamo. Vomer calcar amo viriliter cognatus somnus demonstro villa acervus conscendo.",
+    status: "pending",
+    userId: "9e535df7-9710-43b6-bec5-5cb86e4255bc",
+    createdAt: "2026-01-10T01:09:39.228Z",
+    updatedAt: "2026-01-10T01:09:39.228Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 600,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 156,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - refugiados",
+        description: "Evento presencial para refugiados. Suffragium thermae cultura damno deorsum vetus tondeo vae censura civis. Clamo aeger custodia argumentum thema.",
+        initialDate: "2026-01-26T01:09:39.217Z",
+        place: {
+          direction: "32483 Lincoln Road, 2735",
+          city: "Zaragoza",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "bb7b904b-f60b-4f80-8d7a-a96cce6f8295"
+  },
+  {
+    _id: "0e2a0ecb-ce66-4c34-8390-c42b401e4d25",
+    name: "Campaña desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Adimpleo demulceo cilicium cuppedia vestigium. Constans auxilium vero valetudo.",
+    status: "approved",
+    reason: "",
+    userId: "7652eb8d-09e6-44ff-af59-15713c0afacb",
+    createdAt: "2026-01-10T01:10:12.972Z",
+    updatedAt: "2026-01-10T01:10:12.972Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 173,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - igualdad de género",
+        description: "Evento presencial para igualdad de género. Culpo volup trans stips somnus contego concido aegre. Tribuo tardus tam.",
+        initialDate: "2026-05-23T00:09:39.341Z",
+        place: {
+          direction: "6208 Ritchie Knoll, 964",
+          city: "Tijuana",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "850d6048-87ee-4552-84c4-2f3aa78688b4"
+  },
+  {
+    _id: "dd9eebb7-d8a6-457e-8661-e89673581cbb",
+    name: "Red de apoyo agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Tricesimus acidus aperte copia aperte vestigium absorbeo cetera.",
+    status: "approved",
+    reason: "",
+    userId: "072ae3e2-5faa-4e0c-81b7-5a7a9ae68156",
+    createdAt: "2026-01-10T01:10:13.034Z",
+    updatedAt: "2026-01-10T01:10:13.034Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 743,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 907,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - refugiados",
+        description: "Evento presencial para refugiados. Amet torqueo claudeo adfero tametsi clamo conculco triduana. Aperte tunc tibi derelinquo totidem conicio consequatur dolorem.",
+        initialDate: "2026-04-27T00:09:39.403Z",
+        place: {
+          direction: "78812 Kessler Junction, 382",
+          city: "São Paulo",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "86a9afe5-c341-469a-9275-a03dba53fcd3"
+  },
+  {
+    _id: "f8317540-0ef9-4b3e-9215-c566036f3a7f",
+    name: "Operación emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Distinctio numquam tracto. Terror depromo unde defleo aequus theologus molestiae ceno.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "b0365e0b-4977-4562-9fec-e8ffa71fe75a",
+    createdAt: "2026-01-10T01:10:13.097Z",
+    updatedAt: "2026-01-10T01:10:13.097Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 604,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 836,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 566,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - alimentación",
+        description: "Evento presencial para alimentación. Cetera desino cui deficio terreo supplanto coruscus cupio defendo ducimus. Undique claro volutabrum carpo deserunt curatio cuppedia.",
+        initialDate: "2026-03-29T01:09:39.465Z",
+        place: {
+          direction: "39554 West Road, 23562",
+          city: "Valencia",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Sequi quibusdam vestigium acidus inventore sopor articulus.",
+        initialDate: "2026-04-25T00:09:39.466Z",
+        place: {
+          direction: "19435 Leannon Highway, 638",
+          city: "Antofagasta",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "299a2b72-9f0e-470c-a3d0-5cc3d8219608"
+  },
+  {
+    _id: "a0944491-636e-45af-8557-f2fab53520b0",
+    name: "Movimiento infancia 2026",
+    description: "Acción concreta para infancia con objetivos cuantificables. Aperio blandior occaecati curvo clementia. Aranea statim supplanto cohors doloribus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a80ff311-aa3c-42f2-9cbe-213f5862459f",
+    createdAt: "2026-01-10T01:10:13.159Z",
+    updatedAt: "2026-01-10T01:10:13.159Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 776,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 798,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 941,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - vivienda",
+        description: "Evento presencial para vivienda. Temporibus itaque explicabo contabesco validus cur est earum vomito. Debilito convoco ter.",
+        initialDate: "2026-05-11T00:09:39.528Z",
+        place: {
+          direction: "407 Bernhard Centers, 8981",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      },
+      {
+        name: "Evento benéfico - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Consequuntur repudiandae claudeo aetas suggero acervus deporto bene coaegresco facilis. Uter peccatus alii vulpes turba.",
+        initialDate: "2026-07-03T00:09:39.528Z",
+        place: {
+          direction: "563 Kris Cape, 714",
+          city: "Firenze",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "4812dff5-c964-49f0-9e69-af3c395cc02c"
+  },
+  {
+    _id: "3afbf2ad-7e37-4957-a6fe-0848b5ba0f99",
+    name: "Iniciativa pobreza 2026",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Agnitio maxime supra valetudo pectus ratione derelinquo decumbo sponte totus.",
+    status: "pending",
+    userId: "8652eff5-7c8d-4370-8039-539fa50d2cc7",
+    createdAt: "2026-01-10T01:09:39.601Z",
+    updatedAt: "2026-01-10T01:09:39.601Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 568,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 139,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - discapacidad",
+        description: "Evento presencial para discapacidad. Sed abeo sonitus vilicus vulnus conatus expedita solvo adipiscor coruscus.",
+        initialDate: "2026-02-07T01:09:39.591Z",
+        place: {
+          direction: "892 Abbott Cove, 31042",
+          city: "Berlin",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "afba37b2-cf23-441c-8c63-76193adecef3"
+  },
+  {
+    _id: "1467bea1-db8e-4a8d-80ab-192bb0b0a2d1",
+    name: "Campaña refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Auxilium somniculosus deprecator concedo conor utroque. Aequus minima pecus strues contigo expedita acidus volva.",
+    status: "approved",
+    reason: "",
+    userId: "78dc4d45-a2a6-4592-a5d6-188caccf0029",
+    createdAt: "2026-01-10T01:10:13.412Z",
+    updatedAt: "2026-01-10T01:10:13.412Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 121,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 332,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 312,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - infancia",
+        description: "Evento presencial para infancia. Tres umquam civitas trado color dedico subnecto utilis vesco adicio.",
+        initialDate: "2026-06-08T00:09:39.779Z",
+        place: {
+          direction: "241 Dylan Fort, 8766",
+          city: "Roma",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Demitto officiis adaugeo aurum tripudio defungo corrumpo.",
+        initialDate: "2026-03-03T01:09:39.779Z",
+        place: {
+          direction: "5523 Mona Mews, 50852",
+          city: "Bordeaux",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "a7a81dbd-d946-4917-ab84-5ba3fde5349c"
+  },
+  {
+    _id: "8bd82033-af9c-437a-b847-b89adc16f68b",
+    name: "Iniciativa vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Aestas cimentarius coerceo supra adsuesco aperio decet vir incidunt.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "11c5d45f-ffa1-41d7-b6de-b2b52f14af04",
+    createdAt: "2026-01-10T01:10:13.473Z",
+    updatedAt: "2026-01-10T01:10:13.473Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 214,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 873,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 710,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - salud",
+        description: "Evento presencial para salud. Suspendo pauci volva chirographum provident odit defendo stultus ultio.",
+        initialDate: "2026-01-30T01:09:39.842Z",
+        place: {
+          direction: "8138 Belmont Road, 54059",
+          city: "Marseille",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "9502be00-2ce7-4bd4-8490-ceee76d52d62"
+  },
+  {
+    _id: "83ed71b7-b0a5-4ce2-a387-452a68400bb7",
+    name: "Movimiento derechos humanos 2027",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Et asperiores tametsi urbs. Libero sapiente canto astrum apud temperantia cognomen alveus vitiosus.",
+    status: "approved",
+    reason: "",
+    userId: "03ad56fd-3d10-4b7d-b866-d8da7f791ce2",
+    createdAt: "2026-01-10T01:10:13.597Z",
+    updatedAt: "2026-01-10T01:10:13.597Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 958,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 798,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - agua potable",
+        description: "Evento presencial para agua potable. Volubilis deduco temptatio dedico adhaero condico totus trucido.",
+        initialDate: "2026-03-21T01:09:39.966Z",
+        place: {
+          direction: "9770 Bartoletti Plaza, 4972",
+          city: "Barranquilla",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "024551bd-08d1-4957-be2a-736bcc8ef6d3"
+  },
+  {
+    _id: "5dc00b61-3e1c-43bc-943a-8ed3d1b325a8",
+    name: "Proyecto discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Similique amicitia numquam tener. Umquam ait basium.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fdc2ceb7-9912-4677-a05e-5f9723f15f6e",
+    createdAt: "2026-01-10T01:10:13.723Z",
+    updatedAt: "2026-01-10T01:10:13.723Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 434,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 909,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - salud",
+        description: "Evento presencial para salud. Harum capto voluptate tyrannus creta suadeo tabella urbanus verbera sub. Est libero talis verbum cito.",
+        initialDate: "2026-04-20T00:09:40.092Z",
+        place: {
+          direction: "14781 W Main, 7680",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Encuentro comunitario - pobreza",
+        description: "Evento presencial para pobreza. Aiunt deorsum ubi conduco.",
+        initialDate: "2026-03-12T01:09:40.092Z",
+        place: {
+          direction: "94525 Halvorson Island, 19117",
+          city: "Valencia",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "ff627983-492d-46c9-ae24-ca45d9512f7f"
+  },
+  {
+    _id: "4fe183f8-0250-4787-8530-88d9d6f70bc3",
+    name: "Proyecto discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Vulariter conatus amaritudo.",
+    status: "approved",
+    reason: "",
+    userId: "1cbb1275-8bef-4a50-ae0b-deef074bdb0b",
+    createdAt: "2026-01-10T01:10:13.784Z",
+    updatedAt: "2026-01-10T01:10:13.784Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 623,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 640,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 311,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - tercera edad",
+        description: "Evento presencial para tercera edad. Conservo uberrime tardus. Teneo contra cubicularis candidus coepi sopor quo ocer magnam cogito.",
+        initialDate: "2026-05-10T00:09:40.156Z",
+        place: {
+          direction: "993 Dedrick Valley, 4372",
+          city: "Berlin",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "cc89db0a-3df0-4fb2-bebb-154de0cbd035"
+  },
+  {
+    _id: "08c96c33-0796-4977-a042-5a776e178036",
+    name: "Campaña agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Combibo tamen cupiditas certe nulla quisquam aspicio arceo ager. Approbo ascit cohors saepe antepono cupiditas cur adstringo censura.",
+    status: "pending",
+    userId: "356f0b45-a054-4f06-aaa1-cb66fc5ce267",
+    createdAt: "2026-01-10T01:09:40.228Z",
+    updatedAt: "2026-01-10T01:09:40.228Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 944,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - emergencias",
+        description: "Evento presencial para emergencias. Vester aveho auctor.",
+        initialDate: "2026-04-15T00:09:40.218Z",
+        place: {
+          direction: "2943 Corwin Turnpike, 4598",
+          city: "Birmingham",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Encuentro comunitario - discapacidad",
+        description: "Evento presencial para discapacidad. Provident summopere tergiversatio ater. Ars speciosus quia tricesimus comitatus pecto.",
+        initialDate: "2026-04-29T00:09:40.218Z",
+        place: {
+          direction: "48927 Wuckert Bridge, 8449",
+          city: "Bogotá",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "289918d9-e099-44d6-b5cb-1de6da3c164a"
+  },
+  {
+    _id: "6a8cb817-71cd-42d9-9fe3-3a8f30e88203",
+    name: "Operación igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Ager succedo adopto pecco. Coaegresco sufficio vigor.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a4ccfbdf-e7ad-4c6c-a943-90b9abf85aac",
+    createdAt: "2026-01-10T01:10:13.909Z",
+    updatedAt: "2026-01-10T01:10:13.909Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 85,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 384,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - derechos humanos",
+        description: "Evento presencial para derechos humanos. Dolore audio ceno. Conscendo tempore eaque voro censura urbanus deorsum usitas excepturi sono.",
+        initialDate: "2026-03-15T01:09:40.280Z",
+        place: {
+          direction: "277 Carson Park, 571",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "69068059-2fc9-41da-8b89-baf291fd62a0"
+  },
+  {
+    _id: "70336b5b-380d-4a75-b5e3-2abc63a7ca8b",
+    name: "Proyecto igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Umerus neque terra non coerceo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "0ecad1dd-159d-4d12-bb57-17d19b2d4a56",
+    createdAt: "2026-01-10T01:10:13.973Z",
+    updatedAt: "2026-01-10T01:10:13.973Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 160,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 472,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - vivienda",
+        description: "Evento presencial para vivienda. Vinum cibus rem decumbo asper solus temperantia error crur cur. Conscendo inventore constans nam audeo tredecim aeger creber videlicet triumphus.",
+        initialDate: "2026-01-18T01:09:40.344Z",
+        place: {
+          direction: "82088 S Monroe Street, 865",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "3949796e-57fd-479c-9f1e-a044077f4f23"
+  },
+  {
+    _id: "0ebfea9d-b04c-4e85-b50d-79001e9018d2",
+    name: "Programa medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Culpo subvenio ultra. Urbanus succurro decerno explicabo.",
+    status: "approved",
+    reason: "",
+    userId: "02c19ca9-b0cf-4108-87b4-f8a2b5809ef0",
+    createdAt: "2026-01-10T01:10:14.033Z",
+    updatedAt: "2026-01-10T01:10:14.033Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 759,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 562,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - educación",
+        description: "Evento presencial para educación. Adamo speciosus conturbo libero amicitia vulticulus deludo aestivus. Ubi cervus harum vesco creptio curso conspergo nostrum thermae depereo.",
+        initialDate: "2026-06-28T00:09:40.406Z",
+        place: {
+          direction: "9941 Jaskolski Throughway, 24150",
+          city: "Buenos Aires",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - educación",
+        description: "Evento presencial para educación. Cruciamentum animi cresco condico decerno charisma conforto acies explicabo adflicto. Vilitas ipsam cum volup blandior nulla capto.",
+        initialDate: "2026-04-21T00:09:40.406Z",
+        place: {
+          direction: "46910 E Franklin Street, 79818",
+          city: "Bologna",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "b0029ac4-67f5-45a9-8278-42833a59be05"
+  },
+  {
+    _id: "32cb7cb6-28e9-4a03-ad48-ee6b06e46eaa",
+    name: "Acción solidaria infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Stillicidium tener temperantia advoco doloribus. Amita vilitas accommodo subvenio accusator comitatus tolero accusamus utrum.",
+    status: "approved",
+    reason: "",
+    userId: "71e9bfc6-22be-4c28-92e3-68e76b0a444e",
+    createdAt: "2026-01-10T01:10:14.095Z",
+    updatedAt: "2026-01-10T01:10:14.095Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 333,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 316,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - pobreza",
+        description: "Evento presencial para pobreza. Peccatus curto astrum.",
+        initialDate: "2026-07-01T00:09:40.470Z",
+        place: {
+          direction: "57054 Breitenberg Bridge, 613",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "77d31ed6-e4c5-460b-9342-6a4b05efcd40"
+  },
+  {
+    _id: "f4f4c092-6151-4aea-b9d8-42b75e2c71f7",
+    name: "Movimiento agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Nulla sint tepesco articulus cura solvo stipes. Ventito tendo avarus adnuo claro cinis canto dens.",
+    status: "pending",
+    userId: "a98468b6-e8d0-4b2b-b663-78f06a517db8",
+    createdAt: "2026-01-10T01:09:40.605Z",
+    updatedAt: "2026-01-10T01:09:40.605Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 350,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - salud",
+        description: "Evento presencial para salud. Admitto calamitas vetus.",
+        initialDate: "2026-04-08T00:09:40.595Z",
+        place: {
+          direction: "415 Turcotte Canyon, 3574",
+          city: "Bordeaux",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "6d816895-0443-4fa1-b8f7-5bf1a58c57c3"
+  },
+  {
+    _id: "ff17e4e4-a810-486a-a74b-b848ea334dfa",
+    name: "Campaña alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Vir vinculum crur comis absque. Excepturi teneo vulnus tollo.",
+    status: "approved",
+    reason: "",
+    userId: "6bebbd77-76cb-43ea-955d-5f7442ad3175",
+    createdAt: "2026-01-10T01:10:14.281Z",
+    updatedAt: "2026-01-10T01:10:14.281Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 542,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 372,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 818,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - derechos humanos",
+        description: "Evento presencial para derechos humanos. Est calcar curo temptatio. Acceptus viridis asporto.",
+        initialDate: "2026-04-08T00:09:40.658Z",
+        place: {
+          direction: "6872 Martin Luther King Boulevard, 997",
+          city: "Maracay",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Reunión de coordinación - pobreza",
+        description: "Evento presencial para pobreza. Decet aeneus animi.",
+        initialDate: "2026-05-24T00:09:40.658Z",
+        place: {
+          direction: "7270 Wolf Pine, 325",
+          city: "Munich",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "b0029ac4-67f5-45a9-8278-42833a59be05"
+  },
+  {
+    _id: "209522f9-2cd0-45e8-978e-2221332c61f8",
+    name: "Iniciativa igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Succurro degenero dedico terminatio. Aeger umbra alveus cunabula carpo aestivus absens desino ut verus.",
+    status: "approved",
+    reason: "",
+    userId: "e6bf0d24-c156-4485-ad9a-ac372ef2eea0",
+    createdAt: "2026-01-10T01:10:14.469Z",
+    updatedAt: "2026-01-10T01:10:14.469Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 106,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 122,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 402,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - infancia",
+        description: "Evento presencial para infancia. Debitis sunt templum urbs eveniet somnus.",
+        initialDate: "2026-05-26T00:09:40.846Z",
+        place: {
+          direction: "160 Mateo Crossing, 1891",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "14bcd9c1-4199-4578-98c9-ac25ee169cbc"
+  },
+  {
+    _id: "bfa5915a-2606-431c-aa50-fa90d38be4e7",
+    name: "Operación alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Cariosus amitto considero cogo.",
+    status: "pending",
+    userId: "45ad0625-0ebf-404f-af73-a59de442bae3",
+    createdAt: "2026-01-10T01:09:40.919Z",
+    updatedAt: "2026-01-10T01:09:40.919Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 643,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 56,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - agua potable",
+        description: "Evento presencial para agua potable. Curatio reprehenderit depopulo.",
+        initialDate: "2026-01-28T01:09:40.909Z",
+        place: {
+          direction: "8346 Mann Walks, 310",
+          city: "Cusco",
+          countryCode: "PE"
+        }
+      },
+      {
+        name: "Encuentro comunitario - salud",
+        description: "Evento presencial para salud. Nam teneo thymbra allatus aperio atqui. Doloribus vociferor vitiosus succurro aequitas.",
+        initialDate: "2026-03-12T01:09:40.909Z",
+        place: {
+          direction: "11155 Mellie Viaduct, 935",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "3c2983e6-b26d-44fc-87ee-0534ceba543c"
+  },
+  {
+    _id: "5aeb3d33-2107-4f13-9cb9-6164617acb7a",
+    name: "Programa alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Damnatio vergo vobis tabesco alioqui defluo abstergo utpote delego.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "d6872228-95da-43f8-97ea-a233cd5bc4d6",
+    createdAt: "2026-01-10T01:10:14.594Z",
+    updatedAt: "2026-01-10T01:10:14.594Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 528,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 896,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 795,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - discapacidad",
+        description: "Evento presencial para discapacidad. Vulgus vespillo ultio.",
+        initialDate: "2026-05-24T00:09:40.971Z",
+        place: {
+          direction: "91377 Lafayette Street, 527",
+          city: "La Plata",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Encuentro comunitario - medio ambiente",
+        description: "Evento presencial para medio ambiente. Delicate surgo certus decerno ex cado virtus.",
+        initialDate: "2026-02-19T01:09:40.972Z",
+        place: {
+          direction: "6653 Cambridge Street, 929",
+          city: "Liverpool",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "b63b9184-cea9-471f-b049-6f242d55b51f"
+  },
+  {
+    _id: "93c51eb1-09fb-4210-8200-08377685c758",
+    name: "Operación educación 2027",
+    description: "Acción concreta para educación con objetivos cuantificables. Tamen catena venustas cresco statim vix corporis volva. Astrum tero thesis auxilium.",
+    status: "approved",
+    reason: "",
+    userId: "6d42e696-e642-4efd-8a1c-42f7819575fb",
+    createdAt: "2026-01-10T01:10:14.780Z",
+    updatedAt: "2026-01-10T01:10:14.780Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 562,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 800,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - vivienda",
+        description: "Evento presencial para vivienda. Aegre cilicium claudeo crastinus fuga. Supplanto veritatis calamitas aeneus teres adsuesco cerno.",
+        initialDate: "2026-03-20T01:09:41.159Z",
+        place: {
+          direction: "639 Depot Street, 66134",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "024551bd-08d1-4957-be2a-736bcc8ef6d3"
+  },
+  {
+    _id: "e8cbaba5-f17f-4fb4-883a-7ec5736ed13f",
+    name: "Proyecto salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Suppono vere subseco adfero cura expedita totidem ademptio calculus.",
+    status: "approved",
+    reason: "",
+    userId: "38e83044-cc72-44c1-ab98-cc5d0bdb2827",
+    createdAt: "2026-01-10T01:10:14.970Z",
+    updatedAt: "2026-01-10T01:10:14.970Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 161,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - igualdad de género",
+        description: "Evento presencial para igualdad de género. Doloremque asporto caelum.",
+        initialDate: "2026-04-18T00:09:41.346Z",
+        place: {
+          direction: "921 Nightingale Close, 677",
+          city: "Firenze",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "b20985ca-ebf1-4515-bd09-de93cd6e689d"
+  },
+  {
+    _id: "eaa6868b-b61b-490f-acee-925f482c8e0b",
+    name: "Programa pobreza 2026",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Cum desidero autus infit exercitationem dignissimos quisquam. A curtus trans pariatur cruciamentum adulatio.",
+    status: "approved",
+    reason: "",
+    userId: "a09e1859-ac1e-408c-b32e-c7e8349666ec",
+    createdAt: "2026-01-10T01:10:15.032Z",
+    updatedAt: "2026-01-10T01:10:15.032Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 499,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Sperno rem ara vir sapiente conitor abscido vorax victus.",
+        initialDate: "2026-04-29T00:09:41.408Z",
+        place: {
+          direction: "57886 Talbot Road, 58073",
+          city: "Munich",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "c4955121-fccf-441b-a89b-59fb652856da"
+  },
+  {
+    _id: "cb4d36e8-2c28-48ba-9094-3e3b3e05b0f5",
+    name: "Operación alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Adicio deorsum adfectus auditor deleniti commemoro custodia.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fae76c70-1c22-4b19-b538-8bc0a0eb4486",
+    createdAt: "2026-01-10T01:10:15.159Z",
+    updatedAt: "2026-01-10T01:10:15.159Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 129,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - salud",
+        description: "Evento presencial para salud. Admiratio basium cumque appello.",
+        initialDate: "2026-03-31T00:09:41.532Z",
+        place: {
+          direction: "16140 Armstrong Passage, 75550",
+          city: "Salvador",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Evento benéfico - tercera edad",
+        description: "Evento presencial para tercera edad. Suppono vesco certe suppono.",
+        initialDate: "2026-02-21T01:09:41.532Z",
+        place: {
+          direction: "961 South View, 8915",
+          city: "Maracaibo",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "3f720030-b0e2-4164-8b96-dde1fc8a194a"
+  },
+  {
+    _id: "fea4bb35-db44-48b2-9a23-9c401f2d6a37",
+    name: "Operación tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Amplitudo vulgaris tot.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "21d349ab-4dd8-4a91-add7-10d43a46132e",
+    createdAt: "2026-01-10T01:10:15.220Z",
+    updatedAt: "2026-01-10T01:10:15.220Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 472,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 838,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 288,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - medio ambiente",
+        description: "Evento presencial para medio ambiente. Teres verbum vaco nesciunt pecus ustilo tenetur torqueo. Aliquid templum stipes suasoria deorsum molestias spiritus deorsum arbor.",
+        initialDate: "2026-07-10T00:09:41.594Z",
+        place: {
+          direction: "8410 Elm Grove, 66866",
+          city: "Bologna",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "c8f2f577-388a-44db-bea3-aedd3e5988d2"
+  },
+  {
+    _id: "e0cb4073-14e9-4a3b-9426-d9cda69a431b",
+    name: "Acción solidaria igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Corporis voco clibanus consequatur utrum spectaculum triumphus arma anser temperantia. Quas avarus demum vobis desidero vigor temp",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "5c724730-67f2-4c23-a30c-b60e9fdd90e1",
+    createdAt: "2026-01-10T01:10:15.281Z",
+    updatedAt: "2026-01-10T01:10:15.281Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 698,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 521,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 502,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - salud",
+        description: "Evento presencial para salud. Apostolus adsum deputo.",
+        initialDate: "2026-04-16T00:09:41.656Z",
+        place: {
+          direction: "77051 Asa Underpass, 2588",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Encuentro comunitario - medio ambiente",
+        description: "Evento presencial para medio ambiente. Constans verecundia pel suscipio caterva inventore tabesco vulgo. Sophismata inflammatio clarus armarium suscipio adfectus claro casso utilis.",
+        initialDate: "2026-06-11T00:09:41.657Z",
+        place: {
+          direction: "46707 Old State Road, 605",
+          city: "Paris",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "6e76f385-9e63-4868-8423-56e9bfd412fa"
+  },
+  {
+    _id: "2cbd2cb6-32c7-4f8a-ab5b-0ac9bb72f445",
+    name: "Red de apoyo vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Somnus candidus pariatur barba vivo numquam curia textor crux. Sperno sulum decor thema.",
+    status: "approved",
+    reason: "",
+    userId: "45ad0625-0ebf-404f-af73-a59de442bae3",
+    createdAt: "2026-01-10T01:10:15.346Z",
+    updatedAt: "2026-01-10T01:10:15.346Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 763,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 866,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 893,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - salud",
+        description: "Evento presencial para salud. Non repellendus carpo beatae synagoga comparo apostolus.",
+        initialDate: "2026-04-13T00:09:41.719Z",
+        place: {
+          direction: "772 Julia Fields, 18152",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "b1d34b4e-dbfa-4a63-b8ed-74d454227b46"
+  },
+  {
+    _id: "b7a7ba6b-b102-4bfd-864b-2ac833f5e699",
+    name: "Iniciativa desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Suscipit creo sumo ab spectaculum vehemens territo tero.",
+    status: "approved",
+    reason: "",
+    userId: "87ee6a45-1964-42b0-8ffa-bc1694aad4b8",
+    createdAt: "2026-01-10T01:10:15.406Z",
+    updatedAt: "2026-01-10T01:10:15.406Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 210,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 831,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - pobreza",
+        description: "Evento presencial para pobreza. Vix creta modi corporis comis sustineo.",
+        initialDate: "2026-06-13T00:09:41.782Z",
+        place: {
+          direction: "418 S 6th Street, 64012",
+          city: "Munich",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Taller formativo - alimentación",
+        description: "Evento presencial para alimentación. Contra culpo at delego clementia astrum abstergo tabula.",
+        initialDate: "2026-07-09T00:09:41.782Z",
+        place: {
+          direction: "4935 Vickie Islands, 741",
+          city: "Trujillo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "ad560363-2254-4ea5-be21-6b34694c915d"
+  },
+  {
+    _id: "9127e19f-bfb8-4b65-b554-75e83475747a",
+    name: "Acción solidaria educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Cras beatus cogito viriliter.",
+    status: "approved",
+    reason: "",
+    userId: "03f81753-1a0d-4bbe-b4d4-8f6481201dbb",
+    createdAt: "2026-01-10T01:10:15.532Z",
+    updatedAt: "2026-01-10T01:10:15.532Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 799,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 679,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Occaecati copiose quam sapiente arto pecco suscipit debilito dolorem cedo.",
+        initialDate: "2026-02-11T01:09:41.903Z",
+        place: {
+          direction: "9492 Langosh Ridges, 14213",
+          city: "Maracay",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "9520fbae-c469-459e-af20-d066d34a8376"
+  },
+  {
+    _id: "9f3bf3c1-452e-4f00-bb12-c655635eaab8",
+    name: "Jornada tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Id cubicularis abstergo trepide ullam.",
+    status: "approved",
+    reason: "",
+    userId: "6fad9312-ce25-4c99-92e4-85e420b3db11",
+    createdAt: "2026-01-10T01:10:15.781Z",
+    updatedAt: "2026-01-10T01:10:15.781Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 590,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 637,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 233,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - educación",
+        description: "Evento presencial para educación. Claro tactus cicuta.",
+        initialDate: "2026-05-16T00:09:42.148Z",
+        place: {
+          direction: "579 N Maple Street, 3507",
+          city: "Antofagasta",
+          countryCode: "CL"
+        }
+      },
+      {
+        name: "Encuentro comunitario - educación",
+        description: "Evento presencial para educación. Rerum basium atrocitas conspergo animadverto sublime ambitus.",
+        initialDate: "2026-03-08T01:09:42.148Z",
+        place: {
+          direction: "7481 Wiegand View, 27122",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "efb8828b-3259-4f39-aabc-7584fb83b80d"
+  },
+  {
+    _id: "106d07d9-c01c-40ad-a82b-af5f0567845f",
+    name: "Proyecto derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Admitto paens adhuc solum defessus abbas clamo talis ipsa commodo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "74db25d9-77ae-4212-95ed-37ef103dea01",
+    createdAt: "2026-01-10T01:10:15.843Z",
+    updatedAt: "2026-01-10T01:10:15.843Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 124,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 370,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - tercera edad",
+        description: "Evento presencial para tercera edad. Deputo spectaculum thesaurus chirographum abstergo talio casso colo.",
+        initialDate: "2026-05-27T00:09:42.211Z",
+        place: {
+          direction: "418 Kerluke Dam, 1039",
+          city: "Bristol",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - medio ambiente",
+        description: "Evento presencial para medio ambiente. Validus succurro atrocitas harum magnam substantia argentum admoneo error crebro. Thesaurus verto conventus vado tepidus trepide.",
+        initialDate: "2026-02-04T01:09:42.211Z",
+        place: {
+          direction: "123 Bahringer Spur, 950",
+          city: "Liverpool",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "3bf67a10-6a43-48f7-b17f-6c0f8b3292b2"
+  },
+  {
+    _id: "b61016c2-6fb2-4a0c-8253-64160cf6a161",
+    name: "Iniciativa refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Subvenio tum crux adnuo urbanus ocer facilis. Conqueror auctor necessitatibus bos aeneus auctus approbo.",
+    status: "approved",
+    reason: "",
+    userId: "ea510f67-405f-4649-9027-2d9f38666b62",
+    createdAt: "2026-01-10T01:10:15.905Z",
+    updatedAt: "2026-01-10T01:10:15.905Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 825,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 144,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 703,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - salud",
+        description: "Evento presencial para salud. Adnuo viscus tergum adfectus. Cavus testimonium nemo vos.",
+        initialDate: "2026-02-22T01:09:42.274Z",
+        place: {
+          direction: "597 Veronica Course, 9387",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - vivienda",
+        description: "Evento presencial para vivienda. Triumphus ventito argumentum speculum apparatus voluptates.",
+        initialDate: "2026-03-03T01:09:42.274Z",
+        place: {
+          direction: "682 Quinton Ville, 1432",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "1281737b-03c0-42e8-9cff-72081364a3ae"
+  },
+  {
+    _id: "adcc11b3-3712-4130-b71c-ee1e47df3125",
+    name: "Jornada educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Deporto conculco umerus necessitatibus utpote theologus umerus libero trans unus.",
+    status: "pending",
+    userId: "71e9bfc6-22be-4c28-92e3-68e76b0a444e",
+    createdAt: "2026-01-10T01:09:42.347Z",
+    updatedAt: "2026-01-10T01:09:42.347Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 165,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 512,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 858,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - refugiados",
+        description: "Evento presencial para refugiados. Cura atrocitas ventosus. Velit cohaero cattus adinventitias cognomen truculenter.",
+        initialDate: "2026-03-17T01:09:42.336Z",
+        place: {
+          direction: "8620 Vicenta Green, 52865",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Taller formativo - discapacidad",
+        description: "Evento presencial para discapacidad. Verbum vero tollo tui pariatur vesica usque accendo.",
+        initialDate: "2026-01-25T01:09:42.336Z",
+        place: {
+          direction: "1782 Bradtke Dam, 61090",
+          city: "Rio de Janeiro",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "c4955121-fccf-441b-a89b-59fb652856da"
+  },
+  {
+    _id: "03757198-5b94-402c-9c9d-6f228ac7ae4b",
+    name: "Jornada infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Amicitia pauper inventore auctor sub comes. Corrigo suffoco attonbitus curso aegre speciosus voluptatibus eos coepi.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "2195165d-b901-4ba3-9e38-51f0caa40ce4",
+    createdAt: "2026-01-10T01:10:16.091Z",
+    updatedAt: "2026-01-10T01:10:16.091Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 483,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - agua potable",
+        description: "Evento presencial para agua potable. Cibo capitulus cunabula.",
+        initialDate: "2026-02-27T01:09:42.460Z",
+        place: {
+          direction: "2831 Kshlerin Place, 620",
+          city: "Napoli",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "4a85f754-1780-488b-a8f6-16b705b515d8"
+  },
+  {
+    _id: "46c27afe-a037-42a5-b77d-6d81f19d1e8a",
+    name: "Red de apoyo medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Omnis vitium via demum balbus beneficium deleo. Capto debeo ipsum accendo stillicidium comes cum colo clam.",
+    status: "pending",
+    userId: "730fd0a0-98ec-4365-8b79-4d305b5c2023",
+    createdAt: "2026-01-10T01:09:42.719Z",
+    updatedAt: "2026-01-10T01:09:42.719Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 316,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 336,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 463,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Venustas calamitas triduana basium depopulo aperiam adnuo labore porro absorbeo.",
+        initialDate: "2026-01-26T01:09:42.709Z",
+        place: {
+          direction: "9234 Marjolaine Greens, 770",
+          city: "Dresden",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Vulpes certe comes universe adsum ventosus asporto somniculosus.",
+        initialDate: "2026-07-15T00:09:42.710Z",
+        place: {
+          direction: "7780 3rd Street, 12960",
+          city: "Sevilla",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "b1d34b4e-dbfa-4a63-b8ed-74d454227b46"
+  },
+  {
+    _id: "d9afb9e5-8f86-42b2-8b14-e86efc1afa07",
+    name: "Operación medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Voluptatibus assentator virtus cresco velum ultra aestivus aeternus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "cd59b1c9-f611-4e10-957e-80458902a9d7",
+    createdAt: "2026-01-10T01:10:16.402Z",
+    updatedAt: "2026-01-10T01:10:16.402Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 74,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - emergencias",
+        description: "Evento presencial para emergencias. Delibero bonus curo aeneus tandem aegrotatio. Patruus adopto defleo compono demens soleo subnecto compello.",
+        initialDate: "2026-07-08T00:09:42.772Z",
+        place: {
+          direction: "8286 Grove Lane, 8855",
+          city: "Bologna",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "6d816895-0443-4fa1-b8f7-5bf1a58c57c3"
+  },
+  {
+    _id: "ed3e90e0-fd5a-4c89-9488-8ccd75b9d334",
+    name: "Movimiento medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Adduco amicitia quia taceo. Terminatio dedecor vesper a creptio collum voluntarius carcer.",
+    status: "approved",
+    reason: "",
+    userId: "42631dfb-1ee7-4d54-9547-7f7473232933",
+    createdAt: "2026-01-10T01:10:16.465Z",
+    updatedAt: "2026-01-10T01:10:16.465Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 109,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - alimentación",
+        description: "Evento presencial para alimentación. Acsi tantum suppono cuppedia vitae venio adaugeo.",
+        initialDate: "2026-05-05T00:09:42.835Z",
+        place: {
+          direction: "881 Mara Creek, 72993",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Jornada solidaria - medio ambiente",
+        description: "Evento presencial para medio ambiente. Placeat inventore delectus allatus laudantium eius. Amplus arma vociferor acidus magni decumbo accommodo.",
+        initialDate: "2026-03-20T01:09:42.835Z",
+        place: {
+          direction: "24466 E 2nd Street, 14223",
+          city: "Fortaleza",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "93eaef10-508e-4580-85b0-f083be061c32"
+  },
+  {
+    _id: "1e2c4576-ca01-4c3d-a5c6-c47803856096",
+    name: "Iniciativa discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Ceno territo viriliter terror temporibus allatus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "2dde972e-576c-4a6a-806d-651fd6a24ed3",
+    createdAt: "2026-01-10T01:10:16.527Z",
+    updatedAt: "2026-01-10T01:10:16.527Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 315,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 326,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 552,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - medio ambiente",
+        description: "Evento presencial para medio ambiente. Adipiscor adflicto aufero atque. Vallum suffoco bonus conspergo villa comburo admiratio acceptus umquam.",
+        initialDate: "2026-07-12T00:09:42.898Z",
+        place: {
+          direction: "913 Oxford Road, 35250",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "95200c1a-2cd9-4622-a808-82d99e29a931"
+  },
+  {
+    _id: "3aaa5e9c-aa00-4a8e-bb7f-f7567e495126",
+    name: "Campaña emergencias 2027",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Undique aeternus cuppedia illum conitor ars ipsam cupiditate.",
+    status: "approved",
+    reason: "",
+    userId: "33c89fa3-a2e8-46d1-8a21-eadab035cc34",
+    createdAt: "2026-01-10T01:10:16.653Z",
+    updatedAt: "2026-01-10T01:10:16.653Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 890,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 96,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - pobreza",
+        description: "Evento presencial para pobreza. Acquiro iste adinventitias torqueo modi. Campana perspiciatis dolorem arbor tego.",
+        initialDate: "2026-02-22T01:09:43.024Z",
+        place: {
+          direction: "93616 College Avenue, 84865",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "271e25ef-c6f5-4fe6-95b7-9e195b88fd7e"
+  },
+  {
+    _id: "c91e7dcd-4bf6-469f-9f7f-5e20e176d11f",
+    name: "Iniciativa emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Tutamen tondeo ullam casso vergo aperte arbustum.",
+    status: "approved",
+    reason: "",
+    userId: "38fd508a-33eb-4d2f-9567-175e7f0356f1",
+    createdAt: "2026-01-10T01:10:16.718Z",
+    updatedAt: "2026-01-10T01:10:16.718Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 792,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 780,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - salud",
+        description: "Evento presencial para salud. Vos ubi sursum vergo atque debeo. Spectaculum vel suffragium conicio dolorum solium sint adsidue.",
+        initialDate: "2026-05-17T00:09:43.085Z",
+        place: {
+          direction: "2894 Bertrand Flat, 710",
+          city: "Rio de Janeiro",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - medio ambiente",
+        description: "Evento presencial para medio ambiente. Utor tabgo celebrer vorago stultus deorsum aufero.",
+        initialDate: "2026-05-24T00:09:43.085Z",
+        place: {
+          direction: "8622 Alize Parkway, 2316",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "ff627983-492d-46c9-ae24-ca45d9512f7f"
+  },
+  {
+    _id: "f4c000f6-0050-4694-8099-5a17058e3c5c",
+    name: "Operación salud 2027",
+    description: "Acción concreta para salud con objetivos cuantificables. Cum peccatus infit arca damnatio calamitas repellat ancilla.",
+    status: "approved",
+    reason: "",
+    userId: "fae76c70-1c22-4b19-b538-8bc0a0eb4486",
+    createdAt: "2026-01-10T01:10:16.782Z",
+    updatedAt: "2026-01-10T01:10:16.782Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 741,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - pobreza",
+        description: "Evento presencial para pobreza. Capto cupiditate corroboro colo comitatus.",
+        initialDate: "2026-05-10T00:09:43.147Z",
+        place: {
+          direction: "3931 Zechariah Green, 86608",
+          city: "Sevilla",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Jornada solidaria - agua potable",
+        description: "Evento presencial para agua potable. Adipiscor nam quod acsi candidus capio terebro cursus.",
+        initialDate: "2026-06-23T00:09:43.147Z",
+        place: {
+          direction: "9227 Giovani Parks, 432",
+          city: "Valencia",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "c54b6604-1f85-4443-9475-bd08f9172fc5"
+  },
+  {
+    _id: "ffe9bcf5-9766-4d51-9629-a6fb365216fc",
+    name: "Red de apoyo discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Creptio uterque peccatus conicio abundans arma.",
+    status: "pending",
+    userId: "e454dc60-614c-4be0-9c4d-2e9fed5174fa",
+    createdAt: "2026-01-10T01:09:43.219Z",
+    updatedAt: "2026-01-10T01:09:43.219Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 236,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 965,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Ea sublime contego aeger arcus voluptatem tremo subseco caveo terror. Amet utroque bos succurro aeger coadunatio certe cogito antea tendo.",
+        initialDate: "2026-02-17T01:09:43.209Z",
+        place: {
+          direction: "574 Powlowski Junctions, 3184",
+          city: "Roma",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "69068059-2fc9-41da-8b89-baf291fd62a0"
+  },
+  {
+    _id: "4ed0dbd1-1baf-460d-84ca-5e64ca549f44",
+    name: "Programa salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Conspergo tyrannus cogito peccatus deprimo.",
+    status: "approved",
+    reason: "",
+    userId: "316cac7f-4dce-4a7a-a73b-fc53dafe9716",
+    createdAt: "2026-01-10T01:10:16.968Z",
+    updatedAt: "2026-01-10T01:10:16.968Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 861,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - pobreza",
+        description: "Evento presencial para pobreza. Animadverto arbitro capillus congregatio tego. Vir verumtamen compono agnitio.",
+        initialDate: "2026-02-05T01:09:43.333Z",
+        place: {
+          direction: "5422 Jackson Avenue, 525",
+          city: "Málaga",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "ba9f704e-1213-4c76-a341-1fe43f0003b5"
+  },
+  {
+    _id: "f32d555d-4f39-41c9-9094-8571d430ab77",
+    name: "Programa medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Tristis somnus validus suppono tenax tabernus vinum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "3edf95f1-1ea7-4c62-971e-a05af7d697d7",
+    createdAt: "2026-01-10T01:10:17.094Z",
+    updatedAt: "2026-01-10T01:10:17.094Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 216,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 346,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - vivienda",
+        description: "Evento presencial para vivienda. Succedo certe adulescens canto auctus animadverto substantia voluptatibus venustas utique. Cras clam audax pecco at sublime concido.",
+        initialDate: "2026-05-09T00:09:43.457Z",
+        place: {
+          direction: "8922 Klocko Corner, 58942",
+          city: "Córdoba",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "3949796e-57fd-479c-9f1e-a044077f4f23"
+  },
+  {
+    _id: "07a967b4-cea2-43ce-ab97-5f5ab4fdc01a",
+    name: "Campaña discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Thorax alter custodia.",
+    status: "approved",
+    reason: "",
+    userId: "074f7ac2-175a-4ba8-891d-b9cad85795ec",
+    createdAt: "2026-01-10T01:10:17.157Z",
+    updatedAt: "2026-01-10T01:10:17.157Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 104,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 504,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 379,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - medio ambiente",
+        description: "Evento presencial para medio ambiente. Vaco textilis impedit sum cohibeo vos catena deorsum articulus coepi. Uterque cernuus tabernus minima clibanus.",
+        initialDate: "2026-05-09T00:09:43.519Z",
+        place: {
+          direction: "10255 E Market Street, 373",
+          city: "Dresden",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "850d6048-87ee-4552-84c4-2f3aa78688b4"
+  },
+  {
+    _id: "9012608f-e678-4dfd-b8d0-4def53291fb8",
+    name: "Acción solidaria discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Cubo aeternus volup amet demitto totam votum. Ultio aveho aro velit eum alter conitor tracto.",
+    status: "approved",
+    reason: "",
+    userId: "a6a9fd9e-d555-4ba9-8074-8d17be3e341d",
+    createdAt: "2026-01-10T01:10:17.219Z",
+    updatedAt: "2026-01-10T01:10:17.219Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 27,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 804,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - refugiados",
+        description: "Evento presencial para refugiados. Turba accusantium minus alioqui. Triumphus sublime tenuis talis terebro crinis utpote velum aureus.",
+        initialDate: "2026-07-15T00:09:43.583Z",
+        place: {
+          direction: "34246 Justen Ramp, 90103",
+          city: "Puebla",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "711160a9-f462-439d-b665-2531ed225c94"
+  },
+  {
+    _id: "47984f92-2b4f-44d3-98b6-99749d3e5c6d",
+    name: "Movimiento medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Ambitus repellendus versus adeo una. Viduo usus vomica averto absum caelestis cena utilis alienus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ea1e6178-0abb-4936-a322-9e2de2c1d4d4",
+    createdAt: "2026-01-10T01:10:17.344Z",
+    updatedAt: "2026-01-10T01:10:17.344Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 470,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 721,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Succedo cattus tripudio vesica culpa arto. Sublime crux annus amicitia claro censura.",
+        initialDate: "2026-03-19T01:09:43.708Z",
+        place: {
+          direction: "9953 Beech Drive, 667",
+          city: "Munich",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "58064a9e-96a9-45f6-a5ae-745117cc21d5"
+  },
+  {
+    _id: "e5330f0d-0522-4f1b-83cd-4f60274bc02a",
+    name: "Iniciativa vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Pauper addo clementia viscus absorbeo coniuratio urbs rerum amo. Explicabo patior candidus admoneo peccatus.",
+    status: "approved",
+    reason: "",
+    userId: "48254d4d-1751-40d9-a740-0d0d8ce97f84",
+    createdAt: "2026-01-10T01:10:17.469Z",
+    updatedAt: "2026-01-10T01:10:17.469Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 215,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - pobreza",
+        description: "Evento presencial para pobreza. Appositus alo sublime torrens contra dedico. Ipsa conventus cultellus tondeo attonbitus demulceo nemo infit vomica utrimque.",
+        initialDate: "2026-05-28T00:09:43.831Z",
+        place: {
+          direction: "193 Sauer Ridges, 9931",
+          city: "Murcia",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Encuentro comunitario - alimentación",
+        description: "Evento presencial para alimentación. Ventosus causa ademptio curso infit inflammatio veritas adstringo.",
+        initialDate: "2026-05-13T00:09:43.831Z",
+        place: {
+          direction: "3695 Elm Road, 29601",
+          city: "Málaga",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "5427a22a-94a4-4695-8bbb-b27aefa79324"
+  },
+  {
+    _id: "f54987fe-2416-4721-826f-50949813d9be",
+    name: "Acción solidaria pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Balbus terreo blanditiis candidus deleo alii bibo ancilla. Utor apto somnus.",
+    status: "pending",
+    userId: "b577e67a-b29b-4c30-b81f-353f2e26bb26",
+    createdAt: "2026-01-10T01:09:43.903Z",
+    updatedAt: "2026-01-10T01:09:43.903Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 162,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 773,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 948,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - tercera edad",
+        description: "Evento presencial para tercera edad. Talis crapula conatus defleo abstergo eos alo conor surgo.",
+        initialDate: "2026-05-03T00:09:43.893Z",
+        place: {
+          direction: "730 S West Street, 461",
+          city: "Toulouse",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "efb8828b-3259-4f39-aabc-7584fb83b80d"
+  },
+  {
+    _id: "8f96393e-0be5-4f87-a030-2e1500ff7f11",
+    name: "Iniciativa agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Commodo conventus delectatio astrum. Vulnus adopto vulgaris pel ipsa conduco turpis conspergo tametsi.",
+    status: "pending",
+    userId: "a454f037-4f4e-481a-89f0-077b2ad77e93",
+    createdAt: "2026-01-10T01:09:43.965Z",
+    updatedAt: "2026-01-10T01:09:43.965Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 315,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Ubi audentia assumenda alveus acervus.",
+        initialDate: "2026-02-02T01:09:43.956Z",
+        place: {
+          direction: "19341 Harrison Avenue, 45199",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "e79eaa0f-df62-4bce-8155-c28e26df459c"
+  },
+  {
+    _id: "577f35f4-277d-45b9-902a-f762e225c838",
+    name: "Jornada salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Tumultus tempus voluntarius via sortitus modi.",
+    status: "approved",
+    reason: "",
+    userId: "c3b39509-cd5f-464d-96db-c8a83eaf07bc",
+    createdAt: "2026-01-10T01:10:17.654Z",
+    updatedAt: "2026-01-10T01:10:17.654Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 928,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 323,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - derechos humanos",
+        description: "Evento presencial para derechos humanos. Comminor confido asporto clam demens acsi spoliatio.",
+        initialDate: "2026-05-30T00:09:44.018Z",
+        place: {
+          direction: "1267 E Park Avenue, 207",
+          city: "Cusco",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "a1d40d02-a3ec-4c4f-ab37-d2fac870d3e5"
+  },
+  {
+    _id: "904f310f-f2da-42e5-9602-449807001489",
+    name: "Operación infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Vomer vivo repellat tabernus tametsi tres sequi. Subiungo sum facere decet tamen vulnus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "9ee0e99b-d9a0-4a3b-ab45-6b258c46efc0",
+    createdAt: "2026-01-10T01:10:17.716Z",
+    updatedAt: "2026-01-10T01:10:17.716Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 755,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 570,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 877,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - pobreza",
+        description: "Evento presencial para pobreza. Vulgaris decretum textilis perspiciatis ara contabesco surgo summa.",
+        initialDate: "2026-04-29T00:09:44.079Z",
+        place: {
+          direction: "5988 Ari Circle, 63830",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Reunión de coordinación - tercera edad",
+        description: "Evento presencial para tercera edad. Angustus vesica blandior tandem tergo nulla atrocitas. Creta utrum abeo amitto adfero decretum.",
+        initialDate: "2026-03-29T01:09:44.079Z",
+        place: {
+          direction: "3695 Main, 202",
+          city: "Torino",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "485d35d7-266b-4efc-9c9e-4df8b681acaa"
+  },
+  {
+    _id: "bbbe32ee-029e-4578-a476-8e551182f164",
+    name: "Iniciativa pobreza 2026",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Volaticus spectaculum aegrus accommodo agnitio.",
+    status: "approved",
+    reason: "",
+    userId: "74db25d9-77ae-4212-95ed-37ef103dea01",
+    createdAt: "2026-01-10T01:10:17.779Z",
+    updatedAt: "2026-01-10T01:10:17.779Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 280,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - medio ambiente",
+        description: "Evento presencial para medio ambiente. Occaecati spectaculum adipisci termes.",
+        initialDate: "2026-03-03T01:09:44.141Z",
+        place: {
+          direction: "487 Schoen Lakes, 924",
+          city: "Tucumán",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "8e5a8aba-4a76-4ed9-809a-fd5cf296ce97"
+  },
+  {
+    _id: "241861e7-4bcb-477c-9275-9a96af93ecbb",
+    name: "Iniciativa derechos humanos 2027",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Veniam nemo aufero vulariter. Nihil approbo adiuvo corona.",
+    status: "approved",
+    reason: "",
+    userId: "dec6ac04-b4f3-4eac-9541-4bb4be337c6c",
+    createdAt: "2026-01-10T01:10:17.842Z",
+    updatedAt: "2026-01-10T01:10:17.842Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 998,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Vilis suus incidunt.",
+        initialDate: "2026-06-03T00:09:44.204Z",
+        place: {
+          direction: "206 Champlin Avenue, 48631",
+          city: "São Paulo",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Jornada solidaria - pobreza",
+        description: "Evento presencial para pobreza. Cum candidus voluptas auctus. Veritas qui titulus aptus capitulus beatae beatae pecus ars.",
+        initialDate: "2026-03-26T01:09:44.204Z",
+        place: {
+          direction: "1903 Rath Viaduct, 715",
+          city: "Murcia",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "1b4086a2-6987-4146-8c33-96ed0983ce1b"
+  },
+  {
+    _id: "029e9ae3-e5fc-46dc-8b7e-ae5c3edbdd5a",
+    name: "Operación refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Vaco earum animus quos natus. Cornu cunctatio cibo deporto amitto surgo bene.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "6b00b565-f65e-4bfc-a095-61a3f43aebe7",
+    createdAt: "2026-01-10T01:10:17.904Z",
+    updatedAt: "2026-01-10T01:10:17.904Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 430,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 674,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 950,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - discapacidad",
+        description: "Evento presencial para discapacidad. Voro aer occaecati contego considero.",
+        initialDate: "2026-02-07T01:09:44.266Z",
+        place: {
+          direction: "468 Goodwin Crest, 74715",
+          city: "Lille",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Reunión de coordinación - emergencias",
+        description: "Evento presencial para emergencias. Corrigo allatus quae saepe adeo suppellex summisse custodia confero cibo.",
+        initialDate: "2026-05-04T00:09:44.266Z",
+        place: {
+          direction: "5995 Hamill Mission, 13928",
+          city: "Chiclayo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "289918d9-e099-44d6-b5cb-1de6da3c164a"
+  },
+  {
+    _id: "a168e812-60a2-45e3-ad98-995fc9e99d4a",
+    name: "Red de apoyo salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Curto aro molestias defungo bellum synagoga substantia. Decimus tego verus impedit absens ager.",
+    status: "approved",
+    reason: "",
+    userId: "36951be5-cce4-49af-993b-5917b12cd7b4",
+    createdAt: "2026-01-10T01:17:45.789Z",
+    updatedAt: "2026-01-10T01:17:45.789Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 732,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 320,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 172,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - educación",
+        description: "Evento presencial para educación. In alveus videlicet basium vergo terminatio canonicus.",
+        initialDate: "2026-03-07T01:09:44.329Z",
+        place: {
+          direction: "10643 Cassidy Brook, 19070",
+          city: "Frankfurt",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "41d05331-2237-4ac2-a373-1ad7d6bdf06a"
+  },
+  {
+    _id: "3dc7e3f4-45c3-4c11-87b5-50a4c6b6b9a9",
+    name: "Red de apoyo desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Adeo cultellus consequuntur deleo.",
+    status: "approved",
+    reason: "",
+    userId: "0d1d8c44-b4a5-4491-8c78-0112cc968666",
+    createdAt: "2026-01-10T01:10:18.029Z",
+    updatedAt: "2026-01-10T01:10:18.029Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 328,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 257,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - alimentación",
+        description: "Evento presencial para alimentación. Clibanus approbo cumque iure cuius cuius conscendo temporibus. Depraedor terminatio viridis templum cognomen utilis corona.",
+        initialDate: "2026-02-17T01:09:44.392Z",
+        place: {
+          direction: "8024 Lamont Mount, 50471",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      },
+      {
+        name: "Evento benéfico - discapacidad",
+        description: "Evento presencial para discapacidad. Denego vulticulus comburo defendo nostrum conatus titulus aqua tepidus.",
+        initialDate: "2026-03-07T01:09:44.392Z",
+        place: {
+          direction: "6292 Jammie Camp, 6493",
+          city: "Maracaibo",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "36a729b3-cecb-4897-9a1c-2cc9abee5687"
+  },
+  {
+    _id: "7f9e3d44-a942-409f-91b7-ed84d4f636bd",
+    name: "Campaña desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Tempus vitium ascit voro sophismata defessus quo.",
+    status: "approved",
+    reason: "",
+    userId: "6fa6c0dd-bcf9-4e49-a458-24da5839c6f9",
+    createdAt: "2026-01-10T01:10:18.092Z",
+    updatedAt: "2026-01-10T01:10:18.092Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 721,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - derechos humanos",
+        description: "Evento presencial para derechos humanos. Tego collum adversus depulso victoria patrocinor quae auxilium alii ulciscor.",
+        initialDate: "2026-05-28T00:09:44.455Z",
+        place: {
+          direction: "14524 Christiansen Union, 790",
+          city: "Frankfurt",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "703d1691-13e4-4a2f-ba33-4d0d526a762c"
+  },
+  {
+    _id: "88bea870-bd97-4da7-964f-13f1a73edee7",
+    name: "Programa salud 2027",
+    description: "Acción concreta para salud con objetivos cuantificables. Alienus fuga aliqua sufficio altus officiis. Somnus claustrum terminatio temeritas denique varius vapulus.",
+    status: "pending",
+    userId: "544efd53-d6e9-4024-80fd-754968ad950f",
+    createdAt: "2026-01-10T01:09:44.527Z",
+    updatedAt: "2026-01-10T01:09:44.527Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 509,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 776,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - educación",
+        description: "Evento presencial para educación. Ultio administratio creber conatus corroboro. Curatio auxilium acsi urbanus spiculum sustineo.",
+        initialDate: "2026-04-12T00:09:44.517Z",
+        place: {
+          direction: "55105 Moore View, 966",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Jornada solidaria - derechos humanos",
+        description: "Evento presencial para derechos humanos. Adsidue alius ultio aliquam xiphias communis vereor.",
+        initialDate: "2026-03-07T01:09:44.517Z",
+        place: {
+          direction: "36837 Barrows Place, 2386",
+          city: "São Paulo",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "52d63d51-612c-4a6b-9cdb-164747bcfede"
+  },
+  {
+    _id: "c4c98782-b2e9-4cf3-828e-93d3371b0a20",
+    name: "Campaña vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Alias deleniti aliquid facilis acervus autus speculum. Conspergo repellat tabgo abbas credo vicinus amet sordeo sumptus caries.",
+    status: "approved",
+    reason: "",
+    userId: "8926f58b-d8ee-4edc-ae92-6c7597400a3f",
+    createdAt: "2026-01-10T01:10:18.216Z",
+    updatedAt: "2026-01-10T01:10:18.216Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 820,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Taedium velit aut aedificium calamitas decor suus corrumpo volo. Utroque amplitudo dens.",
+        initialDate: "2026-05-13T00:09:44.579Z",
+        place: {
+          direction: "5682 N State Street, 56642",
+          city: "Ciudad de México",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "ba9f704e-1213-4c76-a341-1fe43f0003b5"
+  },
+  {
+    _id: "f64e1000-59c3-421d-bcdf-f5f0d17c3131",
+    name: "Proyecto educación 2027",
+    description: "Acción concreta para educación con objetivos cuantificables. Curiositas damno eveniet cibo trucido. Cresco cattus verumtamen clarus pecto ad votum tergiversatio appositus tollo.",
+    status: "approved",
+    reason: "",
+    userId: "f72fc6e3-ea6c-4327-808b-38c297e74d5b",
+    createdAt: "2026-01-10T01:10:18.276Z",
+    updatedAt: "2026-01-10T01:10:18.276Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 995,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 159,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 967,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - medio ambiente",
+        description: "Evento presencial para medio ambiente. Nisi appositus cubicularis color calamitas caput commodi conforto. Videlicet xiphias termes cedo utrum tamdiu spiculum.",
+        initialDate: "2026-04-04T00:09:44.641Z",
+        place: {
+          direction: "2304 S Jackson Street, 511",
+          city: "Tijuana",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Taller formativo - infancia",
+        description: "Evento presencial para infancia. Baiulus tremo qui urbs supplanto tristis voveo suadeo suggero.",
+        initialDate: "2026-04-18T00:09:44.641Z",
+        place: {
+          direction: "31500 Oxford Street, 2533",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "d71773b5-2681-4da1-af0b-7ae64f03b07d"
+  },
+  {
+    _id: "73dc6e76-5490-4d09-99d7-9f302230c2fc",
+    name: "Campaña vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Solitudo ceno villa. Cenaculum commodi crapula ducimus cursus.",
+    status: "approved",
+    reason: "",
+    userId: "03f81753-1a0d-4bbe-b4d4-8f6481201dbb",
+    createdAt: "2026-01-10T01:10:18.525Z",
+    updatedAt: "2026-01-10T01:10:18.525Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 965,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 135,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - infancia",
+        description: "Evento presencial para infancia. Carcer arbitro arca statim tertius paulatim substantia alioqui comminor animus. Taedium condico maxime degenero chirographum absque officiis ipsam altus.",
+        initialDate: "2026-02-05T01:09:44.891Z",
+        place: {
+          direction: "44638 Eleanora Valleys, 885",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "bd46aea8-a00e-4160-9b4b-6cb295b60d7c"
+  },
+  {
+    _id: "3c5fa1b6-ab99-4c51-8cd9-c4d63fdb58ed",
+    name: "Programa discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Sortitus decens crustulum assumenda adhaero ulciscor crur officiis sortitus aestivus.",
+    status: "approved",
+    reason: "",
+    userId: "927d7d02-55c2-448e-b54e-a7a0281becd8",
+    createdAt: "2026-01-10T01:10:18.587Z",
+    updatedAt: "2026-01-10T01:10:18.587Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 484,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - vivienda",
+        description: "Evento presencial para vivienda. Id paens tumultus asper cohors aequus theologus aeneus admiratio comminor. Defleo conculco paulatim patrocinor.",
+        initialDate: "2026-05-12T00:09:44.953Z",
+        place: {
+          direction: "623 River Road, 73566",
+          city: "Lille",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "ac746885-7959-4740-801f-26152a5946e1"
+  },
+  {
+    _id: "29a34229-be04-4c5f-a433-8ff6226a7f4b",
+    name: "Jornada pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Claro contabesco provident nobis sub coniuratio sustineo decipio acidus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "0bede458-a62e-43b3-9d02-a367d00069bd",
+    createdAt: "2026-01-10T01:10:18.711Z",
+    updatedAt: "2026-01-10T01:10:18.711Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 51,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 876,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - medio ambiente",
+        description: "Evento presencial para medio ambiente. Censura valde beatae.",
+        initialDate: "2026-06-13T00:09:45.078Z",
+        place: {
+          direction: "3839 Raynor Radial, 23769",
+          city: "Murcia",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Evento benéfico - pobreza",
+        description: "Evento presencial para pobreza. Vulgivagus culpo sum acer bonus atrox cavus.",
+        initialDate: "2026-03-14T01:09:45.078Z",
+        place: {
+          direction: "599 Warren Road, 73512",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "f60bc9f1-76ac-4233-b5b5-e2a63c6dcfc6"
+  },
+  {
+    _id: "530c34ca-3ca6-477c-9185-feeffc675057",
+    name: "Acción solidaria discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Apto quos calco asperiores condico vulticulus volup tenus cotidie. Dolorem tempora convoco.",
+    status: "approved",
+    reason: "",
+    userId: "4cd2f718-ad88-442e-b8df-42f343f00378",
+    createdAt: "2026-01-10T01:10:18.772Z",
+    updatedAt: "2026-01-10T01:10:18.772Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 273,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 315,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 267,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - salud",
+        description: "Evento presencial para salud. Stultus thesaurus barba aeneus commodi tener.",
+        initialDate: "2026-06-11T00:09:45.140Z",
+        place: {
+          direction: "294 Susie Causeway, 9608",
+          city: "Caracas",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Jornada solidaria - tercera edad",
+        description: "Evento presencial para tercera edad. Una decet bis solium cerno. Censura sodalitas desolo officiis admoneo decipio.",
+        initialDate: "2026-04-13T00:09:45.140Z",
+        place: {
+          direction: "889 Satterfield Walks, 136",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "f479bfd2-b3ce-477d-be11-c1321fdfc8c6"
+  },
+  {
+    _id: "73d2fa6a-367d-44c8-83d9-8b2a1251ac3a",
+    name: "Campaña derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Reiciendis rerum accedo defaeco.",
+    status: "pending",
+    userId: "38e83044-cc72-44c1-ab98-cc5d0bdb2827",
+    createdAt: "2026-01-10T01:09:45.213Z",
+    updatedAt: "2026-01-10T01:09:45.213Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 227,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 57,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 882,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - medio ambiente",
+        description: "Evento presencial para medio ambiente. Comitatus tui vomer averto deficio tergo certus vinitor deludo.",
+        initialDate: "2026-03-19T01:09:45.203Z",
+        place: {
+          direction: "625 W Elm Street, 875",
+          city: "Maracay",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Turbo theologus universe uterque deinde benevolentia beatae universe. Conicio verumtamen tenax repudiandae assumenda conspergo causa.",
+        initialDate: "2026-06-24T00:09:45.203Z",
+        place: {
+          direction: "17269 Julian Canyon, 693",
+          city: "Salvador",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "d5d71ed0-7956-472e-b5a5-71f4ac84cb46"
+  },
+  {
+    _id: "e1b61991-dcbe-4a1d-adce-ba0a5dc1d5e9",
+    name: "Programa salud 2027",
+    description: "Acción concreta para salud con objetivos cuantificables. Caries depono congregatio vero adulatio calco exercitationem. Cupio thesaurus taceo varius dens crinis crudelis thorax comis corrumpo.",
+    status: "approved",
+    reason: "",
+    userId: "037464c8-6064-47fe-80ba-45b51c7dac60",
+    createdAt: "2026-01-10T01:10:18.896Z",
+    updatedAt: "2026-01-10T01:10:18.896Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 620,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 337,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 762,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - derechos humanos",
+        description: "Evento presencial para derechos humanos. Commemoro deorsum arx curvo crinis. Quis repudiandae venustas cultura tamen turpis.",
+        initialDate: "2026-05-08T00:09:45.264Z",
+        place: {
+          direction: "9049 West Ville, 35933",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "028db33a-bf65-41b8-bacd-26facd917d95"
+  },
+  {
+    _id: "3539c68c-e1ab-41c9-ac18-2b173cb1e783",
+    name: "Acción solidaria refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Deputo thesaurus tantum.",
+    status: "approved",
+    reason: "",
+    userId: "9d1fe85d-cd95-461b-ba51-87c17fed78c7",
+    createdAt: "2026-01-10T01:10:18.957Z",
+    updatedAt: "2026-01-10T01:10:18.957Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 588,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 311,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 60,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - tercera edad",
+        description: "Evento presencial para tercera edad. Cruciamentum appositus tibi averto. Quaerat pauper vitium vulgus.",
+        initialDate: "2026-01-30T01:09:45.326Z",
+        place: {
+          direction: "2491 Giovanna Viaduct, 6209",
+          city: "Maracay",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "b7afed8c-aa2c-4ebd-a108-402df044b3d7"
+  },
+  {
+    _id: "8b83673a-db59-4d4b-b80f-b088abb871e9",
+    name: "Red de apoyo infancia 2026",
+    description: "Acción concreta para infancia con objetivos cuantificables. Deprimo subseco cetera theologus abbas patruus eveniet abundans sustineo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "9ff9e8ba-c3ec-4fdd-8ce4-cbf263a5c1dc",
+    createdAt: "2026-01-10T01:10:19.020Z",
+    updatedAt: "2026-01-10T01:10:19.020Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 132,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 666,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 942,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - igualdad de género",
+        description: "Evento presencial para igualdad de género. Convoco volo deleo custodia corrigo.",
+        initialDate: "2026-06-05T00:09:45.389Z",
+        place: {
+          direction: "482 Bogan Manor, 894",
+          city: "Trujillo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "b20985ca-ebf1-4515-bd09-de93cd6e689d"
+  },
+  {
+    _id: "4297c539-a891-4d40-937e-9b50a7104992",
+    name: "Movimiento medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Tres catena sustineo repellendus uter odit cupiditate. Agnitio vitium textilis saepe termes.",
+    status: "approved",
+    reason: "",
+    userId: "04fd3f5a-c78d-40f3-aa4d-fd80c4a138a1",
+    createdAt: "2026-01-10T01:10:19.082Z",
+    updatedAt: "2026-01-10T01:10:19.082Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 413,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 186,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - agua potable",
+        description: "Evento presencial para agua potable. Chirographum natus alienus defessus una trado. Arma desparatus tener tero.",
+        initialDate: "2026-04-15T00:09:45.452Z",
+        place: {
+          direction: "87056 Urban Freeway, 80791",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Reunión de coordinación - vivienda",
+        description: "Evento presencial para vivienda. Balbus arto commemoro cogito caterva vigilo venio.",
+        initialDate: "2026-01-29T01:09:45.452Z",
+        place: {
+          direction: "858 The Oval, 3420",
+          city: "Valencia",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "c284f569-af1b-4a92-b37d-6f4f5b0715f7"
+  },
+  {
+    _id: "ff3d5579-0986-44a4-b4a8-c0a473bf2baf",
+    name: "Campaña refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Amor substantia subiungo solum sum. Repellat vel valetudo summopere adulatio suadeo curso conturbo confido.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "8a702982-bc28-4061-a810-72a404b60c6f",
+    createdAt: "2026-01-10T01:10:19.206Z",
+    updatedAt: "2026-01-10T01:10:19.206Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 788,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 438,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - vivienda",
+        description: "Evento presencial para vivienda. Non taceo solio trucido tollo canonicus alter. Aestivus ipsam ipsum deleo tumultus neque crux.",
+        initialDate: "2026-04-02T00:09:45.578Z",
+        place: {
+          direction: "38483 Lawrence Street, 3596",
+          city: "Valencia",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "b7afed8c-aa2c-4ebd-a108-402df044b3d7"
+  },
+  {
+    _id: "65ed06b2-947e-497a-910b-489802b3151c",
+    name: "Movimiento derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Necessitatibus coniuratio demum adsuesco voluptatum comitatus atque omnis civitas crux.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "e1e9b101-e4ba-46c6-a757-242692b827af",
+    createdAt: "2026-01-10T01:10:19.330Z",
+    updatedAt: "2026-01-10T01:10:19.330Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 611,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 530,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 224,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - alimentación",
+        description: "Evento presencial para alimentación. Vesco tenetur cognatus decumbo comis antepono quod sono autus adflicto.",
+        initialDate: "2026-01-31T01:09:45.702Z",
+        place: {
+          direction: "990 Cumberland Street, 263",
+          city: "Barcelona",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Reunión de coordinación - refugiados",
+        description: "Evento presencial para refugiados. Advoco aveho circumvenio terra cinis. Cattus cursus curis theca amissio aspernatur cicuta.",
+        initialDate: "2026-01-31T01:09:45.702Z",
+        place: {
+          direction: "923 Seamus Prairie, 7190",
+          city: "Glasgow",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "06066711-7ae6-4657-8b04-041ee972a014"
+  },
+  {
+    _id: "50e804f4-b491-4492-bbf6-0918fe0a4434",
+    name: "Jornada salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Adflicto decens acerbitas approbo subiungo est aveho angelus. Aer armarium amo peccatus administratio appello demulceo.",
+    status: "approved",
+    reason: "",
+    userId: "500c54dd-41eb-4dae-a2ec-4d1559ed1e2e",
+    createdAt: "2026-01-10T01:10:19.455Z",
+    updatedAt: "2026-01-10T01:10:19.455Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 688,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - discapacidad",
+        description: "Evento presencial para discapacidad. Absens defendo totidem dolore concido abduco bos culpo.",
+        initialDate: "2026-07-06T00:09:45.828Z",
+        place: {
+          direction: "244 Low Road, 5834",
+          city: "Bucaramanga",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "30370111-8748-49b5-a399-12f1ac6e98c2"
+  },
+  {
+    _id: "b4f65517-6da6-45d7-9375-8f11ca04dfd0",
+    name: "Proyecto vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Attero placeat considero.",
+    status: "approved",
+    reason: "",
+    userId: "d6872228-95da-43f8-97ea-a233cd5bc4d6",
+    createdAt: "2026-01-10T01:10:19.517Z",
+    updatedAt: "2026-01-10T01:10:19.517Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 15,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 442,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - vivienda",
+        description: "Evento presencial para vivienda. Admitto defleo consequuntur conventus arbustum congregatio consuasor tempore.",
+        initialDate: "2026-06-23T00:09:45.891Z",
+        place: {
+          direction: "54479 Jerde Manors, 993",
+          city: "Puebla",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Conor curso substantia alter tergum pel vito.",
+        initialDate: "2026-06-02T00:09:45.891Z",
+        place: {
+          direction: "4326 Reichert Drive, 369",
+          city: "Trujillo",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "a43062fa-1abe-45a4-8de5-eae957b5a89e"
+  },
+  {
+    _id: "18f8ef1e-cd44-44ca-84a6-499cbb5c27a3",
+    name: "Movimiento emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Volo vetus nam cornu certe.",
+    status: "approved",
+    reason: "",
+    userId: "78dc4d45-a2a6-4592-a5d6-188caccf0029",
+    createdAt: "2026-01-10T01:10:19.581Z",
+    updatedAt: "2026-01-10T01:10:19.581Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 951,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 191,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - refugiados",
+        description: "Evento presencial para refugiados. Conicio vociferor cimentarius quaerat valens temptatio calcar vis adsuesco coniecto.",
+        initialDate: "2026-05-30T00:09:45.954Z",
+        place: {
+          direction: "993 Louvenia Canyon, 908",
+          city: "Berlin",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Encuentro comunitario - pobreza",
+        description: "Evento presencial para pobreza. Ceno absum cras usitas caterva adficio vulnero avarus adimpleo caute.",
+        initialDate: "2026-04-03T00:09:45.954Z",
+        place: {
+          direction: "89961 Bridge Street, 281",
+          city: "Mar del Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "ff627983-492d-46c9-ae24-ca45d9512f7f"
+  },
+  {
+    _id: "7020ac9f-ea52-458b-a38f-84b84c0e307d",
+    name: "Operación refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Centum terebro decet supplanto strenuus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fae76c70-1c22-4b19-b538-8bc0a0eb4486",
+    createdAt: "2026-01-10T01:10:19.766Z",
+    updatedAt: "2026-01-10T01:10:19.766Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 904,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 401,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - pobreza",
+        description: "Evento presencial para pobreza. Centum vulpes confido. Asperiores undique capio viriliter.",
+        initialDate: "2026-04-16T00:09:46.139Z",
+        place: {
+          direction: "2940 Watson Corner, 26655",
+          city: "Zaragoza",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Reunión de coordinación - medio ambiente",
+        description: "Evento presencial para medio ambiente. Copia bellum angelus ante copiose doloremque barba coadunatio ara.",
+        initialDate: "2026-01-26T01:09:46.139Z",
+        place: {
+          direction: "4913 E Church Street, 79680",
+          city: "Santiago",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "52d63d51-612c-4a6b-9cdb-164747bcfede"
+  },
+  {
+    _id: "6ce813a6-6c12-4b30-815b-6e763b105908",
+    name: "Red de apoyo emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Magni triduana viriliter coaegresco censura credo. Ademptio arca studio damnatio vomer abduco charisma capillus.",
+    status: "approved",
+    reason: "",
+    userId: "41366993-d4a1-4908-85e5-cdfe4dc7affe",
+    createdAt: "2026-01-10T01:10:19.830Z",
+    updatedAt: "2026-01-10T01:10:19.830Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 189,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 695,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 609,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - vivienda",
+        description: "Evento presencial para vivienda. Verumtamen vulpes aperiam tribuo certe utor beatae. Utique sui crustulum torqueo surculus stipes succedo admoneo.",
+        initialDate: "2026-01-23T01:09:46.201Z",
+        place: {
+          direction: "767 Lamont Plain, 4498",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Taller formativo - vivienda",
+        description: "Evento presencial para vivienda. Recusandae cresco abundans vicissitudo adopto tepesco trucido vestigium. Expedita corpus subseco capto aurum quae vitiosus consequatur credo.",
+        initialDate: "2026-06-22T00:09:46.201Z",
+        place: {
+          direction: "16866 S 2nd Street, 4707",
+          city: "Bogotá",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "289918d9-e099-44d6-b5cb-1de6da3c164a"
+  },
+  {
+    _id: "7ebc71b9-0cd8-4358-b855-4d6f39dfbbba",
+    name: "Movimiento pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Adsidue uredo supplanto cruciamentum cetera vobis veritatis amor.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "85190a0b-d05a-4a8e-9c24-4a8ad23a7270",
+    createdAt: "2026-01-10T01:10:19.893Z",
+    updatedAt: "2026-01-10T01:10:19.893Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 241,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - vivienda",
+        description: "Evento presencial para vivienda. Vulticulus tergum cerno vado appositus derelinquo curriculum.",
+        initialDate: "2026-05-28T00:09:46.262Z",
+        place: {
+          direction: "829 Legros Shoals, 35604",
+          city: "Bordeaux",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "ad535d5a-edfe-4ea5-9aab-f41b99eb3ba4"
+  },
+  {
+    _id: "af95e327-8aaf-4aeb-9157-774d77818348",
+    name: "Iniciativa desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Aegrus vinum commodo video.",
+    status: "approved",
+    reason: "",
+    userId: "a80ff311-aa3c-42f2-9cbe-213f5862459f",
+    createdAt: "2026-01-10T01:10:20.019Z",
+    updatedAt: "2026-01-10T01:10:20.019Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 204,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 570,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 293,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - refugiados",
+        description: "Evento presencial para refugiados. Sophismata aliquid volup clam expedita sumptus substantia apostolus valeo dapifer.",
+        initialDate: "2026-05-19T00:09:46.386Z",
+        place: {
+          direction: "911 Roman Way, 932",
+          city: "Maracay",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - derechos humanos",
+        description: "Evento presencial para derechos humanos. Aliqua ascit auctus cupiditas cras arguo super. Cur sint defetiscor aeneus attonbitus acies.",
+        initialDate: "2026-03-01T01:09:46.387Z",
+        place: {
+          direction: "8833 University Drive, 582",
+          city: "Santiago",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "b63b9184-cea9-471f-b049-6f242d55b51f"
+  },
+  {
+    _id: "fa868a3f-9b50-4202-8d6c-f9b88386e5d1",
+    name: "Campaña derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Crebro confido subiungo aduro certus tergiversatio adiuvo at. Adflicto deputo vetus solvo et vomito damno.",
+    status: "approved",
+    reason: "",
+    userId: "096ab8b6-0ced-4368-a38f-c75594679d9e",
+    createdAt: "2026-01-10T01:10:20.144Z",
+    updatedAt: "2026-01-10T01:10:20.144Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 543,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 135,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - derechos humanos",
+        description: "Evento presencial para derechos humanos. Caritas corrumpo cubitum clementia apto adsum.",
+        initialDate: "2026-01-31T01:09:46.512Z",
+        place: {
+          direction: "472 Jalon Avenue, 6034",
+          city: "Birmingham",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "009e3852-b5d4-48de-9e50-e5d09d220fbb"
+  },
+  {
+    _id: "7eca7535-39ff-4007-a4e4-32943926f027",
+    name: "Red de apoyo educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Agnosco ars sufficio.",
+    status: "approved",
+    reason: "",
+    userId: "096ab8b6-0ced-4368-a38f-c75594679d9e",
+    createdAt: "2026-01-10T01:10:20.207Z",
+    updatedAt: "2026-01-10T01:10:20.207Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 982,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 648,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Impedit paulatim culpo ancilla strues.",
+        initialDate: "2026-05-06T00:09:46.572Z",
+        place: {
+          direction: "7504 Pfannerstill Spur, 49333",
+          city: "Dresden",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "1e82a478-470a-4f67-b7e7-ba47861bdeb4"
+  },
+  {
+    _id: "d2f2fba9-fffc-4d5b-970b-617ad43c8bf5",
+    name: "Proyecto derechos humanos 2027",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Laborum verbera amet pax candidus sumptus soleo adversus adeo. Amita voluptas victoria viduo assentator demum cetera.",
+    status: "approved",
+    reason: "",
+    userId: "64f7e3a8-f87e-498a-9e9f-78c0001bf657",
+    createdAt: "2026-01-10T01:10:20.268Z",
+    updatedAt: "2026-01-10T01:10:20.268Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 392,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - educación",
+        description: "Evento presencial para educación. Blanditiis vicissitudo adsidue carus territo tergo aeternus animadverto absconditus.",
+        initialDate: "2026-06-16T00:09:46.635Z",
+        place: {
+          direction: "39491 Hilll Land, 6471",
+          city: "Barranquilla",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "3949796e-57fd-479c-9f1e-a044077f4f23"
+  },
+  {
+    _id: "ada36d55-438c-4198-a90e-a5ef072b5d2b",
+    name: "Programa medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Aufero testimonium atavus nam surgo nihil ustilo summisse curriculum. Contra degenero sopor dedico templum aliqua adamo.",
+    status: "approved",
+    reason: "",
+    userId: "6ae4a37d-2b53-41fa-b4ef-6b63d7dee42c",
+    createdAt: "2026-01-10T01:10:20.394Z",
+    updatedAt: "2026-01-10T01:10:20.394Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 668,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - agua potable",
+        description: "Evento presencial para agua potable. Patria substantia apostolus decipio.",
+        initialDate: "2026-07-05T00:09:46.761Z",
+        place: {
+          direction: "50441 Kerluke Inlet, 945",
+          city: "Chiclayo",
+          countryCode: "PE"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - derechos humanos",
+        description: "Evento presencial para derechos humanos. Titulus cras suppellex. Repellat cultura cruentus admoneo tener agnitio solvo suasoria sollers curto.",
+        initialDate: "2026-06-05T00:09:46.761Z",
+        place: {
+          direction: "7641 Ferry Courts, 84995",
+          city: "Lyon",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "621a18fb-1c46-4b59-877c-8a1d7efadcda"
+  },
+  {
+    _id: "0d4627e9-fc46-4ab3-b203-f48df20ea52e",
+    name: "Operación discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Demoror ambitus volubilis virtus voluptatum delectus adopto esse ipsa cetera.",
+    status: "approved",
+    reason: "",
+    userId: "10874307-532a-44a7-8b85-ef284b6db9c3",
+    createdAt: "2026-01-10T01:10:20.456Z",
+    updatedAt: "2026-01-10T01:10:20.456Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 279,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 957,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - medio ambiente",
+        description: "Evento presencial para medio ambiente. Laborum amplus conspergo quod tempora curvo artificiose a defleo substantia.",
+        initialDate: "2026-02-14T01:09:46.823Z",
+        place: {
+          direction: "507 Sebastian Ferry, 5463",
+          city: "Barranquilla",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Taller formativo - igualdad de género",
+        description: "Evento presencial para igualdad de género. Alo commodi quas deprimo tempus. Ustilo virgo coepi voluptatum vicinus.",
+        initialDate: "2026-02-22T01:09:46.823Z",
+        place: {
+          direction: "409 South Street, 56491",
+          city: "Napoli",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "c4955121-fccf-441b-a89b-59fb652856da"
+  },
+  {
+    _id: "28fed178-6b34-4803-81fb-b47b90630bad",
+    name: "Iniciativa agua potable 2027",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Arcus vergo calcar varietas veniam sophismata votum cubo vetus pauper. Avarus carmen aduro vilis vivo quidem.",
+    status: "approved",
+    reason: "",
+    userId: "81ec6be8-d992-410e-bb68-a536b3c05622",
+    createdAt: "2026-01-10T01:10:20.518Z",
+    updatedAt: "2026-01-10T01:10:20.518Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 123,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - salud",
+        description: "Evento presencial para salud. Credo utor laborum minima coaegresco vivo odio subiungo.",
+        initialDate: "2026-05-17T00:09:46.886Z",
+        place: {
+          direction: "6392 Noah Neck, 7037",
+          city: "Cologne",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "3949796e-57fd-479c-9f1e-a044077f4f23"
+  },
+  {
+    _id: "86d87bc6-38f9-4cd8-bf9f-c991d3140f6c",
+    name: "Acción solidaria alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Conatus cognatus suadeo magni vereor trans vomer. Tumultus amor teres veniam carpo dolores vesica adulatio laudantium.",
+    status: "approved",
+    reason: "",
+    userId: "33c89fa3-a2e8-46d1-8a21-eadab035cc34",
+    createdAt: "2026-01-10T01:10:20.583Z",
+    updatedAt: "2026-01-10T01:10:20.583Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 57,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 689,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 336,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - salud",
+        description: "Evento presencial para salud. Curso cohibeo videlicet admiratio cena.",
+        initialDate: "2026-06-19T00:09:46.949Z",
+        place: {
+          direction: "4397 Sycamore Drive, 8919",
+          city: "Bristol",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Reunión de coordinación - pobreza",
+        description: "Evento presencial para pobreza. Subseco volup abutor creator.",
+        initialDate: "2026-05-14T00:09:46.949Z",
+        place: {
+          direction: "14264 Nichole Villages, 3342",
+          city: "Toulouse",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "f3de8dd0-e18e-4469-8398-86ade50abade"
+  },
+  {
+    _id: "434059ec-c253-4d66-bc0d-4172877a670a",
+    name: "Acción solidaria derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Advenio viscus vivo terror abbas casso audax nostrum spectaculum unde. Stillicidium solvo causa asperiores claro sublime ipsa alter ",
+    status: "approved",
+    reason: "",
+    userId: "a3ff147b-701a-4092-94b4-d55d2740dae3",
+    createdAt: "2026-01-10T01:10:20.659Z",
+    updatedAt: "2026-01-10T01:10:20.659Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 873,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 632,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 938,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - pobreza",
+        description: "Evento presencial para pobreza. Tenetur quis ullus aspernatur pectus canonicus delectus.",
+        initialDate: "2026-05-17T00:09:47.011Z",
+        place: {
+          direction: "3492 Nolan Rest, 74648",
+          city: "Trujillo",
+          countryCode: "PE"
+        }
+      },
+      {
+        name: "Reunión de coordinación - vivienda",
+        description: "Evento presencial para vivienda. Alveus assentator approbo confugo.",
+        initialDate: "2026-04-23T00:09:47.011Z",
+        place: {
+          direction: "13389 Glenda Ferry, 5211",
+          city: "Toulouse",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "c9124372-a145-4833-a10e-c0eb3772b188"
+  },
+  {
+    _id: "1a0838ba-4528-41f0-8c35-65f14cb410cb",
+    name: "Movimiento emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Titulus strues conforto demitto decimus avarus tendo conventus cupiditas tubineus. Cubicularis derelinquo est tepidus triduana somnus arc",
+    status: "approved",
+    reason: "",
+    userId: "03f81753-1a0d-4bbe-b4d4-8f6481201dbb",
+    createdAt: "2026-01-10T01:10:20.970Z",
+    updatedAt: "2026-01-10T01:10:20.970Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 523,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - medio ambiente",
+        description: "Evento presencial para medio ambiente. Conculco cras admoveo xiphias amplitudo derideo cinis arbitro.",
+        initialDate: "2026-02-16T01:09:47.324Z",
+        place: {
+          direction: "20061 Esmeralda Island, 60303",
+          city: "Mendoza",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Encuentro comunitario - alimentación",
+        description: "Evento presencial para alimentación. Anser adsum accusamus placeat cogo crepusculum beatae subito.",
+        initialDate: "2026-06-27T00:09:47.324Z",
+        place: {
+          direction: "17744 Russell Street, 54717",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "efb8828b-3259-4f39-aabc-7584fb83b80d"
+  },
+  {
+    _id: "15992f1a-b3a4-4f9c-b933-3e0bfe380ac9",
+    name: "Acción solidaria desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Veniam tabernus assentator. Uredo absque caelum harum degero debilito soleo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "3c16fa98-0545-4eb0-a526-f16e07df5538",
+    createdAt: "2026-01-10T01:10:21.033Z",
+    updatedAt: "2026-01-10T01:10:21.033Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 74,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 869,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 894,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - vivienda",
+        description: "Evento presencial para vivienda. Temporibus angelus optio aperte adulatio custodia. Talis accedo pecco nemo debilito amita alo.",
+        initialDate: "2026-04-11T00:09:47.387Z",
+        place: {
+          direction: "55614 Einar Spurs, 207",
+          city: "Maracay",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Stella spes somniculosus audax. Itaque caelestis pectus vix.",
+        initialDate: "2026-05-05T00:09:47.387Z",
+        place: {
+          direction: "3607 Predovic Drive, 7495",
+          city: "Salvador",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "4b52e22b-2363-44f8-a9fd-b54efa6585f8"
+  },
+  {
+    _id: "315e502d-2ceb-4391-870f-3e4fc41417b3",
+    name: "Jornada pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Vindico verbum angustus arguo harum varius sophismata tardus sortitus. Arcus ex cibus.",
+    status: "approved",
+    reason: "",
+    userId: "dbb7b465-ce1d-4524-9260-1caad9714f80",
+    createdAt: "2026-01-10T01:10:21.095Z",
+    updatedAt: "2026-01-10T01:10:21.095Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 715,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 962,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 269,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Civis amitto solum unde quos cui cauda vacuus ullam acervus.",
+        initialDate: "2026-04-16T00:09:47.449Z",
+        place: {
+          direction: "8438 Wilma Track, 438",
+          city: "Cali",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Utrimque quia arto cresco clementia agnitio suspendo adulatio bis. Aeneus arguo totidem.",
+        initialDate: "2026-06-07T00:09:47.449Z",
+        place: {
+          direction: "6536 Court Street, 728",
+          city: "Berlin",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "c9124372-a145-4833-a10e-c0eb3772b188"
+  },
+  {
+    _id: "76c8bd0a-6900-46bf-b534-1e9702d8eef1",
+    name: "Jornada educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Suus ocer nostrum.",
+    status: "approved",
+    reason: "",
+    userId: "8926f58b-d8ee-4edc-ae92-6c7597400a3f",
+    createdAt: "2026-01-10T01:10:21.218Z",
+    updatedAt: "2026-01-10T01:10:21.218Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 160,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 610,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 268,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - pobreza",
+        description: "Evento presencial para pobreza. Sophismata verus truculenter adnuo corona cogito appono arbitro sunt.",
+        initialDate: "2026-07-03T00:09:47.572Z",
+        place: {
+          direction: "48775 Leif Valleys, 618",
+          city: "Trujillo",
+          countryCode: "PE"
+        }
+      },
+      {
+        name: "Encuentro comunitario - educación",
+        description: "Evento presencial para educación. Velum desidero depromo. Crepusculum audeo torqueo volutabrum contra umquam.",
+        initialDate: "2026-03-13T01:09:47.573Z",
+        place: {
+          direction: "798 Orlando Manors, 4629",
+          city: "Santiago",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "703d1691-13e4-4a2f-ba33-4d0d526a762c"
+  },
+  {
+    _id: "8cde77f7-0463-447d-856e-81d50cb5a70d",
+    name: "Campaña pobreza 2026",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Velum vis ars curis corrumpo quam ademptio.",
+    status: "pending",
+    userId: "85190a0b-d05a-4a8e-9c24-4a8ad23a7270",
+    createdAt: "2026-01-10T01:09:47.708Z",
+    updatedAt: "2026-01-10T01:09:47.708Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 822,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 600,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - alimentación",
+        description: "Evento presencial para alimentación. Spiritus degenero convoco depraedor cicuta. Demonstro adversus omnis pariatur clamo solio antiquus ater ascisco.",
+        initialDate: "2026-04-11T00:09:47.698Z",
+        place: {
+          direction: "5363 Luettgen Ford, 8588",
+          city: "Barranquilla",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Totidem depereo color. Arto carcer autus timor.",
+        initialDate: "2026-05-16T00:09:47.698Z",
+        place: {
+          direction: "5894 Foster Coves, 2266",
+          city: "Ciudad de México",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "ad535d5a-edfe-4ea5-9aab-f41b99eb3ba4"
+  },
+  {
+    _id: "6f26aa73-945b-49fa-abfb-c65d831b70f7",
+    name: "Programa vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Vulticulus venia urbs deprimo beneficium.",
+    status: "approved",
+    reason: "",
+    userId: "36951be5-cce4-49af-993b-5917b12cd7b4",
+    createdAt: "2026-01-10T01:10:21.409Z",
+    updatedAt: "2026-01-10T01:10:21.409Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 231,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 626,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - pobreza",
+        description: "Evento presencial para pobreza. Coniuratio sulum vomito patria. Titulus decimus audeo.",
+        initialDate: "2026-02-09T01:09:47.759Z",
+        place: {
+          direction: "170 Kreiger Hollow, 540",
+          city: "Edinburgh",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "86a9afe5-c341-469a-9275-a03dba53fcd3"
+  },
+  {
+    _id: "1330c01d-75de-4bbe-9c0b-03e0bebfc87d",
+    name: "Iniciativa infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Statua sumo pecco tergo audacia terreo comis solvo adicio thalassinus.",
+    status: "approved",
+    reason: "",
+    userId: "69247962-7d38-41c6-81bf-38105e0327c3",
+    createdAt: "2026-01-10T01:10:21.534Z",
+    updatedAt: "2026-01-10T01:10:21.534Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 944,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 700,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - vivienda",
+        description: "Evento presencial para vivienda. Trans thesaurus sollers summisse deleniti est confero antea video curto. Campana laboriosam praesentium adeo volva demo ago umquam abscido cupio.",
+        initialDate: "2026-07-08T00:09:47.884Z",
+        place: {
+          direction: "2198 Metz Underpass, 9167",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "289918d9-e099-44d6-b5cb-1de6da3c164a"
+  },
+  {
+    _id: "3b03ed96-e5f5-4fa3-95b4-bf40dfcdecf3",
+    name: "Acción solidaria desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Distinctio caries totus ipsam facere suadeo comparo tristis. Aequus trans ocer tempus recusandae.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "cfc3c9e5-7968-4452-918f-cfd3fc522f2d",
+    createdAt: "2026-01-10T01:10:21.597Z",
+    updatedAt: "2026-01-10T01:10:21.597Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 10,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 796,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - igualdad de género",
+        description: "Evento presencial para igualdad de género. Quasi vitiosus consectetur tantillus cohors utrimque brevis beatae.",
+        initialDate: "2026-05-27T00:09:47.946Z",
+        place: {
+          direction: "3035 Rosario Centers, 1581",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Evento benéfico - tercera edad",
+        description: "Evento presencial para tercera edad. Umquam apto valetudo ex trepide pauci velociter cupiditate capitulus amet. Torrens sollers alo saepe pax audeo provident attollo viscus.",
+        initialDate: "2026-04-19T00:09:47.946Z",
+        place: {
+          direction: "1901 E 5th Street, 8030",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "134c7020-3221-4bf6-853f-be1f355712c5"
+  },
+  {
+    _id: "b770396a-968d-45b0-9cd0-8a1fc5db14c7",
+    name: "Campaña salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Dapifer vis recusandae decerno.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "035b3e09-409f-4fd2-b7bb-575f931e9136",
+    createdAt: "2026-01-10T01:10:21.660Z",
+    updatedAt: "2026-01-10T01:10:21.660Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 997,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 622,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Abeo amissio conturbo valetudo demergo angelus iure solitudo.",
+        initialDate: "2026-02-28T01:09:48.008Z",
+        place: {
+          direction: "9292 Hunter Viaduct, 2192",
+          city: "Buenos Aires",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Taller formativo - salud",
+        description: "Evento presencial para salud. Vacuus solus sonitus virga. Umbra vomito auctor.",
+        initialDate: "2026-02-03T01:09:48.008Z",
+        place: {
+          direction: "62450 Fay Point, 874",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "9b2d68be-9b19-4122-8a45-7b5173a75f3b"
+  },
+  {
+    _id: "2e82d1e7-7be8-4ba2-9605-0dc86db9bfa5",
+    name: "Movimiento desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Adicio vacuus caterva veritas tempora. Possimus nemo cubicularis fugit demoror nulla validus demens cupiditate.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a98468b6-e8d0-4b2b-b663-78f06a517db8",
+    createdAt: "2026-01-10T01:10:21.848Z",
+    updatedAt: "2026-01-10T01:10:21.848Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 187,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - derechos humanos",
+        description: "Evento presencial para derechos humanos. Careo tenetur audio caveo decumbo absorbeo depraedor. Vulnero cerno cicuta verto comptus consequatur crinis vis illum corpus.",
+        initialDate: "2026-02-02T01:09:48.194Z",
+        place: {
+          direction: "340 Annamarie Branch, 8847",
+          city: "Cusco",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "2e765e05-0084-46e2-b852-ea4b913872c8"
+  },
+  {
+    _id: "5b6ad044-c395-475f-bf1a-6dbe2120eebf",
+    name: "Iniciativa medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Consequatur tantillus illo facere talis pauci dens. Uter audentia advenio caste.",
+    status: "approved",
+    reason: "",
+    userId: "7fe93347-1fcc-4061-aa7a-9de0bba26c0d",
+    createdAt: "2026-01-10T01:10:22.035Z",
+    updatedAt: "2026-01-10T01:10:22.035Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 130,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - educación",
+        description: "Evento presencial para educación. Amor adsuesco approbo acsi video artificiose cena sumo.",
+        initialDate: "2026-04-29T00:09:48.380Z",
+        place: {
+          direction: "7777 Kuvalis Well, 436",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Jornada solidaria - derechos humanos",
+        description: "Evento presencial para derechos humanos. Omnis suscipio perferendis.",
+        initialDate: "2026-06-26T00:09:48.380Z",
+        place: {
+          direction: "52302 Beech Road, 8559",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "debed4e8-42ff-4f48-b739-b22aff8c5fec"
+  },
+  {
+    _id: "2d60e5db-d494-427e-80ba-1904c90c2b25",
+    name: "Red de apoyo refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Beatae atqui allatus tyrannus caritas tabgo accendo villa vox. Vulgo aliqua ventus curso abscido tamdiu comparo aeternus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "074f7ac2-175a-4ba8-891d-b9cad85795ec",
+    createdAt: "2026-01-10T01:10:22.097Z",
+    updatedAt: "2026-01-10T01:10:22.097Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 997,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 857,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 865,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - alimentación",
+        description: "Evento presencial para alimentación. Dolorum angustus credo cornu thema casso iure sufficio iste.",
+        initialDate: "2026-01-30T01:09:48.442Z",
+        place: {
+          direction: "7369 Keebler Valley, 16962",
+          city: "Frankfurt",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Jornada solidaria - refugiados",
+        description: "Evento presencial para refugiados. Cognatus centum adduco suspendo volaticus stillicidium.",
+        initialDate: "2026-04-04T00:09:48.442Z",
+        place: {
+          direction: "687 Corkery Dam, 83088",
+          city: "Barcelona",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "48d99e4d-e84a-493e-80b3-54d2ec19a3c5"
+  },
+  {
+    _id: "558cbdac-7f0f-475c-98e3-4e9a568c1326",
+    name: "Red de apoyo refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Quia autus agnosco. Solitudo tepesco culpa astrum stabilis.",
+    status: "approved",
+    reason: "",
+    userId: "69a478a1-10be-4ed4-a178-3df9159930a5",
+    createdAt: "2026-01-10T01:10:22.160Z",
+    updatedAt: "2026-01-10T01:10:22.160Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 369,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 895,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 852,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - agua potable",
+        description: "Evento presencial para agua potable. Dolores conspergo sumptus creator vado. Sum copiose aequus.",
+        initialDate: "2026-01-27T01:09:48.504Z",
+        place: {
+          direction: "346 Parisian Junctions, 4971",
+          city: "Córdoba",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Jornada solidaria - tercera edad",
+        description: "Evento presencial para tercera edad. Dapifer sursum claustrum.",
+        initialDate: "2026-06-21T00:09:48.504Z",
+        place: {
+          direction: "5031 Harmon Wells, 319",
+          city: "Córdoba",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "6e76f385-9e63-4868-8423-56e9bfd412fa"
+  },
+  {
+    _id: "a2fde19e-d673-4af6-94c4-7e955f3c09cd",
+    name: "Operación desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Auctor vobis vorago tolero degero agnosco compello acsi clamo.",
+    status: "approved",
+    reason: "",
+    userId: "10874307-532a-44a7-8b85-ef284b6db9c3",
+    createdAt: "2026-01-10T01:10:22.221Z",
+    updatedAt: "2026-01-10T01:10:22.221Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 961,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 703,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 143,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - salud",
+        description: "Evento presencial para salud. Paens arbitro blandior charisma cultura ambulo distinctio. Deorsum vinitor absum advenio sequi vobis arca ceno earum.",
+        initialDate: "2026-03-28T01:09:48.566Z",
+        place: {
+          direction: "69734 Cathryn Valley, 1455",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "c4955121-fccf-441b-a89b-59fb652856da"
+  },
+  {
+    _id: "ab15461f-16a0-43f0-b45b-3ae5c180227b",
+    name: "Iniciativa alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Circumvenio repellendus curvo claudeo amplitudo cornu consequatur averto adsidue. Cras illo aspernatur celer despecto voveo carus termes",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "d8a040a1-cb63-4e18-9962-806f74b2d340",
+    createdAt: "2026-01-10T01:10:22.536Z",
+    updatedAt: "2026-01-10T01:10:22.536Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 931,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 794,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 766,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - emergencias",
+        description: "Evento presencial para emergencias. Absens templum reiciendis consuasor fugiat theatrum.",
+        initialDate: "2026-07-03T00:09:48.878Z",
+        place: {
+          direction: "86426 Cronin Curve, 70649",
+          city: "Antofagasta",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "024551bd-08d1-4957-be2a-736bcc8ef6d3"
+  },
+  {
+    _id: "e4cec3d3-e2ab-49f5-b390-e728f2c52c7d",
+    name: "Programa medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Repellendus artificiose atqui totidem amor blanditiis auctus ara avaritia.",
+    status: "approved",
+    reason: "",
+    userId: "a6a9fd9e-d555-4ba9-8074-8d17be3e341d",
+    createdAt: "2026-01-10T01:10:22.598Z",
+    updatedAt: "2026-01-10T01:10:22.598Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 103,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 793,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 657,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - medio ambiente",
+        description: "Evento presencial para medio ambiente. Communis uredo tracto adeptio combibo volo tres desparatus unde.",
+        initialDate: "2026-02-24T01:09:48.940Z",
+        place: {
+          direction: "430 Chapel Street, 89588",
+          city: "Salvador",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "0dd26d2b-25aa-4dd7-8622-d2d6ba317a8a"
+  },
+  {
+    _id: "795a674f-8658-49d6-ae45-888208b53bba",
+    name: "Acción solidaria emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Umbra peior ulterius. Possimus auditor occaecati crebro curatio volup comis umerus.",
+    status: "pending",
+    userId: "3a16d985-f175-40cc-a0ea-87d5f1453066",
+    createdAt: "2026-01-10T01:09:49.012Z",
+    updatedAt: "2026-01-10T01:09:49.012Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 10,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 528,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - salud",
+        description: "Evento presencial para salud. Colligo baiulus tricesimus porro vester magnam. Tubineus sui suus occaecati textus sordeo earum denique.",
+        initialDate: "2026-06-09T00:09:49.002Z",
+        place: {
+          direction: "160 The Drive, 5478",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "5427a22a-94a4-4695-8bbb-b27aefa79324"
+  },
+  {
+    _id: "ac2709e2-9ff7-4b16-8cf3-7b94baa7bfc9",
+    name: "Jornada vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Amiculum non ager amitto. Decet spectaculum volo termes venia.",
+    status: "approved",
+    reason: "",
+    userId: "7ad9bad6-47d6-4261-8f17-c64e1f6d0a33",
+    createdAt: "2026-01-10T01:10:22.783Z",
+    updatedAt: "2026-01-10T01:10:22.783Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 696,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - emergencias",
+        description: "Evento presencial para emergencias. Adversus crastinus asper cena amplexus degenero.",
+        initialDate: "2026-04-14T00:09:49.125Z",
+        place: {
+          direction: "8473 Hall Lane, 926",
+          city: "Chiclayo",
+          countryCode: "PE"
+        }
+      },
+      {
+        name: "Evento benéfico - tercera edad",
+        description: "Evento presencial para tercera edad. Subseco esse demo terminatio perferendis catena. Impedit tenus aegrus sophismata amplus barba curto spoliatio spoliatio.",
+        initialDate: "2026-06-24T00:09:49.125Z",
+        place: {
+          direction: "5856 Erdman Meadow, 948",
+          city: "Torino",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "670b4ec0-531d-45db-aac8-94863cd21db3"
+  },
+  {
+    _id: "ce4b6a24-d840-4710-b9f1-49457776ca43",
+    name: "Red de apoyo pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Thalassinus somnus barba capio.",
+    status: "approved",
+    reason: "",
+    userId: "bcee7b18-303f-4d94-a515-1ce21533bd9d",
+    createdAt: "2026-01-10T01:10:22.907Z",
+    updatedAt: "2026-01-10T01:10:22.907Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 390,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 442,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 663,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - emergencias",
+        description: "Evento presencial para emergencias. Alius una pax.",
+        initialDate: "2026-05-25T00:09:49.249Z",
+        place: {
+          direction: "76674 Aufderhar Forge, 55803",
+          city: "Bologna",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "14bcd9c1-4199-4578-98c9-ac25ee169cbc"
+  },
+  {
+    _id: "f4452b20-1c16-44f9-bfca-dd7f647445c6",
+    name: "Operación refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Vox quibusdam tyrannus adficio spes torqueo. Pecto aut libero fuga cauda varius.",
+    status: "approved",
+    reason: "",
+    userId: "a6a9fd9e-d555-4ba9-8074-8d17be3e341d",
+    createdAt: "2026-01-10T01:10:22.969Z",
+    updatedAt: "2026-01-10T01:10:22.969Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 488,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 524,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - infancia",
+        description: "Evento presencial para infancia. Altus vesica auxilium tubineus aeger solutio utilis somniculosus avaritia. Atavus illo asporto sequi aduro cunabula cras aestus tertius adopto.",
+        initialDate: "2026-02-11T01:09:49.310Z",
+        place: {
+          direction: "675 Moor Lane, 453",
+          city: "Dresden",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Varietas amicitia congregatio auctor tantillus uredo bene.",
+        initialDate: "2026-02-27T01:09:49.310Z",
+        place: {
+          direction: "948 Brennon Rest, 823",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "700fc811-ea8a-4069-aea4-988287e82e8f"
+  },
+  {
+    _id: "a6532c14-efa2-411b-97fd-97bae0bc8814",
+    name: "Jornada igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Vestrum bardus video antiquus abbas strenuus civitas auctor.",
+    status: "approved",
+    reason: "",
+    userId: "037464c8-6064-47fe-80ba-45b51c7dac60",
+    createdAt: "2026-01-10T01:10:23.097Z",
+    updatedAt: "2026-01-10T01:10:23.097Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 733,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 60,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - educación",
+        description: "Evento presencial para educación. Pauci necessitatibus cunae nulla conventus argumentum tempora est.",
+        initialDate: "2026-06-21T00:09:49.436Z",
+        place: {
+          direction: "64056 Valley Road, 787",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - tercera edad",
+        description: "Evento presencial para tercera edad. Argentum sit curriculum aliquid tantillus voluptates surculus tollo demens aut.",
+        initialDate: "2026-04-07T00:09:49.436Z",
+        place: {
+          direction: "5059 Tillman Ranch, 492",
+          city: "Frankfurt",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "3f720030-b0e2-4164-8b96-dde1fc8a194a"
+  },
+  {
+    _id: "6452ebe3-ec99-4a48-b0ac-b7a75b9a5c22",
+    name: "Red de apoyo infancia 2026",
+    description: "Acción concreta para infancia con objetivos cuantificables. Cubo studio tamquam terga crinis argentum compello decerno. Adduco amita dedico eius adfero coruscus vinitor.",
+    status: "approved",
+    reason: "",
+    userId: "ff8c92a5-922e-4cda-b204-170267d86a52",
+    createdAt: "2026-01-10T01:10:23.159Z",
+    updatedAt: "2026-01-10T01:10:23.159Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 195,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 746,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - agua potable",
+        description: "Evento presencial para agua potable. Arto aliqua videlicet aeger magni aufero verus. Barba pecus ubi.",
+        initialDate: "2026-05-30T00:09:49.498Z",
+        place: {
+          direction: "281 Schuster Coves, 321",
+          city: "Barquisimeto",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Reunión de coordinación - tercera edad",
+        description: "Evento presencial para tercera edad. Cohors aperte truculenter labore defendo ipsum carus video acerbitas.",
+        initialDate: "2026-04-09T00:09:49.498Z",
+        place: {
+          direction: "4777 Kimberly Lakes, 426",
+          city: "Bologna",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "93eaef10-508e-4580-85b0-f083be061c32"
+  },
+  {
+    _id: "8a752a68-9d1e-40ad-93f5-a2f736f564ee",
+    name: "Iniciativa alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Sint contigo aranea summopere vitium summa aveho absens.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "cfc3c9e5-7968-4452-918f-cfd3fc522f2d",
+    createdAt: "2026-01-10T01:10:23.221Z",
+    updatedAt: "2026-01-10T01:10:23.221Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 34,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 689,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 751,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Amplitudo natus aetas viriliter amiculum aliqua praesentium.",
+        initialDate: "2026-01-24T01:09:49.561Z",
+        place: {
+          direction: "2296 Donnell Freeway, 28331",
+          city: "Barcelona",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Jornada solidaria - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Balbus adflicto teres cimentarius tabernus id deporto. Atrocitas appono tertius temeritas dolore depulso.",
+        initialDate: "2026-03-19T01:09:49.561Z",
+        place: {
+          direction: "996 Monique Locks, 43155",
+          city: "Puebla",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "009e3852-b5d4-48de-9e50-e5d09d220fbb"
+  },
+  {
+    _id: "84ff0bdf-6c81-40ed-8839-0d344eac7665",
+    name: "Campaña medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Texo tremo clibanus volubilis caveo arcus sum quia arx.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "a19ccc78-1efd-4fde-856e-45f48a415918",
+    createdAt: "2026-01-10T01:10:23.345Z",
+    updatedAt: "2026-01-10T01:10:23.345Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 653,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 809,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 744,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Degusto color crapula canis callide accedo congregatio alius.",
+        initialDate: "2026-02-18T01:09:49.686Z",
+        place: {
+          direction: "510 Teagan Rapid, 7529",
+          city: "Antofagasta",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "52d63d51-612c-4a6b-9cdb-164747bcfede"
+  },
+  {
+    _id: "95c5d410-a174-454d-b35c-00e5ac8a9081",
+    name: "Red de apoyo emergencias 2027",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Caute beneficium patria commodi earum.",
+    status: "approved",
+    reason: "",
+    userId: "e76bfa3e-2da5-4505-8071-68bcc558c6b1",
+    createdAt: "2026-01-10T01:10:23.469Z",
+    updatedAt: "2026-01-10T01:10:23.469Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 343,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 213,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - agua potable",
+        description: "Evento presencial para agua potable. Anser deinde nisi timidus contego temperantia conspergo. Crux ventito mollitia solus tricesimus compono facere.",
+        initialDate: "2026-07-16T00:09:49.810Z",
+        place: {
+          direction: "60386 Johns Track, 1118",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      },
+      {
+        name: "Encuentro comunitario - medio ambiente",
+        description: "Evento presencial para medio ambiente. Usque ceno complectus vicinus utrimque tardus vita vilis aperio.",
+        initialDate: "2026-02-20T01:09:49.810Z",
+        place: {
+          direction: "370 Marjorie Land, 800",
+          city: "Guadalajara",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "4cd8a6cd-db51-49cd-98ff-c0216f416296"
+  },
+  {
+    _id: "5554000e-7f2f-4e23-8de6-c87d9bd5b892",
+    name: "Programa tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Carcer pel appono sunt textor sumo altus voluptatem abbas apparatus. Verto suppellex pecco spes depereo combibo.",
+    status: "approved",
+    reason: "",
+    userId: "3c16fa98-0545-4eb0-a526-f16e07df5538",
+    createdAt: "2026-01-10T01:10:23.531Z",
+    updatedAt: "2026-01-10T01:10:23.531Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 732,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - educación",
+        description: "Evento presencial para educación. Sub adsidue calco certus quisquam verecundia dicta conventus patior deputo. Adinventitias ipsum curatio ater illo.",
+        initialDate: "2026-06-28T00:09:49.873Z",
+        place: {
+          direction: "918 Jeffrey Wall, 668",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "299a2b72-9f0e-470c-a3d0-5cc3d8219608"
+  },
+  {
+    _id: "f6181f3a-9f43-498c-a1b5-eebc468f2696",
+    name: "Iniciativa igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Vulticulus talus quam bonus sperno vobis vetus.",
+    status: "pending",
+    userId: "316d853e-782d-4b30-9ddd-baad4354e68c",
+    createdAt: "2026-01-10T01:09:49.948Z",
+    updatedAt: "2026-01-10T01:09:49.948Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 913,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 520,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 665,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - derechos humanos",
+        description: "Evento presencial para derechos humanos. Cenaculum supplanto vapulus ipsa uterque valeo sunt creator conculco collum. Cras acceptus subseco solvo aveho tantum tum damno ut.",
+        initialDate: "2026-03-19T01:09:49.936Z",
+        place: {
+          direction: "480 Moore Dale, 41254",
+          city: "Cali",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Evento benéfico - agua potable",
+        description: "Evento presencial para agua potable. Contra canonicus depono id. Audacia subseco totidem comminor aperiam textilis complectus cunabula.",
+        initialDate: "2026-07-08T00:09:49.936Z",
+        place: {
+          direction: "317 Hickle Club, 96278",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "5427a22a-94a4-4695-8bbb-b27aefa79324"
+  },
+  {
+    _id: "6d12243a-c6e2-4ec0-9186-9bd0285fa885",
+    name: "Programa tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Cohibeo anser solium vulariter eos cura vulariter. Volva cedo clementia creo thesis paulatim optio celer.",
+    status: "approved",
+    reason: "",
+    userId: "ea510f67-405f-4649-9027-2d9f38666b62",
+    createdAt: "2026-01-10T01:10:23.657Z",
+    updatedAt: "2026-01-10T01:10:23.657Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 525,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - tercera edad",
+        description: "Evento presencial para tercera edad. Maxime doloremque carpo. Quidem pel et celer ver.",
+        initialDate: "2026-02-19T01:09:49.998Z",
+        place: {
+          direction: "49117 Baumbach Expressway, 393",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Evento benéfico - salud",
+        description: "Evento presencial para salud. Abeo quis accusamus vox deporto coadunatio quis admoneo tamen. Stillicidium thesaurus deripio sopor crebro debeo adduco cupio acies cultura.",
+        initialDate: "2026-02-05T01:09:49.998Z",
+        place: {
+          direction: "9957 Sycamore Street, 58199",
+          city: "Guadalajara",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "c284f569-af1b-4a92-b37d-6f4f5b0715f7"
+  },
+  {
+    _id: "61fc716f-d014-4db9-b697-a2a30bcc88f1",
+    name: "Red de apoyo derechos humanos 2027",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Aspernatur arguo pauper.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "bc4a1b44-18a7-4102-b623-aaafc6ee7dbf",
+    createdAt: "2026-01-10T01:10:23.718Z",
+    updatedAt: "2026-01-10T01:10:23.718Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 493,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 191,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 373,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - emergencias",
+        description: "Evento presencial para emergencias. Claro molestiae sponte curiositas socius. Cornu perspiciatis adfero caelestis defaeco.",
+        initialDate: "2026-05-31T00:09:50.060Z",
+        place: {
+          direction: "38033 Moses Motorway, 491",
+          city: "La Serena",
+          countryCode: "CL"
+        }
+      },
+      {
+        name: "Encuentro comunitario - derechos humanos",
+        description: "Evento presencial para derechos humanos. Surgo cimentarius accusantium ante deserunt votum eveniet tenax cognomen verumtamen. Thalassinus avarus arma sufficio averto thymbra aro.",
+        initialDate: "2026-07-04T00:09:50.060Z",
+        place: {
+          direction: "3675 Brett Manors, 712",
+          city: "Marseille",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "1df94865-6ac3-4b01-b861-7f579053a620"
+  },
+  {
+    _id: "3a54a70b-81cb-4f3f-aa4d-b85fe55e32e7",
+    name: "Acción solidaria discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Vos comptus bene qui tener conor alveus tabula terror alienus. Appono deripio in quis.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "0ede81ca-3c50-40b8-9b63-acab6b8323a4",
+    createdAt: "2026-01-10T01:10:23.844Z",
+    updatedAt: "2026-01-10T01:10:23.844Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 324,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 776,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - derechos humanos",
+        description: "Evento presencial para derechos humanos. Damno est desino cenaculum admoneo approbo dens temporibus molestias copia.",
+        initialDate: "2026-01-19T01:09:50.184Z",
+        place: {
+          direction: "15944 Irwin Street, 615",
+          city: "Glasgow",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Jornada solidaria - salud",
+        description: "Evento presencial para salud. Cimentarius urbanus aetas adstringo vel tonsor cimentarius. Ad vito video.",
+        initialDate: "2026-07-03T00:09:50.184Z",
+        place: {
+          direction: "52130 Johns Inlet, 871",
+          city: "Nice",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "485d35d7-266b-4efc-9c9e-4df8b681acaa"
+  },
+  {
+    _id: "c2f4ef8f-0c96-469a-9fd8-5a40ea6c2837",
+    name: "Iniciativa salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Terebro demergo aggredior adipisci cultura cultellus cohors.",
+    status: "approved",
+    reason: "",
+    userId: "80289107-eec3-4b5e-9745-f5b6924aee62",
+    createdAt: "2026-01-10T01:10:23.904Z",
+    updatedAt: "2026-01-10T01:10:23.904Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 261,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 617,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 859,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Adhuc creptio cicuta arcus. Dedico tumultus quod ascit xiphias succedo venustas.",
+        initialDate: "2026-03-06T01:09:50.246Z",
+        place: {
+          direction: "52895 Mill Close, 8668",
+          city: "Torino",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "cc89db0a-3df0-4fb2-bebb-154de0cbd035"
+  },
+  {
+    _id: "f6ec5ff9-5b1e-4e11-bb9a-14e8659e5700",
+    name: "Programa discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Venustas corrupti dedecor iusto. Volubilis desolo anser arceo averto voluptatem ultio tempora porro.",
+    status: "approved",
+    reason: "",
+    userId: "500cd7aa-5e9c-40bd-aee5-4d0646e9c529",
+    createdAt: "2026-01-10T01:10:23.965Z",
+    updatedAt: "2026-01-10T01:10:23.965Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 781,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 191,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 758,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Denuo vado cur caelum praesentium caecus adeo delibero cupiditate vestigium.",
+        initialDate: "2026-01-23T01:09:50.308Z",
+        place: {
+          direction: "708 Francisca Cove, 657",
+          city: "Lyon",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "ede468a9-7e3b-4504-a492-88f7979f5896"
+  },
+  {
+    _id: "e3112fba-6e0a-4621-90bb-54fda1f9cd94",
+    name: "Movimiento salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Textilis acceptus concedo nesciunt tempore et pauci nemo. Tibi quam torqueo vitiosus textor ante.",
+    status: "approved",
+    reason: "",
+    userId: "e513ab96-3736-47e6-afd2-2f8560a18764",
+    createdAt: "2026-01-10T01:10:24.028Z",
+    updatedAt: "2026-01-10T01:10:24.028Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 744,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 137,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 187,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - emergencias",
+        description: "Evento presencial para emergencias. Caecus adstringo vallum aptus spiritus copiose pecus nulla. Bene supra studio.",
+        initialDate: "2026-06-11T00:09:50.370Z",
+        place: {
+          direction: "10823 Lilla Extensions, 82366",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "289918d9-e099-44d6-b5cb-1de6da3c164a"
+  },
+  {
+    _id: "4c1abc3d-79b9-4ed7-99a6-a6fecc2a8b19",
+    name: "Operación infancia 2026",
+    description: "Acción concreta para infancia con objetivos cuantificables. Quod pecto ea aegrus tollo aspernatur supellex. Animi bibo repellendus aeternus utilis fuga trado virtus amiculum absum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "41366993-d4a1-4908-85e5-cdfe4dc7affe",
+    createdAt: "2026-01-10T01:10:24.092Z",
+    updatedAt: "2026-01-10T01:10:24.092Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 231,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 403,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 941,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - derechos humanos",
+        description: "Evento presencial para derechos humanos. Voluptate conspergo beatae ademptio corrumpo auditor beatus.",
+        initialDate: "2026-04-30T00:09:50.432Z",
+        place: {
+          direction: "612 Gladys Harbors, 5308",
+          city: "Napoli",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Encuentro comunitario - vivienda",
+        description: "Evento presencial para vivienda. Toties suppono expedita decumbo averto catena tamen attero.",
+        initialDate: "2026-06-16T00:09:50.432Z",
+        place: {
+          direction: "54460 Nels Locks, 1780",
+          city: "Cali",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "10653446-f68d-4b1e-a204-185e5acd5564"
+  },
+  {
+    _id: "e2b10de6-bf72-4f6b-b4c3-ab8684abb7f4",
+    name: "Programa alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Denuncio cogo vitiosus tracto decet vomito capio caelum atrox. Acer uterque vesco somniculosus viridis cerno timidus vehemens valetudo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ff257735-ce42-4717-93de-bea73c953442",
+    createdAt: "2026-01-10T01:10:24.154Z",
+    updatedAt: "2026-01-10T01:10:24.154Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 168,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - medio ambiente",
+        description: "Evento presencial para medio ambiente. Sol sub pectus.",
+        initialDate: "2026-05-28T00:09:50.495Z",
+        place: {
+          direction: "99020 Hudson Skyway, 6116",
+          city: "Rio de Janeiro",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "9b2d68be-9b19-4122-8a45-7b5173a75f3b"
+  },
+  {
+    _id: "95f66b58-6f4b-45ec-8c9b-8a64f2a4aa5d",
+    name: "Movimiento educación 2027",
+    description: "Acción concreta para educación con objetivos cuantificables. Clementia thalassinus denego sustineo. Credo aedificium reiciendis vergo asperiores facilis quam earum enim centum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "8225fb56-65e1-4bae-ba13-677391c8078a",
+    createdAt: "2026-01-10T01:10:24.217Z",
+    updatedAt: "2026-01-10T01:10:24.217Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 23,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - educación",
+        description: "Evento presencial para educación. Tantillus titulus sumo alii tergeo. Textus demitto testimonium sursum.",
+        initialDate: "2026-05-05T00:09:50.558Z",
+        place: {
+          direction: "75065 Jovan Run, 8114",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "5427a22a-94a4-4695-8bbb-b27aefa79324"
+  },
+  {
+    _id: "2e4ca516-d719-47cd-b702-519f02df5908",
+    name: "Jornada alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Spes coniecto abbas super.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "1569d5a5-e39d-4f9c-a4c6-f13d0be1f54b",
+    createdAt: "2026-01-10T01:10:24.292Z",
+    updatedAt: "2026-01-10T01:10:24.292Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 526,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 367,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - discapacidad",
+        description: "Evento presencial para discapacidad. Amplitudo reiciendis voluptatem officia utrimque somnus totus xiphias.",
+        initialDate: "2026-02-01T01:09:50.619Z",
+        place: {
+          direction: "135 N Maple Street, 64863",
+          city: "La Serena",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "9e78e393-18a4-45b2-a71c-56f2a9023c56"
+  },
+  {
+    _id: "5b5771c2-f274-4964-90e1-1276d1d0704a",
+    name: "Programa tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Admitto odio consuasor deinde contra. Sint argumentum artificiose vitiosus amplus cohaero accusamus congregatio sulum.",
+    status: "approved",
+    reason: "",
+    userId: "c7cfb461-d416-4e3c-888a-50efd73fcb13",
+    createdAt: "2026-01-10T01:10:24.353Z",
+    updatedAt: "2026-01-10T01:10:24.353Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 167,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - agua potable",
+        description: "Evento presencial para agua potable. Paulatim adsidue ultra vulgivagus adstringo ex ipsum adfero.",
+        initialDate: "2026-01-29T01:09:50.681Z",
+        place: {
+          direction: "5013 Asa Isle, 81335",
+          city: "Caracas",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Comedo cui demoror vito officiis pauper correptius.",
+        initialDate: "2026-02-06T01:09:50.681Z",
+        place: {
+          direction: "875 Conn Valley, 256",
+          city: "Cusco",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "a0a7f366-8748-4bd8-a066-207340369666"
+  },
+  {
+    _id: "c3db39f0-5a90-447c-8a89-4d539a4cb32d",
+    name: "Proyecto refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Vero succedo molestiae patrocinor ter veritas adeo. Vigilo cohors adeo tamisium canto ventus trepide aetas.",
+    status: "approved",
+    reason: "",
+    userId: "1320a873-67f0-4c35-9d09-b3621bdf9991",
+    createdAt: "2026-01-10T01:10:24.415Z",
+    updatedAt: "2026-01-10T01:10:24.415Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 17,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - educación",
+        description: "Evento presencial para educación. Deleniti corrigo celer crapula. Unus denego vomito solutio currus cupiditate.",
+        initialDate: "2026-04-14T00:09:50.744Z",
+        place: {
+          direction: "2186 Becker Forks, 61027",
+          city: "London",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "8e5a8aba-4a76-4ed9-809a-fd5cf296ce97"
+  },
+  {
+    _id: "975d6a7c-4f57-401a-9b06-e0cad6297c04",
+    name: "Movimiento infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Tumultus bellum amicitia damnatio benevolentia aedificium. Catena baiulus facilis crapula pauper perferendis ipsam.",
+    status: "pending",
+    userId: "38fd508a-33eb-4d2f-9567-175e7f0356f1",
+    createdAt: "2026-01-10T01:09:50.879Z",
+    updatedAt: "2026-01-10T01:09:50.879Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 991,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - discapacidad",
+        description: "Evento presencial para discapacidad. Somnus reprehenderit defessus hic cibus velut pecus ocer. Contabesco dolorum adficio capto conventus.",
+        initialDate: "2026-06-06T00:09:50.868Z",
+        place: {
+          direction: "675 Kiehn Camp, 7788",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "bf9d0a0f-d26c-4a73-9757-1027fab010e3"
+  },
+  {
+    _id: "fb42a911-37e0-4f86-a47f-fbce928eeb93",
+    name: "Red de apoyo vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Suspendo coaegresco ver. Depopulo cunabula comparo arceo cruentus tabgo subiungo patior tego.",
+    status: "approved",
+    reason: "",
+    userId: "5c817b34-5cef-4a15-bae1-ed2749069ba3",
+    createdAt: "2026-01-10T01:10:24.666Z",
+    updatedAt: "2026-01-10T01:10:24.666Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 268,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 743,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 806,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - salud",
+        description: "Evento presencial para salud. Tergo illo maxime armarium. Amet velit cupio sto contra strenuus vobis necessitatibus traho suspendo.",
+        initialDate: "2026-06-15T00:09:50.992Z",
+        place: {
+          direction: "4992 Lafayette Street, 2294",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "edd0b0a1-f88f-4a6a-8b0d-5c86c4b3d2ff"
+  },
+  {
+    _id: "f916b69e-abd2-48d9-a165-0f21a0bafc6d",
+    name: "Iniciativa tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Vulticulus allatus arto animi harum demum.",
+    status: "approved",
+    reason: "",
+    userId: "a68ff1aa-fe21-42a0-89fc-6de5b3348fec",
+    createdAt: "2026-01-10T01:10:24.729Z",
+    updatedAt: "2026-01-10T01:10:24.729Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 987,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 422,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 694,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - discapacidad",
+        description: "Evento presencial para discapacidad. Vomito casso calcar pecto demum. Tardus vociferor depulso usitas ad utroque cauda titulus aspicio texo.",
+        initialDate: "2026-03-26T01:09:51.054Z",
+        place: {
+          direction: "658 Keeling Terrace, 53506",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "86a9afe5-c341-469a-9275-a03dba53fcd3"
+  },
+  {
+    _id: "c7f537fc-fbf2-49c9-9efc-5dbc3e68b5e2",
+    name: "Programa tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Vapulus adiuvo accusamus deripio baiulus tribuo tripudio virga rem suasoria.",
+    status: "approved",
+    reason: "",
+    userId: "6fad9312-ce25-4c99-92e4-85e420b3db11",
+    createdAt: "2026-01-10T01:10:24.791Z",
+    updatedAt: "2026-01-10T01:10:24.791Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 862,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 573,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 347,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - tercera edad",
+        description: "Evento presencial para tercera edad. Antepono ambitus absque demitto maxime vetus.",
+        initialDate: "2026-03-11T01:09:51.117Z",
+        place: {
+          direction: "111 Marks Prairie, 44681",
+          city: "Fortaleza",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Talio caries torqueo carmen deleo pauper adstringo terga cursim. Tepidus antiquus tendo ipsam soleo conscendo bestia crur crastinus sortitus.",
+        initialDate: "2026-05-23T00:09:51.117Z",
+        place: {
+          direction: "972 Jones Mountains, 613",
+          city: "La Serena",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "700fc811-ea8a-4069-aea4-988287e82e8f"
+  },
+  {
+    _id: "1ca02c0b-9b31-4cc0-8029-355f3bf9eee6",
+    name: "Campaña desarrollo sostenible 2026",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Spiculum vix molestias deludo.",
+    status: "approved",
+    reason: "",
+    userId: "47b25c11-690c-42b5-9b52-86213cf7aaf4",
+    createdAt: "2026-01-10T01:10:24.852Z",
+    updatedAt: "2026-01-10T01:10:24.852Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 408,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Cognomen itaque fugit. Arbustum abutor verto.",
+        initialDate: "2026-05-29T00:09:51.180Z",
+        place: {
+          direction: "7713 Bluebell Close, 5296",
+          city: "Milano",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Taller formativo - salud",
+        description: "Evento presencial para salud. Deporto defluo nulla dolorum clibanus pel utrimque audio approbo. Cuius expedita maiores spoliatio caput cruentus.",
+        initialDate: "2026-04-05T00:09:51.180Z",
+        place: {
+          direction: "57982 Alejandrin Camp, 5980",
+          city: "Zaragoza",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "1b4086a2-6987-4146-8c33-96ed0983ce1b"
+  },
+  {
+    _id: "650ca993-6efe-448a-9601-0f23a1f63720",
+    name: "Iniciativa desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Bestia infit nam. Carcer cupio facere tantillus quos arguo confugo impedit sublime nesciunt.",
+    status: "approved",
+    reason: "",
+    userId: "f65f7997-8665-413c-a127-2bd0d0724f52",
+    createdAt: "2026-01-10T01:10:24.913Z",
+    updatedAt: "2026-01-10T01:10:24.913Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 877,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 199,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - tercera edad",
+        description: "Evento presencial para tercera edad. Alias adsidue cohors pecto.",
+        initialDate: "2026-03-31T00:09:51.242Z",
+        place: {
+          direction: "2886 Mariano Junctions, 5856",
+          city: "Napoli",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Taller formativo - infancia",
+        description: "Evento presencial para infancia. Nulla nam conitor credo vindico arca tristis.",
+        initialDate: "2026-05-23T00:09:51.242Z",
+        place: {
+          direction: "34444 Van Crescent, 275",
+          city: "Bordeaux",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "ad535d5a-edfe-4ea5-9aab-f41b99eb3ba4"
+  },
+  {
+    _id: "3ca0f6dd-8206-41ae-80eb-b366be9c4ed8",
+    name: "Iniciativa vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Acceptus corporis corroboro capio vespillo textilis annus teres casso. Curo admoneo est cogito armarium tam conspergo demoror aduro.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "ea510f67-405f-4649-9027-2d9f38666b62",
+    createdAt: "2026-01-10T01:10:24.976Z",
+    updatedAt: "2026-01-10T01:10:24.976Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 76,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 226,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - salud",
+        description: "Evento presencial para salud. Solus curatio amo uredo. Animadverto blanditiis vulnus.",
+        initialDate: "2026-01-31T01:09:51.304Z",
+        place: {
+          direction: "459 Rashad Flat, 35387",
+          city: "Roma",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Evento benéfico - vivienda",
+        description: "Evento presencial para vivienda. Suffragium volo cohaero triduana vehemens tenus cogo suus. Correptius ut doloremque corpus urbanus vespillo ubi.",
+        initialDate: "2026-05-29T00:09:51.305Z",
+        place: {
+          direction: "9340 Sawayn Squares, 58507",
+          city: "León",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "1e82a478-470a-4f67-b7e7-ba47861bdeb4"
+  },
+  {
+    _id: "14319562-c679-4ff0-a6e4-9c0044401ede",
+    name: "Programa salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Deficio deorsum cribro at arguo abbas theca uterque eligendi quod.",
+    status: "pending",
+    userId: "75ce8b14-ac95-4f6c-ae6a-d8efd9b16a5c",
+    createdAt: "2026-01-10T01:09:51.379Z",
+    updatedAt: "2026-01-10T01:09:51.379Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 846,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - educación",
+        description: "Evento presencial para educación. Credo pectus atrox.",
+        initialDate: "2026-02-24T01:09:51.368Z",
+        place: {
+          direction: "9192 McGlynn Fort, 363",
+          city: "La Serena",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "95200c1a-2cd9-4622-a808-82d99e29a931"
+  },
+  {
+    _id: "49fbbea0-b7d1-4f2f-9aa5-06a3339e4655",
+    name: "Red de apoyo infancia 2027",
+    description: "Acción concreta para infancia con objetivos cuantificables. Arguo adduco contabesco doloremque curiositas vacuus virgo colligo perspiciatis. Capto desino absum spectaculum autus ultra.",
+    status: "approved",
+    reason: "",
+    userId: "9ec45a0d-3c22-407b-a752-e1da713eed75",
+    createdAt: "2026-01-10T01:10:25.099Z",
+    updatedAt: "2026-01-10T01:10:25.099Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 923,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - discapacidad",
+        description: "Evento presencial para discapacidad. Stella animi debitis perferendis approbo temporibus.",
+        initialDate: "2026-04-06T00:09:51.431Z",
+        place: {
+          direction: "9488 Mayer Pines, 1192",
+          city: "Guadalajara",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "ad535d5a-edfe-4ea5-9aab-f41b99eb3ba4"
+  },
+  {
+    _id: "79c6ddb9-a74e-4ad5-b270-29e1999e21f4",
+    name: "Jornada agua potable 2027",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Vitiosus demulceo tonsor summopere dolor victus totidem. Ultra omnis viduo allatus vitium tubineus anser appono.",
+    status: "approved",
+    reason: "",
+    userId: "41366993-d4a1-4908-85e5-cdfe4dc7affe",
+    createdAt: "2026-01-10T01:10:25.222Z",
+    updatedAt: "2026-01-10T01:10:25.222Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 511,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 193,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 870,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - pobreza",
+        description: "Evento presencial para pobreza. Candidus crebro cicuta modi subiungo nulla ut aer agnosco.",
+        initialDate: "2026-04-06T00:09:51.557Z",
+        place: {
+          direction: "90864 Mraz Path, 73085",
+          city: "Tucumán",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "1e82a478-470a-4f67-b7e7-ba47861bdeb4"
+  },
+  {
+    _id: "9d36cec2-66a7-4a74-a43c-7757e9998da4",
+    name: "Jornada derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Cogo audeo delicate spoliatio ullus cariosus curto cibus vallum. Absens commodi uredo certus.",
+    status: "approved",
+    reason: "",
+    userId: "cf036bd8-d92d-41a1-a3e4-dc23f24ce914",
+    createdAt: "2026-01-10T01:10:25.284Z",
+    updatedAt: "2026-01-10T01:10:25.284Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 633,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 257,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Vox provident attollo coniuratio alter vero tibi in asporto tametsi. Talio velociter aliquam aufero cibo admitto voluptate vaco.",
+        initialDate: "2026-01-20T01:09:51.619Z",
+        place: {
+          direction: "278 Karlie View, 375",
+          city: "Salvador",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "61fdb887-9b33-4c3e-a468-f2d427ea13f0"
+  },
+  {
+    _id: "9e35bec0-6e66-46a1-9f8e-4753eacf9991",
+    name: "Campaña pobreza 2026",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Depraedor cetera odio stella omnis conatus taceo eveniet cum.",
+    status: "pending",
+    userId: "6b00b565-f65e-4bfc-a095-61a3f43aebe7",
+    createdAt: "2026-01-10T01:09:51.754Z",
+    updatedAt: "2026-01-10T01:09:51.754Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 147,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - infancia",
+        description: "Evento presencial para infancia. Depopulo vestigium annus thymbra defessus. Antea aggero sono.",
+        initialDate: "2026-06-20T00:09:51.743Z",
+        place: {
+          direction: "743 Martin Luther King Drive, 2708",
+          city: "Mar del Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "1b4086a2-6987-4146-8c33-96ed0983ce1b"
+  },
+  {
+    _id: "42156e45-902a-41c0-9be4-ac6d83d73be8",
+    name: "Red de apoyo agua potable 2027",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Aeternus sonitus speculum cerno terreo arcus pauper addo. Dolore capto aufero textus.",
+    status: "approved",
+    reason: "",
+    userId: "385d9dcc-6343-4501-ab2d-44f481276fc1",
+    createdAt: "2026-01-10T01:10:25.473Z",
+    updatedAt: "2026-01-10T01:10:25.473Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 730,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 985,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Curis abeo clibanus.",
+        initialDate: "2026-01-29T01:09:51.805Z",
+        place: {
+          direction: "501 Satterfield Rue, 83861",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "c284f569-af1b-4a92-b37d-6f4f5b0715f7"
+  },
+  {
+    _id: "6417735c-a53a-4079-b040-2d4802bc0f6b",
+    name: "Jornada tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Abscido adsuesco adduco strues crur despecto certus.",
+    status: "approved",
+    reason: "",
+    userId: "5c724730-67f2-4c23-a30c-b60e9fdd90e1",
+    createdAt: "2026-01-10T01:10:25.535Z",
+    updatedAt: "2026-01-10T01:10:25.535Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 597,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 531,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - salud",
+        description: "Evento presencial para salud. Verto velum combibo clibanus depulso deputo suffoco tabernus tactus tondeo.",
+        initialDate: "2026-03-08T01:09:51.868Z",
+        place: {
+          direction: "887 Lansdowne Road, 198",
+          city: "Caracas",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - refugiados",
+        description: "Evento presencial para refugiados. Tollo celebrer tergeo. Caries aptus capto auctus audacia conculco odio utor.",
+        initialDate: "2026-02-10T01:09:51.868Z",
+        place: {
+          direction: "189 Park Crescent, 21351",
+          city: "Santiago",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "36a729b3-cecb-4897-9a1c-2cc9abee5687"
+  },
+  {
+    _id: "7aa75b4f-c1a3-4bf4-8df0-22eeec1c086d",
+    name: "Movimiento desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Contigo damnatio thorax cetera utique veniam aliquam.",
+    status: "approved",
+    reason: "",
+    userId: "e3cc84a4-8000-472f-81cc-7799e9c02c9b",
+    createdAt: "2026-01-10T01:10:25.721Z",
+    updatedAt: "2026-01-10T01:10:25.721Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 242,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 419,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 932,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - discapacidad",
+        description: "Evento presencial para discapacidad. Attero contabesco umerus harum admiratio civitas sui cauda. Sapiente aegrotatio cohaero.",
+        initialDate: "2026-07-08T00:09:52.051Z",
+        place: {
+          direction: "5520 Laury Lock, 6332",
+          city: "Buenos Aires",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "10653446-f68d-4b1e-a204-185e5acd5564"
+  },
+  {
+    _id: "d7e0353d-edf4-42c8-93f1-ea12c154452b",
+    name: "Programa discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Comparo adstringo tersus delibero accusamus degero.",
+    status: "pending",
+    userId: "8a702982-bc28-4061-a810-72a404b60c6f",
+    createdAt: "2026-01-10T01:09:52.126Z",
+    updatedAt: "2026-01-10T01:09:52.126Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 957,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 626,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Clam videlicet cado contego clarus amita.",
+        initialDate: "2026-07-05T00:09:52.113Z",
+        place: {
+          direction: "954 Bramley Close, 709",
+          city: "London",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "a0a7f366-8748-4bd8-a066-207340369666"
+  },
+  {
+    _id: "e57717a8-9b97-4228-87ac-7877534e3268",
+    name: "Iniciativa infancia 2026",
+    description: "Acción concreta para infancia con objetivos cuantificables. Cernuus solum cenaculum patria auctus valens.",
+    status: "approved",
+    reason: "",
+    userId: "8225fb56-65e1-4bae-ba13-677391c8078a",
+    createdAt: "2026-01-10T01:10:25.844Z",
+    updatedAt: "2026-01-10T01:10:25.844Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 348,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Aperiam arguo ambulo undique corrupti vix.",
+        initialDate: "2026-03-18T01:09:52.176Z",
+        place: {
+          direction: "1736 Chestnut Drive, 95422",
+          city: "Puebla",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Jornada solidaria - emergencias",
+        description: "Evento presencial para emergencias. Sonitus timidus deleo denuncio verto conduco.",
+        initialDate: "2026-02-04T01:09:52.176Z",
+        place: {
+          direction: "5460 Aufderhar Extension, 68491",
+          city: "Bogotá",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "6e76f385-9e63-4868-8423-56e9bfd412fa"
+  },
+  {
+    _id: "fef58929-9590-4826-9334-e48427673332",
+    name: "Movimiento tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Acidus animi eligendi constans crepusculum uter suspendo patria utor desino.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "318272a9-3bee-4c66-b450-d73b8d505c27",
+    createdAt: "2026-01-10T01:10:25.906Z",
+    updatedAt: "2026-01-10T01:10:25.906Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 600,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - vivienda",
+        description: "Evento presencial para vivienda. Coerceo volaticus nemo pectus temeritas saepe volup totidem. Adinventitias amitto arceo addo.",
+        initialDate: "2026-02-07T01:09:52.236Z",
+        place: {
+          direction: "87317 13th Street, 116",
+          city: "Madrid",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Taller formativo - pobreza",
+        description: "Evento presencial para pobreza. Terga tabella creator nam cursim nemo. Argumentum demo sit sit et abscido adiuvo communis.",
+        initialDate: "2026-06-12T00:09:52.236Z",
+        place: {
+          direction: "939 Tre Mews, 9604",
+          city: "Maracay",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "5fb52964-b3b6-42c7-a27d-d74b52a033df"
+  },
+  {
+    _id: "436074dc-a7b8-415a-8c04-304a8442805b",
+    name: "Campaña alimentación 2026",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Approbo capto voveo deporto uter.",
+    status: "approved",
+    reason: "",
+    userId: "a68ff1aa-fe21-42a0-89fc-6de5b3348fec",
+    createdAt: "2026-01-10T01:10:26.279Z",
+    updatedAt: "2026-01-10T01:10:26.279Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 628,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 221,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 494,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - refugiados",
+        description: "Evento presencial para refugiados. Approbo vaco carcer trucido.",
+        initialDate: "2026-02-17T01:09:52.614Z",
+        place: {
+          direction: "329 S 4th Street, 66431",
+          city: "Tucumán",
+          countryCode: "AR"
+        }
+      },
+      {
+        name: "Reunión de coordinación - alimentación",
+        description: "Evento presencial para alimentación. Audax sodalitas decipio occaecati corrupti tolero. Demonstro adsidue similique soleo nam defungo.",
+        initialDate: "2026-06-24T00:09:52.614Z",
+        place: {
+          direction: "60341 Wolf Brooks, 35966",
+          city: "La Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "134c7020-3221-4bf6-853f-be1f355712c5"
+  },
+  {
+    _id: "f2f34e93-d056-4111-a21f-1c41bf4952b3",
+    name: "Programa igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Pectus decumbo sit necessitatibus versus tres.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "81ec6be8-d992-410e-bb68-a536b3c05622",
+    createdAt: "2026-01-10T01:10:26.403Z",
+    updatedAt: "2026-01-10T01:10:26.403Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 582,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 468,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - alimentación",
+        description: "Evento presencial para alimentación. Depereo aqua combibo appono dolores cohibeo baiulus curvo. Caries repudiandae antepono.",
+        initialDate: "2026-06-22T00:09:52.739Z",
+        place: {
+          direction: "7740 Grand Avenue, 5560",
+          city: "Paris",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "bb7b904b-f60b-4f80-8d7a-a96cce6f8295"
+  },
+  {
+    _id: "b8c33090-6b7c-4fab-8e41-50f38999b462",
+    name: "Red de apoyo discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Demitto tamdiu inventore subiungo. Curatio appello angelus voluptate demo vaco voluptatibus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "05384bd4-bf7b-45af-9151-d7a59b006dd5",
+    createdAt: "2026-01-10T01:10:26.464Z",
+    updatedAt: "2026-01-10T01:10:26.464Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 91,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 489,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 80,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - derechos humanos",
+        description: "Evento presencial para derechos humanos. Denego curo amplitudo necessitatibus decerno thesis accommodo validus valeo.",
+        initialDate: "2026-06-21T00:09:52.801Z",
+        place: {
+          direction: "269 Winston Mountains, 23326",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "f3de8dd0-e18e-4469-8398-86ade50abade"
+  },
+  {
+    _id: "fe1868ef-c551-4853-b59c-840ae9ea69f9",
+    name: "Operación igualdad de género 2027",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Supplanto magni thymbra tricesimus vox. Torrens adopto patria adeo.",
+    status: "pending",
+    userId: "41366993-d4a1-4908-85e5-cdfe4dc7affe",
+    createdAt: "2026-01-10T01:09:52.936Z",
+    updatedAt: "2026-01-10T01:09:52.936Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 699,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 948,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 984,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - emergencias",
+        description: "Evento presencial para emergencias. Tantillus utor sed antepono spectaculum iusto sophismata cibo rerum. Arbor canto cresco vulpes blandior arca aspicio depraedor iste.",
+        initialDate: "2026-05-24T00:09:52.926Z",
+        place: {
+          direction: "7135 Herzog Landing, 283",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Encuentro comunitario - tercera edad",
+        description: "Evento presencial para tercera edad. Triduana aut voluptatum speculum exercitationem repellat denuncio utpote harum amaritudo. Taceo abstergo defessus crebro denuo cumque decumbo antepono.",
+        initialDate: "2026-05-21T00:09:52.927Z",
+        place: {
+          direction: "730 Highfield Close, 328",
+          city: "Roma",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "48d99e4d-e84a-493e-80b3-54d2ec19a3c5"
+  },
+  {
+    _id: "3b17f929-ec99-4481-9855-d8d76d84058f",
+    name: "Acción solidaria pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Collum aegrus agnitio somnus deleniti amo capitulus utique consuasor demitto. Clibanus cultellus summopere infit curia territo deludo cena.",
+    status: "approved",
+    reason: "",
+    userId: "1aedbf25-dfdf-4297-8c47-d253e31cf3fb",
+    createdAt: "2026-01-10T01:10:26.653Z",
+    updatedAt: "2026-01-10T01:10:26.653Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 866,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 169,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 162,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - agua potable",
+        description: "Evento presencial para agua potable. Porro corona audio cerno adhuc temptatio video tripudio aptus. Vita tabesco aurum peccatus.",
+        initialDate: "2026-04-15T00:09:52.988Z",
+        place: {
+          direction: "7502 Christa Port, 67880",
+          city: "Maracaibo",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "271e25ef-c6f5-4fe6-95b7-9e195b88fd7e"
+  },
+  {
+    _id: "68894650-c74c-496d-a22f-c1ba3b709106",
+    name: "Proyecto infancia 2026",
+    description: "Acción concreta para infancia con objetivos cuantificables. Confugo aro aureus admoneo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "cd59b1c9-f611-4e10-957e-80458902a9d7",
+    createdAt: "2026-01-10T01:10:26.714Z",
+    updatedAt: "2026-01-10T01:10:26.714Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 910,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 573,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - salud",
+        description: "Evento presencial para salud. Repellendus vaco absens astrum canto textor cultellus comitatus.",
+        initialDate: "2026-04-05T00:09:53.050Z",
+        place: {
+          direction: "6170 Dark Lane, 1269",
+          city: "Cali",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - refugiados",
+        description: "Evento presencial para refugiados. Callide debilito vulnus causa statim ventito. Comparo nulla demulceo annus soleo capillus veritas.",
+        initialDate: "2026-03-18T01:09:53.050Z",
+        place: {
+          direction: "4915 E 6th Street, 6244",
+          city: "La Serena",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "debed4e8-42ff-4f48-b739-b22aff8c5fec"
+  },
+  {
+    _id: "af7808af-ea67-4911-a5b0-1a26cbd177ac",
+    name: "Jornada derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Fuga at tardus.",
+    status: "approved",
+    reason: "",
+    userId: "e06bfcff-2582-48a2-97b2-c343674916da",
+    createdAt: "2026-01-10T01:10:26.841Z",
+    updatedAt: "2026-01-10T01:10:26.841Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 706,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 248,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - educación",
+        description: "Evento presencial para educación. Decumbo vindico veniam tener perspiciatis demitto pauper suasoria.",
+        initialDate: "2026-03-26T01:09:53.174Z",
+        place: {
+          direction: "432 Davis Mount, 83951",
+          city: "Hamburg",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "134c7020-3221-4bf6-853f-be1f355712c5"
+  },
+  {
+    _id: "4f57e2e5-dd14-4d13-b80b-9e9b783e57da",
+    name: "Iniciativa pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Rem denuo suscipio caput maxime ut colligo comitatus vorax conicio. Certus usque vilis appello canonicus.",
+    status: "approved",
+    reason: "",
+    userId: "bdbf8763-5b2d-4645-a211-beeb0eecb829",
+    createdAt: "2026-01-10T01:10:26.903Z",
+    updatedAt: "2026-01-10T01:10:26.903Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 534,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 339,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 129,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - infancia",
+        description: "Evento presencial para infancia. Cinis bardus iusto atrocitas neque alioqui administratio. Tracto defendo voveo crudelis auctor.",
+        initialDate: "2026-06-27T00:09:53.235Z",
+        place: {
+          direction: "637 Marks Row, 8808",
+          city: "Puebla",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "1b4086a2-6987-4146-8c33-96ed0983ce1b"
+  },
+  {
+    _id: "569858fb-19db-4993-87c4-5279d634d0d1",
+    name: "Jornada discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Ducimus tunc asporto tandem tergo accusator suffragium adulescens. Careo super vulpes spero perspiciatis depromo centum corrigo.",
+    status: "approved",
+    reason: "",
+    userId: "1cbb1275-8bef-4a50-ae0b-deef074bdb0b",
+    createdAt: "2026-01-10T01:10:26.964Z",
+    updatedAt: "2026-01-10T01:10:26.964Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 894,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Crinis deinde cognomen ratione aufero suus ciminatio sed veritatis. Volo modi comis caterva cohibeo comes curvo vilis verbum quaerat.",
+        initialDate: "2026-02-10T01:09:53.298Z",
+        place: {
+          direction: "14606 Market Street, 482",
+          city: "Tucumán",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "0dd26d2b-25aa-4dd7-8622-d2d6ba317a8a"
+  },
+  {
+    _id: "ea65aadf-ed7b-4449-82b6-be81fb2a1048",
+    name: "Iniciativa derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Concido capio patria culpa voluptatum victus suffoco apostolus comitatus appono. Cogito demoror coepi dignissimos tactus solus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "927d7d02-55c2-448e-b54e-a7a0281becd8",
+    createdAt: "2026-01-10T01:10:27.027Z",
+    updatedAt: "2026-01-10T01:10:27.027Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 461,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - igualdad de género",
+        description: "Evento presencial para igualdad de género. Viridis cursim summisse depromo vos amplus utique.",
+        initialDate: "2026-02-28T01:09:53.361Z",
+        place: {
+          direction: "29657 Robyn Cape, 74385",
+          city: "Bucaramanga",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Reunión de coordinación - educación",
+        description: "Evento presencial para educación. Adinventitias expedita angulus summisse possimus synagoga vestigium thymbra adduco vallum.",
+        initialDate: "2026-04-18T00:09:53.361Z",
+        place: {
+          direction: "570 Lindgren Keys, 25808",
+          city: "Maracaibo",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "ad560363-2254-4ea5-be21-6b34694c915d"
+  },
+  {
+    _id: "13559986-9279-47bf-894f-5e7e1ee56e72",
+    name: "Acción solidaria discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Demonstro balbus harum civitas accommodo undique custodia tolero.",
+    status: "approved",
+    reason: "",
+    userId: "ff8c92a5-922e-4cda-b204-170267d86a52",
+    createdAt: "2026-01-10T01:10:27.213Z",
+    updatedAt: "2026-01-10T01:10:27.213Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 221,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 861,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - pobreza",
+        description: "Evento presencial para pobreza. Sophismata constans optio omnis deduco umquam audentia creta. Adduco in patrocinor timor aduro.",
+        initialDate: "2026-06-02T00:09:53.548Z",
+        place: {
+          direction: "92036 Emilio Plains, 6861",
+          city: "Bordeaux",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Taller formativo - vivienda",
+        description: "Evento presencial para vivienda. Adhaero accendo tremo pauper cubicularis defendo.",
+        initialDate: "2026-07-08T00:09:53.548Z",
+        place: {
+          direction: "810 Koepp Points, 33154",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "d02e5c54-cbc1-4a36-b37c-59497edeef4e"
+  },
+  {
+    _id: "a1a492a4-1988-45c1-a112-f9ca18c1d40d",
+    name: "Campaña agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Curto urbanus minima timor et cultura audax beatae.",
+    status: "approved",
+    reason: "",
+    userId: "c8f569b4-d2dd-4d00-9f60-eb5f7bf54d63",
+    createdAt: "2026-01-10T01:10:27.276Z",
+    updatedAt: "2026-01-10T01:10:27.276Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 561,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 299,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 603,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - emergencias",
+        description: "Evento presencial para emergencias. Aeternus aliqua tibi aurum audax delectatio. Supra aeternus undique.",
+        initialDate: "2026-04-06T00:09:53.610Z",
+        place: {
+          direction: "6601 Mante Estates, 776",
+          city: "Valparaíso",
+          countryCode: "CL"
+        }
+      },
+      {
+        name: "Encuentro comunitario - derechos humanos",
+        description: "Evento presencial para derechos humanos. Eius casus doloribus succedo cicuta. Vulpes timidus labore.",
+        initialDate: "2026-02-19T01:09:53.610Z",
+        place: {
+          direction: "103 Main Road, 32355",
+          city: "La Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "598feb24-9c39-4a1a-a30c-ba8d20420ba5"
+  },
+  {
+    _id: "3f97b4db-e410-490c-92eb-e55e9e8bade8",
+    name: "Campaña desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Quis charisma pax decet concido officiis strenuus usitas. Acies tabella armarium peccatus antiquus.",
+    status: "approved",
+    reason: "",
+    userId: "8652eff5-7c8d-4370-8039-539fa50d2cc7",
+    createdAt: "2026-01-10T01:10:27.338Z",
+    updatedAt: "2026-01-10T01:10:27.338Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 966,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 484,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - igualdad de género",
+        description: "Evento presencial para igualdad de género. Averto similique veritatis auditor aequus acsi sono celebrer.",
+        initialDate: "2026-03-25T01:09:53.672Z",
+        place: {
+          direction: "1420 Korey Springs, 72910",
+          city: "Nice",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "2e765e05-0084-46e2-b852-ea4b913872c8"
+  },
+  {
+    _id: "2bd3f713-e9cd-424c-a5d2-290e00356577",
+    name: "Operación alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Ustilo abeo correptius textor cuius tamen. Contigo complectus confero crux.",
+    status: "approved",
+    reason: "",
+    userId: "23d4dd5b-b4a8-482a-82bc-929573a1dcd3",
+    createdAt: "2026-01-10T01:10:27.401Z",
+    updatedAt: "2026-01-10T01:10:27.401Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 547,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 154,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - medio ambiente",
+        description: "Evento presencial para medio ambiente. Verumtamen colo temporibus theca sustineo cohaero decumbo clementia denuo.",
+        initialDate: "2026-04-08T00:09:53.734Z",
+        place: {
+          direction: "54612 Kylie Squares, 350",
+          city: "Munich",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "3949796e-57fd-479c-9f1e-a044077f4f23"
+  },
+  {
+    _id: "b73726b8-1699-46c4-afcb-9c2dbd6ad0a5",
+    name: "Acción solidaria pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Demens socius crepusculum currus conitor.",
+    status: "approved",
+    reason: "",
+    userId: "40500af5-7c45-44c0-bd3c-698879234871",
+    createdAt: "2026-01-10T01:10:27.523Z",
+    updatedAt: "2026-01-10T01:10:27.523Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 928,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - alimentación",
+        description: "Evento presencial para alimentación. Cupressus tardus ara cinis tam adstringo crux summopere.",
+        initialDate: "2026-05-01T00:09:53.888Z",
+        place: {
+          direction: "3478 Bath Road, 6002",
+          city: "Birmingham",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Encuentro comunitario - derechos humanos",
+        description: "Evento presencial para derechos humanos. Vae ver vulticulus credo comminor nemo tamquam aspicio. Cogito voluptatem alii ulciscor.",
+        initialDate: "2026-05-24T00:09:53.888Z",
+        place: {
+          direction: "612 Mulberry Street, 29329",
+          city: "Cali",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "703d1691-13e4-4a2f-ba33-4d0d526a762c"
+  },
+  {
+    _id: "f1a6b73d-deed-45c4-8d27-cf1ed134a087",
+    name: "Red de apoyo medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Tergo cavus molestiae una arca denique abeo demergo caveo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "074f7ac2-175a-4ba8-891d-b9cad85795ec",
+    createdAt: "2026-01-10T01:10:27.648Z",
+    updatedAt: "2026-01-10T01:10:27.648Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 784,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 604,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 256,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - refugiados",
+        description: "Evento presencial para refugiados. Sustineo tollo solvo sumo cupio spero ventosus. Pauper repellendus cur avarus vita vulariter terminatio.",
+        initialDate: "2026-03-08T01:09:54.012Z",
+        place: {
+          direction: "7143 Javonte Meadow, 97249",
+          city: "Bologna",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Taller formativo - salud",
+        description: "Evento presencial para salud. Repudiandae timor contra eaque stabilis pariatur. Absens tersus ipsam talus angulus demum.",
+        initialDate: "2026-04-06T00:09:54.012Z",
+        place: {
+          direction: "853 Kiehn Glen, 739",
+          city: "Santiago",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "aec16c75-eda7-42fb-98b9-762532d81247"
+  },
+  {
+    _id: "0d4e2cbb-b433-4a66-8e90-449bdfe494d1",
+    name: "Acción solidaria desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Aestivus commemoro candidus occaecati alter ultio admiratio quibusdam.",
+    status: "approved",
+    reason: "",
+    userId: "7daf40f0-931a-493e-bf61-e3f128a366ff",
+    createdAt: "2026-01-10T01:10:27.772Z",
+    updatedAt: "2026-01-10T01:10:27.772Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 873,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - tercera edad",
+        description: "Evento presencial para tercera edad. Careo comitatus statim surculus adstringo.",
+        initialDate: "2026-03-23T01:09:54.136Z",
+        place: {
+          direction: "760 Williamson Terrace, 7701",
+          city: "Valencia",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Tripudio supplanto volaticus.",
+        initialDate: "2026-03-18T01:09:54.137Z",
+        place: {
+          direction: "367 Gutkowski Corners, 82713",
+          city: "Zaragoza",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "aec16c75-eda7-42fb-98b9-762532d81247"
+  },
+  {
+    _id: "6ee5afd5-8506-42ab-be37-c02ab8cd171a",
+    name: "Red de apoyo medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Non vaco abeo cotidie ventosus calamitas celer veniam nihil bardus. Tactus veniam acidus chirographum ducimus vindico.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "4938db8b-0154-4dac-b816-444225a8c3e1",
+    createdAt: "2026-01-10T01:10:27.899Z",
+    updatedAt: "2026-01-10T01:10:27.899Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 797,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - tercera edad",
+        description: "Evento presencial para tercera edad. Cetera coruscus suffoco depopulo ager voluptatum. Tardus accusator vesper vulpes ullam caput paulatim ambulo venustas censura.",
+        initialDate: "2026-01-18T01:09:54.259Z",
+        place: {
+          direction: "4939 Birch Grove, 1251",
+          city: "Rosario",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "95200c1a-2cd9-4622-a808-82d99e29a931"
+  },
+  {
+    _id: "7877f170-1940-4209-8f72-ce75a0b7c952",
+    name: "Acción solidaria medio ambiente 2026",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Comprehendo summisse cribro casus vesco abbas ipsum synagoga. Uter vilis viridis totus delinquo auctus comes beatus.",
+    status: "approved",
+    reason: "",
+    userId: "bcdca0aa-5029-466b-aa55-601ceccbe8be",
+    createdAt: "2026-01-10T01:10:27.960Z",
+    updatedAt: "2026-01-10T01:10:27.960Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 844,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - educación",
+        description: "Evento presencial para educación. Testimonium cruciamentum amplitudo omnis cupressus. Speciosus deleniti demulceo ater tamdiu.",
+        initialDate: "2026-07-09T00:09:54.321Z",
+        place: {
+          direction: "825 Hill Road, 989",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "3ad6c562-c47b-4db3-8038-3c17199902ea"
+  },
+  {
+    _id: "baee99f8-92e9-4c05-b604-4b5a603afd78",
+    name: "Iniciativa agua potable 2027",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Vita sunt autus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "e2317d46-311a-47e2-aef3-e2c5c948b47c",
+    createdAt: "2026-01-10T01:10:28.087Z",
+    updatedAt: "2026-01-10T01:10:28.087Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 395,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 400,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 718,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - salud",
+        description: "Evento presencial para salud. Vehemens labore alienus demum cometes amo. Praesentium suadeo termes.",
+        initialDate: "2026-03-11T01:09:54.444Z",
+        place: {
+          direction: "1320 Taurean Crossing, 39297",
+          city: "Torino",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Reunión de coordinación - vivienda",
+        description: "Evento presencial para vivienda. Capitulus tametsi volutabrum.",
+        initialDate: "2026-04-01T00:09:54.444Z",
+        place: {
+          direction: "239 W 8th Street, 57338",
+          city: "Rio de Janeiro",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "ad535d5a-edfe-4ea5-9aab-f41b99eb3ba4"
+  },
+  {
+    _id: "a86ee444-3b11-4ada-b80d-29de38a7858d",
+    name: "Proyecto pobreza 2026",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Victus clementia amplexus cornu beatus aspicio temptatio repellendus quam antea.",
+    status: "approved",
+    reason: "",
+    userId: "b0365e0b-4977-4562-9fec-e8ffa71fe75a",
+    createdAt: "2026-01-10T01:10:28.149Z",
+    updatedAt: "2026-01-10T01:10:28.149Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 401,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 30,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - infancia",
+        description: "Evento presencial para infancia. Viduo casso arx curto admoveo.",
+        initialDate: "2026-04-30T00:09:54.506Z",
+        place: {
+          direction: "53791 Kling Garden, 162",
+          city: "Brasília",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Angelus tamisium deputo hic allatus coniuratio.",
+        initialDate: "2026-02-10T01:09:54.506Z",
+        place: {
+          direction: "36834 Erdman Cape, 185",
+          city: "Bucaramanga",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "debed4e8-42ff-4f48-b739-b22aff8c5fec"
+  },
+  {
+    _id: "257a732b-65c9-4a9c-92fa-434ff6923ce9",
+    name: "Jornada pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Capitulus trans aestas alius alter quisquam ara tepesco. Ratione umerus eligendi adicio arcesso.",
+    status: "approved",
+    reason: "",
+    userId: "a88d4603-1843-42df-b5c0-00b54903dab3",
+    createdAt: "2026-01-10T01:10:28.273Z",
+    updatedAt: "2026-01-10T01:10:28.273Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 245,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 818,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 81,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - refugiados",
+        description: "Evento presencial para refugiados. Casso charisma cresco ara tenax. Caritas minus facilis vetus eius sumptus quam quibusdam verus blandior.",
+        initialDate: "2026-05-22T00:09:54.631Z",
+        place: {
+          direction: "8220 Barton Highway, 71230",
+          city: "Barquisimeto",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "d5d71ed0-7956-472e-b5a5-71f4ac84cb46"
+  },
+  {
+    _id: "d4b28ec7-35f3-4752-b983-1cfef31e67cb",
+    name: "Jornada alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Reprehenderit decerno patrocinor absconditus valeo vigor clamo tamquam.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fae76c70-1c22-4b19-b538-8bc0a0eb4486",
+    createdAt: "2026-01-10T01:10:28.398Z",
+    updatedAt: "2026-01-10T01:10:28.398Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 304,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 563,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - infancia",
+        description: "Evento presencial para infancia. Ceno atque denique videlicet aureus vinculum crapula vicinus ater minus.",
+        initialDate: "2026-02-27T01:09:54.755Z",
+        place: {
+          direction: "9073 Nolan Causeway, 6271",
+          city: "Liverpool",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - discapacidad",
+        description: "Evento presencial para discapacidad. Compello vere comprehendo uter tolero denuo similique. Versus depulso clamo.",
+        initialDate: "2026-03-27T01:09:54.756Z",
+        place: {
+          direction: "558 Hickle Center, 3976",
+          city: "Valencia",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "3f720030-b0e2-4164-8b96-dde1fc8a194a"
+  },
+  {
+    _id: "0d2709a6-c440-4598-8810-ae83b82d2972",
+    name: "Acción solidaria discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Vix conforto adinventitias ante admiratio tabernus spiculum depraedor.",
+    status: "approved",
+    reason: "",
+    userId: "500cd7aa-5e9c-40bd-aee5-4d0646e9c529",
+    createdAt: "2026-01-10T01:10:28.587Z",
+    updatedAt: "2026-01-10T01:10:28.587Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 358,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 985,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 977,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - tercera edad",
+        description: "Evento presencial para tercera edad. Alias supellex confido demum animus aegrotatio.",
+        initialDate: "2026-04-10T00:09:54.941Z",
+        place: {
+          direction: "47103 Eladio Field, 873",
+          city: "London",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "36a729b3-cecb-4897-9a1c-2cc9abee5687"
+  },
+  {
+    _id: "2c30db49-0f77-461e-96de-6b10579fe25b",
+    name: "Campaña discapacidad 2027",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Callide altus tardus fugit vicinus video. Quia apto velociter.",
+    status: "approved",
+    reason: "",
+    userId: "33805313-dd2d-462a-9f76-ba9ddd835d16",
+    createdAt: "2026-01-10T01:10:28.710Z",
+    updatedAt: "2026-01-10T01:10:28.710Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 502,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - emergencias",
+        description: "Evento presencial para emergencias. Certus decerno comis tamdiu vero unus adipiscor spargo collum aureus. Acies accendo benigne calculus et debitis.",
+        initialDate: "2026-06-05T00:09:55.064Z",
+        place: {
+          direction: "2632 Hermina Spring, 950",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Jornada solidaria - salud",
+        description: "Evento presencial para salud. Cunctatio facilis advenio advoco allatus arca minima coruscus. Tres delego illo urbanus soleo laboriosam spes timidus somniculosus ancilla.",
+        initialDate: "2026-05-10T00:09:55.064Z",
+        place: {
+          direction: "98089 Runolfsdottir Spurs, 271",
+          city: "Cusco",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "a43062fa-1abe-45a4-8de5-eae957b5a89e"
+  },
+  {
+    _id: "28b5f131-dd66-43e9-9a7a-775d316a7821",
+    name: "Jornada agua potable 2027",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Tendo vox adduco voco vinum supplanto possimus vado.",
+    status: "approved",
+    reason: "",
+    userId: "38fd508a-33eb-4d2f-9567-175e7f0356f1",
+    createdAt: "2026-01-10T01:10:28.774Z",
+    updatedAt: "2026-01-10T01:10:28.774Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 891,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 230,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 914,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - derechos humanos",
+        description: "Evento presencial para derechos humanos. Tutamen vicinus terreo debilito angulus cursus.",
+        initialDate: "2026-05-19T00:09:55.126Z",
+        place: {
+          direction: "1343 Elsa Falls, 26863",
+          city: "Birmingham",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Jornada solidaria - infancia",
+        description: "Evento presencial para infancia. Alias creta ars taceo paulatim conscendo abduco perspiciatis. Claudeo sopor sui.",
+        initialDate: "2026-04-13T00:09:55.126Z",
+        place: {
+          direction: "8156 Klein Cliffs, 21610",
+          city: "Zaragoza",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "598feb24-9c39-4a1a-a30c-ba8d20420ba5"
+  },
+  {
+    _id: "2f0f8e4c-92f5-4c68-9207-0d27b47f9905",
+    name: "Acción solidaria derechos humanos 2026",
+    description: "Acción concreta para derechos humanos con objetivos cuantificables. Sponte vomito ascit caute aureus cervus aetas arcesso acies.",
+    status: "approved",
+    reason: "",
+    userId: "072ae3e2-5faa-4e0c-81b7-5a7a9ae68156",
+    createdAt: "2026-01-10T01:10:28.899Z",
+    updatedAt: "2026-01-10T01:10:28.899Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 953,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - discapacidad",
+        description: "Evento presencial para discapacidad. Cras crux cometes dapifer validus administratio solus. Clibanus terga addo terreo numquam.",
+        initialDate: "2026-03-28T01:09:55.250Z",
+        place: {
+          direction: "34357 Rosalinda Path, 4476",
+          city: "Liverpool",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "afba37b2-cf23-441c-8c63-76193adecef3"
+  },
+  {
+    _id: "4413d348-0ca9-425a-a160-337b47fc8037",
+    name: "Movimiento vivienda 2027",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Compono hic vinco verbum consectetur aequus demo suffoco.",
+    status: "approved",
+    reason: "",
+    userId: "82b25e89-0b5c-4025-a048-bf793185f489",
+    createdAt: "2026-01-10T01:10:28.962Z",
+    updatedAt: "2026-01-10T01:10:28.962Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 376,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 670,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Tenax cohors cohors torrens dignissimos surculus cunae tenus cito. Trucido crudelis asper soluta avaritia.",
+        initialDate: "2026-03-17T01:09:55.312Z",
+        place: {
+          direction: "28511 W Main Street, 2035",
+          city: "Maracay",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "009e3852-b5d4-48de-9e50-e5d09d220fbb"
+  },
+  {
+    _id: "0b163c29-5d85-4a88-a17e-df6e4fbdebf9",
+    name: "Acción solidaria agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Verbum peior ars creber adsidue abstergo callide tergiversatio video.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "e2317d46-311a-47e2-aef3-e2c5c948b47c",
+    createdAt: "2026-01-10T01:10:29.023Z",
+    updatedAt: "2026-01-10T01:10:29.023Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 655,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - educación",
+        description: "Evento presencial para educación. Accommodo admiratio amor bellicus volutabrum averto ago absorbeo. Tabernus utrimque creber alii comitatus venustas canis degero terga theatrum.",
+        initialDate: "2026-05-22T00:09:55.373Z",
+        place: {
+          direction: "836 Prospect Street, 26084",
+          city: "Cartagena",
+          countryCode: "CO"
+        }
+      },
+      {
+        name: "Reunión de coordinación - medio ambiente",
+        description: "Evento presencial para medio ambiente. Nostrum eligendi depraedor talus tergum.",
+        initialDate: "2026-07-07T00:09:55.373Z",
+        place: {
+          direction: "134 Hahn Fields, 18003",
+          city: "Berlin",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "485d35d7-266b-4efc-9c9e-4df8b681acaa"
+  },
+  {
+    _id: "53376ec0-ae61-4e53-9783-69d3787fb1f1",
+    name: "Iniciativa vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Sopor tot cupio. Solvo sopor accedo aliqua administratio allatus.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "d25ff7a6-b97e-4262-bbde-afcef1c6db02",
+    createdAt: "2026-01-10T01:10:29.151Z",
+    updatedAt: "2026-01-10T01:10:29.151Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 272,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 587,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - vivienda",
+        description: "Evento presencial para vivienda. Tondeo canto suscipit. Crur strues canis solio casso enim accedo subiungo ulterius.",
+        initialDate: "2026-03-30T00:09:55.495Z",
+        place: {
+          direction: "50781 S 6th Street, 856",
+          city: "Manchester",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Encuentro comunitario - agua potable",
+        description: "Evento presencial para agua potable. Ipsa quisquam coadunatio cohibeo ciminatio atqui ut bestia alter adulescens. Astrum sordeo voro.",
+        initialDate: "2026-05-09T00:09:55.495Z",
+        place: {
+          direction: "6157 Marvin Trace, 4971",
+          city: "Torino",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "703d1691-13e4-4a2f-ba33-4d0d526a762c"
+  },
+  {
+    _id: "51cc8c47-56e7-4b50-b3a3-a3f2fffeca60",
+    name: "Jornada educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Tui theatrum atrox thesis aggero dapifer creptio vinitor illum viscus.",
+    status: "approved",
+    reason: "",
+    userId: "0299b36b-ab61-431b-b4ee-48567a3acb2a",
+    createdAt: "2026-01-10T01:10:29.214Z",
+    updatedAt: "2026-01-10T01:10:29.214Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 470,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - pobreza",
+        description: "Evento presencial para pobreza. Alias truculenter earum appello necessitatibus. Custodia quibusdam somnus adfero similique amo verus debilito demum.",
+        initialDate: "2026-05-23T00:09:55.557Z",
+        place: {
+          direction: "619 Albany Road, 348",
+          city: "Roma",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "b7afed8c-aa2c-4ebd-a108-402df044b3d7"
+  },
+  {
+    _id: "8e78627e-1655-4723-aa67-7cfaf18f9a7b",
+    name: "Red de apoyo emergencias 2027",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Abbas deleo civitas conspergo demergo callide advenio.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "e513ab96-3736-47e6-afd2-2f8560a18764",
+    createdAt: "2026-01-10T01:10:29.338Z",
+    updatedAt: "2026-01-10T01:10:29.338Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 965,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - vivienda",
+        description: "Evento presencial para vivienda. Voluptatibus nesciunt cura carus tamisium ventito deleo adiuvo.",
+        initialDate: "2026-03-10T01:09:55.681Z",
+        place: {
+          direction: "29056 Maryse Rapids, 370",
+          city: "Berlin",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Reunión de coordinación - tercera edad",
+        description: "Evento presencial para tercera edad. Surgo civis nam viduo pecto suus. Iure ustilo surculus sub trucido.",
+        initialDate: "2026-03-31T00:09:55.681Z",
+        place: {
+          direction: "65283 Jarred Route, 3028",
+          city: "Roma",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "86a9afe5-c341-469a-9275-a03dba53fcd3"
+  },
+  {
+    _id: "42db2af9-c0e3-417a-9710-b7c5a3b27b97",
+    name: "Campaña igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Spero acer temporibus praesentium depopulo venio conforto speculum curiositas spiculum.",
+    status: "approved",
+    reason: "",
+    userId: "0bede458-a62e-43b3-9d02-a367d00069bd",
+    createdAt: "2026-01-10T01:10:29.464Z",
+    updatedAt: "2026-01-10T01:10:29.464Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 115,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 544,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 314,
+        unit: "euros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - discapacidad",
+        description: "Evento presencial para discapacidad. Conatus tenuis auctor enim tener adamo capitulus.",
+        initialDate: "2026-07-08T00:09:55.805Z",
+        place: {
+          direction: "5505 Crona Roads, 86142",
+          city: "Bogotá",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "621a18fb-1c46-4b59-877c-8a1d7efadcda"
+  },
+  {
+    _id: "9395013c-ea02-46ea-86b6-1901399c40c0",
+    name: "Red de apoyo vivienda 2026",
+    description: "Acción concreta para vivienda con objetivos cuantificables. Enim sollicito clam aperio ver bis curso compono auctor. Patrocinor aranea peior acerbitas demens natus.",
+    status: "approved",
+    reason: "",
+    userId: "139c63a5-9149-4c64-b2c6-623530211796",
+    createdAt: "2026-01-10T01:10:29.711Z",
+    updatedAt: "2026-01-10T01:10:29.711Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 602,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 759,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 550,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - medio ambiente",
+        description: "Evento presencial para medio ambiente. Comburo vulgo vinum quod.",
+        initialDate: "2026-03-09T01:09:56.052Z",
+        place: {
+          direction: "668 Hills Parkway, 279",
+          city: "Chiclayo",
+          countryCode: "PE"
+        }
+      },
+      {
+        name: "Taller formativo - tercera edad",
+        description: "Evento presencial para tercera edad. Vilitas soluta valde auxilium thesaurus socius unus viscus. Tabgo cresco speciosus creptio carbo depopulo.",
+        initialDate: "2026-01-28T01:09:56.052Z",
+        place: {
+          direction: "2864 Terrell Viaduct, 85835",
+          city: "Bordeaux",
+          countryCode: "FR"
+        }
+      }
+    ],
+    causeId: "6af8dd3f-a974-4308-b999-72ed4f44990a"
+  },
+  {
+    _id: "862b946a-23a1-43e9-ad2b-661b3b68844c",
+    name: "Programa agua potable 2026",
+    description: "Acción concreta para agua potable con objetivos cuantificables. Taedium alter corona perspiciatis auctus tollo arcesso.",
+    status: "approved",
+    reason: "",
+    userId: "fe88acb1-2994-4b48-9e4c-8c7390ebe23c",
+    createdAt: "2026-01-10T01:10:29.774Z",
+    updatedAt: "2026-01-10T01:10:29.774Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 691,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 913,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 557,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - refugiados",
+        description: "Evento presencial para refugiados. Abeo recusandae calculus canis beneficium.",
+        initialDate: "2026-02-19T01:09:56.115Z",
+        place: {
+          direction: "17185 Oak Road, 90010",
+          city: "Málaga",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Encuentro comunitario - agua potable",
+        description: "Evento presencial para agua potable. Studio aveho tendo verto ascisco comminor. Assumenda dolor trado aliqua adsum aestus vespillo.",
+        initialDate: "2026-04-20T00:09:56.115Z",
+        place: {
+          direction: "944 Garnett Mount, 7360",
+          city: "Medellín",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "3b0e260d-8165-4a2a-98ab-9e10746bd67d"
+  },
+  {
+    _id: "d0e2336f-e001-4675-8b12-f61456f1a5ca",
+    name: "Iniciativa igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Cetera repellendus adulescens asporto esse temperantia quod officiis color adfero.",
+    status: "approved",
+    reason: "",
+    userId: "68b60675-f02d-40b8-b856-24b4c14133b1",
+    createdAt: "2026-01-10T01:10:29.836Z",
+    updatedAt: "2026-01-10T01:10:29.836Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 408,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 294,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - educación",
+        description: "Evento presencial para educación. Desipio cupiditate adfectus canonicus apparatus corporis. Iure iure tyrannus conor conculco.",
+        initialDate: "2026-02-17T01:09:56.178Z",
+        place: {
+          direction: "77527 Leora Pass, 94379",
+          city: "Murcia",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Uterque uterque textilis pectus animadverto.",
+        initialDate: "2026-06-18T00:09:56.178Z",
+        place: {
+          direction: "78415 Woodside Road, 834",
+          city: "Monterrey",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "d02e5c54-cbc1-4a36-b37c-59497edeef4e"
+  },
+  {
+    _id: "5134748b-6403-45f6-8fdb-e88ac7ebac09",
+    name: "Programa salud 2027",
+    description: "Acción concreta para salud con objetivos cuantificables. Terreo ulciscor ulterius vigilo viduo curo molestiae teneo atqui rem. Dolor arca tres desparatus cotidie utrum abundans celebrer volva.",
+    status: "approved",
+    reason: "",
+    userId: "96c68380-00d5-4939-8af3-8a393f07e57c",
+    createdAt: "2026-01-10T01:10:29.897Z",
+    updatedAt: "2026-01-10T01:10:29.897Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 748,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 701,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 669,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Cimentarius sapiente voluptatum advoco deinde magni acquiro calculus est.",
+        initialDate: "2026-02-22T01:09:56.239Z",
+        place: {
+          direction: "34469 Heidenreich Hill, 40006",
+          city: "Munich",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - pobreza",
+        description: "Evento presencial para pobreza. Bos cotidie optio mollitia non inventore cado turba vado.",
+        initialDate: "2026-06-21T00:09:56.239Z",
+        place: {
+          direction: "9630 Spencer Viaduct, 666",
+          city: "Mendoza",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "009e3852-b5d4-48de-9e50-e5d09d220fbb"
+  },
+  {
+    _id: "8e3daa92-5b24-4a35-9360-201ad69fcb38",
+    name: "Red de apoyo educación 2027",
+    description: "Acción concreta para educación con objetivos cuantificables. Clamo decumbo ascisco amoveo beatae usus alioqui compono.",
+    status: "approved",
+    reason: "",
+    userId: "05384bd4-bf7b-45af-9151-d7a59b006dd5",
+    createdAt: "2026-01-10T01:10:30.023Z",
+    updatedAt: "2026-01-10T01:10:30.023Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 29,
+        unit: "unidades",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - alimentación",
+        description: "Evento presencial para alimentación. Crapula confido cohibeo animadverto cogo. Inventore patruus molestias clamo caveo advenio.",
+        initialDate: "2026-05-12T00:09:56.364Z",
+        place: {
+          direction: "192 Brook Lane, 66082",
+          city: "León",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "2335c251-34fc-4520-a825-0b41b728d24e"
+  },
+  {
+    _id: "3820ae53-10b2-4a48-b5e2-c74e70971b22",
+    name: "Proyecto pobreza 2027",
+    description: "Acción concreta para pobreza con objetivos cuantificables. Vigor vigor balbus cubitum canonicus ocer.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "531f5efc-24f0-4bf8-8a35-14a802c3f178",
+    createdAt: "2026-01-10T01:10:30.085Z",
+    updatedAt: "2026-01-10T01:10:30.085Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 801,
+        unit: "litros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 583,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 679,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - discapacidad",
+        description: "Evento presencial para discapacidad. Dolorem crebro peior aranea constans qui clam.",
+        initialDate: "2026-05-19T00:09:56.426Z",
+        place: {
+          direction: "248 Bergnaum Mission, 42254",
+          city: "Salvador",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "bb7b904b-f60b-4f80-8d7a-a96cce6f8295"
+  },
+  {
+    _id: "006f60be-ea4f-410e-acc6-c8597b9f28cb",
+    name: "Acción solidaria tercera edad 2026",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Exercitationem alter molestias curriculum theatrum coerceo astrum comparo. Terra contego amicitia una auctor texo autem.",
+    status: "approved",
+    reason: "",
+    userId: "ff8326a3-472f-4587-82cb-e0f4c6d8f921",
+    createdAt: "2026-01-10T01:10:30.274Z",
+    updatedAt: "2026-01-10T01:10:30.274Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 483,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 744,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - infancia",
+        description: "Evento presencial para infancia. Vos convoco tabella acceptus.",
+        initialDate: "2026-02-18T01:09:56.612Z",
+        place: {
+          direction: "3878 Orchard Street, 454",
+          city: "Fortaleza",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Jornada solidaria - medio ambiente",
+        description: "Evento presencial para medio ambiente. Sapiente sponte somnus iure demulceo acerbitas tertius stella stultus illum. Voluptate tumultus uter culpo supra fugiat cognomen.",
+        initialDate: "2026-03-19T01:09:56.612Z",
+        place: {
+          direction: "716 Laurence Run, 256",
+          city: "Lima",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "271e25ef-c6f5-4fe6-95b7-9e195b88fd7e"
+  },
+  {
+    _id: "9251cbcd-54c7-4cc4-9538-14bbd91ea0dc",
+    name: "Iniciativa discapacidad 2026",
+    description: "Acción concreta para discapacidad con objetivos cuantificables. Agnitio casso supellex. Spoliatio territo tergum cupiditas ago.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "91e9bf73-f329-4c6b-be68-c992f136558c",
+    createdAt: "2026-01-10T01:10:30.336Z",
+    updatedAt: "2026-01-10T01:10:30.336Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 641,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 935,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - vivienda",
+        description: "Evento presencial para vivienda. Volup tunc temeritas voluptatum. Veritas tabella strenuus accendo colligo credo.",
+        initialDate: "2026-05-03T00:09:56.675Z",
+        place: {
+          direction: "506 University Avenue, 15566",
+          city: "Edinburgh",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "3ad6c562-c47b-4db3-8038-3c17199902ea"
+  },
+  {
+    _id: "a1966f28-7a98-476e-9fbf-28bed880cd04",
+    name: "Programa medio ambiente 2027",
+    description: "Acción concreta para medio ambiente con objetivos cuantificables. Bene vomer tener agnitio.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "14c0049b-0d1b-4321-b7d6-00566714f61a",
+    createdAt: "2026-01-10T01:10:30.400Z",
+    updatedAt: "2026-01-10T01:10:30.400Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 527,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - derechos humanos",
+        description: "Evento presencial para derechos humanos. Barba defungo alveus adsuesco molestias debilito deinde autem candidus. Suppono cibo volup coniecto tendo conor solitudo.",
+        initialDate: "2026-05-05T00:09:56.737Z",
+        place: {
+          direction: "217 W 9th Street, 862",
+          city: "Venezia",
+          countryCode: "IT"
+        }
+      },
+      {
+        name: "Jornada solidaria - derechos humanos",
+        description: "Evento presencial para derechos humanos. Attollo vehemens at saepe tui laboriosam cresco cuius contego tempus. Capillus aqua assumenda sub comis curis viriliter decor cibus aliquam.",
+        initialDate: "2026-06-02T00:09:56.737Z",
+        place: {
+          direction: "523 Pouros Roads, 9657",
+          city: "Mendoza",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "f3de8dd0-e18e-4469-8398-86ade50abade"
+  },
+  {
+    _id: "28b5c3a9-25d2-451b-a395-817c11f329b3",
+    name: "Iniciativa desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Admoveo suffragium textilis. Reprehenderit aveho vilis quia amaritudo.",
+    status: "pending",
+    userId: "7387cfe6-3799-4e7a-bf12-3e716bd7cdda",
+    createdAt: "2026-01-10T01:09:56.933Z",
+    updatedAt: "2026-01-10T01:09:56.933Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 207,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 877,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - infancia",
+        description: "Evento presencial para infancia. Tandem cibo trucido tui. Illo ascit numquam asporto tui adflicto barba apostolus et.",
+        initialDate: "2026-04-10T00:09:56.922Z",
+        place: {
+          direction: "94791 Tremayne Corners, 210",
+          city: "Barranquilla",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "a7a81dbd-d946-4917-ab84-5ba3fde5349c"
+  },
+  {
+    _id: "6bec5371-bc99-4811-81a1-76301c5e4051",
+    name: "Jornada educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Arcesso ars terga pecco nostrum. Asper volo quidem audeo acceptus curiositas thesaurus tener caritas excepturi.",
+    status: "approved",
+    reason: "",
+    userId: "0a9397f0-b22a-4a6d-8cd7-a998b93cdc55",
+    createdAt: "2026-01-10T01:10:30.647Z",
+    updatedAt: "2026-01-10T01:10:30.647Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 582,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 849,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 434,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - educación",
+        description: "Evento presencial para educación. Agnosco error amet vox argentum deficio cicuta avaritia. Sollicito suus caelestis color ver crux terra via certus.",
+        initialDate: "2026-06-12T00:09:56.985Z",
+        place: {
+          direction: "73812 Bramble Close, 4490",
+          city: "Tijuana",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Taller formativo - salud",
+        description: "Evento presencial para salud. Studio laboriosam adeptio.",
+        initialDate: "2026-05-07T00:09:56.985Z",
+        place: {
+          direction: "94124 Kessler Lodge, 8066",
+          city: "Barranquilla",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "1281737b-03c0-42e8-9cff-72081364a3ae"
+  },
+  {
+    _id: "2295cdf5-f698-451a-a512-9e9a42c8ca6b",
+    name: "Movimiento emergencias 2026",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Tenax cado texo crinis aro toties abundans centum. Defleo odio candidus vulgus amaritudo crebro aliquid bibo virtus.",
+    status: "approved",
+    reason: "",
+    userId: "04fd3f5a-c78d-40f3-aa4d-fd80c4a138a1",
+    createdAt: "2026-01-10T01:10:30.708Z",
+    updatedAt: "2026-01-10T01:10:30.708Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 709,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 541,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 774,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - infancia",
+        description: "Evento presencial para infancia. Spero sumo dedico campana nisi aranea tui. Trepide advoco ademptio apostolus pecus cura esse crebro sum.",
+        initialDate: "2026-04-30T00:09:57.048Z",
+        place: {
+          direction: "8073 Friedrich Brooks, 346",
+          city: "Firenze",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "3b0e260d-8165-4a2a-98ab-9e10746bd67d"
+  },
+  {
+    _id: "f66d7f96-fb5b-4160-b439-3f7e1db91e52",
+    name: "Movimiento educación 2026",
+    description: "Acción concreta para educación con objetivos cuantificables. Una caste tabernus compello velociter beatae. Tabula tabernus vestrum totam ascisco annus ventus textus cras.",
+    status: "approved",
+    reason: "",
+    userId: "4b6c5342-3af0-46ca-9a99-5a8b0500138e",
+    createdAt: "2026-01-10T01:10:30.770Z",
+    updatedAt: "2026-01-10T01:10:30.770Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 699,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - emergencias",
+        description: "Evento presencial para emergencias. Appositus comitatus nostrum vulgaris aiunt abstergo adflicto desipio asporto valetudo. Conspergo cado nulla defungo debitis auctor viridis caritas teres.",
+        initialDate: "2026-05-25T00:09:57.111Z",
+        place: {
+          direction: "2045 Mills Junction, 6915",
+          city: "Edinburgh",
+          countryCode: "GB"
+        }
+      }
+    ],
+    causeId: "14bcd9c1-4199-4578-98c9-ac25ee169cbc"
+  },
+  {
+    _id: "915d8f15-8d1a-4883-b6c4-f78824358de9",
+    name: "Proyecto desarrollo sostenible 2027",
+    description: "Acción concreta para desarrollo sostenible con objetivos cuantificables. Alioqui vicinus vulgus. Conitor speculum certe adaugeo dedico bis combibo.",
+    status: "approved",
+    reason: "",
+    userId: "7387cfe6-3799-4e7a-bf12-3e716bd7cdda",
+    createdAt: "2026-01-10T01:17:33.504Z",
+    updatedAt: "2026-01-10T01:17:33.504Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 285,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - agua potable",
+        description: "Evento presencial para agua potable. Summopere alius quasi vulgus angustus. Reiciendis coerceo cruentus porro quos.",
+        initialDate: "2026-02-22T01:09:57.173Z",
+        place: {
+          direction: "994 The Paddocks, 68734",
+          city: "Hamburg",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Jornada solidaria - educación",
+        description: "Evento presencial para educación. Derideo ante sulum sponte pax.",
+        initialDate: "2026-07-16T00:09:57.174Z",
+        place: {
+          direction: "496 Farm Close, 9639",
+          city: "Concepción",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "028db33a-bf65-41b8-bacd-26facd917d95"
+  },
+  {
+    _id: "8ccf4a45-bc37-4869-aba8-2eb6128dfe0c",
+    name: "Operación refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Tribuo vero carus depraedor arma surgo aranea. Colo viduo allatus versus solutio amplus colo argumentum.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "b4e28702-e016-407d-ada5-8788e5fb5aa7",
+    createdAt: "2026-01-10T01:10:30.893Z",
+    updatedAt: "2026-01-10T01:10:30.893Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 228,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 512,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 539,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - infancia",
+        description: "Evento presencial para infancia. Aveho voluptate aperiam subvenio cui.",
+        initialDate: "2026-03-16T01:09:57.236Z",
+        place: {
+          direction: "6885 Rempel Lakes, 17730",
+          city: "Lyon",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Evento benéfico - derechos humanos",
+        description: "Evento presencial para derechos humanos. Sollicito tenuis degero at aranea. Vindico aperte ea super amplus temptatio.",
+        initialDate: "2026-05-23T00:09:57.236Z",
+        place: {
+          direction: "7208 Toby Road, 940",
+          city: "Valencia",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "3ad6c562-c47b-4db3-8038-3c17199902ea"
+  },
+  {
+    _id: "1fd842e1-4428-4822-9887-d4e6df624572",
+    name: "Proyecto refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Illum vereor videlicet bibo timor ratione viscus ipsam vomer dignissimos. Ceno sumo celebrer vitae vinco conforto aliquid creber.",
+    status: "approved",
+    reason: "",
+    userId: "f72fc6e3-ea6c-4327-808b-38c297e74d5b",
+    createdAt: "2026-01-10T01:10:31.082Z",
+    updatedAt: "2026-01-10T01:10:31.082Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 500,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 113,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 831,
+        unit: "litros",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Alioqui appono suspendo conservo doloremque repudiandae thesis fugiat coma error. Terror sui denego tardus concedo nisi.",
+        initialDate: "2026-03-23T01:09:57.422Z",
+        place: {
+          direction: "47499 Jeanne Rue, 59759",
+          city: "Rio de Janeiro",
+          countryCode: "BR"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - emergencias",
+        description: "Evento presencial para emergencias. Provident aegre truculenter ascit strenuus qui vaco doloribus tubineus.",
+        initialDate: "2026-06-21T00:09:57.422Z",
+        place: {
+          direction: "910 S Market Street, 2101",
+          city: "La Serena",
+          countryCode: "CL"
+        }
+      }
+    ],
+    causeId: "58064a9e-96a9-45f6-a5ae-745117cc21d5"
+  },
+  {
+    _id: "1fd120d4-bd02-4d34-847b-d55080c3e993",
+    name: "Proyecto infancia 2026",
+    description: "Acción concreta para infancia con objetivos cuantificables. Acerbitas cupio spectaculum calcar curvo creber concedo candidus.",
+    status: "approved",
+    reason: "",
+    userId: "0bb3523a-b868-4fde-8ec9-5b763595b012",
+    createdAt: "2026-01-10T01:10:31.146Z",
+    updatedAt: "2026-01-10T01:10:31.146Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 504,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 973,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - refugiados",
+        description: "Evento presencial para refugiados. Odio arbor succedo abscido. Damnatio charisma culpo confido astrum amitto bis deficio ver tenetur.",
+        initialDate: "2026-04-21T00:09:57.486Z",
+        place: {
+          direction: "4716 Canal Street, 5577",
+          city: "Barcelona",
+          countryCode: "ES"
+        }
+      },
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Aptus sollers solus audax aequus.",
+        initialDate: "2026-04-28T00:09:57.486Z",
+        place: {
+          direction: "63109 Grimes Village, 1471",
+          city: "Barranquilla",
+          countryCode: "CO"
+        }
+      }
+    ],
+    causeId: "8e5a8aba-4a76-4ed9-809a-fd5cf296ce97"
+  },
+  {
+    _id: "e158f631-290a-459a-83be-703638e2cbff",
+    name: "Proyecto refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Recusandae tempora at.",
+    status: "approved",
+    reason: "",
+    userId: "7652eb8d-09e6-44ff-af59-15713c0afacb",
+    createdAt: "2026-01-10T01:10:31.207Z",
+    updatedAt: "2026-01-10T01:10:31.207Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 192,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - medio ambiente",
+        description: "Evento presencial para medio ambiente. Ambulo harum exercitationem spero perferendis. Cunae tres candidus aestus pecto.",
+        initialDate: "2026-07-14T00:09:57.549Z",
+        place: {
+          direction: "105 Sam Harbors, 11617",
+          city: "Marseille",
+          countryCode: "FR"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - pobreza",
+        description: "Evento presencial para pobreza. Victoria articulus decerno.",
+        initialDate: "2026-03-05T01:09:57.549Z",
+        place: {
+          direction: "915 Kendall Keys, 478",
+          city: "Barcelona",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "028db33a-bf65-41b8-bacd-26facd917d95"
+  },
+  {
+    _id: "bddffd9a-bc13-40dc-b57f-450786259519",
+    name: "Acción solidaria salud 2027",
+    description: "Acción concreta para salud con objetivos cuantificables. Trado aperte curriculum adimpleo.",
+    status: "approved",
+    reason: "",
+    userId: "78dc4d45-a2a6-4592-a5d6-188caccf0029",
+    createdAt: "2026-01-10T01:10:31.269Z",
+    updatedAt: "2026-01-10T01:10:31.269Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 456,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 626,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 946,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - educación",
+        description: "Evento presencial para educación. Usque vesco bellum deprecator desolo cerno artificiose cruentus. Via dicta curtus vapulus.",
+        initialDate: "2026-01-18T01:09:57.611Z",
+        place: {
+          direction: "719 Kiel Estate, 71273",
+          city: "Bristol",
+          countryCode: "GB"
+        }
+      },
+      {
+        name: "Evento benéfico - igualdad de género",
+        description: "Evento presencial para igualdad de género. Officiis cohibeo constans tremo dolor summa uterque dapifer derideo.",
+        initialDate: "2026-06-17T00:09:57.611Z",
+        place: {
+          direction: "246 Elena Lights, 248",
+          city: "Mar del Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "1b4086a2-6987-4146-8c33-96ed0983ce1b"
+  },
+  {
+    _id: "c595cec1-3677-46b4-aaae-290fb111bb19",
+    name: "Movimiento refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Subseco amitto tutamen vetus baiulus vulgivagus urbanus spectaculum trans velit. Chirographum templum cicuta calculus adsuesco viriliter t",
+    status: "approved",
+    reason: "",
+    userId: "b6c9ce85-27c0-4b3d-804e-76f187d503f7",
+    createdAt: "2026-01-10T01:10:31.332Z",
+    updatedAt: "2026-01-10T01:10:31.332Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 771,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 260,
+        unit: "kilogramos",
+        currentAmount: 0
+      },
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 80,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Aiunt theologus antiquus.",
+        initialDate: "2026-02-20T01:09:57.674Z",
+        place: {
+          direction: "295 Ebony Common, 6831",
+          city: "Bilbao",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "41d05331-2237-4ac2-a373-1ad7d6bdf06a"
+  },
+  {
+    _id: "1e1a3ee4-5fb4-423d-89c7-f48c9cf46339",
+    name: "Jornada refugiados 2027",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Vergo xiphias aufero. Super aliquam autem trado canto admoneo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "33805313-dd2d-462a-9f76-ba9ddd835d16",
+    createdAt: "2026-01-10T01:10:31.394Z",
+    updatedAt: "2026-01-10T01:10:31.394Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 280,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 312,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 191,
+        unit: "paquetes",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Encuentro comunitario - igualdad de género",
+        description: "Evento presencial para igualdad de género. Arguo acsi talis conicio. Vigor vulpes atavus cruentus stabilis cunae crinis ubi.",
+        initialDate: "2026-06-29T00:09:57.735Z",
+        place: {
+          direction: "851 Schulist Gateway, 4365",
+          city: "Mar del Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "8fff8c2d-dd7b-44d0-858a-72239702aa4b"
+  },
+  {
+    _id: "8e54380e-927f-4c6a-bc67-1478e3dad393",
+    name: "Acción solidaria emergencias 2027",
+    description: "Acción concreta para emergencias con objetivos cuantificables. Vigilo solvo odit.",
+    status: "pending",
+    userId: "4ec53b63-2363-4528-885c-c97c95d32102",
+    createdAt: "2026-01-10T01:09:57.808Z",
+    updatedAt: "2026-01-10T01:09:57.808Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Limpieza ambiental",
+        description: "Limpiar y recuperar espacios naturales degradados",
+        quantity: 451,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 986,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 907,
+        unit: "cajas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Jornada solidaria - alimentación",
+        description: "Evento presencial para alimentación. Adduco consuasor acidus ars spes usus nesciunt attero vere calculus.",
+        initialDate: "2026-03-14T01:09:57.798Z",
+        place: {
+          direction: "3723 Swift Row, 2252",
+          city: "Arequipa",
+          countryCode: "PE"
+        }
+      }
+    ],
+    causeId: "024551bd-08d1-4957-be2a-736bcc8ef6d3"
+  },
+  {
+    _id: "67a70063-bd6d-4403-9249-aa74ea6c8536",
+    name: "Operación salud 2026",
+    description: "Acción concreta para salud con objetivos cuantificables. Caelum cultura cornu dignissimos adficio cattus patior solutio adhuc. Temeritas admiratio timor quidem vis tabella defleo.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "c3b39509-cd5f-464d-96db-c8a83eaf07bc",
+    createdAt: "2026-01-10T01:10:31.517Z",
+    updatedAt: "2026-01-10T01:10:31.517Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 644,
+        unit: "horas",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 603,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 847,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - discapacidad",
+        description: "Evento presencial para discapacidad. Terebro paulatim vivo despecto vigor adinventitias cunae.",
+        initialDate: "2026-04-23T00:09:57.860Z",
+        place: {
+          direction: "51653 Adella Freeway, 5355",
+          city: "La Plata",
+          countryCode: "AR"
+        }
+      }
+    ],
+    causeId: "41d05331-2237-4ac2-a373-1ad7d6bdf06a"
+  },
+  {
+    _id: "775289d9-e2a3-4386-82c6-4fa94110b79d",
+    name: "Programa salud 2027",
+    description: "Acción concreta para salud con objetivos cuantificables. Quidem enim vado tantum sub ara.",
+    status: "rejected",
+    reason: "Rejected by seed script",
+    userId: "fe88acb1-2994-4b48-9e4c-8c7390ebe23c",
+    createdAt: "2026-01-10T01:10:31.580Z",
+    updatedAt: "2026-01-10T01:10:31.580Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Distribución de materiales",
+        description: "Entregar materiales educativos o de primera necesidad",
+        quantity: 500,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Actividad de voluntariado - infancia",
+        description: "Evento presencial para infancia. Contigo timidus nesciunt adficio theatrum bardus collum statim.",
+        initialDate: "2026-06-20T00:09:57.923Z",
+        place: {
+          direction: "34909 Broadway Avenue, 97548",
+          city: "Ciudad de México",
+          countryCode: "MX"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - infancia",
+        description: "Evento presencial para infancia. Aqua verto voluptate crepusculum abstergo supellex complectus cohors. Thorax decet ars aggero aufero tergo verus.",
+        initialDate: "2026-06-20T00:09:57.923Z",
+        place: {
+          direction: "577 8th Avenue, 5136",
+          city: "Zaragoza",
+          countryCode: "ES"
+        }
+      }
+    ],
+    causeId: "3b0e260d-8165-4a2a-98ab-9e10746bd67d"
+  },
+  {
+    _id: "b00c33ed-cf9e-477c-8d51-7689c131baf7",
+    name: "Acción solidaria tercera edad 2027",
+    description: "Acción concreta para tercera edad con objetivos cuantificables. Sol vilis deficio velum ullam.",
+    status: "approved",
+    reason: "",
+    userId: "f72fc6e3-ea6c-4327-808b-38c297e74d5b",
+    createdAt: "2026-01-10T01:10:31.643Z",
+    updatedAt: "2026-01-10T01:10:31.643Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 312,
+        unit: "cajas",
+        currentAmount: 0
+      },
+      {
+        name: "Recolección de alimentos",
+        description: "Recolectar alimentos no perecederos para familias necesitadas",
+        quantity: 622,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - igualdad de género",
+        description: "Evento presencial para igualdad de género. Acer concedo aeneus stultus.",
+        initialDate: "2026-03-28T01:09:57.985Z",
+        place: {
+          direction: "201 Trantow Divide, 5194",
+          city: "Torino",
+          countryCode: "IT"
+        }
+      }
+    ],
+    causeId: "b63b9184-cea9-471f-b049-6f242d55b51f"
+  },
+  {
+    _id: "8190cb0c-32d1-4b13-915c-3f81cfb68d7b",
+    name: "Acción solidaria refugiados 2026",
+    description: "Acción concreta para refugiados con objetivos cuantificables. Ademptio cultellus textilis cavus. Tamen talis crapula tribuo illum.",
+    status: "approved",
+    reason: "",
+    userId: "035b3e09-409f-4fd2-b7bb-575f931e9136",
+    createdAt: "2026-01-10T01:10:31.827Z",
+    updatedAt: "2026-01-10T01:10:31.827Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 265,
+        unit: "unidades",
+        currentAmount: 0
+      },
+      {
+        name: "Atención sanitaria",
+        description: "Proporcionar servicios básicos de salud",
+        quantity: 473,
+        unit: "kilogramos",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Taller formativo - educación",
+        description: "Evento presencial para educación. Deludo viscus demergo acceptus totus pauper tertius acervus. Alias accommodo contego.",
+        initialDate: "2026-05-30T00:09:58.171Z",
+        place: {
+          direction: "523 Hauck Junctions, 1803",
+          city: "Valencia",
+          countryCode: "VE"
+        }
+      }
+    ],
+    causeId: "28b68b2a-185c-4a07-9750-5b43106faa19"
+  },
+  {
+    _id: "65d4d25e-80e6-4996-a530-634d397248b4",
+    name: "Campaña educación 2027",
+    description: "Acción concreta para educación con objetivos cuantificables. Ocer copia cunabula conduco virgo. Aureus administratio voluptas corona atque vinco.",
+    status: "approved",
+    reason: "",
+    userId: "49298584-4192-4fcf-9882-74cb0b0e3b97",
+    createdAt: "2026-01-10T01:10:31.889Z",
+    updatedAt: "2026-01-10T01:10:31.889Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 394,
+        unit: "personas",
+        currentAmount: 0
+      },
+      {
+        name: "Capacitación",
+        description: "Formar a beneficiarios en habilidades específicas",
+        quantity: 59,
+        unit: "personas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Evento benéfico - alimentación",
+        description: "Evento presencial para alimentación. Desino cohaero tremo totus verbera vilitas debitis trucido patria. Cena dedico dolores vorago quam cognomen capitulus theatrum vivo.",
+        initialDate: "2026-01-19T01:09:58.233Z",
+        place: {
+          direction: "642 Madison Avenue, 963",
+          city: "Barquisimeto",
+          countryCode: "VE"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - refugiados",
+        description: "Evento presencial para refugiados. Concido cogo mollitia soleo saepe ultra conatus delego pectus tergum. Provident victoria amplus talis.",
+        initialDate: "2026-04-14T00:09:58.233Z",
+        place: {
+          direction: "133 Corkery Shores, 9375",
+          city: "Puebla",
+          countryCode: "MX"
+        }
+      }
+    ],
+    causeId: "707dac7c-a406-4eab-87dc-4b408bd4289e"
+  },
+  {
+    _id: "a89d1226-6661-4858-8857-76e2d85f6c99",
+    name: "Iniciativa alimentación 2027",
+    description: "Acción concreta para alimentación con objetivos cuantificables. Urbanus constans delinquo approbo occaecati.",
+    status: "approved",
+    reason: "",
+    userId: "f65f7997-8665-413c-a127-2bd0d0724f52",
+    createdAt: "2026-01-10T01:10:31.953Z",
+    updatedAt: "2026-01-10T01:10:31.953Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Construcción",
+        description: "Construir o reparar infraestructuras básicas",
+        quantity: 636,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - desarrollo sostenible",
+        description: "Evento presencial para desarrollo sostenible. Crux spoliatio ex succurro arto curso.",
+        initialDate: "2026-04-11T00:09:58.295Z",
+        place: {
+          direction: "4254 Sporer Ports, 8820",
+          city: "Frankfurt",
+          countryCode: "DE"
+        }
+      }
+    ],
+    causeId: "c54b6604-1f85-4443-9475-bd08f9172fc5"
+  },
+  {
+    _id: "aa35e3ab-2d9d-4e51-8d2c-c3bdfc29e5ba",
+    name: "Programa igualdad de género 2026",
+    description: "Acción concreta para igualdad de género con objetivos cuantificables. Totus voro aggero. Tergiversatio summisse sophismata amicitia vestigium.",
+    status: "approved",
+    reason: "",
+    userId: "827da6ab-f136-4935-a6ce-7cc2d9eade01",
+    createdAt: "2026-01-10T01:10:32.017Z",
+    updatedAt: "2026-01-10T01:10:32.017Z",
+    __v: 0,
+    type: "action",
+    objectives: [
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 766,
+        unit: "paquetes",
+        currentAmount: 0
+      },
+      {
+        name: "Recaudación de fondos",
+        description: "Obtener recursos económicos para financiar las actividades",
+        quantity: 597,
+        unit: "euros",
+        currentAmount: 0
+      },
+      {
+        name: "Captación de voluntarios",
+        description: "Reclutar y formar nuevos voluntarios para el proyecto",
+        quantity: 615,
+        unit: "horas",
+        currentAmount: 0
+      }
+    ],
+    events: [
+      {
+        name: "Reunión de coordinación - medio ambiente",
+        description: "Evento presencial para medio ambiente. Distinctio spargo atque.",
+        initialDate: "2026-05-25T00:09:58.358Z",
+        place: {
+          direction: "21087 Franco Spurs, 633",
+          city: "Cologne",
+          countryCode: "DE"
+        }
+      },
+      {
+        name: "Actividad de voluntariado - infancia",
+        description: "Evento presencial para infancia. Votum sonitus cornu aggredior creator repudiandae artificiose ea damno utrum. Uxor vulgaris arcus timor valeo tardus aliqua.",
+        initialDate: "2026-03-20T01:09:58.358Z",
+        place: {
+          direction: "32463 Iliana Square, 8340",
+          city: "Fortaleza",
+          countryCode: "BR"
+        }
+      }
+    ],
+    causeId: "6d816895-0443-4fa1-b8f7-5bf1a58c57c3"
+  }
+]);
+
+print('✅ Loaded 1019 documents from 3 collections');

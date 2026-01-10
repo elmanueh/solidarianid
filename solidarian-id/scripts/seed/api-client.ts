@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { faker } from '@faker-js/faker';
 import {
   ACTION_REQUESTS_MAX,
@@ -82,7 +85,7 @@ async function createUser(userDto: RegisterUserDto): Promise<string | null> {
     // If no Location header, try to parse the response body
     try {
       const responseData = await response.json();
-      if (responseData && responseData.id) {
+      if (responseData?.id) {
         console.log(`  ✅ User ${userDto.username} created with ID from body: ${responseData.id}`);
         return responseData.id;
       }

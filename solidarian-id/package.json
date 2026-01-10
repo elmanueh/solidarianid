@@ -43,7 +43,8 @@
     "docker:dev": "docker compose --env-file .env.development up -d --build",
     "docker:prod": "docker-compose --env-file .env.production up -d --build",
     "docker:down": "docker-compose down",
-    "seed:dev": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register scripts/seed/index.ts"
+    "db:seed": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register scripts/seed/index.ts",
+    "db:export": "ts-node scripts/database/index.ts"
   },
   "dependencies": {
     "@iconify/tailwind": "^1.2.0",

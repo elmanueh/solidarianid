@@ -61,6 +61,7 @@ export class RequestEventMapper extends Mapper<Request<any>, RequestEventDto> {
   private mapAction(request: ActionRequest): ActionRequestEventDto {
     const dto = this.fillBase(new ActionRequestEventDto(), request);
 
+    dto.causeId = request.causeId;
     dto.objectives = request.objectives.map(o => ({
       name: o.name,
       description: o.description,

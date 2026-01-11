@@ -1,12 +1,5 @@
-import { AuthenticationErrorFilter } from '@app/admin/administrator/controllers/filters/authentication-error.filter';
-import { ConflictErrorFilter } from '@app/admin/administrator/controllers/filters/conflict-error.filter';
 import { HttpExceptionFilter } from '@app/admin/administrator/controllers/filters/http-exception.filter';
-import { InternalServerErrorFilter } from '@app/admin/administrator/controllers/filters/internal-server-error.filter';
-import { NotFoundErrorFilter } from '@app/admin/administrator/controllers/filters/not-found-error.filter';
-import { RepositoryExceptionFilter } from '@app/admin/administrator/controllers/filters/repository-exception.filter';
-import { ValidationErrorFilter } from '@app/admin/administrator/controllers/filters/validation-error.filter';
 import { AppModule } from '@app/admin/app.module';
-import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 import { odsNames } from '@app/admin/utils/data-utils';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -78,7 +71,7 @@ async function bootstrap() {
         sort: (arr: any): any => {
           if (!Array.isArray(arr)) return arr;
           const copy = arr.slice();
-          const sorted = copy.sort((a: any, b: any) => a - b);
+          const sorted = copy.toSorted((a: any, b: any) => a - b);
           return [...new Set(sorted)];
         },
         // Helper para suma
@@ -131,16 +124,7 @@ async function bootstrap() {
   );
 
   // Configurar filtros globales de excepciones
-  app.useGlobalFilters(
-    new HttpExceptionFilter(),
-    new NotFoundErrorFilter(),
-    new RepositoryExceptionFilter(),
-    new ValidationErrorFilter(),
-    new ConflictErrorFilter(),
-    new AuthenticationErrorFilter(),
-    new InternalServerErrorFilter(),
-    new GlobalExceptionFilter(),
-  );
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   // Configurar Kafka como microservicio para consumir eventos
   app.connectMicroservice({

@@ -25,7 +25,7 @@ Antes de comenzar, asegúrate de tener instalado en tu sistema:
 
 ### 1. Configuración de Variables de Entorno
 
-El primer paso consiste en crear el archivo de configuración `.env` a partir de la plantilla de producción:
+El primer paso consiste en crear el archivo de configuración `.env` a partir de la plantilla de este directorio:
 
 ```bash
 cd deployment

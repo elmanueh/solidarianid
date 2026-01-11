@@ -40,9 +40,10 @@
     "test:mutation:users": "stryker run",
     "cypress:open": "cypress open --config-file ./apps/admin/test/cypress.config.js",
     "cypress:run": "cypress run --config-file ./apps/admin/test/cypress.config.js",
+    "docker": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build",
+    "docker:down": "docker compose -f docker-compose.yml -f docker-compose.dev.yml down",
     "docker:dev": "docker compose --env-file .env.development up -d --build",
-    "docker:prod": "docker-compose --env-file .env.production up -d --build",
-    "docker:down": "docker-compose down"
+    "docker:dev:down": "docker compose --env-file .env.development down"
   },
   "dependencies": {
     "@iconify/tailwind": "^1.2.0",

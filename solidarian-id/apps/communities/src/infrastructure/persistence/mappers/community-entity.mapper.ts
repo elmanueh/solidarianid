@@ -51,9 +51,9 @@ export class CommunityEntityMapper implements Mapper<Community, CommunityEntity>
       entity.members?.map(communityUserEntity => {
         const user = this.userEntityMapper.fromPersistence(communityUserEntity.user);
         if (user.isRight()) {
-          if (communityUserEntity.role === (MemberType.CREATOR as string)) {
+          if (communityUserEntity.role === MemberType.CREATOR) {
             creator = user.value;
-          } else if (communityUserEntity.role === (MemberType.ADMIN as string)) {
+          } else if (communityUserEntity.role === MemberType.ADMIN) {
             admins.push(user.value);
           }
         }

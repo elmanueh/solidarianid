@@ -384,6 +384,11 @@
     @apply px-3 py-1 rounded-full text-xs font-semibold;
   }
 
+  .community-role-creator {
+    @apply bg-dark-wine-200 text-dark-wine-900;
+    @apply dark:bg-dark-wine-800 dark:text-dark-wine-100;
+  }
+
   .community-role-admin {
     @apply bg-harvest-orange-100 text-harvest-orange-800;
     @apply dark:bg-harvest-orange-900 dark:text-harvest-orange-200;

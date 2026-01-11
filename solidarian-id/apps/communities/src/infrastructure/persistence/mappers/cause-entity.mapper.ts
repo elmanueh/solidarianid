@@ -19,7 +19,9 @@ export class CauseEntityMapper implements Mapper<Cause, CauseEntity> {
     entity.initialDate = model.initialDate;
     entity.communityId = model.communityId;
 
-    entity.actions = model.actions?.map(action => this.actionEntityMapper.toPersistence(action)) || [];
+    if (model.actions && model.actions.length > 0) {
+      entity.actions = model.actions.map(action => this.actionEntityMapper.toPersistence(action));
+    }
     return entity;
   }
   fromPersistence(entity: CauseEntity): Either<ValidationError, Cause> {

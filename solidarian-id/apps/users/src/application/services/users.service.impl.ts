@@ -35,14 +35,14 @@ export class UsersServiceImpl extends UsersService {
     if (usernameResult.isLeft()) return left(usernameResult.value);
 
     // 2a. Comprobar si el numero de telefono ya existe
-    const userPhoneExists = await this.usersRepository.existsByMobilePhone(phoneResult.value);
+    const userPhoneExists = await this.usersRepository.existsByMobilePhone(phoneResult.value.value);
     if (userPhoneExists.isLeft()) return left(userPhoneExists.value);
 
     if (userPhoneExists.value)
       return left(new UserConflictError('The provided mobile phone is already signed up in SolidarianID.'));
 
     // 2b. Comprobar si el nombre de usuario existe
-    const userNameExists = await this.usersRepository.existsByUsername(usernameResult.value);
+    const userNameExists = await this.usersRepository.existsByUsername(usernameResult.value.value);
     if (userNameExists.isLeft()) return left(userNameExists.value);
 
     if (userNameExists.value)
@@ -75,7 +75,7 @@ export class UsersServiceImpl extends UsersService {
     const usernameOrError = Username.create(username);
     if (usernameOrError.isLeft()) return left(usernameOrError.value);
 
-    const userOrError = await this.usersRepository.findByUsername(usernameOrError.value);
+    const userOrError = await this.usersRepository.findByUsername(usernameOrError.value.value);
 
     if (userOrError.isLeft()) return left(userOrError.value);
 
@@ -98,6 +98,16 @@ export class UsersServiceImpl extends UsersService {
 
     const user = userOrError.value;
 
+    const mobilePhoneUnavailable = await this.isMobilePhoneUnavailable(mobilePhone, userId);
+    if (mobilePhoneUnavailable.isLeft()) return left(mobilePhoneUnavailable.value);
+    if (mobilePhoneUnavailable.value)
+      return left(new UserConflictError('The provided mobile phone is already signed up in SolidarianID.'));
+
+    const usernameUnavailable = await this.isUsernameUnavailable(username, userId);
+    if (usernameUnavailable.isLeft()) return left(usernameUnavailable.value);
+    if (usernameUnavailable.value)
+      return left(new UserConflictError('The provided user name is already signed up in SolidarianID.'));
+
     const userUpdateOrError = user.updateUserProfile(fullName, username, mobilePhone, city, countryCode);
 
     if (userUpdateOrError.isLeft()) {
@@ -113,5 +123,29 @@ export class UsersServiceImpl extends UsersService {
     await this.usersPublisher.publish(EventType.USER_UPDATED, user);
 
     return right(undefined);
+  }
+
+  private async isMobilePhoneUnavailable(
+    mobilePhone: string | undefined,
+    excludeUserId?: string,
+  ): Promise<Either<RepositoryException, boolean>> {
+    if (mobilePhone) {
+      const mobilePhoneExists = await this.usersRepository.existsByMobilePhone(mobilePhone, excludeUserId);
+      return mobilePhoneExists;
+    }
+
+    return right(false);
+  }
+
+  private async isUsernameUnavailable(
+    username: string | undefined,
+    excludeUserId?: string,
+  ): Promise<Either<RepositoryException, boolean>> {
+    if (username) {
+      const usernameExists = await this.usersRepository.existsByUsername(username, excludeUserId);
+      return usernameExists;
+    }
+
+    return right(false);
   }
 }

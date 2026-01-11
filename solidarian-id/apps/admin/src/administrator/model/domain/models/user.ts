@@ -63,6 +63,12 @@ export class User extends Entity<UserProps> {
     return this.props.communityMemberships;
   }
 
+  addCommunityMembership(membership: CommunityMembership): void {
+    if (!this.props.communityMemberships.find(m => m.equals(membership))) {
+      this.props.communityMemberships.push(membership);
+    }
+  }
+
   private constructor(props: UserProps, id: UniqueEntityID) {
     super(props, id);
   }

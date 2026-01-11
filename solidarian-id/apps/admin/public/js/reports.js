@@ -74,9 +74,27 @@
     }
   }
 
-  // FUNCIONES DE RENDERIZADO
+  function translateRole(role) {
+    const translations = {
+      creator: 'Creador',
+      admin: 'Administrador',
+      member: 'Miembro',
+    };
+    return translations[role] || role;
+  }
 
-  // Renderiza el detalle de un usuario en el panel
+  function getRoleBadgeClass(role) {
+    switch (role) {
+      case 'creator':
+        return 'community-role-creator';
+      case 'admin':
+        return 'community-role-admin';
+      default:
+        return 'community-role-member';
+    }
+  }
+
+  // Render User Detail
   function renderUserDetail(userData) {
     let communitiesHtml = '';
     if (userData.communities && userData.communities.length > 0) {
@@ -85,8 +103,8 @@
           community => `
         <div class="community-item">
           <span class="community-name">${community.name}</span>
-          <span class="community-role-badge ${community.isAdmin ? 'community-role-admin' : 'community-role-member'}">
-            ${community.isAdmin ? 'Administrador' : 'Miembro'}
+          <span class="community-role-badge ${getRoleBadgeClass(community.role)}">
+            ${translateRole(community.role)}
           </span>
         </div>
       `,

@@ -305,9 +305,7 @@ describe('UsersService Unit testing', () => {
 
         await service.registerUser(validCommand);
 
-        expect(mockRepo.existsByMobilePhone).toHaveBeenCalledWith(
-          expect.objectContaining({ value: validCommand.mobilePhone }),
-        );
+        expect(mockRepo.existsByMobilePhone).toHaveBeenCalledWith(validCommand.mobilePhone);
       });
 
       it('should call existsByUsername with correct Username value object', async () => {
@@ -318,9 +316,7 @@ describe('UsersService Unit testing', () => {
 
         await service.registerUser(validCommand);
 
-        expect(mockRepo.existsByUsername).toHaveBeenCalledWith(
-          expect.objectContaining({ value: validCommand.username }),
-        );
+        expect(mockRepo.existsByUsername).toHaveBeenCalledWith(validCommand.username);
       });
 
       it('should call save with User entity', async () => {
@@ -464,6 +460,8 @@ describe('UsersService Unit testing', () => {
           const existingUser = existingUserOrError.value;
 
           mockRepo.findById = jest.fn().mockResolvedValueOnce(right(existingUser));
+          mockRepo.existsByMobilePhone = jest.fn().mockResolvedValueOnce(right(false));
+          mockRepo.existsByUsername = jest.fn().mockResolvedValueOnce(right(false));
 
           const invalidCommand = {
             username: 'a', // Too short
@@ -491,6 +489,8 @@ describe('UsersService Unit testing', () => {
           const existingUser = existingUserOrError.value;
 
           mockRepo.findById = jest.fn().mockResolvedValueOnce(right(existingUser));
+          mockRepo.existsByMobilePhone = jest.fn().mockResolvedValueOnce(right(false));
+          mockRepo.existsByUsername = jest.fn().mockResolvedValueOnce(right(false));
 
           const saveError = new RepositoryException('Failed to update user');
           mockRepo.save.mockResolvedValueOnce(left(saveError));
@@ -516,6 +516,8 @@ describe('UsersService Unit testing', () => {
           const existingUser = existingUserOrError.value;
 
           mockRepo.findById = jest.fn().mockResolvedValueOnce(right(existingUser));
+          mockRepo.existsByMobilePhone = jest.fn().mockResolvedValueOnce(right(false));
+          mockRepo.existsByUsername = jest.fn().mockResolvedValueOnce(right(false));
           mockRepo.save.mockResolvedValueOnce(right(undefined));
 
           const result = await service.updateUserProfile(EXISTING_USER_ID, validUpdateCommand);
@@ -567,6 +569,8 @@ describe('UsersService Unit testing', () => {
           const existingUser = existingUserOrError.value;
 
           mockRepo.findById = jest.fn().mockResolvedValueOnce(right(existingUser));
+          mockRepo.existsByMobilePhone = jest.fn().mockResolvedValueOnce(right(false));
+          mockRepo.existsByUsername = jest.fn().mockResolvedValueOnce(right(false));
           mockRepo.save.mockResolvedValueOnce(right(undefined));
 
           const result = await service.updateUserProfile(EXISTING_USER_ID, {
@@ -593,6 +597,8 @@ describe('UsersService Unit testing', () => {
           const existingUser = existingUserOrError.value;
 
           mockRepo.findById = jest.fn().mockResolvedValueOnce(right(existingUser));
+          mockRepo.existsByMobilePhone = jest.fn().mockResolvedValueOnce(right(false));
+          mockRepo.existsByUsername = jest.fn().mockResolvedValueOnce(right(false));
 
           const result = await service.updateUserProfile(EXISTING_USER_ID, {
             username: 'a', // Too short
@@ -615,6 +621,8 @@ describe('UsersService Unit testing', () => {
           const existingUser = existingUserOrError.value;
 
           mockRepo.findById = jest.fn().mockResolvedValueOnce(right(existingUser));
+          mockRepo.existsByMobilePhone = jest.fn().mockResolvedValueOnce(right(false));
+          mockRepo.existsByUsername = jest.fn().mockResolvedValueOnce(right(false));
 
           const result = await service.updateUserProfile(EXISTING_USER_ID, {
             username: 'invalid@user!',
@@ -639,6 +647,8 @@ describe('UsersService Unit testing', () => {
           const existingUser = existingUserOrError.value;
 
           mockRepo.findById = jest.fn().mockResolvedValueOnce(right(existingUser));
+          mockRepo.existsByMobilePhone = jest.fn().mockResolvedValueOnce(right(false));
+          mockRepo.existsByUsername = jest.fn().mockResolvedValueOnce(right(false));
           mockRepo.save.mockResolvedValueOnce(right(undefined));
 
           const result = await service.updateUserProfile(EXISTING_USER_ID, {
@@ -665,6 +675,8 @@ describe('UsersService Unit testing', () => {
           const existingUser = existingUserOrError.value;
 
           mockRepo.findById = jest.fn().mockResolvedValueOnce(right(existingUser));
+          mockRepo.existsByMobilePhone = jest.fn().mockResolvedValueOnce(right(false));
+          mockRepo.existsByUsername = jest.fn().mockResolvedValueOnce(right(false));
 
           const result = await service.updateUserProfile(EXISTING_USER_ID, {
             mobilePhone: 'invalid-phone',
@@ -825,6 +837,8 @@ describe('UsersService Unit testing', () => {
           const existingUser = existingUserOrError.value;
 
           mockRepo.findById = jest.fn().mockResolvedValueOnce(right(existingUser));
+          mockRepo.existsByMobilePhone = jest.fn().mockResolvedValueOnce(right(false));
+          mockRepo.existsByUsername = jest.fn().mockResolvedValueOnce(right(false));
           mockRepo.save.mockResolvedValueOnce(right(undefined));
 
           const result = await service.updateUserProfile(EXISTING_USER_ID, {

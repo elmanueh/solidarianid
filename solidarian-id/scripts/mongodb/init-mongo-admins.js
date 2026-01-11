@@ -2,7 +2,7 @@
 // Este script crea la base de datos y los administradores iniciales
 
 // Conexión a la base de datos
-let db = db.getSiblingDB('solidarianid');
+let db = db.getSiblingDB(process.env.MONGO_INITDB_DATABASE || 'solidarianid');
 
 // Crear colección de administradores si no existe
 db.createCollection('administrators');

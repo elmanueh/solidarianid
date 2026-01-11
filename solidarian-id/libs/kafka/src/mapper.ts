@@ -1,4 +1,5 @@
 import { Entity } from '@app/ddd/entity';
+import { EventType } from './events.enum';
 
 /**
  * Maps between domain models and persistence entities.
@@ -11,6 +12,7 @@ export abstract class Mapper<TDomain extends Entity<any>, TDto> {
    * Converts a domain model into its event representation.
    *
    * @param model Domain model
+   * @param eventType Optional event type to determine which DTO to create
    */
-  abstract toDto(model: TDomain): TDto;
+  abstract toDto(model: TDomain, eventType?: EventType): TDto;
 }

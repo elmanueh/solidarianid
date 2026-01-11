@@ -22,7 +22,7 @@ export class KafkaPublisher<TDomain extends Entity<any>, TDto>
   }
 
   publish(eventType: EventType, entity: TDomain): Promise<void> {
-    const dto: TDto = this.mapper.toDto(entity);
+    const dto: TDto = this.mapper.toDto(entity, eventType);
 
     const genericEvent: GenericEvent<TDto> = new GenericEvent<TDto>(eventType, dto);
 

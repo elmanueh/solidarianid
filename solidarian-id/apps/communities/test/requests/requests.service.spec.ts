@@ -25,6 +25,7 @@ import { CommunityRequest } from '@app/communities/domain/model/entities/request
 import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
 import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
 import { CommunityRequestEventDto, CauseRequestEventDto, ActionRequestEventDto } from '@solidarianid/kafka';
+import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 
 describe('RequestsServiceImpl', () => {
   let service: RequestsServiceImpl;
@@ -58,10 +59,12 @@ describe('RequestsServiceImpl', () => {
   let mockActionsService: { create: jest.Mock };
 
   const validUserId = 'a1b2c3d4-e5f6-4890-abcd-ef1234567001';
+  const unauthorizedUserId = 'a1b2c3d4-e5f6-4890-abcd-ef1234567999';
   const validCommunityId = 'b1b2c3d4-e5f6-4890-abcd-ef1234567002';
   const validCauseId = 'c1b2c3d4-e5f6-4890-abcd-ef1234567003';
   const validRequestId = 'd1b2c3d4-e5f6-4890-abcd-ef1234567004';
   const validUser = User.create({ fullName: 'Juan Voluntario García' }, validUserId);
+  const unauthorizedUser = User.create({ fullName: 'Usuario Sin Permisos' }, unauthorizedUserId);
   const validCommunity = Community.create(
     {
       name: 'Test Community',
@@ -263,6 +266,22 @@ describe('RequestsServiceImpl', () => {
       expect(result.value).toBeInstanceOf(RepositoryException);
       expect(mockRequestPublisher.publish).not.toHaveBeenCalled();
     });
+
+    it('should return UserPermissionError when user is not admin or creator', async () => {
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
+      mockUsersRepository.findById.mockResolvedValueOnce(unauthorizedUser);
+
+      const dtoWithUnauthorizedUser: CreateCauseRequestDto = {
+        ...validCauseDto,
+        userId: unauthorizedUserId,
+      };
+
+      const result = await service.createCauseRequest(dtoWithUnauthorizedUser);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBeInstanceOf(UserPermissionError);
+      expect(mockRequestsRepository.save).not.toHaveBeenCalled();
+    });
   });
 
   describe('createActionRequest', () => {
@@ -296,11 +315,13 @@ describe('RequestsServiceImpl', () => {
     it('should create an action request successfully', async () => {
       mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
       mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
 
       const result = await service.createActionRequest(validActionDto);
 
+      expect(result).toBeDefined();
       expect(result.isRight()).toBe(true);
       expect(mockUsersRepository.findById).toHaveBeenCalledWith(validUserId);
       expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
@@ -322,6 +343,7 @@ describe('RequestsServiceImpl', () => {
     it('should return ValidationError when name is invalid', async () => {
       mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
 
       const invalidDto: CreateActionRequestDto = {
         ...validActionDto,
@@ -338,6 +360,7 @@ describe('RequestsServiceImpl', () => {
     it('should return RepositoryException when save fails', async () => {
       mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       const repoError = new RepositoryException('Database error');
       mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
 
@@ -351,6 +374,7 @@ describe('RequestsServiceImpl', () => {
     it('should publish event after successful save', async () => {
       mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
       mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
 
@@ -363,6 +387,23 @@ describe('RequestsServiceImpl', () => {
           id: expect.objectContaining({}) as unknown as object,
         }) as unknown as object,
       );
+    });
+
+    it('should return UserPermissionError when user is not admin or creator of the community', async () => {
+      mockCauseRepository.findById.mockResolvedValueOnce(right(validCause.value));
+      mockUsersRepository.findById.mockResolvedValueOnce(unauthorizedUser);
+      mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
+
+      const dtoWithUnauthorizedUser: CreateActionRequestDto = {
+        ...validActionDto,
+        userId: unauthorizedUserId,
+      };
+
+      const result = await service.createActionRequest(dtoWithUnauthorizedUser);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBeInstanceOf(UserPermissionError);
+      expect(mockRequestsRepository.save).not.toHaveBeenCalled();
     });
   });
 

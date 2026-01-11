@@ -1,3 +1,4 @@
+import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
 import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
 import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
@@ -119,6 +120,12 @@ export class RequestsServiceImpl extends RequestsService {
       return left(userOrError.value);
     }
 
+    if (!communityOrError.value.isAdminOrCreator(userOrError.value)) {
+      return left(
+        new UserPermissionError('User must be an admin or creator of the community to create a cause request'),
+      );
+    }
+
     const causeRequestOrError = CauseRequest.create({
       name: dto.name,
       description: dto.description,
@@ -164,6 +171,21 @@ export class RequestsServiceImpl extends RequestsService {
 
     if (userOrError.isLeft()) {
       return left(userOrError.value);
+    }
+
+    const communityOrError = await this.communityRepository.findById(causeOrError.value.communityId, [
+      'members',
+      'members.user',
+    ]);
+
+    if (communityOrError.isLeft()) {
+      return left(communityOrError.value);
+    }
+
+    if (!communityOrError.value.isAdminOrCreator(userOrError.value)) {
+      return left(
+        new UserPermissionError('User must be an admin or creator of the community to create an action request'),
+      );
     }
 
     const objectives = dto.objectives.map(objective => ({

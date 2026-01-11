@@ -3,37 +3,24 @@ import { User } from '../models/user';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserGroupByCountryData } from '../../application/services/data/user-group-by-country.data';
 import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
+import { UserEventDto } from '@solidarianid/kafka';
+import { CreateCommunityMembershipProps } from '../value-objects/community-membership';
 
-/**
- * Servicio de dominio para usuarios
- * Define las operaciones de negocio disponibles sobre usuarios
- */
 export abstract class UsersService {
-  /**
-   * Obtiene usuarios de forma paginada
-   * @param page Número de página (empieza en 1)
-   * @param limit Número de usuarios por página
-   * @returns Either con error o resultado paginado
-   */
   abstract getPaginatedUsers(page: number, limit: number): Promise<Either<RepositoryException, PaginatedResult<User>>>;
 
-  /**
-   * Obtiene un usuario específico por su ID
-   * @param id ID del usuario (UUID v4)
-   * @returns Either con error de repositorio o el usuario encontrado
-   */
   abstract getUserById(id: string): Promise<Either<RepositoryException, User>>;
 
-  /**
-   * Obtiene el total de usuarios en el sistema
-   * @returns Número total de usuarios
-   */
   abstract getTotalUsers(): Promise<Either<RepositoryException, number>>;
 
-  /**
-   * Obtiene la cantidad de usuarios agrupados por país
-   * @param limit Número máximo de países a retornar
-   * @returns Either con error de repositorio o arreglo de datos agrupados
-   */
   abstract getUsersGroupByCountry(limit: number): Promise<Either<RepositoryException, UserGroupByCountryData[]>>;
+
+  abstract createUser(userDto: UserEventDto): Promise<Either<RepositoryException, void>>;
+
+  abstract updateUser(userDto: UserEventDto): Promise<Either<RepositoryException, void>>;
+
+  abstract addMemberShip(
+    userId: string,
+    props: CreateCommunityMembershipProps,
+  ): Promise<Either<RepositoryException, void>>;
 }

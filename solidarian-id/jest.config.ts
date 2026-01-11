@@ -50,6 +50,7 @@ const baseJestConfig: Config = {
     '!**/enums/**',
     '!**/model/**',
     '!**/models/**',
+    '!**/*.data.ts',
   ],
 
   reporters: ['default'],

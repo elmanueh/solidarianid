@@ -9,9 +9,7 @@ export class UserEntity {
   @PrimaryColumn()
   id: string;
 
-  @Column({
-    unique: true,
-  })
+  @Column()
   fullName: string;
 
   @Column({ nullable: true })

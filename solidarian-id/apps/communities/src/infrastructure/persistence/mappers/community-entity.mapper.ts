@@ -22,9 +22,15 @@ export class CommunityEntityMapper implements Mapper<Community, CommunityEntity>
     entity.name = model.name;
     entity.description = model.description;
 
-    entity.members = model.members?.map(member => CommunityUserEntityMapper.toPersistence(member, model)) || [];
+    if (model.members && model.members.length > 0) {
+      entity.members = model.members.map(member => {
+        return CommunityUserEntityMapper.toPersistence(member, model);
+      });
+    }
 
-    entity.causes = model.causes?.map(cause => this.causesEntityMapper.toPersistence(cause)) || [];
+    if (model.causes && model.causes.length > 0) {
+      entity.causes = model.causes.map(cause => this.causesEntityMapper.toPersistence(cause));
+    }
 
     return entity;
   }
@@ -45,9 +51,9 @@ export class CommunityEntityMapper implements Mapper<Community, CommunityEntity>
       entity.members?.map(communityUserEntity => {
         const user = this.userEntityMapper.fromPersistence(communityUserEntity.user);
         if (user.isRight()) {
-          if (communityUserEntity.role === (MemberType.CREATOR as string)) {
+          if (communityUserEntity.role === MemberType.CREATOR) {
             creator = user.value;
-          } else if (communityUserEntity.role === (MemberType.ADMIN as string)) {
+          } else if (communityUserEntity.role === MemberType.ADMIN) {
             admins.push(user.value);
           }
         }

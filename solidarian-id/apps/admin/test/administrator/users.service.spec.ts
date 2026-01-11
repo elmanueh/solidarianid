@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { UsersServiceImpl } from '@app/admin/administrator/model/application/services/users.service.impl';
 import { User } from '@app/admin/administrator/model/domain/models/user';
-import {
-  PaginatedResult,
-  UserRepositoryPort,
-} from '@app/admin/administrator/model/domain/ports/output/user.repository.port';
+import { UserRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/user.repository.port';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserQueryRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/user-query.repository.port';
+import { Role } from '@app/admin/administrator/model/domain/enums/role';
+import { PaginatedResult } from '@app/admin/administrator/model/domain/value-objects/paginated-result';
 
 const createMockUserRepository = (): jest.Mocked<UserRepositoryPort> => ({
   findPaginated: jest.fn(),
@@ -32,12 +31,12 @@ const createMockUsers = (): User[] => {
       {
         communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
         communityName: 'Volunteers Spain',
-        isAdmin: true,
+        role: Role.MEMBER,
       },
       {
         communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c9',
         communityName: 'Green Initiative',
-        isAdmin: false,
+        role: Role.MEMBER,
       },
     ],
   });
@@ -53,7 +52,7 @@ const createMockUsers = (): User[] => {
       {
         communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430d0',
         communityName: 'Mexico Relief',
-        isAdmin: false,
+        role: Role.MEMBER,
       },
     ],
   });

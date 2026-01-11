@@ -20,10 +20,10 @@ export class RequestConsumerAdapter {
       const result = await this.dispatch(eventType, data);
 
       if (result.isLeft()) {
-        this.logger.error(`Error processing request event: ${result.value.message}`);
+        this.logger.error(`Error processing request event: ${result.value.message}`, RequestConsumerAdapter.name);
       }
     } catch (error) {
-      this.logger.error(`Unexpected error processing request event: ${error}`);
+      this.logger.error(`Unexpected error processing request event: ${error}`, RequestConsumerAdapter.name);
       throw error;
     }
   }
@@ -33,11 +33,11 @@ export class RequestConsumerAdapter {
     data: RequestEventDto,
   ): Promise<Either<RequestError | RepositoryException, any>> {
     if (eventType === EventType.REQUEST_CREATED) {
-      this.logger.debug(`Dispatching REQUEST_CREATED for request ${data.id}`);
+      this.logger.debug(`Dispatching REQUEST_CREATED for request ${data.id}`, RequestConsumerAdapter.name);
       return this.requestService.createRequest(data);
     }
 
-    this.logger.warn(`Unhandled event type: ${eventType}`);
+    this.logger.warn(`Unhandled event type: ${eventType}`, RequestConsumerAdapter.name);
     return left(new RequestError(`Unhandled event type: ${eventType}`));
   }
 }

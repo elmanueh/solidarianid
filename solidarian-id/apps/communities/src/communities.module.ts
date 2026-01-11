@@ -48,6 +48,9 @@ import { ActionsController } from './infrastructure/presentation/controllers/act
 import { CausesController } from './infrastructure/presentation/controllers/causes.controller';
 import { CommunitiesController } from './infrastructure/presentation/controllers/communities.controller';
 import { RequestController } from './infrastructure/presentation/controllers/request.controller';
+import { CommunitiesKafkaPublisherAdapter } from './infrastructure/messaging/publishers/communities.publisher';
+import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
+import { CommunityEventMapper } from './infrastructure/messaging/mappers/community-event-mapper';
 
 @Module({
   imports: [
@@ -125,6 +128,10 @@ import { RequestController } from './infrastructure/presentation/controllers/req
       provide: UserService,
       useClass: UserServiceImpl,
     },
+    {
+      provide: CommunitiesPublisherPort,
+      useClass: CommunitiesKafkaPublisherAdapter,
+    },
     // Persistence Mappers
     CommunityEntityMapper,
     CauseEntityMapper,
@@ -136,6 +143,7 @@ import { RequestController } from './infrastructure/presentation/controllers/req
 
     // Events Mappers
     RequestEventMapper,
+    CommunityEventMapper,
   ],
 })
 export class CommunitiesModule {}

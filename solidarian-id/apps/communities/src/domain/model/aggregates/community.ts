@@ -92,6 +92,10 @@ export class Community extends AggregateRoot<CommunityProps> {
     return this.props.admins.some(a => a.id.equals(user.id));
   }
 
+  isAdminOrCreator(user: User): boolean {
+    return this.props.admins.some(a => a.id.equals(user.id)) || this.isCreator(user);
+  }
+
   isCreator(user: User): boolean {
     return this.props.creator.id.equals(user.id);
   }

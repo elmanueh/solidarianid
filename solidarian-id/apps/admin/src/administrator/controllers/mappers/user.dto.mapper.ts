@@ -15,7 +15,7 @@ export class UserDtoMapper {
   static toDetailDto(user: User): UserDetailResponseDto {
     const communities = user.communityMemberships.map(
       (membership: CommunityMembership) =>
-        new CommunityDto(membership.communityId, membership.communityName, membership.isAdmin),
+        new CommunityDto(membership.communityId, membership.communityName, membership.role),
     );
 
     return new UserDetailResponseDto(

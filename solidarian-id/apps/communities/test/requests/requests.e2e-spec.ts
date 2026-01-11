@@ -220,6 +220,18 @@ describe('RequestController (e2e)', () => {
     };
 
     it('should create an action request and return 201 with Location header', async () => {
+      validActionRequestDto.userId = USER_IDS.JUAN;
+      const response = await server
+        .getRequest()
+        .post('/api/action-requests')
+        .send(validActionRequestDto)
+        .expect(HttpStatus.CREATED);
+
+      expect(response.headers.location).toBeDefined();
+      expect(response.headers.location).toMatch(/\/action-requests\/[0-9a-f-]{36}$/);
+    });
+
+    it('should not create an action request and return 401 if the user dont have permission', async () => {
       const response = await server
         .getRequest()
         .post('/api/action-requests')

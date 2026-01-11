@@ -1,15 +1,17 @@
+import { Role } from '../../model/domain/enums/role';
+
 /**
  * DTO de comunidad para la respuesta de detalle de usuario
  */
 export class CommunityDto {
   id: string;
   name: string;
-  isAdmin: boolean;
+  role: Role;
 
-  constructor(id: string, name: string, isAdmin: boolean) {
+  constructor(id: string, name: string, role: Role) {
     this.id = id;
     this.name = name;
-    this.isAdmin = isAdmin;
+    this.role = role;
   }
 }
 

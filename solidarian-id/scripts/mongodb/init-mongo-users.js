@@ -2,7 +2,7 @@
 // Este script puebla la colección de usuarios con datos de prueba
 
 // Conexión a la base de datos
-let db = db.getSiblingDB('solidarianid');
+let db = db.getSiblingDB(process.env.MONGO_INITDB_DATABASE || 'solidarianid');
 
 // Crear colección de usuarios si no existe
 db.createCollection('users');

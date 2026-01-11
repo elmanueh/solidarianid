@@ -1,0 +1,174 @@
+@startuml C2-Container-Full-Architecture
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!$ICONURL = "https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v3.0.0/icons"
+
+!include $ICONURL/common.puml
+!include $ICONURL/devicons/database.puml
+!include $ICONURL/govicons/user_military.puml
+!include $ICONURL/govicons/user_suit.puml
+!include $ICONURL/font-awesome-5/user_shield.puml
+!include $ICONURL/font-awesome-5/user.puml
+!include $ICONURL/font-awesome-5/users.puml
+!include $ICONURL/devicons2/apachekafka_original.puml
+!include $ICONURL/devicons2/mongodb.puml
+!include $ICONURL/devicons2/postgresql.puml
+!include $ICONURL/devicons2/neo4j.puml
+!include $ICONURL/devicons2/cassandra.puml
+!include $ICONURL/devicons2/nestjs_original.puml
+
+' ============================================================================
+' CONFIGURACIÓN GLOBAL
+' ============================================================================
+LAYOUT_TOP_DOWN()
+HIDE_STEREOTYPE()
+
+skinparam {
+  ArrowThickness 2
+  RoundCorner 10
+  Shadowing false
+  DefaultFontSize 12
+}
+
+title Arquitectura Completa de SolidarianID
+
+' ============================================================================
+' DEFINICIÓN DE TAGS (Colores y estilos)
+' ============================================================================
+AddElementTag("monolith", $bgColor="#6C3483", $fontColor="#FFFFFF")
+AddElementTag("monolith-database", $bgColor="#00943eff", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)
+AddElementTag("microservice", $bgColor="#db7a03ff", $fontColor="#FFFFFF")
+AddElementTag("microservice-database", $bgColor="#1C2833", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)  
+AddElementTag("message-broker", $bgColor="#530176ff", $fontColor="#ffffff", $borderColor="#FFFFFF", $borderThickness=2)
+
+' ============================================================================
+' ACTORES DEL SISTEMA
+' ============================================================================
+
+' --- Actor de Administración (Izquierda) ---
+Person(admin, "Administrador de la plataforma", "Personal autorizado de SolidarianID", $sprite="user_military")
+
+' --- Actores de la Aplicación Principal (Derecha) ---
+Person(communityAdmin, "Administrador de comunidad", "Gestiona causas y eventos dentro de su comunidad", $sprite="user_suit")
+Person(ong, "ONG", "Organización No Gubernamental colaboradora", $sprite="users")
+Person(userNotRegistered, "Usuario no registrado", "Navega por el sitio web público", $sprite="user")
+Person(userRegistered, "Usuario registrado", "Usuario autenticado en SolidarianID", $sprite="user_shield")
+
+' Layout de actores: Admin a la izquierda, resto en fila a la derecha
+Lay_R(admin, communityAdmin)
+Lay_R(communityAdmin, ong)
+Lay_R(ong, userNotRegistered)
+Lay_R(userNotRegistered, userRegistered)
+
+' ============================================================================
+' APLICACIÓN DE ADMINISTRACIÓN (Monolito)
+' ============================================================================
+System_Boundary(adminAppBoundary, "Aplicación de Administración") {
+  Container(adminMonolith, "Monolito MVC", "NestJS + Handlebars", "Gestiona peticiones HTTP y renderiza vistas", $sprite="nestjs_original", $tags="monolith")
+  ContainerDb(adminDatabase, "Admin DB", "MongoDB", "Administradores, causas, comunidades, eventos, SDGs", $sprite="mongodb", $tags="monolith-database")
+}
+
+' ============================================================================
+' BROKER DE MENSAJERÍA (Centro - Eje de comunicación)
+' ============================================================================
+ContainerQueue(kafkaBroker, "Apache Kafka", "Event Streaming Platform", "Bus de eventos de dominio entre microservicios", $sprite="apachekafka_original", $tags="message-broker")
+
+' ============================================================================
+' APLICACIÓN PRINCIPAL (Microservicios)
+' ============================================================================
+System_Boundary(principalAppBoundary, "Aplicación Principal (MVP) - Microservicios") {
+  
+  ' --- API Gateway (Punto de entrada único) ---
+  Container(apiGateway, "API Gateway", "NestJS + Express", "Punto de entrada único: routing, autenticación JWT, rate limiting", $sprite="nestjs_original", $tags="microservice")
+  
+  ' --- Fila 1: Usuarios y Comunidades (Core) ---
+  System_Boundary(userServiceBoundary, "Usuarios") {
+    Container(userService, "Users API", "NestJS", "Registro, autenticación y perfil", $sprite="nestjs_original", $tags="microservice")
+    ContainerDb(userDatabase, "Users DB", "PostgreSQL", "Datos de usuarios", $sprite="postgresql", $tags="microservice-database")
+  }
+  
+  System_Boundary(communitiesServiceBoundary, "Comunidades") {
+    Container(communitiesService, "Communities API", "NestJS", "Gestión de comunidades y miembros", $sprite="nestjs_original", $tags="microservice")
+    ContainerDb(communitiesDatabase, "Communities DB", "PostgreSQL", "Comunidades y asociaciones", $sprite="postgresql", $tags="microservice-database")
+  }
+
+  ' --- Fila 2: Servicios de Soporte ---
+  System_Boundary(socialMediaServiceBoundary, "Redes Sociales") {
+    Container(socialMediaService, "Social API", "NestJS", "Integración con redes sociales", $sprite="nestjs_original", $tags="microservice")
+    ContainerDb(socialMediaDatabase, "Social DB", "Neo4j", "Grafos de conexiones sociales", $sprite="neo4j", $tags="microservice-database")
+  }
+  
+  System_Boundary(messagingServiceBoundary, "Mensajería") {
+    Container(messagingService, "Messaging API", "NestJS", "Notificaciones email/SMS", $sprite="nestjs_original", $tags="microservice")
+    ContainerDb(messagingDatabase, "Messaging DB", "Cassandra", "Plantillas y logs de envíos", $sprite="cassandra", $tags="microservice-database")
+  }
+}
+
+' ============================================================================
+' LAYOUT: Posicionamiento de componentes
+' ============================================================================
+
+' Posicionar Admin App a la izquierda del sistema principal
+Lay_L(adminAppBoundary, principalAppBoundary)
+
+' API Gateway arriba de los microservicios
+Lay_D(apiGateway, userServiceBoundary)
+Lay_D(apiGateway, communitiesServiceBoundary)
+
+' Alinear microservicios horizontalmente dentro del boundary
+Lay_R(userServiceBoundary, communitiesServiceBoundary)
+Lay_R(socialMediaServiceBoundary, messagingServiceBoundary)
+
+' Fila 2 debajo de Fila 1
+Lay_D(userServiceBoundary, socialMediaServiceBoundary)
+Lay_D(communitiesServiceBoundary, messagingServiceBoundary)
+
+' Kafka debajo de ambas aplicaciones
+Lay_D(adminAppBoundary, kafkaBroker)
+Lay_D(principalAppBoundary, kafkaBroker)
+
+' ============================================================================
+' RELACIONES: Aplicación de Administración
+' ============================================================================
+BiRel_D(admin, adminMonolith, "Gestiona la plataforma", "HTTPS")
+Rel_D(adminMonolith, adminDatabase, "Persiste datos", "MongoDB Driver")
+BiRel_D(adminMonolith, kafkaBroker, "Eventos de dominio", "Kafka Protocol")
+
+' ============================================================================
+' RELACIONES: Actores → API Gateway
+' ============================================================================
+Rel_D(communityAdmin, apiGateway, "Gestiona causas y eventos", "HTTPS/REST")
+Rel_D(ong, apiGateway, "Colabora con la plataforma", "HTTPS/REST")
+Rel_D(userNotRegistered, apiGateway, "Navega contenido público", "HTTPS/REST")
+Rel_D(userRegistered, apiGateway, "Accede a funcionalidades", "HTTPS/REST + JWT")
+
+' ============================================================================
+' RELACIONES: API Gateway → Microservicios
+' ============================================================================
+Rel_D(apiGateway, userService, "Rutas /users/*", "HTTP interno")
+Rel_D(apiGateway, communitiesService, "Rutas /communities/*", "HTTP interno")
+Rel_D(apiGateway, socialMediaService, "Rutas /social/*", "HTTP interno")
+Rel_D(apiGateway, messagingService, "Rutas /messages/*", "HTTP interno")
+
+' ============================================================================
+' RELACIONES: Microservicios → Bases de Datos
+' ============================================================================
+Rel_D(userService, userDatabase, "CRUD usuarios", "SQL/TypeORM")
+Rel_D(communitiesService, communitiesDatabase, "CRUD comunidades", "SQL/TypeORM")
+Rel_D(socialMediaService, socialMediaDatabase, "Grafos sociales", "Cypher/Neo4j")
+Rel_D(messagingService, messagingDatabase, "Logs mensajes", "CQL/Cassandra")
+
+' ============================================================================
+' RELACIONES: Microservicios → Kafka (Event-Driven)
+' ============================================================================
+BiRel_D(userService, kafkaBroker, "UserCreated, UserUpdated", "Kafka")
+BiRel_D(communitiesService, kafkaBroker, "CommunityCreated, MemberJoined", "Kafka")
+BiRel_D(socialMediaService, kafkaBroker, "PostShared, ConnectionMade", "Kafka")
+BiRel_D(messagingService, kafkaBroker, "NotificationSent", "Kafka")
+
+' ============================================================================
+' LEYENDA
+' ============================================================================
+SHOW_FLOATING_LEGEND()
+
+@enduml

@@ -114,3 +114,73 @@ Kafka puede tardar algunos segundos en inicializarse completamente. Si ves error
 ```bash
 docker compose ps kafka
 ```
+
+## Ejecución de Scripts de Consultas de Base de Datos
+
+Para facilitar la correción y el análisis de las consultas, se proporcionan 2 scripts que ejecutan las consultas reales más importantes utilizadas por las aplicaciones.
+
+### Consultas MongoDB (Aplicación Admin)
+
+El script `admin-mongodb-queries.js` contiene todas las consultas ejecutadas por la aplicación de administración:
+
+```bash
+# Desde la raíz del proyecto
+cd ado
+
+# Copiar el script al contenedor de MongoDB
+docker cp admin-mongodb-queries.js mongo:/tmp/
+
+# Ejecutar el script dentro del contenedor con mongosh
+docker exec mongo mongosh /tmp/admin-mongodb-queries.js
+```
+
+Este script ejecuta **15 consultas** que incluyen:
+
+- Métricas del dashboard (causas por ODS, usuarios por país, totales)
+- Solicitudes pendientes de comunidades, causas y acciones
+- Reportes de usuarios con paginación
+- Consultas de autenticación de administradores
+
+Dentro del script está detallada cada consulta y su caso de uso.
+
+**Nota:** Puedes modificar los parámetros de ejemplo al inicio del script (`PARAMS` object) para ajustarlos y probar resultados distintos.
+
+### Consultas PostgreSQL (Aplicaciones Communities y Users)
+
+El script `postgres-queries.sql` contiene todas las consultas ejecutadas por las aplicaciones Communities y Users en PostgreSQL:
+
+```bash
+# Desde la raíz del proyecto
+cd ado
+
+# Copiar el script al contenedor de PostgreSQL
+docker cp postgres-queries.sql solidarian_postgres_db:/tmp/
+
+# Ejecutar el script dentro del contenedor
+docker exec solidarian_postgres_db psql -U <.env/POSTGRES_USER> -d <.env/POSTGRES_DB> -f /tmp/postgres-queries.sql
+```
+
+Este script ejecuta **13 consultas** que incluyen:
+
+- Listados de comunidades con miembros y causas
+- Ranking de comunidades por número de usuarios
+- Búsquedas de causas y acciones benéficas
+- Análisis temporal de usuarios unidos por mes
+- Validaciones de unicidad para autenticación
+
+**Nota:** Puedes modificar los parámetros al inicio del script (sección `PARÁMETROS DE EJEMPLO`) usando comandos `\set` para ajustarlos y probar resultados distintos.
+
+### Análisis de Consultas
+
+Si necesitas revisar la documentación detallada de cada consulta, sus repositorios asociados y casos de uso:
+
+- **MongoDB**: `mongodb-queries-analysis.md`
+- **PostgreSQL**: `postgres-queries-analysis.md`
+
+Estos documentos incluyen información sobre:
+
+- Métodos de repositorio que ejecutan cada consulta
+- Servicios y controladores que las invocan
+- Endpoints de API relacionados
+- Casos de uso de negocio
+- Patrones arquitectónicos aplicados (CQRS, DDD, etc.)

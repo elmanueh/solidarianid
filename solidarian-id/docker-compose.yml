@@ -22,7 +22,7 @@ services:
 
   mongo:
     image: mongo@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d
-    container_name: mongo
+    container_name: solidarian_mongo_db
     restart: unless-stopped
     ports:
       - '${MONGO_PORT}:27017'

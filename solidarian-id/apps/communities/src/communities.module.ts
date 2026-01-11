@@ -51,9 +51,11 @@ import { RequestController } from './infrastructure/presentation/controllers/req
 import { CommunitiesKafkaPublisherAdapter } from './infrastructure/messaging/publishers/communities.publisher';
 import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunityEventMapper } from './infrastructure/messaging/mappers/community-event-mapper';
+import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
 
 @Module({
   imports: [
+    DatabaseModule,
     TypeOrmModule.forFeature([
       CommunityEntity,
       CauseEntity,

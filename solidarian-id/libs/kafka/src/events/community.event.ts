@@ -1,9 +1,9 @@
 import { EventType } from '../events.enum';
 import { GenericEvent } from './generic.event';
 import { CommunityMemberJoinedEventDto } from '../dtos/communities/community-member-joined.event.dto';
-import { CommunityCreatedDto } from '../dtos/communities/community-created.event.dto';
+import { CommunityCreatedEventDto } from '../dtos/communities/community-created.event.dto';
 
-export type CommunityEventDto = CommunityCreatedDto | CommunityMemberJoinedEventDto;
+export type CommunityEventDto = CommunityCreatedEventDto | CommunityMemberJoinedEventDto;
 
 /**
  * Domain event for community-updated operations.

@@ -1,4 +1,4 @@
-export class CommunityCreatedDto {
+export class CommunityCreatedEventDto {
   id: string;
   name: string;
   description: string;

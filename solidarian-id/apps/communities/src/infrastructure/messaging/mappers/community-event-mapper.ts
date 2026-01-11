@@ -2,7 +2,7 @@ import { Community } from '@app/communities/domain/model/aggregates/community';
 import { Injectable } from '@nestjs/common';
 import {
   CommunityMemberJoinedEventDto,
-  CommunityCreatedDto,
+  CommunityCreatedEventDto,
   CommunityEventDto,
   EventType,
   Mapper,
@@ -24,8 +24,8 @@ export class CommunityEventMapper extends Mapper<Community, CommunityEventDto> {
     }
   }
 
-  private toCommunityCreatedDto(community: Community): CommunityCreatedDto {
-    const dto = new CommunityCreatedDto();
+  private toCommunityCreatedDto(community: Community): CommunityCreatedEventDto {
+    const dto = new CommunityCreatedEventDto();
     dto.id = community.id.value;
     dto.name = community.name;
     dto.description = community.description;
@@ -37,6 +37,7 @@ export class CommunityEventMapper extends Mapper<Community, CommunityEventDto> {
     const dto = new CommunityMemberJoinedEventDto();
     dto.communityId = community.id.value;
     dto.joinedAt = new Date();
+    dto.communityName = community.name;
     const lastMember = community.members[community.members.length - 1];
     dto.userId = lastMember.id.value;
     return dto;

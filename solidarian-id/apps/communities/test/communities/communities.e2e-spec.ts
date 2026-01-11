@@ -153,7 +153,7 @@ describe('CommunitiesController (e2e)', () => {
       await server
         .getRequest()
         .post(`/api/communities/${COMMUNITY_IDS.AFRICA}/members`)
-        .send({ idUsuario: newUserId })
+        .send({ userId: newUserId })
         .expect(HttpStatus.CREATED);
 
       await server
@@ -173,7 +173,7 @@ describe('CommunitiesController (e2e)', () => {
       await server
         .getRequest()
         .post(`/api/communities/${COMMUNITY_IDS.AFRICA}/members`)
-        .send({ idUsuario: existingUserId })
+        .send({ userId: existingUserId })
         .expect(HttpStatus.CONFLICT);
     });
 

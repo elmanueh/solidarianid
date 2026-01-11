@@ -81,36 +81,7 @@ async findAll(relations?: string[]): Promise<Either<RepositoryException, Communi
 
 #### Qué Busca Esta Consulta
 
-Busca **todas las comunidades** con sus miembros asociados y los datos completos de cada usuario miembro. El resultado incluye comunidades sin miembros (gracias al LEFT JOIN). Ejemplo:
-
-```javascript
-[
-  {
-    id: "comm-uuid-1",
-    name: "Solidarios Madrid",
-    description: "Comunidad de voluntarios en Madrid",
-    members: [
-      {
-        userId: "user-uuid-1",
-        role: "administrator",
-        joinedAt: "2025-06-15",
-        user: { id: "user-uuid-1", fullName: "María García", email: "maria@email.com", ... }
-      },
-      {
-        userId: "user-uuid-2",
-        role: "member",
-        joinedAt: "2025-07-20",
-        user: { id: "user-uuid-2", fullName: "Juan Pérez", email: "juan@email.com", ... }
-      }
-    ]
-  },
-  {
-    id: "comm-uuid-2",
-    name: "Voluntarios Barcelona",
-    members: [] // Comunidad sin miembros aún
-  }
-]
-```
+Busca **todas las comunidades** con sus miembros asociados y los datos completos de cada usuario miembro. El resultado incluye comunidades sin miembros (gracias al LEFT JOIN).
 
 Vista: `GET /api/communities` → Listado público de comunidades
 
@@ -196,43 +167,7 @@ async findById(
 
 #### Qué Busca Esta Consulta
 
-Busca **una comunidad específica por su ID** con toda la información relacionada: causas benéficas asociadas y miembros con sus datos de usuario. Ejemplo:
-
-```javascript
-{
-  id: "comm-uuid-1",
-  name: "Solidarios Madrid",
-  description: "Comunidad de voluntarios en Madrid",
-  causes: [
-    {
-      id: "cause-uuid-1",
-      name: "Reforestación Urbana",
-      ods: [13, 15],
-      initialDate: "2026-03-01",
-      durationDays: 90
-    },
-    {
-      id: "cause-uuid-2",
-      name: "Limpieza de Ríos",
-      ods: [6, 14],
-      initialDate: "2026-04-15",
-      durationDays: 30
-    }
-  ],
-  members: [
-    {
-      userId: "user-uuid-1",
-      role: "administrator",
-      user: { fullName: "María García", email: "maria@email.com" }
-    },
-    {
-      userId: "user-uuid-2",
-      role: "member",
-      user: { fullName: "Juan Pérez", email: "juan@email.com" }
-    }
-  ]
-}
-```
+Busca **una comunidad específica por su ID** con toda la información relacionada: causas benéficas asociadas y miembros con sus datos de usuario.
 
 Vista: `GET /api/communities/:id` → Página de detalle de comunidad
 
@@ -309,33 +244,7 @@ async findOrderByMostUsers(limit: number = 10): Promise<Either<RepositoryExcepti
 
 #### Qué Busca Esta Consulta
 
-Busca **un ranking de comunidades** ordenadas por número de miembros, limitado a las top N (típicamente 10). Solo incluye comunidades con al menos un miembro (INNER JOIN). Ejemplo:
-
-```javascript
-[
-  {
-    communityId: "comm-uuid-5",
-    communityName: "Solidarios Madrid",
-    userCount: 234,
-  },
-  {
-    communityId: "comm-uuid-12",
-    communityName: "Voluntarios Barcelona",
-    userCount: 189,
-  },
-  {
-    communityId: "comm-uuid-3",
-    communityName: "Ayuda Valencia",
-    userCount: 145,
-  },
-  {
-    communityId: "comm-uuid-8",
-    communityName: "Acción Sevilla",
-    userCount: 98,
-  },
-  // ... hasta 10 comunidades
-];
-```
+Busca **un ranking de comunidades** ordenadas por número de miembros, limitado a las top N (típicamente 10). Solo incluye comunidades con al menos un miembro (INNER JOIN).
 
 Vista: `GET /api/communities/ranking/most-users` → Dashboard de métricas
 
@@ -522,26 +431,6 @@ Busca causas donde `communityId` coincide con el parámetro proporcionado:
 - Filtra por Foreign Key a la tabla `communities`
 - Retorna solo causas pertenecientes a una comunidad específica
 - No incluye datos de acciones asociadas
-
-**Ejemplo de uso:**
-Si `communityId = "comm-123"`, retorna:
-
-```json
-[
-  {
-    "id": "cause-uuid-1",
-    "name": "Limpieza de playas",
-    "communityId": "comm-123",
-    "status": "APPROVED"
-  },
-  {
-    "id": "cause-uuid-5",
-    "name": "Reciclaje urbano",
-    "communityId": "comm-123",
-    "status": "PENDING"
-  }
-]
-```
 
 ### 2.3 Causa específica por ID (con acciones)
 
@@ -804,26 +693,6 @@ Busca una causa que cumpla DOS condiciones simultáneamente:
 - **Fallo 1**: Causa existe pero pertenece a otra comunidad → Retorna `null` (EntityNotFoundException)
 - **Fallo 2**: Causa no existe → Retorna `null` (EntityNotFoundException)
 
-**Ejemplo de resultado exitoso:**
-
-```json
-{
-  "id": "cause-uuid-123",
-  "name": "Educación para niños",
-  "communityId": "community-uuid-456",
-  "status": "APPROVED"
-}
-```
-
-**Ejemplo de resultado fallido:**
-
-```json
-{
-  "error": "EntityNotFoundException",
-  "message": "Cause with id cause-uuid-123 for community community-uuid-789 not found"
-}
-```
-
 ---
 
 ## **3. ACTIONS - Listado Simple (1 consulta)**
@@ -903,37 +772,7 @@ async findAll(): Promise<Either<ValidationError | RepositoryException, Action[]>
 
 #### Qué Busca Esta Consulta
 
-Recupera todas las filas de la tabla `actions` con sus columnas:
-
-- `id`: Identificador UUID de la acción
-- `name`: Nombre de la acción solidaria
-- `description`: Descripción detallada de qué consiste la acción
-- `causeId`: Foreign Key a la causa a la que pertenece
-- `startDate`: Fecha de inicio de la acción
-- `endDate`: Fecha de finalización de la acción
-
-**Ejemplo de resultado:**
-
-```json
-[
-  {
-    "id": "action-uuid-1",
-    "name": "Jornada de limpieza de playas",
-    "description": "Limpieza en playa de Valencia",
-    "causeId": "cause-uuid-1",
-    "startDate": "2024-03-15T09:00:00Z",
-    "endDate": "2024-03-15T13:00:00Z"
-  },
-  {
-    "id": "action-uuid-2",
-    "name": "Recogida de alimentos",
-    "description": "Recolectar alimentos para banco",
-    "causeId": "cause-uuid-2",
-    "startDate": "2024-03-20T10:00:00Z",
-    "endDate": "2024-03-20T14:00:00Z"
-  }
-]
-```
+Recupera todas las filas de la tabla `actions` con sus datos básicos: identificador UUID, nombre, descripción, FK a la causa, y fechas de inicio/fin de la acción.
 
 ---
 
@@ -1049,33 +888,6 @@ Genera un resumen mensual del crecimiento de usuarios en una comunidad:
 - **Últimos N meses**: Solo los más recientes (por defecto 12)
 - **Ordenado descendente**: Del mes actual hacia atrás
 
-**Ejemplo de resultado:**
-
-```json
-[
-  {
-    "communityName": "Voluntarios Valencia",
-    "month": "2024-03",
-    "userCount": 45
-  },
-  {
-    "communityName": "Voluntarios Valencia",
-    "month": "2024-02",
-    "userCount": 38
-  },
-  {
-    "communityName": "Voluntarios Valencia",
-    "month": "2024-01",
-    "userCount": 52
-  },
-  {
-    "communityName": "Voluntarios Valencia",
-    "month": "2023-12",
-    "userCount": 30
-  }
-]
-```
-
 **Uso en frontend:** Estos datos se utilizan para generar gráficos de líneas o barras mostrando la evolución temporal del crecimiento de la comunidad.
 
 ---
@@ -1173,31 +985,7 @@ async findById(
 
 #### Qué Busca Esta Consulta
 
-Busca un usuario específico por su ID primario:
-
-- `id`: Identificador UUID del usuario
-- `username`: Nombre de usuario único
-- `email`: Correo electrónico
-- `mobilePhone`: Número de teléfono móvil
-- `firstName`: Nombre
-- `lastName`: Apellido
-- `createdAt`: Fecha de creación del registro
-- `updatedAt`: Fecha de última actualización
-
-**Ejemplo de resultado:**
-
-```json
-{
-  "id": "user-uuid-123",
-  "username": "juan_martinez",
-  "email": "juan@example.com",
-  "mobilePhone": "+34612345678",
-  "firstName": "Juan",
-  "lastName": "Martínez",
-  "createdAt": "2024-01-15T10:30:00Z",
-  "updatedAt": "2024-03-10T14:20:00Z"
-}
-```
+Busca un usuario específico por su ID primario con sus datos básicos: identificador UUID, username, información de contacto (email, móvil), nombre completo, y fechas de creación/actualización del registro.
 
 ### 5.2 Verificar existencia por móvil
 
@@ -1507,28 +1295,6 @@ async findByUsername(
 
 #### Qué Busca Esta Consulta
 
-Busca un usuario completo por su Username en `tbl_Usuarios` para autenticación:
-
-- `Id`: UUID del usuario
-- `Username`: Nombre de usuario (criterio de búsqueda)
-- `FullName`: Nombre completo
-- `PasswordHash`: Hash bcrypt de la contraseña (necesario para validación)
-- `MobilePhone`: Teléfono móvil
-- `City`: Ciudad del usuario
-- `CountryCode`: Código de país
-
-**Ejemplo de resultado:**
-
-```json
-{
-  "Id": "user-uuid-123",
-  "Username": "juan_martinez",
-  "FullName": "Juan Martínez García",
-  "PasswordHash": "$2b$10$abcdefghijklmnopqrstuvwxyz123456",
-  "MobilePhone": "+34612345678",
-  "City": "Madrid",
-  "CountryCode": "ES"
-}
-```
+Busca un usuario completo por su Username en `tbl_Usuarios` para autenticación. Retorna todos sus datos incluyendo el PasswordHash (hash bcrypt) necesario para validar credenciales en el proceso de login.
 
 ---

@@ -63,15 +63,7 @@ async findCausesGroupByOds(): Promise<Either<RepositoryException, CauseGroupByOd
 
 #### Qué Busca Esta Consulta
 
-Busca **todas las causas aprobadas** (`status: "approved"`) y las agrupa contando cuántas causas están asociadas a cada ODS específico. Por ejemplo, si hay 15 causas con ODS 3 (Salud y Bienestar) y 8 con ODS 13 (Acción por el Clima), el resultado será:
-
-```javascript
-[
-  { ods: 3, causeCount: 15 },
-  { ods: 13, causeCount: 8 },
-  // ... resto de ODS
-];
-```
+Busca **todas las causas aprobadas** (`status: "approved"`) y las agrupa contando cuántas causas están asociadas a cada ODS específico.
 
 Vista en dashboard: `/admin` → Sección "Causas por ODS"
 
@@ -132,18 +124,7 @@ async findUsersGroupByCountry(limit: number = 6): Promise<Either<RepositoryExcep
 
 #### Qué Busca Esta Consulta
 
-Busca **todos los usuarios** de la colección `users`, los agrupa por código de país (`location.countryCode`) y cuenta cuántos usuarios hay en cada país. Luego ordena por el conteo de mayor a menor y retorna solo el top 6. Resultado ejemplo:
-
-```javascript
-[
-  { country: "ES", userCount: 234 },
-  { country: "MX", userCount: 189 },
-  { country: "CO", userCount: 145 },
-  { country: "AR", userCount: 98 },
-  { country: "PE", userCount: 76 },
-  { country: "CL", userCount: 54 },
-];
-```
+Busca **todos los usuarios** de la colección `users`, los agrupa por código de país (`location.countryCode`) y cuenta cuántos usuarios hay en cada país. Luego ordena por el conteo de mayor a menor y retorna solo el top 6.
 
 Vista en dashboard: `/admin` → Sección "Distribución Geográfica"
 
@@ -199,17 +180,7 @@ async findByStatusAndType(
 
 #### Qué Busca Esta Consulta
 
-Busca **todas las solicitudes de tipo "community"** que tienen `status: "approved"`. Retorna el array completo de comunidades aprobadas. El servicio luego cuenta con `.length`. Resultado ejemplo:
-
-```javascript
-[
-  { _id: "uuid1", type: "community", status: "approved", name: "Amigos de África", ... },
-  { _id: "uuid2", type: "community", status: "approved", name: "Voluntarios por el Mar", ... },
-  // ... todas las comunidades aprobadas
-]
-```
-
-El dashboard muestra: **"23 Comunidades Activas"**
+Busca **todas las solicitudes de tipo "community"** que tienen `status: "approved"`. Retorna el array completo de comunidades aprobadas. El servicio luego cuenta con `.length`.
 
 Vista en dashboard: `/admin` → Card "Total Comunidades"
 
@@ -241,19 +212,7 @@ Idéntico a la consulta 1.3. Mongoose aplica `.find()` con doble condición AND,
 
 #### Qué Busca Esta Consulta
 
-Busca **todas las solicitudes de tipo "cause"** que tienen `status: "approved"`. Las causas están vinculadas a comunidades (campo `communityId`). Ejemplo:
-
-```javascript
-[
-  { _id: "uuid3", type: "cause", status: "approved", communityId: "uuid1",
-    name: "Reforestación en Amazonas", ods: [13, 15], ... },
-  { _id: "uuid4", type: "cause", status: "approved", communityId: "uuid1",
-    name: "Limpieza de playas", ods: [14], ... },
-  // ... todas las causas aprobadas
-]
-```
-
-El dashboard muestra: **"87 Causas Activas"**
+Busca **todas las solicitudes de tipo "cause"** que tienen `status: "approved"`. Las causas están vinculadas a comunidades (campo `communityId`).
 
 Vista en dashboard: `/admin` → Card "Total Causas"
 
@@ -285,19 +244,7 @@ Idéntico a consultas 1.3 y 1.4. Mongoose ejecuta `.find({ status: "approved", t
 
 #### Qué Busca Esta Consulta
 
-Busca **todas las solicitudes de tipo "action"** que tienen `status: "approved"`. Las acciones están vinculadas a causas (campo `causeId`). Ejemplo:
-
-```javascript
-[
-  { _id: "uuid5", type: "action", status: "approved", causeId: "uuid3",
-    name: "Plantación 1000 árboles - Marzo 2026", startDate: "2026-03-15", ... },
-  { _id: "uuid6", type: "action", status: "approved", causeId: "uuid3",
-    name: "Campaña de concientización", ... },
-  // ... todas las acciones aprobadas
-]
-```
-
-El dashboard muestra: **"156 Acciones en Marcha"**
+Busca **todas las solicitudes de tipo "action"** que tienen `status: "approved"`. Las acciones están vinculadas a causas (campo `causeId`).
 
 Vista en dashboard: `/admin` → Card "Total Acciones"
 
@@ -533,30 +480,7 @@ async findPendingCommunityRequests(
 
 #### Qué Busca Esta Consulta
 
-Busca **comunidades pendientes** y para cada una hace un JOIN con la misma colección para traer **todas sus causas asociadas** (independientemente del status de las causas). Retorna paginado (10 por página). Resultado ejemplo:
-
-```javascript
-{
-  data: [
-    {
-      _id: "comm-uuid-1",
-      type: "community",
-      status: "pending",
-      name: "Solidarios Madrid",
-      causes: [
-        { _id: "cause-uuid-1", communityId: "comm-uuid-1", type: "cause", status: "pending", name: "Ayuda alimentaria", ... },
-        { _id: "cause-uuid-2", communityId: "comm-uuid-1", type: "cause", status: "pending", name: "Ropero social", ... }
-      ],
-      ...
-    },
-    // ... 9 comunidades más
-  ],
-  total: 23,
-  page: 1,
-  limit: 10,
-  totalPages: 3
-}
-```
+Busca **comunidades pendientes** y para cada una hace un JOIN con la misma colección para traer **todas sus causas asociadas** (independientemente del status de las causas). Retorna paginado (10 por página).
 
 Vista: `/community-requests` → Tabla expandible con causas anidadas
 
@@ -645,19 +569,9 @@ const total = countPipeline.length > 0 ? countPipeline[0].count : 0;
 
 #### Qué Busca Esta Consulta
 
-Cuenta **cuántas causas pendientes existen que pertenecen a comunidades ya aprobadas**. Es una consulta compleja porque aplica filtro jerárquico (comunidad aprobada → causa pendiente). Ejemplo:
+Cuenta **cuántas causas pendientes existen que pertenecen a comunidades ya aprobadas**. Es una consulta compleja porque aplica filtro jerárquico (comunidad aprobada → causa pendiente).
 
-```javascript
-// Si hay:
-// - Comunidad A (aprobada) con 3 causas pendientes
-// - Comunidad B (aprobada) con 2 causas pendientes
-// - Comunidad C (pendiente) con 5 causas pendientes  ← IGNORADA
-
-// Resultado:
-{ _id: null, count: 5 }  // 3 + 2 = 5 (la comunidad C no se cuenta)
-```
-
-Vista: `/cause-requests` → Footer "Total: 5 causas"
+Vista: `/cause-requests` → Footer "Total: X causas"
 
 ---
 
@@ -782,25 +696,7 @@ async findPendingCauseRequests(
 
 #### Qué Busca Esta Consulta
 
-Busca **causas pendientes de comunidades aprobadas** y las retorna "aplanadas" (sin la comunidad padre). Paginado en 10 causas por página. Resultado ejemplo:
-
-```javascript
-{
-  data: [
-    { _id: "cause1", type: "cause", status: "pending", communityId: "comm-A",
-      name: "Reforestación Urbana", ods: [13, 15], ... },
-    { _id: "cause2", type: "cause", status: "pending", communityId: "comm-A",
-      name: "Huertos escolares", ods: [2, 11], ... },
-    { _id: "cause3", type: "cause", status: "pending", communityId: "comm-B",
-      name: "Limpieza de ríos", ods: [6, 14], ... },
-    // ... 7 causas más
-  ],
-  total: 45,
-  page: 1,
-  limit: 10,
-  totalPages: 5
-}
-```
+Busca **causas pendientes de comunidades aprobadas** y las retorna "aplanadas" (sin la comunidad padre). Paginado en 10 causas por página.
 
 Vista: `/cause-requests` → Tabla de causas pendientes
 
@@ -889,19 +785,9 @@ const total = countPipeline.length > 0 ? countPipeline[0].count : 0;
 
 #### Qué Busca Esta Consulta
 
-Cuenta **acciones pendientes de causas aprobadas**. Ejemplo:
+Cuenta **acciones pendientes de causas aprobadas**.
 
-```javascript
-// Si hay:
-// - Causa X (aprobada) con 4 acciones pendientes
-// - Causa Y (aprobada) con 2 acciones pendientes
-// - Causa Z (pendiente) con 10 acciones pendientes ← IGNORADA
-
-// Resultado:
-{ _id: null, count: 6 }  // 4 + 2 = 6
-```
-
-Vista: `/action-requests` → Footer "Total: 6 acciones"
+Vista: `/action-requests` → Footer "Total: X acciones"
 
 ---
 
@@ -1015,24 +901,7 @@ async findPendingActionRequests(
 
 #### Qué Busca Esta Consulta
 
-Busca **acciones pendientes de causas aprobadas**, aplanadas y paginadas. Resultado ejemplo:
-
-```javascript
-{
-  data: [
-    { _id: "action1", type: "action", status: "pending", causeId: "cause-X",
-      name: "Plantación 500 árboles - Marzo 2026", startDate: "2026-03-15",
-      location: { city: "Madrid", coordinates: [40.4168, -3.7038] }, ... },
-    { _id: "action2", type: "action", status: "pending", causeId: "cause-X",
-      name: "Taller educativo escuelas", startDate: "2026-04-10", ... },
-    // ... 8 acciones más
-  ],
-  total: 34,
-  page: 1,
-  limit: 10,
-  totalPages: 4
-}
-```
+Busca **acciones pendientes de causas aprobadas**, aplanadas y paginadas.
 
 Vista: `/action-requests` → Tabla de acciones con detalles expandibles
 
@@ -1155,23 +1024,7 @@ async findPaginated(page: number, limit: number): Promise<Either<RepositoryExcep
 
 #### Qué Busca Esta Consulta
 
-Busca **todos los usuarios** sin filtros, pero con paginación. Retorna solo un subconjunto (6 usuarios por página). Resultado ejemplo:
-
-```javascript
-{
-  data: [
-    { _id: "user1", fullName: "María González", email: "maria@email.com",
-      location: { city: "Madrid", countryCode: "ES" }, createdAt: "2025-01-05", ... },
-    { _id: "user2", fullName: "Juan Pérez", email: "juan@email.com",
-      location: { city: "Barcelona", countryCode: "ES" }, createdAt: "2025-01-04", ... },
-    // ... 4 usuarios más
-  ],
-  total: 1247,
-  page: 1,
-  limit: 6,
-  totalPages: 208
-}
-```
+Busca **todos los usuarios** sin filtros, pero con paginación. Retorna solo un subconjunto (6 usuarios por página).
 
 Vista: `/reports` → Tabla de voluntarios con búsqueda/filtros
 
@@ -1230,29 +1083,7 @@ async findById(id: string): Promise<Either<RepositoryException, User>> {
 
 #### Qué Busca Esta Consulta
 
-Busca **un usuario específico por su ID único** (\_id). Retorna el documento completo con toda la información del perfil. Ejemplo:
-
-```javascript
-{
-  _id: "550e8400-e29b-41d4-a716-446655440001",
-  fullName: "María González Ruiz",
-  email: "maria@email.com",
-  mobilePhone: "+34612345678",
-  location: {
-    city: "Madrid",
-    countryCode: "ES",
-    coordinates: [40.4168, -3.7038]
-  },
-  skills: ["Educación", "Logística", "Comunicación"],
-  biography: "Profesora jubilada con experiencia en...",
-  createdAt: "2025-01-05T10:30:00Z",
-  volunteerHistory: [
-    { causeId: "cause1", hours: 45, rating: 5 },
-    { causeId: "cause3", hours: 30, rating: 4 }
-  ],
-  ...
-}
-```
+Busca **un usuario específico por su ID único** (\_id). Retorna el documento completo con toda la información del perfil.
 
 Vista: `/api/reports/:userId` → Modal "Detalle de Voluntario"
 
@@ -1307,15 +1138,4 @@ async findByEmail(email: string): Promise<Either<RepositoryException, Administra
 
 #### Qué Busca Esta Consulta
 
-Busca **un administrador por su email** para autenticación. Retorna el documento completo incluyendo password hasheado. Ejemplo:
-
-```javascript
-{
-  _id: "c337c0e7-a5ce-483d-a74e-be95f58d60fd",
-  fullname: "Sergio Ros Liarte",
-  email: "info@cafecutillas88.com",
-  phone: "+34608398684",
-  password: "$2b$10$vUrVrsLVO2OduYj7UGr/KOJDVWQewpXroONStmeCpgGjPwiwWaXzi",
-  __v: 0
-}
-```
+Busca **un administrador por su email** para autenticación. Retorna el documento completo incluyendo password hasheado.

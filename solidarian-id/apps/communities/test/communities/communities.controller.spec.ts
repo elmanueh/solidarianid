@@ -6,6 +6,7 @@ import { CommunitiesService } from '@app/communities/domain/services/communities
 import { CommunitiesController } from '@app/communities/infrastructure/presentation/controllers/communities.controller';
 import { EntityNotFoundError } from 'typeorm';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { CommunityRankingUserResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/community-ranking-user.response.dto';
 
 describe('CommunitiesController', () => {
   let controller: CommunitiesController;
@@ -69,7 +70,7 @@ describe('CommunitiesController', () => {
       ];
       mockService.getOrderByMostUsers.mockResolvedValueOnce(right(domainData));
 
-      const result = await controller.getCommunities('most-users', 10);
+      const result = (await controller.getCommunities('most-users', 10)) as CommunityRankingUserResponseDto[];
       expect(result.length).toBe(2);
       expect(result[0].id).toBe('1');
       expect(result[0].name).toBe('Com1');

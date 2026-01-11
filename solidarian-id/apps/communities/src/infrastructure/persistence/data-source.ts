@@ -26,8 +26,8 @@ import { CauseEntity } from './entities/cause.entity';
 import { ActionEntity } from './entities/action.entity';
 import { ObjectiveEntity } from './entities/objective.entity';
 import { EventEntity } from './entities/event.entity';
-import { EventUserEntity } from './entities/event-user';
-import { ObjetiveUserEntity } from './entities/objetive-user';
+import { EventUserEntity } from './entities/event-user.entity';
+import { ObjetiveUserEntity } from './entities/objetive-user.entity';
 import { RequestEntity } from './entities/request.entity';
 
 const COMMUNITIES_ENTITIES = [

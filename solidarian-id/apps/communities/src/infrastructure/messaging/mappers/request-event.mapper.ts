@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
 import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
 import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
@@ -11,6 +12,7 @@ import {
   CauseRequestEventDto,
   CommunityRequestCauseEventDto,
   CommunityRequestEventDto,
+  EventType,
   Mapper,
   RequestEventDto,
 } from '@solidarianid/kafka';
@@ -21,7 +23,7 @@ import {
  */
 @Injectable()
 export class RequestEventMapper extends Mapper<AnyRequest, RequestEventDto> {
-  toDto(model: AnyRequest): RequestEventDto {
+  toDto(model: AnyRequest, eventType?: EventType): RequestEventDto {
     if (model instanceof CommunityRequest) {
       return this.toCommunityDto(model);
     }

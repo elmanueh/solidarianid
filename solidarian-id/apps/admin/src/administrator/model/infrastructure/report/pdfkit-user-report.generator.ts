@@ -9,6 +9,7 @@ import { Injectable } from '@nestjs/common';
 import { join } from 'node:path';
 import type { Readable } from 'node:stream';
 import PDFDocument from 'pdfkit';
+import { Role } from '../../domain/enums/role';
 
 type PDFDoc = typeof PDFDocument extends new (...args: any[]) => infer R ? R : never;
 
@@ -208,10 +209,11 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
             ellipsis: true,
           });
 
-        // Badge de rol
-        const badgeText = community.isAdmin ? 'Administrador' : 'Miembro';
-        const badgeColor = community.isAdmin ? colors.harvestOrange[100] : colors.oceanBlue[100];
-        const badgeTextColor = community.isAdmin ? colors.harvestOrange[800] : colors.oceanBlue[800];
+        // Translate rol and get badge colors
+        const badgeText = this.translateRole(community.role);
+        const { background, text } = this.renderBadgeColor(community.role);
+        const badgeColor = background;
+        const badgeTextColor = text;
 
         const badgeWidth = doc.widthOfString(badgeText) + 20;
         const badgeX = 495 - badgeWidth;
@@ -232,6 +234,32 @@ export class PdfKitUserReportGenerator implements UserPdfGeneratorPort {
     }
 
     doc.moveDown(2);
+  }
+
+  private translateRole(role: Role): string {
+    switch (role) {
+      case Role.CREATOR:
+        return 'Creador';
+      case Role.ADMIN:
+        return 'Administrador';
+      case Role.MEMBER:
+        return 'Miembro';
+      default:
+        return role;
+    }
+  }
+
+  private renderBadgeColor(role: Role): { background: string; text: string } {
+    switch (role) {
+      case Role.CREATOR:
+        return { background: colors.darkWine[100], text: colors.darkWine[800] };
+      case Role.MEMBER:
+        return { background: colors.oceanBlue[100], text: colors.oceanBlue[800] };
+      case Role.ADMIN:
+        return { background: colors.harvestOrange[100], text: colors.harvestOrange[800] };
+      default:
+        return { background: colors.iron[100], text: colors.iron[800] };
+    }
   }
 
   /**

@@ -140,7 +140,7 @@ vitest.config.*.timestamp-*
 **/.pnp/
 **/.svn/
 **/jest-cache/
-**/nest-cli.json
+# **/nest-cli.json
 **/proto/
 **/ws/
 *.bak

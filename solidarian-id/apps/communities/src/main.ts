@@ -8,6 +8,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 import { Transport } from '@nestjs/microservices';
+import { join } from 'node:path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,7 +25,14 @@ async function bootstrap() {
 
   // Generar el YAML con la documentación Swagger
   const yamlString: string = dump(document);
-  writeFileSync('./communities-swagger.yaml', yamlString, 'utf8');
+
+  const outPath =
+    process.env.IN_DOCKER === 'true'
+      ? '/app/communities-swagger.yaml'
+      : join(process.cwd(), 'communities-swagger.yaml');
+
+  writeFileSync(outPath, yamlString, 'utf8');
+
   // Habilitar validación global de DTOs
   app.useGlobalPipes(
     new ValidationPipe({

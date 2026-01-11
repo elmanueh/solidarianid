@@ -17,6 +17,9 @@ const createMockUsersService = (): jest.Mocked<UsersService> => ({
   getUserById: jest.fn(),
   getTotalUsers: jest.fn(),
   getUsersGroupByCountry: jest.fn(),
+  createUser: jest.fn(),
+  updateUser: jest.fn(),
+  addMemberShip: jest.fn(),
 });
 
 const createMockPdfGenerator = (): jest.Mocked<UserPdfGeneratorPort> => ({
@@ -45,7 +48,7 @@ const createMockUser = (id: string, username: string): User => {
       {
         communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
         communityName: 'Test Community',
-        isAdmin: false,
+        role: 'member',
       },
     ],
   });

@@ -60,7 +60,7 @@ describe('ReportsApiController (e2e)', () => {
         const membership = response.body.communities[0];
         expect(membership).toHaveProperty('id');
         expect(membership).toHaveProperty('name');
-        expect(membership).toHaveProperty('isAdmin');
+        expect(membership).toHaveProperty('role');
       }
     });
 

@@ -1,5 +1,6 @@
 import { RequestStatus } from '@app/admin/administrator/model/domain/enums/request-status';
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
+import { Role } from '@app/admin/administrator/model/domain/enums/role';
 import { ActionRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/action-request.entity';
 import { CauseRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/cause-request.entity';
 import { CommunityRequestEntity } from '@app/admin/administrator/model/infrastructure/persistence/entities/community-request.entity';
@@ -306,7 +307,7 @@ export class MongoDBSeeder implements IDatabaseSeeder {
           {
             communityId: COMMUNITY_IDS.TEST_COMMUNITY_1,
             communityName: 'Comunidad de Prueba 1',
-            isAdmin: false,
+            role: Role.MEMBER,
           },
         ],
       },
@@ -334,12 +335,12 @@ export class MongoDBSeeder implements IDatabaseSeeder {
           {
             communityId: COMMUNITY_IDS.AFRICA,
             communityName: 'Amigos por África',
-            isAdmin: true,
+            role: 'creator',
           },
           {
             communityId: COMMUNITY_IDS.MADRID,
             communityName: 'Voluntarios Sin Fronteras Madrid',
-            isAdmin: false,
+            role: Role.MEMBER,
           },
         ],
       },
@@ -356,7 +357,7 @@ export class MongoDBSeeder implements IDatabaseSeeder {
           {
             communityId: COMMUNITY_IDS.HUMANITARIA,
             communityName: 'Ayuda Humanitaria España',
-            isAdmin: true,
+            role: Role.ADMIN,
           },
         ],
       },
@@ -373,7 +374,7 @@ export class MongoDBSeeder implements IDatabaseSeeder {
           {
             communityId: COMMUNITY_IDS.MADRID,
             communityName: 'Voluntarios Sin Fronteras Madrid',
-            isAdmin: true,
+            role: Role.CREATOR,
           },
         ],
       },
@@ -390,7 +391,7 @@ export class MongoDBSeeder implements IDatabaseSeeder {
           {
             communityId: COMMUNITY_IDS.HUMANITARIA,
             communityName: 'Ayuda Humanitaria España',
-            isAdmin: false,
+            role: Role.MEMBER,
           },
         ],
       },

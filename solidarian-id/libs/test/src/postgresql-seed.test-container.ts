@@ -1,3 +1,4 @@
+import { MemberType } from '@app/communities/domain/model/enums/member-type';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
@@ -572,51 +573,51 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
       {
         communityId: COMMUNITY_IDS.AFRICA,
         userId: USER_IDS.JUAN,
-        role: 'creator',
+        role: MemberType.CREATOR,
         joinedAt: new Date('2024-01-15'),
       },
       {
         communityId: COMMUNITY_IDS.AFRICA,
         userId: USER_IDS.MARIA,
-        role: 'admin',
+        role: MemberType.ADMIN,
         joinedAt: new Date('2024-03-01'),
       },
       {
         communityId: COMMUNITY_IDS.AFRICA,
         userId: USER_IDS.ANA,
-        role: 'member',
+        role: MemberType.MEMBER,
         joinedAt: new Date('2024-03-10'),
       },
       // Miembros de "Voluntarios Sin Fronteras Madrid"
       {
         communityId: COMMUNITY_IDS.MADRID,
         userId: USER_IDS.PEDRO,
-        role: 'creator',
+        role: MemberType.CREATOR,
         joinedAt: new Date('2024-01-01'),
       },
       {
         communityId: COMMUNITY_IDS.MADRID,
         userId: USER_IDS.JUAN,
-        role: 'member',
+        role: MemberType.MEMBER,
         joinedAt: new Date('2024-04-01'),
       },
       {
         communityId: COMMUNITY_IDS.MADRID,
         userId: USER_IDS.CARLOS,
-        role: 'member',
+        role: MemberType.MEMBER,
         joinedAt: new Date('2024-05-15'),
       },
       // Miembros de "Ayuda Humanitaria España"
       {
         communityId: COMMUNITY_IDS.HUMANITARIA,
         userId: USER_IDS.MARIA,
-        role: 'creator',
+        role: MemberType.CREATOR,
         joinedAt: new Date('2024-06-01'),
       },
       {
         communityId: COMMUNITY_IDS.HUMANITARIA,
         userId: USER_IDS.PEDRO,
-        role: 'admin',
+        role: MemberType.ADMIN,
         joinedAt: new Date('2024-06-10'),
       },
     ];

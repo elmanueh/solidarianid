@@ -20,7 +20,7 @@ export class UserMapper implements Mapper<User, UserEntity> {
       communityMemberships: user.communityMemberships.map(membership => ({
         communityId: membership.communityId,
         communityName: membership.communityName,
-        isAdmin: membership.isAdmin,
+        role: membership.role,
       })),
     } as UserEntity;
   }
@@ -36,7 +36,7 @@ export class UserMapper implements Mapper<User, UserEntity> {
       communityMemberships: document.communityMemberships.map(m => ({
         communityId: m.communityId,
         communityName: m.communityName,
-        isAdmin: m.isAdmin,
+        role: m.role,
       })),
     });
   }

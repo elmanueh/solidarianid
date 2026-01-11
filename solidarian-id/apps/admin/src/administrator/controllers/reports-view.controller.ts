@@ -2,7 +2,7 @@ import { Controller, Get, Query, Render, BadRequestException } from '@nestjs/com
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import type { User } from '@app/admin/administrator/model/domain/models/user';
-import { validatePageNumber } from '@app/admin/administrator/controllers/utils';
+import { validatePageNumber } from '@app/admin/utils/pdf-util';
 
 /**
  * Controlador de vistas para reportes (MVC)

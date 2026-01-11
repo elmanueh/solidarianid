@@ -15,8 +15,8 @@ import { ActionEntity } from '../../src/infrastructure/persistence/entities/acti
 import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
 import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
 import { EventEntity } from '../../src/infrastructure/persistence/entities/event.entity';
-import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user';
-import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user';
+import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
+import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user.entity';
 import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
 import { CommunitiesModule } from '@app/communities/communities.module';
 import { CauseSummaryResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/cause-summary.response.dto';

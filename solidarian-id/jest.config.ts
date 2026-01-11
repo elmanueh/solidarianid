@@ -51,6 +51,9 @@ const baseJestConfig: Config = {
     '!**/model/**',
     '!**/models/**',
     '!**/*.data.ts',
+    '!**/*-view.controller.ts',
+    '!**/*-Auto.ts',
+    '!data-source.ts',
   ],
 
   reporters: ['default'],

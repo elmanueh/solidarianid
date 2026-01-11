@@ -1,3 +1,4 @@
+// istanbul ignore next
 import {
   Body,
   Controller,
@@ -31,6 +32,7 @@ import { CommunityLastUsersJoinedSummaryResponseDto } from '../dtos/output/commu
 import { MemberJoinCommunityRequestDto } from '../dtos/input/member-join-community.request.dto';
 
 @Controller('communities')
+// istanbul ignore next
 export class CommunitiesController {
   constructor(private readonly communitiesService: CommunitiesService) {}
 

@@ -14,7 +14,7 @@ jobs:
   cd:
     name: CD Pipeline
     runs-on: ubuntu-latest
-    environment: production
+    environment: development
     env:
       AWS_REGION: eu-south-2
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}

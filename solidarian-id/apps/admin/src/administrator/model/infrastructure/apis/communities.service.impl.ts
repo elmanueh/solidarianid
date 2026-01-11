@@ -12,8 +12,8 @@ export class CommunitiesApiServiceImpl extends CommunitiesApiPort {
 
   constructor(private readonly configService: ConfigService) {
     super();
-    this.communitiesApiUrl =
-      this.configService.get<string>('COMMUNITIES_API_URL') ?? 'http://localhost:3002/api/communities';
+    const url = this.configService.get<string>('API_BASE_COMMUNITIES_INTERNAL_URL');
+    this.communitiesApiUrl = url ? `${url}api/communities` : 'http://localhost:3002/api/communities';
   }
 
   async getCommunitiesOrderByMostUsers(

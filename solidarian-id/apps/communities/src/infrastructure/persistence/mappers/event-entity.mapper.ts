@@ -5,7 +5,7 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { EventEntity } from '../entities/event.entity';
 import { Event } from '@app/communities/domain/model/entities/event';
 import { EventPlace } from '@app/communities/domain/model/value-objects/event-place';
-import { EventUserEntity } from '../entities/event-user';
+import { EventUserEntity } from '../entities/event-user.entity';
 import { User } from '@app/communities/domain/model/entities/user';
 
 @Injectable()

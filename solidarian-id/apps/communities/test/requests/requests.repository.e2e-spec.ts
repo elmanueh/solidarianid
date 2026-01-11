@@ -21,10 +21,10 @@ import { ActionEntity } from '../../src/infrastructure/persistence/entities/acti
 import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
 import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
-import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user';
+import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
 import { EventEntity } from '../../src/infrastructure/persistence/entities/event.entity';
 import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
-import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user';
+import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user.entity';
 import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
 
 // ============================================

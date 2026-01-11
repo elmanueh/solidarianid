@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { ActionEntity } from './action.entity';
-import { ObjetiveUserEntity } from './objetive-user';
+import { ObjetiveUserEntity } from './objetive-user.entity';
 
 @Entity('objective')
 export class ObjectiveEntity {

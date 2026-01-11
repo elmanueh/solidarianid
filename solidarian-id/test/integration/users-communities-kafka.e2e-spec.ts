@@ -22,8 +22,8 @@ import { ObjectiveEntity } from '@app/communities/infrastructure/persistence/ent
 import { EventEntity } from '@app/communities/infrastructure/persistence/entities/event.entity';
 import { CommunityUserEntity } from '@app/communities/infrastructure/persistence/entities/community-user.entity';
 import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
-import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user';
-import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user';
+import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user.entity';
+import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user.entity';
 
 import { UserService } from '@app/communities/domain/services/user.service';
 

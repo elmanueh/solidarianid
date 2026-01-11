@@ -1,3 +1,5 @@
+import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
+import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
@@ -8,8 +10,8 @@ import { RequestsServiceImpl } from './application/services/requests.service.imp
 import { UserServiceImpl } from './application/services/user.service.impl';
 import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
 import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
+import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { RequestPublisherPort } from './domain/ports/requests.publisher.port';
 import { RequestsRepositoryPort } from './domain/ports/requests.repository.port';
 import { UsersRepositoryPort } from './domain/ports/users.repository.port';
@@ -20,15 +22,17 @@ import { RequestsService } from './domain/services/request.service';
 import { UserService } from './domain/services/user.service';
 import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/requests.consumer';
 import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
+import { CommunityEventMapper } from './infrastructure/messaging/mappers/community-event.mapper';
+import { CommunitiesKafkaPublisherAdapter } from './infrastructure/messaging/publishers/communities.publisher';
 import { RequestKafkaPublisherAdapter } from './infrastructure/messaging/publishers/requests.publisher';
 import { ActionEntity } from './infrastructure/persistence/entities/action.entity';
 import { CauseEntity } from './infrastructure/persistence/entities/cause.entity';
 import { CommunityUserEntity } from './infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from './infrastructure/persistence/entities/community.entity';
-import { EventUserEntity } from './infrastructure/persistence/entities/event-user';
+import { EventUserEntity } from './infrastructure/persistence/entities/event-user.entity';
 import { EventEntity } from './infrastructure/persistence/entities/event.entity';
 import { ObjectiveEntity } from './infrastructure/persistence/entities/objective.entity';
-import { ObjetiveUserEntity } from './infrastructure/persistence/entities/objetive-user';
+import { ObjetiveUserEntity } from './infrastructure/persistence/entities/objetive-user.entity';
 import { RequestEntity } from './infrastructure/persistence/entities/request.entity';
 import { UserEntity } from './infrastructure/persistence/entities/user.entity';
 import { ActionEntityMapper } from './infrastructure/persistence/mappers/action-entity.mapper';
@@ -48,10 +52,6 @@ import { ActionsController } from './infrastructure/presentation/controllers/act
 import { CausesController } from './infrastructure/presentation/controllers/causes.controller';
 import { CommunitiesController } from './infrastructure/presentation/controllers/communities.controller';
 import { RequestController } from './infrastructure/presentation/controllers/request.controller';
-import { CommunitiesKafkaPublisherAdapter } from './infrastructure/messaging/publishers/communities.publisher';
-import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
-import { CommunityEventMapper } from './infrastructure/messaging/mappers/community-event-mapper';
-import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
 
 @Module({
   imports: [

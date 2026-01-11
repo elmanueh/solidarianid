@@ -1,4 +1,4 @@
-import { validatePageNumber } from '@app/admin/administrator/controllers/utils';
+import { validatePageNumber } from '@app/admin/utils/pdf-util';
 import { BadRequestException, Controller, Get, Query, Render } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';

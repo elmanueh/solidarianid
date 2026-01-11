@@ -23,6 +23,7 @@ export class CommunityDomainMapper {
       id: community.id.value,
       name: community.name,
       description: community.description,
+      creatorId: community.creator.id.value,
       causes: community.causes.map(cause => CauseDomainMapper.toCauseSummaryDto(cause)),
     };
   }

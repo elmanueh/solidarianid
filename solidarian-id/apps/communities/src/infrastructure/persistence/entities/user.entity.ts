@@ -1,8 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { CommunityUserEntity } from './community-user.entity';
 import { RequestEntity } from './request.entity';
-import { EventUserEntity } from './event-user';
-import { ObjetiveUserEntity } from './objetive-user';
+import { EventUserEntity } from './event-user.entity';
+import { ObjetiveUserEntity } from './objetive-user.entity';
 
 @Entity('user')
 export class UserEntity {

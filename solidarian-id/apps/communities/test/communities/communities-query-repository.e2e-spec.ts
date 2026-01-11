@@ -5,10 +5,10 @@ import { ActionEntity } from '@app/communities/infrastructure/persistence/entiti
 import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
 import { CommunityUserEntity } from '@app/communities/infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from '@app/communities/infrastructure/persistence/entities/community.entity';
-import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user';
+import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user.entity';
 import { EventEntity } from '@app/communities/infrastructure/persistence/entities/event.entity';
 import { ObjectiveEntity } from '@app/communities/infrastructure/persistence/entities/objective.entity';
-import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user';
+import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user.entity';
 import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
 import { UserEntity } from '@app/communities/infrastructure/persistence/entities/user.entity';
 import { ActionEntityMapper } from '@app/communities/infrastructure/persistence/mappers/action-entity.mapper';

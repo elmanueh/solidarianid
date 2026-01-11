@@ -9,14 +9,6 @@ import type { CommunityMembership } from '@app/admin/administrator/model/domain/
 import { Controller, Get, HttpStatus, Param, Res } from '@nestjs/common';
 import type { Response } from 'express';
 
-/**
- * Controlador API para reportes
- * Maneja las peticiones REST del módulo de reportes de usuarios
- *
- * Utiliza inyección de dependencias siguiendo arquitectura hexagonal:
- * - UsersService: Para obtener datos de usuarios
- * - UserPdfGeneratorPort: Para generar PDFs de reportes de usuario
- */
 @Controller('/api/reports')
 export class ReportsApiController {
   constructor(
@@ -24,10 +16,6 @@ export class ReportsApiController {
     private readonly pdfGenerator: UserPdfGeneratorPort,
   ) {}
 
-  /**
-   * Obtiene detalle completo de un usuario
-   * GET /api/reports/users/:id
-   */
   @Get('/users/:id')
   async getUserDetail(@Param('id') id: string): Promise<UserDetailResponseDto> {
     const result = await this.userService.getUserById(id);
@@ -40,10 +28,6 @@ export class ReportsApiController {
     return UserDtoMapper.toDetailDto(user);
   }
 
-  /**
-   * Descarga PDF del reporte de usuario
-   * GET /api/reports/users/:id/pdf
-   */
   @Get('/users/:id/pdf')
   async downloadUserPdf(@Param('id') id: string, @Res() response: Response = {} as Response): Promise<Response> {
     // Obtener datos del usuario
@@ -60,7 +44,6 @@ export class ReportsApiController {
 
     const user = result.value;
 
-    // Preparar datos para el PDF
     const pdfData: UserReportPdfCommand = {
       id: user.id.value,
       fullName: user.fullName,
@@ -71,7 +54,7 @@ export class ReportsApiController {
       communities: user.communityMemberships.map((membership: CommunityMembership) => ({
         id: membership.communityId,
         name: membership.communityName,
-        isAdmin: membership.isAdmin,
+        role: membership.role,
       })),
       generatedAt: new Date(),
     };

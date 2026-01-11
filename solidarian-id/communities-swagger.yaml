@@ -3,10 +3,28 @@ paths:
   /communities:
     get:
       operationId: CommunitiesController_getCommunities
-      parameters: []
+      parameters:
+        - name: criteria
+          required: false
+          in: query
+          description: >-
+            Criteria to filter communities. If "most-users", returns communities
+            ranked by user count.
+          schema:
+            enum:
+              - most-users
+            type: string
+        - name: limit
+          required: false
+          in: query
+          description: >-
+            Maximum number of communities to return (only applies when criteria
+            is "most-users")
+          schema:
+            type: number
       responses:
         '200':
-          description: List of communities
+          description: List of communities (default)
           content:
             application/json:
               schema:
@@ -42,31 +60,7 @@ paths:
           description: Internal server error
       summary: Retrieve a charitable community by ID
       tags: *ref_0
-  /communities/ranking/most-users:
-    get:
-      operationId: CommunitiesController_getCommunitiesOrderByMostUsers
-      parameters:
-        - name: limit
-          required: true
-          in: query
-          schema:
-            type: number
-      responses:
-        '200':
-          description: List of communities ranked by user count
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/'
-        '400':
-          description: The request parameters are invalid
-        '500':
-          description: Internal server error
-      summary: Retrieve communities ranked by number of users
-      tags: *ref_0
-  /communities/{id}/users-joined:
+  /communities/{id}/users:
     get:
       operationId: CommunitiesController_getJoinedUsersLastMonths
       parameters:
@@ -82,18 +76,43 @@ paths:
             type: number
       responses:
         '200':
-          description: List of months with the number of users who joined
+          description: Summary of users joined per month
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/'
+                $ref: >-
+                  #/components/schemas/CommunityLastUsersJoinedSummaryResponseDto
         '400':
           description: The request parameters are invalid
         '500':
           description: Internal server error
       summary: Retrieve the number of users who joined a community in the last months
+      tags: *ref_0
+  /communities/{id}/members:
+    post:
+      operationId: CommunitiesController_joinCommunity
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberJoinCommunityRequestDto'
+      responses:
+        '201':
+          description: User successfully joined the community
+        '400':
+          description: The request parameters are invalid
+        '409':
+          description: User is already a member of the community
+        '500':
+          description: Internal server error
+      summary: Join a user to a community
       tags: *ref_0
   /causes:
     get:
@@ -306,12 +325,195 @@ components:
     CommunityDetailResponseDto:
       type: object
       properties: {}
+    CommunityLastUsersJoinedPeriodResponseDto:
+      type: object
+      properties:
+        month:
+          type: string
+          description: Month in format YYYY-MM
+          example: 2026-01
+        userCount:
+          type: number
+          description: Number of users joined in this month
+          example: 25
+      required:
+        - month
+        - userCount
+    CommunityLastUsersJoinedSummaryResponseDto:
+      type: object
+      properties:
+        communityName:
+          type: string
+          description: Community name
+          example: Friends for Africa
+        dataRange:
+          description: Data range showing users joined per period
+          type: array
+          items:
+            $ref: '#/components/schemas/CommunityLastUsersJoinedPeriodResponseDto'
+      required:
+        - communityName
+        - dataRange
+    MemberJoinCommunityRequestDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Unique identifier of the user joining the community
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+      required:
+        - userId
+    ActionSummaryResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Action unique identifier
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        name:
+          type: string
+          description: Action name
+          example: Food Collection Drive
+        description:
+          type: string
+          description: Action description
+          example: Collecting food donations for local families in need
+      required:
+        - id
+        - name
+        - description
     CauseDetailResponseDto:
       type: object
-      properties: {}
+      properties:
+        id:
+          type: string
+          description: Cause unique identifier
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        name:
+          type: string
+          description: Cause name
+          example: Clean Water Initiative
+        description:
+          type: string
+          description: Cause description
+          example: Providing access to clean water for rural communities
+        durationDays:
+          type: number
+          description: Duration of the cause in days
+          example: 90
+        ods:
+          description: Related UN Sustainable Development Goals (SDGs) numbers
+          example:
+            - 6
+            - 3
+          type: array
+          items:
+            type: number
+        actions:
+          description: List of actions associated with this cause
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionSummaryResponseDto'
+      required:
+        - id
+        - name
+        - description
+        - durationDays
+        - ods
+        - actions
+    EventSummaryResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Event unique identifier
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        name:
+          type: string
+          description: Event name
+          example: Community Cleanup Day
+        description:
+          type: string
+          description: Event description
+          example: Join us for a community cleanup to make our neighborhood better
+        initialDate:
+          format: date-time
+          type: string
+          description: Event start date and time
+          example: '2026-02-15T10:00:00Z'
+        place:
+          type: object
+          description: Event location details
+          example:
+            direction: 123 Main Street
+            city: Madrid
+            countryCode: ES
+      required:
+        - id
+        - name
+        - description
+        - initialDate
+        - place
+    ObjetiveSummaryResponseDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Objective name
+          example: Collect Food Items
+        description:
+          type: string
+          description: Objective description
+          example: Collect non-perishable food items for distribution
+        unit:
+          type: string
+          description: Unit of measurement
+          example: kg
+        quantity:
+          type: number
+          description: Target quantity to achieve
+          example: 1000
+        currentAmount:
+          type: number
+          description: Current amount achieved
+          example: 750
+      required:
+        - name
+        - description
+        - unit
+        - quantity
+        - currentAmount
     ActionDetailResponseDto:
       type: object
-      properties: {}
+      properties:
+        id:
+          type: string
+          description: Action unique identifier
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        name:
+          type: string
+          description: Action name
+          example: Food Collection Drive
+        description:
+          type: string
+          description: Action description
+          example: Collecting food donations for local families in need
+        events:
+          description: List of events associated with this action
+          type: array
+          items:
+            $ref: '#/components/schemas/EventSummaryResponseDto'
+        objectives:
+          description: List of objectives for this action
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjetiveSummaryResponseDto'
+      required:
+        - id
+        - name
+        - description
+        - events
+        - objectives
     CommunityCauseDto:
       type: object
       properties:

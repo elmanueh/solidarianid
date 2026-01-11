@@ -17,4 +17,8 @@ export abstract class CommunitiesService {
   abstract create(
     communityDto: CommunityRequestEventDto,
   ): Promise<Either<ValidationError | RepositoryException, Community>>;
+  abstract joinCommunity(
+    communityId: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>>;
 }

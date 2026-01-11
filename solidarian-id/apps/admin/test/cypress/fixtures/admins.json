@@ -1,0 +1,60 @@
+{
+  "validAdmin": {
+    "email": "sergio.garcia@solidarianid.org",
+    "password": "Admin2024!Pass"
+  },
+  "allAdmins": [
+    {
+      "fullName": "Sergio García Martínez",
+      "email": "sergio.garcia@solidarianid.org",
+      "phone": "+34612345001",
+      "password": "Admin2024!Pass"
+    },
+    {
+      "fullName": "Fabián Rodríguez López",
+      "email": "fabian.rodriguez@solidarianid.org",
+      "phone": "+34612345002",
+      "password": "Admin2024!Pass"
+    },
+    {
+      "fullName": "Pablo Fernández Sánchez",
+      "email": "pablo.fernandez@solidarianid.org",
+      "phone": "+34612345003",
+      "password": "Admin2024!Pass"
+    },
+    {
+      "fullName": "Antonio Martín González",
+      "email": "antonio.martin@solidarianid.org",
+      "phone": "+34612345004",
+      "password": "Admin2024!Pass"
+    },
+    {
+      "fullName": "Manuel Pérez Ruiz",
+      "email": "manuel.perez@solidarianid.org",
+      "phone": "+34612345005",
+      "password": "Admin2024!Pass"
+    }
+  ],
+  "invalidAdmin": {
+    "email": "invalid@solidarianid.org",
+    "password": "WrongPassword123!"
+  },
+  "invalidCredentials": {
+    "emptyEmail": {
+      "email": "",
+      "password": "Admin2024!Pass"
+    },
+    "emptyPassword": {
+      "email": "sergio.garcia@solidarianid.org",
+      "password": ""
+    },
+    "invalidEmailFormat": {
+      "email": "invalid-email",
+      "password": "Admin2024!Pass"
+    },
+    "shortPassword": {
+      "email": "sergio.garcia@solidarianid.org",
+      "password": "short"
+    }
+  }
+}

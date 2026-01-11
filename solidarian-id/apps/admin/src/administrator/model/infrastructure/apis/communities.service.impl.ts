@@ -12,15 +12,16 @@ export class CommunitiesApiServiceImpl extends CommunitiesApiPort {
 
   constructor(private readonly configService: ConfigService) {
     super();
-    this.communitiesApiUrl =
-      this.configService.get<string>('COMMUNITIES_API_URL') ?? 'http://localhost:3002/api/communities';
+    const url = this.configService.get<string>('API_BASE_COMMUNITIES_INTERNAL_URL');
+    this.communitiesApiUrl = url ? `${url}api/communities` : 'http://localhost:3002/api/communities';
   }
 
   async getCommunitiesOrderByMostUsers(
     limit?: number,
   ): Promise<Either<RepositoryException, CommunityRankingUserResponseDto[]>> {
     try {
-      const url = new URL(`${this.communitiesApiUrl}/ranking/most-users`);
+      const url = new URL(this.communitiesApiUrl);
+      url.searchParams.append('criteria', 'most-users');
       if (limit) {
         url.searchParams.append('limit', limit.toString());
       }
@@ -54,7 +55,7 @@ export class CommunitiesApiServiceImpl extends CommunitiesApiPort {
     months?: number,
   ): Promise<Either<RepositoryException, CommunityLastUsersJoinedSummaryResponseDto>> {
     try {
-      const url = new URL(`${this.communitiesApiUrl}/${communityId}/users-joined`);
+      const url = new URL(`${this.communitiesApiUrl}/${communityId}/users`);
       if (months) {
         url.searchParams.append('months', months.toString());
       }

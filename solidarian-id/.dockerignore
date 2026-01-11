@@ -1,0 +1,186 @@
+# ============================================================================
+# Created by https://dockerignore.com/
+# COMPREHENSIVE FRAMEWORK TEMPLATE for NestJS
+# website: https://nestjs.com/
+# ============================================================================
+
+# •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+# SECURITY & SENSITIVE DATA PROTECTION (ALWAYS FIRST!)
+# •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+# CRITICAL: Protect sensitive data from accidental inclusion in Docker images
+
+# ENVIRONMENT VARIABLES & CONFIGURATION FILES
+.env
+.env.*
+.env.*.local
+.env.development
+.env.development.local
+.env.example
+.env.local
+.env.production
+.env.production.local
+.env.sample
+.env.staging
+.env.staging.local
+.env.template
+.env.test
+.env.test.local
+
+# APPLICATION SECRETS & CREDENTIALS
+*.auth
+*.authz
+*.password
+*.secret
+*.secrets
+*.token
+*_tokens
+*password*
+apikeys.*
+appsettings.Development.json
+appsettings.Local.json
+appsettings.Staging.json
+**/config/credentials.*
+**/config/secrets.*
+connectionstrings.config
+credentials
+database.ini
+database.yml
+dbconfig.xml
+**/keys/
+**/passwords/
+**/private/
+secrets.json
+secrets.yaml
+secrets.yml
+**/secrets/
+tokens.*
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TEMPLATE OVERVIEW & USAGE NOTES
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# • TEMPLATE TYPE: Comprehensive Framework Template
+# • DESIGN PHILOSOPHY: Self-contained with all necessary patterns
+# • COMBINATION: Use standalone - no need to combine with other templates
+# • BEST PRACTICES: Follow technology-specific security guidelines
+
+# •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+# DEPENDENCIES AND PACKAGE MANAGERS
+**/.npm/
+**/.npm/_logs/
+**/.pnpm-store/
+**/.pnpm/
+**/.yarn/
+**/bower_components/
+**/node_modules/
+.npmignore
+.npmrc
+.npmrc.*
+.yarn/install-state.gz
+.yarnrc
+.yarnrc.yml
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log
+
+# •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+# BUILD ARTIFACTS AND OUTPUT
+**/.nyc_output/
+**/.out/
+**/.output/
+**/build/
+**/dist/
+**/public/build/
+.tsbuildinfo
+tsconfig.*.tsbuildinfo
+
+# •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+# CACHE AND TEMPORARY FILES
+**/.cache/
+**/.parcel-cache/
+**/.turbo/
+**/temp/
+**/tmp/
+*.cache
+*.temp
+*.tmp
+
+# •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+# LOGS AND DEBUG FILES
+**/logs/
+*.log
+
+# •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+# CONFIGURATION AND ENVIRONMENT
+.env.testing
+jsconfig.json
+vitest.config.*.timestamp-*
+
+# •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+# TESTING AND COVERAGE
+**/.jest-cache/
+**/__tests__/__snapshots__/
+**/coverage/
+**/test-results/
+
+# •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+# OTHER
+**/*.e2e-spec.ts
+**/*.gql
+**/*.graphql
+**/*.proto
+**/.babel-cache/
+**/.bzr/
+**/.cvs/
+**/.git/
+**/.hg/
+**/.next/
+**/.nuxt/
+**/.nx/
+**/.nx/cache/
+**/.pnp/
+**/.svn/
+**/jest-cache/
+# **/nest-cli.json
+**/proto/
+**/ws/
+*.bak
+*.old
+*.orig
+*.save
+*.swo
+*.swp
+*~
+._*
+.babelrc
+.babelrc.*
+.browserslistrc
+.DS_Store
+.DS_Store?
+.eslintcache
+.eslintignore
+.eslintrc
+.eslintrc.*
+.gitattributes
+.gitignore
+.gitmodules
+.jsbeautifyrc
+.jscsrc
+.jshintrc
+.pnp.cjs
+.pnp.js
+.pnp.loader.mjs
+.prettiercache
+.prettierignore
+.prettierrc
+.prettierrc.*
+.Spotlight-V100
+.stylelintcache
+.stylelintignore
+.stylelintrc
+.stylelintrc.*
+.Trashes
+desktop.ini
+ehthumbs.db
+npm-shrinkwrap.json
+pnpm-workspace.yaml
+Thumbs.db

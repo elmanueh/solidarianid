@@ -5,11 +5,13 @@ import { CommunitiesServiceImpl } from '@app/communities/application/services/co
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
+import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
 
 describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;
   let mockCommunityRepo: { findAll: jest.Mock; findById: jest.Mock; save: jest.Mock };
   let mockUsersRepo: { findById: jest.Mock };
+  let mockPublisher: { publish: jest.Mock };
 
   beforeEach(async () => {
     mockCommunityRepo = {
@@ -22,12 +24,17 @@ describe('CommunitiesServiceImpl', () => {
       findById: jest.fn(),
     };
 
+    mockPublisher = {
+      publish: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CommunitiesServiceImpl,
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepo },
         { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
+        { provide: CommunitiesPublisherPort, useValue: mockPublisher },
       ],
     }).compile();
 

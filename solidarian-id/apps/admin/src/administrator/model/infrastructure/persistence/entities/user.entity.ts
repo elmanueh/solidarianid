@@ -1,5 +1,6 @@
 import { HydratedDocument } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Role } from '../../../domain/enums/role';
 
 export type UserDocument = HydratedDocument<UserEntity>;
 
@@ -20,8 +21,8 @@ export class CommunityMembershipSchema {
   @Prop({ required: true })
   communityName: string;
 
-  @Prop({ required: true })
-  isAdmin: boolean;
+  @Prop({ type: String, enum: Role, required: true })
+  role: Role;
 }
 
 @Schema({ collection: 'users', timestamps: true, _id: false })

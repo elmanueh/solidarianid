@@ -2,29 +2,26 @@ import { Either, left, right } from '@app/ddd/either';
 import { ValueObject } from '@app/ddd/value-object';
 import { InvalidUniqueEntityIDError } from '@app/value-objects/errors/validation/unique-entity-id-validation-error';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { Role } from '../enums/role';
 
 interface CommunityMembershipProps {
   communityId: UniqueEntityID;
   communityName: string;
-  isAdmin: boolean;
+  role: Role;
 }
 
-interface CreateCommunityMembershipProps {
+export interface CreateCommunityMembershipProps {
   communityId: string;
   communityName: string;
-  isAdmin: boolean;
+  role: Role;
 }
 
 export interface ReconstituteCommunityMembershipProps {
   communityId: string;
   communityName: string;
-  isAdmin: boolean;
+  role: Role;
 }
 
-/**
- * Value Object que representa la membresía de un usuario a una comunidad
- * Encapsula el ID de la comunidad, su nombre y el rol del usuario (admin o miembro)
- */
 export class CommunityMembership extends ValueObject<CommunityMembershipProps> {
   private constructor(props: CommunityMembershipProps) {
     super(props);
@@ -38,25 +35,15 @@ export class CommunityMembership extends ValueObject<CommunityMembershipProps> {
     return this.props.communityName;
   }
 
-  get isAdmin(): boolean {
-    return this.props.isAdmin;
-  }
-
-  public equals(other: CommunityMembership): boolean {
-    return (
-      this.communityId === other.communityId &&
-      this.communityName === other.communityName &&
-      this.isAdmin === other.isAdmin
-    );
+  get role(): Role {
+    return this.props.role;
   }
 
   public static create(props: CreateCommunityMembershipProps): Either<InvalidUniqueEntityIDError, CommunityMembership> {
-    // Validar que el nombre de la comunidad no esté vacío
     if (!props.communityName || props.communityName.trim().length === 0) {
       return left(new InvalidUniqueEntityIDError('Community name cannot be empty.'));
     }
 
-    // Validar el ID de la comunidad
     const communityIdResult = UniqueEntityID.create(props.communityId);
     if (communityIdResult.isLeft()) {
       return left(communityIdResult.value);
@@ -64,8 +51,8 @@ export class CommunityMembership extends ValueObject<CommunityMembershipProps> {
 
     const membershipProps: CommunityMembershipProps = {
       communityId: communityIdResult.value,
-      communityName: props.communityName.trim(),
-      isAdmin: props.isAdmin,
+      communityName: props.communityName,
+      role: props.role,
     };
 
     return right(new CommunityMembership(membershipProps));

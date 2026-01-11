@@ -14,10 +14,10 @@ export class CommunityUserEntity {
 
   @Column({
     type: 'enum',
-    enum: [MemberType.CREATOR, MemberType.ADMIN, MemberType.MEMBER],
+    enum: MemberType,
     default: MemberType.MEMBER,
   })
-  role: string;
+  role: MemberType;
 
   @Column({ type: 'timestamp' })
   @CreateDateColumn()

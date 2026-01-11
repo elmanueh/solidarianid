@@ -1,4 +1,15 @@
-import { Controller, Get, Param, ParseIntPipe, ParseUUIDPipe, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  ParseUUIDPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CommunitySummaryResponseDto } from '../dtos/output/community-summary.response.dto';
 
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
@@ -6,15 +17,18 @@ import { CommunityDomainMapper } from '../mappers/community.mapper';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import {
   ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
 } from '@nestjs/swagger/dist/decorators/api-response.decorator';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { CommunityDetailResponseDto } from '../dtos/output/community-detail.response.dto';
 import { CommunityRankingUserResponseDto } from '../dtos/output/community-ranking-user.response.dto';
 import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
 import { CommunityLastUsersJoinedSummaryResponseDto } from '../dtos/output/community-last-users-joined-summary.response.dto';
+import { MemberJoinCommunityRequestDto } from '../dtos/input/member-join-community.request.dto';
 
 @Controller('communities')
 export class CommunitiesController {
@@ -22,13 +36,37 @@ export class CommunitiesController {
 
   @Get()
   @ApiOperation({ summary: 'Retrieve all charitable communities' })
+  @ApiQuery({
+    name: 'criteria',
+    required: false,
+    enum: ['most-users'],
+    description: 'Criteria to filter communities. If "most-users", returns communities ranked by user count.',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Maximum number of communities to return (only applies when criteria is "most-users")',
+  })
   @ApiOkResponse({
-    description: 'List of communities',
+    description: 'List of communities (default)',
     type: [CommunitySummaryResponseDto],
     isArray: true,
   })
+  @ApiOkResponse({
+    description: 'List of communities ranked by user count (when criteria=most-users)',
+    type: [CommunityRankingUserResponseDto],
+    isArray: true,
+  })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  async getCommunities(): Promise<CommunitySummaryResponseDto[]> {
+  async getCommunities(
+    @Query('criteria') criteria?: string,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
+  ): Promise<CommunitySummaryResponseDto[] | CommunityRankingUserResponseDto[]> {
+    if (criteria === 'most-users') {
+      return await this.getCommunitiesOrderByMostUsers(limit);
+    }
+
     const communities = await this.communitiesService.getCommunities();
 
     if (communities.isLeft()) {
@@ -57,18 +95,7 @@ export class CommunitiesController {
     return CommunityDomainMapper.toCommunityDetailDto(community.value);
   }
 
-  @Get('ranking/most-users')
-  @ApiOperation({ summary: 'Retrieve communities ranked by number of users' })
-  @ApiOkResponse({
-    description: 'List of communities ranked by user count',
-    type: [CommunitySummaryResponseDto],
-    isArray: true,
-  })
-  @ApiBadRequestResponse({ description: 'The request parameters are invalid' })
-  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  async getCommunitiesOrderByMostUsers(
-    @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
-  ): Promise<CommunityRankingUserResponseDto[]> {
+  async getCommunitiesOrderByMostUsers(limit?: number): Promise<CommunityRankingUserResponseDto[]> {
     const communities = await this.communitiesService.getOrderByMostUsers(limit);
     if (communities.isLeft()) {
       throw communities.value;
@@ -79,12 +106,11 @@ export class CommunitiesController {
     );
   }
 
-  @Get(':id/users-joined')
+  @Get(':id/users')
   @ApiOperation({ summary: 'Retrieve the number of users who joined a community in the last months' })
   @ApiOkResponse({
-    description: 'List of months with the number of users who joined',
-    type: [Object],
-    isArray: true,
+    description: 'Summary of users joined per month',
+    type: CommunityLastUsersJoinedSummaryResponseDto,
   })
   @ApiBadRequestResponse({ description: 'The request parameters are invalid' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
@@ -98,5 +124,26 @@ export class CommunitiesController {
     }
 
     return CommunityDomainMapper.toCommunityLastUsersJoinedSummaryResponseDto(joinedUsersData.value);
+  }
+
+  @Post(':id/members')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Join a user to a community' })
+  @ApiCreatedResponse({
+    description: 'User successfully joined the community',
+  })
+  @ApiBadRequestResponse({ description: 'The request parameters are invalid' })
+  @ApiConflictResponse({ description: 'User is already a member of the community' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  async joinCommunity(
+    @Param('id', new ParseUUIDPipe()) communityId: string,
+    @Body() dto: MemberJoinCommunityRequestDto,
+  ): Promise<void> {
+    const result = await this.communitiesService.joinCommunity(communityId, dto.userId);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+    return undefined;
   }
 }

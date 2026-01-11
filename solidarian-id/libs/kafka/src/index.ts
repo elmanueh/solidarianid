@@ -15,3 +15,6 @@ export * from './dtos/requests/request-community.event.dto';
 export * from './dtos/requests/request-cause.event.dto';
 export * from './dtos/requests/request-action.event.dto';
 export * from '../../../apps/communities/src/infrastructure/messaging/mappers/request-event.mapper';
+export * from './events/community.event';
+export * from './dtos/communities/community-created.event.dto';
+export * from './dtos/communities/community-member-joined.event.dto';

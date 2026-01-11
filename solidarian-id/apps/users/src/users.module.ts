@@ -13,9 +13,11 @@ import { KafkaDynamicModule } from '@solidarianid/kafka';
 import { UsersPublisherPort } from './domain/ports/users.publisher.port';
 import { UsersKafkaPublisherAdapter } from './infrastructure/messaging/producer/user.publisher';
 import { UserEventMapper } from './infrastructure/messaging/mappers/user.event.mapper';
+import { DatabaseModule } from '@app/users/infrastructure/persistence/database.module';
 
 @Module({
   imports: [
+    DatabaseModule,
     TypeOrmModule.forFeature([UserEntity]),
     KafkaDynamicModule.register(process.env.KAFKA_USERS_CLIENT_ID ?? 'users'),
   ],

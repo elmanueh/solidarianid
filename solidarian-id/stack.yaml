@@ -11,7 +11,7 @@ Parameters:
     Type: String
     MinLength: 1
     MaxLength: 255
-    AllowedPattern: "^[a-zA-Z][-a-zA-Z0-9]*$"
+    AllowedPattern: '^[a-zA-Z][-a-zA-Z0-9]*$'
     Default: MyStackNetwork
 
   AmazonLinuxAMIID:
@@ -31,7 +31,7 @@ Resources:
   WebServerInstance:
     Type: AWS::EC2::Instance
     Metadata:
-      "AWS::CloudFormation::Init":
+      'AWS::CloudFormation::Init':
         configSets:
           All:
             - ConfigureSampleApp
@@ -83,10 +83,10 @@ Resources:
             --output text \
             --region ${AWS::Region})
 
-          echo "$SECRET_JSON" | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | .[]' > /home/ec2-user/solidarian.env
+          echo "$SECRET_JSON" | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | .[]' > /home/ec2-user/.env.solidarianid
 
-          chown ec2-user:ec2-user /home/ec2-user/solidarian.env
-          chmod 600 /home/ec2-user/solidarian.env
+          chown ec2-user:ec2-user /home/ec2-user/.env.solidarianid
+          chmod 600 /home/ec2-user/.env.solidarianid
 
           # Descargamos los datos de prueba de un bucket S3
           mkdir -p /home/ec2-user/init-data
@@ -219,6 +219,7 @@ Resources:
                 - "${!USERS_PORT}:3001"
               environment:
                 - NODE_ENV=${!NODE_ENV}
+                - IN_DOCKER=true
                 - POSTGRES_HOST=${!POSTGRES_HOST}
                 - POSTGRES_PORT=${!POSTGRES_PORT}
                 - POSTGRES_USER=${!POSTGRES_USER}
@@ -246,6 +247,7 @@ Resources:
                 - "${!COMMUNITIES_PORT}:3002"
               environment:
                 - NODE_ENV=${!NODE_ENV}
+                - IN_DOCKER=true
                 - POSTGRES_HOST=${!POSTGRES_HOST}
                 - POSTGRES_PORT=${!POSTGRES_PORT}
                 - POSTGRES_USER=${!POSTGRES_USER}
@@ -266,18 +268,18 @@ Resources:
                 - solidarian_network
               restart: unless-stopped
 
-          networks:
-            solidarian_network:
-              driver: bridge
-
           volumes:
             postgres_data:
             mongo_data:
+
+          networks:
+            solidarian_network:
+              driver: bridge
           EOT
 
           cd /home/ec2-user
-          docker-compose --env-file /home/ec2-user/solidarian.env pull
-          docker-compose --env-file /home/ec2-user/solidarian.env up -d
+          docker-compose --env-file /home/ec2-user/.env.solidarianid pull
+          docker-compose --env-file /home/ec2-user/.env.solidarianid up -d
 
           # Signal the status from cfn-init
           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
@@ -295,7 +297,7 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
           - Effect: Allow
             Principal:
@@ -306,14 +308,14 @@ Resources:
       Policies:
         - PolicyName: ReadSolidarianSecrets
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action: secretsmanager:GetSecretValue
                 Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:prod/solidarianid*
         - PolicyName: S3ReadAccess
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action:
@@ -336,7 +338,7 @@ Resources:
   DiskVolume:
     Type: AWS::EC2::Volume
     Properties:
-      Size: 100
+      Size: 10
       AvailabilityZone: !GetAtt WebServerInstance.AvailabilityZone
       Tags:
         - Key: Name
@@ -375,12 +377,12 @@ Resources:
 Outputs:
   AdminURL:
     Description: URL of the admin application
-    Value: !Sub "http://${WebServerInstance.PublicDnsName}:3000"
+    Value: !Sub 'http://${WebServerInstance.PublicDnsName}:3000'
 
   UsersURL:
     Description: URL of the users microservice
-    Value: !Sub "http://${WebServerInstance.PublicDnsName}:3001"
+    Value: !Sub 'http://${WebServerInstance.PublicDnsName}:3001'
 
   CommunitiesURL:
     Description: URL of the communities microservice
-    Value: !Sub "http://${WebServerInstance.PublicDnsName}:3002"
+    Value: !Sub 'http://${WebServerInstance.PublicDnsName}:3002'

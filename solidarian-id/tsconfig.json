@@ -44,6 +44,12 @@
     },
     "baseUrl": "./"
   },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"],
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
   "exclude": [
     "node_modules",
     "dist",

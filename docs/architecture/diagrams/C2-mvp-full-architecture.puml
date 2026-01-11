@@ -74,7 +74,7 @@ Lay_D(communitiesDatabase, kafkaBroker)
 
 ' Relaciones de alto nivel de la aplicación de administración
 BiRel_Down(admin, adminAppBoundary, "Accede a la aplicación de administración", "HTTPS")
-BiRel_Down(adminMonolith, adminDatabase, "2. NO está en caché. Lee/Escribe datos de administración", "NoSQL queries MongoDB")
+BiRel_Down(adminMonolith, adminDatabase, " Lee/Escribe datos de administración", "NoSQL queries MongoDB")
 BiRel_Down(adminMonolith, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
 
 
@@ -84,9 +84,9 @@ Rel_Down(ong, principalAppBoundary, "Colabora con la plataforma", "HTTPS")
 Rel_Down(userNotRegistered, principalAppBoundary, "Navega por el sitio web público", "HTTPS")
 Rel_Down(userRegistered, principalAppBoundary, "Inicia sesión y utiliza la plataforma", "HTTPS")
 
-BiRel_Down(userService, userDatabase, "2. NO está en caché. Lee/Escribe datos de usuarios", "SQL queries PostgreSQL")
+BiRel_Down(userService, userDatabase, " Lee/Escribe datos de usuarios", "SQL queries PostgreSQL")
 BiRel_Down(userService, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
-BiRel_Down(communitiesService, communitiesDatabase, "2. NO está en caché. Lee/Escribe datos de comunidades", "SQL queries PostgreSQL")
+BiRel_Down(communitiesService, communitiesDatabase, " Lee/Escribe datos de comunidades", "SQL queries PostgreSQL")
 BiRel_Down(communitiesService, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
 
 

@@ -107,7 +107,7 @@ jobs:
         run: npm run lint:ci
 
       - name: Build project
-        run: npm run build users admin communities
+        run: npm run build:all
 
       - name: Run all tests with combined coverage
         run: npm run test:all:coverage
@@ -173,7 +173,7 @@ jobs:
             -Dsonar.exclusions=**/dist/**,**/node_modules/**,**/coverage/**,**/*.spec.ts,**/*.test.ts,**/*.e2e-spec.ts,**/*.js,**/*.json,**/*.css,**/*.html
             -Dsonar.tests=apps
             -Dsonar.test.inclusions=**/*.spec.ts,**/*.test.ts,**/*.e2e-spec.ts
-            -Dsonar.coverage.exclusions=**/*.entity.ts,**/*.dto.ts,**/*.filter.ts,**/*.guard.ts,**/*.mapper.ts,**/*.port.ts,**/fake*.ts,**/enums/**,**/model/**,**/models/**,**/main.ts,**/*.module.ts,**/jest*.config.ts,**/*.config.ts,**/*.d.ts,**/index.ts
+            -Dsonar.coverage.exclusions=**/*.entity.ts,**/*.dto.ts,**/*.filter.ts,**/*.guard.ts,**/*.mapper.ts,**/*.port.ts,**/fake*.ts,**/enums/**,**/model/**,**/models/**,**/main.ts,**/*.module.ts,**/jest*.config.ts,**/*.config.ts,**/*.d.ts,**/index.ts,**/*.data.ts
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.qualitygate.wait=true
 

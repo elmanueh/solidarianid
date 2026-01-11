@@ -21,12 +21,13 @@ export class CommunityEntity {
 
   @OneToMany(() => CommunityUserEntity, member => member.community, {
     cascade: true,
-    orphanedRowAction: 'soft-delete',
+    orphanedRowAction: 'delete',
   })
   members: CommunityUserEntity[];
 
   @OneToMany(() => CauseEntity, cause => cause.community, {
     cascade: true,
+    orphanedRowAction: 'delete',
   })
   causes: CauseEntity[];
 }

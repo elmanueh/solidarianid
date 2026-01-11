@@ -30,11 +30,11 @@ services:
     networks:
       - solidarian_network
 
-  user-app:
+  users-app:
     build:
       context: .
       dockerfile: ./apps/users/Dockerfile
-    container_name: solidarian_user_app
+    container_name: solidarian_users_app
     restart: unless-stopped
     ports:
       - '${USERS_PORT}:3001'
@@ -60,11 +60,11 @@ services:
     networks:
       - solidarian_network
 
-  community-app:
+  communities-app:
     build:
       context: .
       dockerfile: ./apps/communities/Dockerfile
-    container_name: solidarian_community_app
+    container_name: solidarian_communities_app
     restart: unless-stopped
     ports:
       - '${COMMUNITIES_PORT}:3002'

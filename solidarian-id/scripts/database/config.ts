@@ -13,7 +13,7 @@ export const DB_CONFIG = {
     database: process.env.POSTGRES_DB || 'solidarian_id_db',
   },
   mongo: {
-    container: 'mongo',
+    container: 'solidarian_mongo_db',
     user: process.env.MONGO_USER || 'test',
     password: process.env.MONGO_PASSWORD || 'test',
     database: process.env.MONGO_DB || 'solidarianid',
@@ -24,11 +24,11 @@ export const DB_CONFIG = {
 export const OUTPUT_PATHS = {
   postgres: {
     dir: join(__dirname, '../init/postgres'),
-    schema: join(__dirname, '../init/postgres/01-schema.sql'),
-    data: join(__dirname, '../init/postgres/02-seed-data.sql'),
+    schema: join(__dirname, '../init/postgres/init-01-schema.sql'),
+    data: join(__dirname, '../init/postgres/init-02-seed-data.sql'),
   },
   mongo: {
     dir: join(__dirname, '../init/mongo'),
-    data: join(__dirname, '../init/mongo/01-seed-data.js'),
+    data: join(__dirname, '../init/mongo/init-01-seed-data.js'),
   },
 } as const;

@@ -35,6 +35,8 @@ export interface CommunityRequestDto {
 export interface CreatedCommunity {
   id: string;
   name: string;
+  creatorId: string;
+  description: string;
 }
 
 // =============================================================================
@@ -63,6 +65,7 @@ export interface CreatedCause {
   id: string;
   name: string;
   communityId: string;
+  creatorId: string;
 }
 
 // =============================================================================

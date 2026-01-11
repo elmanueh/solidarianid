@@ -1,17 +1,17 @@
 import { faker } from '@faker-js/faker';
-import type { SeedStats } from './types';
-import { FAKER_SEED, KAFKA_PROPAGATION_DELAY_MS } from './config';
-import { validateEnvironment, delay } from './utils';
 import {
-  seedUsers,
-  seedCommunityRequests,
-  seedCauseRequests,
-  seedActionRequests,
+  fetchCauses,
+  fetchCommunities,
   loginAdmin,
   processRequests,
-  fetchCommunities,
-  fetchCauses,
+  seedActionRequests,
+  seedCauseRequests,
+  seedCommunityRequests,
+  seedUsers,
 } from './api-client';
+import { FAKER_SEED, KAFKA_PROPAGATION_DELAY_MS } from './config';
+import type { SeedStats } from './types';
+import { delay, validateEnvironment } from './utils';
 
 /**
  * Main Seed Script
@@ -77,8 +77,10 @@ async function main(): Promise<void> {
   // COMMUNITY REQUESTS FLOW
   // =========================================================================
 
-  // 5. Seed community requests and capture IDs
-  const communityRequestIds = await seedCommunityRequests(userIds);
+  // 5. Seed community requests and capture IDs + creators
+  const communityResult = await seedCommunityRequests(userIds);
+  const communityRequestIds = communityResult.requestIds;
+  const communityCreators = communityResult.creatorByRequest;
   stats.communityRequests = communityRequestIds.length;
 
   // Wait for Kafka events to propagate requests to admin
@@ -108,8 +110,9 @@ async function main(): Promise<void> {
     // CAUSE REQUESTS FLOW
     // =======================================================================
 
-    // 8. Seed standalone cause requests (linked to existing communities)
-    const causeRequestIds = await seedCauseRequests(userIds);
+    // 8. Seed cause requests - only community creators (via community.creatorId) can make these
+    const causeResult = await seedCauseRequests(communities);
+    const causeRequestIds = causeResult.requestIds;
     stats.causeRequests = causeRequestIds.length;
 
     // Wait for Kafka events to propagate requests to admin
@@ -139,8 +142,8 @@ async function main(): Promise<void> {
       // ACTION REQUESTS FLOW
       // =====================================================================
 
-      // 11. Seed action requests (linked to existing causes)
-      const actionRequestIds = await seedActionRequests(userIds);
+      // 11. Seed action requests - use the creator of each cause's community
+      const actionRequestIds = await seedActionRequests(communities, causes);
       stats.actionRequests = actionRequestIds.length;
 
       // Wait for Kafka events to propagate requests to admin

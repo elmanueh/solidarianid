@@ -1,13 +1,13 @@
 -- =====================================================
 -- PostgreSQL Database Schema
--- Generated: 2026-01-10T16:42:32.288Z
+-- Generated: 2026-01-11T22:03:18.262Z
 -- =====================================================
 
 --
 -- PostgreSQL database dump
 --
 
-\restrict fvWcJYS4RhlaDIArSKJK2SQNyouJkDSjAfmd85kX6Vu7QeisjwFhv83db5sKmNT
+\restrict QVFkBX15rzNIUZPpMe9d4OkjvUWiL9kfbVUukdCMmcKan3GR9ncsgqI1tMstvn3
 
 -- Dumped from database version 16.11 (Debian 16.11-1.pgdg13+1)
 -- Dumped by pg_dump version 16.11 (Debian 16.11-1.pgdg13+1)
@@ -287,14 +287,6 @@ ALTER TABLE ONLY public.event_user
 
 
 --
--- Name: user UQ_035190f70c9aff0ef331258d28b; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."user"
-    ADD CONSTRAINT "UQ_035190f70c9aff0ef331258d28b" UNIQUE ("fullName");
-
-
---
 -- Name: tbl_Usuarios UQ_120aab196d9c98bc86e66d46387; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -423,5 +415,5 @@ ALTER TABLE ONLY public.event
 -- PostgreSQL database dump complete
 --
 
-\unrestrict fvWcJYS4RhlaDIArSKJK2SQNyouJkDSjAfmd85kX6Vu7QeisjwFhv83db5sKmNT
+\unrestrict QVFkBX15rzNIUZPpMe9d4OkjvUWiL9kfbVUukdCMmcKan3GR9ncsgqI1tMstvn3
 

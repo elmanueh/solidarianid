@@ -180,10 +180,12 @@ async function createCommunityRequest(requestDto: CommunityRequestDto): Promise<
 /**
  * Seeds community requests via the communities service API
  */
-export async function seedCommunityRequests(userIds: string[]): Promise<string[]> {
+export async function seedCommunityRequests(
+  userIds: string[],
+): Promise<{ requestIds: string[]; creatorByRequest: Map<string, string> }> {
   if (userIds.length === 0) {
     console.error('\n❌ No users available to create community requests!');
-    return [];
+    return { requestIds: [], creatorByRequest: new Map() };
   }
 
   const requestsCount = randomBetween(COMMUNITY_REQUESTS_MIN, COMMUNITY_REQUESTS_MAX);
@@ -195,6 +197,7 @@ export async function seedCommunityRequests(userIds: string[]): Promise<string[]
   console.log(`   Service URL: ${COMMUNITIES_SERVICE_URL}`);
 
   const createdIds: string[] = [];
+  const creatorByRequest = new Map<string, string>();
   let successCount = 0;
 
   for (let i = 0; i < requestsCount; i++) {
@@ -204,6 +207,7 @@ export async function seedCommunityRequests(userIds: string[]): Promise<string[]
 
     if (requestId) {
       createdIds.push(requestId);
+      creatorByRequest.set(requestId, userId);
       successCount++;
     }
 
@@ -215,7 +219,7 @@ export async function seedCommunityRequests(userIds: string[]): Promise<string[]
   }
 
   console.log(`   ✅ Community requests created: ${successCount}`);
-  return createdIds;
+  return { requestIds: createdIds, creatorByRequest };
 }
 
 /**
@@ -251,7 +255,7 @@ async function createCauseRequest(requestDto: CauseRequestDto): Promise<string |
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`  ⚠️ Cause request failed: ${response.status} - ${errorText.slice(0, 100)}`);
+      console.error(`  ⚠️ Cause request failed: ${response.status} - ${errorText.slice(0, 200)}`);
       return null;
     }
 
@@ -266,17 +270,12 @@ async function createCauseRequest(requestDto: CauseRequestDto): Promise<string |
 /**
  * Seeds cause requests via the communities service API
  */
-export async function seedCauseRequests(userIds: string[]): Promise<string[]> {
-  if (userIds.length === 0) {
-    console.error('\n❌ No users available to create cause requests!');
-    return [];
-  }
-
-  // Fetch existing communities to link causes
-  const communities = await fetchCommunities();
+export async function seedCauseRequests(
+  communities: CreatedCommunity[],
+): Promise<{ requestIds: string[]; creatorByRequest: Map<string, string> }> {
   if (communities.length === 0) {
-    console.log('\n⚠️ No communities found, skipping standalone cause requests');
-    return [];
+    console.log('\n⚠️ No communities found, skipping cause requests');
+    return { requestIds: [], creatorByRequest: new Map() };
   }
 
   const requestsCount = randomBetween(CAUSE_REQUESTS_MIN, CAUSE_REQUESTS_MAX);
@@ -286,18 +285,21 @@ export async function seedCauseRequests(userIds: string[]): Promise<string[]> {
     `   Target: ${requestsCount} cause requests (random between ${CAUSE_REQUESTS_MIN}-${CAUSE_REQUESTS_MAX})`,
   );
   console.log(`   Available communities: ${communities.length}`);
+  console.log(`   Only the creator of each community can create causes for it`);
 
   const createdIds: string[] = [];
+  const creatorByRequest = new Map<string, string>();
   let successCount = 0;
 
   for (let i = 0; i < requestsCount; i++) {
-    const userId = faker.helpers.arrayElement(userIds);
     const community = faker.helpers.arrayElement(communities);
+    const userId = community.creatorId; // Use the community's creator
     const requestDto = generateCauseRequestDto(userId, community.id);
     const requestId = await createCauseRequest(requestDto);
 
     if (requestId) {
       createdIds.push(requestId);
+      creatorByRequest.set(requestId, userId);
       successCount++;
     }
 
@@ -309,7 +311,7 @@ export async function seedCauseRequests(userIds: string[]): Promise<string[]> {
   }
 
   console.log(`   ✅ Cause requests created: ${successCount}`);
-  return createdIds;
+  return { requestIds: createdIds, creatorByRequest };
 }
 
 /**
@@ -345,7 +347,8 @@ async function createActionRequest(requestDto: ActionRequestDto): Promise<string
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`  ⚠️ Action request failed: ${response.status} - ${errorText.slice(0, 100)}`);
+      console.error(response);
+      console.error(`  ⚠️ Action request failed: ${response.status} - ${errorText.slice(0, 200)}`);
       return null;
     }
 
@@ -360,18 +363,17 @@ async function createActionRequest(requestDto: ActionRequestDto): Promise<string
 /**
  * Seeds action requests via the communities service API
  */
-export async function seedActionRequests(userIds: string[]): Promise<string[]> {
-  if (userIds.length === 0) {
-    console.error('\n❌ No users available to create action requests!');
-    return [];
-  }
-
-  // Fetch existing causes to link actions
-  const causes = await fetchCauses();
+export async function seedActionRequests(communities: CreatedCommunity[], causes: CreatedCause[]): Promise<string[]> {
   if (causes.length === 0) {
     console.log('\n⚠️ No causes found, skipping action requests');
     return [];
   }
+
+  // Create a map of communityId -> creatorId for quick lookup
+  const communityCreatorMap = new Map<string, string>();
+  communities.forEach(community => {
+    communityCreatorMap.set(community.id, community.creatorId);
+  });
 
   const requestsCount = randomBetween(ACTION_REQUESTS_MIN, ACTION_REQUESTS_MAX);
 
@@ -380,13 +382,20 @@ export async function seedActionRequests(userIds: string[]): Promise<string[]> {
     `   Target: ${requestsCount} action requests (random between ${ACTION_REQUESTS_MIN}-${ACTION_REQUESTS_MAX})`,
   );
   console.log(`   Available causes: ${causes.length}`);
+  console.log(`   Each action created by the community creator`);
 
   const createdIds: string[] = [];
   let successCount = 0;
 
   for (let i = 0; i < requestsCount; i++) {
-    const userId = faker.helpers.arrayElement(userIds);
     const cause = faker.helpers.arrayElement(causes);
+    const userId = communityCreatorMap.get(cause.communityId);
+
+    if (!userId) {
+      console.warn(`  ⚠️ No creator found for community ${cause.communityId}, skipping action`);
+      continue;
+    }
+
     const requestDto = generateActionRequestDto(userId, cause.id);
     const requestId = await createActionRequest(requestDto);
 

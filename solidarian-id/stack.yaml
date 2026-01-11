@@ -186,7 +186,7 @@ Resources:
 
             admin-app:
               image: ${DockerHubUsername}/solidarianid-admin:latest
-              container_name: solidarian_admin
+              container_name: solidarian_admin_app
               ports:
                 - "${!ADMIN_PORT}:3000"
               environment:
@@ -213,8 +213,8 @@ Resources:
               restart: unless-stopped
 
             users-app:
-              image: ${DockerHubUsername}/solidarianid-user:latest
-              container_name: solidarian_users
+              image: ${DockerHubUsername}/solidarianid-users:latest
+              container_name: solidarian_users_app
               ports:
                 - "${!USERS_PORT}:3001"
               environment:
@@ -241,8 +241,8 @@ Resources:
               restart: unless-stopped
 
             communities-app:
-              image: ${DockerHubUsername}/solidarianid-community:latest
-              container_name: solidarian_communities
+              image: ${DockerHubUsername}/solidarianid-communities:latest
+              container_name: solidarian_communities_app
               ports:
                 - "${!COMMUNITIES_PORT}:3002"
               environment:

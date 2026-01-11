@@ -17,12 +17,10 @@ RUN npm run build -- admin
 FROM node:24-alpine AS production
 WORKDIR /app
 
-# Instalar dumb-init
-RUN apk add --no-cache dumb-init
-
-# Crear usuario no-root
-RUN addgroup -g 1001 -S nodejs && \
-  adduser -S nestjs -u 1001
+# Instalar dumb-init, crear usuario no-root y copiar dependencias de producción
+RUN apk add --no-cache dumb-init \
+  && addgroup -g 1001 -S nodejs \
+  && adduser -S nestjs -u 1001
 
 # Copiar dependencias de producción
 COPY package*.json ./
@@ -45,5 +43,6 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD node -e "require('http').get('http://127.0.0.1:3000/health', r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
 
+USER nestjs
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["node", "dist/apps/admin/main.js"]

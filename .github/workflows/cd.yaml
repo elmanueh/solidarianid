@@ -12,7 +12,7 @@ jobs:
   cd:
     name: CD Pipeline
     runs-on: ubuntu-latest
-    environment: production
+    environment: development
     env:
       AWS_REGION: eu-south-2
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -38,14 +38,14 @@ jobs:
 
       - name: Build and push Docker images
         id: build-images
-        working-directory: deployment
+        working-directory: solidarian-id
         env:
           IMAGE_TAG: ${{ steps.image-tag.outputs.tag }}
         run: |
           set -euo pipefail
 
           # Build all 3 apps
-          docker compose -p deployment build admin-app user-app community-app
+          docker compose -f docker-compose.yml -f docker-compose.dev.yml -p deployment build admin-app user-app community-app
 
           # Tag and push admin-app
           docker tag deployment-admin-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-admin:$IMAGE_TAG
@@ -73,7 +73,7 @@ jobs:
           aws-region: eu-south-2
 
       - name: Deploy Network Stack
-        working-directory: deployment
+        working-directory: solidarian-id
         run: |
           aws cloudformation deploy \
             --stack-name MyStackNetwork \
@@ -82,7 +82,7 @@ jobs:
             --no-fail-on-empty-changeset
 
       - name: Deploy Application Stack
-        working-directory: deployment
+        working-directory: solidarian-id
         run: |
           aws cloudformation deploy \
             --stack-name MyStackApp \
@@ -115,7 +115,7 @@ jobs:
           CMD_ID="$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
-            --parameters 'commands=["cd /home/ec2-user && docker-compose --env-file /home/ec2-user/solidarian.env pull && docker-compose --env-file /home/ec2-user/solidarian.env up -d --force-recreate"]' \
+            --parameters 'commands=["cd /home/ec2-user && docker-compose --env-file /home/ec2-user/.env.solidarianid pull && docker-compose --env-file /home/ec2-user/.env.solidarianid up -d --force-recreate"]' \
             --query "Command.CommandId" \
             --output text)"
 

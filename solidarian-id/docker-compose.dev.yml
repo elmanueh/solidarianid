@@ -1,0 +1,91 @@
+services:
+  admin-app:
+    build:
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+    container_name: solidarian_admin_app
+    restart: unless-stopped
+    ports:
+      - '${ADMIN_PORT}:3000'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_USER=${MONGO_USER}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_DB=${MONGO_DB}
+      - KAFKA_BROKERS=${KAFKA_DOCKER_BROKERS}
+      - KAFKA_ADMIN_CLIENT_ID=${KAFKA_ADMIN_CLIENT_ID}
+      - KAFKA_ADMIN_CONSUMER_GROUP_ID=${KAFKA_ADMIN_CONSUMER_GROUP_ID}
+      - API_BASE_ADMIN_URL=${API_BASE_ADMIN_URL}
+      - API_BASE_USERS_URL=${API_BASE_USERS_URL}
+      - API_BASE_COMMUNITIES_URL=${API_BASE_COMMUNITIES_URL}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - API_BASE_COMMUNITIES_INTERNAL_URL=${API_BASE_COMMUNITIES_INTERNAL_URL}
+    depends_on:
+      mongo:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    networks:
+      - solidarian_network
+
+  user-app:
+    build:
+      context: .
+      dockerfile: ./apps/users/Dockerfile
+    container_name: solidarian_user_app
+    restart: unless-stopped
+    ports:
+      - '${USERS_PORT}:3001'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - IN_DOCKER=true
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - KAFKA_BROKERS=${KAFKA_DOCKER_BROKERS}
+      - KAFKA_USERS_CLIENT_ID=${KAFKA_USERS_CLIENT_ID}
+      - KAFKA_USERS_CONSUMER_GROUP_ID=${KAFKA_USERS_CONSUMER_GROUP_ID}
+      - API_BASE_ADMIN_URL=${API_BASE_ADMIN_URL}
+      - API_BASE_USERS_URL=${API_BASE_USERS_URL}
+      - API_BASE_COMMUNITIES_URL=${API_BASE_COMMUNITIES_URL}
+    depends_on:
+      postgres:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    networks:
+      - solidarian_network
+
+  community-app:
+    build:
+      context: .
+      dockerfile: ./apps/communities/Dockerfile
+    container_name: solidarian_community_app
+    restart: unless-stopped
+    ports:
+      - '${COMMUNITIES_PORT}:3002'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - IN_DOCKER=true
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - KAFKA_BROKERS=${KAFKA_DOCKER_BROKERS}
+      - KAFKA_COMMUNITIES_CLIENT_ID=${KAFKA_COMMUNITIES_CLIENT_ID}
+      - KAFKA_COMMUNITIES_CONSUMER_GROUP_ID=${KAFKA_COMMUNITIES_CONSUMER_GROUP_ID}
+      - API_BASE_ADMIN_URL=${API_BASE_ADMIN_URL}
+      - API_BASE_USERS_URL=${API_BASE_USERS_URL}
+      - API_BASE_COMMUNITIES_URL=${API_BASE_COMMUNITIES_URL}
+    depends_on:
+      postgres:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    networks:
+      - solidarian_network

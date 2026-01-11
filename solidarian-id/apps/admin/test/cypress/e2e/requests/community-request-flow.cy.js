@@ -10,10 +10,10 @@
  */
 
 /**
- * Función helper para buscar una solicitud en todas las páginas y hacer clic en la acción
+ * Función helper para buscar una solicitud navegando hacia atrás (de última a primera página)
  * @param {string} communityName - Nombre de la comunidad a buscar
  * @param {string} action - Acción a realizar: 'approve' o 'reject'
- * @param {number} maxPages - Número máximo de páginas a buscar
+ * @param {number} maxPages - Número máximo de páginas a buscar hacia atrás
  */
 function findAndClickRequest(communityName, action, maxPages = 10) {
   cy.get('body').then($body => {
@@ -25,12 +25,12 @@ function findAndClickRequest(communityName, action, maxPages = 10) {
         cy.get(`button[data-action="${action}"]`).click();
       });
     } else {
-      // Verificar si hay página siguiente
+      // Verificar si hay página anterior
       cy.get('body').then($body2 => {
-        const nextPageLink = $body2.find('a:contains("Siguiente")');
-        if (nextPageLink.length > 0 && maxPages > 1) {
-          // Ir a la siguiente página y buscar de nuevo
-          cy.wrap(nextPageLink).click();
+        const prevPageLink = $body2.find('a:contains("Anterior")');
+        if (prevPageLink.length > 0 && maxPages > 1) {
+          // Ir a la página anterior y buscar de nuevo
+          cy.wrap(prevPageLink).click();
           cy.get('.request[data-variant="community"]', { timeout: 10000 }).should('exist');
           findAndClickRequest(communityName, action, maxPages - 1);
         } else {
@@ -38,6 +38,40 @@ function findAndClickRequest(communityName, action, maxPages = 10) {
           throw new Error(`No se encontró la solicitud "${communityName}" en ninguna página`);
         }
       });
+    }
+  });
+}
+
+/**
+ * Navega a la última página de solicitudes de comunidad
+ */
+function goToLastPage() {
+  cy.get('body').then($body => {
+    const lastPageLink = $body.find('a:contains("Última")');
+    if (lastPageLink.length > 0) {
+      cy.wrap(lastPageLink).click();
+      // Esperamos a que cargue la nueva página
+      cy.get('.request[data-variant="community"]', { timeout: 10000 }).should('exist');
+    }
+    // Si no hay enlace "Última", ya estamos en la última (o única) página
+  });
+}
+
+/**
+ * Espera a que aparezca la solicitud recién creada, recargando la página si es necesario
+ * @param {string} communityName - Nombre de la comunidad a buscar
+ * @param {number} maxRetries - Número máximo de reintentos
+ */
+function waitForRequestToAppear(communityName, maxRetries = 10) {
+  cy.get('body').then($body => {
+    // Buscar en todas las páginas empezando por la última
+    const requestExists = $body.text().includes(communityName);
+
+    if (!requestExists && maxRetries > 0) {
+      // Recargar y volver a intentar
+      cy.reload();
+      cy.wait(1000); // eslint-disable-line cypress/no-unnecessary-waiting
+      waitForRequestToAppear(communityName, maxRetries - 1);
     }
   });
 }
@@ -124,11 +158,12 @@ describe('Escenario completo de solicitud de una comunidad', () => {
       expect(response.status).to.eq(201);
     });
 
-    // 3. Vamos a la página de requests (página 1 para ver las más recientes)
-    cy.visit('/community-requests?page=1');
-    cy.get('.request[data-variant="community"]', { timeout: 15000 }).should('exist');
+    // 3. Vamos a la página de requests y esperamos a que aparezca la solicitud
+    cy.visit('/community-requests');
+    waitForRequestToAppear(communityRequest.name);
+    goToLastPage();
 
-    // 4. Buscamos la solicitud recién creada navegando por las páginas si es necesario
+    // 4. Buscamos la solicitud recién creada navegando hacia atrás si es necesario
     findAndClickRequest(communityRequest.name, 'reject');
 
     // 5. Confirmamos el rechazo en el modal escribiendo la razón
@@ -176,11 +211,12 @@ describe('Escenario completo de solicitud de una comunidad', () => {
       expect(response.status).to.eq(201);
     });
 
-    // 3. Vamos a la página de requests (página 1 para ver las más recientes)
-    cy.visit('/community-requests?page=1');
-    cy.get('.request[data-variant="community"]', { timeout: 15000 }).should('exist');
+    // 3. Vamos a la página de requests y esperamos a que aparezca la solicitud
+    cy.visit('/community-requests');
+    waitForRequestToAppear(communityRequest.name);
+    goToLastPage();
 
-    // 4. Buscamos la solicitud recién creada navegando por las páginas si es necesario
+    // 4. Buscamos la solicitud recién creada navegando hacia atrás si es necesario
     findAndClickRequest(communityRequest.name, 'approve');
 
     // 5. Confirmamos la aceptación en el modal escribiendo la razón

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AdminRegisterRequestDto } from './dto/input/admin-register-request.dto';
 import { AdminLoginRequestDto } from './dto/input/admin-login-request.dto';
 import { AuthService } from '../../administrator/model/domain/services/auth.service';
@@ -11,6 +11,7 @@ import { ConfigService } from '@nestjs/config';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { AuthError } from '@app/ddd/errors/auth-error';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { AuthGuard } from '@app/admin/auth/controllers/guards/auth.guard';
 
 /**
  * Controlador API para autenticación
@@ -23,8 +24,8 @@ export class AuthApiController {
     private readonly configService: ConfigService,
   ) {}
 
+  @UseGuards(AuthGuard)
   @Post('register')
-  // @UseGuards(AuthGuard) // Descomentar si se desea proteger la ruta de registro
   async register(
     @Req() request: Request,
     @Res() response: Response,
@@ -60,8 +61,8 @@ export class AuthApiController {
     return response.status(200).json(adminDto);
   }
 
+  @UseGuards(AuthGuard)
   @Post('logout')
-  // @UseGuards(AuthGuard) // Descomentar si se desea proteger la ruta de registro
   logout(@Req() request: Request, @Res() response: Response) {
     request.session.destroy(() => {
       response.status(204).send();

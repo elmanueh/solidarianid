@@ -6,9 +6,11 @@ import {
 } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
 import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import type { CommunityMembership } from '@app/admin/administrator/model/domain/value-objects/community-membership';
-import { Controller, Get, HttpStatus, Param, Res } from '@nestjs/common';
+import { AuthGuard } from '@app/admin/auth/controllers/guards/auth.guard';
+import { Controller, Get, HttpStatus, Param, Res, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 
+@UseGuards(AuthGuard)
 @Controller('/api/reports')
 export class ReportsApiController {
   constructor(

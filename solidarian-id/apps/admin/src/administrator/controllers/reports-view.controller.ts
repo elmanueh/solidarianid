@@ -1,14 +1,16 @@
-import { Controller, Get, Query, Render, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Query, Render, BadRequestException, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
 import type { User } from '@app/admin/administrator/model/domain/models/user';
 import { validatePageNumber } from '@app/admin/administrator/controllers/utils';
+import { AuthGuard } from '@app/admin/auth/controllers/guards/auth.guard';
 
 /**
  * Controlador de vistas para reportes (MVC)
  * Maneja las rutas que renderizan las vistas del módulo de reportes
  * Implementa Server-Side Rendering con progressive enhancement
  */
+@UseGuards(AuthGuard)
 @Controller()
 export class ReportsViewController {
   private readonly USERS_PER_PAGE = 6;

@@ -6,6 +6,7 @@ import {
   processRequests,
   seedActionRequests,
   seedCauseRequests,
+  seedCommunityMembers,
   seedCommunityRequests,
   seedUsers,
 } from './api-client';
@@ -162,7 +163,16 @@ async function main(): Promise<void> {
 
   stats.totalRequests = stats.communityRequests + stats.causeRequests + stats.actionRequests;
 
-  // 13. Final Summary
+  // ==========================================================================
+  // ADD USERS TO COMMUNITIES
+  // ==========================================================================
+  console.log('\n⏳ Waiting before assigning community members...');
+  await delay(KAFKA_PROPAGATION_DELAY_MS);
+
+  // 13. Add users to communities (variability: some communities many members, others few)
+  await seedCommunityMembers(createdUsers, communities);
+
+  // 14. Final Summary
   printSummary(stats, !!adminToken);
 }
 

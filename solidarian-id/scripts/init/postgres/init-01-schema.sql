@@ -1,13 +1,13 @@
 -- =====================================================
 -- PostgreSQL Database Schema
--- Generated: 2026-01-11T22:03:18.262Z
+-- Generated: 2026-01-11T22:18:49.420Z
 -- =====================================================
 
 --
 -- PostgreSQL database dump
 --
 
-\restrict QVFkBX15rzNIUZPpMe9d4OkjvUWiL9kfbVUukdCMmcKan3GR9ncsgqI1tMstvn3
+\restrict 2FEL67FNo5IyWC4rPx9Zn6FaRjj45l5JqBBnBOmc5on5C5ni0cmDc4NT2Gnh0f7
 
 -- Dumped from database version 16.11 (Debian 16.11-1.pgdg13+1)
 -- Dumped by pg_dump version 16.11 (Debian 16.11-1.pgdg13+1)
@@ -415,5 +415,5 @@ ALTER TABLE ONLY public.event
 -- PostgreSQL database dump complete
 --
 
-\unrestrict QVFkBX15rzNIUZPpMe9d4OkjvUWiL9kfbVUukdCMmcKan3GR9ncsgqI1tMstvn3
+\unrestrict 2FEL67FNo5IyWC4rPx9Zn6FaRjj45l5JqBBnBOmc5on5C5ni0cmDc4NT2Gnh0f7
 

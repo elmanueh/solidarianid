@@ -541,3 +541,78 @@ export async function processRequests(
   console.log(`   ✅ Approved: ${approved}, ❌ Rejected: ${rejected}, ⏳ Pending: ${pending}`);
   return { approved, rejected, pending };
 }
+
+// =============================================================================
+// Community Members API Functions
+// =============================================================================
+
+/**
+ * Adds a user to a community
+ */
+async function addUserToCommunity(communityId: string, userId: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${COMMUNITIES_SERVICE_URL}/communities/${communityId}/members`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 409) {
+        // Conflict - user already member, skip silently
+        return false;
+      }
+      const errorText = await response.text();
+      console.error(`  ⚠️ Failed to add user ${userId} to community ${communityId}: ${response.status}`);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error(`  ❌ Error adding user to community:`, (error as Error).message);
+    return false;
+  }
+}
+
+/**
+ * Seeds community members - randomly adds users to communities
+ * Creates variability: some communities have many members, others have fewer
+ */
+export async function seedCommunityMembers(users: CreatedUser[], communities: CreatedCommunity[]): Promise<void> {
+  if (users.length === 0 || communities.length === 0) {
+    console.log('\n⚠️ No users or communities available, skipping member assignments');
+    return;
+  }
+
+  console.log('\n👥 Adding users to communities...');
+  console.log(`   Users available: ${users.length}`);
+  console.log(`   Communities available: ${communities.length}`);
+
+  let totalAssignments = 0;
+  let successCount = 0;
+
+  // For each user, add them to a random number of communities (1-5)
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+    const communitiesPerUser = faker.number.int({ min: 1, max: Math.min(5, communities.length) });
+
+    // Get random communities for this user
+    const randomCommunities = faker.helpers.shuffle(communities).slice(0, communitiesPerUser);
+
+    for (const community of randomCommunities) {
+      const added = await addUserToCommunity(community.id, user.id);
+      if (added) {
+        successCount++;
+      }
+      totalAssignments++;
+    }
+
+    if ((i + 1) % 10 === 0) {
+      console.log(`   Progress: ${i + 1}/${users.length} users processed`);
+    }
+
+    await delay(DELAY_BETWEEN_REQUESTS_MS);
+  }
+
+  console.log(`   ✅ Users added to communities: ${successCount}/${totalAssignments}`);
+}

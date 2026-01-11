@@ -47,7 +47,7 @@ jobs:
           set -euo pipefail
 
           # Build all 3 apps
-          docker compose -f docker-compose.dev.yml -p deployment build admin-app user-app community-app
+          docker compose -f docker-compose.yml -f docker-compose.dev.yml -p deployment build admin-app user-app community-app
 
           # Tag and push admin-app
           docker tag deployment-admin-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-admin:$IMAGE_TAG

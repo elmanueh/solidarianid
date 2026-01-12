@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const chartsDataElement = document.getElementById('charts-data');
   const chartsData = JSON.parse(chartsDataElement.textContent);
 
+  const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  Chart.defaults.color = isDarkMode ? '#FFFFFF' : '#000000';
+  Chart.defaults.font.size = 16;
+
   const ctx = chart => document.getElementById(chart).getContext('2d');
 
   const hasData = chartData => {

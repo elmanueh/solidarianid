@@ -1,5 +1,7 @@
 // Conectar a la base de datos
-const conn = new Mongo("mongodb://ado_user2:ado_user2_password@localhost:27017/solidarianid?authSource=admin");
+const conn = new Mongo(
+  "mongodb://ado_user2:ado_user2_password@localhost:27017/solidarianid?authSource=admin"
+);
 const db = conn.getDB("solidarianid");
 
 // Parámetros de ejemplo
@@ -12,8 +14,8 @@ const PARAMS = {
   LIMIT_USERS: 6,
 
   // IDs de ejemplo (reemplazar con IDs reales de tu base de datos)
-  USER_ID: "550e8400-e29b-41d4-a716-446655440001",
-  ADMIN_EMAIL: "info@cafecutillas88.com",
+  USER_ID: "a1acf9c7-4b92-4bdc-bae9-4473662ab63e",
+  ADMIN_EMAIL: "sergio.garcia@solidarianid.org",
 };
 
 // 1.1 Causas agrupadas por ODS
@@ -40,15 +42,21 @@ let usersGroupedByCountry = db.users
 printjson(usersGroupedByCountry);
 
 // 1.3 Comunidades aprobadas
-let approvedCommunities = db.requests.find({ status: "approved", type: "community" }).toArray();
+let approvedCommunities = db.requests
+  .find({ status: "approved", type: "community" })
+  .toArray();
 print("Total comunidades aprobadas: " + approvedCommunities.length);
 
 // 1.4 Causas aprobadas
-let approvedCauses = db.requests.find({ status: "approved", type: "cause" }).toArray();
+let approvedCauses = db.requests
+  .find({ status: "approved", type: "cause" })
+  .toArray();
 print("Total causas aprobadas: " + approvedCauses.length);
 
 // 1.5 Acciones aprobadas
-let approvedActions = db.requests.find({ status: "approved", type: "action" }).toArray();
+let approvedActions = db.requests
+  .find({ status: "approved", type: "action" })
+  .toArray();
 print("Total acciones aprobadas: " + approvedActions.length);
 
 // 1.6 Total de usuarios registrados
@@ -221,5 +229,7 @@ let adminForLogin = db.administrators.findOne({ email: PARAMS.ADMIN_EMAIL });
 if (adminForLogin) {
   printjson(adminForLogin);
 } else {
-  print("Administrador no encontrado (email de ejemplo). Reemplazar con un email real.");
+  print(
+    "Administrador no encontrado (email de ejemplo). Reemplazar con un email real."
+  );
 }

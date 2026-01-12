@@ -6,8 +6,8 @@
 \set cause_id '\'3cb13e37-308f-4fd5-80a1-ec31a58a0b4b\''
 \set user_id '\'d89858db-23ca-4df2-b5d3-b1c5f2eb4683\''
 
-\set username_example '\'testuser\''
-\set mobile_phone_example '\'+34123456789\''
+\set username_example '\'jeromeratke2\''
+\set mobile_phone_example '\'+58747829873\''
 \set ranking_limit 10
 \set months_limit 12
 

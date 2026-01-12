@@ -2,6 +2,7 @@
 import { INestApplication } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { AdminModule } from '@app/admin/administrator/admin.module';
+import { AuthModule } from '@app/admin/auth/auth.module';
 import {
   KafkaTestModule,
   MongoDBSeeder,
@@ -23,11 +24,17 @@ describe('ReportsApiController (e2e)', () => {
     const databaseModule = await MongoDBTestModule.forRoot();
     server = new TestServerHelper();
     app = await server.create({
-      imports: [messageModule, databaseModule, AdminModule],
+      imports: [messageModule, databaseModule, AuthModule, AdminModule],
     });
 
     const connection: Connection = app.get<Connection>('Connection');
     seeder = new MongoDBSeeder(connection);
+
+    await seeder.seedAdministrators();
+    await server.loginAsAdmin({
+      email: 'login.test@solidarianid.org',
+      password: 'Admin2024!Pass',
+    });
   });
 
   beforeEach(async () => {

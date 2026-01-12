@@ -18,14 +18,6 @@ export function RenderHttpExceptionMapper(statusCode: HttpStatus) {
         showHomeLink: false,
       };
 
-    case HttpStatus.UNAUTHORIZED:
-      return {
-        statusCode,
-        errorTitle: 'No autorizado',
-        message: 'Debes iniciar sesión para acceder a esta página.',
-        showHomeLink: false,
-      };
-
     case HttpStatus.INTERNAL_SERVER_ERROR:
       return {
         statusCode,

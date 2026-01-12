@@ -1,5 +1,5 @@
 import { validatePageNumber } from '@app/admin/utils/pdf-util';
-import { BadRequestException, Controller, Get, Query, Render } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Query, Render, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
 import { AdminViewService } from '@app/admin/administrator/model/domain/services/admin-view.service';
@@ -10,11 +10,14 @@ import { ActionRequestResponseDto } from '@app/admin/administrator/controllers/d
 import { CauseRequest } from '@app/admin/administrator/model/domain/models/cause-request';
 import { CommunityRequest } from '@app/admin/administrator/model/domain/models/community-request';
 import { ActionRequest } from '@app/admin/administrator/model/domain/models/action-request';
+import { AuthGuard } from '@app/admin/auth/controllers/guards/auth.guard';
 
 /**
  * Controlador de vistas para el panel de administración (MVC)
  * Maneja las rutas que renderizan las vistas del dashboard
  */
+
+@UseGuards(AuthGuard)
 @Controller()
 export class AdminViewController {
   private readonly REQUESTS_PER_PAGE = 10;

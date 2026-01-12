@@ -51,7 +51,7 @@ export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOp
     migrationsRun: isProduction,
     migrations: [isProduction ? migrationsDistPath : migrationsPath],
     migrationsTableName: 'typeorm_migrations',
-    logging: !isProduction,
+    //logging: !isProduction,
   };
 }
 

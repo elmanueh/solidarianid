@@ -8,6 +8,7 @@ import {
   TestServerHelper,
 } from '@solidarianid/testing';
 import { AdminModule } from '@app/admin/administrator/admin.module';
+import { AuthModule } from '@app/admin/auth/auth.module';
 import { UserGroupByCountryResponseDto } from '@app/admin/administrator/controllers/dtos/user-group-by-country.response.dto';
 import { CauseGroupByOdsResponseDto } from '@app/admin/administrator/controllers/dtos/cause-group-by-ods.response.dto';
 
@@ -17,15 +18,21 @@ describe('MetricsApiController (e2e)', () => {
   let seeder!: MongoDBSeeder;
 
   beforeAll(async () => {
-    const databaseModule = await MongoDBTestModule.forRoot();
     const messageModule = await KafkaTestModule.forRoot();
+    const databaseModule = await MongoDBTestModule.forRoot();
     server = new TestServerHelper();
     app = await server.create({
-      imports: [databaseModule, AdminModule, messageModule],
+      imports: [messageModule, databaseModule, AuthModule, AdminModule],
     });
 
     const connection: Connection = app.get<Connection>('Connection');
     seeder = new MongoDBSeeder(connection);
+
+    await seeder.seedAdministrators();
+    await server.loginAsAdmin({
+      email: 'login.test@solidarianid.org',
+      password: 'Admin2024!Pass',
+    });
   });
 
   afterAll(async () => {

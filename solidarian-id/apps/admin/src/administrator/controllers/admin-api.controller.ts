@@ -1,10 +1,12 @@
-import { Controller, Get, HttpCode, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, HttpCode, ParseIntPipe, Query, UseGuards } from '@nestjs/common';
 import { RequestsService } from '../model/domain/services/requests.service';
 import { UsersService } from '../model/domain/services/users.service';
 import { UserGroupByCountryResponseDto } from './dtos/user-group-by-country.response.dto';
 import { AdminDtoMapper } from './mappers/admin.dto.mapper';
 import { CauseGroupByOdsResponseDto } from './dtos/cause-group-by-ods.response.dto';
+import { AuthGuard } from '@app/admin/auth/controllers/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('api/metrics')
 export class MetricsApiController {
   constructor(

@@ -12,6 +12,7 @@ services:
       POSTGRES_INITDB_ARGS: '--encoding=UTF8 --lc-collate=C.UTF-8 --lc-ctype=C.UTF-8'
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+      - ./scripts/init/postgres:/docker-entrypoint-initdb.d
     networks:
       - solidarian_network
     healthcheck:
@@ -32,8 +33,8 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_DB}
     volumes:
       - ./data/mongodb:/data/db
-    networks:
-      - solidarian_network
+      #- ./scripts/init/init-mongo-admins.js:/docker-entrypoint-initdb.d/init-mongo-admins.js:ro
+      - ./scripts/init/mongo:/docker-entrypoint-initdb.d
     healthcheck:
       test:
         [
@@ -44,6 +45,8 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
+    networks:
+      - solidarian_network
 
   kafka:
     image: apache/kafka@sha256:0bc1bb2478f45b6cea78864df86acdc11e8df2c5172477819a4d12942cbe5d40

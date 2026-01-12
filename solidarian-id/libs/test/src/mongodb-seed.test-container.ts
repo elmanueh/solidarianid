@@ -259,6 +259,8 @@ export class MongoDBSeeder implements IDatabaseSeeder {
   async seedAdministrators(admins: AdministratorEntity[] = []): Promise<void> {
     const adminsCollection = this.connection.collection('administrators');
 
+    await adminsCollection.deleteMany({});
+
     const defaultAdmins: AdministratorEntity[] = [
       {
         _id: ADMINISTRATOR_IDS.TEST_ADMIN,

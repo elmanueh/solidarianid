@@ -49,7 +49,15 @@ export class UsersServiceImpl extends UsersService {
       return left(existingUserOrError.value);
     }
 
-    return await this.saveUser(userDto);
+    existingUserOrError.value.updateDetails({
+      fullName: userDto.fullName,
+      username: userDto.username,
+      city: userDto.city,
+      phone: userDto.mobilePhone,
+      countryCode: userDto.countryCode,
+    });
+
+    return await this.userRepository.save(existingUserOrError.value);
   }
 
   async addMemberShip(

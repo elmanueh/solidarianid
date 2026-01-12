@@ -69,6 +69,30 @@ export class User extends Entity<UserProps> {
     }
   }
 
+  updateDetails(details: {
+    fullName: string;
+    username: string;
+    city: string;
+    phone: string;
+    countryCode: string;
+  }): void {
+    const fullNameOrError = FullName.create(details.fullName);
+    if (fullNameOrError.isLeft()) throw fullNameOrError.value;
+    this.props.fullName = fullNameOrError.value;
+
+    const usernameOrError = Username.create(details.username);
+    if (usernameOrError.isLeft()) throw usernameOrError.value;
+    this.props.username = usernameOrError.value;
+
+    const phoneOrError = MobilePhone.create(details.phone);
+    if (phoneOrError.isLeft()) throw phoneOrError.value;
+    this.props.phone = phoneOrError.value;
+
+    const locationOrError = UserLocation.create({ city: details.city, countryCode: details.countryCode });
+    if (locationOrError.isLeft()) throw locationOrError.value;
+    this.props.location = locationOrError.value;
+  }
+
   private constructor(props: UserProps, id: UniqueEntityID) {
     super(props, id);
   }

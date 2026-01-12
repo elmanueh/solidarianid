@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe, ModuleMetadata } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -35,6 +34,7 @@ export class TestServerHelper {
         secret: 'test-secret-key-for-e2e-tests',
         resave: false,
         saveUninitialized: false,
+        name: 'connect.sid',
         cookie: {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24,
@@ -105,6 +105,7 @@ export class TestServerHelper {
   }
 
   getRequest(): supertest.Agent {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.agent ??= request.agent(this.app.getHttpServer());
     return this.agent;
   }

@@ -1074,9 +1074,7 @@ Verifica existencia de usuarios con un número de móvil específico:
 
 ```typescript
 // En el servicio de registro:
-const existsResult = await this.usersRepository.existsByMobilePhone(
-  mobilePhone
-);
+const existsResult = await this.usersRepository.existsByMobilePhone(mobilePhone);
 
 if (existsResult.isRight() && existsResult.value === true) {
   throw new ConflictException("Mobile phone already registered");

@@ -116,11 +116,8 @@ Para facilitar la corrección y el análisis de las consultas, se proporcionan s
 El script `mongodb-queries.js` contiene todas las consultas ejecutadas por la aplicación de administración:
 
 ```bash
-# Desde la raíz del proyecto
-cd ado
-
 # Copiar el script al contenedor de MongoDB
-docker cp ado/mongodb-queries.js solidarian_mongo_db:/tmp/
+docker cp ../ado/mongodb-queries.js solidarian_mongo_db:/tmp/
 
 # Ejecutar el script dentro del contenedor con mongosh
 docker exec solidarian_mongo_db mongosh /tmp/mongodb-queries.js
@@ -142,14 +139,11 @@ Dentro del script está detallada cada consulta y su caso de uso.
 El script `postgres-queries.sql` contiene todas las consultas ejecutadas por las aplicaciones Communities y Users en PostgreSQL:
 
 ```bash
-# Desde la raíz del proyecto
-cd ado
-
 # Copiar el script al contenedor de PostgreSQL
-docker cp ado/postgres-queries.sql solidarian_postgres_db:/tmp/
+docker cp ../ado/postgres-queries.sql solidarian_postgres_db:/tmp/
 
 # Ejecutar el script dentro del contenedor
-docker exec solidarian_postgres_db psql -U <POSTGRES_USER> -d <POSTGRES_DB> -f /tmp/postgres-queries.sql
+docker exec solidarian_postgres_db psql -U ado_user -d solidarianid -f /tmp/postgres-queries.sql
 ```
 
 Este script ejecuta **13 consultas** que incluyen:

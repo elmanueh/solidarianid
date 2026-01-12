@@ -11,7 +11,7 @@ Parameters:
     Type: String
     MinLength: 1
     MaxLength: 255
-    AllowedPattern: '^[a-zA-Z][-a-zA-Z0-9]*$'
+    AllowedPattern: "^[a-zA-Z][-a-zA-Z0-9]*$"
     Default: MyStackNetwork
 
   AmazonLinuxAMIID:
@@ -31,7 +31,7 @@ Resources:
   WebServerInstance:
     Type: AWS::EC2::Instance
     Metadata:
-      'AWS::CloudFormation::Init':
+      "AWS::CloudFormation::Init":
         configSets:
           All:
             - ConfigureSampleApp
@@ -110,6 +110,7 @@ Resources:
                 - solidarian_network
               volumes:
                 - postgres_data:/var/lib/postgresql/data
+                - /home/ec2-user/init-data:/docker-entrypoint-initdb.d
               healthcheck:
                 test: ["CMD-SHELL", "pg_isready -U ${!POSTGRES_USER} -d ${!POSTGRES_DB}"]
                 interval: 10s
@@ -200,6 +201,7 @@ Resources:
                 - API_BASE_ADMIN_URL=${!API_BASE_ADMIN_URL}
                 - API_BASE_USERS_URL=${!API_BASE_USERS_URL}
                 - API_BASE_COMMUNITIES_URL=${!API_BASE_COMMUNITIES_URL}
+                - API_BASE_COMMUNITIES_INTERNAL_URL=${!API_BASE_COMMUNITIES_INTERNAL_URL}
                 - SESSION_SECRET=${!SESSION_SECRET}
                 - KAFKA_ADMIN_CLIENT_ID=${!KAFKA_ADMIN_CLIENT_ID}
                 - KAFKA_ADMIN_CONSUMER_GROUP_ID=${!KAFKA_ADMIN_CONSUMER_GROUP_ID}
@@ -297,7 +299,7 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
@@ -308,14 +310,14 @@ Resources:
       Policies:
         - PolicyName: ReadSolidarianSecrets
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Effect: Allow
                 Action: secretsmanager:GetSecretValue
                 Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:prod/solidarianid*
         - PolicyName: S3ReadAccess
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Effect: Allow
                 Action:
@@ -377,12 +379,12 @@ Resources:
 Outputs:
   AdminURL:
     Description: URL of the admin application
-    Value: !Sub 'http://${WebServerInstance.PublicDnsName}:3000'
+    Value: !Sub "http://${WebServerInstance.PublicDnsName}:3000"
 
   UsersURL:
     Description: URL of the users microservice
-    Value: !Sub 'http://${WebServerInstance.PublicDnsName}:3001'
+    Value: !Sub "http://${WebServerInstance.PublicDnsName}:3001"
 
   CommunitiesURL:
     Description: URL of the communities microservice
-    Value: !Sub 'http://${WebServerInstance.PublicDnsName}:3002'
+    Value: !Sub "http://${WebServerInstance.PublicDnsName}:3002"

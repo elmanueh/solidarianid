@@ -12,7 +12,7 @@ jobs:
   cd:
     name: CD Pipeline
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
     env:
       AWS_REGION: eu-south-2
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -30,7 +30,7 @@ jobs:
           IMAGE_TAG="${SHORT_SHA}-$(date +%s)"
           echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
-      - name: Login to Docker Hub
+      - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}

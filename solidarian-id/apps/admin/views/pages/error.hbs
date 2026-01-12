@@ -1,0 +1,26 @@
+<main class='error-page'>
+  <div class='error-content' role='alert' aria-live='assertive'>
+    <h1 class='error-code' tabindex='-1'>Error {{statusCode}}</h1>
+    <h2 class='error-title'>{{errorTitle}}</h2>
+    <p
+      class='error-message'
+      aria-describedby='error-description'
+    >{{message}}</p>
+    <span
+      class='icon-[si--error-duotone] text-[200px] text-ocean-blue-500'
+      role='img'
+      aria-hidden='true'
+    ></span>
+    <div class='error-actions'>
+      <a class='btn btn-primary btn-lg' href='/dashboard'>
+        <span aria-hidden='true'>←</span>
+        Volver al Dashboard
+      </a>
+      {{#if showHomeLink}}
+        <a type='button' href='/' class='btn btn-secondary btn-lg'>
+          Ir al Inicio
+        </a>
+      {{/if}}
+    </div>
+  </div>
+</main>

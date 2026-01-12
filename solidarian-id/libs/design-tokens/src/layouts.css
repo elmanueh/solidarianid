@@ -1,0 +1,166 @@
+/* Elementos reutilizables en los layout de la aplicación Solidarian ID */
+@layer components {
+  /* Footer */
+  .footer {
+    @apply border-t p-2 pt-6;
+    background-color: var(--color-ocean-blue-900);
+    color: white;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-top h3 {
+    @apply mb-6 uppercase underline;
+  }
+
+  .footer-top-section {
+    @apply flex flex-col;
+  }
+
+  .footer-top li {
+    @apply mb-4;
+  }
+
+  .footer-top a span {
+    @apply cursor-pointer p-2 rounded-md;
+    &:hover {
+      background-color: var(--color-ocean-blue-800);
+    }
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    margin: calc(var(--spacing) * 3);
+  }
+
+  .footer-social-icons {
+    @apply flex gap-2;
+  }
+
+  .footer-social-icons span {
+    @apply cursor-pointer p-3 hover:brightness-130;
+  }
+
+  /* Footer media queries */
+  @media (min-width: 390px) {
+    .footer-top section {
+      @apply mb-6;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .footer-top {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-top {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* dashboard */
+  .dashboard {
+    @apply min-h-screen relative md:grid md:grid-cols-[14rem_1fr];
+  }
+
+  .dashboard > *:not(.aside):not(.aside-overlay):not(.hamburger-header) {
+    @apply pt-16 md:pt-0;
+  }
+
+  .aside {
+    @apply text-white flex flex-col bg-ocean-blue-600 dark:bg-black-haze-800
+       fixed
+       top-0 left-0 bottom-0
+       w-2/3 md:w-56
+       z-50 
+       -translate-x-full md:translate-x-0
+       transition-transform duration-300
+       shadow-2xl md:shadow-none
+
+       md:sticky md:top-0 md:h-screen md:overflow-y-auto;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .aside::-webkit-scrollbar {
+    display: none;
+  }
+
+  .aside.open {
+    @apply translate-x-0;
+  }
+
+  .hamburger-btn {
+    @apply p-2 rounded-md 
+         hover:bg-ocean-blue-700
+         transition-colors
+         absolute left-2;
+  }
+
+  .hamburger-header {
+    @apply fixed top-0 left-0 right-0 z-50 
+         md:hidden 
+         bg-ocean-blue-600 text-white 
+         px-4 py-2
+         flex items-center justify-center dark:bg-black-haze-800
+         shadow-lg;
+  }
+
+  .hamburger-header-content {
+    @apply flex items-center gap-3;
+  }
+
+  .hamburger-btn-logo {
+    @apply w-10 h-10;
+  }
+
+  .hamburger-btn-title {
+    @apply text-xl font-bold;
+  }
+
+  .hamburger-icon {
+    @apply w-6 h-6;
+  }
+
+  .aside-overlay {
+    @apply fixed inset-0 bg-black/50 z-40 
+         md:hidden opacity-0 pointer-events-none;
+  }
+
+  .aside-overlay.active {
+    @apply opacity-100 pointer-events-auto;
+  }
+
+  .aside-menu {
+    @apply flex flex-col gap-4 m-6 text-xl;
+  }
+
+  .aside-menu a {
+    @apply flex px-3 py-2 rounded-md hover:bg-white/10;
+  }
+
+  .aside-menu a.active {
+    @apply bg-white/20 font-semibold;
+  }
+
+  .aside-menu-item {
+    @apply flex items-center gap-2;
+  }
+
+  .aside-logo-container {
+    @apply flex flex-col items-center gap-2 mb-6 mt-8 font-bold text-2xl;
+  }
+
+  .aside-logout {
+    @apply cursor-pointer text-start mt-auto p-6 rounded-md hover:bg-white/10 text-xl flex items-center gap-2;
+  }
+}

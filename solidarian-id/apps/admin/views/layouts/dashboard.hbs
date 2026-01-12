@@ -1,0 +1,27 @@
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{{title}} - SolidarianID</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="/css/main.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard">{{>aside}} {{{body}}}</div>
+    {{>footer}}
+    <script src="/js/aside.js"></script>
+    <script>
+      globalThis.APP_CONFIG = {
+        apiBaseUrl: '{{apiBaseUrl}}',
+      };
+    </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/js/requests.js"></script>
+    <script src="/js/validation-requests.js"></script>
+  </body>
+</html>

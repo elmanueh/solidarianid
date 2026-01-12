@@ -1,0 +1,53 @@
+@startuml C2-Container-AdminApp
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+!$ICONURL = "https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v3.0.0/icons"
+!include $ICONURL/common.puml
+!include $ICONURL/devicons/database.puml
+!include $ICONURL/font-awesome-5/cog.puml
+!include $ICONURL/font-awesome-5/eye.puml
+!include $ICONURL/devicons2/apachekafka_original.puml
+!include $ICONURL/devicons2/mongodb.puml
+!include $ICONURL/devicons2/handlebars_original.puml
+!include $ICONURL/devicons2/nestjs_original.puml
+
+!include $ICONURL/govicons/user_military.puml
+
+skinparam ArrowThickness 2
+
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram - Aplicación de Administración (Monolito MVC)
+
+Person(admin, "Administrador", "Personal autorizado de SolidarianID", $sprite="user_military")
+ComponentQueue(kafkaBroker, "Apache Kafka", "Broker de mensajería", $sprite="apachekafka_original")
+ComponentDb(database, "Base de Datos", "MongoDB (TBD)", "Almacena administradores, usuarios, causas, comunidades, eventos, SDGs", $sprite="mongodb", $tags="database")
+
+System_Boundary(adminAppBoundary, "Aplicación de Administración - Monolito NestJS") {
+    Component(webController, "Controllers (MVC)", "NestJS Controllers", "Gestiona peticiones HTTP y renderiza vistas Handlebars", $sprite="nestjs_original", $tags="controller")
+    
+    Component(businessLogic, "Model (Business Logic)", "NestJS Services", "Implementa la lógica de negocio: validación de causas, gestión de usuarios, etc.", $sprite="cog", $tags="service")
+    Component(viewEngine, "View", "Express Handlebars", "Motor de plantillas para renderizado server-side de vistas HTML dinámicas", $sprite="handlebars_original")
+    
+    Component(kafkaConsumer, "Kafka Consumer", "NestJS Component", "Consume eventos del topic de Kafka desde la aplicación principal", $sprite="nestjs_original", $tags="kafka")
+    Component(dataAccess, "Repositories (Data Access)", "TypeORM/Mongoose", "Capa de acceso a datos con patrón Repository", $sprite="database", $tags="repository")
+}
+
+AddElementTag("controller", $bgColor="#D4AF37", $fontColor="#FFFFFF")
+AddElementTag("service", $bgColor="#359275", $fontColor="#FFFFFF")
+AddElementTag("kafka", $bgColor="#923584", $fontColor="#FFFFFF")
+AddElementTag("repository", $bgColor="#A8E6CF", $fontColor="#000000")
+AddElementTag("database", $bgColor="#2C3E50", $fontColor="#FFFFFF")
+
+Rel_Down(admin, adminAppBoundary, "1. Accede a la aplicación de administración", "HTTPS")
+BiRel_Down(webController, businessLogic, "2.Invoca lógica de negocio", "Método TypeScript")
+Rel_Down(webController, viewEngine, "3. Renderiza vistas con datos", "Template rendering")
+Rel_Down(businessLogic, dataAccess, "2.1 Ejecuta operaciones CRUD", "Repository pattern")
+Rel_Down(dataAccess, database, "2.2 Lee/Escribe datos", "SQL/NoSQL queries")
+
+Rel_Down(kafkaConsumer, businessLogic, "Procesa eventos de negocio", "Event handlers")
+Rel_Left(kafkaBroker, kafkaConsumer, "Publica / consume eventos", "Kafka Protocol")
+
+SHOW_LEGEND()
+@enduml

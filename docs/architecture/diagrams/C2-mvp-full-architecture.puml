@@ -1,0 +1,94 @@
+@startuml C2-Container-Full-Architecture
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!$ICONURL = "https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v3.0.0/icons"
+
+!include $ICONURL/common.puml
+!include $ICONURL/devicons/database.puml
+
+!include $ICONURL/govicons/user_military.puml
+!include $ICONURL/govicons/user_suit.puml
+!include $ICONURL/font-awesome-5/user_shield.puml
+!include $ICONURL/font-awesome-5/user.puml
+!include $ICONURL/font-awesome-5/users.puml
+
+!include $ICONURL/font-awesome-5/cog.puml
+!include $ICONURL/font-awesome-5/eye.puml
+!include $ICONURL/devicons2/apachekafka_original.puml
+!include $ICONURL/devicons2/mongodb.puml
+!include $ICONURL/devicons2/postgresql.puml
+!include $ICONURL/devicons2/nestjs_original.puml
+
+LAYOUT_WITH_LEGEND()
+
+' Configuración de estilos
+skinparam ArrowThickness 2
+
+title Arquitectura Completa de SolidarianID
+
+' Definición de Tags para definir colores de contenedores
+AddElementTag("monolith", $bgColor="#6C3483", $fontColor="#FFFFFF")
+AddElementTag("monolith-database", $bgColor="#00943eff", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)
+AddElementTag("microservice", $bgColor="#db7a03ff", $fontColor="#FFFFFF")
+AddElementTag("microservice-database", $bgColor="#1C2833", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)  
+AddElementTag("message-broker", $bgColor="#530176ff", $fontColor="#ffffff", $borderColor="#FFFFFF", $borderThickness=2)
+
+' Definición de Actores
+Person(admin, "Administrador de la plataforma", "Personal autorizado de SolidarianID", $sprite="user_military")
+
+' Actores de la aplicación principal (agrupados)
+Person(communityAdmin, "Administrador de comunidad", "Usuarios con privilegios para gestionar causas y eventos dentro de su comunidad", $sprite="user_suit")
+Person(ong, "ONG", "Organización No Gubernamental que colabora con SolidarianID", $sprite="users")
+Person(userNotRegistered, "Usuario no registrado", "Usuario que navega por el sitio web público sin haberse registrado", $sprite="user")
+Person(userRegistered, "Usuario registrado", "Usuario que ha creado una cuenta en SolidarianID y ha iniciado sesión", $sprite="user_shield")
+
+' Layout para alinear actores de la app principal
+Lay_R(communityAdmin, ong)
+Lay_R(ong, userNotRegistered)
+Lay_R(userNotRegistered, userRegistered)
+
+' Contexto de la aplicación de administración en alto nivel
+System_Boundary(adminAppBoundary, "Aplicación de Administración - Monolito NestJS - SolidarianID") {
+  Container(adminMonolith, "Monolito MVC de administración", "Monolito NestJS", "Gestiona peticiones HTTP y renderiza vistas Handlebars", $sprite="nestjs_original", $tags="monolith")
+  ContainerDb(adminDatabase, "Base de Datos de Administración", "MongoDB (TBD)", "Almacena administradores, usuarios, causas, comunidades, eventos, SDGs", $sprite="mongodb", $tags="monolith-database")
+}
+' Contexto de la aplicación principal en alto nivel
+System_Boundary(principalAppBoundary, "Aplicación Principal (MVP) - Microservicios NestJS - SolidarianID") {
+  System_Boundary(userServiceBoundary, "Microservicio de Usuarios") {
+    Container(userService, "Microservicio de Usuarios", "NestJS Microservicio", "Gestiona el registro, autenticación y perfil de usuarios", $sprite="nestjs_original", $tags="microservice")
+    ContainerDb(userDatabase, "Base de Datos de Usuarios", "PostgreSQL (TBD)", "Almacena datos de usuarios registrados", $sprite="postgresql", $tags="microservice-database")
+  }
+  System_Boundary(communitiesServiceBoundary, "Microservicio de Comunidades") {
+    Container(communitiesService, "Microservicio de Comunidades", "NestJS Microservicio", "Gestiona comunidades y la asociación de usuarios a comunidades", $sprite="nestjs_original", $tags="microservice")
+    ContainerDb(communitiesDatabase, "Base de Datos de Comunidades", "PostgreSQL (TBD)", "Almacena datos relacionados con comunidades y sus miembros", $sprite="postgresql", $tags="microservice-database")
+  }
+}
+
+' Kafka al final para que quede abajo
+ContainerQueue(kafkaBroker, "Apache Kafka", "Broker de mensajería", $sprite="apachekafka_original", $tags="message-broker")
+
+' Layout para posicionar Kafka abajo del todo
+Lay_D(adminDatabase, kafkaBroker)
+Lay_D(userDatabase, kafkaBroker)
+Lay_D(communitiesDatabase, kafkaBroker)
+
+' Relaciones de alto nivel de la aplicación de administración
+BiRel_Down(admin, adminAppBoundary, "Accede a la aplicación de administración", "HTTPS")
+BiRel_Down(adminMonolith, adminDatabase, " Lee/Escribe datos de administración", "NoSQL queries MongoDB")
+BiRel_Down(adminMonolith, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
+
+
+' Relaciones de alto nivel de la aplicación principal
+Rel_Down(communityAdmin, principalAppBoundary, "Gestiona causas y eventos", "HTTPS")
+Rel_Down(ong, principalAppBoundary, "Colabora con la plataforma", "HTTPS")
+Rel_Down(userNotRegistered, principalAppBoundary, "Navega por el sitio web público", "HTTPS")
+Rel_Down(userRegistered, principalAppBoundary, "Inicia sesión y utiliza la plataforma", "HTTPS")
+
+BiRel_Down(userService, userDatabase, " Lee/Escribe datos de usuarios", "SQL queries PostgreSQL")
+BiRel_Down(userService, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
+BiRel_Down(communitiesService, communitiesDatabase, " Lee/Escribe datos de comunidades", "SQL queries PostgreSQL")
+BiRel_Down(communitiesService, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
+
+
+SHOW_LEGEND()
+@enduml

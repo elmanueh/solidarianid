@@ -1,0 +1,390 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  SolidarianID Stack: EC2 instance with Docker for running 3 NestJS microservices
+  (admin, users, communities) with PostgreSQL, MongoDB and Kafka.
+
+Parameters:
+  NetworkStackName:
+    Description: >-
+      Name of an active CloudFormation stack that contains the networking
+      resources, such as the VPC and subnet that will be used in this stack.
+    Type: String
+    MinLength: 1
+    MaxLength: 255
+    AllowedPattern: "^[a-zA-Z][-a-zA-Z0-9]*$"
+    Default: MyStackNetwork
+
+  AmazonLinuxAMIID:
+    Type: AWS::EC2::Image::Id
+    Default: ami-02e50d15ca7664be9
+
+  DockerHubUsername:
+    Description: Docker Hub username for pulling images
+    Type: String
+    Default: zerep0
+
+  ExistingEipAllocationId:
+    Type: String
+    Default: eipalloc-086485758b47098be
+
+Resources:
+  WebServerInstance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      "AWS::CloudFormation::Init":
+        configSets:
+          All:
+            - ConfigureSampleApp
+        ConfigureSampleApp:
+          packages:
+            yum:
+              docker: []
+          services:
+            sysvinit:
+              docker:
+                enabled: true
+                ensureRunning: true
+
+    Properties:
+      IamInstanceProfile: !Ref WebServerInstanceProfile
+      KeyName: solidarian-keypair
+      InstanceType: t3.medium
+      ImageId: !Ref AmazonLinuxAMIID
+      NetworkInterfaces:
+        - GroupSet:
+            - !Ref WebServerSecurityGroup
+          AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          DeleteOnTermination: true
+          SubnetId:
+            Fn::ImportValue: !Sub ${NetworkStackName}-SubnetID
+      Tags:
+        - Key: Name
+          Value: SolidarianID Web Server
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -e
+          yum update -y aws-cfn-bootstrap
+          # Install the files and packages from the metadata
+          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerInstance --configsets All --region ${AWS::Region}
+
+          # Instalamos docker-compose
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          sudo usermod -aG docker ec2-user
+          newgrp docker
+
+          yum install -y jq awscli
+
+          # Obtenemos las credenciales desde AWS Secrets Manager
+          SECRET_JSON=$(aws secretsmanager get-secret-value \
+            --secret-id "prod/solidarianid" \
+            --query SecretString \
+            --output text \
+            --region ${AWS::Region})
+
+          echo "$SECRET_JSON" | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | .[]' > /home/ec2-user/.env.solidarianid
+
+          chown ec2-user:ec2-user /home/ec2-user/.env.solidarianid
+          chmod 600 /home/ec2-user/.env.solidarianid
+
+          # Descargamos los datos de prueba de un bucket S3
+          mkdir -p /home/ec2-user/init-data
+          aws s3 cp s3://solidarianid-bucket-init-data-database /home/ec2-user/init-data --recursive --exclude "*" --include "init-*" --region ${AWS::Region}
+          chown -R ec2-user:ec2-user /home/ec2-user/init-data
+
+          # Creamos el fichero docker-compose.yml con las 3 apps
+          cat <<'EOT' > /home/ec2-user/docker-compose.yml
+          version: '3.8'
+          services:
+            postgres:
+              image: postgres:16
+              container_name: solidarian_postgres
+              environment:
+                POSTGRES_USER: ${!POSTGRES_USER}
+                POSTGRES_PASSWORD: ${!POSTGRES_PASSWORD}
+                POSTGRES_DB: ${!POSTGRES_DB}
+              ports:
+                - "${!POSTGRES_PORT}:5432"
+              networks:
+                - solidarian_network
+              volumes:
+                - postgres_data:/var/lib/postgresql/data
+                - /home/ec2-user/init-data:/docker-entrypoint-initdb.d
+              healthcheck:
+                test: ["CMD-SHELL", "pg_isready -U ${!POSTGRES_USER} -d ${!POSTGRES_DB}"]
+                interval: 10s
+                timeout: 5s
+                retries: 5
+
+            mongo:
+              image: mongo:7
+              container_name: solidarian_mongo
+              environment:
+                MONGO_INITDB_ROOT_USERNAME: ${!MONGO_INITDB_ROOT_USERNAME}
+                MONGO_INITDB_ROOT_PASSWORD: ${!MONGO_INITDB_ROOT_PASSWORD}
+                MONGO_INITDB_DATABASE: ${!MONGO_INITDB_DATABASE}
+              ports:
+                - "${!MONGO_PORT}:27017"
+              networks:
+                - solidarian_network
+              volumes:
+                - mongo_data:/data/db
+                - /home/ec2-user/init-data:/docker-entrypoint-initdb.d
+              healthcheck:
+                test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+                interval: 10s
+                timeout: 5s
+                retries: 5
+
+            kafka:
+              image: apache/kafka:latest
+              container_name: solidarian_kafka
+              hostname: kafka
+              ports:
+                - "${!KAFKA_PORT}:9092"
+              environment:
+                KAFKA_NODE_ID: ${!KAFKA_NODE_ID}
+                KAFKA_PROCESS_ROLES: ${!KAFKA_PROCESS_ROLES}
+                KAFKA_LISTENERS: ${!KAFKA_LISTENERS}
+                KAFKA_ADVERTISED_LISTENERS: ${!KAFKA_ADVERTISED_LISTENERS}
+                KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: ${!KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}
+                KAFKA_CONTROLLER_LISTENER_NAMES: ${!KAFKA_CONTROLLER_LISTENER_NAMES}
+                KAFKA_CONTROLLER_QUORUM_VOTERS: ${!KAFKA_CONTROLLER_QUORUM_VOTERS}
+                KAFKA_INTER_BROKER_LISTENER_NAME: ${!KAFKA_INTER_BROKER_LISTENER_NAME}
+                KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${!KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
+              networks:
+                - solidarian_network
+              healthcheck:
+                test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 || exit 1"]
+                interval: 15s
+                timeout: 10s
+                retries: 10
+                start_period: 30s
+
+            kafka-init:
+              image: apache/kafka@sha256:0bc1bb2478f45b6cea78864df86acdc11e8df2c5172477819a4d12942cbe5d40
+              depends_on:
+                kafka:
+                  condition: service_healthy
+              entrypoint: ["/bin/bash", "-lc"]
+              command: >
+                "
+                set -e;
+                BOOTSTRAP=kafka:9093;
+
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic user-topic      --partitions 1 --replication-factor 1;
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic request-topic   --partitions 1 --replication-factor 1;
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic community-topic --partitions 1 --replication-factor 1;
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic cause-topic     --partitions 1 --replication-factor 1;
+                /opt/kafka/bin/kafka-topics.sh --bootstrap-server $$BOOTSTRAP --create --if-not-exists --topic event-topic     --partitions 1 --replication-factor 1;
+
+                echo 'Topics ready';
+                "
+              networks:
+                - solidarian_network
+              restart: "no"
+
+            admin-app:
+              image: ${DockerHubUsername}/solidarianid-admin:latest
+              container_name: solidarian_admin_app
+              ports:
+                - "${!ADMIN_PORT}:3000"
+              environment:
+                - NODE_ENV=${!NODE_ENV}
+                - MONGO_HOST=${!MONGO_HOST}
+                - MONGO_PORT=${!MONGO_PORT}
+                - MONGO_USER=${!MONGO_INITDB_ROOT_USERNAME}
+                - MONGO_PASSWORD=${!MONGO_INITDB_ROOT_PASSWORD}
+                - MONGO_DB=${!MONGO_INITDB_DATABASE}
+                - KAFKA_BROKERS=${!KAFKA_BROKERS}
+                - API_BASE_ADMIN_URL=${!API_BASE_ADMIN_URL}
+                - API_BASE_USERS_URL=${!API_BASE_USERS_URL}
+                - API_BASE_COMMUNITIES_URL=${!API_BASE_COMMUNITIES_URL}
+                - API_BASE_COMMUNITIES_INTERNAL_URL=${!API_BASE_COMMUNITIES_INTERNAL_URL}
+                - SESSION_SECRET=${!SESSION_SECRET}
+                - KAFKA_ADMIN_CLIENT_ID=${!KAFKA_ADMIN_CLIENT_ID}
+                - KAFKA_ADMIN_CONSUMER_GROUP_ID=${!KAFKA_ADMIN_CONSUMER_GROUP_ID}
+              depends_on:
+                mongo:
+                  condition: service_healthy
+                kafka:
+                  condition: service_healthy
+              networks:
+                - solidarian_network
+              restart: unless-stopped
+
+            users-app:
+              image: ${DockerHubUsername}/solidarianid-users:latest
+              container_name: solidarian_users_app
+              ports:
+                - "${!USERS_PORT}:3001"
+              environment:
+                - NODE_ENV=${!NODE_ENV}
+                - IN_DOCKER=true
+                - POSTGRES_HOST=${!POSTGRES_HOST}
+                - POSTGRES_PORT=${!POSTGRES_PORT}
+                - POSTGRES_USER=${!POSTGRES_USER}
+                - POSTGRES_PASSWORD=${!POSTGRES_PASSWORD}
+                - POSTGRES_DB=${!POSTGRES_DB}
+                - KAFKA_BROKERS=${!KAFKA_BROKERS}
+                - KAFKA_USERS_CLIENT_ID=${!KAFKA_USERS_CLIENT_ID}
+                - KAFKA_USERS_CONSUMER_GROUP_ID=${!KAFKA_USERS_CONSUMER_GROUP_ID}
+                - API_BASE_ADMIN_URL=${!API_BASE_ADMIN_URL}
+                - API_BASE_USERS_URL=${!API_BASE_USERS_URL}
+                - API_BASE_COMMUNITIES_URL=${!API_BASE_COMMUNITIES_URL}
+              depends_on:
+                postgres:
+                  condition: service_healthy
+                kafka:
+                  condition: service_healthy
+              networks:
+                - solidarian_network
+              restart: unless-stopped
+
+            communities-app:
+              image: ${DockerHubUsername}/solidarianid-communities:latest
+              container_name: solidarian_communities_app
+              ports:
+                - "${!COMMUNITIES_PORT}:3002"
+              environment:
+                - NODE_ENV=${!NODE_ENV}
+                - IN_DOCKER=true
+                - POSTGRES_HOST=${!POSTGRES_HOST}
+                - POSTGRES_PORT=${!POSTGRES_PORT}
+                - POSTGRES_USER=${!POSTGRES_USER}
+                - POSTGRES_PASSWORD=${!POSTGRES_PASSWORD}
+                - POSTGRES_DB=${!POSTGRES_DB}
+                - KAFKA_BROKERS=${!KAFKA_BROKERS}
+                - KAFKA_COMMUNITIES_CLIENT_ID=${!KAFKA_COMMUNITIES_CLIENT_ID}
+                - KAFKA_COMMUNITIES_CONSUMER_GROUP_ID=${!KAFKA_COMMUNITIES_CONSUMER_GROUP_ID}
+                - API_BASE_ADMIN_URL=${!API_BASE_ADMIN_URL}
+                - API_BASE_USERS_URL=${!API_BASE_USERS_URL}
+                - API_BASE_COMMUNITIES_URL=${!API_BASE_COMMUNITIES_URL}
+              depends_on:
+                postgres:
+                  condition: service_healthy
+                kafka:
+                  condition: service_healthy
+              networks:
+                - solidarian_network
+              restart: unless-stopped
+
+          volumes:
+            postgres_data:
+            mongo_data:
+
+          networks:
+            solidarian_network:
+              driver: bridge
+          EOT
+
+          cd /home/ec2-user
+          docker-compose --env-file /home/ec2-user/.env.solidarianid pull
+          docker-compose --env-file /home/ec2-user/.env.solidarianid up -d
+
+          # Signal the status from cfn-init
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT10M
+
+  WebServerEIPAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      AllocationId: !Ref ExistingEipAllocationId
+      InstanceId: !Ref WebServerInstance
+
+  WebServerInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Policies:
+        - PolicyName: ReadSolidarianSecrets
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:prod/solidarianid*
+        - PolicyName: S3ReadAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                Resource:
+                  - !Sub arn:aws:s3:::solidarianid-bucket-init-data-database
+                  - !Sub arn:aws:s3:::solidarianid-bucket-init-data-database/*
+      Tags:
+        - Key: Name
+          Value: SolidarianID-EC2-Role
+
+  WebServerInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref WebServerInstanceRole
+
+  DiskVolume:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: 10
+      AvailabilityZone: !GetAtt WebServerInstance.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: SolidarianID Data Volume
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+
+  DiskMountPoint:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref WebServerInstance
+      VolumeId: !Ref DiskVolume
+      Device: /dev/sdh
+
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for SolidarianID microservices
+      VpcId:
+        Fn::ImportValue: !Sub ${NetworkStackName}-VPCID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          Description: SSH access
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3002
+          CidrIp: 0.0.0.0/0
+          Description: NestJS microservices (admin, users, communities)
+      Tags:
+        - Key: Name
+          Value: SolidarianID Security Group
+
+Outputs:
+  AdminURL:
+    Description: URL of the admin application
+    Value: !Sub "http://${WebServerInstance.PublicDnsName}:3000"
+
+  UsersURL:
+    Description: URL of the users microservice
+    Value: !Sub "http://${WebServerInstance.PublicDnsName}:3001"
+
+  CommunitiesURL:
+    Description: URL of the communities microservice
+    Value: !Sub "http://${WebServerInstance.PublicDnsName}:3002"

@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/admin/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/admin/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/admin",
+  "projects": {
+    "admin": {
+      "type": "application",
+      "root": "apps/admin",
+      "entryFile": "main",
+      "sourceRoot": "apps/admin/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/admin/tsconfig.app.json",
+        "assets": [
+          {
+            "include": "views/**/*",
+            "outDir": "dist/apps/admin",
+            "watchAssets": true
+          },
+          {
+            "include": "public/**/*",
+            "outDir": "dist/apps/admin",
+            "watchAssets": true
+          }
+        ]
+      }
+    },
+    "charts": {
+      "type": "library",
+      "root": "libs/charts",
+      "entryFile": "index",
+      "sourceRoot": "libs/charts/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/charts/tsconfig.lib.json"
+      }
+    },
+    "communities": {
+      "type": "application",
+      "root": "apps/communities",
+      "entryFile": "main",
+      "sourceRoot": "apps/communities/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/communities/tsconfig.app.json"
+      }
+    },
+    "ddd": {
+      "type": "library",
+      "root": "libs/ddd",
+      "entryFile": "index",
+      "sourceRoot": "libs/ddd/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/ddd/tsconfig.lib.json"
+      }
+    },
+    "design-tokens": {
+      "type": "library",
+      "root": "libs/design-tokens",
+      "entryFile": "index",
+      "sourceRoot": "libs/design-tokens/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/design-tokens/tsconfig.lib.json"
+      }
+    },
+    "kafka": {
+      "type": "library",
+      "root": "libs/kafka",
+      "entryFile": "index",
+      "sourceRoot": "libs/kafka/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/kafka/tsconfig.lib.json"
+      }
+    },
+    "test": {
+      "type": "library",
+      "root": "libs/test",
+      "entryFile": "index",
+      "sourceRoot": "libs/test/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/test/tsconfig.lib.json"
+      }
+    },
+    "users": {
+      "type": "application",
+      "root": "apps/users",
+      "entryFile": "main",
+      "sourceRoot": "apps/users/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/users/tsconfig.app.json"
+      }
+    },
+    "utils": {
+      "type": "library",
+      "root": "libs/utils",
+      "entryFile": "index",
+      "sourceRoot": "libs/utils/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/utils/tsconfig.lib.json"
+      }
+    },
+    "value-objects": {
+      "type": "library",
+      "root": "libs/value-objects",
+      "entryFile": "index",
+      "sourceRoot": "libs/value-objects/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/value-objects/tsconfig.lib.json"
+      }
+    }
+  }
+}

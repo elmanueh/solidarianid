@@ -1,0 +1,401 @@
+/* Componentes reutilizables con Tailwind CSS y soporte para Dark Mode */
+@layer components {
+  /*** Auth Component Styles (login y registro) ***/
+  .auth-container {
+    @apply flex items-center justify-center min-h-screen px-4 py-6 dark:bg-black-haze-800;
+    @apply sm:px-6 sm:py-8 md:px-8 lg:py-12;
+    @apply bg-linear-to-br from-black-haze-50 to-athens-gray-100;
+    @apply dark:from-black-haze-950 dark:to-athens-gray-950;
+  }
+
+  .auth-card {
+    @apply w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl dark:bg-black-haze-100;
+    @apply rounded-xl shadow-lg;
+    @apply p-5 sm:p-6 md:p-8 lg:p-10;
+    @apply bg-white border border-iron-200;
+    @apply dark:bg-black-haze-999 dark:border-iron-700;
+  }
+
+  .auth-header {
+    @apply text-center mb-2 sm:mb-8;
+  }
+
+  .auth-logo {
+    @apply mx-auto mb-4 w-16 h-16;
+  }
+
+  .auth-title {
+    @apply text-xl sm:text-2xl md:text-3xl font-bold mb-2;
+    @apply text-black-haze-950;
+    @apply dark:text-black-haze-50;
+  }
+
+  .auth-subtitle {
+    @apply text-sm sm:text-base;
+    @apply text-pale-sky-500;
+    @apply dark:text-pale-sky-400;
+  }
+
+  .auth-footer {
+    @apply text-center mt-5 pt-5 sm:mt-6 sm:pt-6;
+    @apply text-sm sm:text-base;
+    @apply border-t border-iron-200;
+    @apply text-pale-sky-500;
+    @apply dark:border-iron-700 dark:text-pale-sky-400;
+  }
+
+  .auth-footer-link {
+    @apply font-medium underline rounded;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply text-ocean-blue-600;
+    @apply hover:text-ocean-blue-700;
+    @apply focus:ring-ocean-blue-500;
+    @apply dark:text-ocean-blue-400 dark:hover:text-ocean-blue-300;
+    @apply dark:focus:ring-ocean-blue-400;
+  }
+
+  .form-group {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .form-label {
+    @apply font-medium;
+    @apply text-black-haze-800;
+    @apply dark:text-black-haze-200;
+  }
+
+  .form-label-required {
+    @apply ml-0.5;
+    @apply text-dark-wine-500;
+    @apply dark:text-dark-wine-400;
+  }
+
+  .input-wrapper {
+    @apply relative flex items-center;
+  }
+
+  .input-icon {
+    @apply absolute left-3 text-lg pointer-events-none;
+    @apply text-pale-sky-400;
+    @apply dark:text-pale-sky-500;
+  }
+
+  .input-icon-status {
+    @apply absolute right-3 text-lg hidden;
+  }
+
+  .form-input {
+    @apply w-full py-3 text-sm rounded-lg;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2;
+    @apply bg-black-haze-50 border-2 border-iron-500;
+    @apply text-black-haze-900;
+    @apply placeholder:text-pale-sky-500;
+    @apply hover:border-iron-300;
+    @apply focus:border-ocean-blue-500 focus:bg-white focus:ring-ocean-blue-200;
+    @apply dark:bg-black-haze-800 dark:border-iron-600;
+    @apply dark:text-black-haze-100 dark:placeholder:text-pale-sky-600;
+    @apply dark:hover:border-iron-500;
+    @apply dark:focus:border-ocean-blue-400 dark:focus:bg-black-haze-900;
+    @apply dark:focus:ring-ocean-blue-800;
+  }
+
+  .form-input-with-icon {
+    @apply pl-10 pr-10;
+  }
+
+  .form-input-with-toggle {
+    @apply pl-10 pr-20;
+  }
+
+  .form-input-error {
+    @apply border-dark-wine-500;
+    @apply focus:border-dark-wine-500 focus:ring-dark-wine-200;
+    @apply dark:border-dark-wine-400;
+    @apply dark:focus:border-dark-wine-400 dark:focus:ring-dark-wine-800;
+  }
+
+  .form-input-success {
+    @apply border-sage-green-500;
+    @apply focus:border-sage-green-500 focus:ring-sage-green-200;
+    @apply dark:border-sage-green-400;
+    @apply dark:focus:border-sage-green-400 dark:focus:ring-sage-green-800;
+  }
+
+  .form-help {
+    @apply text-xs;
+    @apply text-pale-sky-500;
+    @apply dark:text-pale-sky-400;
+  }
+
+  .form-error {
+    @apply text-xs items-center gap-1 hidden;
+    @apply text-dark-wine-600;
+    @apply dark:text-dark-wine-400;
+  }
+
+  .form-error-visible {
+    @apply flex;
+  }
+
+  .password-toggle {
+    @apply absolute right-8 p-1.5 rounded;
+    @apply transition-colors duration-200;
+    @apply border-none cursor-pointer bg-transparent;
+    @apply focus:outline-none focus:ring-2;
+    @apply text-pale-sky-500;
+    @apply hover:text-pale-sky-700 hover:bg-iron-100;
+    @apply focus:ring-ocean-blue-500;
+    @apply dark:text-pale-sky-400;
+    @apply dark:hover:text-pale-sky-200 dark:hover:bg-iron-800;
+    @apply dark:focus:ring-ocean-blue-400;
+  }
+
+  .alert {
+    @apply flex items-start gap-3 p-4 rounded-lg mb-4;
+  }
+
+  .alert-error {
+    @apply bg-dark-wine-50 border border-dark-wine-200;
+    @apply text-dark-wine-700;
+    @apply dark:bg-dark-wine-900 dark:border-dark-wine-700;
+    @apply dark:text-dark-wine-200;
+  }
+
+  .alert-success {
+    @apply bg-sage-green-50 border border-sage-green-200;
+    @apply text-sage-green-700;
+    @apply dark:bg-sage-green-900 dark:border-sage-green-700;
+    @apply dark:text-sage-green-200;
+  }
+
+  .alert-warning {
+    @apply bg-harvest-orange-50 border border-harvest-orange-200;
+    @apply text-harvest-orange-700;
+    @apply dark:bg-harvest-orange-900 dark:border-harvest-orange-700;
+    @apply dark:text-harvest-orange-200;
+  }
+
+  .alert-icon {
+    @apply text-xl shrink-0 mt-0.5;
+  }
+
+  .alert-message {
+    @apply text-sm;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply font-medium rounded-lg cursor-pointer;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-ocean-blue-600 text-white;
+    @apply hover:bg-ocean-blue-700;
+    @apply active:bg-ocean-blue-800;
+    @apply focus:ring-ocean-blue-500;
+    @apply dark:bg-ocean-blue-700 dark:hover:bg-ocean-blue-800;
+    @apply dark:active:bg-ocean-blue-700;
+    @apply dark:focus:ring-ocean-blue-400;
+  }
+
+  .btn-secondary {
+    @apply bg-soft-fawn-400 text-white;
+    @apply border border-soft-fawn-600;
+    @apply hover:bg-soft-fawn-500;
+    @apply active:bg-soft-fawn-600;
+    @apply focus:ring-soft-fawn-400;
+    @apply dark:bg-soft-fawn-600 dark:border-soft-fawn-700;
+    @apply dark:hover:bg-soft-fawn-700;
+    @apply dark:active:bg-soft-fawn-800;
+    @apply dark:focus:ring-soft-fawn-500;
+  }
+
+  .btn-success {
+    @apply bg-sage-green-500 text-white;
+    @apply hover:bg-sage-green-600;
+    @apply active:bg-sage-green-700;
+    @apply focus:ring-sage-green-400;
+    @apply dark:bg-sage-green-600 dark:hover:bg-sage-green-700;
+    @apply dark:active:bg-sage-green-600;
+    @apply dark:focus:ring-sage-green-300;
+  }
+
+  .btn-error {
+    @apply bg-dark-wine-500 text-white;
+    @apply hover:bg-dark-wine-600;
+    @apply active:bg-dark-wine-700;
+    @apply focus:ring-dark-wine-400;
+  }
+
+  .btn-lg {
+    @apply w-full px-5 py-2.5 sm:px-6 sm:py-3;
+    @apply text-sm sm:text-base;
+  }
+
+  .btn-md {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    @apply [clip:rect(0,0,0,0)];
+  }
+
+  .auth-form {
+    @apply space-y-4 sm:space-y-5;
+  }
+
+  .auth-form-actions {
+    @apply pt-3 sm:pt-4;
+  }
+}
+
+/* Error Page Styles */
+@layer components {
+  .error-page {
+    @apply flex items-center justify-center min-h-[75vh] px-4 py-6;
+  }
+
+  .error-content {
+    @apply flex flex-col items-center gap-3;
+  }
+
+  .error-code {
+    @apply text-[4rem] md:text-[6rem] font-bold m-0 leading-none;
+    @apply text-ocean-blue-500;
+    @apply dark:text-ocean-blue-400;
+  }
+
+  .error-title {
+    @apply text-2xl md:text-3xl font-semibold m-0;
+    @apply text-black-haze-900;
+    @apply dark:text-black-haze-100;
+  }
+
+  .error-message {
+    @apply text-base md:text-lg m-0 leading-none;
+    @apply text-soft-fawn-800;
+    @apply dark:text-soft-fawn-300;
+  }
+
+  .error-actions {
+    @apply flex gap-3 content-center flex-col w-full md:flex-row md:w-auto;
+  }
+
+  .error-actions .btn {
+    @apply px-8 py-3 min-w-60;
+  }
+}
+
+/* Reports - User Cards */
+@layer components {
+  .user-card {
+    @apply bg-white border border-iron-200 rounded-lg p-6 cursor-pointer;
+    @apply transition-all duration-200;
+    @apply hover:shadow-lg hover:border-ocean-blue-500 hover:-translate-y-1;
+    @apply focus:outline-none focus:ring-2 focus:ring-ocean-blue-500 focus:ring-offset-2;
+    @apply dark:bg-black-haze-900 dark:border-iron-700;
+    @apply dark:hover:border-ocean-blue-400;
+  }
+
+  .user-card-header {
+    @apply flex items-center mb-4;
+  }
+
+  .user-card-info {
+    @apply flex-1 min-w-0;
+  }
+
+  .user-card-username {
+    @apply font-semibold text-lg truncate;
+    @apply text-black-haze-950;
+    @apply dark:text-black-haze-50;
+  }
+
+  .user-card-location {
+    @apply flex items-center gap-2 text-sm mt-1;
+    @apply text-pale-sky-600;
+    @apply dark:text-pale-sky-400;
+  }
+
+  .user-card-meta {
+    @apply flex items-center justify-between pt-4 border-t;
+    @apply border-iron-200;
+    @apply dark:border-iron-700;
+  }
+
+  .user-card-communities {
+    @apply flex items-center gap-2 text-sm;
+    @apply text-pale-sky-600;
+    @apply dark:text-pale-sky-400;
+  }
+
+  /* Detail Panel Sections */
+  .detail-section {
+    @apply space-y-4;
+  }
+
+  .detail-section-title {
+    @apply font-semibold text-lg flex items-center gap-2 mb-4;
+    @apply text-black-haze-900;
+    @apply dark:text-black-haze-100;
+  }
+
+  .detail-info-grid {
+    @apply grid gap-4;
+  }
+
+  .detail-info-item {
+    @apply flex flex-col gap-1;
+  }
+
+  .detail-info-label {
+    @apply text-xs font-semibold uppercase tracking-wide;
+    @apply text-pale-sky-600;
+    @apply dark:text-pale-sky-500;
+  }
+
+  .detail-info-value {
+    @apply text-base;
+    @apply text-black-haze-950;
+    @apply dark:text-black-haze-50;
+  }
+
+  .community-item {
+    @apply flex items-center justify-between p-3 rounded-lg;
+    @apply bg-black-haze-50;
+    @apply dark:bg-black-haze-800;
+  }
+
+  .community-name {
+    @apply font-medium;
+    @apply text-black-haze-900;
+    @apply dark:text-black-haze-100;
+  }
+
+  .community-role-badge {
+    @apply px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .community-role-creator {
+    @apply bg-dark-wine-200 text-dark-wine-900;
+    @apply dark:bg-dark-wine-800 dark:text-dark-wine-100;
+  }
+
+  .community-role-admin {
+    @apply bg-harvest-orange-100 text-harvest-orange-800;
+    @apply dark:bg-harvest-orange-900 dark:text-harvest-orange-200;
+  }
+
+  .community-role-member {
+    @apply bg-ocean-blue-100 text-ocean-blue-800;
+    @apply dark:bg-ocean-blue-900 dark:text-ocean-blue-200;
+  }
+}

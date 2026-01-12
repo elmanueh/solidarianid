@@ -1,0 +1,31 @@
+{
+  "validUser": {
+    "fullName": "Fake User E2E",
+    "username": "FakeUserE2E",
+    "mobilePhone": "+34623405999",
+    "password": "SecureP@ssw0rd",
+    "city": "Madrid",
+    "countryCode": "ES"
+  },
+  "communityRequest": {
+    "name": "esto es la comunidad",
+    "description": "esto es una prueba",
+    "causeCreationRequests": [
+      {
+        "name": "esto es la causa",
+        "description": "esto es una prueba2",
+        "ods": [1, 2, 3],
+        "initialDate": "2026-01-03T10:30:00.000Z",
+        "durationDays": 5
+      },
+      {
+        "name": "esto es la causa 2",
+        "description": "esto es una prueba2",
+        "ods": [1, 2, 3],
+        "initialDate": "2026-01-03T10:30:00.000Z",
+        "durationDays": 5
+      }
+    ],
+    "userId": "550e8400-e29b-41d4-a716-446655440001"
+  }
+}

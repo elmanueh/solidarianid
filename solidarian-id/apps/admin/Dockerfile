@@ -1,0 +1,48 @@
+FROM node:24-alpine AS builder
+WORKDIR /app
+
+# Copiar dependencias
+COPY package*.json ./
+RUN npm ci && npm cache clean --force
+
+# Copiar código fuente
+COPY . ./
+# Construir Tailwind CSS
+RUN npm run build:tailwind
+
+# Construir todas las apps (necesario por las dependencias compartidas)
+RUN npm run build -- admin
+
+# Etapa de producción
+FROM node:24-alpine AS production
+WORKDIR /app
+
+# Instalar dumb-init, crear usuario no-root y copiar dependencias de producción
+RUN apk add --no-cache dumb-init \
+  && addgroup -g 1001 -S nodejs \
+  && adduser -S nestjs -u 1001
+
+# Copiar dependencias de producción
+COPY package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+# Copiar solo la app admin construida
+COPY --from=builder --chown=nestjs:nodejs /app/dist/apps/admin ./dist/apps/admin
+
+# Copiar views de la aplicación admin
+COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/views ./apps/admin/views
+
+# Copiar archivos estáticos
+COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/public ./apps/admin/public
+
+# Copiar el logo solidarian-128x128.png
+COPY --from=builder --chown=nestjs:nodejs /app/libs/design-tokens/src/icons/solidarian-128x128.png ./libs/design-tokens/src/icons/solidarian-128x128.png
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD node -e "require('http').get('http://127.0.0.1:3000/health', r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
+
+USER nestjs
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "dist/apps/admin/main.js"]

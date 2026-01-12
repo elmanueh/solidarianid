@@ -1,0 +1,822 @@
+openapi: 3.0.0
+paths:
+  /communities:
+    get:
+      operationId: CommunitiesController_getCommunities
+      parameters:
+        - name: criteria
+          required: false
+          in: query
+          description: >-
+            Criteria to filter communities. If "most-users", returns communities
+            ranked by user count.
+          schema:
+            enum:
+              - most-users
+            type: string
+        - name: limit
+          required: false
+          in: query
+          description: >-
+            Maximum number of communities to return (only applies when criteria
+            is "most-users")
+          schema:
+            type: number
+      responses:
+        '200':
+          description: List of communities (default)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/'
+        '500':
+          description: Internal server error
+      summary: Retrieve all charitable communities
+      tags: &ref_0
+        - Communities
+  /communities/{id}:
+    get:
+      operationId: CommunitiesController_getCommunityById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Community details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityDetailResponseDto'
+        '400':
+          description: The provided ID is invalid
+        '404':
+          description: Community not found
+        '500':
+          description: Internal server error
+      summary: Retrieve a charitable community by ID
+      tags: *ref_0
+  /communities/{id}/users:
+    get:
+      operationId: CommunitiesController_getJoinedUsersLastMonths
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: months
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Summary of users joined per month
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/CommunityLastUsersJoinedSummaryResponseDto
+        '400':
+          description: The request parameters are invalid
+        '500':
+          description: Internal server error
+      summary: Retrieve the number of users who joined a community in the last months
+      tags: *ref_0
+  /communities/{id}/members:
+    post:
+      operationId: CommunitiesController_joinCommunity
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberJoinCommunityRequestDto'
+      responses:
+        '201':
+          description: User successfully joined the community
+        '400':
+          description: The request parameters are invalid
+        '409':
+          description: User is already a member of the community
+        '500':
+          description: Internal server error
+      summary: Join a user to a community
+      tags: *ref_0
+  /causes:
+    get:
+      operationId: CausesController_getCauses
+      parameters: []
+      responses:
+        '200':
+          description: List of causes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/'
+      summary: Retrieve all charitable causes
+      tags: &ref_1
+        - Causes
+  /causes/{id}:
+    get:
+      operationId: CausesController_getCauseById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cause details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CauseDetailResponseDto'
+        '404':
+          description: Cause not found
+      summary: Retrieve a charitable cause by ID
+      tags: *ref_1
+  /communities/{communityId}/causes:
+    get:
+      operationId: CausesController_getCausesByCommunityId
+      parameters:
+        - name: communityId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of causes for the specified community
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/'
+        '404':
+          description: Community not found
+      summary: Retrieve all causes for a specific community
+      tags: *ref_1
+  /communities/{communityId}/causes/{causeId}:
+    get:
+      operationId: CausesController_getCauseByCommunityIdAndCauseId
+      parameters:
+        - name: communityId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: causeId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Details of the specified cause for the specified community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CauseDetailResponseDto'
+        '404':
+          description: Community or Cause not found
+      summary: Retrieve a specific cause for a specific community
+      tags: *ref_1
+  /actions:
+    get:
+      operationId: ActionsController_getActions
+      parameters: []
+      responses:
+        '200':
+          description: List of actions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/'
+      summary: Retrieve all charitable actions
+      tags: &ref_2
+        - Actions
+  /actions/{id}:
+    get:
+      operationId: ActionsController_getActionById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Action details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionDetailResponseDto'
+      summary: Retrieve a charitable action by ID
+      tags: *ref_2
+  /community-requests:
+    post:
+      operationId: RequestController_createCommunityRequest
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommunityRequestDto'
+      responses:
+        '201':
+          description: Solicitud de comunidad creada exitosamente
+        '400':
+          description: >-
+            Datos de entrada inválidos. Errores de validación en nombre,
+            descripción, razón o en las causas asociadas
+        '409':
+          description: >-
+            Ya existe una solicitud de comunidad con el mismo nombre o conflicto
+            en la base de datos
+        '500':
+          description: >-
+            Error interno del servidor. Error en la capa de persistencia o error
+            inesperado
+      summary: Crear una solicitud de comunidad
+      tags: &ref_3
+        - Requests
+  /cause-requests:
+    post:
+      operationId: RequestController_createCauseRequest
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCauseRequestDto'
+      responses:
+        '201':
+          description: Solicitud de causa benéfica creada exitosamente
+        '400':
+          description: >-
+            Datos de entrada inválidos. Errores de validación en nombre,
+            descripción, ODS, fecha inicial o duración
+        '409':
+          description: >-
+            Ya existe una solicitud de causa con el mismo nombre o conflicto en
+            la base de datos
+        '500':
+          description: >-
+            Error interno del servidor. Error en la capa de persistencia o error
+            inesperado
+      summary: Crear una solicitud de causa benéfica
+      tags: *ref_3
+  /action-requests:
+    post:
+      operationId: RequestController_createActionRequest
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateActionRequestDto'
+      responses:
+        '201':
+          description: Solicitud de acción benéfica creada exitosamente
+        '400':
+          description: >-
+            Datos de entrada inválidos. Errores de validación en nombre,
+            descripción, objetivos, eventos o lugares
+        '409':
+          description: >-
+            Ya existe una solicitud de acción con el mismo nombre o conflicto en
+            la base de datos
+        '500':
+          description: >-
+            Error interno del servidor. Error en la capa de persistencia o error
+            inesperado
+      summary: Crear una solicitud de acción benéfica
+      tags: *ref_3
+info:
+  title: 'SolidarianID: Communities Microservice'
+  description: The SolidarianID`s Communities Microservice API documentation
+  version: '0.1'
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    CommunityDetailResponseDto:
+      type: object
+      properties: {}
+    CommunityLastUsersJoinedPeriodResponseDto:
+      type: object
+      properties:
+        month:
+          type: string
+          description: Month in format YYYY-MM
+          example: 2026-01
+        userCount:
+          type: number
+          description: Number of users joined in this month
+          example: 25
+      required:
+        - month
+        - userCount
+    CommunityLastUsersJoinedSummaryResponseDto:
+      type: object
+      properties:
+        communityName:
+          type: string
+          description: Community name
+          example: Friends for Africa
+        dataRange:
+          description: Data range showing users joined per period
+          type: array
+          items:
+            $ref: '#/components/schemas/CommunityLastUsersJoinedPeriodResponseDto'
+      required:
+        - communityName
+        - dataRange
+    MemberJoinCommunityRequestDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Unique identifier of the user joining the community
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+      required:
+        - userId
+    ActionSummaryResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Action unique identifier
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        name:
+          type: string
+          description: Action name
+          example: Food Collection Drive
+        description:
+          type: string
+          description: Action description
+          example: Collecting food donations for local families in need
+      required:
+        - id
+        - name
+        - description
+    CauseDetailResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Cause unique identifier
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        name:
+          type: string
+          description: Cause name
+          example: Clean Water Initiative
+        description:
+          type: string
+          description: Cause description
+          example: Providing access to clean water for rural communities
+        durationDays:
+          type: number
+          description: Duration of the cause in days
+          example: 90
+        ods:
+          description: Related UN Sustainable Development Goals (SDGs) numbers
+          example:
+            - 6
+            - 3
+          type: array
+          items:
+            type: number
+        actions:
+          description: List of actions associated with this cause
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionSummaryResponseDto'
+      required:
+        - id
+        - name
+        - description
+        - durationDays
+        - ods
+        - actions
+    EventSummaryResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Event unique identifier
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        name:
+          type: string
+          description: Event name
+          example: Community Cleanup Day
+        description:
+          type: string
+          description: Event description
+          example: Join us for a community cleanup to make our neighborhood better
+        initialDate:
+          format: date-time
+          type: string
+          description: Event start date and time
+          example: '2026-02-15T10:00:00Z'
+        place:
+          type: object
+          description: Event location details
+          example:
+            direction: 123 Main Street
+            city: Madrid
+            countryCode: ES
+      required:
+        - id
+        - name
+        - description
+        - initialDate
+        - place
+    ObjetiveSummaryResponseDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Objective name
+          example: Collect Food Items
+        description:
+          type: string
+          description: Objective description
+          example: Collect non-perishable food items for distribution
+        unit:
+          type: string
+          description: Unit of measurement
+          example: kg
+        quantity:
+          type: number
+          description: Target quantity to achieve
+          example: 1000
+        currentAmount:
+          type: number
+          description: Current amount achieved
+          example: 750
+      required:
+        - name
+        - description
+        - unit
+        - quantity
+        - currentAmount
+    ActionDetailResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Action unique identifier
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        name:
+          type: string
+          description: Action name
+          example: Food Collection Drive
+        description:
+          type: string
+          description: Action description
+          example: Collecting food donations for local families in need
+        events:
+          description: List of events associated with this action
+          type: array
+          items:
+            $ref: '#/components/schemas/EventSummaryResponseDto'
+        objectives:
+          description: List of objectives for this action
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjetiveSummaryResponseDto'
+      required:
+        - id
+        - name
+        - description
+        - events
+        - objectives
+    CommunityCauseDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the cause within the community
+          example: Ayuda educativa
+          minLength: 5
+          maxLength: 50
+        description:
+          type: string
+          description: Description of the cause
+          example: >-
+            Programa de apoyo educativo para niños en situación de
+            vulnerabilidad
+          minLength: 15
+          maxLength: 200
+        ods:
+          type: array
+          description: >-
+            Sustainable Development Goals (SDGs) related to this cause. Must
+            include at least one SDG.
+          example:
+            - 2
+          minItems: 1
+          items:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+        initialDate:
+          type: string
+          description: Initial date when the cause starts (ISO 8601 format)
+          example: '2026-02-01T00:00:00.000Z'
+          format: date-time
+        durationDays:
+          type: number
+          description: Duration of the cause in days (must be a positive integer)
+          example: 180
+          minimum: 1
+      required:
+        - name
+        - description
+        - ods
+        - initialDate
+        - durationDays
+    CreateCommunityRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the community
+          example: Amigos por África
+          minLength: 5
+          maxLength: 50
+        description:
+          type: string
+          description: Detailed description of the community and its purpose
+          example: >-
+            Comunidad dedicada a apoyar proyectos de desarrollo sostenible en
+            países africanos.
+          minLength: 15
+          maxLength: 200
+        causeCreationRequests:
+          description: >-
+            List of charitable causes associated with this community. Must
+            include at least one cause.
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/CommunityCauseDto'
+        userId:
+          type: string
+          description: >-
+            The ID of the user creating the community (will be the
+            administrator)
+          example: 550e8400-e29b-41d4-a716-446655440000
+      required:
+        - name
+        - description
+        - causeCreationRequests
+        - userId
+    CreateCauseRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the charitable cause
+          example: Ayuda alimentaria para familias vulnerables
+          minLength: 5
+          maxLength: 50
+        description:
+          type: string
+          description: Detailed description of the charitable cause
+          example: >-
+            Campaña para recolectar alimentos no perecederos y distribuirlos
+            entre familias en situación de vulnerabilidad social.
+          minLength: 15
+          maxLength: 200
+        ods:
+          type: array
+          description: >-
+            Sustainable Development Goals (SDGs) related to this cause. Must
+            include at least one SDG.
+          example:
+            - 5
+          minItems: 1
+          items:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+        initialDate:
+          type: string
+          description: Initial date when the cause starts (ISO 8601 format)
+          example: '2026-01-15T00:00:00.000Z'
+          format: date-time
+        durationDays:
+          type: number
+          description: Duration of the cause in days (must be a positive integer)
+          example: 90
+          minimum: 1
+        userId:
+          type: string
+          description: The ID of the user creating the request
+          example: 550e8400-e29b-41d4-a716-446655440000
+        communityId:
+          type: string
+          description: The ID of the community related to the cause request
+          example: 550e8400-e29b-41d4-a716-446655440000
+      required:
+        - name
+        - description
+        - ods
+        - initialDate
+        - durationDays
+        - userId
+        - communityId
+    ActionObjectiveDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the objective
+          example: Recolección de alimentos
+          minLength: 5
+          maxLength: 50
+        description:
+          type: string
+          description: Description of the objective
+          example: Recolectar alimentos no perecederos para familias necesitadas
+          minLength: 15
+          maxLength: 200
+        quantity:
+          type: number
+          description: Quantifiable target amount (must be greater than 0)
+          example: 500
+          minimum: 1
+        unit:
+          type: string
+          description: Unit of measurement for the objective
+          example: kilogramos
+      required:
+        - name
+        - description
+        - quantity
+        - unit
+    EventPlaceDto:
+      type: object
+      properties:
+        direction:
+          type: string
+          description: Street address or directions to the event
+          example: Calle Mayor 123
+        city:
+          type: string
+          description: City where the event takes place
+          example: Madrid
+          minLength: 1
+          maxLength: 25
+        countryCode:
+          type: string
+          description: Country code (ISO 3166-1 alpha-2)
+          example: ES
+          minLength: 2
+          maxLength: 2
+          pattern: ^[A-Z]{2}$
+      required:
+        - direction
+        - city
+        - countryCode
+    ActionEventDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the event
+          example: Jornada de recolección de alimentos
+          minLength: 5
+          maxLength: 50
+        description:
+          type: string
+          description: Description of the event
+          example: >-
+            Evento público para recolectar donaciones de alimentos no
+            perecederos
+          minLength: 15
+          maxLength: 200
+        initialDate:
+          type: string
+          description: Date and time when the event starts (ISO 8601 format)
+          example: '2026-01-20T10:00:00.000Z'
+          format: date-time
+        place:
+          description: Physical location where the event will take place
+          allOf:
+            - $ref: '#/components/schemas/EventPlaceDto'
+      required:
+        - name
+        - description
+        - initialDate
+        - place
+    CreateActionRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the charitable action
+          example: Campaña de alimentos enero 2026
+          minLength: 5
+          maxLength: 50
+        description:
+          type: string
+          description: Detailed description of the charitable action
+          example: >-
+            Acción concreta para recolectar y distribuir alimentos durante el
+            mes de enero.
+          minLength: 15
+          maxLength: 200
+        objectives:
+          description: >-
+            Quantifiable objectives for this action. Must include at least one
+            objective.
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionObjectiveDto'
+        events:
+          description: >-
+            In-person events associated with this action. Must include at least
+            one event.
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionEventDto'
+        userId:
+          type: string
+          description: The ID of the user creating the request
+          example: 550e8400-e29b-41d4-a716-446655440000
+        causeId:
+          type: string
+          description: The ID of the cause related to the action request
+          example: 550e8400-e29b-41d4-a716-446655440000
+      required:
+        - name
+        - description
+        - objectives
+        - events
+        - userId
+        - causeId
+    UserEvent:
+      type: object
+      properties: {}
+    RequestEvent:
+      type: object
+      properties: {}

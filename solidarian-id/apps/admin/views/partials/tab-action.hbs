@@ -1,0 +1,43 @@
+{{#each actions}}
+<article class="request" data-variant="action" data-id="{{this.id}}">
+  <section class="name-buttons-request">
+    <span class="font-bold text-md sm:text-lg">{{this.name}}</span>
+    {{> validation-buttons}}
+  </section>
+
+  <section class="flex flex-col gap-2 text-sm sm:text-md">
+    <span>{{formatDateShort this.date}}</span>
+    <p>{{this.description}}</p>
+
+    <ul class="list bg-base-100 rounded-box shadow-md">
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Objetivos</li>
+      {{#each this.objectives}}
+      <li class="list-row flex flex-col gap-1.5">
+        <div class="flex items-start justify-between gap-4">
+          <b>{{this.name}}</b>
+          <div class="badge badge-accent">{{this.quantity}} {{this.unit}}</div>
+        </div>
+        <span>{{this.description}}</span>
+      </li>
+      {{/each}}
+    </ul>
+
+    <ul class="list bg-base-100 rounded-box shadow-md">
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Eventos</li>
+      {{#each this.events}}
+      <li class="list-row flex flex-col gap-1.5">
+        <div>
+          <b>{{this.name}}</b>
+          <p>{{this.description}}</p>
+        </div>
+
+        <div class="bg-base-300 rounded-box p-2 mt-4">
+          <b>Día y lugar:</b>
+          {{formatDate this.initialDate}} en {{this.place.direction}}, {{this.place.city}} ({{this.place.countryCode}})
+        </div>
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+</article>
+{{/each}}

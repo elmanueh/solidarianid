@@ -1,0 +1,75 @@
+<div class="hamburger-header">
+  <button class="hamburger-btn" aria-label="Abrir menú" id="hamburger-btn">
+    <span class="icon-[material-symbols--menu] hamburger-icon" aria-hidden="true"></span>
+  </button>
+  <div class="hamburger-header-content">
+    <img src="icons/solidarian-128x128.png" alt="Logo de Solidarian ID" class="hamburger-btn-logo" />
+    <span class="hamburger-btn-title">SolidarianID</span>
+  </div>
+</div>
+
+<div class="aside-overlay" id="aside-overlay"></div>
+
+<aside class="aside" id="aside">
+  <a href="dashboard" class="aside-logo-container targeteable">
+    <img src="icons/solidarian-128x128.png" alt="Logo de Solidarian ID" class="aside-logo" />
+    <p>SolidarianID</p>
+  </a>
+  <nav aria-label="Navegación lateral" class="flex flex-col h-full">
+    <ul class="aside-menu">
+      <li>
+        <a href="dashboard" class="aside-menu-item targeteable">
+          <span class="icon-[material-symbols--dashboard]" role="img" aria-hidden="true"></span>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <details class="collapse">
+          <summary class="collapse-title flex items-center gap-2 p-2 pl-3 pr-10 hover:bg-white/10">
+            <span class="icon-[carbon--request-quote]" role="img" aria-hidden="true"></span>
+            <span>Solicitudes</span>
+          </summary>
+          <div class="collapse-content">
+            <ul class="menu menu-compact w-full">
+              <li>
+                <a href="community-requests">
+                  <span class="icon-[iconoir--community]" role="img" aria-hidden="true"></span>
+                  Comunidades
+                </a>
+              </li>
+              <li>
+                <a href="cause-requests" class="aside-menu-item targeteable">
+                  <span class="icon-[ri--target-fill]" role="img" aria-hidden="true"></span>
+                  Causas
+                </a>
+              </li>
+              <li>
+                <a href="action-requests" class="aside-menu-item targeteable">
+                  <span class="icon-[streamline-ultimate--task-list-pin]" role="img" aria-hidden="true"></span>
+                  Acciones
+                </a>
+              </li>
+            </ul>
+          </div>
+        </details>
+      </li>
+      <li>
+        <a href="reports" class="aside-menu-item targeteable">
+          <span class="icon-[bx--bxs-file-pdf]" role="img" aria-hidden="true"></span>
+          Informes
+        </a>
+      </li>
+      <li>
+        <a href="register" class="aside-menu-item targeteable">
+          <span class="icon-[basil--user-plus-solid]" role="img" aria-hidden="true"></span>
+          Registro
+        </a>
+      </li>
+    </ul>
+
+    <button class="aside-logout targeteable" type="button" id="logout-btn">
+      <span class="icon-[basil--logout-solid]" aria-hidden="true"></span>
+      Cerrar sesión
+    </button>
+  </nav>
+</aside>

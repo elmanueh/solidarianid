@@ -1,0 +1,29 @@
+{{#each causes}}
+<article class="request" data-variant="cause" data-id="{{this.id}}">
+  <section class="name-buttons-request">
+    <span class="font-bold text-md sm:text-lg">{{this.name}}</span>
+
+    {{> validation-buttons}}
+  </section>
+
+  <section class="flex flex-col gap-2 text-sm sm:text-md">
+    <span>{{formatDateShort this.date}}</span>
+    <p>{{this.description}}</p>
+
+    <p>
+      <b>Comienzo:</b>
+      {{formatDate this.startDate}}, (Duración: {{this.duration}} días)
+    </p>
+
+    <ul class="list bg-base-100 rounded-box shadow-md">
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">ODS</li>
+      {{#each (sort this.ods)}}
+      <li class="list-row flex">
+        <b>{{this}}</b>
+        <p>{{odsTitle this}}</p>
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+</article>
+{{/each}}

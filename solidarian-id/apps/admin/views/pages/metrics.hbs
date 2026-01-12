@@ -1,0 +1,115 @@
+<main class='metrics' aria-labelledby='page-title'>
+  <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+  <script id='charts-data' type='application/json'>
+    {{{charts}}}
+  </script>
+  <script src='/js/lib/charts.js'></script>
+  <script src='/js/metrics.js'></script>
+
+  <h1 id='page-title' class='metrics-title'>Dashboard</h1>
+
+  <section
+    class='metrics-container'
+    aria-label='Métricas y gráficos del sistema'
+  >
+
+    <div
+      class='metrics-analytics'
+      role='region'
+      aria-label='Gráficos analíticos'
+    >
+      <div class='metrics-analytics-graph'>
+        <canvas
+          id='chart-communities'
+          role='img'
+          aria-label='Gráfico de comunidades con más usuarios'
+        ></canvas>
+      </div>
+      <div class='metrics-analytics-graph'>
+        <canvas
+          id='chart-nationalities'
+          role='img'
+          aria-label='Gráfico de nacionalidades más comunes'
+        ></canvas>
+      </div>
+      <div class='metrics-analytics-graph'>
+        <canvas
+          id='chart-ods'
+          role='img'
+          aria-label='Gráfico de causas por Objetivos de Desarrollo Sostenible'
+        ></canvas>
+      </div>
+      <div class='metrics-analytics-graph'>
+        <canvas
+          id='chart-joins'
+          role='img'
+          aria-label='Gráfico comparativo de uniones mensuales'
+        ></canvas>
+      </div>
+    </div>
+
+    <div
+      class='metrics-summary'
+      role='region'
+      aria-label='Resumen de estadísticas'
+      aria-live='polite'
+    >
+      <div
+        class='metrics-summary-card'
+        data-variant='green'
+        role='group'
+        aria-label='El número de comunidades es {{dataSummary.totalComunities}}'
+        tabindex='0'
+      >
+        <h3 class='metrics-summary-card-title' aria-hidden='true'>Nº Comunidades</h3>
+        <p
+          class='metrics-summary-card-value'
+          aria-hidden='true'
+        >{{dataSummary.totalComunities}}</p>
+      </div>
+
+      <div
+        class='metrics-summary-card'
+        data-variant='orange'
+        role='group'
+        aria-label='El número de usuarios activos es {{dataSummary.totalUsers}}'
+        tabindex='0'
+      >
+        <h3 class='metrics-summary-card-title' aria-hidden='true'>Usuarios
+          Activos</h3>
+        <p
+          class='metrics-summary-card-value'
+          aria-hidden='true'
+        >{{dataSummary.totalUsers}}</p>
+      </div>
+
+      <div
+        class='metrics-summary-card'
+        data-variant='sofa'
+        role='group'
+        aria-label='El número de causas es {{dataSummary.totalCauses}}'
+        tabindex='0'
+      >
+        <h3 class='metrics-summary-card-title' aria-hidden='true'>Nº Causas</h3>
+        <p
+          class='metrics-summary-card-value'
+          aria-hidden='true'
+        >{{dataSummary.totalCauses}}</p>
+      </div>
+
+      <div
+        class='metrics-summary-card'
+        data-variant='red'
+        role='group'
+        aria-label='El número de acciones es {{dataSummary.totalActions}}'
+        tabindex='0'
+      >
+        <h3 class='metrics-summary-card-title' aria-hidden='true'>Nº Acciones</h3>
+        <p
+          class='metrics-summary-card-value'
+          aria-hidden='true'
+        >{{dataSummary.totalActions}}</p>
+      </div>
+    </div>
+  </section>
+</main>

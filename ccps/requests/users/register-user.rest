@@ -1,0 +1,134 @@
+### Variables
+@baseUrl = http://localhost:3001
+@contentType = application/json
+
+### Test 1: Register a new user successfully
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "John Doe",
+  "username": "Nolood9desSad",
+  "mobilePhone": "+3321058145678",
+  "password": "SecureP*ssw0rd123",
+  "city": "Madrid",
+  "countryCode": "ES"
+}
+
+### Test 2: Register user with international phone (US)
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "Jane Smith",
+  "username": "janeSmith",
+  "mobilePhone": "+15551234567",
+  "password": "ValidPassword789!",
+  "city": "New York",
+  "countryCode": "US"
+}
+
+### Test 3: Try to register with duplicate username (should fail)
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "John Duplicate",
+  "username": "johnDoe",
+  "mobilePhone": "+34677889900",
+  "password": "AnotherPass123!",
+  "city": "Valencia",
+  "countryCode": "ES"
+}
+
+### Test 4: Validation error - username too short
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "Short Username",
+  "username": "a",
+  "mobilePhone": "+34612345678",
+  "password": "SecureP*ssw0rd123",
+  "city": "Madrid",
+  "countryCode": "ES"
+}
+
+### Test 5: Validation error - password too short
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "Test User",
+  "username": "testUser",
+  "mobilePhone": "+34612345678",
+  "password": "123",
+  "city": "Madrid",
+  "countryCode": "ES"
+}
+
+### Test 6: Validation error - invalid country code
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "Invalid Country",
+  "username": "invalidCountry",
+  "mobilePhone": "+34612345678",
+  "password": "SecureP*ssw0rd123",
+  "city": "Madrid",
+  "countryCode": "INVALID"
+}
+
+### Test 7: Validation error - missing required field (mobilePhone)
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "Missing Phone",
+  "username": "missingPhone",
+  "password": "SecureP*ssw0rd123",
+  "city": "Madrid",
+  "countryCode": "ES"
+}
+
+### Test 8: Validation error - empty username
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "Empty Username",
+  "username": "",
+  "mobilePhone": "+34612345678",
+  "password": "SecureP*ssw0rd123",
+  "city": "Madrid",
+  "countryCode": "ES"
+}
+
+### Test 9: Invalid phone format
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "Invalid Phone",
+  "username": "testInvalidPhone",
+  "mobilePhone": "612345678",
+  "password": "SecureP*ssw0rd123",
+  "city": "Madrid",
+  "countryCode": "ES"
+}
+
+### Test 10: Non-whitelisted fields aren't accepted
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "fullName": "Extra Fields Test",
+  "username": "extraFieldsTest",
+  "mobilePhone": "+34633444555",
+  "password": "SecureP*ssw0rd123",
+  "city": "Málaga",
+  "countryCode": "ES",
+  "extraField": "should be ignored",
+  "anotherField": 12345
+}

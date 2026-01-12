@@ -1,0 +1,29 @@
+{
+  "css.validate": false,
+  "css.customData": [".vscode/css-custom-data.json"],
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "css"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.formatOnSave": true,
+  "yaml.customTags": [
+    "!Ref",
+    "!GetAtt",
+    "!Sub",
+    "!Join",
+    "!FindInMap",
+    "!GetAZs",
+    "!ImportValue",
+    "!Split",
+    "!Base64",
+    "!Cidr",
+    "!And",
+    "!Equals",
+    "!If",
+    "!Not",
+    "!Or",
+    "!Select"
+  ]
+}

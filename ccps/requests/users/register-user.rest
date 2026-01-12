@@ -8,7 +8,7 @@ Content-Type: {{contentType}}
 
 {
   "fullName": "John Doe",
-  "username": "Nolood9desSad",
+  "username": "johnDoe",
   "mobilePhone": "+3321058145678",
   "password": "SecureP*ssw0rd123",
   "city": "Madrid",

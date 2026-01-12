@@ -9,14 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/solidarianid/solidarianid/graphs/contributors">
-    <img src="https://img.shields.io/badge/contributors-2-blue?style=for-the-badge" alt="Contributors"/>
+  <a href="https://github.com/fsoladur/SolidarianID/graphs/contributors">
+    <img src="https://img.shields.io/badge/contributors-5-blue?style=for-the-badge" alt="Contributors"/>
   </a>
-  <a href="https://github.com/solidarianid/solidarianid/issues">
-    <img src="https://img.shields.io/badge/issues-open-green?style=for-the-badge" alt="Issues"/>
-  </a>
-  <a href="https://github.com/solidarianid/solidarianid/stargazers">
-    <img src="https://img.shields.io/github/stars/solidarianid/solidarianid?style=for-the-badge" alt="Stars"/>
+  <a href="https://github.com/fsoladur/SolidarianID/stargazers">
+    <img src="https://img.shields.io/github/stars/fsoladur/SolidarianID?style=for-the-badge" alt="Stars"/>
   </a>
 </p>
 
@@ -28,6 +25,18 @@
   <img src="https://img.shields.io/badge/Kafka-Latest-231F20?style=for-the-badge&logo=apachekafka&logoColor=white" alt="Kafka"/>
   <img src="https://img.shields.io/badge/Docker-Latest-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/>
 </p>
+
+---
+
+### Autores
+
+- **Fabián Sola**
+- **Sergio Ros**
+- **Pablo Peris**
+- **Manuel Bernabé**
+- **Antonio Pérez**
+
+![Contributors](https://img.shields.io/github/contributors/fsoladur/SolidarianID)
 
 ---
 
@@ -60,7 +69,6 @@
   - [Tecnologías Principales](#tecnologías-principales)
   - [Librerías destacadas](#librerías-destacadas)
 - [Créditos y Licencia](#créditos-y-licencia)
-  - [Autores](#autores)
   - [Licencia](#licencia)
 
 ---
@@ -137,8 +145,8 @@ Para observar la aplicación ya desplegada en un entorno cloud, puedes acceder a
 ### Clona el repositorio
 
 ```bash
-git clone https://github.com/solidarianid/solidarianid.git
-cd solidarianid
+git clone https://github.com/fsoladur/SolidarianID.git
+cd SolidarianID
 ```
 
 ---
@@ -532,14 +540,6 @@ npm run test:all:coverage
 ## Créditos y Licencia
 
 **SolidarianID** ha sido desarrollado como parte de un Trabajo conjunto entre varias asignaturas en el contexto del Máster de Ingeniería del Software de la Universidad de Murcia.
-
-### Autores
-
-- **Fabián Sola**
-- **Sergio Ros**
-- **Pablo Peris**
-- **Manuel Bernabé**
-- **Antonio Pérez**
 
 ### Licencia
 

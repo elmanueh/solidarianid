@@ -21,7 +21,7 @@ async function bootstrap() {
     .setVersion('0.1')
     .build();
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('users/docs', app, document);
+  SwaggerModule.setup('api/users/docs', app, document);
 
   // Generar el YAML con la documentación Swagger
   const yamlString: string = dump(document);

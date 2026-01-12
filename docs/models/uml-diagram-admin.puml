@@ -1,0 +1,132 @@
+@startuml Modelo de Dominio - Admin
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam class {
+  BackgroundColor<<aggregate>> #FFEFD5
+  BackgroundColor<<entity>> #E6F3FF
+  BackgroundColor<<valueobject>> #F0FFF0
+  BackgroundColor<<enum>> #FFF0F5
+}
+
+' ==================== ENTITIES ====================
+class Administrator <<entity>> {
+  id: UniqueEntityID
+  fullname: FullName
+  email: Email
+  phone: MobilePhone
+  password: HashedPassword
+}
+
+class User <<entity>> {
+  id: UniqueEntityID
+  fullName: FullName
+  username: Username
+  phone: MobilePhone
+  location: UserLocation
+  communityMemberships: CommunityMembership[]
+}
+
+abstract class Request <<entity>> {
+  id: UniqueEntityID
+  name: string
+  description: Description
+  status: RequestStatus
+  reason: Reason
+  userId: string
+  createdAt: Date
+}
+
+class CommunityRequest <<entity>> {
+  causes: CauseRequest[]
+}
+
+class CauseRequest <<entity>> {
+  startDate: Date
+  duration: Duration
+  ods: SustainableDevelopmentGoal[]
+  actions: ActionRequest[]
+  communityId: UniqueEntityID
+}
+
+class ActionRequest <<entity>> {
+  objectives: Objective[]
+  events: Event[]
+  causeId: UniqueEntityID
+}
+
+' ==================== VALUE OBJECTS ====================
+class CommunityMembership <<valueobject>> {
+  communityId: UniqueEntityID
+  communityName: string
+  role: MemberType
+  joinedAt: Date
+}
+
+class Objective <<valueobject>> {
+  name: Name
+  description: Description
+  quantity: Quantity
+  unit: Unit
+  currentAmount: CurrentAmount
+}
+
+class Event <<valueobject>> {
+  name: Name
+  description: Description
+  initialDate: Date
+  place: EventPlace
+}
+
+class EventPlace <<valueobject>> {
+  direction: Direction
+  city: City
+  countryCode: CountryCode
+}
+
+class UserLocation <<valueobject>> {
+  city: string
+  countryCode: string
+}
+
+' ==================== ENUMS ====================
+enum RequestStatus <<enum>> {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum MemberType <<enum>> {
+  CREATOR
+  ADMIN
+  MEMBER
+}
+
+' ==================== RELATIONSHIPS ====================
+' Request hierarchy
+Request <|-- CommunityRequest
+Request <|-- CauseRequest
+Request <|-- ActionRequest
+
+' Request relationships
+Request --> RequestStatus : status
+
+' CommunityRequest relationships
+CommunityRequest "1" *-- "*" CauseRequest : causes
+
+' CauseRequest relationships
+CauseRequest "1" *-- "*" ActionRequest : actions
+
+' ActionRequest relationships
+ActionRequest "1" *-- "*" Objective : objectives
+ActionRequest "1" *-- "*" Event : events
+
+' Event relationships
+Event "1" *-- "1" EventPlace : place
+
+' User relationships
+User "1" *-- "*" CommunityMembership : communityMemberships
+User "1" *-- "1" UserLocation : location
+CommunityMembership --> MemberType : role
+
+@enduml

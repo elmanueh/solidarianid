@@ -1,0 +1,162 @@
+@startuml Modelo de Dominio - Communities
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam class {
+  BackgroundColor<<aggregate>> #FFEFD5
+  BackgroundColor<<entity>> #E6F3FF
+  BackgroundColor<<valueobject>> #F0FFF0
+  BackgroundColor<<enum>> #FFF0F5
+}
+
+' ==================== AGGREGATES ====================
+class Community <<aggregate>> {
+  id: UniqueEntityID
+  name: Name
+  description: Description
+  creator: User
+  admins: User[]
+  members: User[]
+  causes: Cause[]
+}
+
+' ==================== ENTITIES ====================
+class User <<entity>> {
+  id: UniqueEntityID
+  fullName: FullName
+  mobilePhone: MobilePhone
+  email: Email
+}
+
+class Cause <<entity>> {
+  id: UniqueEntityID
+  name: Name
+  description: Description
+  durationDays: Duration
+  ods: SustainableDevelopmentGoal[]
+  initialDate: Date
+  actions: Action[]
+  communityId: UniqueEntityID
+}
+
+class Action <<entity>> {
+  id: UniqueEntityID
+  name: Name
+  description: Description
+  objectives: Objective[]
+  events: Event[]
+  causeId: UniqueEntityID
+}
+
+class Event <<entity>> {
+  id: UniqueEntityID
+  name: Name
+  description: Description
+  initialDate: Date
+  place: EventPlace
+  actionId: UniqueEntityID
+  assistants: User[]
+}
+
+abstract class Request <<entity>> {
+  id: UniqueEntityID
+  type: RequestType
+  name: Name
+  description: Description
+  status: RequestStatus
+  reason: Reason
+  user: User
+}
+
+class CommunityRequest <<entity>> {
+  causeRequests: CommunityCauseRequestProps[]
+}
+
+class CauseRequest <<entity>> {
+  ods: SustainableDevelopmentGoal[]
+  initialDate: Date
+  durationDays: Duration
+  communityId: UniqueEntityID
+}
+
+class ActionRequest <<entity>> {
+  objectives: ActionRequestObjectiveProps[]
+  events: ActionRequestEventProps[]
+  causeId: UniqueEntityID
+}
+
+' ==================== VALUE OBJECTS ====================
+class EventPlace <<valueobject>> {
+  direction: Direction
+  city: City
+  countryCode: CountryCode
+}
+
+class Objective <<valueobject>> {
+  name: Name
+  description: Description
+  quantity: Quantity
+  unit: Unit
+  currentAmount: CurrentAmount
+  actionId: UniqueEntityID
+  contributors: User[]
+}
+
+' ==================== ENUMS ====================
+enum RequestType <<enum>> {
+  CAUSE
+  COMMUNITY
+  ACTION
+}
+
+enum RequestStatus <<enum>> {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum MemberType <<enum>> {
+  CREATOR
+  ADMIN
+  MEMBER
+}
+
+' ==================== RELATIONSHIPS ====================
+' Community relationships
+Community "1" *-- "1" User : creator
+Community "1" *-- "*" User : admins
+Community "1" *-- "*" User : members
+Community "1" *-- "*" Cause : causes
+
+' Cause relationships
+Cause "1" *-- "*" Action : actions
+Cause "*" --> "1" Community : communityId
+
+' Action relationships
+Action "1" *-- "*" Objective : objectives
+Action "1" *-- "*" Event : events
+Action "*" --> "1" Cause : causeId
+
+' Event relationships
+Event "1" *-- "1" EventPlace : place
+Event "1" *-- "*" User : assistants
+Event "*" --> "1" Action : actionId
+
+' Objective relationships
+Objective "1" *-- "*" User : contributors
+Objective "*" --> "1" Action : actionId
+
+' Request hierarchy
+Request <|-- CommunityRequest
+Request <|-- CauseRequest
+Request <|-- ActionRequest
+
+' Request relationships
+Request "1" *-- "1" User : user
+Request --> RequestType : type
+Request --> RequestStatus : status
+
+CauseRequest "*" --> "1" Community : communityId
+ActionRequest "*" --> "1" Cause : causeId
+
+@enduml

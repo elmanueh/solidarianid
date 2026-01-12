@@ -28,6 +28,9 @@
 
 ---
 
+> [!NOTE]
+> En la carpeta `./memorias` se pueden encontrar todas las documentaciones de las 4 asignaturas que se han visto directamente involucradas en el desarrollo de este proyecto.
+
 ## Autores
 
 <table>

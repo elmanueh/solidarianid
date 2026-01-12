@@ -105,6 +105,7 @@ export class TestServerHelper {
   }
 
   getRequest(): supertest.Agent {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.agent ??= request.agent(this.app.getHttpServer());
     return this.agent;
   }

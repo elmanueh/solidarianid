@@ -1,0 +1,501 @@
+{
+	"info": {
+		"_postman_id": "13ef6a3e-e5d7-434c-8edc-8e862d6e93ec",
+		"name": "SolidarianID",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "51450080",
+		"_collection_link": "https://red-moon-193984.postman.co/workspace/solidarianid~b19f3f71-af4e-4a20-bffb-ca3fd5beba41/collection/51408229-13ef6a3e-e5d7-434c-8edc-8e862d6e93ec?action=share&source=collection_link&creator=51450080"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Registro",
+					"item": [
+						{
+							"name": "Success",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "id",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"John Doe\",\r\n  \"username\": \"Nolood9desSad\",\r\n  \"mobilePhone\": \"+3321058145678\",\r\n  \"password\": \"SecureP*ssw0rd123\",\r\n  \"city\": \"Madrid\",\r\n  \"countryCode\": \"ES\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_BASE_URL}}/api/users",
+									"host": [
+										"{{USERS_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Duplicate-name",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "id",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"John Duplicate\",\r\n  \"username\": \"Nolood9desSad\",\r\n  \"mobilePhone\": \"+34677889900\",\r\n  \"password\": \"AnotherPass123!\",\r\n  \"city\": \"Valencia\",\r\n  \"countryCode\": \"ES\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_BASE_URL}}/api/users",
+									"host": [
+										"{{USERS_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Duplicate-phone",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "id",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"John Duplicate\",\r\n  \"username\": \"NootNootPablo\",\r\n  \"mobilePhone\": \"+3321058145678\",\r\n  \"password\": \"AnotherPass123!\",\r\n  \"city\": \"Valencia\",\r\n  \"countryCode\": \"ES\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_BASE_URL}}/api/users",
+									"host": [
+										"{{USERS_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Password-too-weak",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "id",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"Test User\",\r\n  \"username\": \"testUser\",\r\n  \"mobilePhone\": \"+34612345678\",\r\n  \"password\": \"123\",\r\n  \"city\": \"Madrid\",\r\n  \"countryCode\": \"ES\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_BASE_URL}}/api/users",
+									"host": [
+										"{{USERS_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid-countryCode",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "id",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"Invalid Country\",\r\n  \"username\": \"invalidCountry\",\r\n  \"mobilePhone\": \"+34612345678\",\r\n  \"password\": \"SecureP*ssw0rd123\",\r\n  \"city\": \"Madrid\",\r\n  \"countryCode\": \"INVALID\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_BASE_URL}}/api/users",
+									"host": [
+										"{{USERS_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing-field",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "id",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"Missing Phone\",\r\n  \"username\": \"missingPhone\",\r\n  \"password\": \"SecureP*ssw0rd123\",\r\n  \"city\": \"Madrid\",\r\n  \"countryCode\": \"ES\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_BASE_URL}}/api/users",
+									"host": [
+										"{{USERS_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid-phone",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "id",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"Invalid Phone\",\r\n  \"username\": \"testInvalidPhone\",\r\n  \"mobilePhone\": \"612345678\",\r\n  \"password\": \"SecureP*ssw0rd123\",\r\n  \"city\": \"Madrid\",\r\n  \"countryCode\": \"ES\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_BASE_URL}}/api/users",
+									"host": [
+										"{{USERS_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Non-whitelisted-fields",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "id",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"Extra Fields Test\",\r\n  \"username\": \"extraFieldsTest\",\r\n  \"mobilePhone\": \"+34633444555\",\r\n  \"password\": \"SecureP*ssw0rd123\",\r\n  \"city\": \"Málaga\",\r\n  \"countryCode\": \"ES\",\r\n  \"extraField\": \"should be ignored\",\r\n  \"anotherField\": 12345\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_BASE_URL}}/api/users",
+									"host": [
+										"{{USERS_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update",
+					"item": [
+						{
+							"name": "Success",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"mobilePhone\": \"+34608198785\",\r\n    \"username\": \"pilimartinez22\",\r\n    \"city\": \"Mallorca\",\r\n    \"countryCode\": \"ES\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/users/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "79375083-ef7d-4d5c-8a71-6b55ec7e1290"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Communities",
+			"item": [
+				{
+					"name": "create-community-request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"esto es la comunidad 22\",\r\n    \"description\": \"esto es una prueba\",\r\n    \"causeCreationRequests\": [\r\n        {\r\n            \"name\": \"esto es la causa\",\r\n            \"description\": \"esto es una prueba2\",\r\n            \"ods\": [1,2,3],\r\n            \"initialDate\": \"2026-01-03T10:30:00.000Z\",\r\n            \"durationDays\": 5\r\n        },\r\n        {\r\n            \"name\": \"esto es la causa 2\",\r\n            \"description\": \"esto es una prueba2\",\r\n            \"ods\": [1,2,3],\r\n            \"initialDate\": \"2026-01-03T10:30:00.000Z\",\r\n            \"durationDays\": 5\r\n        }\r\n    ],\r\n    \"userId\": \"d89858db-23ca-4df2-b5d3-b1c5f2eb4683\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{COMMUNITIES_BASE_URL}}/api/community-requests",
+							"host": [
+								"{{COMMUNITIES_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"community-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-cause-request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Esto es una prueba de causa nueva\",\r\n    \"description\": \"Esto es una prueba de causa nueva\",\r\n    \"ods\": [1,2,3],\r\n    \"initialDate\": \"2026-02-09T00:00:00.000Z\",\r\n    \"durationDays\": 4,\r\n    \"userId\": \"64470a45-d841-4afc-8b01-34b0a4c83171\",\r\n    \"communityId\": \"ab8d5a8d-ed49-490b-af98-ab51a29d980a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{COMMUNITIES_BASE_URL}}/api/cause-requests",
+							"host": [
+								"{{COMMUNITIES_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"cause-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-action-request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Esto es una prueba de action nueva\",\r\n    \"description\": \"Esto es una prueba de action nueva\",\r\n    \"objectives\": [\r\n        {\r\n            \"name\": \"Nombre del objetivo\",\r\n            \"description\": \"Descripcion del objetivo\",\r\n            \"quantity\": 5,\r\n            \"unit\": \"€\"\r\n        }\r\n    ],\r\n    \"events\": [\r\n        {\r\n            \"name\": \"Nombre del evento\",\r\n            \"description\": \"Descripcion del evento\",\r\n            \"initialDate\": \"2026-01-20T10:00:00.000Z\",\r\n            \"place\": {\r\n                \"direction\": \"Calle Mayor 123\",\r\n                \"city\": \"Madrid\",\r\n                \"countryCode\": \"ES\"\r\n            }\r\n        }\r\n    ],\r\n    \"userId\": \"64470a45-d841-4afc-8b01-34b0a4c83171\",\r\n    \"causeId\": \"7ee54c5b-4fbb-4b1c-8f77-e63ecaf830eb\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{COMMUNITIES_BASE_URL}}/api/action-requests",
+							"host": [
+								"{{COMMUNITIES_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"action-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-communities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{COMMUNITIES_BASE_URL}}/api/communities",
+							"host": [
+								"{{COMMUNITIES_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"communities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-causes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{COMMUNITIES_BASE_URL}}/api/causes",
+							"host": [
+								"{{COMMUNITIES_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"causes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-actions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{COMMUNITIES_BASE_URL}}/api/actions",
+							"host": [
+								"{{COMMUNITIES_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"actions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "member-join",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"userId\": \"3f8ace31-fb59-45d5-803b-872f7734ccfd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{COMMUNITIES_BASE_URL}}/api/communities/:communityId/members",
+							"host": [
+								"{{COMMUNITIES_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"communities",
+								":communityId",
+								"members"
+							],
+							"variable": [
+								{
+									"key": "communityId",
+									"value": "2b5b1a3e-3268-49ce-958c-11eec50975a5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

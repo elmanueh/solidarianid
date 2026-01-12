@@ -39,12 +39,6 @@ export class AdminViewServiceImpl implements AdminViewService {
       });
     }
 
-    if (monthlyJoinsData != null) {
-      monthlyJoinsData.forEach(monthlyJoinData => {
-        monthlyJoinData.dataRange.reverse();
-      });
-    }
-
     const joinsChart = monthlyJoinsData === null ? undefined : createMonthlyJoinsLine(monthlyJoinsData);
 
     const charts = {

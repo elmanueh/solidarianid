@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AdminRegisterRequestDto } from './dto/input/admin-register-request.dto';
 import { AdminLoginRequestDto } from './dto/input/admin-login-request.dto';
 import { AuthService } from '../../administrator/model/domain/services/auth.service';
@@ -44,7 +44,8 @@ export class AuthApiController {
   }
 
   @Post('login')
-  async login(@Req() request: Request, @Res() response: Response, @Body() loginDto: AdminLoginRequestDto) {
+  @HttpCode(200)
+  async login(@Req() request: Request, @Body() loginDto: AdminLoginRequestDto) {
     const loginOrError: Either<AuthError, Administrator> = await this.authService.login(
       loginDto.email,
       loginDto.password,
@@ -58,7 +59,7 @@ export class AuthApiController {
 
     request.session.user = adminDto;
 
-    return response.status(200).json(adminDto);
+    return adminDto;
   }
 
   @UseGuards(AuthGuard)

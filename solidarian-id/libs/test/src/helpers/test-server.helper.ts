@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe, ModuleMetadata } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -35,6 +34,7 @@ export class TestServerHelper {
         secret: 'test-secret-key-for-e2e-tests',
         resave: false,
         saveUninitialized: false,
+        name: 'connect.sid',
         cookie: {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24,

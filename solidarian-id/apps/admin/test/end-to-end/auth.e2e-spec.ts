@@ -202,13 +202,12 @@ describe('AuthController (e2e)', () => {
     beforeAll(async () => {
       await seeder.clean();
       await seeder.seedAdministrators();
-      await server.loginAsAdmin({
-        email: 'login.test@solidarianid.org',
-        password: 'Admin2024!Pass',
-      });
     });
 
     it('should logout successfully and clear session', async () => {
+      // Reset agent to ensure no previous session exists
+      server.resetAgent();
+
       // First login to get a session
       const loginResponse = await server
         .getRequest()
@@ -219,18 +218,19 @@ describe('AuthController (e2e)', () => {
         })
         .expect(200);
 
-      const cookies = loginResponse.headers['set-cookie'];
+      const cookies = loginResponse.headers['set-cookie'] as unknown as string[] | undefined;
+      expect(cookies).toBeDefined();
+      expect(Array.isArray(cookies) ? cookies.length : cookies).toBeGreaterThan(0);
+
+      const cookieValue: string = Array.isArray(cookies) ? cookies[0] : typeof cookies === 'string' ? cookies : '';
 
       // Then logout
-      await server
-        .getRequest()
-        .post('/api/auth/logout')
-        .set('Cookie', Array.isArray(cookies) ? cookies[0] : cookies)
-        .expect(204);
+      await server.getRequest().post('/api/auth/logout').set('Cookie', cookieValue).expect(204);
     });
 
-    it('should return 204 even without active session', async () => {
-      await server.getRequest().post('/api/auth/logout').expect(204);
+    it('should return 401 Unauthorized when trying to logout without active session', async () => {
+      server.resetAgent();
+      await server.getRequest().post('/api/auth/logout').expect(401);
     });
 
     afterAll(() => {
@@ -277,15 +277,15 @@ describe('AuthController (e2e)', () => {
         .expect(200);
 
       expect(loginResponse.body.email).toBe(uniqueEmail);
-      const cookies = loginResponse.headers['set-cookie'];
-      expect(cookies).toBeDefined();
 
-      // Step 3: Logout
-      await server
-        .getRequest()
-        .post('/api/auth/logout')
-        .set('Cookie', Array.isArray(cookies) ? cookies[0] : cookies)
-        .expect(204);
+      const cookies = loginResponse.headers['set-cookie'] as unknown as string[] | undefined;
+      expect(cookies).toBeDefined();
+      expect(Array.isArray(cookies) ? cookies.length : cookies).toBeGreaterThan(0);
+
+      const cookieValue: string = Array.isArray(cookies) ? cookies[0] : typeof cookies === 'string' ? cookies : '';
+
+      // Then logout
+      await server.getRequest().post('/api/auth/logout').set('Cookie', cookieValue).expect(204);
     });
 
     afterAll(() => {

@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/fsoladur/SolidarianID/graphs/contributors">
+  <a href="https://github.com/fsoladur/SolidarianID">
     <img src="https://img.shields.io/badge/contributors-5-blue?style=for-the-badge" alt="Contributors"/>
   </a>
-  <a href="https://github.com/fsoladur/SolidarianID/stargazers">
-    <img src="https://img.shields.io/github/stars/fsoladur/SolidarianID?style=for-the-badge" alt="Stars"/>
+  <a href="https://github.com/fsoladur/SolidarianID">
+    <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License"/>
   </a>
 </p>
 
@@ -28,20 +28,48 @@
 
 ---
 
-### Autores
+## Autores
 
-- **Fabián Sola**
-- **Sergio Ros**
-- **Pablo Peris**
-- **Manuel Bernabé**
-- **Antonio Pérez**
-
-![Contributors](https://img.shields.io/github/contributors/fsoladur/SolidarianID)
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/fsoladur">
+        <img src="https://github.com/fsoladur.png" width="80px;" alt="Fabián Sola"/><br />
+        <sub><b>Fabián Sola</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/pabloperissolano">
+        <img src="https://github.com/pabloperissolano.png" width="80px;" alt="Pablo Peris Solano"/><br />
+        <sub><b>Pablo Peris</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Sergiorosliarte">
+        <img src="https://github.com/Sergiorosliarte.png" width="80px;" alt="Sergio Ros"/><br />
+        <sub><b>Sergio Ros</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/elmanueh">
+        <img src="https://github.com/elmanueh.png" width="80px;" alt="Manuel Bernabé"/><br />
+        <sub><b>Manuel Bernabé</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Zerep0">
+        <img src="https://github.com/Zerep0.png" width="80px;" alt="Antonio Pérez"/><br />
+        <sub><b>Antonio Pérez</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
 ---
 
 ## Tabla de Contenidos
 
+- [Autores](#autores)
 - [Tabla de Contenidos](#tabla-de-contenidos)
 - [Descripción](#descripción)
 - [Arquitectura](#arquitectura)

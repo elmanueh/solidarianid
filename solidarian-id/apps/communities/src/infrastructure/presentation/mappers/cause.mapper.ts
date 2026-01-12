@@ -11,6 +11,7 @@ export class CauseDomainMapper {
       description: cause.description,
       durationDays: cause.durationDays,
       ods: cause.ods,
+      communityId: cause.communityId,
     };
   }
 

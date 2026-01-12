@@ -33,6 +33,17 @@ export class AdminViewServiceImpl implements AdminViewService {
 
     const topThreeIds = this.topIdsFromEither(communitiesEither, 3, c => c.id);
     const monthlyJoinsData = await this.loadMonthlyJoins(topThreeIds, communitiesEither);
+    if (monthlyJoinsData != null) {
+      monthlyJoinsData.forEach(monthlyJoinData => {
+        monthlyJoinData.dataRange.reverse();
+      });
+    }
+
+    if (monthlyJoinsData != null) {
+      monthlyJoinsData.forEach(monthlyJoinData => {
+        monthlyJoinData.dataRange.reverse();
+      });
+    }
 
     const joinsChart = monthlyJoinsData === null ? undefined : createMonthlyJoinsLine(monthlyJoinsData);
 

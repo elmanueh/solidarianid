@@ -2,10 +2,6 @@ name: CD - SolidarianID
 on:
   push:
     branches: [main]
-    paths:
-      - "solidarian-id/**"
-      - "deployment/**"
-      - "!docs/**"
   workflow_dispatch:
 
 jobs:
@@ -38,14 +34,14 @@ jobs:
 
       - name: Build and push Docker images
         id: build-images
-        working-directory: deployment
+        working-directory: solidarian-id
         env:
           IMAGE_TAG: ${{ steps.image-tag.outputs.tag }}
         run: |
           set -euo pipefail
 
           # Build all 3 apps
-          docker compose -p deployment build admin-app user-app community-app
+          docker compose -f docker-compose.yml -f docker-compose.dev.yml -p deployment build admin-app users-app communities-app
 
           # Tag and push admin-app
           docker tag deployment-admin-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-admin:$IMAGE_TAG
@@ -54,16 +50,16 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-admin:latest
 
           # Tag and push users-app
-          docker tag deployment-user-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-user:$IMAGE_TAG
-          docker tag deployment-user-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-user:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-user:$IMAGE_TAG
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-user:latest
+          docker tag deployment-users-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-users:$IMAGE_TAG
+          docker tag deployment-users-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-users:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-users:$IMAGE_TAG
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-users:latest
 
           # Tag and push communities-app
-          docker tag deployment-community-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-community:$IMAGE_TAG
-          docker tag deployment-community-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-community:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-community:$IMAGE_TAG
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-community:latest
+          docker tag deployment-communities-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-communities:$IMAGE_TAG
+          docker tag deployment-communities-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-communities:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-communities:$IMAGE_TAG
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-communities:latest
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -73,7 +69,7 @@ jobs:
           aws-region: eu-south-2
 
       - name: Deploy Network Stack
-        working-directory: deployment
+        working-directory: solidarian-id
         run: |
           aws cloudformation deploy \
             --stack-name MyStackNetwork \
@@ -82,7 +78,7 @@ jobs:
             --no-fail-on-empty-changeset
 
       - name: Deploy Application Stack
-        working-directory: deployment
+        working-directory: solidarian-id
         run: |
           aws cloudformation deploy \
             --stack-name MyStackApp \
@@ -115,7 +111,7 @@ jobs:
           CMD_ID="$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
-            --parameters 'commands=["cd /home/ec2-user && docker-compose --env-file /home/ec2-user/solidarian.env pull && docker-compose --env-file /home/ec2-user/solidarian.env up -d --force-recreate"]' \
+            --parameters 'commands=["cd /home/ec2-user && docker-compose --env-file /home/ec2-user/.env.solidarianid pull && docker-compose --env-file /home/ec2-user/.env.solidarianid up -d --force-recreate"]' \
             --query "Command.CommandId" \
             --output text)"
 

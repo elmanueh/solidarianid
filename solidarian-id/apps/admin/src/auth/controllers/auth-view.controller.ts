@@ -1,4 +1,5 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { AuthGuard } from '@app/admin/auth/controllers/guards/auth.guard';
+import { Controller, Get, Render, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 /**
@@ -19,6 +20,7 @@ export class AuthViewController {
     };
   }
 
+  @UseGuards(AuthGuard)
   @Get('/register')
   @Render('pages/register')
   // @UseGuards(AuthGuard) // Descomentar si se desea proteger la ruta de registro

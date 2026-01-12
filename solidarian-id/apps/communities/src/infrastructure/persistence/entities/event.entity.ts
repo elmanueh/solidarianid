@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { EventPlaceEntity } from './event-place.entity';
 import { ActionEntity } from './action.entity';
-import { EventUserEntity } from './event-user';
+import { EventUserEntity } from './event-user.entity';
 
 @Entity('event')
 export class EventEntity {

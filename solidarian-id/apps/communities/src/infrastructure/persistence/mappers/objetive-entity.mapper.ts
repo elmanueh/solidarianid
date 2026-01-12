@@ -4,7 +4,7 @@ import { Either, left, sequence } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Objective } from '@app/communities/domain/model/value-objects/objective';
 import { ObjectiveEntity } from '../entities/objective.entity';
-import { ObjetiveUserEntity } from '../entities/objetive-user';
+import { ObjetiveUserEntity } from '../entities/objetive-user.entity';
 import { User } from '@app/communities/domain/model/entities/user';
 
 @Injectable()

@@ -83,10 +83,10 @@ Resources:
             --output text \
             --region ${AWS::Region})
 
-          echo "$SECRET_JSON" | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | .[]' > /home/ec2-user/solidarian.env
+          echo "$SECRET_JSON" | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | .[]' > /home/ec2-user/.env.solidarianid
 
-          chown ec2-user:ec2-user /home/ec2-user/solidarian.env
-          chmod 600 /home/ec2-user/solidarian.env
+          chown ec2-user:ec2-user /home/ec2-user/.env.solidarianid
+          chmod 600 /home/ec2-user/.env.solidarianid
 
           # Descargamos los datos de prueba de un bucket S3
           mkdir -p /home/ec2-user/init-data
@@ -110,6 +110,7 @@ Resources:
                 - solidarian_network
               volumes:
                 - postgres_data:/var/lib/postgresql/data
+                - /home/ec2-user/init-data:/docker-entrypoint-initdb.d
               healthcheck:
                 test: ["CMD-SHELL", "pg_isready -U ${!POSTGRES_USER} -d ${!POSTGRES_DB}"]
                 interval: 10s
@@ -186,7 +187,7 @@ Resources:
 
             admin-app:
               image: ${DockerHubUsername}/solidarianid-admin:latest
-              container_name: solidarian_admin
+              container_name: solidarian_admin_app
               ports:
                 - "${!ADMIN_PORT}:3000"
               environment:
@@ -200,6 +201,7 @@ Resources:
                 - API_BASE_ADMIN_URL=${!API_BASE_ADMIN_URL}
                 - API_BASE_USERS_URL=${!API_BASE_USERS_URL}
                 - API_BASE_COMMUNITIES_URL=${!API_BASE_COMMUNITIES_URL}
+                - API_BASE_COMMUNITIES_INTERNAL_URL=${!API_BASE_COMMUNITIES_INTERNAL_URL}
                 - SESSION_SECRET=${!SESSION_SECRET}
                 - KAFKA_ADMIN_CLIENT_ID=${!KAFKA_ADMIN_CLIENT_ID}
                 - KAFKA_ADMIN_CONSUMER_GROUP_ID=${!KAFKA_ADMIN_CONSUMER_GROUP_ID}
@@ -213,12 +215,13 @@ Resources:
               restart: unless-stopped
 
             users-app:
-              image: ${DockerHubUsername}/solidarianid-user:latest
-              container_name: solidarian_users
+              image: ${DockerHubUsername}/solidarianid-users:latest
+              container_name: solidarian_users_app
               ports:
                 - "${!USERS_PORT}:3001"
               environment:
                 - NODE_ENV=${!NODE_ENV}
+                - IN_DOCKER=true
                 - POSTGRES_HOST=${!POSTGRES_HOST}
                 - POSTGRES_PORT=${!POSTGRES_PORT}
                 - POSTGRES_USER=${!POSTGRES_USER}
@@ -240,12 +243,13 @@ Resources:
               restart: unless-stopped
 
             communities-app:
-              image: ${DockerHubUsername}/solidarianid-community:latest
-              container_name: solidarian_communities
+              image: ${DockerHubUsername}/solidarianid-communities:latest
+              container_name: solidarian_communities_app
               ports:
                 - "${!COMMUNITIES_PORT}:3002"
               environment:
                 - NODE_ENV=${!NODE_ENV}
+                - IN_DOCKER=true
                 - POSTGRES_HOST=${!POSTGRES_HOST}
                 - POSTGRES_PORT=${!POSTGRES_PORT}
                 - POSTGRES_USER=${!POSTGRES_USER}
@@ -266,18 +270,18 @@ Resources:
                 - solidarian_network
               restart: unless-stopped
 
-          networks:
-            solidarian_network:
-              driver: bridge
-
           volumes:
             postgres_data:
             mongo_data:
+
+          networks:
+            solidarian_network:
+              driver: bridge
           EOT
 
           cd /home/ec2-user
-          docker-compose --env-file /home/ec2-user/solidarian.env pull
-          docker-compose --env-file /home/ec2-user/solidarian.env up -d
+          docker-compose --env-file /home/ec2-user/.env.solidarianid pull
+          docker-compose --env-file /home/ec2-user/.env.solidarianid up -d
 
           # Signal the status from cfn-init
           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
@@ -336,7 +340,7 @@ Resources:
   DiskVolume:
     Type: AWS::EC2::Volume
     Properties:
-      Size: 100
+      Size: 10
       AvailabilityZone: !GetAtt WebServerInstance.AvailabilityZone
       Tags:
         - Key: Name

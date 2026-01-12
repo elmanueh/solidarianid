@@ -1,7 +1,9 @@
 import { UpdateStatusRequestDto } from '@app/admin/administrator/controllers/dtos/update-status.request.dto';
 import { RequestsService } from '@app/admin/administrator/model/domain/services/requests.service';
-import { Body, Controller, HttpCode, HttpStatus, Param, Patch } from '@nestjs/common';
+import { AuthGuard } from '@app/admin/auth/controllers/guards/auth.guard';
+import { Body, Controller, HttpCode, HttpStatus, Param, Patch, UseGuards } from '@nestjs/common';
 
+@UseGuards(AuthGuard)
 @Controller('requests')
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}

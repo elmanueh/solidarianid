@@ -4,11 +4,13 @@ import { ConfigModule } from '@nestjs/config';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 import { MicroserviceOptions } from '@nestjs/microservices';
 import request from 'supertest';
+import type supertest from 'supertest';
 import session from 'express-session';
 
 export class TestServerHelper {
   private app: INestApplication;
   private moduleRef: TestingModule;
+  private agent: supertest.Agent | null = null;
 
   async create(moduleMetadata: ModuleMetadata, globalPrefix?: string): Promise<INestApplication> {
     const configModule = ConfigModule.forRoot({
@@ -32,6 +34,7 @@ export class TestServerHelper {
         secret: 'test-secret-key-for-e2e-tests',
         resave: false,
         saveUninitialized: false,
+        name: 'connect.sid',
         cookie: {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24,
@@ -101,9 +104,24 @@ export class TestServerHelper {
     return this.app;
   }
 
-  getRequest(): ReturnType<typeof request> {
+  getRequest(): supertest.Agent {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    return request(this.app.getHttpServer());
+    this.agent ??= request.agent(this.app.getHttpServer());
+    return this.agent;
+  }
+
+  resetAgent(): void {
+    this.agent = null;
+  }
+
+  async loginAsAdmin(credentials: { email: string; password: string }): Promise<void> {
+    const response = await this.getRequest().post('/api/auth/login').send(credentials);
+
+    if (response.status !== 200) {
+      throw new Error(
+        `Login failed with status ${response.status}: ${JSON.stringify(response.body?.error?.message || response.body?.message || 'Unknown error')}`,
+      );
+    }
   }
 
   async close(): Promise<void> {

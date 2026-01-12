@@ -1,6 +1,6 @@
 import { RenderHttpExceptionMapper } from '@app/admin/administrator/controllers/filters/mappers/http-exception-render.mapper';
 import { ErrorMapper } from '@app/utils/http/filters/error-mapper';
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 @Catch()
@@ -23,6 +23,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
         message: httpException.message,
       });
     } else {
+      if (status === (HttpStatus.UNAUTHORIZED as number)) {
+        response.redirect('/login');
+        return;
+      }
+
       const errorData = RenderHttpExceptionMapper(status);
 
       response.status(status).render('pages/error', {

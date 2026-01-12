@@ -10,6 +10,7 @@ import {
   TestServerHelper,
 } from '@solidarianid/testing';
 import { RequestsModule } from '@app/admin/administrator/modules/requests.module';
+import { AuthModule } from '@app/admin/auth/auth.module';
 
 describe('RequestsController (e2e)', () => {
   let repository: RequestsRepositoryPort;
@@ -25,12 +26,17 @@ describe('RequestsController (e2e)', () => {
     const databaseModule = await MongoDBTestModule.forRoot();
     server = new TestServerHelper();
     app = await server.create({
-      imports: [messageModule, databaseModule, RequestsModule],
+      imports: [messageModule, databaseModule, AuthModule, RequestsModule],
     });
 
     const connection: Connection = app.get<Connection>('Connection');
     seeder = new MongoDBSeeder(connection);
     repository = app.get<RequestsRepositoryPort>(RequestsRepositoryPort);
+    await seeder.seedAdministrators();
+    await server.loginAsAdmin({
+      email: 'login.test@solidarianid.org',
+      password: 'Admin2024!Pass',
+    });
   });
 
   beforeEach(async () => {

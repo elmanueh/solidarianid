@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe, ModuleMetadata } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 import { MicroserviceOptions } from '@nestjs/microservices';
 import request from 'supertest';
+import type supertest from 'supertest';
 import session from 'express-session';
 
 export class TestServerHelper {
   private app: INestApplication;
   private moduleRef: TestingModule;
+  private agent: supertest.Agent | null = null;
 
   async create(moduleMetadata: ModuleMetadata, globalPrefix?: string): Promise<INestApplication> {
     const configModule = ConfigModule.forRoot({
@@ -101,9 +104,23 @@ export class TestServerHelper {
     return this.app;
   }
 
-  getRequest(): ReturnType<typeof request> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    return request(this.app.getHttpServer());
+  getRequest(): supertest.Agent {
+    this.agent ??= request.agent(this.app.getHttpServer());
+    return this.agent;
+  }
+
+  resetAgent(): void {
+    this.agent = null;
+  }
+
+  async loginAsAdmin(credentials: { email: string; password: string }): Promise<void> {
+    const response = await this.getRequest().post('/api/auth/login').send(credentials);
+
+    if (response.status !== 200) {
+      throw new Error(
+        `Login failed with status ${response.status}: ${JSON.stringify(response.body?.error?.message || response.body?.message || 'Unknown error')}`,
+      );
+    }
   }
 
   async close(): Promise<void> {

@@ -32,6 +32,15 @@ describe('AuthController (e2e)', () => {
   });
 
   describe('POST /api/auth/register', () => {
+    beforeAll(async () => {
+      await seeder.clean();
+      await seeder.seedAdministrators();
+      await server.loginAsAdmin({
+        email: 'login.test@solidarianid.org',
+        password: 'Admin2024!Pass',
+      });
+    });
+
     it('should register a new administrator successfully', async () => {
       const response = await server.getRequest().post('/api/auth/register').send(validRegisterData).expect(201);
 
@@ -115,6 +124,10 @@ describe('AuthController (e2e)', () => {
         })
         .expect(400);
     });
+
+    afterAll(() => {
+      server.resetAgent();
+    });
   });
 
   describe('POST /api/auth/login', () => {
@@ -179,9 +192,22 @@ describe('AuthController (e2e)', () => {
         })
         .expect(400);
     });
+
+    afterAll(() => {
+      server.resetAgent();
+    });
   });
 
   describe('POST /api/auth/logout', () => {
+    beforeAll(async () => {
+      await seeder.clean();
+      await seeder.seedAdministrators();
+      await server.loginAsAdmin({
+        email: 'login.test@solidarianid.org',
+        password: 'Admin2024!Pass',
+      });
+    });
+
     it('should logout successfully and clear session', async () => {
       // First login to get a session
       const loginResponse = await server
@@ -196,15 +222,32 @@ describe('AuthController (e2e)', () => {
       const cookies = loginResponse.headers['set-cookie'];
 
       // Then logout
-      await server.getRequest().post('/api/auth/logout').set('Cookie', cookies).expect(204);
+      await server
+        .getRequest()
+        .post('/api/auth/logout')
+        .set('Cookie', Array.isArray(cookies) ? cookies[0] : cookies)
+        .expect(204);
     });
 
     it('should return 204 even without active session', async () => {
       await server.getRequest().post('/api/auth/logout').expect(204);
     });
+
+    afterAll(() => {
+      server.resetAgent();
+    });
   });
 
   describe('Integration flow: Register → Login → Logout', () => {
+    beforeAll(async () => {
+      await seeder.clean();
+      await seeder.seedAdministrators();
+      await server.loginAsAdmin({
+        email: 'login.test@solidarianid.org',
+        password: 'Admin2024!Pass',
+      });
+    });
+
     it('should complete full authentication flow successfully', async () => {
       const uniqueEmail = `flow.test.${Date.now()}@solidarianid.org`;
 
@@ -238,7 +281,15 @@ describe('AuthController (e2e)', () => {
       expect(cookies).toBeDefined();
 
       // Step 3: Logout
-      await server.getRequest().post('/api/auth/logout').set('Cookie', cookies).expect(204);
+      await server
+        .getRequest()
+        .post('/api/auth/logout')
+        .set('Cookie', Array.isArray(cookies) ? cookies[0] : cookies)
+        .expect(204);
+    });
+
+    afterAll(() => {
+      server.resetAgent();
     });
   });
 });

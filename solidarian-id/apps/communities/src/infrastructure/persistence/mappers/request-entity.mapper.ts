@@ -4,7 +4,6 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Injectable } from '@nestjs/common';
 import { RequestEntity } from '../entities/request.entity';
 import { UserEntityMapper } from './user-entity.mapper';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
 
 /**
@@ -52,7 +51,7 @@ export class RequestEntityMapper extends Mapper<Request<RequestProps>, RequestEn
       return left(userOrError.value);
     }
 
-    const status = entity.status as RequestStatus;
+    const status = entity.status;
 
     return Request.create(
       {

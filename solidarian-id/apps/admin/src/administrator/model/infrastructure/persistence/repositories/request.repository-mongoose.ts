@@ -233,7 +233,7 @@ export class RequestRepositoryMongoose
       }
 
       const total = await this.requestModel.countDocuments({
-        status: 'pending',
+        status: RequestStatus.PENDING,
         type: RequestType.COMMUNITY,
       });
 
@@ -242,7 +242,7 @@ export class RequestRepositoryMongoose
 
       const communityDocs = await this.requestModel
         .aggregate<CommunityRequestEntity & { causes: CauseRequestEntity[] }>([
-          { $match: { status: 'pending', type: RequestType.COMMUNITY } },
+          { $match: { status: RequestStatus.PENDING, type: RequestType.COMMUNITY } },
           {
             $lookup: {
               from: this.requestModel.collection.name,
@@ -293,7 +293,7 @@ export class RequestRepositoryMongoose
 
       const countPipeline = await this.requestModel
         .aggregate<{ count: number }>([
-          { $match: { status: 'approved', type: RequestType.COMMUNITY } },
+          { $match: { status: RequestStatus.APPROVED, type: RequestType.COMMUNITY } },
           {
             $lookup: {
               from: this.requestModel.collection.name,
@@ -302,7 +302,7 @@ export class RequestRepositoryMongoose
                 {
                   $match: {
                     $expr: { $eq: ['$communityId', '$$communityId'] },
-                    status: 'pending',
+                    status: RequestStatus.PENDING,
                     type: RequestType.CAUSE,
                   },
                 },
@@ -321,7 +321,7 @@ export class RequestRepositoryMongoose
 
       const causeDocs = await this.requestModel
         .aggregate<CauseRequestEntity>([
-          { $match: { status: 'approved', type: RequestType.COMMUNITY } },
+          { $match: { status: RequestStatus.APPROVED, type: RequestType.COMMUNITY } },
           {
             $lookup: {
               from: this.requestModel.collection.name,
@@ -330,7 +330,7 @@ export class RequestRepositoryMongoose
                 {
                   $match: {
                     $expr: { $eq: ['$communityId', '$$communityId'] },
-                    status: 'pending',
+                    status: RequestStatus.PENDING,
                     type: RequestType.CAUSE,
                   },
                 },
@@ -380,7 +380,7 @@ export class RequestRepositoryMongoose
 
       const countPipeline = await this.requestModel
         .aggregate<{ count: number }>([
-          { $match: { status: 'approved', type: RequestType.CAUSE } },
+          { $match: { status: RequestStatus.APPROVED, type: RequestType.CAUSE } },
           {
             $lookup: {
               from: this.requestModel.collection.name,
@@ -389,7 +389,7 @@ export class RequestRepositoryMongoose
                 {
                   $match: {
                     $expr: { $eq: ['$causeId', '$$causeId'] },
-                    status: 'pending',
+                    status: RequestStatus.PENDING,
                     type: RequestType.ACTION,
                   },
                 },
@@ -408,7 +408,7 @@ export class RequestRepositoryMongoose
 
       const actionDocs = await this.requestModel
         .aggregate<ActionRequestEntity>([
-          { $match: { status: 'approved', type: RequestType.CAUSE } },
+          { $match: { status: RequestStatus.APPROVED, type: RequestType.CAUSE } },
           {
             $lookup: {
               from: this.requestModel.collection.name,
@@ -417,7 +417,7 @@ export class RequestRepositoryMongoose
                 {
                   $match: {
                     $expr: { $eq: ['$causeId', '$$causeId'] },
-                    status: 'pending',
+                    status: RequestStatus.PENDING,
                     type: RequestType.ACTION,
                   },
                 },

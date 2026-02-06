@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 
 @Entity('requests')
 export class RequestEntity {
@@ -16,8 +17,11 @@ export class RequestEntity {
   @Column('text', { nullable: true })
   reason: string;
 
-  @Column()
-  status: string;
+  @Column({
+    type: 'enum',
+    enum: [RequestStatus.APPROVED, RequestStatus.PENDING, RequestStatus.REJECTED],
+  })
+  status: RequestStatus;
 
   @Column({
     type: 'enum',

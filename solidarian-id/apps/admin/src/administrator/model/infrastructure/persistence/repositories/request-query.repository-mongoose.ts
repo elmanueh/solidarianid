@@ -24,7 +24,20 @@ export class RequestsQueryMongooseRepository extends RequestsQueryRepositoryPort
         { $match: { $and: [{ type: RequestType.CAUSE }, { status: RequestStatus.APPROVED }] } },
         { $unwind: '$ods' },
         { $group: { _id: '$ods', causeCount: { $sum: 1 } } },
-        { $project: { _id: 0, ods: '$_id', causeCount: 1 } },
+        {
+          $project: {
+            _id: 0,
+            ods: {
+              $convert: {
+                input: '$_id',
+                to: 'int',
+                onError: 0,
+                onNull: null,
+              },
+            },
+            causeCount: 1,
+          },
+        },
         { $sort: { ods: 1 } },
       ]);
     } catch (error) {

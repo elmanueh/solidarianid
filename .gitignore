@@ -4,6 +4,7 @@
 solidarian-id/data
 main.css
 images/
+*.venv
 
 ### Node ###
 # Logs

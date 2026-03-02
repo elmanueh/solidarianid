@@ -1,12 +1,14 @@
-import { Entity } from '@app/ddd/entity';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Username } from '@app/value-objects/model/username';
-import { MobilePhone } from '@app/value-objects/model/mobile-phone';
-import { UserLocation } from '@app/value-objects/model/user-location';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Either, left, right } from '@app/ddd/either';
-import { HashedPassword } from '@app/value-objects/model/hashed-password';
+import { Entity } from '@app/ddd/entity';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Description } from '@app/value-objects/model/description';
 import { FullName } from '@app/value-objects/model/fullname';
+import { HashedPassword } from '@app/value-objects/model/hashed-password';
+import { MobilePhone } from '@app/value-objects/model/mobile-phone';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { UserLocation } from '@app/value-objects/model/user-location';
+import { Username } from '@app/value-objects/model/username';
 
 export interface UserProps {
   fullName: FullName;
@@ -14,6 +16,8 @@ export interface UserProps {
   mobilePhone: MobilePhone;
   passwordHash: HashedPassword;
   location: UserLocation;
+  userOdsPreferences?: Set<SustainableDevelopmentGoal>;
+  userPreferencesDescription?: Description;
 }
 
 export interface UserCreationProps {
@@ -68,6 +72,21 @@ export class User extends Entity<UserProps> {
 
   private set location(location: UserLocation) {
     this.props.location = location;
+  }
+
+  public setUserOdsPreferences(odsPreferences: SustainableDevelopmentGoal[]): void {
+    if (!this.props.userOdsPreferences) {
+      this.props.userOdsPreferences = new Set<SustainableDevelopmentGoal>();
+    }
+    odsPreferences.forEach(ods => this.props.userOdsPreferences!.add(ods));
+  }
+
+  public setUserPreferencesDescription(description: string): void {
+    const descriptionOrError = Description.create(description);
+    if (descriptionOrError.isLeft()) {
+      throw new Error(`Invalid description: ${descriptionOrError.value.message}`);
+    }
+    this.props.userPreferencesDescription = descriptionOrError.value;
   }
 
   public updateUserProfile(

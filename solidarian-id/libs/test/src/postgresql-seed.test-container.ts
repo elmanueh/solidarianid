@@ -230,6 +230,23 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
     const usersRepository = this.dataSource.getRepository(userEntityTarget);
     const allUsers = [...DEFAULT_USERS_DATA, ...users];
     await usersRepository.insert(allUsers);
+
+    // Crear preferencias por defecto para cada usuario
+    const preferencesEntityTarget = this.dataSource.entityMetadatas.find(
+      meta => meta.tableName === 'user_preferences',
+    )?.target;
+
+    if (preferencesEntityTarget) {
+      const preferencesRepository = this.dataSource.getRepository(preferencesEntityTarget);
+      const defaultPreferences = allUsers.map(user => ({
+        userId: user.id,
+        preferredSDGs: [],
+        preferredCategories: [],
+        durationPreferences: ['any'],
+        notificationsEnabled: true,
+      }));
+      await preferencesRepository.insert(defaultPreferences);
+    }
   }
 
   // COMMUNITIES APP SEEDS
@@ -935,11 +952,11 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
 }
 
 export {
-  USER_IDS as PG_USER_IDS,
-  COMMUNITY_IDS as PG_COMMUNITY_IDS,
-  CAUSE_IDS as PG_CAUSE_IDS,
   ACTION_IDS as PG_ACTION_IDS,
-  OBJECTIVE_IDS as PG_OBJECTIVE_IDS,
+  CAUSE_IDS as PG_CAUSE_IDS,
+  COMMUNITY_IDS as PG_COMMUNITY_IDS,
   EVENT_IDS as PG_EVENT_IDS,
+  OBJECTIVE_IDS as PG_OBJECTIVE_IDS,
   REQUEST_IDS as PG_REQUEST_IDS,
+  USER_IDS as PG_USER_IDS,
 };

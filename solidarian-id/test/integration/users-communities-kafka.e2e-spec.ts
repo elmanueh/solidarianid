@@ -1,29 +1,30 @@
 import { Transport } from '@nestjs/microservices';
-import { DataSource, Repository } from 'typeorm';
 import {
+  EventTracker,
   KafkaTestModule,
   PostgreSQLTestModule,
-  TestServerHelper,
-  EventTracker,
   TestContainerLifecycle,
+  TestServerHelper,
 } from '@solidarianid/testing';
+import { DataSource, Repository } from 'typeorm';
 
 // Users microservice
-import { UsersModule } from '@app/users/users.module';
+import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/entities/user-preference.entity';
 import { UserEntity as UsersUserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
+import { UsersModule } from '@app/users/users.module';
 
 // Communities microservice
 import { CommunitiesModule } from '@app/communities/communities.module';
-import { UserEntity as CommunitiesUserEntity } from '@app/communities/infrastructure/persistence/entities/user.entity';
-import { CommunityEntity } from '@app/communities/infrastructure/persistence/entities/community.entity';
-import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
 import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
-import { ObjectiveEntity } from '@app/communities/infrastructure/persistence/entities/objective.entity';
-import { EventEntity } from '@app/communities/infrastructure/persistence/entities/event.entity';
+import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
 import { CommunityUserEntity } from '@app/communities/infrastructure/persistence/entities/community-user.entity';
-import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
+import { CommunityEntity } from '@app/communities/infrastructure/persistence/entities/community.entity';
 import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user.entity';
+import { EventEntity } from '@app/communities/infrastructure/persistence/entities/event.entity';
+import { ObjectiveEntity } from '@app/communities/infrastructure/persistence/entities/objective.entity';
 import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user.entity';
+import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
+import { UserEntity as CommunitiesUserEntity } from '@app/communities/infrastructure/persistence/entities/user.entity';
 
 import { UserService } from '@app/communities/domain/services/user.service';
 
@@ -48,6 +49,7 @@ describe('Users-Communities Kafka Integration', () => {
     // PostgreSQL module shared by both microservices
     const databaseModule = await PostgreSQLTestModule.forRoot([
       UsersUserEntity,
+      UserPreferenceEntity,
       CommunitiesUserEntity,
       CommunityEntity,
       CauseEntity,
@@ -123,6 +125,7 @@ describe('Users-Communities Kafka Integration', () => {
 
   beforeEach(async () => {
     eventTracker.clear();
+    await usersDataSource.getRepository(UserPreferenceEntity).createQueryBuilder().delete().execute();
     await usersDataSource.getRepository(UsersUserEntity).createQueryBuilder().delete().execute();
     await communitiesUserRepository.createQueryBuilder().delete().execute();
   });

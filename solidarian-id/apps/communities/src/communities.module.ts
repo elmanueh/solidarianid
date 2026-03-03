@@ -55,7 +55,7 @@ import { RequestController } from './infrastructure/presentation/controllers/req
 
 @Module({
   imports: [
-    DatabaseModule,
+    DatabaseModule.forRoot(),
     TypeOrmModule.forFeature([
       CommunityEntity,
       CauseEntity,

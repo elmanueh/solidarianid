@@ -1,5 +1,5 @@
-import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const envFile = resolve(process.cwd(), `.env.${nodeEnv}`);
@@ -19,6 +19,7 @@ try {
 }
 
 import { DataSource } from 'typeorm';
+import { UserPreferenceEntity } from './entities/user-preference.entity';
 import { UserEntity } from './entities/user.entity';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -50,7 +51,7 @@ if (isTest && process.env.TEST_POSTGRESQL_URI) {
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const AppDataSource = new DataSource({
   ...dbConfig,
-  entities: [UserEntity],
+  entities: [UserEntity, UserPreferenceEntity],
   migrations: [
     process.env.NODE_ENV === 'production'
       ? 'dist/apps/users/src/infrastructure/persistence/migrations/*.js'

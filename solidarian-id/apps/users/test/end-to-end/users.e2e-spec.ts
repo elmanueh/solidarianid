@@ -1,15 +1,16 @@
-import { INestApplication } from '@nestjs/common';
-import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
-import { DataSource } from 'typeorm';
+import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/entities/user-preference.entity';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { UsersModule } from '@app/users/users.module';
+import { INestApplication } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
 import {
-  TestServerHelper,
+  KafkaTestModule,
   PostgreSQLSeeder,
   PostgreSQLTestModule,
-  KafkaTestModule,
   TestContainerLifecycle,
+  TestServerHelper,
 } from '@solidarianid/testing';
+import { DataSource } from 'typeorm';
 
 describe('UsersController (e2e)', () => {
   let server!: TestServerHelper;
@@ -18,7 +19,7 @@ describe('UsersController (e2e)', () => {
 
   beforeAll(async () => {
     const messageModule = await KafkaTestModule.forRoot();
-    const databaseModule = await PostgreSQLTestModule.forRoot([UserEntity]);
+    const databaseModule = await PostgreSQLTestModule.forRoot([UserEntity, UserPreferenceEntity]);
 
     server = new TestServerHelper();
     app = await server.create({
@@ -465,6 +466,263 @@ describe('UsersController (e2e)', () => {
           password: 'Wrong@Password123',
         })
         .expect(HttpStatus.UNAUTHORIZED);
+    });
+  });
+
+  describe('/api/users/:id/preferences (GET)', () => {
+    const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
+
+    it('Test 1 - should get user preferences successfully', async () => {
+      const response = await server.getRequest().get(`/api/users/${existingUserId}/preferences`).expect(HttpStatus.OK);
+
+      expect(response.body).toHaveProperty('preferredSDGs');
+      expect(response.body).toHaveProperty('preferredCategories');
+      expect(response.body).toHaveProperty('durationPreferences');
+      expect(response.body).toHaveProperty('notificationsEnabled');
+      expect(Array.isArray(response.body.preferredSDGs)).toBe(true);
+      expect(Array.isArray(response.body.preferredCategories)).toBe(true);
+      expect(Array.isArray(response.body.durationPreferences)).toBe(true);
+      expect(typeof response.body.notificationsEnabled).toBe('boolean');
+    });
+
+    it('Test 2 - should return 404 for non-existent user', async () => {
+      await server
+        .getRequest()
+        .get('/api/users/00000000-0000-0000-0000-000000000000/preferences')
+        .expect(HttpStatus.NOT_FOUND);
+    });
+
+    it('Test 3 - should return 400 for invalid user ID format', async () => {
+      await server.getRequest().get('/api/users/invalid-uuid/preferences').expect(HttpStatus.BAD_REQUEST);
+    });
+  });
+
+  describe('/api/users/:id/preferences (PUT)', () => {
+    const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
+
+    it('Test 1 - should update all preferences successfully', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2, 4, 10],
+          preferredCategories: ['pobreza', 'educación', 'salud'],
+          durationPreferences: ['short_term', 'medium_term'],
+          notificationsEnabled: true,
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 2 - should update only SDGs', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [3, 7, 13],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 3 - should update only categories', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredCategories: ['medio ambiente', 'derechos humanos'],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 4 - should update only duration preferences', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          durationPreferences: ['long_term'],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 5 - should update only notifications flag', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          notificationsEnabled: false,
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 6 - should update with all 17 SDGs (maximum allowed)', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 7 - should update with 10 categories (maximum allowed)', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredCategories: [
+            'pobreza',
+            'educación',
+            'salud',
+            'medio ambiente',
+            'derechos humanos',
+            'infancia',
+            'igualdad de género',
+            'discapacidad',
+            'refugiados',
+            'ayuda humanitaria',
+          ],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 8 - should update with all duration preferences', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          durationPreferences: ['short_term', 'medium_term', 'long_term', 'any'],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 9 - should fail with more than 17 SDGs → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 10 - should fail with invalid SDG number → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [0, 2, 4],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 11 - should fail with SDG out of range → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2, 20],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 12 - should fail with more than 10 categories → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredCategories: [
+            'pobreza',
+            'educación',
+            'salud',
+            'medio ambiente',
+            'derechos humanos',
+            'infancia',
+            'igualdad de género',
+            'discapacidad',
+            'refugiados',
+            'ayuda humanitaria',
+            'cultura',
+          ],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 13 - should fail with invalid category value → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredCategories: ['invalid_category', 'educación'],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 14 - should fail with invalid duration preference → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          durationPreferences: ['invalid_duration'],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 15 - should fail with empty arrays when required → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [],
+          preferredCategories: [],
+          durationPreferences: [],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 16 - should fail with non-array values → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: 'not-an-array',
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 17 - should fail with invalid boolean for notifications → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          notificationsEnabled: 'yes',
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 18 - should fail for non-existent user → 404', async () => {
+      await server
+        .getRequest()
+        .patch('/api/users/00000000-0000-0000-0000-000000000000/preferences')
+        .send({
+          preferredSDGs: [1, 2],
+          preferredCategories: ['educación'],
+          durationPreferences: ['short_term'],
+          notificationsEnabled: true,
+        })
+        .expect(HttpStatus.NOT_FOUND);
+    });
+
+    it('Test 19 - should fail with extra fields (forbidNonWhitelisted) → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2],
+          preferredCategories: ['educación'],
+          durationPreferences: ['short_term'],
+          notificationsEnabled: true,
+          extraField: 'should be rejected',
+        })
+        .expect(HttpStatus.BAD_REQUEST);
     });
   });
 });

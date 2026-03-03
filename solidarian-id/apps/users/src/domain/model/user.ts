@@ -1,12 +1,14 @@
-import { Entity } from '@app/ddd/entity';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Username } from '@app/value-objects/model/username';
-import { MobilePhone } from '@app/value-objects/model/mobile-phone';
-import { UserLocation } from '@app/value-objects/model/user-location';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Either, left, right } from '@app/ddd/either';
-import { HashedPassword } from '@app/value-objects/model/hashed-password';
+import { Entity } from '@app/ddd/entity';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { FullName } from '@app/value-objects/model/fullname';
+import { HashedPassword } from '@app/value-objects/model/hashed-password';
+import { MobilePhone } from '@app/value-objects/model/mobile-phone';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { UserLocation } from '@app/value-objects/model/user-location';
+import { CauseCategory, DurationPreference, UserPreferences } from '@app/value-objects/model/user-preferences';
+import { Username } from '@app/value-objects/model/username';
 
 export interface UserProps {
   fullName: FullName;
@@ -14,6 +16,7 @@ export interface UserProps {
   mobilePhone: MobilePhone;
   passwordHash: HashedPassword;
   location: UserLocation;
+  userPreferences: UserPreferences;
 }
 
 export interface UserCreationProps {
@@ -54,6 +57,10 @@ export class User extends Entity<UserProps> {
     return this.props.fullName.value;
   }
 
+  get userPreferences(): UserPreferences {
+    return this.props.userPreferences;
+  }
+
   private set username(username: Username) {
     this.props.username = username;
   }
@@ -68,6 +75,34 @@ export class User extends Entity<UserProps> {
 
   private set location(location: UserLocation) {
     this.props.location = location;
+  }
+
+  private set userPreferences(preferences: UserPreferences) {
+    this.props.userPreferences = preferences;
+  }
+
+  public updateUserPreferences(
+    preferences: Partial<{
+      preferredSDGs: SustainableDevelopmentGoal[];
+      preferredCategories: CauseCategory[];
+      durationPreferences: DurationPreference[];
+      notificationsEnabled: boolean;
+    }>,
+  ): Either<ValidationError, void> {
+    const currentPrefs = this.props.userPreferences;
+    const preferencesOrError = UserPreferences.create({
+      preferredSDGs: preferences.preferredSDGs ?? currentPrefs.preferredSDGs.slice(),
+      preferredCategories: preferences.preferredCategories ?? currentPrefs.preferredCategories.slice(),
+      durationPreferences: preferences.durationPreferences ?? currentPrefs.durationPreferences.slice(),
+      notificationsEnabled: preferences.notificationsEnabled ?? currentPrefs.notificationsEnabled,
+    });
+
+    if (preferencesOrError.isLeft()) {
+      return left(preferencesOrError.value);
+    }
+
+    this.userPreferences = preferencesOrError.value;
+    return right(undefined);
   }
 
   public updateUserProfile(
@@ -204,7 +239,6 @@ export class User extends Entity<UserProps> {
       return left(fullNameOrError.value);
     }
 
-    // Create and return the User entity
     const user = new User(
       {
         fullName: fullNameOrError.value,
@@ -212,6 +246,7 @@ export class User extends Entity<UserProps> {
         mobilePhone: mobilePhoneOrError.value,
         passwordHash: passwordHashOrError.value,
         location: locationOrError.value,
+        userPreferences: UserPreferences.createDefault(),
       },
       entityId,
     );

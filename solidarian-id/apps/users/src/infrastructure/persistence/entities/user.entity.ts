@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/entities/user-preference.entity';
+import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'tbl_Usuarios' })
 export class UserEntity {
@@ -25,4 +26,10 @@ export class UserEntity {
 
   @Column({ name: 'CountryCode', length: 2 })
   countryCode: string;
+
+  @OneToOne(() => UserPreferenceEntity, preferences => preferences.user, {
+    cascade: true,
+    eager: false,
+  })
+  preferences?: UserPreferenceEntity;
 }

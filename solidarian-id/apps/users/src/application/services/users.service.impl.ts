@@ -8,6 +8,8 @@ import { RegisterUserCommand, UpdateUserProfileCommand, UsersService } from '@ap
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { CauseCategory, DurationPreference } from '@app/value-objects/model/user-preferences';
 import { Username } from '@app/value-objects/model/username';
 import { Injectable } from '@nestjs/common';
 import { EventType } from '@solidarianid/kafka';
@@ -121,6 +123,66 @@ export class UsersServiceImpl extends UsersService {
     }
 
     await this.usersPublisher.publish(EventType.USER_UPDATED, user);
+
+    return right(undefined);
+  }
+
+  async getUserPreferences(userId: string): Promise<
+    Either<
+      ValidationError | RepositoryException,
+      {
+        preferredSDGs: SustainableDevelopmentGoal[];
+        preferredCategories: CauseCategory[];
+        durationPreferences: DurationPreference[];
+        notificationsEnabled: boolean;
+      }
+    >
+  > {
+    const userOrError = await this.usersRepository.findById(userId, ['preferences']);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    const user = userOrError.value;
+    const preferences = user.userPreferences;
+
+    return right({
+      preferredSDGs: [...preferences.preferredSDGs],
+      preferredCategories: [...preferences.preferredCategories],
+      durationPreferences: [...preferences.durationPreferences],
+      notificationsEnabled: preferences.notificationsEnabled,
+    });
+  }
+
+  async updateUserPreferences(
+    userId: string,
+    preferences: Partial<{
+      preferredSDGs: SustainableDevelopmentGoal[];
+      preferredCategories: CauseCategory[];
+      durationPreferences: DurationPreference[];
+      notificationsEnabled: boolean;
+    }>,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const userOrError = await this.usersRepository.findById(userId, ['preferences']);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    const user = userOrError.value;
+
+    const prefsUpdateOrError = user.updateUserPreferences(preferences);
+
+    if (prefsUpdateOrError.isLeft()) {
+      return left(prefsUpdateOrError.value);
+    }
+
+    const saveResult = await this.usersRepository.save(user);
+
+    if (saveResult.isLeft()) {
+      return left(saveResult.value);
+    }
 
     return right(undefined);
   }

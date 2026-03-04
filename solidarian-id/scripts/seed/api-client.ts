@@ -27,6 +27,7 @@ import {
   generateCauseRequestDto,
   generateCommunityRequestDto,
   generateUserDto,
+  generateUserPreferencesPatchDto,
 } from './data-generators';
 import type {
   ActionRequestDto,
@@ -37,6 +38,7 @@ import type {
   CreatedUser,
   ProcessingResults,
   RegisterUserDto,
+  UpdateUserPreferencesDto,
 } from './types';
 import { delay, randomBetween } from './utils';
 
@@ -103,6 +105,32 @@ async function createUser(userDto: RegisterUserDto): Promise<string | null> {
 }
 
 /**
+ * Updates a user's preferences via the users service API
+ */
+async function updateUserPreferences(userId: string, preferencesDto: UpdateUserPreferencesDto): Promise<boolean> {
+  try {
+    const response = await fetch(`${USERS_SERVICE_URL}/users/${userId}/preferences`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(preferencesDto),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(
+        `  ⚠️ Failed to update preferences for user ${userId}: ${response.status} - ${errorText.slice(0, 200)}`,
+      );
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error(`  ❌ Error updating preferences for user ${userId}:`, (error as Error).message);
+    return false;
+  }
+}
+
+/**
  * Seeds users via the users service API
  */
 export async function seedUsers(): Promise<CreatedUser[]> {
@@ -115,6 +143,7 @@ export async function seedUsers(): Promise<CreatedUser[]> {
   const createdUsers: CreatedUser[] = [];
   let successCount = 0;
   let failCount = 0;
+  let preferencesUpdatedCount = 0;
 
   for (let i = 0; i < usersCount; i++) {
     const userDto = generateUserDto(i);
@@ -123,6 +152,11 @@ export async function seedUsers(): Promise<CreatedUser[]> {
     if (userId) {
       createdUsers.push({ id: userId, username: userDto.username });
       successCount++;
+
+      const preferencesUpdated = await updateUserPreferences(userId, generateUserPreferencesPatchDto());
+      if (preferencesUpdated) {
+        preferencesUpdatedCount++;
+      }
     } else {
       failCount++;
     }
@@ -139,6 +173,7 @@ export async function seedUsers(): Promise<CreatedUser[]> {
   }
 
   console.log(`\n   ✅ Users created: ${successCount}`);
+  console.log(`   🎛️ Preferences patched: ${preferencesUpdatedCount}`);
   if (failCount > 0) {
     console.log(`   ⚠️ Users skipped/failed: ${failCount}`);
   }
@@ -549,7 +584,7 @@ export async function processRequests(
 /**
  * Adds a user to a community
  */
-async function addUserToCommunity(communityId: string, userId: string): Promise<boolean> {
+async function addUserToCommunity(communityId: string, userId: string): Promise<'joined' | 'already_member' | 'failed'> {
   try {
     const response = await fetch(`${COMMUNITIES_SERVICE_URL}/communities/${communityId}/members`, {
       method: 'POST',
@@ -559,18 +594,17 @@ async function addUserToCommunity(communityId: string, userId: string): Promise<
 
     if (!response.ok) {
       if (response.status === 409) {
-        // Conflict - user already member, skip silently
-        return false;
+        return 'already_member';
       }
       const errorText = await response.text();
       console.error(`  ⚠️ Failed to add user ${userId} to community ${communityId}: ${response.status}`);
-      return false;
+      return 'failed';
     }
 
-    return true;
+    return 'joined';
   } catch (error) {
     console.error(`  ❌ Error adding user to community:`, (error as Error).message);
-    return false;
+    return 'failed';
   }
 }
 
@@ -578,10 +612,19 @@ async function addUserToCommunity(communityId: string, userId: string): Promise<
  * Seeds community members - randomly adds users to communities
  * Creates variability: some communities have many members, others have fewer
  */
-export async function seedCommunityMembers(users: CreatedUser[], communities: CreatedCommunity[]): Promise<void> {
+export async function seedCommunityMembers(
+  users: CreatedUser[],
+  communities: CreatedCommunity[],
+): Promise<Map<string, Set<string>>> {
+  const communityMembers = new Map<string, Set<string>>();
+
+  communities.forEach(community => {
+    communityMembers.set(community.id, new Set([community.creatorId]));
+  });
+
   if (users.length === 0 || communities.length === 0) {
     console.log('\n⚠️ No users or communities available, skipping member assignments');
-    return;
+    return communityMembers;
   }
 
   console.log('\n👥 Adding users to communities...');
@@ -590,6 +633,7 @@ export async function seedCommunityMembers(users: CreatedUser[], communities: Cr
 
   let totalAssignments = 0;
   let successCount = 0;
+  let alreadyMemberCount = 0;
 
   // For each user, add them to a random number of communities (1-5)
   for (let i = 0; i < users.length; i++) {
@@ -600,9 +644,13 @@ export async function seedCommunityMembers(users: CreatedUser[], communities: Cr
     const randomCommunities = faker.helpers.shuffle(communities).slice(0, communitiesPerUser);
 
     for (const community of randomCommunities) {
-      const added = await addUserToCommunity(community.id, user.id);
-      if (added) {
+      const status = await addUserToCommunity(community.id, user.id);
+      if (status === 'joined') {
         successCount++;
+        communityMembers.get(community.id)?.add(user.id);
+      } else if (status === 'already_member') {
+        alreadyMemberCount++;
+        communityMembers.get(community.id)?.add(user.id);
       }
       totalAssignments++;
     }
@@ -615,4 +663,105 @@ export async function seedCommunityMembers(users: CreatedUser[], communities: Cr
   }
 
   console.log(`   ✅ Users added to communities: ${successCount}/${totalAssignments}`);
+  if (alreadyMemberCount > 0) {
+    console.log(`   ↩️ Already members detected and reused: ${alreadyMemberCount}`);
+  }
+
+  return communityMembers;
+}
+
+// =============================================================================
+// Cause Followers API Functions
+// =============================================================================
+
+/**
+ * Adds a user as follower to a cause
+ */
+async function addUserToCause(causeId: string, userId: string): Promise<'joined' | 'already_following' | 'failed'> {
+  try {
+    const response = await fetch(`${COMMUNITIES_SERVICE_URL}/causes/${causeId}/followers`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 409) {
+        return 'already_following';
+      }
+
+      const errorText = await response.text();
+      console.error(
+        `  ⚠️ Failed to add user ${userId} to cause ${causeId}: ${response.status} - ${errorText.slice(0, 200)}`,
+      );
+      return 'failed';
+    }
+
+    return 'joined';
+  } catch (error) {
+    console.error(`  ❌ Error adding user to cause:`, (error as Error).message);
+    return 'failed';
+  }
+}
+
+/**
+ * Seeds cause followers based on existing community memberships.
+ * Users only follow causes that belong to communities where they are members.
+ */
+export async function seedCauseFollowers(
+  causes: CreatedCause[],
+  communities: CreatedCommunity[],
+  communityMembers: Map<string, Set<string>>,
+): Promise<void> {
+  if (causes.length === 0 || communities.length === 0) {
+    console.log('\n⚠️ No causes or communities available, skipping cause followers');
+    return;
+  }
+
+  console.log('\n🤝 Adding users to causes...');
+  console.log(`   Causes available: ${causes.length}`);
+
+  const communityCreatorMap = new Map<string, string>();
+  communities.forEach(community => {
+    communityCreatorMap.set(community.id, community.creatorId);
+  });
+
+  let totalAssignments = 0;
+  let successCount = 0;
+  let alreadyFollowingCount = 0;
+
+  for (let i = 0; i < causes.length; i++) {
+    const cause = causes[i];
+    const creatorId = communityCreatorMap.get(cause.communityId);
+    const eligibleUsers = Array.from(communityMembers.get(cause.communityId) ?? []).filter(userId => userId !== creatorId);
+
+    if (eligibleUsers.length === 0) {
+      continue;
+    }
+
+    const followersCount = faker.number.int({ min: 1, max: Math.min(5, eligibleUsers.length) });
+    const selectedFollowers = faker.helpers.arrayElements(eligibleUsers, followersCount);
+
+    for (const userId of selectedFollowers) {
+      const status = await addUserToCause(cause.id, userId);
+
+      if (status === 'joined') {
+        successCount++;
+      } else if (status === 'already_following') {
+        alreadyFollowingCount++;
+      }
+
+      totalAssignments++;
+      await delay(DELAY_BETWEEN_REQUESTS_MS);
+    }
+
+    if ((i + 1) % 10 === 0) {
+      console.log(`   Progress: ${i + 1}/${causes.length} causes processed`);
+    }
+  }
+
+  console.log(`   ✅ Users added to causes: ${successCount}/${totalAssignments}`);
+  if (alreadyFollowingCount > 0) {
+    console.log(`   ↩️ Already following detected and reused: ${alreadyFollowingCount}`);
+  }
 }

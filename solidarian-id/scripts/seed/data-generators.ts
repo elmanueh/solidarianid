@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { ACTION_TYPES, CAUSE_THEMES, COMMUNITY_TYPES, EVENT_TYPES, OBJECTIVE_UNITS } from './config';
+import { CauseCategory, DurationPreference } from '@app/value-objects/model/user-preferences';
+import { ACTION_TYPES, CAUSE_THEMES, COMMUNITY_TYPES, EVENT_TYPES, OBJECTIVE_UNITS, SDG_VALUES } from './config';
 import type {
   ActionRequestDto,
   CauseCreationRequest,
@@ -8,6 +9,7 @@ import type {
   EventDto,
   ObjectiveDto,
   RegisterUserDto,
+  UpdateUserPreferencesDto,
 } from './types';
 import {
   generateDescription,
@@ -16,6 +18,7 @@ import {
   generateRequestName,
   generateSecurePassword,
   generateUsername,
+  randomBetween,
   selectRandomCity,
   selectRandomCountry,
   selectRandomSDGs,
@@ -46,6 +49,38 @@ export function generateUserDto(index: number): RegisterUserDto {
     city,
     countryCode: country.code,
   };
+}
+
+/**
+ * Generates a randomized user preferences patch payload.
+ * Mirrors the distribution used by generate-user-preferences.js, but formatted
+ * for the /users/:id/preferences PATCH endpoint.
+ */
+export function generateUserPreferencesPatchDto(): UpdateUserPreferencesDto {
+  const profileType = faker.number.float({ min: 0, max: 100, fractionDigits: 4 });
+  const payload: UpdateUserPreferencesDto = {};
+
+  if (profileType < 10) {
+    payload.durationPreferences = [DurationPreference.ANY];
+    payload.notificationsEnabled = true;
+    return payload;
+  }
+
+  const sdgCount = profileType < 40 ? randomBetween(0, 2) : randomBetween(1, 7);
+  if (sdgCount > 0) {
+    payload.preferredSDGs = faker.helpers.arrayElements(SDG_VALUES, sdgCount).sort((a: number, b: number) => a - b);
+  }
+
+  const categoryCount = profileType < 40 ? randomBetween(0, 2) : randomBetween(1, 5);
+  if (categoryCount > 0) {
+    payload.preferredCategories = faker.helpers.arrayElements(Object.values(CauseCategory), categoryCount);
+  }
+
+  const durationCount = profileType < 40 ? 1 : randomBetween(1, 2);
+  payload.durationPreferences = faker.helpers.arrayElements(Object.values(DurationPreference), durationCount);
+  payload.notificationsEnabled = faker.number.float({ min: 0, max: 1, fractionDigits: 4 }) < 0.8;
+
+  return payload;
 }
 
 // =============================================================================
@@ -102,7 +137,7 @@ export function generateCauseRequestDto(userId: string, communityId: string): Ca
     communityId,
     ods: selectRandomSDGs(),
     initialDate: generateFutureDate(),
-    durationDays: faker.number.int({ min: 30, max: 365 }),
+    durationDays: faker.number.int({ min: 1, max: 365 }),
   };
 }
 

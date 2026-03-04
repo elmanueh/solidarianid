@@ -6,11 +6,13 @@ import {
   KafkaTestModule,
   TestContainerLifecycle,
   PG_COMMUNITY_IDS as COMMUNITY_IDS,
+  PG_USER_IDS as USER_IDS,
 } from '@solidarianid/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
 import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
+import { CauseUserEntity } from '../../src/infrastructure/persistence/entities/cause-user.entity';
 import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
 import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
 import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
@@ -26,12 +28,14 @@ describe('CausesController (e2e)', () => {
   let server!: TestServerHelper;
   let seeder!: PostgreSQLSeeder;
   let app: INestApplication;
+  let causeUserRepository: Repository<CauseUserEntity>;
 
   beforeAll(async () => {
     const messageModule = await KafkaTestModule.forRoot();
     const databaseModule = await PostgreSQLTestModule.forRoot([
       CommunityEntity,
       CauseEntity,
+      CauseUserEntity,
       ActionEntity,
       UserEntity,
       ObjectiveEntity,
@@ -52,6 +56,7 @@ describe('CausesController (e2e)', () => {
 
     const dataSource = app.get<DataSource>('DataSource');
     seeder = new PostgreSQLSeeder(dataSource);
+    causeUserRepository = dataSource.getRepository(CauseUserEntity);
   });
 
   afterAll(async () => {
@@ -199,6 +204,62 @@ describe('CausesController (e2e)', () => {
         .getRequest()
         .get(`/api/communities/${COMMUNITY_IDS.AFRICA}/causes/00000000-0000-0000-0000-000000000999`)
         .expect(HttpStatus.NOT_FOUND);
+    });
+  });
+
+  describe('/causes/:id/followers (POST)', () => {
+    it('should allow a community member to follow a cause', async () => {
+      const payload = { userId: USER_IDS.ANA };
+
+      await server
+        .getRequest()
+        .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
+        .send(payload)
+        .expect(HttpStatus.CREATED);
+
+      const causeFollower = await causeUserRepository.findOne({
+        where: {
+          causeId: CAUSE_IDS.AGUA_KENIA,
+          userId: USER_IDS.ANA,
+        },
+      });
+
+      expect(causeFollower).toBeDefined();
+      expect(causeFollower?.causeId).toBe(CAUSE_IDS.AGUA_KENIA);
+      expect(causeFollower?.userId).toBe(USER_IDS.ANA);
+    });
+
+    it('should return 401 when the user is not a member of the cause community', async () => {
+      await server
+        .getRequest()
+        .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
+        .send({ userId: USER_IDS.PEDRO })
+        .expect(HttpStatus.UNAUTHORIZED);
+
+      const causeFollower = await causeUserRepository.findOne({
+        where: {
+          causeId: CAUSE_IDS.AGUA_KENIA,
+          userId: USER_IDS.PEDRO,
+        },
+      });
+
+      expect(causeFollower).toBeNull();
+    });
+
+    it('should return 409 when the user already follows the cause', async () => {
+      const payload = { userId: USER_IDS.ANA };
+
+      await server
+        .getRequest()
+        .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
+        .send(payload)
+        .expect(HttpStatus.CREATED);
+
+      await server
+        .getRequest()
+        .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
+        .send(payload)
+        .expect(HttpStatus.CONFLICT);
     });
   });
 });

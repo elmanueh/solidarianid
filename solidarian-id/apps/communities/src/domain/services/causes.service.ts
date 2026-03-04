@@ -14,4 +14,5 @@ export abstract class CausesService {
     actions?: boolean,
   ): Promise<Either<ValidationError | RepositoryException, Cause>>;
   abstract create(causeEventDto: CauseRequestEventDto): Promise<Either<ValidationError | RepositoryException, Cause>>;
+  abstract joinCause(causeId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>>;
 }

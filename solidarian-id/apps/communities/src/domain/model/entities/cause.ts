@@ -1,5 +1,5 @@
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
-import { Either, left, right } from '@app/ddd/either';
+import { Either, left, right, sequence } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
 import { Duration } from '@app/value-objects/model/duration';
@@ -16,6 +16,7 @@ export interface CauseProps {
   initialDate: Date;
   actions: Action[];
   communityId: UniqueEntityID;
+  userIds: UniqueEntityID[];
 }
 
 interface CauseCreationProps {
@@ -26,6 +27,7 @@ interface CauseCreationProps {
   ods: SustainableDevelopmentGoal[];
   actions?: Action[];
   communityId: string;
+  userIds?: string[];
 }
 
 export class Cause extends Entity<CauseProps> {
@@ -61,12 +63,34 @@ export class Cause extends Entity<CauseProps> {
     return this.props.communityId?.value;
   }
 
+  get userIds(): string[] {
+    return this.props.userIds.map(userId => userId.value);
+  }
+
   addOds(ods: SustainableDevelopmentGoal): void {
     this.props.ods.push(ods);
   }
 
   addAction(action: Action): void {
     this.props.actions.push(action);
+  }
+
+  hasFollower(userId: string): boolean {
+    return this.props.userIds.some(currentUserId => currentUserId.value === userId);
+  }
+
+  addFollower(userId: string): Either<ValidationError, void> {
+    const userIdOrError = UniqueEntityID.create(userId);
+
+    if (userIdOrError.isLeft()) {
+      return left(userIdOrError.value);
+    }
+
+    if (!this.hasFollower(userId)) {
+      this.props.userIds.push(userIdOrError.value);
+    }
+
+    return right(undefined);
   }
 
   /**
@@ -80,12 +104,14 @@ export class Cause extends Entity<CauseProps> {
     const description = Description.create(props.description);
     const durationDays = Duration.create(props.durationDays);
     const communityId = UniqueEntityID.create(props.communityId);
+    const userIdsOrError = sequence((props.userIds ?? []).map(userId => UniqueEntityID.create(userId)));
 
     if (uniqueId.isLeft()) return left(uniqueId.value);
     if (name.isLeft()) return left(name.value);
     if (description.isLeft()) return left(description.value);
     if (durationDays.isLeft()) return left(durationDays.value);
     if (communityId.isLeft()) return left(communityId.value);
+    if (userIdsOrError.isLeft()) return left(userIdsOrError.value);
 
     const causeProps: CauseProps = {
       name: name.value,
@@ -95,6 +121,7 @@ export class Cause extends Entity<CauseProps> {
       initialDate: props.initialDate,
       actions: props.actions ?? [],
       communityId: communityId.value,
+      userIds: userIdsOrError.value,
     };
 
     return right(new Cause(causeProps, uniqueId.value));

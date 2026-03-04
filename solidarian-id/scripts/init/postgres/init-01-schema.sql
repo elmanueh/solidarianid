@@ -47,6 +47,11 @@ CREATE TYPE public.community_user_role_enum AS ENUM ('creator', 'admin', 'member
 --
 CREATE TYPE public.requests_type_enum AS ENUM ('community', 'cause', 'action');
 
+--
+-- Name: requests_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+CREATE TYPE public.requests_status_enum AS ENUM ('approved', 'pending', 'rejected');
+
 SET
     default_table_access_method = heap;
 
@@ -92,6 +97,14 @@ CREATE TABLE public.community_user (
     "userId" character varying NOT NULL,
     role public.community_user_role_enum DEFAULT 'member' :: public.community_user_role_enum NOT NULL,
     "joinedAt" timestamp without time zone DEFAULT now() NOT NULL
+);
+
+--
+-- Name: cause_user; Type: TABLE; Schema: public; Owner: -
+--
+CREATE TABLE public.cause_user (
+    "causeId" character varying NOT NULL,
+    "userId" character varying NOT NULL
 );
 
 --
@@ -151,7 +164,7 @@ CREATE TABLE public.requests (
     name character varying NOT NULL,
     description text NOT NULL,
     reason text,
-    status character varying NOT NULL,
+    status public.requests_status_enum NOT NULL,
     type public.requests_type_enum NOT NULL,
     user_id character varying
 );
@@ -247,6 +260,14 @@ ADD
     CONSTRAINT "PK_bd372ac34825213b0ccb110c859" PRIMARY KEY ("communityId", "userId");
 
 --
+-- Name: cause_user PK_cause_user; Type: CONSTRAINT; Schema: public; Owner: -
+--
+ALTER TABLE
+    ONLY public.cause_user
+ADD
+    CONSTRAINT "PK_cause_user" PRIMARY KEY ("causeId", "userId");
+
+--
 -- Name: user PK_cace4a159ff9f2512dd42373760; Type: CONSTRAINT; Schema: public; Owner: -
 --
 ALTER TABLE
@@ -318,6 +339,11 @@ CREATE INDEX "IDX_eb84a91a104e413c2ced7ee493" ON public.event_user USING btree (
 CREATE INDEX "IDX_f9bc5c9c1155949ea5a5af2806" ON public.community_user USING btree ("communityId", "userId", role);
 
 --
+-- Name: IDX_cause_user; Type: INDEX; Schema: public; Owner: -
+--
+CREATE INDEX "IDX_cause_user" ON public.cause_user USING btree ("causeId", "userId");
+
+--
 -- Name: objective FK_1ae66f2ebd41ed4a6dfd2b0c4af; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 ALTER TABLE
@@ -348,6 +374,14 @@ ALTER TABLE
     ONLY public.community_user
 ADD
     CONSTRAINT "FK_7ebd3469ae3f0c64129af3cc6a5" FOREIGN KEY ("userId") REFERENCES public."user"(id) ON DELETE CASCADE;
+
+--
+-- Name: cause_user FK_cause_user_user; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+ALTER TABLE
+    ONLY public.cause_user
+ADD
+    CONSTRAINT "FK_cause_user_user" FOREIGN KEY ("userId") REFERENCES public."user"(id) ON DELETE CASCADE;
 
 --
 -- Name: objective_user FK_899e10c88c5ebae76d685200cad; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -396,6 +430,14 @@ ALTER TABLE
     ONLY public.community_user
 ADD
     CONSTRAINT "FK_fab8516524e4728bb788da6a924" FOREIGN KEY ("communityId") REFERENCES public.community(id) ON DELETE CASCADE;
+
+--
+-- Name: cause_user FK_cause_user_cause; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+ALTER TABLE
+    ONLY public.cause_user
+ADD
+    CONSTRAINT "FK_cause_user_cause" FOREIGN KEY ("causeId") REFERENCES public.cause(id) ON DELETE CASCADE;
 
 --
 -- Name: user_preferences FK_user_preferences_user; Type: FK CONSTRAINT; Schema: public; Owner: -

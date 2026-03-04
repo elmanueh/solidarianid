@@ -1,4 +1,5 @@
 import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
+import { CauseUserEntity } from '@app/communities/infrastructure/persistence/entities/cause-user.entity';
 import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
 import { CommunityUserEntity } from '@app/communities/infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from '@app/communities/infrastructure/persistence/entities/community.entity';
@@ -38,6 +39,7 @@ export class DatabaseModule {
                 UserEntity,
                 CommunityEntity,
                 CommunityUserEntity,
+                CauseUserEntity,
                 CauseEntity,
                 ActionEntity,
                 ObjectiveEntity,
@@ -46,8 +48,8 @@ export class DatabaseModule {
                 ObjetiveUserEntity,
                 RequestEntity,
               ],
-              migrationsPath: 'apps/communities/src/migrations/*.ts',
-              migrationsDistPath: 'dist/apps/communities/src/migrations/*.js',
+              migrationsPath: 'apps/communities/src/infrastructure/persistence/migrations/*.ts',
+              migrationsDistPath: 'dist/apps/communities/src/infrastructure/persistence/migrations/*.js',
             }),
         }),
       ],

@@ -29,7 +29,7 @@ export class CausesRepositoryTypeOrmAdapter
   ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
     const causeEntities = await this.causeRepository.find({
       where: { communityId },
-      relations: actions ? ['actions'] : [],
+      relations: actions ? ['actions', 'users'] : ['users'],
     });
 
     const causes = sequence(causeEntities.map(entity => this.causeMapper.fromPersistence(entity)));
@@ -48,7 +48,7 @@ export class CausesRepositoryTypeOrmAdapter
   ): Promise<Either<ValidationError | RepositoryException, Cause>> {
     const causeEntity = await this.causeRepository.findOne({
       where: { id: causeId, communityId },
-      relations: actions ? ['actions'] : [],
+      relations: actions ? ['actions', 'users'] : ['users'],
     });
 
     if (!causeEntity) {

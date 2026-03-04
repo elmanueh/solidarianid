@@ -17,6 +17,7 @@ import { UsersModule } from '@app/users/users.module';
 import { CommunitiesModule } from '@app/communities/communities.module';
 import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
 import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
+import { CauseUserEntity } from '@app/communities/infrastructure/persistence/entities/cause-user.entity';
 import { CommunityUserEntity } from '@app/communities/infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from '@app/communities/infrastructure/persistence/entities/community.entity';
 import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user.entity';
@@ -53,6 +54,7 @@ describe('Users-Communities Kafka Integration', () => {
       CommunitiesUserEntity,
       CommunityEntity,
       CauseEntity,
+      CauseUserEntity,
       ActionEntity,
       ObjectiveEntity,
       EventEntity,

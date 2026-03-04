@@ -5,6 +5,7 @@ import { Either, left, sequence } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { ActionEntityMapper } from './action-entity.mapper';
+import { CauseUserEntity } from '../entities/cause-user.entity';
 
 @Injectable()
 export class CauseEntityMapper implements Mapper<Cause, CauseEntity> {
@@ -18,6 +19,13 @@ export class CauseEntityMapper implements Mapper<Cause, CauseEntity> {
     entity.ods = model.ods;
     entity.initialDate = model.initialDate;
     entity.communityId = model.communityId;
+
+    entity.users = model.userIds.map(userId => {
+      const causeUserEntity = new CauseUserEntity();
+      causeUserEntity.causeId = model.id.value;
+      causeUserEntity.userId = userId;
+      return causeUserEntity;
+    });
 
     if (model.actions && model.actions.length > 0) {
       entity.actions = model.actions.map(action => this.actionEntityMapper.toPersistence(action));
@@ -41,6 +49,7 @@ export class CauseEntityMapper implements Mapper<Cause, CauseEntity> {
         ods: entity.ods,
         initialDate: entity.initialDate,
         communityId: entity.communityId,
+        userIds: entity.users?.map(causeUserEntity => causeUserEntity.userId) ?? [],
         actions: actionsOrError.value,
       },
       entity.id,

@@ -124,14 +124,24 @@ describe('CommunitiesServiceImpl', () => {
       };
       mockCommunityRepo.findById.mockResolvedValueOnce(right(data));
       await expect(service.getCommunityById('1')).resolves.toEqual(right(data));
-      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['causes', 'members', 'members.user']);
+      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', [
+        'causes',
+        'causes.users',
+        'members',
+        'members.user',
+      ]);
     });
 
     it('propagates ValidationError from repository', async () => {
       const err = new ValidationError('invalid repo data');
       mockCommunityRepo.findById.mockResolvedValueOnce(left(err));
       await expect(service.getCommunityById('1')).resolves.toEqual(left(err));
-      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['causes', 'members', 'members.user']);
+      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', [
+        'causes',
+        'causes.users',
+        'members',
+        'members.user',
+      ]);
     });
   });
 
@@ -173,6 +183,7 @@ describe('CommunitiesServiceImpl', () => {
         expect(result.value.causes).toHaveLength(1);
         expect(result.value.causes[0].name).toBe('Test Cause');
         expect(result.value.causes[0].ods).toContain(SustainableDevelopmentGoal.AffordableAndCleanEnergy);
+        expect(result.value.causes[0].userIds).toEqual([dto.userId]);
       }
     });
 

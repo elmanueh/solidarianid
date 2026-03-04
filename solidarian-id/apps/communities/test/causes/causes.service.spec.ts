@@ -9,6 +9,12 @@ import { CauseRequestEventDto } from '@solidarianid/kafka';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { User } from '@app/communities/domain/model/entities/user';
+import { Community } from '@app/communities/domain/model/aggregates/community';
+import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 
 describe('CausesServiceImpl', () => {
   let service: CausesServiceImpl;
@@ -16,6 +22,12 @@ describe('CausesServiceImpl', () => {
     findAll: jest.Mock;
     findById: jest.Mock;
     save: jest.Mock;
+  };
+  let mockUsersRepository: {
+    findById: jest.Mock;
+  };
+  let mockCommunitiesRepository: {
+    findById: jest.Mock;
   };
 
   const validCommunityId = 'b1b2c3d4-e5f6-4890-abcd-ef1234567002';
@@ -51,15 +63,50 @@ describe('CausesServiceImpl', () => {
     return causeOrError.value;
   };
 
+  const createMockUser = (id: string = validUserId): User => {
+    const userOrError = User.create({ fullName: 'Test User' }, id);
+
+    if (userOrError.isLeft()) throw new Error('Failed to create mock user');
+
+    return userOrError.value;
+  };
+
+  const createMockCommunity = (members: User[] = [createMockUser()]): Community => {
+    const communityOrError = Community.create(
+      {
+        name: 'Test Community',
+        description: 'A valid test community description with more than 20 characters',
+        creator: members[0],
+        members,
+      },
+      validCommunityId,
+    );
+
+    if (communityOrError.isLeft()) throw new Error('Failed to create mock community');
+
+    return communityOrError.value;
+  };
+
   beforeEach(async () => {
     mockCauseRepository = {
       findAll: jest.fn(),
       findById: jest.fn(),
       save: jest.fn(),
     };
+    mockUsersRepository = {
+      findById: jest.fn(),
+    };
+    mockCommunitiesRepository = {
+      findById: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CausesServiceImpl, { provide: CausesRepositoryPort, useValue: mockCauseRepository }],
+      providers: [
+        CausesServiceImpl,
+        { provide: CausesRepositoryPort, useValue: mockCauseRepository },
+        { provide: UsersRepositoryPort, useValue: mockUsersRepository },
+        { provide: CommunitiesRepositoryPort, useValue: mockCommunitiesRepository },
+      ],
     }).compile();
 
     service = module.get<CausesServiceImpl>(CausesServiceImpl);
@@ -80,6 +127,7 @@ describe('CausesServiceImpl', () => {
         expect(result.value.durationDays).toBe(dto.durationDays);
         expect(result.value.ods).toEqual(dto.ods);
         expect(result.value.communityId).toBe(dto.communityId);
+        expect(result.value.userIds).toEqual([dto.userId]);
       }
       expect(mockCauseRepository.save).toHaveBeenCalledTimes(1);
     });
@@ -139,7 +187,7 @@ describe('CausesServiceImpl', () => {
       if (result.isRight()) {
         expect(result.value).toEqual([]);
       }
-      expect(mockCauseRepository.findAll).toHaveBeenCalledTimes(1);
+      expect(mockCauseRepository.findAll).toHaveBeenCalledWith(['users']);
     });
 
     it('should return causes when repository returns data', async () => {
@@ -153,7 +201,7 @@ describe('CausesServiceImpl', () => {
         expect(result.value).toHaveLength(1);
         expect(result.value[0]).toBeInstanceOf(Cause);
       }
-      expect(mockCauseRepository.findAll).toHaveBeenCalledTimes(1);
+      expect(mockCauseRepository.findAll).toHaveBeenCalledWith(['users']);
     });
 
     it('should propagate ValidationError from repository', async () => {
@@ -164,7 +212,7 @@ describe('CausesServiceImpl', () => {
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBe(err);
-      expect(mockCauseRepository.findAll).toHaveBeenCalledTimes(1);
+      expect(mockCauseRepository.findAll).toHaveBeenCalledWith(['users']);
     });
   });
 
@@ -180,7 +228,7 @@ describe('CausesServiceImpl', () => {
         expect(result.value).toBeInstanceOf(Cause);
         expect(result.value.id.value).toBe(validCauseId);
       }
-      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions']);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions', 'users']);
     });
 
     it('should propagate ValidationError from repository', async () => {
@@ -191,7 +239,7 @@ describe('CausesServiceImpl', () => {
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBe(err);
-      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions']);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions', 'users']);
     });
 
     it('should request actions relation when fetching by id', async () => {
@@ -200,7 +248,74 @@ describe('CausesServiceImpl', () => {
 
       await service.getById(validCauseId);
 
-      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions']);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions', 'users']);
+    });
+  });
+
+  describe('joinCause', () => {
+    it('should add a follower when the user belongs to the cause community', async () => {
+      const cause = createMockCause();
+      const user = createMockUser();
+      const community = createMockCommunity([user]);
+
+      mockCauseRepository.findById.mockResolvedValueOnce(right(cause));
+      mockUsersRepository.findById.mockResolvedValueOnce(right(user));
+      mockCommunitiesRepository.findById.mockResolvedValueOnce(right(community));
+      mockCauseRepository.save.mockResolvedValueOnce(right(undefined));
+
+      const result = await service.joinCause(validCauseId, validUserId);
+
+      expect(result.isRight()).toBe(true);
+      expect(cause.userIds).toContain(validUserId);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
+      expect(mockUsersRepository.findById).toHaveBeenCalledWith(validUserId);
+      expect(mockCommunitiesRepository.findById).toHaveBeenCalledWith(validCommunityId, ['members', 'members.user']);
+      expect(mockCauseRepository.save).toHaveBeenCalledWith(cause);
+    });
+
+    it('should return ConflictError when the user already follows the cause', async () => {
+      const causeOrError = Cause.create(
+        {
+          name: 'Test Cause',
+          description: 'A valid test cause description with more than 20 characters',
+          ods: [SustainableDevelopmentGoal.NoPoverty],
+          initialDate: new Date('2026-01-01'),
+          durationDays: 90,
+          communityId: validCommunityId,
+          userIds: [validUserId],
+        },
+        validCauseId,
+      );
+      const user = createMockUser();
+
+      if (causeOrError.isLeft()) throw new Error('Failed to create mock cause');
+
+      mockCauseRepository.findById.mockResolvedValueOnce(right(causeOrError.value));
+      mockUsersRepository.findById.mockResolvedValueOnce(right(user));
+
+      const result = await service.joinCause(validCauseId, validUserId);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBeInstanceOf(ConflictError);
+      expect(mockCommunitiesRepository.findById).not.toHaveBeenCalled();
+      expect(mockCauseRepository.save).not.toHaveBeenCalled();
+    });
+
+    it('should return UserPermissionError when the user is not a community member', async () => {
+      const cause = createMockCause();
+      const user = createMockUser();
+      const otherUser = createMockUser('a1b2c3d4-e5f6-4890-abcd-ef1234567005');
+      const community = createMockCommunity([otherUser]);
+
+      mockCauseRepository.findById.mockResolvedValueOnce(right(cause));
+      mockUsersRepository.findById.mockResolvedValueOnce(right(user));
+      mockCommunitiesRepository.findById.mockResolvedValueOnce(right(community));
+
+      const result = await service.joinCause(validCauseId, validUserId);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBeInstanceOf(UserPermissionError);
+      expect(mockCauseRepository.save).not.toHaveBeenCalled();
     });
   });
 });

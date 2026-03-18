@@ -1,5 +1,4 @@
 import { Either, left, right } from '@app/ddd/either';
-import { Either, left, right } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { FullName } from '@app/value-objects/model/fullname';

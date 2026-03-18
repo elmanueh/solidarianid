@@ -584,7 +584,10 @@ export async function processRequests(
 /**
  * Adds a user to a community
  */
-async function addUserToCommunity(communityId: string, userId: string): Promise<'joined' | 'already_member' | 'failed'> {
+async function addUserToCommunity(
+  communityId: string,
+  userId: string,
+): Promise<'joined' | 'already_member' | 'failed'> {
   try {
     const response = await fetch(`${COMMUNITIES_SERVICE_URL}/communities/${communityId}/members`, {
       method: 'POST',
@@ -733,7 +736,9 @@ export async function seedCauseFollowers(
   for (let i = 0; i < causes.length; i++) {
     const cause = causes[i];
     const creatorId = communityCreatorMap.get(cause.communityId);
-    const eligibleUsers = Array.from(communityMembers.get(cause.communityId) ?? []).filter(userId => userId !== creatorId);
+    const eligibleUsers = Array.from(communityMembers.get(cause.communityId) ?? []).filter(
+      userId => userId !== creatorId,
+    );
 
     if (eligibleUsers.length === 0) {
       continue;

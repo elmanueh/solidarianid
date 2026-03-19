@@ -1,16 +1,16 @@
 -- =====================================================
 -- PostgreSQL Database Schema
--- Generated: 2026-01-11T22:18:49.420Z
+-- Generated: 2026-03-04T01:41:44.693Z
 -- =====================================================
 
 --
 -- PostgreSQL database dump
 --
 
-\restrict 2FEL67FNo5IyWC4rPx9Zn6FaRjj45l5JqBBnBOmc5on5C5ni0cmDc4NT2Gnh0f7
+\restrict 5FrGfOZpFGhi1UTeTx2IvWx3JxEpPiGxNJzx5fhehGAufX834he5biOxmBwUNSF
 
--- Dumped from database version 16.11 (Debian 16.11-1.pgdg13+1)
--- Dumped by pg_dump version 16.11 (Debian 16.11-1.pgdg13+1)
+-- Dumped from database version 16.13 (Debian 16.13-1.pgdg13+1)
+-- Dumped by pg_dump version 16.13 (Debian 16.13-1.pgdg13+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -31,6 +31,17 @@ CREATE TYPE public.community_user_role_enum AS ENUM (
     'creator',
     'admin',
     'member'
+);
+
+
+--
+-- Name: requests_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.requests_status_enum AS ENUM (
+    'approved',
+    'pending',
+    'rejected'
 );
 
 
@@ -71,6 +82,16 @@ CREATE TABLE public.cause (
     "durationDays" integer NOT NULL,
     ods text NOT NULL,
     "communityId" character varying NOT NULL
+);
+
+
+--
+-- Name: cause_user; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cause_user (
+    "causeId" character varying NOT NULL,
+    "userId" character varying NOT NULL
 );
 
 
@@ -165,7 +186,7 @@ CREATE TABLE public.requests (
     name character varying NOT NULL,
     description text NOT NULL,
     reason text,
-    status character varying NOT NULL,
+    status public.requests_status_enum NOT NULL,
     type public.requests_type_enum NOT NULL,
     user_id character varying
 );
@@ -187,6 +208,37 @@ CREATE TABLE public."tbl_Usuarios" (
 
 
 --
+-- Name: typeorm_migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.typeorm_migrations (
+    id integer NOT NULL,
+    "timestamp" bigint NOT NULL,
+    name character varying NOT NULL
+);
+
+
+--
+-- Name: typeorm_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.typeorm_migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: typeorm_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.typeorm_migrations_id_seq OWNED BY public.typeorm_migrations.id;
+
+
+--
 -- Name: user; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -196,6 +248,26 @@ CREATE TABLE public."user" (
     "mobilePhone" character varying,
     email character varying
 );
+
+
+--
+-- Name: user_preferences; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_preferences (
+    user_id uuid NOT NULL,
+    preferred_sdgs integer[] DEFAULT '{}'::integer[] NOT NULL,
+    preferred_categories text[] DEFAULT '{}'::text[] NOT NULL,
+    duration_preferences text[] DEFAULT '{any}'::text[] NOT NULL,
+    notifications_enabled boolean DEFAULT true NOT NULL
+);
+
+
+--
+-- Name: typeorm_migrations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.typeorm_migrations ALTER COLUMN id SET DEFAULT nextval('public.typeorm_migrations_id_seq'::regclass);
 
 
 --
@@ -223,11 +295,27 @@ ALTER TABLE ONLY public.event
 
 
 --
+-- Name: user_preferences PK_458057fa75b66e68a275647da2e; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_preferences
+    ADD CONSTRAINT "PK_458057fa75b66e68a275647da2e" PRIMARY KEY (user_id);
+
+
+--
 -- Name: objective_user PK_7538a84f24015b7e8b424a264b6; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.objective_user
     ADD CONSTRAINT "PK_7538a84f24015b7e8b424a264b6" PRIMARY KEY (name, "actionId", "userId");
+
+
+--
+-- Name: cause_user PK_7944411ff0f9293259e4c27a633; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cause_user
+    ADD CONSTRAINT "PK_7944411ff0f9293259e4c27a633" PRIMARY KEY ("causeId", "userId");
 
 
 --
@@ -244,6 +332,14 @@ ALTER TABLE ONLY public.cause
 
 ALTER TABLE ONLY public.objective
     ADD CONSTRAINT "PK_960cdbbf9e380bcfccdc088fdf1" PRIMARY KEY (name, "actionId");
+
+
+--
+-- Name: typeorm_migrations PK_bb2f075707dd300ba86d0208923; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.typeorm_migrations
+    ADD CONSTRAINT "PK_bb2f075707dd300ba86d0208923" PRIMARY KEY (id);
 
 
 --
@@ -310,6 +406,13 @@ CREATE INDEX "IDX_7538a84f24015b7e8b424a264b" ON public.objective_user USING btr
 
 
 --
+-- Name: IDX_7944411ff0f9293259e4c27a63; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_7944411ff0f9293259e4c27a63" ON public.cause_user USING btree ("causeId", "userId");
+
+
+--
 -- Name: IDX_eb84a91a104e413c2ced7ee493; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -332,11 +435,35 @@ ALTER TABLE ONLY public.objective
 
 
 --
+-- Name: user_preferences FK_458057fa75b66e68a275647da2e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_preferences
+    ADD CONSTRAINT "FK_458057fa75b66e68a275647da2e" FOREIGN KEY (user_id) REFERENCES public."tbl_Usuarios"("Id");
+
+
+--
+-- Name: cause_user FK_4fe651b6ac8d674480c650deaef; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cause_user
+    ADD CONSTRAINT "FK_4fe651b6ac8d674480c650deaef" FOREIGN KEY ("userId") REFERENCES public."user"(id) ON DELETE CASCADE;
+
+
+--
 -- Name: event_user FK_600a6c0ba1ff979f6bfbce3bfe3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.event_user
     ADD CONSTRAINT "FK_600a6c0ba1ff979f6bfbce3bfe3" FOREIGN KEY ("userId") REFERENCES public."user"(id) ON DELETE CASCADE;
+
+
+--
+-- Name: cause_user FK_61248b84682b564af449c4b0ddb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cause_user
+    ADD CONSTRAINT "FK_61248b84682b564af449c4b0ddb" FOREIGN KEY ("causeId") REFERENCES public.cause(id) ON DELETE CASCADE;
 
 
 --
@@ -415,5 +542,5 @@ ALTER TABLE ONLY public.event
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 2FEL67FNo5IyWC4rPx9Zn6FaRjj45l5JqBBnBOmc5on5C5ni0cmDc4NT2Gnh0f7
+\unrestrict 5FrGfOZpFGhi1UTeTx2IvWx3JxEpPiGxNJzx5fhehGAufX834he5biOxmBwUNSF
 

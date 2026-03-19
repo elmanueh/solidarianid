@@ -12,6 +12,7 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
 import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
+import { CauseUserEntity } from '../../src/infrastructure/persistence/entities/cause-user.entity';
 import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
 import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
 import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
@@ -33,6 +34,7 @@ describe('RequestController (e2e)', () => {
     const databaseModule = await PostgreSQLTestModule.forRoot([
       CommunityEntity,
       CauseEntity,
+      CauseUserEntity,
       ActionEntity,
       UserEntity,
       ObjectiveEntity,

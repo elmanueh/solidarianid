@@ -3,6 +3,7 @@ import { CommunityUserEntity } from './community-user.entity';
 import { RequestEntity } from './request.entity';
 import { EventUserEntity } from './event-user.entity';
 import { ObjetiveUserEntity } from './objetive-user.entity';
+import { CauseUserEntity } from './cause-user.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -32,4 +33,7 @@ export class UserEntity {
 
   @OneToMany(() => ObjetiveUserEntity, objectiveUser => objectiveUser.user)
   objectivesList: ObjetiveUserEntity[];
+
+  @OneToMany(() => CauseUserEntity, causeUser => causeUser.user)
+  causesList: CauseUserEntity[];
 }

@@ -19,6 +19,7 @@ import {
 import { DataSource } from 'typeorm';
 import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
 import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
+import { CauseUserEntity } from '../../src/infrastructure/persistence/entities/cause-user.entity';
 import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
 import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
@@ -40,6 +41,7 @@ describe('RequestsRepositoryTypeOrmAdapter (e2e)', () => {
     const databaseModule = await PostgreSQLTestModule.forRoot([
       CommunityEntity,
       CauseEntity,
+      CauseUserEntity,
       ActionEntity,
       UserEntity,
       ObjectiveEntity,

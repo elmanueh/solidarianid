@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { CommunityEntity } from './community.entity';
 import { ActionEntity } from './action.entity';
+import { CauseUserEntity } from './cause-user.entity';
 
 @Entity('cause')
 export class CauseEntity {
@@ -33,4 +34,10 @@ export class CauseEntity {
     cascade: true,
   })
   actions: ActionEntity[];
+
+  @OneToMany(() => CauseUserEntity, causeUser => causeUser.cause, {
+    cascade: true,
+    orphanedRowAction: 'delete',
+  })
+  users: CauseUserEntity[];
 }

@@ -1,24 +1,39 @@
 import { getTypeOrmConfig } from '@app/ddd/repository/modules/database-typeorm.module';
+import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/entities/user-preference.entity';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
-import { Module } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-@Module({
-  imports: [
-    ConfigModule,
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) =>
-        getTypeOrmConfig({
-          config,
-          entities: [UserEntity],
-          migrationsPath: 'apps/users/src/migrations/*.ts',
-          migrationsDistPath: 'dist/apps/users/src/migrations/*.js',
+@Module({})
+export class DatabaseModule {
+  static forRoot(): DynamicModule {
+    // En modo test, PostgreSQLTestModule ya provee la conexión TypeORM
+    if (process.env.NODE_ENV === 'test') {
+      return {
+        module: DatabaseModule,
+        exports: [],
+      };
+    }
+
+    // En desarrollo/producción, crear la conexión TypeORM
+    return {
+      module: DatabaseModule,
+      imports: [
+        ConfigModule,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: (config: ConfigService) =>
+            getTypeOrmConfig({
+              config,
+              entities: [UserEntity, UserPreferenceEntity],
+              migrationsPath: 'apps/users/src/migrations/*.ts',
+              migrationsDistPath: 'dist/apps/users/src/migrations/*.js',
+            }),
         }),
-    }),
-  ],
-  exports: [TypeOrmModule],
-})
-export class DatabaseModule {}
+      ],
+      exports: [TypeOrmModule],
+    };
+  }
+}

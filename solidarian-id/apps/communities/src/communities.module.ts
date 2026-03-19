@@ -26,6 +26,7 @@ import { CommunityEventMapper } from './infrastructure/messaging/mappers/communi
 import { CommunitiesKafkaPublisherAdapter } from './infrastructure/messaging/publishers/communities.publisher';
 import { RequestKafkaPublisherAdapter } from './infrastructure/messaging/publishers/requests.publisher';
 import { ActionEntity } from './infrastructure/persistence/entities/action.entity';
+import { CauseUserEntity } from './infrastructure/persistence/entities/cause-user.entity';
 import { CauseEntity } from './infrastructure/persistence/entities/cause.entity';
 import { CommunityUserEntity } from './infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from './infrastructure/persistence/entities/community.entity';
@@ -55,9 +56,10 @@ import { RequestController } from './infrastructure/presentation/controllers/req
 
 @Module({
   imports: [
-    DatabaseModule,
+    DatabaseModule.forRoot(),
     TypeOrmModule.forFeature([
       CommunityEntity,
+      CauseUserEntity,
       CauseEntity,
       ActionEntity,
       UserEntity,

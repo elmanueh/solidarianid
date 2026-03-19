@@ -1,8 +1,10 @@
 import { RegisterUserCommand, UsersService } from '@app/users/domain/services/users.service';
 import { LoginUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/login-user.request.dto';
 import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
+import { UpdateUserPreferencesRequestDto } from '@app/users/infrastructure/presentation/dtos/update-user-preferences.request.dto';
 import { UpdateUserProfileDtoRequest } from '@app/users/infrastructure/presentation/dtos/update-user-profile.dto';
-import { Body, Controller, HttpCode, HttpStatus, Param, Patch, Post, Res } from '@nestjs/common';
+import { UserPreferencesResponseDto } from '@app/users/infrastructure/presentation/dtos/user-preferences.response.dto';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Patch, Post, Res } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -97,6 +99,51 @@ export class UsersController {
 
     if (user.isLeft()) {
       throw user.value;
+    }
+
+    response.status(HttpStatus.NO_CONTENT).send();
+  }
+
+  @Get(':id/preferences')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get user preferences' })
+  @ApiOkResponse({
+    description: 'User preferences retrieved successfully',
+    type: UserPreferencesResponseDto,
+  })
+  @ApiBadRequestResponse({ description: 'Invalid user ID' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  async getUserPreferences(@Param('id', ParseUUIDPipe) id: string): Promise<UserPreferencesResponseDto> {
+    const preferencesResult = await this.usersService.getUserPreferences(id);
+
+    if (preferencesResult.isLeft()) {
+      throw preferencesResult.value;
+    }
+
+    return preferencesResult.value;
+  }
+
+  @Patch(':id/preferences')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Update user preferences' })
+  @ApiBody({ type: UpdateUserPreferencesRequestDto })
+  @ApiNoContentResponse({ description: 'User preferences updated successfully' })
+  @ApiBadRequestResponse({ description: 'Invalid request payload' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  async updateUserPreferences(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updatePreferencesDto: UpdateUserPreferencesRequestDto,
+    @Res() response: Response,
+  ): Promise<void> {
+    const updateResult = await this.usersService.updateUserPreferences(id, {
+      preferredSDGs: updatePreferencesDto.preferredSDGs,
+      preferredCategories: updatePreferencesDto.preferredCategories,
+      durationPreferences: updatePreferencesDto.durationPreferences,
+      notificationsEnabled: updatePreferencesDto.notificationsEnabled,
+    });
+
+    if (updateResult.isLeft()) {
+      throw updateResult.value;
     }
 
     response.status(HttpStatus.NO_CONTENT).send();

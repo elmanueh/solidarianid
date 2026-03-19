@@ -21,6 +21,13 @@ export interface CreatedUser {
   username: string;
 }
 
+export interface UpdateUserPreferencesDto {
+  preferredSDGs?: number[];
+  preferredCategories?: string[];
+  durationPreferences?: string[];
+  notificationsEnabled?: boolean;
+}
+
 // =============================================================================
 // Community Types
 // =============================================================================

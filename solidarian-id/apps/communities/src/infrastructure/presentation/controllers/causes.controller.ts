@@ -1,10 +1,21 @@
-import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import { CauseDomainMapper } from '../mappers/cause.mapper';
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { CauseSummaryResponseDto } from '../dtos/output/cause-summary.response.dto';
-import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { Cause } from '@app/communities/domain/model/entities/cause';
 import { CauseDetailResponseDto } from '../dtos/output/cause-detail.response.dto';
+import { FollowerJoinCauseRequestDto } from '../dtos/input/follower-join-cause.request.dto';
 
 @Controller()
 export class CausesController {
@@ -81,5 +92,29 @@ export class CausesController {
     }
 
     return CauseDomainMapper.toCauseDetailDto(cause.value);
+  }
+
+  @Post('causes/:id/followers')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Join a user as a supporter of a cause' })
+  @ApiCreatedResponse({
+    description: 'User successfully joined the cause',
+  })
+  @ApiBadRequestResponse({ description: 'The request parameters are invalid' })
+  @ApiNotFoundResponse({ description: 'Cause or user not found' })
+  @ApiConflictResponse({ description: 'User is already following the cause' })
+  @ApiUnauthorizedResponse({ description: 'User is not a member of the community linked to the cause' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  async joinCause(
+    @Param('id', new ParseUUIDPipe()) causeId: string,
+    @Body() dto: FollowerJoinCauseRequestDto,
+  ): Promise<void> {
+    const result = await this.causesService.joinCause(causeId, dto.userId);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return undefined;
   }
 }

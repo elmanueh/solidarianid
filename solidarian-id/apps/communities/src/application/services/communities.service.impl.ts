@@ -59,6 +59,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
         ods: causeRequest.ods,
         actions: [],
         communityId: community.id.value,
+        userIds: [communityDto.userId],
       });
 
       if (causeOrError.isLeft()) {
@@ -84,7 +85,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
   }
 
   async getCommunityById(id: string): Promise<Either<ValidationError, Community>> {
-    return await this.communityRepository.findById(id, ['causes', 'members', 'members.user']);
+    return await this.communityRepository.findById(id, ['causes', 'causes.users', 'members', 'members.user']);
   }
 
   async getOrderByMostUsers(limit?: number): Promise<Either<ValidationError, RankingCommunitiesByUsersData[]>> {

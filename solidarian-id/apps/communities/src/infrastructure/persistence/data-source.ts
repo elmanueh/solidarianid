@@ -22,6 +22,7 @@ import { DataSource } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { CommunityEntity } from './entities/community.entity';
 import { CommunityUserEntity } from './entities/community-user.entity';
+import { CauseUserEntity } from './entities/cause-user.entity';
 import { CauseEntity } from './entities/cause.entity';
 import { ActionEntity } from './entities/action.entity';
 import { ObjectiveEntity } from './entities/objective.entity';
@@ -34,6 +35,7 @@ const COMMUNITIES_ENTITIES = [
   UserEntity,
   CommunityEntity,
   CommunityUserEntity,
+  CauseUserEntity,
   CauseEntity,
   ActionEntity,
   ObjectiveEntity,

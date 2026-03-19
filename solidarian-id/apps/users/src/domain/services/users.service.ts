@@ -1,6 +1,8 @@
 import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { CauseCategory, DurationPreference } from '@app/value-objects/model/user-preferences';
 
 /**
  * Servicio para la gestión de usuarios en el sistema.
@@ -27,6 +29,37 @@ export abstract class UsersService {
   abstract updateUserProfile(
     userId: string,
     updateUserProfileCommand: UpdateUserProfileCommand,
+  ): Promise<Either<ValidationError | RepositoryException, void>>;
+
+  /**
+   * Obtiene las preferencias de un usuario existente.
+   * @param userId
+   */
+  abstract getUserPreferences(userId: string): Promise<
+    Either<
+      ValidationError | RepositoryException,
+      {
+        preferredSDGs: SustainableDevelopmentGoal[];
+        preferredCategories: CauseCategory[];
+        durationPreferences: DurationPreference[];
+        notificationsEnabled: boolean;
+      }
+    >
+  >;
+
+  /**
+   * Actualiza las preferencias de un usuario existente.
+   * @param userId
+   * @param preferences
+   */
+  abstract updateUserPreferences(
+    userId: string,
+    preferences: Partial<{
+      preferredSDGs: SustainableDevelopmentGoal[];
+      preferredCategories: CauseCategory[];
+      durationPreferences: DurationPreference[];
+      notificationsEnabled: boolean;
+    }>,
   ): Promise<Either<ValidationError | RepositoryException, void>>;
 }
 

@@ -1,16 +1,17 @@
 "use client"
 
-import logoSolidarian from "@/public/solidarian-logo.png"
 import {
   Button,
   Card,
   CardAction,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   Input,
@@ -18,26 +19,68 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui"
+import {
+  PASSWORD_COMPLEXITY_REGEX,
+  PASSWORD_MIN_LENGTH,
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+  USERNAME_REGEX,
+} from "@/features/auth/constants/auth.constants"
 import { authService } from "@/features/auth/services/auth.service"
 import { getErrorMessage } from "@/features/axios/errors.handler"
+import logoSolidarian from "@/public/solidarian-logo.png"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { IconEye, IconEyeOff, IconLogin2 } from "@tabler/icons-react"
-import { useState } from "react"
-import Link from "next/link"
 import Image from "next/image"
+import Link from "next/link"
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
+import * as z from "zod"
+
+const formSchema = z.object({
+  username: z
+    .string()
+    .min(
+      USERNAME_MIN_LENGTH,
+      `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`
+    )
+    .max(
+      USERNAME_MAX_LENGTH,
+      `Username must not exceed ${USERNAME_MAX_LENGTH} characters.`
+    )
+    .regex(USERNAME_REGEX, "Username must contain only letters and numbers."),
+  password: z
+    .string()
+    .min(
+      PASSWORD_MIN_LENGTH,
+      `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`
+    )
+    .regex(
+      PASSWORD_COMPLEXITY_REGEX,
+      "La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial."
+    ),
+})
+
+type LoginFormData = z.infer<typeof formSchema>
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    mode: "onTouched",
+  })
 
+  async function onSubmit(data: LoginFormData) {
+    setIsLoading(true)
     try {
-      await authService.login(username, password)
+      await authService.login(data.username, data.password)
     } catch (err) {
       toast.error(getErrorMessage(err))
     } finally {
@@ -60,62 +103,83 @@ export default function LoginPage() {
               width={80}
               height={80}
               className="h-20 w-20"
+              loading="eager"
             />
           </CardAction>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form id="form-login" onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="username">Nombre de usuario</FieldLabel>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="pabloperiss"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Field>
+              <Controller
+                name="username"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor={field.name}>
+                      Nombre de usuario
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id={field.name}
+                      type="text"
+                      aria-invalid={fieldState.invalid}
+                      disabled={isLoading}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
 
-              <Field>
-                <FieldLabel htmlFor="password">Contraseña</FieldLabel>
-                <InputGroup>
-                  <InputGroupInput
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    disabled={isLoading}
-                  />
-                  <InputGroupAddon align="inline-end">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <IconEyeOff /> : <IconEye />}
-                    </Button>
-                  </InputGroupAddon>
-                </InputGroup>
-              </Field>
-
-              <Field>
-                <Button type="submit" disabled={isLoading}>
-                  <IconLogin2 />
-                  {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
-                </Button>
-
-                <FieldDescription className="text-center">
-                  ¿No tienes cuenta? <Link href="/register">Regístrate</Link>
-                </FieldDescription>
-              </Field>
+              <Controller
+                name="password"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor={field.name}>Contraseña</FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        {...field}
+                        id={field.name}
+                        type={showPassword ? "text" : "password"}
+                        aria-invalid={fieldState.invalid}
+                        disabled={isLoading}
+                      />
+                      <InputGroupAddon align="inline-end">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setShowPassword(!showPassword)}
+                          disabled={isLoading}
+                        >
+                          {showPassword ? <IconEyeOff /> : <IconEye />}
+                        </Button>
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
             </FieldGroup>
           </form>
         </CardContent>
+
+        <CardFooter>
+          <Field>
+            <Button type="submit" form="form-login" disabled={isLoading}>
+              <IconLogin2 />
+              {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
+            </Button>
+
+            <FieldDescription className="text-center">
+              ¿No tienes cuenta? <Link href="/register">Regístrate</Link>
+            </FieldDescription>
+          </Field>
+        </CardFooter>
       </Card>
     </div>
   )

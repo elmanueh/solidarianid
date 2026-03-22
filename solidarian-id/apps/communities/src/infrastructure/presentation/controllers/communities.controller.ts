@@ -36,6 +36,7 @@ import { MemberJoinCommunityRequestDto } from '../dtos/input/member-join-communi
 export class CommunitiesController {
   constructor(private readonly communitiesService: CommunitiesService) {}
 
+  //TODO : Borrar este endpoint y sustituirlo por grpc
   @Get()
   @ApiOperation({ summary: 'Retrieve all charitable communities' })
   @ApiQuery({
@@ -108,6 +109,8 @@ export class CommunitiesController {
     );
   }
 
+
+  //TODO : Borrar este endpoint y sustituirlo por grpc
   @Get(':id/users')
   @ApiOperation({ summary: 'Retrieve the number of users who joined a community in the last months' })
   @ApiOkResponse({

@@ -8,6 +8,8 @@
   "scripts": {
     "build": "nest build",
     "build:all": "nest build admin communities users",
+    "proto:wingen:communities": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_out=./libs/grpc-common/src --ts_proto_opt=nestJs=true,outputServices=grpc-js,esModuleInterop=true,useOptionals=messages,oneof=unions --proto_path=./libs/grpc-common/spec --proto_path=./node_modules ./libs/grpc-common/spec/communities.proto",
+    "proto:gen:communities": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./libs/grpc-common/src --ts_proto_opt=nestJs=true,outputServices=grpc-js,esModuleInterop=true,useOptionals=messages,oneof=unions --proto_path=./libs/grpc-common/spec --proto_path=./node_modules ./libs/grpc-common/spec/communities.proto",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "cross-env NODE_ENV=production nest start",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
@@ -60,12 +62,14 @@
     "mig:revert:communities": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:revert -d apps/communities/src/infrastructure/persistence/data-source.ts"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.0",
     "@iconify/tailwind": "^1.2.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "*",
-    "@nestjs/microservices": "^11.1.10",
+    "@nestjs/microservices": "^11.1.17",
     "@nestjs/mongoose": "^11.0.4",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.3",
@@ -97,11 +101,12 @@
   "devDependencies": {
     "@eslint/js": "^9.18.0",
     "@faker-js/faker": "^9.3.0",
-    "@nestjs/cli": "^11.0.0",
     "@iconify/json": "^2.2.419",
     "@iconify/tailwind4": "^1.2.0",
+    "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
+    "@protobuf-ts/protoc": "^2.11.1",
     "@stryker-mutator/core": "^9.4.0",
     "@stryker-mutator/jest-runner": "^9.4.0",
     "@testcontainers/kafka": "^11.11.0",
@@ -137,6 +142,7 @@
     "ts-jest": "^29.4.6",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
+    "ts-proto": "^2.11.5",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.20.0"
   }

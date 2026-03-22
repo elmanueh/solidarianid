@@ -67,6 +67,15 @@
         "tsConfigPath": "libs/design-tokens/tsconfig.lib.json"
       }
     },
+    "grpc-common": {
+      "type": "library",
+      "root": "libs/grpc-common",
+      "entryFile": "index",
+      "sourceRoot": "libs/grpc-common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/grpc-common/tsconfig.lib.json"
+      }
+    },
     "kafka": {
       "type": "library",
       "root": "libs/kafka",

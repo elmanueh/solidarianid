@@ -80,7 +80,7 @@ import { RequestController } from './infrastructure/presentation/controllers/res
     RequestController,
     UserConsumerAdapter,
     RequestsConsumerAdapter,
-    CommunitiesControllerGrpc
+    CommunitiesControllerGrpc,
   ],
   providers: [
     // Services
@@ -152,4 +152,4 @@ import { RequestController } from './infrastructure/presentation/controllers/res
     CommunityEventMapper,
   ],
 })
-export class CommunitiesModule { }
+export class CommunitiesModule {}

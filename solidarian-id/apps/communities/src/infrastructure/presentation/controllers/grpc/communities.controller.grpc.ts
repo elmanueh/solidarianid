@@ -1,8 +1,8 @@
-import { RankingCommunitiesByUsersData } from "@app/communities/application/services/community-ranking.data";
-import { Community } from "@app/communities/domain/model/aggregates/community";
-import { CommunitiesService } from "@app/communities/domain/services/communities.service";
-import { CommunityDomainMapper } from "@app/communities/infrastructure/presentation/mappers/community.mapper";
-import { BadRequestException, Controller } from "@nestjs/common";
+import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
+import { Community } from '@app/communities/domain/model/aggregates/community';
+import { CommunitiesService } from '@app/communities/domain/services/communities.service';
+import { CommunityDomainMapper } from '@app/communities/infrastructure/presentation/mappers/community.mapper';
+import { BadRequestException, Controller } from '@nestjs/common';
 import {
   CommunitiesServiceController,
   CommunitiesServiceControllerMethods,
@@ -11,20 +11,18 @@ import {
   GetCommunitiesResponse,
   GetCommunityUsersRequest,
   GetCommunityUsersResponse,
-} from "@solidarianid/grpc";
-
+} from '@solidarianid/grpc';
 
 @Controller()
 @CommunitiesServiceControllerMethods()
 export class CommunitiesControllerGrpc implements CommunitiesServiceController {
-
-  constructor(private readonly communitiesService: CommunitiesService) { }
+  constructor(private readonly communitiesService: CommunitiesService) {}
 
   async getCommunities(request: GetCommunitiesRequest): Promise<GetCommunitiesResponse> {
     const { criteria, limit } = request;
 
     if (limit !== undefined && limit <= 0) {
-      throw new BadRequestException("limit must be greater than 0");
+      throw new BadRequestException('limit must be greater than 0');
     }
 
     if (criteria === CommunityCriteria.COMMUNITY_CRITERIA_MOST_USERS) {
@@ -43,7 +41,7 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
 
     return {
       result: {
-        $case: "summaries",
+        $case: 'summaries',
         summaries: {
           items: communityDtos,
         },
@@ -64,7 +62,7 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
 
     return {
       result: {
-        $case: "ranking",
+        $case: 'ranking',
         ranking: {
           items: communityDtos,
         },
@@ -76,11 +74,11 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
     const { communityId, months } = request;
 
     if (!this.isValidUuid(communityId)) {
-      throw new BadRequestException("communityId must be a valid UUID");
+      throw new BadRequestException('communityId must be a valid UUID');
     }
 
     if (months !== undefined && months <= 0) {
-      throw new BadRequestException("months must be greater than 0");
+      throw new BadRequestException('months must be greater than 0');
     }
 
     const joinedUsersData = await this.communitiesService.getJoinedUsersLastMonths(communityId, months);
@@ -93,9 +91,8 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
   }
 
   private isValidUuid(value: string): boolean {
-    const uuidV4Pattern =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-    return typeof value === "string" && uuidV4Pattern.test(value);
+    return typeof value === 'string' && uuidV4Pattern.test(value);
   }
 }

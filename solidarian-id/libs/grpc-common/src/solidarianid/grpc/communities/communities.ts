@@ -5,12 +5,12 @@
 // source: solidarianid/grpc/communities/communities.proto
 
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import type { handleUnaryCall, UntypedServiceImplementation } from "@grpc/grpc-js";
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
+import { BinaryReader, BinaryWriter } from '@bufbuild/protobuf/wire';
+import type { handleUnaryCall, UntypedServiceImplementation } from '@grpc/grpc-js';
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
-export const protobufPackage = "solidarianid.grpc.communities.v1";
+export const protobufPackage = 'solidarianid.grpc.communities.v1';
 
 export enum CommunityCriteria {
   COMMUNITY_CRITERIA_ALL_UNSPECIFIED = 0,
@@ -60,21 +60,24 @@ export interface CommunityRankingUserList {
 }
 
 export interface GetCommunitiesResponse {
-  result?: { $case: "summaries"; summaries: CommunitySummaryList } | {
-    $case: "ranking";
-    ranking: CommunityRankingUserList;
-  } | undefined;
+  result?:
+    | { $case: 'summaries'; summaries: CommunitySummaryList }
+    | {
+        $case: 'ranking';
+        ranking: CommunityRankingUserList;
+      }
+    | undefined;
 }
 
-export const SOLIDARIANID_GRPC_COMMUNITIES_V1_PACKAGE_NAME = "solidarianid.grpc.communities.v1";
+export const SOLIDARIANID_GRPC_COMMUNITIES_V1_PACKAGE_NAME = 'solidarianid.grpc.communities.v1';
 
 function createBaseGetCommunityUsersRequest(): GetCommunityUsersRequest {
-  return { communityId: "" };
+  return { communityId: '' };
 }
 
 export const GetCommunityUsersRequest: MessageFns<GetCommunityUsersRequest> = {
   encode(message: GetCommunityUsersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.communityId !== "") {
+    if (message.communityId !== '') {
       writer.uint32(10).string(message.communityId);
     }
     if (message.months !== undefined) {
@@ -117,12 +120,12 @@ export const GetCommunityUsersRequest: MessageFns<GetCommunityUsersRequest> = {
 };
 
 function createBaseCommunityLastUsersJoinedPeriod(): CommunityLastUsersJoinedPeriod {
-  return { month: "", userCount: 0 };
+  return { month: '', userCount: 0 };
 }
 
 export const CommunityLastUsersJoinedPeriod: MessageFns<CommunityLastUsersJoinedPeriod> = {
   encode(message: CommunityLastUsersJoinedPeriod, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.month !== "") {
+    if (message.month !== '') {
       writer.uint32(10).string(message.month);
     }
     if (message.userCount !== 0) {
@@ -165,12 +168,12 @@ export const CommunityLastUsersJoinedPeriod: MessageFns<CommunityLastUsersJoined
 };
 
 function createBaseGetCommunityUsersResponse(): GetCommunityUsersResponse {
-  return { communityName: "", dataRange: [] };
+  return { communityName: '', dataRange: [] };
 }
 
 export const GetCommunityUsersResponse: MessageFns<GetCommunityUsersResponse> = {
   encode(message: GetCommunityUsersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.communityName !== "") {
+    if (message.communityName !== '') {
       writer.uint32(10).string(message.communityName);
     }
     for (const v of message.dataRange) {
@@ -261,21 +264,21 @@ export const GetCommunitiesRequest: MessageFns<GetCommunitiesRequest> = {
 };
 
 function createBaseCommunitySummary(): CommunitySummary {
-  return { id: "", name: "", description: "", creatorId: "" };
+  return { id: '', name: '', description: '', creatorId: '' };
 }
 
 export const CommunitySummary: MessageFns<CommunitySummary> = {
   encode(message: CommunitySummary, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== "") {
+    if (message.id !== '') {
       writer.uint32(10).string(message.id);
     }
-    if (message.name !== "") {
+    if (message.name !== '') {
       writer.uint32(18).string(message.name);
     }
-    if (message.description !== "") {
+    if (message.description !== '') {
       writer.uint32(26).string(message.description);
     }
-    if (message.creatorId !== "") {
+    if (message.creatorId !== '') {
       writer.uint32(34).string(message.creatorId);
     }
     return writer;
@@ -331,15 +334,15 @@ export const CommunitySummary: MessageFns<CommunitySummary> = {
 };
 
 function createBaseCommunityRankingUser(): CommunityRankingUser {
-  return { id: "", name: "", userCount: 0 };
+  return { id: '', name: '', userCount: 0 };
 }
 
 export const CommunityRankingUser: MessageFns<CommunityRankingUser> = {
   encode(message: CommunityRankingUser, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== "") {
+    if (message.id !== '') {
       writer.uint32(10).string(message.id);
     }
-    if (message.name !== "") {
+    if (message.name !== '') {
       writer.uint32(18).string(message.name);
     }
     if (message.userCount !== 0) {
@@ -470,10 +473,10 @@ function createBaseGetCommunitiesResponse(): GetCommunitiesResponse {
 export const GetCommunitiesResponse: MessageFns<GetCommunitiesResponse> = {
   encode(message: GetCommunitiesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     switch (message.result?.$case) {
-      case "summaries":
+      case 'summaries':
         CommunitySummaryList.encode(message.result.summaries, writer.uint32(10).fork()).join();
         break;
-      case "ranking":
+      case 'ranking':
         CommunityRankingUserList.encode(message.result.ranking, writer.uint32(18).fork()).join();
         break;
     }
@@ -492,7 +495,7 @@ export const GetCommunitiesResponse: MessageFns<GetCommunitiesResponse> = {
             break;
           }
 
-          message.result = { $case: "summaries", summaries: CommunitySummaryList.decode(reader, reader.uint32()) };
+          message.result = { $case: 'summaries', summaries: CommunitySummaryList.decode(reader, reader.uint32()) };
           continue;
         }
         case 2: {
@@ -500,7 +503,7 @@ export const GetCommunitiesResponse: MessageFns<GetCommunitiesResponse> = {
             break;
           }
 
-          message.result = { $case: "ranking", ranking: CommunityRankingUserList.decode(reader, reader.uint32()) };
+          message.result = { $case: 'ranking', ranking: CommunityRankingUserList.decode(reader, reader.uint32()) };
           continue;
         }
       }
@@ -531,25 +534,25 @@ export interface CommunitiesServiceController {
 
 export function CommunitiesServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["getCommunities", "getCommunityUsers"];
+    const grpcMethods: string[] = ['getCommunities', 'getCommunityUsers'];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("CommunitiesService", method)(constructor.prototype[method], method, descriptor);
+      GrpcMethod('CommunitiesService', method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("CommunitiesService", method)(constructor.prototype[method], method, descriptor);
+      GrpcStreamMethod('CommunitiesService', method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const COMMUNITIES_SERVICE_NAME = "CommunitiesService";
+export const COMMUNITIES_SERVICE_NAME = 'CommunitiesService';
 
 export type CommunitiesServiceService = typeof CommunitiesServiceService;
 export const CommunitiesServiceService = {
   getCommunities: {
-    path: "/solidarianid.grpc.communities.v1.CommunitiesService/GetCommunities" as const,
+    path: '/solidarianid.grpc.communities.v1.CommunitiesService/GetCommunities' as const,
     requestStream: false as const,
     responseStream: false as const,
     requestSerialize: (value: GetCommunitiesRequest): Buffer =>
@@ -560,7 +563,7 @@ export const CommunitiesServiceService = {
     responseDeserialize: (value: Buffer): GetCommunitiesResponse => GetCommunitiesResponse.decode(value),
   },
   getCommunityUsers: {
-    path: "/solidarianid.grpc.communities.v1.CommunitiesService/GetCommunityUsers" as const,
+    path: '/solidarianid.grpc.communities.v1.CommunitiesService/GetCommunityUsers' as const,
     requestStream: false as const,
     responseStream: false as const,
     requestSerialize: (value: GetCommunityUsersRequest): Buffer =>

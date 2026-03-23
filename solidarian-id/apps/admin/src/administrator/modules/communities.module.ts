@@ -33,4 +33,4 @@ import { join } from 'node:path';
   ],
   exports: [CommunitiesApiPort],
 })
-export class CommunitiesModule { }
+export class CommunitiesModule {}

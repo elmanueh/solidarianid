@@ -19,7 +19,7 @@ import { CauseDomainMapper } from '../../mappers/cause.mapper';
 
 @Controller()
 export class CausesController {
-  constructor(private readonly causesService: CausesService) { }
+  constructor(private readonly causesService: CausesService) {}
 
   @Get('causes')
   @ApiOperation({ summary: 'Retrieve all charitable causes' })

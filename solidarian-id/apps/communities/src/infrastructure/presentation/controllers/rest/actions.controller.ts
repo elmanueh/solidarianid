@@ -8,7 +8,7 @@ import { ActionDomainMapper } from '../../mappers/action.mapper';
 
 @Controller()
 export class ActionsController {
-  constructor(private readonly actionsService: ActionsService) { }
+  constructor(private readonly actionsService: ActionsService) {}
 
   @Get('actions')
   @ApiOperation({ summary: 'Retrieve all charitable actions' })

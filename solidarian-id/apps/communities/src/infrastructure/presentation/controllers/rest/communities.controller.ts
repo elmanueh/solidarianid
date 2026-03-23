@@ -34,7 +34,7 @@ import { CommunityDomainMapper } from '../../mappers/community.mapper';
 @Controller('communities')
 // istanbul ignore next
 export class CommunitiesController {
-  constructor(private readonly communitiesService: CommunitiesService) { }
+  constructor(private readonly communitiesService: CommunitiesService) {}
 
   //TODO : Borrar este endpoint y sustituirlo por grpc
   @Get()
@@ -108,7 +108,6 @@ export class CommunitiesController {
       CommunityDomainMapper.toRankingCommunitiesByUsersDto(community),
     );
   }
-
 
   //TODO : Borrar este endpoint y sustituirlo por grpc
   @Get(':id/users')

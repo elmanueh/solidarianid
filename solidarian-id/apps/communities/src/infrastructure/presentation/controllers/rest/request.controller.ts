@@ -17,7 +17,7 @@ import { CreateCommunityRequestDto } from '../../dtos/input/create-request-commu
 @Controller()
 @ApiTags('Requests')
 export class RequestController {
-  constructor(private readonly requestsService: RequestsService) { }
+  constructor(private readonly requestsService: RequestsService) {}
 
   @Post('community-requests')
   @HttpCode(HttpStatus.CREATED)

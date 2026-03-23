@@ -1,12 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
+import { left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Test, TestingModule } from '@nestjs/testing';
 
-import { CausesService } from '@app/communities/domain/services/causes.service';
-import { CausesController } from '@app/communities/infrastructure/presentation/controllers/causes.controller';
-import { EntityNotFoundError } from 'typeorm';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Cause } from '@app/communities/domain/model/entities/cause';
+import { CausesService } from '@app/communities/domain/services/causes.service';
+import { CausesController } from '@app/communities/infrastructure/presentation/controllers/rest/causes.controller';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { EntityNotFoundError } from 'typeorm';
 
 describe('CausesController', () => {
   let controller: CausesController;

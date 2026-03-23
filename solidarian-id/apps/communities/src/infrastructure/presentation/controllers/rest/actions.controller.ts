@@ -1,14 +1,14 @@
+import { Action } from '@app/communities/domain/model/entities/action';
 import { ActionsService } from '@app/communities/domain/services/actions.service';
 import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
-import { ActionSummaryResponseDto } from '../dtos/output/action-summary.response.dto';
-import { ActionDomainMapper } from '../mappers/action.mapper';
-import { Action } from '@app/communities/domain/model/entities/action';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { ActionDetailResponseDto } from '../dtos/output/action-detail.response.dto';
+import { ActionDetailResponseDto } from '../../dtos/output/action-detail.response.dto';
+import { ActionSummaryResponseDto } from '../../dtos/output/action-summary.response.dto';
+import { ActionDomainMapper } from '../../mappers/action.mapper';
 
 @Controller()
 export class ActionsController {
-  constructor(private readonly actionsService: ActionsService) {}
+  constructor(private readonly actionsService: ActionsService) { }
 
   @Get('actions')
   @ApiOperation({ summary: 'Retrieve all charitable actions' })

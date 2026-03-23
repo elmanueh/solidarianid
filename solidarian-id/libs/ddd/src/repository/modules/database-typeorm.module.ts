@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule, TypeOrmModuleOptions, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 
 export interface TypeOrmConfigOptions {
@@ -19,6 +19,7 @@ export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOp
   const nodeEnv = config?.get<string>('NODE_ENV') ?? process.env.NODE_ENV ?? 'development';
   const isProduction = nodeEnv === 'production';
   const isTest = nodeEnv === 'test';
+  const shouldLoadMigrations = isProduction || isTest;
 
   const testUri = config?.get<string>('TEST_POSTGRESQL_URI') ?? process.env.TEST_POSTGRESQL_URI;
   if (isTest && testUri) {
@@ -29,7 +30,7 @@ export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOp
       autoLoadEntities: true,
       synchronize: false,
       migrationsRun: true,
-      migrations: [migrationsPath],
+      migrations: shouldLoadMigrations ? [migrationsPath] : [],
       migrationsTableName: 'typeorm_migrations',
       logging: false,
       extra: {
@@ -48,8 +49,8 @@ export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOp
     entities,
     autoLoadEntities: true,
     synchronize: !isProduction,
-    migrationsRun: isProduction,
-    migrations: [isProduction ? migrationsDistPath : migrationsPath],
+    migrationsRun: shouldLoadMigrations,
+    migrations: shouldLoadMigrations ? [isProduction ? migrationsDistPath : migrationsPath] : [],
     migrationsTableName: 'typeorm_migrations',
     //logging: !isProduction,
   };

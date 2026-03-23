@@ -1,7 +1,6 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post } from '@nestjs/common';
-import { CauseDomainMapper } from '../mappers/cause.mapper';
+import { Cause } from '@app/communities/domain/model/entities/cause';
 import { CausesService } from '@app/communities/domain/services/causes.service';
-import { CauseSummaryResponseDto } from '../dtos/output/cause-summary.response.dto';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -13,13 +12,14 @@ import {
   ApiResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { Cause } from '@app/communities/domain/model/entities/cause';
-import { CauseDetailResponseDto } from '../dtos/output/cause-detail.response.dto';
-import { FollowerJoinCauseRequestDto } from '../dtos/input/follower-join-cause.request.dto';
+import { FollowerJoinCauseRequestDto } from '../../dtos/input/follower-join-cause.request.dto';
+import { CauseDetailResponseDto } from '../../dtos/output/cause-detail.response.dto';
+import { CauseSummaryResponseDto } from '../../dtos/output/cause-summary.response.dto';
+import { CauseDomainMapper } from '../../mappers/cause.mapper';
 
 @Controller()
 export class CausesController {
-  constructor(private readonly causesService: CausesService) {}
+  constructor(private readonly causesService: CausesService) { }
 
   @Get('causes')
   @ApiOperation({ summary: 'Retrieve all charitable causes' })

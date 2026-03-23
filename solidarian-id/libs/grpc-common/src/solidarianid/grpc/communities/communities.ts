@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.11.5
 //   protoc               v7.34.1
-// source: communities.proto
+// source: solidarianid/grpc/communities/communities.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
@@ -10,11 +10,11 @@ import type { handleUnaryCall, UntypedServiceImplementation } from "@grpc/grpc-j
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
-export const protobufPackage = "solidarian.id.grpc.common.communities";
+export const protobufPackage = "solidarianid.grpc.communities.v1";
 
 export enum CommunityCriteria {
-  ALL = 0,
-  MOST_USERS = 1,
+  COMMUNITY_CRITERIA_ALL_UNSPECIFIED = 0,
+  COMMUNITY_CRITERIA_MOST_USERS = 1,
   UNRECOGNIZED = -1,
 }
 
@@ -66,7 +66,7 @@ export interface GetCommunitiesResponse {
   } | undefined;
 }
 
-export const SOLIDARIAN_ID_GRPC_COMMON_COMMUNITIES_PACKAGE_NAME = "solidarian.id.grpc.common.communities";
+export const SOLIDARIANID_GRPC_COMMUNITIES_V1_PACKAGE_NAME = "solidarianid.grpc.communities.v1";
 
 function createBaseGetCommunityUsersRequest(): GetCommunityUsersRequest {
   return { communityId: "" };
@@ -549,7 +549,7 @@ export const COMMUNITIES_SERVICE_NAME = "CommunitiesService";
 export type CommunitiesServiceService = typeof CommunitiesServiceService;
 export const CommunitiesServiceService = {
   getCommunities: {
-    path: "/solidarian.id.grpc.common.communities.CommunitiesService/GetCommunities" as const,
+    path: "/solidarianid.grpc.communities.v1.CommunitiesService/GetCommunities" as const,
     requestStream: false as const,
     responseStream: false as const,
     requestSerialize: (value: GetCommunitiesRequest): Buffer =>
@@ -560,7 +560,7 @@ export const CommunitiesServiceService = {
     responseDeserialize: (value: Buffer): GetCommunitiesResponse => GetCommunitiesResponse.decode(value),
   },
   getCommunityUsers: {
-    path: "/solidarian.id.grpc.common.communities.CommunitiesService/GetCommunityUsers" as const,
+    path: "/solidarianid.grpc.communities.v1.CommunitiesService/GetCommunityUsers" as const,
     requestStream: false as const,
     responseStream: false as const,
     requestSerialize: (value: GetCommunityUsersRequest): Buffer =>

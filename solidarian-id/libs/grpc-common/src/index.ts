@@ -1,3 +1,3 @@
 // gRPC Common Exports
-export * from './communities';
+export * from './solidarianid/grpc/communities/communities';
 

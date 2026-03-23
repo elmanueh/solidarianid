@@ -8,8 +8,8 @@
   "scripts": {
     "build": "nest build",
     "build:all": "nest build admin communities users",
-    "proto:wingen:communities": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_out=./libs/grpc-common/src --ts_proto_opt=nestJs=true,outputServices=grpc-js,esModuleInterop=true,useOptionals=messages,oneof=unions --proto_path=./libs/grpc-common/spec --proto_path=./node_modules ./libs/grpc-common/spec/communities.proto",
-    "proto:gen:communities": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./libs/grpc-common/src --ts_proto_opt=nestJs=true,outputServices=grpc-js,esModuleInterop=true,useOptionals=messages,oneof=unions --proto_path=./libs/grpc-common/spec --proto_path=./node_modules ./libs/grpc-common/spec/communities.proto",
+    "proto:wingen:communities": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_out=./libs/grpc-common/src --ts_proto_opt=nestJs=true,outputServices=grpc-js,esModuleInterop=true,useOptionals=messages,oneof=unions --proto_path=./libs/grpc-common/spec --proto_path=./node_modules ./libs/grpc-common/spec/solidarianid/grpc/communities/communities.proto",
+    "proto:gen:communities": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./libs/grpc-common/src --ts_proto_opt=nestJs=true,outputServices=grpc-js,esModuleInterop=true,useOptionals=messages,oneof=unions --proto_path=./libs/grpc-common/spec --proto_path=./node_modules ./libs/grpc-common/spec/solidarianid/grpc/communities/communities.proto",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "cross-env NODE_ENV=production nest start",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",

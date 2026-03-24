@@ -91,8 +91,8 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
   }
 
   private isValidUuid(value: string): boolean {
-    const uuidV4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-    return typeof value === 'string' && uuidV4Pattern.test(value);
+    return typeof value === 'string' && uuidPattern.test(value);
   }
 }

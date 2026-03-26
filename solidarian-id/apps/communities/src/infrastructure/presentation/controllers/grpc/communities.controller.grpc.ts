@@ -3,6 +3,7 @@ import { Community } from '@app/communities/domain/model/aggregates/community';
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { CommunityDomainMapper } from '@app/communities/infrastructure/presentation/mappers/community.mapper';
 import { BadRequestException, Controller } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import {
   CommunitiesServiceController,
   CommunitiesServiceControllerMethods,
@@ -22,7 +23,7 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
     const { criteria, limit } = request;
 
     if (limit !== undefined && limit <= 0) {
-      throw new BadRequestException('limit must be greater than 0');
+      throw new RpcException(new BadRequestException('limit must be greater than 0'));
     }
 
     if (criteria === CommunityCriteria.COMMUNITY_CRITERIA_MOST_USERS) {
@@ -32,7 +33,7 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
     const communities = await this.communitiesService.getCommunities();
 
     if (communities.isLeft()) {
-      throw communities.value;
+      throw new RpcException(communities.value);
     }
 
     const communityDtos = communities.value.map((community: Community) =>
@@ -73,18 +74,14 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
   async getCommunityUsers(request: GetCommunityUsersRequest): Promise<GetCommunityUsersResponse> {
     const { communityId, months } = request;
 
-    if (!this.isValidUuid(communityId)) {
-      throw new BadRequestException('communityId must be a valid UUID');
-    }
-
-    if (months !== undefined && months <= 0) {
-      throw new BadRequestException('months must be greater than 0');
+    if(communityId && !this.isValidUuid(communityId)) {
+      throw new RpcException(new BadRequestException('communityId must be a valid UUID'));
     }
 
     const joinedUsersData = await this.communitiesService.getJoinedUsersLastMonths(communityId, months);
 
     if (joinedUsersData.isLeft()) {
-      throw joinedUsersData.value;
+      throw new RpcException(joinedUsersData.value);
     }
 
     return CommunityDomainMapper.toCommunityLastUsersJoinedSummaryResponseDto(joinedUsersData.value);

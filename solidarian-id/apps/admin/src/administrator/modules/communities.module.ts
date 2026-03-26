@@ -4,13 +4,14 @@ import { CommunitiesApiServiceImpl } from '@app/admin/administrator/model/infras
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { SOLIDARIANID_GRPC_COMMUNITIES_V1_PACKAGE_NAME } from '@solidarianid/grpc';
 import { join } from 'node:path';
 
 @Module({
   imports: [
     ClientsModule.registerAsync([
       {
-        name: 'COMMUNITIES_PACKAGE',
+        name: SOLIDARIANID_GRPC_COMMUNITIES_V1_PACKAGE_NAME,
         inject: [ConfigService],
         useFactory: (configService: ConfigService) => ({
           transport: Transport.GRPC,

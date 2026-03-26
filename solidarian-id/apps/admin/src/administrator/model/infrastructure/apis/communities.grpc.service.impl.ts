@@ -3,7 +3,12 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Inject, Injectable } from '@nestjs/common';
 import type { ClientGrpc } from '@nestjs/microservices';
-import { COMMUNITIES_SERVICE_NAME, CommunitiesServiceClient, CommunityCriteria, SOLIDARIANID_GRPC_COMMUNITIES_V1_PACKAGE_NAME } from '@solidarianid/grpc';
+import {
+  COMMUNITIES_SERVICE_NAME,
+  CommunitiesServiceClient,
+  CommunityCriteria,
+  SOLIDARIANID_GRPC_COMMUNITIES_V1_PACKAGE_NAME,
+} from '@solidarianid/grpc';
 import { firstValueFrom, timeout } from 'rxjs';
 import { CommunitiesApiPort } from '../../domain/ports/output/communities.api.port';
 import { CommunityLastUsersJoinedSummaryResponseDto } from './dtos/community-last-users-joined-summary.response.dto';

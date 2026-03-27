@@ -12,7 +12,7 @@ services:
       POSTGRES_INITDB_ARGS: '--encoding=UTF8 --lc-collate=C.UTF-8 --lc-ctype=C.UTF-8'
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-      #- ./scripts/init/postgres:/docker-entrypoint-initdb.d
+      - ./scripts/init/postgres:/docker-entrypoint-initdb.d
     networks:
       - solidarian_network
     healthcheck:
@@ -34,7 +34,7 @@ services:
     volumes:
       - ./data/mongodb:/data/db
       - ./scripts/init/init-mongo-admins.js:/docker-entrypoint-initdb.d/init-mongo-admins.js:ro
-      #- ./scripts/init/mongo:/docker-entrypoint-initdb.d
+      - ./scripts/init/mongo:/docker-entrypoint-initdb.d
     healthcheck:
       test:
         [
@@ -141,6 +141,17 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9093
     depends_on:
       - kafka
+    networks:
+      - solidarian_network
+
+  nginx:
+    build:
+      context: ./apps/pasarela
+      dockerfile: Dockerfile
+    container_name: solidarian_proxy
+    restart: unless-stopped
+    ports:
+      - "8090:80"
     networks:
       - solidarian_network
 

@@ -60,10 +60,14 @@
     "mig:revert:communities": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:revert -d apps/communities/src/infrastructure/persistence/data-source.ts"
   },
   "dependencies": {
+    "@apollo/server": "^5.5.0",
+    "@as-integrations/express5": "^1.1.2",
     "@iconify/tailwind": "^1.2.0",
+    "@nestjs/apollo": "^13.2.4",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/graphql": "^13.2.4",
     "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^11.1.10",
     "@nestjs/mongoose": "^11.0.4",
@@ -81,6 +85,8 @@
     "eslint-plugin-jest-dom": "^5.5.0",
     "express-handlebars": "^8.0.2",
     "express-session": "^1.18.2",
+    "graphql": "^16.13.2",
+    "graphql-subscriptions": "^3.0.0",
     "hbs": "^4.2.0",
     "js-yaml": "^4.1.1",
     "kafkajs": "^2.2.4",
@@ -92,14 +98,15 @@
     "shallow-equal-object": "^1.1.1",
     "tailwindcss": "^4.1.18",
     "typeorm": "^0.3.28",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "webpack": "^5.105.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
     "@faker-js/faker": "^9.3.0",
-    "@nestjs/cli": "^11.0.0",
     "@iconify/json": "^2.2.419",
     "@iconify/tailwind4": "^1.2.0",
+    "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
     "@stryker-mutator/core": "^9.4.0",

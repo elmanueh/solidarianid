@@ -49,10 +49,11 @@ import { CommunitiesQueryTypeOrmRepositoryAdapter } from './infrastructure/persi
 import { CommunitiesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/communities-typeorm.repository';
 import { RequestsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/requests-typeorm.repository';
 import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/users-typeorm.repository';
-import { ActionsController } from './infrastructure/presentation/controllers/actions.controller';
-import { CausesController } from './infrastructure/presentation/controllers/causes.controller';
-import { CommunitiesController } from './infrastructure/presentation/controllers/communities.controller';
-import { RequestController } from './infrastructure/presentation/controllers/request.controller';
+import { ActionsController } from './infrastructure/presentation/controllers/rest/actions.controller';
+import { CausesController } from './infrastructure/presentation/controllers/rest/causes.controller';
+import { CommunitiesController } from './infrastructure/presentation/controllers/rest/communities.controller';
+import { HealthResolver } from './infrastructure/presentation/controllers/graphql/resolvers/health.resolver';
+import { RequestController } from './infrastructure/presentation/controllers/rest/request.controller';
 
 @Module({
   imports: [
@@ -148,6 +149,9 @@ import { RequestController } from './infrastructure/presentation/controllers/req
     // Events Mappers
     RequestEventMapper,
     CommunityEventMapper,
+
+    // GraphQL
+    HealthResolver,
   ],
 })
 export class CommunitiesModule {}

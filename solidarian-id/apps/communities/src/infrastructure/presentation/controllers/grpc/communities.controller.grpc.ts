@@ -17,7 +17,7 @@ import {
 @Controller()
 @CommunitiesServiceControllerMethods()
 export class CommunitiesControllerGrpc implements CommunitiesServiceController {
-  constructor(private readonly communitiesService: CommunitiesService) {}
+  constructor(private readonly communitiesService: CommunitiesService) { }
 
   async getCommunities(request: GetCommunitiesRequest): Promise<GetCommunitiesResponse> {
     const { criteria, limit } = request;
@@ -40,35 +40,31 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
       CommunityDomainMapper.toCommunitySummaryDto(community),
     );
 
+    // Nest gRPC + proto-loader serializa oneof con el campo concreto en raíz.
     return {
-      result: {
-        $case: 'summaries',
-        summaries: {
-          items: communityDtos,
-        },
+      summaries: {
+        items: communityDtos,
       },
-    };
+    } as unknown as GetCommunitiesResponse;
   }
 
   private async getCommunitiesOrderByMostUsers(limit?: number): Promise<GetCommunitiesResponse> {
     const communities = await this.communitiesService.getOrderByMostUsers(limit);
 
     if (communities.isLeft()) {
-      throw communities.value;
+      throw new RpcException(communities.value);
     }
 
     const communityDtos = communities.value.map((community: RankingCommunitiesByUsersData) =>
       CommunityDomainMapper.toRankingCommunitiesByUsersDto(community),
     );
 
+    // Nest gRPC + proto-loader serializa oneof con el campo concreto en raíz.
     return {
-      result: {
-        $case: 'ranking',
-        ranking: {
-          items: communityDtos,
-        },
+      ranking: {
+        items: communityDtos,
       },
-    };
+    } as unknown as GetCommunitiesResponse;
   }
 
   async getCommunityUsers(request: GetCommunityUsersRequest): Promise<GetCommunityUsersResponse> {

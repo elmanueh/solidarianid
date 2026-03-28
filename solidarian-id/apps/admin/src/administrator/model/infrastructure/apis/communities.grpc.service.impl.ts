@@ -1,6 +1,5 @@
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Inject, Injectable } from '@nestjs/common';
 import type { ClientGrpc } from '@nestjs/microservices';
 import {
@@ -37,7 +36,13 @@ export class CommunitiesApiGrpcServiceImpl extends CommunitiesApiPort {
           .pipe(timeout(5000)),
       );
 
-      if (response.result?.$case !== 'ranking') {
+      const rankingItems =
+        response.result?.$case === 'ranking'
+          ? response.result.ranking.items
+          : // Compatibilidad con respuestas oneof serializadas por proto-loader en campo raíz.
+          (response as unknown as { ranking?: { items?: CommunityRankingUserResponseDto[] } }).ranking?.items;
+
+      if (!rankingItems) {
         return left(
           new RepositoryException(
             'Unexpected response from Communities gRPC service: ranking payload was not returned',
@@ -45,7 +50,7 @@ export class CommunitiesApiGrpcServiceImpl extends CommunitiesApiPort {
         );
       }
 
-      const ranking: CommunityRankingUserResponseDto[] = response.result.ranking.items.map(item => ({
+      const ranking: CommunityRankingUserResponseDto[] = rankingItems.map(item => ({
         id: item.id,
         name: item.name,
         userCount: item.userCount,
@@ -60,7 +65,7 @@ export class CommunitiesApiGrpcServiceImpl extends CommunitiesApiPort {
   async getJoinedUsersLastMonths(
     communityId: string,
     months?: number,
-  ): Promise<Either<ValidationError, CommunityLastUsersJoinedSummaryResponseDto>> {
+  ): Promise<Either<RepositoryException, CommunityLastUsersJoinedSummaryResponseDto>> {
     try {
       const response = await firstValueFrom(
         this.communitiesServiceClient
@@ -80,8 +85,8 @@ export class CommunitiesApiGrpcServiceImpl extends CommunitiesApiPort {
       };
 
       return right(summary);
-    } catch {
-      return left(new ValidationError('Failed to communicate with Communities gRPC service'));
+    } catch (error) {
+      return left(new RepositoryException('Failed to communicate with Communities gRPC service', error as Error));
     }
   }
 }

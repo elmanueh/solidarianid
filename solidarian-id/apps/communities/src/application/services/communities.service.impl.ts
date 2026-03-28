@@ -21,7 +21,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communityQueryRepository: CommunitiesQueryRepositoryPort,
     private readonly communitiesPublisher: CommunitiesPublisherPort,
-  ) { }
+  ) {}
 
   async create(
     communityDto: CommunityRequestEventDto,

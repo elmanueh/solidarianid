@@ -40,7 +40,7 @@ export class CommunitiesApiGrpcServiceImpl extends CommunitiesApiPort {
         response.result?.$case === 'ranking'
           ? response.result.ranking.items
           : // Compatibilidad con respuestas oneof serializadas por proto-loader en campo raíz.
-          (response as unknown as { ranking?: { items?: CommunityRankingUserResponseDto[] } }).ranking?.items;
+            (response as unknown as { ranking?: { items?: CommunityRankingUserResponseDto[] } }).ranking?.items;
 
       if (!rankingItems) {
         return left(

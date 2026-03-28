@@ -17,7 +17,7 @@ import {
 @Controller()
 @CommunitiesServiceControllerMethods()
 export class CommunitiesControllerGrpc implements CommunitiesServiceController {
-  constructor(private readonly communitiesService: CommunitiesService) { }
+  constructor(private readonly communitiesService: CommunitiesService) {}
 
   async getCommunities(request: GetCommunitiesRequest): Promise<GetCommunitiesResponse> {
     const { criteria, limit } = request;

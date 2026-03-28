@@ -11,10 +11,10 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CommunitySummaryResponseDto } from '../dtos/output/community-summary.response.dto';
+import { CommunitySummaryResponseDto } from '../../dtos/output/community-summary.response.dto';
 
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
-import { CommunityDomainMapper } from '../mappers/community.mapper';
+import { CommunityDomainMapper } from '../../mappers/community.mapper';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import {
   ApiBadRequestResponse,
@@ -25,11 +25,11 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { ApiOperation, ApiQuery } from '@nestjs/swagger';
-import { CommunityDetailResponseDto } from '../dtos/output/community-detail.response.dto';
-import { CommunityRankingUserResponseDto } from '../dtos/output/community-ranking-user.response.dto';
+import { CommunityDetailResponseDto } from '../../dtos/output/community-detail.response.dto';
+import { CommunityRankingUserResponseDto } from '../../dtos/output/community-ranking-user.response.dto';
 import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
-import { CommunityLastUsersJoinedSummaryResponseDto } from '../dtos/output/community-last-users-joined-summary.response.dto';
-import { MemberJoinCommunityRequestDto } from '../dtos/input/member-join-community.request.dto';
+import { CommunityLastUsersJoinedSummaryResponseDto } from '../../dtos/output/community-last-users-joined-summary.response.dto';
+import { MemberJoinCommunityRequestDto } from '../../dtos/input/member-join-community.request.dto';
 
 @Controller('communities')
 // istanbul ignore next

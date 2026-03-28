@@ -3,7 +3,7 @@ import { right, left } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
-import { CommunitiesController } from '@app/communities/infrastructure/presentation/controllers/communities.controller';
+import { CommunitiesController } from '@app/communities/infrastructure/presentation/controllers/rest/communities.controller';
 import { EntityNotFoundError } from 'typeorm';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { CommunityRankingUserResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/community-ranking-user.response.dto';

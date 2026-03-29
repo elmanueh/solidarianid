@@ -118,6 +118,17 @@ services:
     networks:
       - solidarian_network
 
+  nginx:
+    build:
+      context: ./apps/pasarela
+      dockerfile: Dockerfile
+    container_name: solidarian_proxy
+    restart: unless-stopped
+    ports:
+      - "8090:80"
+    networks:
+      - solidarian_network
+
 networks:
   solidarian_network:
     driver: bridge

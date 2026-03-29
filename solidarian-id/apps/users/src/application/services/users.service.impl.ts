@@ -1,3 +1,4 @@
+import { DomainEvents } from '@app/ddd/domain-events';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
@@ -18,6 +19,7 @@ import { EventType } from '@solidarianid/kafka';
 export class UsersServiceImpl extends UsersService {
   constructor(
     private readonly usersRepository: UsersRepositoryPort,
+    private readonly domainEvents: DomainEvents,
     private readonly passwordManager: PasswordManager,
     private readonly usersPublisher: UsersPublisherPort,
   ) {
@@ -68,6 +70,9 @@ export class UsersServiceImpl extends UsersService {
     if (res.isLeft()) return left(res.value);
 
     await this.usersPublisher.publish(EventType.USER_CREATED, user.value);
+
+    const events = user.value.pullDomainEvents();
+    this.domainEvents.dispatch(events);
 
     // 6. Retornar ID del usuario creado
     return right(user.value.id.value);
@@ -121,6 +126,9 @@ export class UsersServiceImpl extends UsersService {
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
+
+    const events = user.pullDomainEvents();
+    this.domainEvents.dispatch(events);
 
     await this.usersPublisher.publish(EventType.USER_UPDATED, user);
 
@@ -183,6 +191,9 @@ export class UsersServiceImpl extends UsersService {
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
+
+    const events = user.pullDomainEvents();
+    this.domainEvents.dispatch(events);
 
     return right(undefined);
   }

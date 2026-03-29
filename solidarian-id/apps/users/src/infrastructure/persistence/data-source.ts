@@ -19,8 +19,8 @@ try {
 }
 
 import { DataSource } from 'typeorm';
-import { UserPreferenceEntity } from './entities/user-preference.entity';
-import { UserEntity } from './entities/user.entity';
+import { CheckpointProjectionEntity } from './projections/checkpoint.projection.entity';
+import { UserProjectionEntity } from './projections/user.projection.entity';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
@@ -51,7 +51,7 @@ if (isTest && process.env.TEST_POSTGRESQL_URI) {
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const AppDataSource = new DataSource({
   ...dbConfig,
-  entities: [UserEntity, UserPreferenceEntity],
+  entities: [UserProjectionEntity, CheckpointProjectionEntity],
   migrations: [
     process.env.NODE_ENV === 'production'
       ? 'dist/apps/users/src/infrastructure/persistence/migrations/*.js'

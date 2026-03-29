@@ -39,11 +39,23 @@
           "authType": "inherit",
           "authActive": true
         }
+      },
+      {
+        "v": 9,
+        "name": "SuscriptionCommunityCreated",
+        "url": "https://echo.hoppscotch.io/graphql",
+        "headers": [],
+        "query": "query Request {\n  method\n  url\n  headers {\n    key\n    value\n  }\n}",
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        }
       }
     ],
     "auth": {
-      "authType": "none",
-      "authActive": true
+      "authActive": true,
+      "authType": "none"
     },
     "headers": [],
     "variables": [],

@@ -1,6 +1,5 @@
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { User } from '@app/users/domain/model/user';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -23,6 +22,6 @@ export class Request {
   @Field({ nullable: true })
   reason?: string;
 
-  @Field(() => User)
-  user: User;
+  @Field(() => ID)
+  userId: string;
 }

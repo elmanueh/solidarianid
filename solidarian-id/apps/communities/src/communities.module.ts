@@ -52,7 +52,9 @@ import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repo
 import { ActionsController } from './infrastructure/presentation/controllers/rest/actions.controller';
 import { CausesController } from './infrastructure/presentation/controllers/rest/causes.controller';
 import { CommunitiesController } from './infrastructure/presentation/controllers/rest/communities.controller';
+import { RequestGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/request-graphql.mapper';
 import { HealthResolver } from './infrastructure/presentation/controllers/graphql/resolvers/health.resolver';
+import { RequestResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request.resolver';
 import { RequestController } from './infrastructure/presentation/controllers/rest/request.controller';
 
 @Module({
@@ -151,7 +153,9 @@ import { RequestController } from './infrastructure/presentation/controllers/res
     CommunityEventMapper,
 
     // GraphQL
+    RequestGraphqlMapper,
     HealthResolver,
+    RequestResolver,
   ],
 })
 export class CommunitiesModule {}

@@ -1,7 +1,7 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 
-@ObjectType()
-export class Place {
+@InputType()
+export class EventPlaceInput {
   @Field()
   direction: string;
 
@@ -12,8 +12,8 @@ export class Place {
   countryCode: string;
 }
 
-@ObjectType()
-export class EventRequest {
+@InputType()
+export class ActionEventInput {
   @Field()
   name: string;
 
@@ -23,6 +23,6 @@ export class EventRequest {
   @Field(() => Date)
   initialDate: Date;
 
-  @Field(() => Place)
-  place: Place;
+  @Field(() => EventPlaceInput)
+  place: EventPlaceInput;
 }

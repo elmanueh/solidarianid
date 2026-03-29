@@ -1,8 +1,8 @@
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
-@ObjectType()
-export class CommunityCauseRequest {
+@InputType()
+export class CommunityCauseRequestInput {
   @Field()
   name: string;
 
@@ -15,6 +15,6 @@ export class CommunityCauseRequest {
   @Field(() => Date)
   initialDate: Date;
 
-  @Field()
+  @Field(() => Int)
   durationDays: number;
 }

@@ -41,7 +41,7 @@ export class ReportsViewController {
       return {
         title: 'Reportes de Usuarios',
         layout: 'dashboard',
-        apiBaseUrl: this.configService.get<string>('API_ADMIN_BASE_URL'),
+        apiBaseUrl: this.configService.get<string>('GATEWAY_BASE_URL') ?? '',
         error: result.value.message,
         users: [],
         totalUsers: 0,
@@ -68,7 +68,7 @@ export class ReportsViewController {
     return {
       title: 'Reportes de Usuarios',
       layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_ADMIN_BASE_URL'),
+      apiBaseUrl: this.configService.get<string>('GATEWAY_BASE_URL') ?? '',
       users: usersViewModel,
       totalUsers: paginatedResult.total,
       currentPage: paginatedResult.page,

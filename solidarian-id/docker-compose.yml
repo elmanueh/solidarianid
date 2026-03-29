@@ -37,6 +37,7 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_DB}
     volumes:
       - ./data/mongodb:/data/db
+      - ./scripts/init/init-mongo-admins.js:/docker-entrypoint-initdb.d/init-mongo-admins.js:ro
       - ./scripts/init/mongo:/docker-entrypoint-initdb.d
     healthcheck:
       test:
@@ -114,6 +115,17 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9093
     depends_on:
       - kafka
+    networks:
+      - solidarian_network
+
+  nginx:
+    build:
+      context: ./apps/pasarela
+      dockerfile: Dockerfile
+    container_name: solidarian_proxy
+    restart: unless-stopped
+    ports:
+      - "8090:80"
     networks:
       - solidarian_network
 

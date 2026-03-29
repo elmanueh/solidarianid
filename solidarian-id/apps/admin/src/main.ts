@@ -143,7 +143,7 @@ async function bootstrap() {
   await app.startAllMicroservices();
 
   app.enableCors({
-    origin: configService.get<string>('API_BASE_ADMIN_URL') ?? '*',
+    origin: [configService.get<string>('GATEWAY_BASE_URL') ?? '*'],
     exposedHeaders: ['Location'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     credentials: true,

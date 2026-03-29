@@ -16,7 +16,7 @@ export class AuthViewController {
     return {
       title: 'Inicio de sesión',
       isLoginPage: true,
-      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
+      apiBaseUrl: this.configService.get<string>('GATEWAY_BASE_URL') ?? '',
     };
   }
 
@@ -28,7 +28,7 @@ export class AuthViewController {
     return {
       title: 'Registro de usuario',
       isRegisterPage: true,
-      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
+      apiBaseUrl: this.configService.get<string>('GATEWAY_BASE_URL') ?? '',
     };
   }
 }

@@ -15,6 +15,7 @@ import { User } from '@app/communities/domain/model/entities/user';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
+import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
 
 describe('CausesServiceImpl', () => {
   let service: CausesServiceImpl;
@@ -28,6 +29,9 @@ describe('CausesServiceImpl', () => {
   };
   let mockCommunitiesRepository: {
     findById: jest.Mock;
+  };
+  let mockCausesPublisher: {
+    publish: jest.Mock;
   };
 
   const validCommunityId = 'b1b2c3d4-e5f6-4890-abcd-ef1234567002';
@@ -99,6 +103,9 @@ describe('CausesServiceImpl', () => {
     mockCommunitiesRepository = {
       findById: jest.fn(),
     };
+    mockCausesPublisher = {
+      publish: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -106,6 +113,7 @@ describe('CausesServiceImpl', () => {
         { provide: CausesRepositoryPort, useValue: mockCauseRepository },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
         { provide: CommunitiesRepositoryPort, useValue: mockCommunitiesRepository },
+        { provide: CausesPublisherPort, useValue: mockCausesPublisher },
       ],
     }).compile();
 

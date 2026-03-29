@@ -468,7 +468,7 @@ describe('RequestsServiceImpl', () => {
       const result = await service.acceptRequest(communityEventDto);
 
       expect(result.isRight()).toBe(true);
-      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(communityEventDto.id);
+      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(communityEventDto.id, ['user']);
       expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
       expect(mockCommunitiesService.create).toHaveBeenCalledWith(communityEventDto);
     });
@@ -514,7 +514,11 @@ describe('RequestsServiceImpl', () => {
 
       mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
-      mockActionsService.create.mockResolvedValueOnce(right({}));
+      mockActionsService.create.mockResolvedValueOnce(
+        right({
+          id: { value: 'f1b2c3d4-e5f6-4890-abcd-ef1234567888' },
+        }),
+      );
 
       const result = await service.acceptRequest(actionEventDto);
 
@@ -597,7 +601,7 @@ describe('RequestsServiceImpl', () => {
       const result = await service.rejectRequest(rejectDto);
 
       expect(result.isRight()).toBe(true);
-      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(rejectDto.id);
+      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(rejectDto.id, ['user']);
       expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
     });
 

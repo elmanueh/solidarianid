@@ -4,6 +4,7 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ActionsServiceImpl } from '@app/communities/application/services/actions.service.impl';
 import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
+import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
 import { Action } from '@app/communities/domain/model/entities/action';
 import { ActionRequestEventDto } from '@solidarianid/kafka';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
@@ -15,6 +16,9 @@ describe('ActionsServiceImpl', () => {
     findAll: jest.Mock;
     findById: jest.Mock;
     save: jest.Mock;
+  };
+  let mockActionsPublisher: {
+    publish: jest.Mock;
   };
 
   const validCauseId = 'c1b2c3d4-e5f6-4890-abcd-ef1234567003';
@@ -72,9 +76,16 @@ describe('ActionsServiceImpl', () => {
       findById: jest.fn(),
       save: jest.fn(),
     };
+    mockActionsPublisher = {
+      publish: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ActionsServiceImpl, { provide: ActionsRepositoryPort, useValue: mockActionRepository }],
+      providers: [
+        ActionsServiceImpl,
+        { provide: ActionsRepositoryPort, useValue: mockActionRepository },
+        { provide: ActionsPublisherPort, useValue: mockActionsPublisher },
+      ],
     }).compile();
 
     service = module.get<ActionsServiceImpl>(ActionsServiceImpl);

@@ -308,7 +308,7 @@ export class RequestsServiceImpl extends RequestsService {
   }
 
   async getRequestById(id: string): Promise<Either<ValidationError | RepositoryException, Request<RequestProps>>> {
-    const requestOrError = await this.requestsRepository.findById(id);
+    const requestOrError = await this.requestsRepository.findById(id, ['user']);
 
     if (requestOrError.isLeft()) {
       return left(requestOrError.value);

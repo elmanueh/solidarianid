@@ -2,6 +2,181 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Action {
+  id: ID!
+  name: String!
+  description: String!
+  objectives: [Objective!]!
+  events: [Event!]!
+  causeId: ID!
+}
+
+type EventPlace {
+  direction: String!
+  city: String!
+  countryCode: String!
+}
+
+type Event {
+  id: ID!
+  name: String!
+  description: String!
+  initialDate: Date!
+  place: EventPlace!
+}
+
+type Objective {
+  name: String!
+  description: String!
+  unit: String!
+  quantity: Int!
+  currentAmount: Int!
+}
+
+type Cause {
+  id: ID!
+  name: String!
+  description: String!
+  durationDays: Int!
+  ods: [SustainableDevelopmentGoal!]!
+  initialDate: Date!
+  actions: [Action!]!
+  communityId: ID!
+  userIds: [ID!]!
+}
+
+enum SustainableDevelopmentGoal {
+  NoPoverty
+  ZeroHunger
+  GoodHealthAndWellBeing
+  QualityEducation
+  GenderEquality
+  CleanWaterAndSanitation
+  AffordableAndCleanEnergy
+  DecentWorkAndEconomicGrowth
+  IndustryInnovationAndInfrastructure
+  ReducedInequalities
+  SustainableCitiesAndCommunities
+  ResponsibleConsumptionAndProduction
+  ClimateAction
+  LifeBelowWater
+  LifeOnLand
+  PeaceJusticeAndStrongInstitutions
+  PartnershipsForTheGoals
+}
+
+type Request {
+  id: ID!
+  type: RequestType!
+  name: String!
+  description: String!
+  status: RequestStatus!
+  reason: String
+  userId: ID!
+}
+
+enum RequestType {
+  CAUSE
+  COMMUNITY
+  ACTION
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+type User {
+  id: ID!
+  fullName: String!
+  email: String
+  mobilePhone: String
+}
+
+type Community {
+  id: ID!
+  name: String!
+  description: String!
+  creator: User!
+  admins: [User!]!
+  members: [User!]!
+  causes: [Cause!]!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
 type Query {
-  health: String!
+  actions: [Action!]!
+  action(id: ID!): Action!
+  causes: [Cause!]!
+  cause(id: ID!): Cause!
+  causesByCommunity(communityId: ID!): [Cause!]!
+  causeByCommunity(communityId: ID!, causeId: ID!): Cause!
+  request(id: ID!): Request!
+  communities: [Community!]!
+  community(id: ID!): Community!
+}
+
+type Mutation {
+  joinCause(causeId: ID!, userId: ID!): Boolean!
+  createCommunityRequest(createCommunityRequestInput: CreateCommunityRequestInput!): String!
+  createCauseRequest(createCauseRequestInput: CreateCauseRequestInput!): String!
+  createActionRequest(createActionRequestInput: CreateActionRequestInput!): String!
+  joinCommunity(communityId: ID!, userId: ID!): Boolean!
+}
+
+input CreateCommunityRequestInput {
+  name: String!
+  description: String!
+  causeCreationRequests: [CommunityCauseRequestInput!]!
+  userId: String!
+}
+
+input CommunityCauseRequestInput {
+  name: String!
+  description: String!
+  ods: [SustainableDevelopmentGoal!]!
+  initialDate: Date!
+  durationDays: Int!
+}
+
+input CreateCauseRequestInput {
+  name: String!
+  description: String!
+  ods: [SustainableDevelopmentGoal!]!
+  initialDate: Date!
+  durationDays: Int!
+  userId: String!
+  communityId: String!
+}
+
+input CreateActionRequestInput {
+  name: String!
+  description: String!
+  objectives: [ActionObjectiveInput!]!
+  events: [ActionEventInput!]!
+  userId: String!
+  causeId: String!
+}
+
+input ActionObjectiveInput {
+  name: String!
+  description: String!
+  quantity: Int!
+  unit: String!
+}
+
+input ActionEventInput {
+  name: String!
+  description: String!
+  initialDate: Date!
+  place: EventPlaceInput!
+}
+
+input EventPlaceInput {
+  direction: String!
+  city: String!
+  countryCode: String!
 }

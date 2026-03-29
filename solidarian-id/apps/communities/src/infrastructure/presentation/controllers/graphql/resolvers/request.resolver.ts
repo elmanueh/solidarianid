@@ -1,9 +1,8 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { RequestsService } from '@app/communities/domain/services/request.service';
-import '@app/communities/infrastructure/presentation/controllers/graphql/enums/enum.register';
-import { CreateCommunityRequestInput } from '../inputs/create-community-request.input';
-import { CreateCauseRequestInput } from '../inputs/create-cause-request.input';
-import { CreateActionRequestInput } from '../inputs/create-action-request.input';
+import { CreateCommunityRequestInput } from '../inputs/request/create-community-request.input';
+import { CreateCauseRequestInput } from '../inputs/request/create-cause-request.input';
+import { CreateActionRequestInput } from '../inputs/request/create-action-request.input';
 import { Request } from '../entities/request';
 import { RequestGraphqlMapper } from '../mappers/request-graphql.mapper';
 

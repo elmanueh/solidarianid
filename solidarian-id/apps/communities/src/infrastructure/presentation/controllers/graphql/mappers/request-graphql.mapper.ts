@@ -4,9 +4,9 @@ import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentat
 import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
 import { Injectable } from '@nestjs/common';
 import { Request as GraphqlRequest } from '../entities/request';
-import { CreateActionRequestInput } from '../inputs/create-action-request.input';
-import { CreateCauseRequestInput } from '../inputs/create-cause-request.input';
-import { CreateCommunityRequestInput } from '../inputs/create-community-request.input';
+import { CreateActionRequestInput } from '../inputs/request/create-action-request.input';
+import { CreateCauseRequestInput } from '../inputs/request/create-cause-request.input';
+import { CreateCommunityRequestInput } from '../inputs/request/create-community-request.input';
 
 @Injectable()
 export class RequestGraphqlMapper {

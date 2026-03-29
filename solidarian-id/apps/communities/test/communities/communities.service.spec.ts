@@ -124,24 +124,14 @@ describe('CommunitiesServiceImpl', () => {
       };
       mockCommunityRepo.findById.mockResolvedValueOnce(right(data));
       await expect(service.getCommunityById('1')).resolves.toEqual(right(data));
-      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', [
-        'causes',
-        'causes.users',
-        'members',
-        'members.user',
-      ]);
+      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['members', 'members.user']);
     });
 
     it('propagates ValidationError from repository', async () => {
       const err = new ValidationError('invalid repo data');
       mockCommunityRepo.findById.mockResolvedValueOnce(left(err));
       await expect(service.getCommunityById('1')).resolves.toEqual(left(err));
-      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', [
-        'causes',
-        'causes.users',
-        'members',
-        'members.user',
-      ]);
+      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['members', 'members.user']);
     });
   });
 

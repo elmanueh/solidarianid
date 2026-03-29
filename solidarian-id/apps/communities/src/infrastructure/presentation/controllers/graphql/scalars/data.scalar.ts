@@ -3,11 +3,17 @@ import { CustomScalar, Scalar } from '@nestjs/graphql';
 import { Kind, ValueNode } from 'graphql';
 
 @Scalar('Date', () => Date)
-export class DateScalar implements CustomScalar<number, Date> {
+export class DateScalar implements CustomScalar<number | string, Date> {
   description = 'Date custom scalar type';
 
-  parseValue(value: number): Date {
-    return new Date(value); // value from the client
+  parseValue(value: number | string): Date {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      throw new InvalidDateError('Date must be a valid timestamp integer or ISO date string.');
+    }
+
+    return date;
   }
 
   serialize(value: Date): number {
@@ -16,8 +22,25 @@ export class DateScalar implements CustomScalar<number, Date> {
 
   parseLiteral(ast: ValueNode): Date {
     if (ast.kind === Kind.INT) {
-      return new Date(ast.value);
+      const date = new Date(ast.value);
+
+      if (Number.isNaN(date.getTime())) {
+        throw new InvalidDateError('Date must be a valid timestamp integer or ISO date string.');
+      }
+
+      return date;
     }
-    throw new InvalidDateError('Date must be an integer representing a timestamp.');
+
+    if (ast.kind === Kind.STRING) {
+      const date = new Date(ast.value);
+
+      if (Number.isNaN(date.getTime())) {
+        throw new InvalidDateError('Date must be a valid timestamp integer or ISO date string.');
+      }
+
+      return date;
+    }
+
+    throw new InvalidDateError('Date must be an integer timestamp or ISO date string.');
   }
 }

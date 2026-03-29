@@ -6,19 +6,19 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 
 export abstract class CausesService {
   abstract getAll(): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
-  abstract getById(id: string): Promise<Either<ValidationError | RepositoryException, Cause>>;
+  abstract getById(id: string, relations?: string[]): Promise<Either<ValidationError | RepositoryException, Cause>>;
   abstract getAllByCommunityIds(
     communityIds: string[],
-    actions?: boolean,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
   abstract getAllByCommunityId(
     communityId: string,
-    actions?: boolean,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
   abstract getByCommunityIdAndCauseId(
     communityId: string,
     causeId: string,
-    actions?: boolean,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause>>;
   abstract create(causeEventDto: CauseRequestEventDto): Promise<Either<ValidationError | RepositoryException, Cause>>;
   abstract joinCause(causeId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>>;

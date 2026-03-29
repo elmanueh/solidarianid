@@ -88,7 +88,12 @@ export class CommunitiesController {
   @ApiBadRequestResponse({ description: 'The provided ID is invalid' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async getCommunityById(@Param('id', new ParseUUIDPipe()) id: string): Promise<CommunityDetailResponseDto> {
-    const community = await this.communitiesService.getCommunityById(id);
+    const community = await this.communitiesService.getCommunityById(id, [
+      'members',
+      'members.user',
+      'causes',
+      'causes.users',
+    ]);
 
     if (community.isLeft()) {
       throw community.value;

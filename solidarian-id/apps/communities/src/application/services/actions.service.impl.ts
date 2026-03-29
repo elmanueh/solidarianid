@@ -84,7 +84,7 @@ export class ActionsServiceImpl implements ActionsService {
   }
 
   async getActions(): Promise<Either<ValidationError, Action[]>> {
-    return await this.actionRepository.findAll(['events', 'objectives']);
+    return await this.actionRepository.findAll();
   }
 
   async getActionById(id: string): Promise<Either<ValidationError, Action>> {

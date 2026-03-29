@@ -228,7 +228,7 @@ describe('CausesServiceImpl', () => {
         expect(result.value).toBeInstanceOf(Cause);
         expect(result.value.id.value).toBe(validCauseId);
       }
-      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions', 'users']);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
     });
 
     it('should propagate ValidationError from repository', async () => {
@@ -239,16 +239,16 @@ describe('CausesServiceImpl', () => {
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBe(err);
-      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions', 'users']);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
     });
 
-    it('should request actions relation when fetching by id', async () => {
+    it('should request users relation when fetching by id', async () => {
       const mockCause = createMockCause();
       mockCauseRepository.findById.mockResolvedValueOnce(right(mockCause));
 
       await service.getById(validCauseId);
 
-      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions', 'users']);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
     });
   });
 

@@ -84,12 +84,18 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     return await this.communityRepository.findAll(['members', 'members.user']);
   }
 
-  async getCommunityById(id: string): Promise<Either<ValidationError, Community>> {
-    return await this.communityRepository.findById(id, ['members', 'members.user']);
+  async getCommunityById(
+    id: string,
+    relations: string[] = ['members', 'members.user'],
+  ): Promise<Either<ValidationError, Community>> {
+    return await this.communityRepository.findById(id, relations);
   }
 
-  async getCommunitiesByIds(ids: string[]): Promise<Either<ValidationError | RepositoryException, Community[]>> {
-    return await this.communityRepository.findAllByIds(ids, ['members', 'members.user']);
+  async getCommunitiesByIds(
+    ids: string[],
+    relations: string[] = ['members', 'members.user'],
+  ): Promise<Either<ValidationError | RepositoryException, Community[]>> {
+    return await this.communityRepository.findAllByIds(ids, relations);
   }
 
   async getOrderByMostUsers(limit?: number): Promise<Either<ValidationError, RankingCommunitiesByUsersData[]>> {

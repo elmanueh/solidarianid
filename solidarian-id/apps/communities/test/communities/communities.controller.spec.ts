@@ -128,21 +128,36 @@ describe('CommunitiesController', () => {
       };
       mockService.getCommunityById.mockResolvedValueOnce(right(domainData));
       await expect(controller.getCommunityById('1')).resolves.toEqual(expectedDto);
-      expect(mockService.getCommunityById).toHaveBeenCalledWith('1');
+      expect(mockService.getCommunityById).toHaveBeenCalledWith('1', [
+        'members',
+        'members.user',
+        'causes',
+        'causes.users',
+      ]);
     });
 
     it('throws RepositoryException when service returns left(ValidationError)', async () => {
       const err = new RepositoryException('invalid data');
       mockService.getCommunityById.mockResolvedValueOnce(left(err));
       await expect(controller.getCommunityById('1')).rejects.toThrow(err);
-      expect(mockService.getCommunityById).toHaveBeenCalledWith('1');
+      expect(mockService.getCommunityById).toHaveBeenCalledWith('1', [
+        'members',
+        'members.user',
+        'causes',
+        'causes.users',
+      ]);
     });
 
     it('throws NotFoundError when service returns ValidationError', async () => {
       const err = new EntityNotFoundError('Community', 'Not found');
       mockService.getCommunityById.mockResolvedValueOnce(left(err));
       await expect(controller.getCommunityById('999')).rejects.toThrow(err);
-      expect(mockService.getCommunityById).toHaveBeenCalledWith('999');
+      expect(mockService.getCommunityById).toHaveBeenCalledWith('999', [
+        'members',
+        'members.user',
+        'causes',
+        'causes.users',
+      ]);
     });
   });
 

@@ -7,15 +7,15 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 export abstract class CausesRepositoryPort extends Repository<Cause> {
   abstract findAllByCommunityIds(
     communityIds: string[],
-    actions?: boolean,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
   abstract findAllByCommunityId(
     communityId: string,
-    actions?: boolean,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
   abstract findByCommunityIdAndCauseId(
     communityId: string,
     causeId: string,
-    actions?: boolean,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause>>;
 }

@@ -51,30 +51,30 @@ export class CausesServiceImpl implements CausesService {
     return await this.causeRepository.findAll(['users']);
   }
 
-  async getById(id: string): Promise<Either<ValidationError | RepositoryException, Cause>> {
-    return await this.causeRepository.findById(id, ['users']);
+  async getById(id: string, relations?: string[]): Promise<Either<ValidationError | RepositoryException, Cause>> {
+    return await this.causeRepository.findById(id, relations || ['users']);
   }
 
   async getAllByCommunityIds(
     communityIds: string[],
-    actions: boolean = false,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
-    return await this.causeRepository.findAllByCommunityIds(communityIds, actions);
+    return await this.causeRepository.findAllByCommunityIds(communityIds, relations);
   }
 
   async getAllByCommunityId(
     communityId: string,
-    actions: boolean = false,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
-    return await this.causeRepository.findAllByCommunityId(communityId, actions);
+    return await this.causeRepository.findAllByCommunityId(communityId, relations);
   }
 
   async getByCommunityIdAndCauseId(
     communityId: string,
     causeId: string,
-    actions: boolean = false,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause>> {
-    const causeOrError = await this.causeRepository.findByCommunityIdAndCauseId(communityId, causeId, actions);
+    const causeOrError = await this.causeRepository.findByCommunityIdAndCauseId(communityId, causeId, relations);
 
     if (causeOrError.isLeft()) {
       return left(causeOrError.value);

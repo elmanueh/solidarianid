@@ -27,7 +27,7 @@ export class CausesRepositoryTypeOrmAdapter
 
   async findAllByCommunityIds(
     communityIds: string[],
-    actions: boolean = false,
+    relations: string[] = ['users'],
   ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
     if (communityIds.length === 0) {
       return right([]);
@@ -36,7 +36,7 @@ export class CausesRepositoryTypeOrmAdapter
     try {
       const causeEntities = await this.causeRepository.find({
         where: { communityId: In(communityIds) },
-        relations: actions ? ['actions', 'actions.events', 'actions.objectives', 'users'] : ['users'],
+        relations,
       });
 
       const causes = sequence(causeEntities.map(entity => this.causeMapper.fromPersistence(entity)));
@@ -53,11 +53,11 @@ export class CausesRepositoryTypeOrmAdapter
 
   async findAllByCommunityId(
     communityId: string,
-    actions: boolean = false,
+    relations: string[] = ['users'],
   ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
     const causeEntities = await this.causeRepository.find({
       where: { communityId },
-      relations: actions ? ['actions', 'users'] : ['users'],
+      relations,
     });
 
     const causes = sequence(causeEntities.map(entity => this.causeMapper.fromPersistence(entity)));
@@ -72,11 +72,11 @@ export class CausesRepositoryTypeOrmAdapter
   async findByCommunityIdAndCauseId(
     communityId: string,
     causeId: string,
-    actions: boolean = false,
+    relations: string[] = ['users'],
   ): Promise<Either<ValidationError | RepositoryException, Cause>> {
     const causeEntity = await this.causeRepository.findOne({
       where: { id: causeId, communityId },
-      relations: actions ? ['actions', 'users'] : ['users'],
+      relations,
     });
 
     if (!causeEntity) {

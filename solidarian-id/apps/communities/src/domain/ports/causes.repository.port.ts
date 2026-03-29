@@ -5,6 +5,10 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 
 export abstract class CausesRepositoryPort extends Repository<Cause> {
+  abstract findAllByCommunityIds(
+    communityIds: string[],
+    actions?: boolean,
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
   abstract findAllByCommunityId(
     communityId: string,
     actions?: boolean,

@@ -47,15 +47,25 @@ export class CausesServiceImpl implements CausesService {
     return right(causeOrError.value);
   }
 
-  async getAll(): Promise<Either<ValidationError, Cause[]>> {
+  async getAll(): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
     return await this.causeRepository.findAll(['users']);
   }
 
-  async getById(id: string): Promise<Either<ValidationError, Cause>> {
-    return await this.causeRepository.findById(id, ['actions', 'users']);
+  async getById(id: string): Promise<Either<ValidationError | RepositoryException, Cause>> {
+    return await this.causeRepository.findById(id, ['users']);
   }
 
-  async getAllByCommunityId(communityId: string, actions: boolean = false): Promise<Either<ValidationError, Cause[]>> {
+  async getAllByCommunityIds(
+    communityIds: string[],
+    actions: boolean = false,
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
+    return await this.causeRepository.findAllByCommunityIds(communityIds, actions);
+  }
+
+  async getAllByCommunityId(
+    communityId: string,
+    actions: boolean = false,
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
     return await this.causeRepository.findAllByCommunityId(communityId, actions);
   }
 

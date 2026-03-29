@@ -5,9 +5,16 @@ import { CauseRequestEventDto } from '@solidarianid/kafka';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 
 export abstract class CausesService {
-  abstract getAll(): Promise<Either<ValidationError, Cause[]>>;
-  abstract getById(id: string): Promise<Either<ValidationError, Cause>>;
-  abstract getAllByCommunityId(communityId: string, actions?: boolean): Promise<Either<ValidationError, Cause[]>>;
+  abstract getAll(): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
+  abstract getById(id: string): Promise<Either<ValidationError | RepositoryException, Cause>>;
+  abstract getAllByCommunityIds(
+    communityIds: string[],
+    actions?: boolean,
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
+  abstract getAllByCommunityId(
+    communityId: string,
+    actions?: boolean,
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
   abstract getByCommunityIdAndCauseId(
     communityId: string,
     causeId: string,

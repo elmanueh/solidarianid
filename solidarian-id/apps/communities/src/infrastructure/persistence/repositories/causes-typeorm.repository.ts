@@ -10,6 +10,7 @@ import { Either, left, right, sequence } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { In } from 'typeorm';
 
 @Injectable()
 export class CausesRepositoryTypeOrmAdapter
@@ -23,6 +24,33 @@ export class CausesRepositoryTypeOrmAdapter
   ) {
     super(causeRepository, causeMapper);
   }
+
+  async findAllByCommunityIds(
+    communityIds: string[],
+    actions: boolean = false,
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
+    if (communityIds.length === 0) {
+      return right([]);
+    }
+
+    try {
+      const causeEntities = await this.causeRepository.find({
+        where: { communityId: In(communityIds) },
+        relations: actions ? ['actions', 'actions.events', 'actions.objectives', 'users'] : ['users'],
+      });
+
+      const causes = sequence(causeEntities.map(entity => this.causeMapper.fromPersistence(entity)));
+
+      if (causes.isLeft()) {
+        return left(causes.value);
+      }
+
+      return right(causes.value);
+    } catch (error) {
+      return left(new RepositoryException('Failed to find causes by community ids.', error));
+    }
+  }
+
   async findAllByCommunityId(
     communityId: string,
     actions: boolean = false,

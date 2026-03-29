@@ -7,5 +7,6 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 export abstract class ActionsService {
   abstract getActions(): Promise<Either<ValidationError, Action[]>>;
   abstract getActionById(id: string): Promise<Either<ValidationError, Action>>;
+  abstract getByCauseIds(causeIds: string[]): Promise<Either<ValidationError, Action[]>>;
   abstract create(actionDto: ActionRequestEventDto): Promise<Either<ValidationError | RepositoryException, Action>>;
 }

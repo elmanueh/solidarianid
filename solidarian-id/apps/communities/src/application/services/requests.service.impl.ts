@@ -24,6 +24,10 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Injectable } from '@nestjs/common';
 import {
+  pubSub,
+  REQUEST_STATUS_CHANGED_TOPIC,
+} from '@app/communities/infrastructure/presentation/controllers/graphql/subscriptions/community.subscription';
+import {
   ActionRequestEventDto,
   CauseRequestEventDto,
   CommunityRequestEventDto,
@@ -235,7 +239,7 @@ export class RequestsServiceImpl extends RequestsService {
     const requestOrError: Either<
       RepositoryException | EntityNotFoundException,
       Request<RequestProps>
-    > = await this.requestsRepository.findById(requestEventDto.id);
+    > = await this.requestsRepository.findById(requestEventDto.id, ['user']);
 
     if (requestOrError.isLeft()) {
       return left(requestOrError.value);
@@ -250,6 +254,8 @@ export class RequestsServiceImpl extends RequestsService {
       return left(saveResult.value);
     }
 
+    let createdEntityId: string | undefined;
+
     // Additional logic based on request type
     switch (request.type) {
       case RequestType.COMMUNITY: {
@@ -257,6 +263,9 @@ export class RequestsServiceImpl extends RequestsService {
         if (communityResult.isLeft()) {
           return left(communityResult.value);
         }
+
+        createdEntityId = communityResult.value.id.value;
+
         break;
       }
       case RequestType.CAUSE: {
@@ -264,6 +273,8 @@ export class RequestsServiceImpl extends RequestsService {
         if (causeResult.isLeft()) {
           return left(causeResult.value);
         }
+
+        createdEntityId = causeResult.value.id.value;
         break;
       }
       case RequestType.ACTION: {
@@ -271,11 +282,26 @@ export class RequestsServiceImpl extends RequestsService {
         if (actionResult.isLeft()) {
           return left(actionResult.value);
         }
+
+        createdEntityId = actionResult.value.id.value;
         break;
       }
       default:
         return left(new ValidationError('Invalid request type'));
     }
+
+    await pubSub.publish(REQUEST_STATUS_CHANGED_TOPIC, {
+      requestStatusChanged: {
+        id: request.id.value,
+        userId: request.user.id.value,
+        type: request.type,
+        name: request.name,
+        description: request.description,
+        status: request.status,
+        reason: request.reason,
+        createdEntityId,
+      },
+    });
 
     return right(undefined);
   }
@@ -284,7 +310,7 @@ export class RequestsServiceImpl extends RequestsService {
     const requestOrError: Either<
       RepositoryException | EntityNotFoundException,
       Request<RequestProps>
-    > = await this.requestsRepository.findById(requestEventDto.id);
+    > = await this.requestsRepository.findById(requestEventDto.id, ['user']);
 
     if (requestOrError.isLeft()) {
       return left(requestOrError.value);
@@ -303,6 +329,18 @@ export class RequestsServiceImpl extends RequestsService {
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
+
+    await pubSub.publish(REQUEST_STATUS_CHANGED_TOPIC, {
+      requestStatusChanged: {
+        id: request.id.value,
+        userId: request.user.id.value,
+        type: request.type,
+        name: request.name,
+        description: request.description,
+        status: request.status,
+        reason: request.reason,
+      },
+    });
 
     return right(undefined);
   }

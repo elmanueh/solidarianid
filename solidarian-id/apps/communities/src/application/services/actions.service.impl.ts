@@ -5,14 +5,22 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Either, left, right } from '@app/ddd/either';
 import { ActionsRepositoryPort } from '../../domain/ports/actions.repository.port';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { ActionRequestEventDto } from '@solidarianid/kafka';
+import { ActionRequestEventDto, EventType } from '@solidarianid/kafka';
 import { Objective } from '../../domain/model/value-objects/objective';
 import { Event } from '../../domain/model/entities/event';
 import { EventPlace } from '../../domain/model/value-objects/event-place';
+import {
+  ACTION_CREATED_TOPIC,
+  pubSub,
+} from '@app/communities/infrastructure/presentation/controllers/graphql/subscriptions/community.subscription';
+import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
 
 @Injectable()
 export class ActionsServiceImpl implements ActionsService {
-  constructor(private readonly actionRepository: ActionsRepositoryPort) {}
+  constructor(
+    private readonly actionRepository: ActionsRepositoryPort,
+    private readonly actionPublisher: ActionsPublisherPort,
+  ) {}
 
   async create(actionDto: ActionRequestEventDto): Promise<Either<ValidationError | RepositoryException, Action>> {
     // Create action first (without objectives and events)
@@ -79,6 +87,9 @@ export class ActionsServiceImpl implements ActionsService {
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
+
+    await this.actionPublisher.publish(EventType.ACTION_CREATED, action);
+    await pubSub.publish(ACTION_CREATED_TOPIC, { actionCreated: action });
 
     return right(action);
   }

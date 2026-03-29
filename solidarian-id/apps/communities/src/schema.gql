@@ -104,6 +104,15 @@ type Community {
   causes: [Cause!]!
 }
 
+type RequestStatusChangedEvent {
+  requestId: ID!
+  userId: ID!
+  type: RequestType!
+  status: RequestStatus!
+  reason: String
+  createdEntityId: ID
+}
+
 """Date custom scalar type"""
 scalar Date
 
@@ -179,4 +188,10 @@ input EventPlaceInput {
   direction: String!
   city: String!
   countryCode: String!
+}
+
+type Subscription {
+  actionCreated(causeId: ID!, userId: ID!): Action!
+  causeCreated(communityId: ID!): Cause!
+  requestStatusChanged(userId: ID!): RequestStatusChangedEvent!
 }

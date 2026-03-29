@@ -11,7 +11,9 @@ import { CommunitiesServiceImpl } from './application/services/communities.servi
 import { RequestsServiceImpl } from './application/services/requests.service.impl';
 import { UserServiceImpl } from './application/services/user.service.impl';
 import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
+import { ActionsPublisherPort } from './domain/ports/actions.publisher.port';
 import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
+import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
 import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
 import { RequestPublisherPort } from './domain/ports/requests.publisher.port';
@@ -25,6 +27,10 @@ import { UserService } from './domain/services/user.service';
 import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/requests.consumer';
 import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
 import { CommunityEventMapper } from './infrastructure/messaging/mappers/community-event.mapper';
+import { CauseEventMapper } from './infrastructure/messaging/mappers/cause-event.mapper';
+import { ActionEventMapper } from './infrastructure/messaging/mappers/action-event.mapper';
+import { ActionsKafkaPublisherAdapter } from './infrastructure/messaging/publishers/actions.publisher';
+import { CausesKafkaPublisherAdapter } from './infrastructure/messaging/publishers/causes.publisher';
 import { CommunitiesKafkaPublisherAdapter } from './infrastructure/messaging/publishers/communities.publisher';
 import { RequestKafkaPublisherAdapter } from './infrastructure/messaging/publishers/requests.publisher';
 import { ActionEntity } from './infrastructure/persistence/entities/action.entity';
@@ -59,10 +65,13 @@ import { CausesGraphqlMapper } from './infrastructure/presentation/controllers/g
 import { CommunitiesGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/communities-graphql.mapper';
 import { RequestGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/request-graphql.mapper';
 import { ActionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/actions.resolver';
+import { ActionsSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/actions-subscriptions.resolver';
 import { CausesResolver } from './infrastructure/presentation/controllers/graphql/resolvers/causes.resolver';
 import { RequestResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request.resolver';
 import { RequestController } from './infrastructure/presentation/controllers/rest/request.controller';
 import { CommunitiesResolver } from './infrastructure/presentation/controllers/graphql/resolvers/communities.resolver';
+import { CausesSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/causes-subscriptions.resolver';
+import { RequestSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request-subscriptions.resolver';
 import { UserGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/user-graphql.mapper';
 import { GraphqlLoadersService } from './infrastructure/presentation/controllers/graphql/loaders/graphql-loaders.service';
 
@@ -148,6 +157,14 @@ import { GraphqlLoadersService } from './infrastructure/presentation/controllers
       provide: CommunitiesPublisherPort,
       useClass: CommunitiesKafkaPublisherAdapter,
     },
+    {
+      provide: CausesPublisherPort,
+      useClass: CausesKafkaPublisherAdapter,
+    },
+    {
+      provide: ActionsPublisherPort,
+      useClass: ActionsKafkaPublisherAdapter,
+    },
     // Persistence Mappers
     CommunityEntityMapper,
     CauseEntityMapper,
@@ -160,6 +177,8 @@ import { GraphqlLoadersService } from './infrastructure/presentation/controllers
     // Events Mappers
     RequestEventMapper,
     CommunityEventMapper,
+    CauseEventMapper,
+    ActionEventMapper,
 
     // GraphQL
     DateScalar,
@@ -171,6 +190,9 @@ import { GraphqlLoadersService } from './infrastructure/presentation/controllers
     CausesResolver,
     RequestResolver,
     CommunitiesResolver,
+    ActionsSubscriptionsResolver,
+    CausesSubscriptionsResolver,
+    RequestSubscriptionsResolver,
     UserGraphqlMapper,
     GraphqlLoadersService,
   ],

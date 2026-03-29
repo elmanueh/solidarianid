@@ -4,11 +4,15 @@ import { Community as CommunityGraphql } from '../entities/community';
 
 @Injectable()
 export class CommunitiesGraphqlMapper {
-  toCommunityBase(community: Community): CommunityGraphql {
+  static toCommunityBaseFromDomain(community: Community): CommunityGraphql {
     return {
       id: community.id.value,
       name: community.name,
       description: community.description,
     } as CommunityGraphql;
+  }
+
+  toCommunityBase(community: Community): CommunityGraphql {
+    return CommunitiesGraphqlMapper.toCommunityBaseFromDomain(community);
   }
 }

@@ -7,6 +7,19 @@ import { ActionsGraphqlMapper } from './actions-graphql.mapper';
 export class CausesGraphqlMapper {
   constructor(private readonly actionsGraphqlMapper: ActionsGraphqlMapper) {}
 
+  static toCauseBaseFromDomain(cause: Cause): CauseGraphql {
+    return {
+      id: cause.id.value,
+      name: cause.name,
+      description: cause.description,
+      durationDays: cause.durationDays,
+      ods: cause.ods,
+      initialDate: cause.initialDate,
+      communityId: cause.communityId,
+      userIds: cause.userIds,
+    } as CauseGraphql;
+  }
+
   toCause(cause: Cause): CauseGraphql {
     return {
       id: cause.id.value,
@@ -22,15 +35,6 @@ export class CausesGraphqlMapper {
   }
 
   toCauseBase(cause: Cause): CauseGraphql {
-    return {
-      id: cause.id.value,
-      name: cause.name,
-      description: cause.description,
-      durationDays: cause.durationDays,
-      ods: cause.ods,
-      initialDate: cause.initialDate,
-      communityId: cause.communityId,
-      userIds: cause.userIds,
-    } as CauseGraphql;
+    return CausesGraphqlMapper.toCauseBaseFromDomain(cause);
   }
 }

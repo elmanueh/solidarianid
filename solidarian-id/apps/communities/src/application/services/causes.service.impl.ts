@@ -5,11 +5,16 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Cause } from '../../domain/model/entities/cause';
 import { CausesRepositoryPort } from '../../domain/ports/causes.repository.port';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { CauseRequestEventDto } from '@solidarianid/kafka';
+import { CauseRequestEventDto, EventType } from '@solidarianid/kafka';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
+import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
+import {
+  CAUSE_CREATED_TOPIC,
+  pubSub,
+} from '@app/communities/infrastructure/presentation/controllers/graphql/subscriptions/community.subscription';
 
 @Injectable()
 export class CausesServiceImpl implements CausesService {
@@ -17,6 +22,7 @@ export class CausesServiceImpl implements CausesService {
     private readonly causeRepository: CausesRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communitiesRepository: CommunitiesRepositoryPort,
+    private readonly causesPublisher: CausesPublisherPort,
   ) {}
 
   async create(causeEventDto: CauseRequestEventDto): Promise<Either<ValidationError | RepositoryException, Cause>> {
@@ -43,6 +49,9 @@ export class CausesServiceImpl implements CausesService {
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
+
+    await this.causesPublisher.publish(EventType.CAUSE_CREATED, causeOrError.value);
+    await pubSub.publish(CAUSE_CREATED_TOPIC, { causeCreated: causeOrError.value });
 
     return right(causeOrError.value);
   }

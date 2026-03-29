@@ -1,6 +1,8 @@
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
 import { Module } from '@nestjs/common';
+import '@app/communities/infrastructure/presentation/controllers/graphql/enums/enum.register';
+import { DateScalar } from '@app/communities/infrastructure/presentation/controllers/graphql/scalars/data.scalar';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
@@ -52,10 +54,17 @@ import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repo
 import { ActionsController } from './infrastructure/presentation/controllers/rest/actions.controller';
 import { CausesController } from './infrastructure/presentation/controllers/rest/causes.controller';
 import { CommunitiesController } from './infrastructure/presentation/controllers/rest/communities.controller';
+import { ActionsGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/actions-graphql.mapper';
+import { CausesGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/causes-graphql.mapper';
+import { CommunitiesGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/communities-graphql.mapper';
 import { RequestGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/request-graphql.mapper';
-import { HealthResolver } from './infrastructure/presentation/controllers/graphql/resolvers/health.resolver';
+import { ActionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/actions.resolver';
+import { CausesResolver } from './infrastructure/presentation/controllers/graphql/resolvers/causes.resolver';
 import { RequestResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request.resolver';
 import { RequestController } from './infrastructure/presentation/controllers/rest/request.controller';
+import { CommunitiesResolver } from './infrastructure/presentation/controllers/graphql/resolvers/communities.resolver';
+import { UserGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/user-graphql.mapper';
+import { GraphqlLoadersService } from './infrastructure/presentation/controllers/graphql/loaders/graphql-loaders.service';
 
 @Module({
   imports: [
@@ -153,9 +162,17 @@ import { RequestController } from './infrastructure/presentation/controllers/res
     CommunityEventMapper,
 
     // GraphQL
+    DateScalar,
+    ActionsGraphqlMapper,
+    CausesGraphqlMapper,
+    CommunitiesGraphqlMapper,
     RequestGraphqlMapper,
-    HealthResolver,
+    ActionsResolver,
+    CausesResolver,
     RequestResolver,
+    CommunitiesResolver,
+    UserGraphqlMapper,
+    GraphqlLoadersService,
   ],
 })
 export class CommunitiesModule {}

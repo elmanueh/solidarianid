@@ -9,6 +9,7 @@ import { CommunityLastUsersJoinedData } from '@app/communities/application/servi
 export abstract class CommunitiesService {
   abstract getCommunities(): Promise<Either<ValidationError | RepositoryException, Community[]>>;
   abstract getCommunityById(id: string): Promise<Either<ValidationError, Community>>;
+  abstract getCommunitiesByIds(ids: string[]): Promise<Either<ValidationError | RepositoryException, Community[]>>;
   abstract getOrderByMostUsers(limit?: number): Promise<Either<ValidationError, RankingCommunitiesByUsersData[]>>;
   abstract getJoinedUsersLastMonths(
     communityId: string,

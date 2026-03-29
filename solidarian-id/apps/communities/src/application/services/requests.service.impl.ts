@@ -306,4 +306,14 @@ export class RequestsServiceImpl extends RequestsService {
 
     return right(undefined);
   }
+
+  async getRequestById(id: string): Promise<Either<ValidationError | RepositoryException, Request<RequestProps>>> {
+    const requestOrError = await this.requestsRepository.findById(id);
+
+    if (requestOrError.isLeft()) {
+      return left(requestOrError.value);
+    }
+
+    return right(requestOrError.value);
+  }
 }

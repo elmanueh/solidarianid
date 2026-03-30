@@ -1,6 +1,7 @@
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
 import { Module } from '@nestjs/common';
+import { PubSub } from 'graphql-subscriptions';
 import '@app/communities/infrastructure/presentation/controllers/graphql/enums/enum.register';
 import { DateScalar } from '@app/communities/infrastructure/presentation/controllers/graphql/scalars/data.scalar';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -18,6 +19,7 @@ import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.p
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
 import { RequestPublisherPort } from './domain/ports/requests.publisher.port';
 import { RequestsRepositoryPort } from './domain/ports/requests.repository.port';
+import { SubscriptionsPublisherPort } from './domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from './domain/ports/users.repository.port';
 import { ActionsService } from './domain/services/actions.service';
 import { CausesService } from './domain/services/causes.service';
@@ -74,6 +76,8 @@ import { CausesSubscriptionsResolver } from './infrastructure/presentation/contr
 import { RequestSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request-subscriptions.resolver';
 import { UserGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/user-graphql.mapper';
 import { GraphqlLoadersService } from './infrastructure/presentation/controllers/graphql/loaders/graphql-loaders.service';
+import { GraphqlSubscriptionsPublisherAdapter } from './infrastructure/presentation/controllers/graphql/subscriptions/graphql-subscriptions.publisher';
+import { GRAPHQL_PUB_SUB } from './infrastructure/presentation/controllers/graphql/subscriptions/community.subscription';
 
 @Module({
   imports: [
@@ -164,6 +168,14 @@ import { GraphqlLoadersService } from './infrastructure/presentation/controllers
     {
       provide: ActionsPublisherPort,
       useClass: ActionsKafkaPublisherAdapter,
+    },
+    {
+      provide: SubscriptionsPublisherPort,
+      useClass: GraphqlSubscriptionsPublisherAdapter,
+    },
+    {
+      provide: GRAPHQL_PUB_SUB,
+      useFactory: () => new PubSub(),
     },
     // Persistence Mappers
     CommunityEntityMapper,

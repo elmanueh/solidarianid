@@ -105,11 +105,13 @@ type Community {
 }
 
 type RequestStatusChangedEvent {
-  requestId: ID!
-  userId: ID!
+  id: ID!
   type: RequestType!
+  name: String!
+  description: String!
   status: RequestStatus!
   reason: String
+  userId: ID!
   createdEntityId: ID
 }
 
@@ -191,7 +193,7 @@ input EventPlaceInput {
 }
 
 type Subscription {
-  actionCreated(causeId: ID!, userId: ID!): Action!
+  actionCreated(causeId: ID!): Action!
   causeCreated(communityId: ID!): Cause!
   requestStatusChanged(userId: ID!): RequestStatusChangedEvent!
 }

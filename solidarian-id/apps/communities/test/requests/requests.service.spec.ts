@@ -9,6 +9,7 @@ import { RequestPublisherPort } from '@app/communities/domain/ports/requests.pub
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
+import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
 import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
 import { CreateActionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-action.request.dto';
@@ -57,6 +58,7 @@ describe('RequestsServiceImpl', () => {
   let mockCommunitiesService: { create: jest.Mock };
   let mockCausesService: { create: jest.Mock };
   let mockActionsService: { create: jest.Mock };
+  let mockSubscriptionsPublisher: { publishRequestStatusChanged: jest.Mock };
 
   const validUserId = 'a1b2c3d4-e5f6-4890-abcd-ef1234567001';
   const unauthorizedUserId = 'a1b2c3d4-e5f6-4890-abcd-ef1234567999';
@@ -114,6 +116,7 @@ describe('RequestsServiceImpl', () => {
     mockCommunitiesService = { create: jest.fn() };
     mockCausesService = { create: jest.fn() };
     mockActionsService = { create: jest.fn() };
+    mockSubscriptionsPublisher = { publishRequestStatusChanged: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -126,6 +129,7 @@ describe('RequestsServiceImpl', () => {
         { provide: CommunitiesService, useValue: mockCommunitiesService },
         { provide: CausesService, useValue: mockCausesService },
         { provide: ActionsService, useValue: mockActionsService },
+        { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
       ],
     }).compile();
 

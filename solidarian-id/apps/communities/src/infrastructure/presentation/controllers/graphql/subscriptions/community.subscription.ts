@@ -1,6 +1,4 @@
-import { PubSub } from 'graphql-subscriptions';
-
-export const pubSub = new PubSub();
+export const GRAPHQL_PUB_SUB = Symbol('GRAPHQL_PUB_SUB');
 
 export const CAUSE_CREATED_TOPIC = 'causeCreated';
 export const ACTION_CREATED_TOPIC = 'actionCreated';

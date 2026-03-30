@@ -22,7 +22,13 @@ export class DateScalar implements CustomScalar<number | string, Date> {
 
   parseLiteral(ast: ValueNode): Date {
     if (ast.kind === Kind.INT) {
-      const date = new Date(ast.value);
+      const timestamp = Number(ast.value);
+
+      if (!Number.isFinite(timestamp)) {
+        throw new InvalidDateError('Date must be a valid timestamp integer or ISO date string.');
+      }
+
+      const date = new Date(timestamp);
 
       if (Number.isNaN(date.getTime())) {
         throw new InvalidDateError('Date must be a valid timestamp integer or ISO date string.');

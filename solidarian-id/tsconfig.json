@@ -23,8 +23,6 @@
     "allowJs": true,
     "types": ["jest", "node"],
     "paths": {
-      "@solidarianid/kafka": ["libs/kafka/src/index.ts"],
-      "@solidarianid/testing": ["libs/test/src/index.ts"],
       "@app/admin": ["apps/admin/src"],
       "@app/admin/*": ["apps/admin/src/*"],
       "@app/communities": ["apps/communities/src"],
@@ -37,10 +35,14 @@
       "@app/utils/*": ["libs/utils/src/*"],
       "@app/value-objects": ["libs/value-objects/src"],
       "@app/value-objects/*": ["libs/value-objects/src/*"],
+      "@charts": ["libs/charts/src"],
+      "@charts/*": ["libs/charts/src/*"],
       "@frontend/design-tokens": ["libs/design-tokens/src"],
       "@frontend/design-tokens/*": ["libs/design-tokens/src/*"],
-      "@charts": ["libs/charts/src"],
-      "@charts/*": ["libs/charts/src/*"]
+      "@solidarianid/kafka": ["libs/kafka/src/index.ts"],
+      "@solidarianid/testing": ["libs/test/src/index.ts"],
+      "@solidarianid/grpc": ["libs/grpc-common/src"],
+      "@solidarianid/grpc/*": ["libs/grpc-common/src/*"]
     },
     "baseUrl": "./"
   },

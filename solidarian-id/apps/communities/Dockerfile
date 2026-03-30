@@ -25,6 +25,7 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 # Copiar solo la app communities construida
 COPY --from=builder --chown=nestjs:nodejs /app/dist/apps/communities ./dist/apps/communities
+COPY --from=builder --chown=nestjs:nodejs /app/libs/grpc-common/spec ./libs/grpc-common/spec
 RUN touch /app/communities-swagger.yaml && chown nestjs:nodejs /app/communities-swagger.yaml
 
 EXPOSE 3002

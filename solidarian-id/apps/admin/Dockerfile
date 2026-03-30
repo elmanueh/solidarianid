@@ -38,6 +38,9 @@ COPY --from=builder --chown=nestjs:nodejs /app/apps/admin/public ./apps/admin/pu
 # Copiar el logo solidarian-128x128.png
 COPY --from=builder --chown=nestjs:nodejs /app/libs/design-tokens/src/icons/solidarian-128x128.png ./libs/design-tokens/src/icons/solidarian-128x128.png
 
+# Copiar especificaciones gRPC necesarias en runtime
+COPY --from=builder --chown=nestjs:nodejs /app/libs/grpc-common/spec ./libs/grpc-common/spec
+
 EXPOSE 3000
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \

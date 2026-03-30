@@ -1,18 +1,18 @@
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { Cause } from '@app/communities/domain/model/entities/cause';
+import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { Either, left, right } from '@app/ddd/either';
+import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { CommunityRequestEventDto, EventType } from '@solidarianid/kafka';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { RankingCommunitiesByUsersData } from './community-ranking.data';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { CommunityLastUsersJoinedData } from './community-last-users-joined.data';
-import { ConflictError } from '@app/ddd/errors/conflict-error';
-import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
+import { RankingCommunitiesByUsersData } from './community-ranking.data';
 
 @Injectable()
 export class CommunitiesServiceImpl implements CommunitiesService {
@@ -98,14 +98,16 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     return await this.communityRepository.findAllByIds(ids, relations);
   }
 
-  async getOrderByMostUsers(limit?: number): Promise<Either<ValidationError, RankingCommunitiesByUsersData[]>> {
+  async getOrderByMostUsers(
+    limit?: number,
+  ): Promise<Either<ValidationError | RepositoryException, RankingCommunitiesByUsersData[]>> {
     return await this.communityQueryRepository.findOrderByMostUsers(limit);
   }
 
   async getJoinedUsersLastMonths(
     communityId: string,
     months?: number,
-  ): Promise<Either<ValidationError, CommunityLastUsersJoinedData[]>> {
+  ): Promise<Either<ValidationError | RepositoryException, CommunityLastUsersJoinedData[]>> {
     return await this.communityQueryRepository.findJoinedUsersLastMonths(communityId, months);
   }
 

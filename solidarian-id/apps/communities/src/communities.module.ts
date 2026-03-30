@@ -1,5 +1,6 @@
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
+import { CommunitiesControllerGrpc } from '@app/communities/infrastructure/presentation/controllers/grpc/communities.controller.grpc';
 import { Module } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
 import '@app/communities/infrastructure/presentation/controllers/graphql/enums/enum.register';
@@ -104,6 +105,7 @@ import { GRAPHQL_PUB_SUB } from './infrastructure/presentation/controllers/graph
     RequestController,
     UserConsumerAdapter,
     RequestsConsumerAdapter,
+    CommunitiesControllerGrpc,
   ],
   providers: [
     // Services

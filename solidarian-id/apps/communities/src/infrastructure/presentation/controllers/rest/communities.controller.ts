@@ -12,10 +12,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { CommunitySummaryResponseDto } from '../../dtos/output/community-summary.response.dto';
-
-import { CommunitiesService } from '@app/communities/domain/services/communities.service';
-import { CommunityDomainMapper } from '../../mappers/community.mapper';
 import { Community } from '@app/communities/domain/model/aggregates/community';
+import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -25,17 +23,19 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { ApiOperation, ApiQuery } from '@nestjs/swagger';
-import { CommunityDetailResponseDto } from '../../dtos/output/community-detail.response.dto';
-import { CommunityRankingUserResponseDto } from '../../dtos/output/community-ranking-user.response.dto';
 import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
-import { CommunityLastUsersJoinedSummaryResponseDto } from '../../dtos/output/community-last-users-joined-summary.response.dto';
 import { MemberJoinCommunityRequestDto } from '../../dtos/input/member-join-community.request.dto';
+import { CommunityDetailResponseDto } from '../../dtos/output/community-detail.response.dto';
+import { CommunityLastUsersJoinedSummaryResponseDto } from '../../dtos/output/community-last-users-joined-summary.response.dto';
+import { CommunityRankingUserResponseDto } from '../../dtos/output/community-ranking-user.response.dto';
+import { CommunityDomainMapper } from '../../mappers/community.mapper';
 
 @Controller('communities')
 // istanbul ignore next
 export class CommunitiesController {
   constructor(private readonly communitiesService: CommunitiesService) {}
 
+  //TODO : Borrar este endpoint y sustituirlo por grpc
   @Get()
   @ApiOperation({ summary: 'Retrieve all charitable communities' })
   @ApiQuery({
@@ -113,6 +113,7 @@ export class CommunitiesController {
     );
   }
 
+  //TODO : Borrar este endpoint y sustituirlo por grpc
   @Get(':id/users')
   @ApiOperation({ summary: 'Retrieve the number of users who joined a community in the last months' })
   @ApiOkResponse({

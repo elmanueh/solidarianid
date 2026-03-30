@@ -3,16 +3,16 @@ import { CreateCommunityRequestDto } from '../../dtos/input/create-request-commu
 import { CreateCauseRequestDto } from '../../dtos/input/create-request-cause.request.dto';
 import { CreateActionRequestDto } from '../../dtos/input/create-request-action.request.dto';
 import { RequestsService } from '@app/communities/domain/services/request.service';
-import type { Request, Response } from 'express';
 import {
-  ApiOperation,
-  ApiBody,
-  ApiTags,
-  ApiCreatedResponse,
   ApiBadRequestResponse,
+  ApiBody,
   ApiConflictResponse,
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
+  ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
+import type { Request, Response } from 'express';
 
 @Controller()
 @ApiTags('Requests')

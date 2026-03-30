@@ -1,16 +1,17 @@
 "use client"
 
-import logoSolidarian from "@/public/solidarian-logo.png"
 import {
   Button,
   Card,
   CardAction,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   Input,
@@ -18,43 +19,130 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui"
+import {
+  CITY_MAX_LENGTH,
+  CITY_MIN_LENGTH,
+  COUNTRY_CODE_LENGTH,
+  COUNTRY_CODE_REGEX,
+  FULLNAME_MAX_LENGTH,
+  FULLNAME_MIN_LENGTH,
+  FULLNAME_REGEX,
+  PASSWORD_COMPLEXITY_REGEX,
+  PASSWORD_MIN_LENGTH,
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+  USERNAME_REGEX,
+} from "@/features/auth/constants/auth.constants"
 import { getErrorMessage } from "@/features/axios/errors.handler"
+import logoSolidarian from "@/public/solidarian-logo.png"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { IconEye, IconEyeOff, IconLogin2 } from "@tabler/icons-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useMemo, useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import PhoneInput from "react-phone-input-2"
 import { toast } from "sonner"
+import z from "zod"
+import "react-phone-input-2/lib/style.css"
+import countryList from "react-select-country-list"
+
+const formSchema = z.object({
+  fullName: z
+    .string()
+    .min(
+      FULLNAME_MIN_LENGTH,
+      `Full name must be at least ${FULLNAME_MIN_LENGTH} characters long.`
+    )
+    .max(
+      FULLNAME_MAX_LENGTH,
+      `Full name must not exceed ${FULLNAME_MAX_LENGTH} characters.`
+    )
+    .regex(FULLNAME_REGEX, "Full name must contain only letters and spaces."),
+
+  username: z
+    .string()
+    .min(
+      USERNAME_MIN_LENGTH,
+      `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`
+    )
+    .max(
+      USERNAME_MAX_LENGTH,
+      `Username must not exceed ${USERNAME_MAX_LENGTH} characters.`
+    )
+    .regex(USERNAME_REGEX, "Username must contain only letters and numbers."),
+
+  password: z
+    .string()
+    .min(
+      PASSWORD_MIN_LENGTH,
+      `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`
+    )
+    .regex(
+      PASSWORD_COMPLEXITY_REGEX,
+      "La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial."
+    ),
+
+  city: z
+    .string()
+    .min(
+      CITY_MIN_LENGTH,
+      `City must be at least ${CITY_MIN_LENGTH} characters long.`
+    )
+    .max(
+      CITY_MAX_LENGTH,
+      `City must not exceed ${CITY_MAX_LENGTH} characters.`
+    ),
+
+  countryCode: z
+    .string()
+    .length(COUNTRY_CODE_LENGTH, "Country code must be exactly 2 characters.")
+    .regex(
+      COUNTRY_CODE_REGEX,
+      "Country code must be a valid ISO 3166-1 alpha-2 code (e.g., ES, US, MX)."
+    ),
+})
+
+type RegisterFormData = z.infer<typeof formSchema>
 
 export default function RegisterPage() {
-  const [fullName, setFullName] = useState("")
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [mobilePhone, setMobilePhone] = useState("")
-  const [city, setCity] = useState("")
-  const [countryCode, setCountryCode] = useState("")
+  const [phone, setPhone] = useState("")
 
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
+  const form = useForm<RegisterFormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: "",
+      username: "",
+      password: "",
+      city: "",
+      countryCode: "",
+    },
+    mode: "onTouched",
+  })
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async function onSubmit(data: RegisterFormData) {
+    setIsLoading(true)
     try {
-      // const user = await authService.register(
-      //   fullName,
-      //   username,
-      //   password,
-      //   mobilePhone,
-      //   city,
-      //   countryCode,
-      // );
+      // await authService.register(
+      //   data.fullName,
+      //   data.username,
+      //   data.password,
+      //   data.mobilePhone,
+      //   data.city,
+      //   data.countryCode
+      // )
     } catch (err) {
       toast.error(getErrorMessage(err))
     } finally {
       setIsLoading(false)
     }
   }
+
+  const options = useMemo(() => countryList().getData(), [])
 
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -71,114 +159,173 @@ export default function RegisterPage() {
               width={80}
               height={80}
               className="h-20 w-20"
+              loading="eager"
             />
           </CardAction>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form id="registerForm" onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="name">Nombre completo</FieldLabel>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="Pablo Peris Solano"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="username">Nombre de usuario</FieldLabel>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="pabloperiss"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="password">Contraseña</FieldLabel>
-                <InputGroup>
-                  <InputGroupInput
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    disabled={isLoading}
+              <div className="flex flex-col gap-10 sm:flex-row">
+                <div className="flex flex-col gap-5">
+                  <Controller
+                    name="fullName"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor={field.name}>
+                          Nombre completo
+                        </FieldLabel>
+                        <Input
+                          {...field}
+                          id={field.name}
+                          type="text"
+                          placeholder="Pablo Peris Solano"
+                          aria-invalid={fieldState.invalid}
+                          disabled={isLoading}
+                        />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
                   />
-                  <InputGroupAddon align="inline-end">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <IconEyeOff /> : <IconEye />}
-                    </Button>
-                  </InputGroupAddon>
-                </InputGroup>
-              </Field>
 
-              <Field>
-                <FieldLabel htmlFor="phone">Teléfono</FieldLabel>
-                <Input
-                  id="phone"
-                  type="text"
-                  placeholder="123456789"
-                  value={mobilePhone}
-                  onChange={(e) => setMobilePhone(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Field>
+                  <Controller
+                    name="password"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor={field.name}>Contraseña</FieldLabel>
+                        <InputGroup>
+                          <InputGroupInput
+                            {...field}
+                            id={field.name}
+                            type={showPassword ? "text" : "password"}
+                            aria-invalid={fieldState.invalid}
+                            disabled={isLoading}
+                          />
+                          <InputGroupAddon align="inline-end">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => setShowPassword(!showPassword)}
+                              disabled={isLoading}
+                            >
+                              {showPassword ? <IconEyeOff /> : <IconEye />}
+                            </Button>
+                          </InputGroupAddon>
+                        </InputGroup>
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
 
-              <Field>
-                <FieldLabel htmlFor="city">Ciudad</FieldLabel>
-                <Input
-                  id="city"
-                  type="text"
-                  placeholder="Madrid"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Field>
+                  <Controller
+                    name="countryCode"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor={field.name}>País</FieldLabel>
+                        <select
+                          {...field}
+                          id={field.name}
+                          aria-invalid={fieldState.invalid}
+                          disabled={isLoading}
+                          className="w-full rounded border px-2 py-2"
+                        >
+                          <option value="">Selecciona un país</option>
+                          {options.map(
+                            (option: { value: string; label: string }) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            )
+                          )}
+                        </select>
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+                </div>
 
-              <Field>
-                <FieldLabel htmlFor="countryCode">Código de país</FieldLabel>
-                <Input
-                  id="countryCode"
-                  type="text"
-                  placeholder="ES"
-                  value={countryCode}
-                  onChange={(e) => setCountryCode(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Field>
+                <div className="flex flex-col gap-5">
+                  <Controller
+                    name="username"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor={field.name}>
+                          Nombre de usuario
+                        </FieldLabel>
+                        <Input
+                          {...field}
+                          id={field.name}
+                          type="text"
+                          aria-invalid={fieldState.invalid}
+                          disabled={isLoading}
+                        />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
 
-              <Field>
-                <Button type="submit" disabled={isLoading}>
-                  <IconLogin2 />
-                  {isLoading ? "Registrando..." : "Registrarse"}
-                </Button>
+                  <Field>
+                    <FieldLabel>Teléfono</FieldLabel>
+                    <PhoneInput
+                      country="es"
+                      value={phone}
+                      onChange={(value) => {
+                        setPhone(value)
+                      }}
+                    />
+                  </Field>
 
-                <FieldDescription className="text-center">
-                  ¿No tienes cuenta? <Link href="/login">Inicia sesión</Link>
-                </FieldDescription>
-              </Field>
+                  <Controller
+                    name="city"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor={field.name}>Ciudad</FieldLabel>
+                        <Input
+                          {...field}
+                          id={field.name}
+                          type="text"
+                          placeholder="Murcia"
+                          aria-invalid={fieldState.invalid}
+                          disabled={isLoading}
+                        />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+                </div>
+              </div>
             </FieldGroup>
           </form>
         </CardContent>
+
+        <CardFooter>
+          <Field>
+            <Button type="submit" form="registerForm" disabled={isLoading}>
+              <IconLogin2 />
+              {isLoading ? "Registrando..." : "Registrarse"}
+            </Button>
+
+            <FieldDescription className="text-center">
+              Ya tienes cuenta? <Link href="/login">Inicia sesión</Link>
+            </FieldDescription>
+          </Field>
+        </CardFooter>
       </Card>
     </div>
   )

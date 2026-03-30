@@ -16,7 +16,7 @@ import { join } from 'node:path';
         useFactory: (configService: ConfigService) => ({
           transport: Transport.GRPC,
           options: {
-            url: configService.get<string>('COMMUNITIES_GRPC_URL') ?? '0.0.0.0:50052',
+            url: configService.get<string>('COMMUNITIES_GRPC_URL') ?? 'localhost:50052',
             package: 'solidarianid.grpc.communities.v1',
             protoPath: join(process.cwd(), 'libs/grpc-common/spec/solidarianid/grpc/communities/communities.proto'),
           },

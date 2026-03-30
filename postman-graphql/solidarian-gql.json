@@ -51,11 +51,109 @@
           "authType": "inherit",
           "authActive": true
         }
+      },
+      {
+        "v": 9,
+        "name": "RequestCauseMutation",
+        "url": "https://echo.hoppscotch.io/graphql",
+        "headers": [],
+        "query": "query Request {\n  method\n  url\n  headers {\n    key\n    value\n  }\n}",
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        }
+      },
+      {
+        "v": 9,
+        "name": "JoinCauseMutation",
+        "url": "https://echo.hoppscotch.io/graphql",
+        "headers": [],
+        "query": "query Request {\n  method\n  url\n  headers {\n    key\n    value\n  }\n}",
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        }
+      },
+      {
+        "v": 9,
+        "name": "RequestActionMutation",
+        "url": "https://echo.hoppscotch.io/graphql",
+        "headers": [],
+        "query": "query Request {\n  method\n  url\n  headers {\n    key\n    value\n  }\n}",
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        }
       }
     ],
     "auth": {
-      "authActive": true,
-      "authType": "none"
+      "authType": "none",
+      "authActive": true
+    },
+    "headers": [],
+    "variables": [],
+    "description": null
+  },
+  {
+    "v": 11,
+    "name": "SolidarianID",
+    "folders": [],
+    "requests": [
+      {
+        "v": 9,
+        "name": "Comunities",
+        "url": "http://localhost:3002/graphql",
+        "headers": [],
+        "query": "mutation{\n  createCommunityRequest(name: \"Comunidad de prueba\", description: \"testUsers\", causeCreationRequests: {\n    name: \"causa 1\"\n  \tdescription: \"descripcion\"\n  \tods: [1, 2]\n  \tinitialDate: Date!\n  durationDays: Int!\n  } , userId: \"5a78e808-2833-439f-8877-2adc6a8b459e\"){\n    \n  }\n}\n\n name: String!\n  description: String!\n  causeCreationRequests: [CommunityCauseRequestInput!]!\n  userId: String!",
+        "variables": "{\n  \"input\": {\n    \"name\": \"Comunidad por el Agua\",\n    \"description\": \"Iniciativa para llevar agua potable a comunidades rurales\",\n    \"userId\": \"u123\",\n    \"causeCreationRequests\": [\n      {\n        \"name\": \"Pozos en Kenia\",\n        \"description\": \"Construcción de pozos en zonas con escasez hídrica\",\n        \"ods\": [\"CleanWaterAndSanitation\", \"GoodHealthAndWellBeing\"],\n        \"initialDate\": \"2026-04-15T00:00:00.000Z\",\n        \"durationDays\": 180\n      },\n      {\n        \"name\": \"Filtros comunitarios\",\n        \"description\": \"Instalación de filtros de agua en escuelas\",\n        \"ods\": [\"CleanWaterAndSanitation\", \"QualityEducation\"],\n        \"initialDate\": \"2026-05-01T00:00:00.000Z\",\n        \"durationDays\": 120\n      }\n    ]\n  }\n}",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        }
+      },
+      {
+        "v": 9,
+        "name": "RequestMutation",
+        "url": "https://echo.hoppscotch.io/graphql",
+        "headers": [],
+        "query": "query Request {\n  method\n  url\n  headers {\n    key\n    value\n  }\n}",
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        }
+      },
+      {
+        "v": 9,
+        "name": "RequestQuery",
+        "url": "http://localhost:3002/graphql",
+        "headers": [],
+        "query": "query{\n  request(id: \"0185af2f-1d69-4dec-a18d-e40a8dff688c\")\n  {\n    id,\n    name,\n    status,\n    reason\n  }\n}",
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        }
+      },
+      {
+        "v": 9,
+        "name": "SuscriptionCommunityCreated",
+        "url": "https://echo.hoppscotch.io/graphql",
+        "headers": [],
+        "query": "query Request {\n  method\n  url\n  headers {\n    key\n    value\n  }\n}",
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        }
+      }
+    ],
+    "auth": {
+      "authType": "none",
+      "authActive": true
     },
     "headers": [],
     "variables": [],

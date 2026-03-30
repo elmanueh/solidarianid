@@ -90,7 +90,6 @@
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "shallow-equal-object": "^1.1.1",
     "tailwindcss": "^4.1.18",
     "typeorm": "^0.3.28",
     "uuid": "^8.3.2"
@@ -98,9 +97,9 @@
   "devDependencies": {
     "@eslint/js": "^9.18.0",
     "@faker-js/faker": "^9.3.0",
-    "@nestjs/cli": "^11.0.0",
     "@iconify/json": "^2.2.419",
     "@iconify/tailwind4": "^1.2.0",
+    "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
     "@stryker-mutator/core": "^9.4.0",

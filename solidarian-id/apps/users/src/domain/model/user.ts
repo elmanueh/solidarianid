@@ -1,6 +1,7 @@
 import { AggregateRoot } from '@app/ddd/aggregate-root';
 import { DomainEvent } from '@app/ddd/domain-event';
 import { Either, left, right } from '@app/ddd/either';
+import { ValueObject } from '@app/ddd/value-object';
 import { UserCreatedEvent } from '@app/users/domain/events/user-created.event';
 import { UserFullNameUpdatedEvent } from '@app/users/domain/events/user-fullname-updated.event';
 import { UserLocationUpdatedEvent } from '@app/users/domain/events/user-location-updated.event';
@@ -108,16 +109,18 @@ export class User extends AggregateRoot<UserProps> {
       return left(preferencesOrError.value);
     }
 
-    this.userPreferences = preferencesOrError.value;
-    this.addDomainEvent(
-      new UserPreferencesUpdatedEvent(
-        this.id.value,
-        this.userPreferences.preferredSDGs.slice(),
-        this.userPreferences.preferredCategories.slice(),
-        this.userPreferences.durationPreferences.slice(),
-        this.userPreferences.notificationsEnabled,
-      ),
-    );
+    if (!preferencesOrError.value.equals(this.props.userPreferences)) {
+      this.userPreferences = preferencesOrError.value;
+      this.addDomainEvent(
+        new UserPreferencesUpdatedEvent(
+          this.id.value,
+          this.userPreferences.preferredSDGs.slice(),
+          this.userPreferences.preferredCategories.slice(),
+          this.userPreferences.durationPreferences.slice(),
+          this.userPreferences.notificationsEnabled,
+        ),
+      );
+    }
 
     return right(undefined);
   }
@@ -138,6 +141,7 @@ export class User extends AggregateRoot<UserProps> {
       fullName,
       val => FullName.create(val),
       v => (this.fullName = v),
+      this.props.fullName,
     );
     if (fullNameResult.isLeft()) return left(fullNameResult.value);
     if (fullNameResult.value) {
@@ -148,6 +152,7 @@ export class User extends AggregateRoot<UserProps> {
       username,
       val => Username.create(val),
       v => (this.username = v),
+      this.props.username,
     );
     if (usernameResult.isLeft()) return left(usernameResult.value);
     if (usernameResult.value) {
@@ -158,6 +163,7 @@ export class User extends AggregateRoot<UserProps> {
       mobilePhone,
       val => MobilePhone.create(val),
       v => (this.mobilePhone = v),
+      this.props.mobilePhone,
     );
     if (phoneResult.isLeft()) return left(phoneResult.value);
     if (phoneResult.value) {
@@ -201,10 +207,11 @@ export class User extends AggregateRoot<UserProps> {
   }
 
   // Método genérico para el patrón: Si existe valor -> Crear VO -> Validar -> Asignar
-  private updateField<T>(
+  private updateField<T extends ValueObject<any>>(
     rawValue: string | undefined,
     factory: (val: string) => Either<ValidationError, T>,
     setter: (val: T) => void,
+    currentValue?: T,
   ): Either<ValidationError, boolean> {
     if (rawValue === undefined) {
       return right(false);
@@ -213,6 +220,10 @@ export class User extends AggregateRoot<UserProps> {
     const result = factory(rawValue);
     if (result.isLeft()) {
       return left(result.value);
+    }
+
+    if (result.value.equals(currentValue)) {
+      return right(false);
     }
 
     setter(result.value);
@@ -229,6 +240,11 @@ export class User extends AggregateRoot<UserProps> {
     if (locationOrError.isLeft()) {
       return left(locationOrError.value);
     }
+
+    if (locationOrError.value.equals(this.props.location)) {
+      return right(false);
+    }
+
     this.location = locationOrError.value;
     return right(true);
   }

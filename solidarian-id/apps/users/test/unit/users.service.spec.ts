@@ -5,7 +5,6 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 import { UsersServiceImpl } from '@app/users/application/services/users.service.impl';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { User } from '@app/users/domain/model/user';
-import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
 import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
 import { RegisterUserCommand } from '@app/users/domain/services/users.service';
 import { PasswordManager } from '@app/utils/security/password-manager';
@@ -25,10 +24,6 @@ describe('UsersService Unit testing', () => {
   let mockPasswordManager: {
     validateAndHashPassword: jest.Mock;
     comparePassword: jest.Mock;
-  };
-
-  let mockKafkaPublisher: {
-    publish: jest.Mock;
   };
 
   const validCommand: RegisterUserCommand = {
@@ -60,17 +55,12 @@ describe('UsersService Unit testing', () => {
       comparePassword: jest.fn(),
     };
 
-    mockKafkaPublisher = {
-      publish: jest.fn(),
-    };
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         DomainEvents,
         UsersServiceImpl,
         { provide: UsersRepositoryPort, useValue: mockRepo },
         { provide: PasswordManager, useValue: mockPasswordManager },
-        { provide: UsersPublisherPort, useValue: mockKafkaPublisher },
       ],
     }).compile();
 

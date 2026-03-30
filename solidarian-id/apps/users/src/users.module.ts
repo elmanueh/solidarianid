@@ -1,4 +1,5 @@
 import { DomainEvents } from '@app/ddd/domain-events';
+import { UsersDomainEvents } from '@app/users/infrastructure/messaging/providers/users.domain-events.provider';
 import { DatabaseModule } from '@app/users/infrastructure/persistence/database.module';
 import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
 import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
@@ -33,8 +34,9 @@ import { UsersController } from './infrastructure/presentation/controllers/users
   providers: [
     UserMapper,
     UserEventMapper,
-    DomainEvents,
     UsersProjectionService,
+    DomainEvents,
+    UsersDomainEvents,
     {
       provide: UsersProjectionRepository,
       useClass: UsersProjectionRepositoryTypeORM,

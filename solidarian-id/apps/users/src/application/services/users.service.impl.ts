@@ -3,7 +3,6 @@ import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { User } from '@app/users/domain/model/user';
-import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
 import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
 import { RegisterUserCommand, UpdateUserProfileCommand, UsersService } from '@app/users/domain/services/users.service';
 import { PasswordManager } from '@app/utils/security/password-manager';
@@ -13,15 +12,13 @@ import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { CauseCategory, DurationPreference } from '@app/value-objects/model/user-preferences';
 import { Username } from '@app/value-objects/model/username';
 import { Injectable } from '@nestjs/common';
-import { EventType } from '@solidarianid/kafka';
 
 @Injectable()
 export class UsersServiceImpl extends UsersService {
   constructor(
     private readonly usersRepository: UsersRepositoryPort,
-    private readonly domainEvents: DomainEvents,
     private readonly passwordManager: PasswordManager,
-    private readonly usersPublisher: UsersPublisherPort,
+    private readonly domainEvents: DomainEvents,
   ) {
     super();
   }
@@ -69,10 +66,7 @@ export class UsersServiceImpl extends UsersService {
 
     if (res.isLeft()) return left(res.value);
 
-    await this.usersPublisher.publish(EventType.USER_CREATED, user.value);
-
-    const events = user.value.pullDomainEvents();
-    this.domainEvents.dispatch(events);
+    this.domainEvents.dispatch(user.value.pullDomainEvents());
 
     // 6. Retornar ID del usuario creado
     return right(user.value.id.value);
@@ -127,10 +121,7 @@ export class UsersServiceImpl extends UsersService {
       return left(saveResult.value);
     }
 
-    const events = user.pullDomainEvents();
-    this.domainEvents.dispatch(events);
-
-    await this.usersPublisher.publish(EventType.USER_UPDATED, user);
+    this.domainEvents.dispatch(user.pullDomainEvents());
 
     return right(undefined);
   }
@@ -192,8 +183,7 @@ export class UsersServiceImpl extends UsersService {
       return left(saveResult.value);
     }
 
-    const events = user.pullDomainEvents();
-    this.domainEvents.dispatch(events);
+    this.domainEvents.dispatch(user.pullDomainEvents());
 
     return right(undefined);
   }

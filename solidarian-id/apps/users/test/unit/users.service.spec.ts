@@ -1,15 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UsersServiceImpl } from '@app/users/application/services/users.service.impl';
-import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
-import { RegisterUserCommand } from '@app/users/domain/services/users.service';
-import { right, left, Either } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { DomainEvents } from '@app/ddd/domain-events';
+import { Either, left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { PasswordManager } from '@app/utils/security/password-manager';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { UsersServiceImpl } from '@app/users/application/services/users.service.impl';
+import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { User } from '@app/users/domain/model/user';
 import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
+import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
+import { RegisterUserCommand } from '@app/users/domain/services/users.service';
+import { PasswordManager } from '@app/utils/security/password-manager';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('UsersService Unit testing', () => {
   let service: UsersServiceImpl;
@@ -65,6 +66,7 @@ describe('UsersService Unit testing', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        DomainEvents,
         UsersServiceImpl,
         { provide: UsersRepositoryPort, useValue: mockRepo },
         { provide: PasswordManager, useValue: mockPasswordManager },

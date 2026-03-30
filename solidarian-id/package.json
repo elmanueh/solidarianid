@@ -106,6 +106,7 @@
     "@stryker-mutator/core": "^9.4.0",
     "@stryker-mutator/jest-runner": "^9.4.0",
     "@testcontainers/kafka": "^11.11.0",
+    "@testcontainers/kurrentdb": "^11.13.0",
     "@testcontainers/mongodb": "^11.10.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",

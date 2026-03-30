@@ -2,6 +2,7 @@ import { MemberType } from '@app/communities/domain/model/enums/member-type';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
+import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
 import { IDatabaseSeeder } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
@@ -247,6 +248,23 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
       }));
       await preferencesRepository.insert(defaultPreferences);
     }
+  }
+
+  async getUserProjectionIds(): Promise<string[]> {
+    const repo = this.dataSource.getRepository(UserProjectionEntity);
+    return repo.find().then(users => users.map(u => u.id));
+  }
+
+  async seedUsersProjection(): Promise<void> {
+    const repo = this.dataSource.getRepository(UserProjectionEntity);
+
+    const defaultUsersProjection: UserProjectionEntity[] = DEFAULT_USERS_DATA.map(user => ({
+      id: user.id,
+      username: user.username,
+      mobilePhone: user.mobilePhone,
+    }));
+
+    await repo.insert(defaultUsersProjection);
   }
 
   // COMMUNITIES APP SEEDS

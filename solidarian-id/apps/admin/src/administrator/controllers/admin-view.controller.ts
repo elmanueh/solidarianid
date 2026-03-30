@@ -44,7 +44,7 @@ export class AdminViewController {
       layout: 'dashboard',
       dataSummary,
       charts: chartsJson,
-      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
+      apiBaseUrl: this.configService.get<string>('GATEWAY_BASE_URL') ?? '',
     };
   }
 
@@ -90,7 +90,7 @@ export class AdminViewController {
     return {
       title: 'Solicitudes de comunidades',
       layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
+      apiBaseUrl: this.configService.get<string>('GATEWAY_BASE_URL') ?? '',
       communities: mappedData,
       currentPage: data.page,
       totalPages: data.totalPages,
@@ -122,7 +122,7 @@ export class AdminViewController {
     return {
       title: 'Solicitudes de causas',
       layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
+      apiBaseUrl: this.configService.get<string>('GATEWAY_BASE_URL') ?? '',
       causes: mappedData,
       currentPage: data.page,
       totalPages: data.totalPages,
@@ -156,7 +156,7 @@ export class AdminViewController {
     return {
       title: 'Solicitudes de acciones',
       layout: 'dashboard',
-      apiBaseUrl: this.configService.get<string>('API_BASE_ADMIN_URL'),
+      apiBaseUrl: this.configService.get<string>('GATEWAY_BASE_URL') ?? '',
       actions: mappedData,
       currentPage: data.page,
       totalPages: data.totalPages,

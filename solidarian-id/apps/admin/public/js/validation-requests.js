@@ -7,7 +7,7 @@
   'use strict';
 
   const config = globalThis.APP_CONFIG || {
-    apiBaseUrl: 'http://localhost:3000',
+    apiBaseUrl: 'http://localhost:8090',
   };
 
   const axiosInstance = axios.create({

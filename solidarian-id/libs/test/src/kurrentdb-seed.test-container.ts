@@ -104,12 +104,7 @@ export class KurrentDBSeeder implements IDatabaseSeeder {
 
   async clean(userIds: string[] = Array.from(this.seededUserIds)): Promise<void> {
     const streamNames = Array.from(new Set(userIds.map(userId => this.userStream(userId))));
-
-    await Promise.all(
-      streamNames.map(async streamName => {
-        await this.eventStore.deleteStream(streamName);
-      }),
-    );
+    await Promise.allSettled(streamNames.map(streamName => this.eventStore.deleteStream(streamName)));
   }
 
   async seedAll(): Promise<void> {

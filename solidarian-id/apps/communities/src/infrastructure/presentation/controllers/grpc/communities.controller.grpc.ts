@@ -70,7 +70,7 @@ export class CommunitiesControllerGrpc implements CommunitiesServiceController {
   async getCommunityUsers(request: GetCommunityUsersRequest): Promise<GetCommunityUsersResponse> {
     const { communityId, months } = request;
 
-    if (communityId && !this.isValidUuid(communityId)) {
+    if (!communityId || !this.isValidUuid(communityId)) {
       throw new RpcException(new BadRequestException('communityId must be a valid UUID'));
     }
 

@@ -3,6 +3,7 @@ import {
   EventTracker,
   KafkaTestModule,
   KurrentDBTestModule,
+  PostgreSQLSeeder,
   PostgreSQLTestModule,
   TestContainerLifecycle,
   TestServerHelper,
@@ -40,6 +41,7 @@ describe('Users-Communities Kafka Integration', () => {
   let communitiesServer: TestServerHelper;
 
   let usersDataSource: DataSource;
+  let postgresSeeder: PostgreSQLSeeder;
   let communitiesUserRepository: Repository<CommunitiesUserEntity>;
 
   let eventTracker: EventTracker;
@@ -85,6 +87,7 @@ describe('Users-Communities Kafka Integration', () => {
     );
 
     usersDataSource = usersServer.getModule().get<DataSource>(DataSource);
+    postgresSeeder = new PostgreSQLSeeder(usersDataSource);
 
     // Communities: Kafka consumer only
     communitiesServer = new TestServerHelper();
@@ -129,9 +132,7 @@ describe('Users-Communities Kafka Integration', () => {
 
   beforeEach(async () => {
     eventTracker.clear();
-    await usersDataSource.getRepository(UserProjectionEntity).createQueryBuilder().delete().execute();
-    await usersDataSource.getRepository(CheckpointProjectionEntity).createQueryBuilder().delete().execute();
-    await communitiesUserRepository.createQueryBuilder().delete().execute();
+    await postgresSeeder.clean();
   });
 
   afterAll(async () => {

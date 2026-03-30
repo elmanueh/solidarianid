@@ -56,6 +56,10 @@ describe('UsersController (e2e)', () => {
   });
 
   describe('/api/users (POST)', () => {
+    beforeEach(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder);
+    });
+
     it('Test 1 - should register new user', async () => {
       await server
         .getRequest()

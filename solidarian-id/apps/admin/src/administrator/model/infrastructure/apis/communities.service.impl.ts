@@ -6,6 +6,7 @@ import { CommunitiesApiPort } from '../../domain/ports/output/communities.api.po
 import { CommunityRankingUserResponseDto } from './dtos/community-ranking-user.response.dto';
 import { CommunityLastUsersJoinedSummaryResponseDto } from './dtos/community-last-users-joined-summary.response.dto';
 
+// TODO refactor this service to use gRPC instead of REST once the Communities microservice supports gRPC communication.
 @Injectable()
 export class CommunitiesApiServiceImpl extends CommunitiesApiPort {
   private readonly communitiesApiUrl: string;

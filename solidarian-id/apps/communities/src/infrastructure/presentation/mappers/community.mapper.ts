@@ -1,12 +1,12 @@
-import { Community } from '@app/communities/domain/model/aggregates/community';
-import { CommunitySummaryResponseDto } from '../dtos/output/community-summary.response.dto';
-import { CommunityDetailResponseDto } from '../dtos/output/community-detail.response.dto';
-import { CauseDomainMapper } from './cause.mapper';
-import { CommunityRankingUserResponseDto } from '../dtos/output/community-ranking-user.response.dto';
-import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
 import { CommunityLastUsersJoinedData } from '@app/communities/application/services/community-last-users-joined.data';
-import { CommunityLastUsersJoinedSummaryResponseDto } from '../dtos/output/community-last-users-joined-summary.response.dto';
+import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
+import { Community } from '@app/communities/domain/model/aggregates/community';
+import { CommunityDetailResponseDto } from '../dtos/output/community-detail.response.dto';
 import { CommunityLastUsersJoinedPeriodResponseDto } from '../dtos/output/community-last-users-joined-period.response.dto';
+import { CommunityLastUsersJoinedSummaryResponseDto } from '../dtos/output/community-last-users-joined-summary.response.dto';
+import { CommunityRankingUserResponseDto } from '../dtos/output/community-ranking-user.response.dto';
+import { CommunitySummaryResponseDto } from '../dtos/output/community-summary.response.dto';
+import { CauseDomainMapper } from './cause.mapper';
 
 export class CommunityDomainMapper {
   static toCommunitySummaryDto(community: Community): CommunitySummaryResponseDto {
@@ -40,7 +40,7 @@ export class CommunityDomainMapper {
     communityData: CommunityLastUsersJoinedData[],
   ): CommunityLastUsersJoinedSummaryResponseDto {
     return {
-      communityName: communityData[0].communityName,
+      communityName: communityData[0]?.communityName ?? '',
       dataRange: communityData.map(data => this.toCommunityLastUsersJoinedPeriodResponseDto(data)),
     };
   }

@@ -28,8 +28,9 @@ export class DatabaseModule {
             getTypeOrmConfig({
               config,
               entities: [UserProjectionEntity, CheckpointProjectionEntity],
-              migrationsPath: 'apps/users/src/migrations/*.ts',
-              migrationsDistPath: 'dist/apps/users/src/migrations/*.js',
+              migrationsPath: 'apps/users/src/infrastructure/persistence/migrations/*.ts',
+              migrationsDistPath: 'dist/apps/users/src/infrastructure/persistence/migrations/*.js',
+              migrationsTableName: 'typeorm_migrations_users',
             }),
         }),
       ],

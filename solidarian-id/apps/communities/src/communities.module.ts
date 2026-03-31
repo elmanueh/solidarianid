@@ -1,5 +1,6 @@
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
+import { CommunitiesControllerGrpc } from '@app/communities/infrastructure/presentation/controllers/grpc/communities.controller.grpc';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
@@ -49,10 +50,10 @@ import { CommunitiesQueryTypeOrmRepositoryAdapter } from './infrastructure/persi
 import { CommunitiesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/communities-typeorm.repository';
 import { RequestsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/requests-typeorm.repository';
 import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/users-typeorm.repository';
-import { ActionsController } from './infrastructure/presentation/controllers/actions.controller';
-import { CausesController } from './infrastructure/presentation/controllers/causes.controller';
-import { CommunitiesController } from './infrastructure/presentation/controllers/communities.controller';
-import { RequestController } from './infrastructure/presentation/controllers/request.controller';
+import { ActionsController } from './infrastructure/presentation/controllers/rest/actions.controller';
+import { CausesController } from './infrastructure/presentation/controllers/rest/causes.controller';
+import { CommunitiesController } from './infrastructure/presentation/controllers/rest/communities.controller';
+import { RequestController } from './infrastructure/presentation/controllers/rest/request.controller';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { RequestController } from './infrastructure/presentation/controllers/req
     RequestController,
     UserConsumerAdapter,
     RequestsConsumerAdapter,
+    CommunitiesControllerGrpc,
   ],
   providers: [
     // Services

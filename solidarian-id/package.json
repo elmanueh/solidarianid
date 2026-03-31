@@ -54,12 +54,8 @@
     "docker:test:down": "docker compose -f docker-compose.test.yml down",
     "db:seed": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register scripts/seed/index.ts",
     "db:export": "ts-node scripts/database/index.ts",
-    "mig:gen:users": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:generate apps/users/src/infrastructure/persistence/migrations/Auto -d apps/users/src/infrastructure/persistence/data-source.ts",
-    "mig:gen:communities": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:generate apps/communities/src/infrastructure/persistence/migrations/Auto -d apps/communities/src/infrastructure/persistence/data-source.ts",
-    "mig:run:users": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:run -d apps/users/src/infrastructure/persistence/data-source.ts",
-    "mig:run:communities": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:run -d apps/communities/src/infrastructure/persistence/data-source.ts",
-    "mig:revert:users": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:revert -d apps/users/src/infrastructure/persistence/data-source.ts",
-    "mig:revert:communities": "cross-env NODE_ENV=development npx typeorm-ts-node-commonjs migration:revert -d apps/communities/src/infrastructure/persistence/data-source.ts"
+    "mig:gen:users": "cross-env NODE_ENV=production POSTGRES_HOST=localhost npx typeorm-ts-node-commonjs migration:generate apps/users/src/infrastructure/persistence/migrations/Auto -d apps/users/src/infrastructure/persistence/data-source.ts",
+    "mig:gen:communities": "cross-env NODE_ENV=production POSTGRES_HOST=localhost npx typeorm-ts-node-commonjs migration:generate apps/communities/src/infrastructure/persistence/migrations/Auto -d apps/communities/src/infrastructure/persistence/data-source.ts"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^2.11.0",

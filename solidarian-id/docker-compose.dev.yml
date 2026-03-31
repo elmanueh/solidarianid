@@ -55,7 +55,7 @@ services:
       - API_BASE_COMMUNITIES_URL=${API_BASE_COMMUNITIES_URL}
     depends_on:
       postgres:
-        condition: service_started
+        condition: service_healthy
       kafka:
         condition: service_healthy
     networks:
@@ -87,7 +87,7 @@ services:
       - API_BASE_COMMUNITIES_URL=${API_BASE_COMMUNITIES_URL}
     depends_on:
       postgres:
-        condition: service_started
+        condition: service_healthy
       kafka:
         condition: service_healthy
     networks:

@@ -9,6 +9,7 @@ RUN npm ci && npm cache clean --force
 COPY . ./
 # Construir todas las apps
 RUN npm run build -- communities
+RUN npx tsc -p apps/communities/tsconfig.migrations.json
 
 # Etapa de producción
 FROM node:24-alpine AS production

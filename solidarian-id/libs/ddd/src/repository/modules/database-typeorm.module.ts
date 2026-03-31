@@ -1,25 +1,46 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import * as dotenv from 'dotenv';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 export interface TypeOrmConfigOptions {
   config?: ConfigService;
   entities: any[];
   migrationsPath: string;
   migrationsDistPath: string;
+  migrationsTableName?: string;
   database?: string;
 }
 
 export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOptions {
-  const { config, entities, migrationsPath, migrationsDistPath, database } = options;
+  const { config, entities, migrationsPath, migrationsDistPath, migrationsTableName, database } = options;
 
-  if (!config) dotenv.config();
+  if (!config) {
+    const nodeEnv = process.env.NODE_ENV || 'development';
+    const envFile = resolve(process.cwd(), `.env.${nodeEnv}`);
+    try {
+      const envContent = readFileSync(envFile, 'utf-8');
+      envContent.split('\n').forEach(line => {
+        const [key, ...valueParts] = line.split('=');
+        const trimmedKey = key.trim();
+        const trimmedValue = valueParts.join('=').trim();
+
+        if (trimmedKey && !trimmedKey.startsWith('#') && trimmedValue && process.env[trimmedKey] === undefined) {
+          process.env[trimmedKey] = trimmedValue;
+        }
+      });
+    } catch {
+      // Ignorar si el archivo no existe
+    }
+  }
 
   const nodeEnv = config?.get<string>('NODE_ENV') ?? process.env.NODE_ENV ?? 'development';
   const isProduction = nodeEnv === 'production';
   const isTest = nodeEnv === 'test';
   const shouldLoadMigrations = isProduction || isTest;
+  const shouldSynchronize = nodeEnv === 'development';
+  const resolvedMigrationsTableName = migrationsTableName ?? 'typeorm_migrations';
 
   const testUri = config?.get<string>('TEST_POSTGRESQL_URI') ?? process.env.TEST_POSTGRESQL_URI;
   if (isTest && testUri) {
@@ -31,7 +52,8 @@ export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOp
       synchronize: false,
       migrationsRun: true,
       migrations: shouldLoadMigrations ? [migrationsPath] : [],
-      migrationsTableName: 'typeorm_migrations',
+      migrationsTableName: resolvedMigrationsTableName,
+      migrationsTransactionMode: 'all',
       logging: false,
       extra: {
         connectionTimeoutMillis: 10000,
@@ -48,10 +70,11 @@ export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOp
     database: database ?? config?.get<string>('POSTGRES_DB') ?? process.env.POSTGRES_DB ?? 'solidarian_id',
     entities,
     autoLoadEntities: true,
-    synchronize: !isProduction,
+    synchronize: shouldSynchronize,
     migrationsRun: shouldLoadMigrations,
     migrations: shouldLoadMigrations ? [isProduction ? migrationsDistPath : migrationsPath] : [],
-    migrationsTableName: 'typeorm_migrations',
+    migrationsTableName: resolvedMigrationsTableName,
+    migrationsTransactionMode: 'all',
     //logging: !isProduction,
   };
 }

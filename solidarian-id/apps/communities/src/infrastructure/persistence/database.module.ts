@@ -50,6 +50,7 @@ export class DatabaseModule {
               ],
               migrationsPath: 'apps/communities/src/infrastructure/persistence/migrations/*.ts',
               migrationsDistPath: 'dist/apps/communities/src/infrastructure/persistence/migrations/*.js',
+              migrationsTableName: 'typeorm_migrations_communities',
             }),
         }),
       ],

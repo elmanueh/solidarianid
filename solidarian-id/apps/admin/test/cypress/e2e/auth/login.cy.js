@@ -2,10 +2,10 @@
  * Test E2E: Login de Administradores
  *
  * Pruebas de autenticación para el panel de administración de SolidarianID.
- * Los administradores están pre-cargados en MongoDB mediante el script init-mongo-admins.js
+ * Los administradores están pre-cargados en MongoDB mediante el script 00-seed-admins.js
  *
- * @see scripts/mongodb/init-mongo-admins.js
- * @see scripts/mongodb/CREDENTIALS.md
+ * @see scripts/init/mongo/00-seed-admins.js
+ * @see scripts/init/CREDENTIALS.md
  */
 
 describe('Login de Administradores', () => {

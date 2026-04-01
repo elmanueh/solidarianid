@@ -52,7 +52,7 @@
     "docker:dev:down": "docker compose --env-file .env.development down",
     "docker:test": "docker compose -f docker-compose.test.yml --env-file .env.test up -d",
     "docker:test:down": "docker compose -f docker-compose.test.yml down",
-    "db:seed": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register scripts/seed/index.ts",
+    "db:seed": "cross-env NODE_ENV=production npx ts-node -r tsconfig-paths/register scripts/seed/index.ts",
     "db:export": "ts-node scripts/database/index.ts",
     "mig:gen:users": "cross-env NODE_ENV=production POSTGRES_HOST=localhost npx typeorm-ts-node-commonjs migration:generate apps/users/src/infrastructure/persistence/migrations/Auto -d apps/users/src/infrastructure/persistence/data-source.ts",
     "mig:gen:communities": "cross-env NODE_ENV=production POSTGRES_HOST=localhost npx typeorm-ts-node-commonjs migration:generate apps/communities/src/infrastructure/persistence/migrations/Auto -d apps/communities/src/infrastructure/persistence/data-source.ts"

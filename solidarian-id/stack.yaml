@@ -90,7 +90,7 @@ Resources:
 
           # Descargamos los datos de prueba de un bucket S3
           mkdir -p /home/ec2-user/init-data
-          aws s3 cp s3://solidarianid-bucket-init-data-database /home/ec2-user/init-data --recursive --exclude "*" --include "init-*" --include "create-service-databases.sql" --region ${AWS::Region}
+          aws s3 cp s3://solidarianid-bucket-init-data-database /home/ec2-user/init-data --recursive --exclude "*" --include "init-*" --include "00-*" --include "01-*" --include "02-*" --region ${AWS::Region}
           chown -R ec2-user:ec2-user /home/ec2-user/init-data
 
           # Creamos el fichero docker-compose.yml con las 3 apps

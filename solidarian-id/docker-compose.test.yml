@@ -15,7 +15,7 @@ services:
     tmpfs:
       - /var/lib/postgresql/data
     volumes:
-      - ./scripts/init/postgres/create-service-databases.sql:/docker-entrypoint-initdb.d/00-create-service-databases.sql:ro
+      - ./scripts/init/postgres/00-create-databases.sql:/docker-entrypoint-initdb.d/00-create-databases.sql:ro
     networks:
       - solidarian_test_network
 
@@ -32,7 +32,7 @@ services:
     tmpfs:
       - /data/db
     volumes:
-      - ./scripts/init/init-mongo-admins.js:/docker-entrypoint-initdb.d/init-mongo-admins.js:ro
+      - ./scripts/init/mongo/00-seed-admins.js:/docker-entrypoint-initdb.d/00-seed-admins.js:ro
     healthcheck:
       test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
       interval: 10s

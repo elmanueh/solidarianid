@@ -38,7 +38,7 @@ import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as z from "zod"
 
-const formSchema = z.object({
+const loginFormSchema = z.object({
   username: z
     .string()
     .min(
@@ -62,14 +62,14 @@ const formSchema = z.object({
     ),
 })
 
-type LoginFormData = z.infer<typeof formSchema>
+type LoginFormData = z.infer<typeof loginFormSchema>
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<LoginFormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       username: "",
       password: "",

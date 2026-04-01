@@ -39,15 +39,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { IconEye, IconEyeOff, IconLogin2 } from "@tabler/icons-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import PhoneInput from "react-phone-input-2"
-import { toast } from "sonner"
-import z from "zod"
+// @ts-expect-error CSS para ver la bandera
 import "react-phone-input-2/lib/style.css"
 import countryList from "react-select-country-list"
+import { toast } from "sonner"
+import z from "zod"
 
-const formSchema = z.object({
+const registerFormSchema = z.object({
   fullName: z
     .string()
     .min(
@@ -103,16 +104,31 @@ const formSchema = z.object({
     ),
 })
 
-type RegisterFormData = z.infer<typeof formSchema>
+type RegisterFormData = z.infer<typeof registerFormSchema>
 
 export default function RegisterPage() {
   const [phone, setPhone] = useState("")
+  const [phoneInputStyle, setPhoneInputStyle] = useState({})
+  const [dropdownStyle, setDropdownStyle] = useState({})
 
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
+  useEffect(() => {
+    setPhoneInputStyle({
+      backgroundColor: "var(--color-input)",
+      color: "var(--foreground)",
+      borderColor: "var(--border)",
+      borderRadius: "1rem",
+    })
+    setDropdownStyle({
+      backgroundColor: "lightgray",
+      color: "black",
+    })
+  }, [])
+
   const form = useForm<RegisterFormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(registerFormSchema),
     defaultValues: {
       fullName: "",
       username: "",
@@ -235,7 +251,7 @@ export default function RegisterPage() {
                           id={field.name}
                           aria-invalid={fieldState.invalid}
                           disabled={isLoading}
-                          className="w-full rounded border px-2 py-2"
+                          className="w-full rounded border bg-input px-2 py-2"
                         >
                           <option value="">Selecciona un país</option>
                           {options.map(
@@ -285,6 +301,9 @@ export default function RegisterPage() {
                       onChange={(value) => {
                         setPhone(value)
                       }}
+                      inputStyle={phoneInputStyle}
+                      buttonStyle={phoneInputStyle}
+                      dropdownStyle={dropdownStyle}
                     />
                   </Field>
 

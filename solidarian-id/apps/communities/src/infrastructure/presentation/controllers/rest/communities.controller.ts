@@ -12,11 +12,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { CommunitySummaryResponseDto } from '../../dtos/output/community-summary.response.dto';
-
-import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
-import { ApiOperation, ApiQuery } from '@nestjs/swagger';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -25,6 +22,8 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
 } from '@nestjs/swagger/dist/decorators/api-response.decorator';
+import { ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
 import { MemberJoinCommunityRequestDto } from '../../dtos/input/member-join-community.request.dto';
 import { CommunityDetailResponseDto } from '../../dtos/output/community-detail.response.dto';
 import { CommunityLastUsersJoinedSummaryResponseDto } from '../../dtos/output/community-last-users-joined-summary.response.dto';
@@ -89,7 +88,12 @@ export class CommunitiesController {
   @ApiBadRequestResponse({ description: 'The provided ID is invalid' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async getCommunityById(@Param('id', new ParseUUIDPipe()) id: string): Promise<CommunityDetailResponseDto> {
-    const community = await this.communitiesService.getCommunityById(id);
+    const community = await this.communitiesService.getCommunityById(id, [
+      'members',
+      'members.user',
+      'causes',
+      'causes.users',
+    ]);
 
     if (community.isLeft()) {
       throw community.value;

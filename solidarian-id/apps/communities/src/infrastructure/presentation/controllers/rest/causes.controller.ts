@@ -1,6 +1,6 @@
-import { Cause } from '@app/communities/domain/model/entities/cause';
-import { CausesService } from '@app/communities/domain/services/causes.service';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { CausesService } from '@app/communities/domain/services/causes.service';
+import { Cause } from '@app/communities/domain/model/entities/cause';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -46,7 +46,7 @@ export class CausesController {
   })
   @ApiResponse({ status: 404, description: 'Cause not found' })
   async getCauseById(@Param('id', new ParseUUIDPipe()) id: string): Promise<CauseDetailResponseDto> {
-    const cause = await this.causesService.getById(id);
+    const cause = await this.causesService.getById(id, ['users', 'actions']);
 
     if (cause.isLeft()) {
       throw cause.value;
@@ -86,7 +86,7 @@ export class CausesController {
     @Param('communityId', new ParseUUIDPipe()) communityId: string,
     @Param('causeId', new ParseUUIDPipe()) causeId: string,
   ): Promise<CauseDetailResponseDto> {
-    const cause = await this.causesService.getByCommunityIdAndCauseId(communityId, causeId, true);
+    const cause = await this.causesService.getByCommunityIdAndCauseId(communityId, causeId, ['users', 'actions']);
     if (cause.isLeft()) {
       throw cause.value;
     }

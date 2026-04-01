@@ -1,6 +1,7 @@
 import { CreateActionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-action.request.dto';
 import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
 import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
+import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
 import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
@@ -49,4 +50,10 @@ export abstract class RequestsService {
   abstract rejectRequest(
     requestEventDto: RequestEventDto,
   ): Promise<Either<ValidationError | RepositoryException, void>>;
+
+  /**
+   * Retrieves a request by its unique identifier.
+   * @param id Unique identifier of the request
+   */
+  abstract getRequestById(id: string): Promise<Either<ValidationError | RepositoryException, Request<RequestProps>>>;
 }

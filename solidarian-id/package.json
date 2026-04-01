@@ -58,13 +58,17 @@
     "mig:gen:communities": "cross-env NODE_ENV=production POSTGRES_HOST=localhost npx typeorm-ts-node-commonjs migration:generate apps/communities/src/infrastructure/persistence/migrations/Auto -d apps/communities/src/infrastructure/persistence/data-source.ts"
   },
   "dependencies": {
+    "@apollo/server": "^5.5.0",
+    "@as-integrations/express5": "^1.1.2",
     "@bufbuild/protobuf": "^2.11.0",
     "@grpc/grpc-js": "^1.14.3",
     "@grpc/proto-loader": "^0.8.0",
     "@iconify/tailwind": "^1.2.0",
+    "@nestjs/apollo": "^13.2.4",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/graphql": "^13.2.4",
     "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^11.1.17",
     "@nestjs/mongoose": "^11.0.4",
@@ -77,11 +81,14 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "cross-env": "^10.1.0",
+    "dataloader": "^2.2.3",
     "eslint-plugin-cypress": "^5.2.0",
     "eslint-plugin-jest": "^29.11.0",
     "eslint-plugin-jest-dom": "^5.5.0",
     "express-handlebars": "^8.0.2",
     "express-session": "^1.18.2",
+    "graphql": "^16.13.2",
+    "graphql-subscriptions": "^3.0.0",
     "hbs": "^4.2.0",
     "js-yaml": "^4.1.1",
     "kafkajs": "^2.2.4",
@@ -141,6 +148,7 @@
     "ts-node": "^10.9.2",
     "ts-proto": "^2.11.5",
     "typescript": "^5.9.3",
+    "webpack": "^5.105.4",
     "typescript-eslint": "^8.20.0"
   }
 }

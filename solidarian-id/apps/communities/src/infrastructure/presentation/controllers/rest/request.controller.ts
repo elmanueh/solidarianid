@@ -1,5 +1,8 @@
+import { Body, Controller, Post, Req, Res, HttpCode, HttpStatus } from '@nestjs/common';
+import { CreateCommunityRequestDto } from '../../dtos/input/create-request-community.request.dto';
+import { CreateCauseRequestDto } from '../../dtos/input/create-request-cause.request.dto';
+import { CreateActionRequestDto } from '../../dtos/input/create-request-action.request.dto';
 import { RequestsService } from '@app/communities/domain/services/request.service';
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -10,9 +13,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
-import { CreateActionRequestDto } from '../../dtos/input/create-request-action.request.dto';
-import { CreateCauseRequestDto } from '../../dtos/input/create-request-cause.request.dto';
-import { CreateCommunityRequestDto } from '../../dtos/input/create-request-community.request.dto';
 
 @Controller()
 @ApiTags('Requests')

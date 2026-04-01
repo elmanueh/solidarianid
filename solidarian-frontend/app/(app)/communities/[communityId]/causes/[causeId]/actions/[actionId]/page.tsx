@@ -5,9 +5,5 @@ type ActionPageProps = {
 export default async function ActionPage({ params }: ActionPageProps) {
   const { communityId, causeId, actionId } = await params
 
-  return (
-    <p>
-      Action {actionId} in cause {causeId} from community {communityId}
-    </p>
-  )
+  return <p>Action detail: {communityId}/{causeId}/{actionId}</p>
 }

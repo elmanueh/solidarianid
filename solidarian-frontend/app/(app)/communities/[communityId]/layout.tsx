@@ -13,6 +13,7 @@ export default async function CommunityLayout({
     <section className="space-y-4">
       <header className="border-b pb-3">
         <h1 className="text-xl font-semibold">Community {communityId}</h1>
+        <p className="text-sm text-muted-foreground">Trace: /communities/{communityId}</p>
       </header>
       {children}
     </section>

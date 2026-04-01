@@ -5,5 +5,5 @@ type CommunityPageProps = {
 export default async function CommunityPage({ params }: CommunityPageProps) {
   const { communityId } = await params
 
-  return <p>Community page for {communityId}</p>
+  return <p>About community: {communityId}</p>
 }

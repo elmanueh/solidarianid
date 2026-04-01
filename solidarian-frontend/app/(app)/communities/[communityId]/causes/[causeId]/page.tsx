@@ -5,9 +5,5 @@ type CausePageProps = {
 export default async function CausePage({ params }: CausePageProps) {
   const { communityId, causeId } = await params
 
-  return (
-    <p>
-      Cause page for {causeId} in community {communityId}
-    </p>
-  )
+  return <p>Cause detail: {communityId}/{causeId}</p>
 }

@@ -10,7 +10,7 @@ export const DB_CONFIG = {
     port: process.env.POSTGRES_PORT || '5432',
     user: process.env.POSTGRES_USER || 'solidarian_user',
     password: process.env.POSTGRES_PASSWORD || 'solidarian_dev_password',
-    database: process.env.POSTGRES_DB || 'solidarian_id_db',
+    database: process.env.POSTGRES_USERS_DB || process.env.POSTGRES_DB || 'solidarian_users_db',
   },
   mongo: {
     container: 'solidarian_mongo_db',

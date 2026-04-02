@@ -4,8 +4,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { ActionsService } from '@app/communities/domain/services/actions.service';
 import { ActionsController } from '@app/communities/infrastructure/presentation/controllers/rest/actions.controller';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { EntityNotFoundError } from 'typeorm';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 
 describe('ActionsController', () => {
   let controller: ActionsController;

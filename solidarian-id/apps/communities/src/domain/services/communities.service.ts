@@ -8,7 +8,12 @@ import { Community } from '../model/aggregates/community';
 
 export abstract class CommunitiesService {
   abstract getCommunities(): Promise<Either<ValidationError | RepositoryException, Community[]>>;
-  abstract getCommunityById(id: string): Promise<Either<ValidationError, Community>>;
+  abstract getCommunityById(id: string, relations?: string[]): Promise<Either<ValidationError, Community>>;
+  abstract getCommunitiesByIds(
+    ids: string[],
+    relations?: string[],
+  ): Promise<Either<ValidationError | RepositoryException, Community[]>>;
+  abstract getOrderByMostUsers(limit?: number): Promise<Either<ValidationError, RankingCommunitiesByUsersData[]>>;
   abstract getOrderByMostUsers(
     limit?: number,
   ): Promise<Either<ValidationError | RepositoryException, RankingCommunitiesByUsersData[]>>;

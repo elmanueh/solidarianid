@@ -5,13 +5,20 @@ import { CauseRequestEventDto } from '@solidarianid/kafka';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 
 export abstract class CausesService {
-  abstract getAll(): Promise<Either<ValidationError, Cause[]>>;
-  abstract getById(id: string): Promise<Either<ValidationError, Cause>>;
-  abstract getAllByCommunityId(communityId: string, actions?: boolean): Promise<Either<ValidationError, Cause[]>>;
+  abstract getAll(): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
+  abstract getById(id: string, relations?: string[]): Promise<Either<ValidationError | RepositoryException, Cause>>;
+  abstract getAllByCommunityIds(
+    communityIds: string[],
+    relations?: string[],
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
+  abstract getAllByCommunityId(
+    communityId: string,
+    relations?: string[],
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
   abstract getByCommunityIdAndCauseId(
     communityId: string,
     causeId: string,
-    actions?: boolean,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause>>;
   abstract create(causeEventDto: CauseRequestEventDto): Promise<Either<ValidationError | RepositoryException, Cause>>;
   abstract joinCause(causeId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>>;

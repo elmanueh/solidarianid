@@ -9,6 +9,7 @@ import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repos
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
 import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
+import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { ActionsService } from '@app/communities/domain/services/actions.service';
 import { CausesService } from '@app/communities/domain/services/causes.service';
@@ -18,7 +19,6 @@ import { CreateActionRequestDto } from '@app/communities/infrastructure/presenta
 import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
 import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
 import { Either, left, right } from '@app/ddd/either';
-import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
@@ -48,6 +48,7 @@ export class RequestsServiceImpl extends RequestsService {
     private readonly communitiesService: CommunitiesService,
     private readonly causesService: CausesService,
     private readonly actionsService: ActionsService,
+    private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
   ) {
     super();
   }
@@ -232,10 +233,7 @@ export class RequestsServiceImpl extends RequestsService {
   }
 
   async acceptRequest(requestEventDto: RequestEventDto): Promise<Either<ValidationError | RepositoryException, void>> {
-    const requestOrError: Either<
-      RepositoryException | EntityNotFoundException,
-      Request<RequestProps>
-    > = await this.requestsRepository.findById(requestEventDto.id);
+    const requestOrError = await this.requestsRepository.findById(requestEventDto.id, ['user']);
 
     if (requestOrError.isLeft()) {
       return left(requestOrError.value);
@@ -250,6 +248,8 @@ export class RequestsServiceImpl extends RequestsService {
       return left(saveResult.value);
     }
 
+    let createdEntityId: string | undefined;
+
     // Additional logic based on request type
     switch (request.type) {
       case RequestType.COMMUNITY: {
@@ -257,6 +257,9 @@ export class RequestsServiceImpl extends RequestsService {
         if (communityResult.isLeft()) {
           return left(communityResult.value);
         }
+
+        createdEntityId = communityResult.value.id.value;
+
         break;
       }
       case RequestType.CAUSE: {
@@ -264,6 +267,8 @@ export class RequestsServiceImpl extends RequestsService {
         if (causeResult.isLeft()) {
           return left(causeResult.value);
         }
+
+        createdEntityId = causeResult.value.id.value;
         break;
       }
       case RequestType.ACTION: {
@@ -271,20 +276,30 @@ export class RequestsServiceImpl extends RequestsService {
         if (actionResult.isLeft()) {
           return left(actionResult.value);
         }
+
+        createdEntityId = actionResult.value.id.value;
         break;
       }
       default:
         return left(new ValidationError('Invalid request type'));
     }
 
+    await this.subscriptionsPublisher.publishRequestStatusChanged({
+      id: request.id.value,
+      userId: request.user.id.value,
+      type: request.type,
+      name: request.name,
+      description: request.description,
+      status: request.status,
+      reason: request.reason,
+      createdEntityId,
+    });
+
     return right(undefined);
   }
 
   async rejectRequest(requestEventDto: RequestEventDto): Promise<Either<ValidationError | RepositoryException, void>> {
-    const requestOrError: Either<
-      RepositoryException | EntityNotFoundException,
-      Request<RequestProps>
-    > = await this.requestsRepository.findById(requestEventDto.id);
+    const requestOrError = await this.requestsRepository.findById(requestEventDto.id, ['user']);
 
     if (requestOrError.isLeft()) {
       return left(requestOrError.value);
@@ -304,6 +319,26 @@ export class RequestsServiceImpl extends RequestsService {
       return left(saveResult.value);
     }
 
+    await this.subscriptionsPublisher.publishRequestStatusChanged({
+      id: request.id.value,
+      userId: request.user.id.value,
+      type: request.type,
+      name: request.name,
+      description: request.description,
+      status: request.status,
+      reason: request.reason,
+    });
+
     return right(undefined);
+  }
+
+  async getRequestById(id: string): Promise<Either<ValidationError | RepositoryException, Request<RequestProps>>> {
+    const requestOrError = await this.requestsRepository.findById(id, ['user']);
+
+    if (requestOrError.isLeft()) {
+      return left(requestOrError.value);
+    }
+
+    return right(requestOrError.value);
   }
 }

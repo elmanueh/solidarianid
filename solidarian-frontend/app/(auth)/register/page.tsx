@@ -41,14 +41,7 @@ export default function RegisterPage() {
     setIsLoading(true)
 
     try {
-      // const user = await authService.register(
-      //   fullName,
-      //   username,
-      //   password,
-      //   mobilePhone,
-      //   city,
-      //   countryCode,
-      // );
+      // TODO: Conectar con authService.register
     } catch (err) {
       toast.error(getErrorMessage(err))
     } finally {
@@ -173,7 +166,7 @@ export default function RegisterPage() {
                 </Button>
 
                 <FieldDescription className="text-center">
-                  ¿No tienes cuenta? <Link href="/login">Inicia sesión</Link>
+                  ¿Ya tienes cuenta? <Link href="/">Inicia sesión</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

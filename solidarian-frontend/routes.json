@@ -1,0 +1,11 @@
+{
+  "/api/v1/users": "/users",
+  "/api/v1/users/:id": "/users/:id",
+  "/api/v1/communities": "/communities",
+  "/api/v1/communities/:id": "/communities/:id",
+  "/api/v1/communities/featured": "/communities?_sort=memberCount&_order=desc&_limit=4",
+  "/api/v1/communities/:communityId/causes": "/causes?communityId=:communityId",
+  "/api/v1/causes": "/causes",
+  "/api/v1/causes/:id": "/causes/:id",
+  "/api/v1/causes/recommended": "/causes?_limit=6"
+}

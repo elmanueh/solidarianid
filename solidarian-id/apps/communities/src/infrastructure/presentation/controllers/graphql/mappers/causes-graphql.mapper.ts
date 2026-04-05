@@ -6,7 +6,7 @@ import { ActionsGraphqlMapper } from './actions-graphql.mapper';
 
 @Injectable()
 export class CausesGraphqlMapper {
-  constructor(private readonly actionsGraphqlMapper: ActionsGraphqlMapper) { }
+  constructor(private readonly actionsGraphqlMapper: ActionsGraphqlMapper) {}
 
   private static readonly ODS_NUMERIC_VALUES = new Set<number>(
     Object.values(SustainableDevelopmentGoal).filter((value): value is number => typeof value === 'number'),

@@ -21,18 +21,17 @@ import { delay, validateEnvironment } from './utils';
  * Following Clean Architecture: this is the application layer orchestrating use cases
  */
 
-// Disable TLS certificate validation for development
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 async function main(): Promise<void> {
-  console.log('🌱 SolidarianID Development Seed Script');
+  console.log('🌱 SolidarianID Seed Script');
   console.log('========================================');
   console.log(`   Faker seed: ${FAKER_SEED} (deterministic)`);
   console.log(`   Timestamp: ${new Date().toISOString()}`);
   console.log(`   Target: ~300 users, ~50 community requests, ~200 cause requests, ~500 action requests`);
   console.log(`   Approval rates: 60% approved, 30% rejected, 10% pending`);
 
-  // 1. Validate environment (fail if production)
+  // 1. Validate environment configuration
   validateEnvironment();
 
   // 2. Initialize faker with deterministic seed

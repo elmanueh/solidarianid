@@ -90,7 +90,7 @@ Resources:
 
           # Descargamos los datos de prueba de un bucket S3
           mkdir -p /home/ec2-user/init-data
-          aws s3 cp s3://solidarianid-bucket-init-data-database /home/ec2-user/init-data --recursive --exclude "*" --include "init-*" --region ${AWS::Region}
+          aws s3 cp s3://solidarianid-bucket-init-data-database /home/ec2-user/init-data --recursive --exclude "*" --include "init-*" --include "00-*" --include "01-*" --include "02-*" --region ${AWS::Region}
           chown -R ec2-user:ec2-user /home/ec2-user/init-data
 
           # Creamos el fichero docker-compose.yml con las 3 apps
@@ -103,7 +103,9 @@ Resources:
               environment:
                 POSTGRES_USER: ${!POSTGRES_USER}
                 POSTGRES_PASSWORD: ${!POSTGRES_PASSWORD}
-                POSTGRES_DB: ${!POSTGRES_DB}
+                POSTGRES_DB: ${!POSTGRES_USERS_DB}
+                POSTGRES_USERS_DB: ${!POSTGRES_USERS_DB}
+                POSTGRES_COMMUNITIES_DB: ${!POSTGRES_COMMUNITIES_DB}
               ports:
                 - "${!POSTGRES_PORT}:5432"
               networks:
@@ -112,7 +114,7 @@ Resources:
                 - postgres_data:/var/lib/postgresql/data
                 - /home/ec2-user/init-data:/docker-entrypoint-initdb.d
               healthcheck:
-                test: ["CMD-SHELL", "pg_isready -U ${!POSTGRES_USER} -d ${!POSTGRES_DB}"]
+                test: ["CMD-SHELL", "pg_isready -U ${!POSTGRES_USER} -d ${!POSTGRES_USERS_DB}"]
                 interval: 10s
                 timeout: 5s
                 retries: 5
@@ -226,7 +228,7 @@ Resources:
                 - POSTGRES_PORT=${!POSTGRES_PORT}
                 - POSTGRES_USER=${!POSTGRES_USER}
                 - POSTGRES_PASSWORD=${!POSTGRES_PASSWORD}
-                - POSTGRES_DB=${!POSTGRES_DB}
+                - POSTGRES_USERS_DB=${!POSTGRES_USERS_DB}
                 - KAFKA_BROKERS=${!KAFKA_BROKERS}
                 - KAFKA_USERS_CLIENT_ID=${!KAFKA_USERS_CLIENT_ID}
                 - KAFKA_USERS_CONSUMER_GROUP_ID=${!KAFKA_USERS_CONSUMER_GROUP_ID}
@@ -254,7 +256,7 @@ Resources:
                 - POSTGRES_PORT=${!POSTGRES_PORT}
                 - POSTGRES_USER=${!POSTGRES_USER}
                 - POSTGRES_PASSWORD=${!POSTGRES_PASSWORD}
-                - POSTGRES_DB=${!POSTGRES_DB}
+                - POSTGRES_COMMUNITIES_DB=${!POSTGRES_COMMUNITIES_DB}
                 - KAFKA_BROKERS=${!KAFKA_BROKERS}
                 - KAFKA_COMMUNITIES_CLIENT_ID=${!KAFKA_COMMUNITIES_CLIENT_ID}
                 - KAFKA_COMMUNITIES_CONSUMER_GROUP_ID=${!KAFKA_COMMUNITIES_CONSUMER_GROUP_ID}

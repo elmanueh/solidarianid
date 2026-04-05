@@ -24,6 +24,7 @@ describe('CausesServiceImpl', () => {
     findAll: jest.Mock;
     findById: jest.Mock;
     save: jest.Mock;
+    removeFollower: jest.Mock;
   };
   let mockUsersRepository: {
     findById: jest.Mock;
@@ -100,6 +101,7 @@ describe('CausesServiceImpl', () => {
       findAll: jest.fn(),
       findById: jest.fn(),
       save: jest.fn(),
+      removeFollower: jest.fn(),
     };
     mockUsersRepository = {
       findById: jest.fn(),
@@ -355,15 +357,14 @@ describe('CausesServiceImpl', () => {
 
       mockCauseRepository.findById.mockResolvedValueOnce(right(causeOrError.value));
       mockUsersRepository.findById.mockResolvedValueOnce(right(user));
-      mockCauseRepository.save.mockResolvedValueOnce(right(undefined));
+      mockCauseRepository.removeFollower.mockResolvedValueOnce(right(undefined));
 
       const result = await service.leaveCause(validCauseId, validUserId);
 
       expect(result.isRight()).toBe(true);
-      expect(causeOrError.value.userIds).not.toContain(validUserId);
       expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
-      expect(mockUsersRepository.findById).toHaveBeenCalledWith(validUserId);
-      expect(mockCauseRepository.save).toHaveBeenCalledWith(causeOrError.value);
+      expect(mockCauseRepository.removeFollower).toHaveBeenCalledWith(validCauseId, validUserId);
+      expect(mockCauseRepository.save).not.toHaveBeenCalled();
     });
 
     it('should return ConflictError when the user is not following the cause', async () => {
@@ -377,6 +378,7 @@ describe('CausesServiceImpl', () => {
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(ConflictError);
+      expect(mockCauseRepository.removeFollower).not.toHaveBeenCalled();
       expect(mockCauseRepository.save).not.toHaveBeenCalled();
     });
   });

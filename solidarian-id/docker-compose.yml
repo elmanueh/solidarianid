@@ -8,11 +8,13 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB: ${POSTGRES_USERS_DB}
+      POSTGRES_USERS_DB: ${POSTGRES_USERS_DB}
+      POSTGRES_COMMUNITIES_DB: ${POSTGRES_COMMUNITIES_DB}
       POSTGRES_INITDB_ARGS: '--encoding=UTF8 --lc-collate=C.UTF-8 --lc-ctype=C.UTF-8'
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-      - ./scripts/init/postgres:/docker-entrypoint-initdb.d
+      - ./scripts/init/postgres/00-create-databases.sql:/docker-entrypoint-initdb.d/00-create-databases.sql:ro
     networks:
       - solidarian_network
     healthcheck:
@@ -33,8 +35,7 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_DB}
     volumes:
       - ./data/mongodb:/data/db
-      - ./scripts/init/init-mongo-admins.js:/docker-entrypoint-initdb.d/init-mongo-admins.js:ro
-      - ./scripts/init/mongo:/docker-entrypoint-initdb.d
+      - ./scripts/init/mongo/00-seed-admins.js:/docker-entrypoint-initdb.d/00-seed-admins.js:ro
     healthcheck:
       test:
         [
@@ -151,7 +152,7 @@ services:
     container_name: solidarian_proxy
     restart: unless-stopped
     ports:
-      - "8090:80"
+      - '8090:80'
     networks:
       - solidarian_network
 

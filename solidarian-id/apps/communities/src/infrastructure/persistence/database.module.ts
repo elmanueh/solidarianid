@@ -8,8 +8,8 @@ import { EventEntity } from '@app/communities/infrastructure/persistence/entitie
 import { ObjectiveEntity } from '@app/communities/infrastructure/persistence/entities/objective.entity';
 import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user.entity';
 import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
-import { getTypeOrmConfig } from '@app/ddd/repository/modules/database-typeorm.module';
 import { UserEntity } from '@app/communities/infrastructure/persistence/entities/user.entity';
+import { getTypeOrmConfig } from '@app/ddd/repository/modules/database-typeorm.module';
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -50,7 +50,7 @@ export class DatabaseModule {
               ],
               migrationsPath: 'apps/communities/src/infrastructure/persistence/migrations/*.ts',
               migrationsDistPath: 'dist/apps/communities/src/infrastructure/persistence/migrations/*.js',
-              migrationsTableName: 'typeorm_migrations_communities',
+              databaseEnvKey: 'POSTGRES_COMMUNITIES_DB',
             }),
         }),
       ],

@@ -30,7 +30,7 @@ export class DatabaseModule {
               entities: [UserProjectionEntity, CheckpointProjectionEntity],
               migrationsPath: 'apps/users/src/infrastructure/persistence/migrations/*.ts',
               migrationsDistPath: 'dist/apps/users/src/infrastructure/persistence/migrations/*.js',
-              migrationsTableName: 'typeorm_migrations_users',
+              databaseEnvKey: 'POSTGRES_USERS_DB',
             }),
         }),
       ],

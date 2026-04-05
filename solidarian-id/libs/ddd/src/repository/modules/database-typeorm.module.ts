@@ -11,10 +11,12 @@ export interface TypeOrmConfigOptions {
   migrationsDistPath: string;
   migrationsTableName?: string;
   database?: string;
+  databaseEnvKey?: string;
 }
 
 export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOptions {
-  const { config, entities, migrationsPath, migrationsDistPath, migrationsTableName, database } = options;
+  const { config, entities, migrationsPath, migrationsDistPath, migrationsTableName, database, databaseEnvKey } =
+    options;
 
   if (!config) {
     const nodeEnv = process.env.NODE_ENV || 'development';
@@ -41,6 +43,12 @@ export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOp
   const shouldLoadMigrations = isProduction || isTest;
   const shouldSynchronize = nodeEnv === 'development';
   const resolvedMigrationsTableName = migrationsTableName ?? 'typeorm_migrations';
+  const resolvedDatabase =
+    database ??
+    (databaseEnvKey ? (config?.get<string>(databaseEnvKey) ?? process.env[databaseEnvKey]) : undefined) ??
+    config?.get<string>('POSTGRES_DB') ??
+    process.env.POSTGRES_DB ??
+    'solidarian_id';
 
   const testUri = config?.get<string>('TEST_POSTGRESQL_URI') ?? process.env.TEST_POSTGRESQL_URI;
   if (isTest && testUri) {
@@ -67,7 +75,7 @@ export function getTypeOrmConfig(options: TypeOrmConfigOptions): TypeOrmModuleOp
     port: Number(config?.get<string>('POSTGRES_PORT') ?? process.env.POSTGRES_PORT ?? '5432'),
     username: config?.get<string>('POSTGRES_USER') ?? process.env.POSTGRES_USER ?? 'postgres',
     password: config?.get<string>('POSTGRES_PASSWORD') ?? process.env.POSTGRES_PASSWORD ?? 'postgres',
-    database: database ?? config?.get<string>('POSTGRES_DB') ?? process.env.POSTGRES_DB ?? 'solidarian_id',
+    database: resolvedDatabase,
     entities,
     autoLoadEntities: true,
     synchronize: shouldSynchronize,

@@ -132,6 +132,7 @@ type Query {
 
 type Mutation {
   joinCause(causeId: ID!, userId: ID!): Boolean!
+  leaveCause(causeId: ID!, userId: ID!): Boolean!
   createCommunityRequest(createCommunityRequestInput: CreateCommunityRequestInput!): String!
   createCauseRequest(createCauseRequestInput: CreateCauseRequestInput!): String!
   createActionRequest(createActionRequestInput: CreateActionRequestInput!): String!

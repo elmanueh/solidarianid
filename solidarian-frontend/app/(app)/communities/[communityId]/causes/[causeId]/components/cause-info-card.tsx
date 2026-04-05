@@ -2,8 +2,11 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { IconCalendarEvent, IconClock, IconInfoCircle, IconTargetArrow } from '@tabler/icons-react';
+import CauseFollowButton from './cause-follow-button';
 
 interface CauseInfoCardProps {
+  causeId: string;
+  causeUserIds: readonly string[];
   description: string;
   initialDate: string;
   durationDays: number;
@@ -12,6 +15,8 @@ interface CauseInfoCardProps {
 }
 
 export default function CauseInfoCard({
+  causeId,
+  causeUserIds,
   description,
   initialDate,
   durationDays,
@@ -36,23 +41,25 @@ export default function CauseInfoCard({
   return (
     <Card className="gap-0 overflow-hidden rounded-4xl border border-neutral-100 bg-white shadow-sm transition-all dark:border-neutral-700 dark:bg-neutral-900">
       <CardHeader>
-        <div className="flex flex-wrap items-center gap-2 font-bold text-neutral-800 dark:text-neutral-200">
-          <IconInfoCircle size={20} className="text-[#40A9FF]" />
-          <CardTitle className="text-base font-bold">Información de la Causa</CardTitle>
-          <Badge
-            variant="outline"
-            className="h-auto gap-1.5 border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-medium text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
-          >
-            <IconCalendarEvent size={14} className="shrink-0 text-[#7CC342]" />
-            Inicio {formattedInitialDate}
-          </Badge>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-2 font-bold text-neutral-800 dark:text-neutral-200">
+            <IconInfoCircle size={20} className="text-[#40A9FF]" />
+            <CardTitle className="text-base font-bold">Información de la Causa</CardTitle>
+            <Badge
+              variant="outline"
+              className="h-auto gap-1.5 border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-medium text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+            >
+              <IconCalendarEvent size={14} className="shrink-0 text-[#7CC342]" />
+              Inicio {formattedInitialDate}
+            </Badge>
+          </div>
+
+          <CauseFollowButton causeId={causeId} causeUserIds={causeUserIds} />
         </div>
 
         <CardDescription className="min-h-20 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
           {description}
         </CardDescription>
-
-        {/* TODO: añadir un boton para unirse/salirse de la causa */}
       </CardHeader>
 
       <CardContent className="px-6 pt-0 pb-6">

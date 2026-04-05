@@ -56,6 +56,8 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
       <div className="flex flex-col gap-8 px-0 pt-10 pb-6">
         <div className="px-6">
           <CauseInfoCard
+            causeId={causeId}
+            causeUserIds={cause.userIds}
             description={cause.description}
             initialDate={cause.initialDate}
             durationDays={cause.durationDays}

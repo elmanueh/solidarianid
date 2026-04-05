@@ -150,7 +150,13 @@ export const causesGraphqlApi = {
       variables,
     });
 
-    return response.data?.createCauseRequest ?? "";
+    const requestId = response.data?.createCauseRequest;
+
+    if (!requestId) {
+      throw new Error("createCauseRequest returned an empty response");
+    }
+
+    return requestId;
   },
 
   subscribeToCauseCreated(

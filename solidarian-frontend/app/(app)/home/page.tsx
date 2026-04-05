@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { Star, TrendingUp, ChevronRight } from 'lucide-react';
-import { useFeaturedCommunities } from '@/hooks/useCommunities';
-import { useRecommendedCauses } from '@/hooks/useCauses';
 import { CommunityCard } from '@/components/community-card';
 import { CauseCard } from '@/components/cause-card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useFeaturedCommunities } from '@/hooks/use-featured-communities';
+import { useRecommendedCauses } from '@/hooks/use-recommended-causes';
 import { homeStyles } from '@/styles/app/home/page.styles';
 
 export default function HomePage() {

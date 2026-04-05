@@ -1,7 +1,7 @@
 import { Geist_Mono, Inter } from 'next/font/google';
 
 import { ThemeProvider } from '@/components/theme-provider';
-import { ApolloGraphqlProvider } from '@/features/graphql/apollo-provider';
+import { ApolloGraphqlProvider } from '@/components/apollo-provider';
 import { cn } from '@/lib/utils';
 import './globals.css';
 

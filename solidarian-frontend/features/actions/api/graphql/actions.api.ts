@@ -77,7 +77,13 @@ export const actionsGraphqlApi = {
       variables,
     });
 
-    return response.data?.createActionRequest ?? "";
+    const requestId = response.data?.createActionRequest;
+
+    if (!requestId) {
+      throw new Error("createActionRequest returned an empty response");
+    }
+
+    return requestId;
   },
 
   subscribeToActionCreated(

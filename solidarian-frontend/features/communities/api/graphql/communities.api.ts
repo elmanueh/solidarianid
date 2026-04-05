@@ -95,6 +95,12 @@ export const communitiesGraphqlApi = {
       variables,
     });
 
-    return response.data?.createCommunityRequest ?? "";
+    const requestId = response.data?.createCommunityRequest;
+
+    if (!requestId) {
+      throw new Error("createCommunityRequest returned an empty response");
+    }
+
+    return requestId;
   },
 };

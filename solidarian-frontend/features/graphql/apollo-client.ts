@@ -11,15 +11,34 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { createClient } from "graphql-ws";
 import type { DocumentNode } from "graphql";
 
-const GRAPHQL_HTTP_URL =
-  process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL ?? "http://localhost:3002/graphql";
-const GRAPHQL_WS_URL =
-  process.env.NEXT_PUBLIC_GRAPHQL_WS_URL ?? "ws://localhost:3002/graphql";
+const DEFAULT_GRAPHQL_HTTP_URL = "http://localhost:3002/graphql";
+const DEFAULT_GRAPHQL_WS_URL = "ws://localhost:3002/graphql";
 
-const httpLink = new HttpLink({
-  uri: GRAPHQL_HTTP_URL,
-  credentials: "include",
-});
+const resolveGraphqlHttpUrl = (): string => {
+  const configuredHttpUrl = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL;
+
+  if (configuredHttpUrl) {
+    return configuredHttpUrl;
+  }
+
+  return DEFAULT_GRAPHQL_HTTP_URL;
+};
+
+const resolveGraphqlWsUrl = (): string => {
+  const configuredWsUrl = process.env.NEXT_PUBLIC_GRAPHQL_WS_URL;
+
+  if (configuredWsUrl) {
+    return configuredWsUrl;
+  }
+
+  return DEFAULT_GRAPHQL_WS_URL;
+};
+
+const createHttpLink = (): HttpLink =>
+  new HttpLink({
+    uri: resolveGraphqlHttpUrl(),
+    credentials: "include",
+  });
 
 interface ErrorWithMessage {
   message: string;
@@ -46,6 +65,16 @@ const collectErrors = (value: unknown): ErrorWithMessage[] => {
   return [];
 };
 
+const isConnectivityError = (message: string): boolean => {
+  const normalizedMessage = message.toLowerCase();
+
+  return (
+    normalizedMessage.includes("failed to fetch") ||
+    normalizedMessage.includes("load failed") ||
+    normalizedMessage.includes("networkerror")
+  );
+};
+
 const errorLink = onError((errorContext: ErrorResponse) => {
   const operationName = errorContext.operation.operationName || "anonymous";
   const contextMap = errorContext as unknown as Record<string, unknown>;
@@ -63,6 +92,13 @@ const errorLink = onError((errorContext: ErrorResponse) => {
 
   errors.forEach((error) => {
     // Keep global logging centralized while UI-specific handling remains in services/hooks.
+    if (isConnectivityError(error.message)) {
+      console.warn(
+        `[GraphQL warning][${operationName}] ${error.message}. Revisa NEXT_PUBLIC_GRAPHQL_HTTP_URL/NEXT_PUBLIC_GRAPHQL_WS_URL.`,
+      );
+      return;
+    }
+
     console.error(`[GraphQL error][${operationName}] ${error.message}`);
   });
 });
@@ -77,6 +113,8 @@ const isSubscriptionOperation = (query: DocumentNode): boolean => {
 };
 
 export const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
+  const httpLink = createHttpLink();
+
   if (typeof window === "undefined") {
     return new ApolloClient({
       link: errorLink.concat(httpLink),
@@ -86,7 +124,7 @@ export const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
 
   const wsLink = new GraphQLWsLink(
     createClient({
-      url: GRAPHQL_WS_URL,
+      url: resolveGraphqlWsUrl(),
       shouldRetry: () => true,
       retryAttempts: 5,
       lazy: true,

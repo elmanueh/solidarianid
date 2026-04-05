@@ -9,6 +9,7 @@ import { dump } from 'js-yaml';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { AppModule } from './app.module';
+import { credentials } from '@grpc/grpc-js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -64,6 +65,16 @@ async function bootstrap() {
       package: 'solidarianid.grpc.communities.v1',
       protoPath: join(process.cwd(), 'libs/grpc-common/spec/solidarianid/grpc/communities/communities.proto'),
     },
+  });
+
+  app.enableCors({
+    // Evita el conflicto de CORS entre wildcard y credenciales en navegador.
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 204,
+    maxAge: 600,
   });
 
   await app.startAllMicroservices();

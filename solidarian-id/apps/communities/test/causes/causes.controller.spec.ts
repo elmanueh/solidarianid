@@ -1,9 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
+import { left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Test, TestingModule } from '@nestjs/testing';
 
 import { CausesService } from '@app/communities/domain/services/causes.service';
-import { CausesController } from '@app/communities/infrastructure/presentation/controllers/causes.controller';
+import { CausesController } from '@app/communities/infrastructure/presentation/controllers/rest/causes.controller';
 import { EntityNotFoundError } from 'typeorm';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Cause } from '@app/communities/domain/model/entities/cause';
@@ -118,21 +118,21 @@ describe('CausesController', () => {
       };
       mockService.getById.mockResolvedValueOnce(right(domainData));
       await expect(controller.getCauseById('1')).resolves.toEqual(expectedDto);
-      expect(mockService.getById).toHaveBeenCalledWith('1');
+      expect(mockService.getById).toHaveBeenCalledWith('1', ['users', 'actions']);
     });
 
     it('throws RepositoryException when service returns left(RepositoryException)', async () => {
       const err = new RepositoryException('invalid data');
       mockService.getById.mockResolvedValueOnce(left(err));
       await expect(controller.getCauseById('1')).rejects.toThrow(err);
-      expect(mockService.getById).toHaveBeenCalledWith('1');
+      expect(mockService.getById).toHaveBeenCalledWith('1', ['users', 'actions']);
     });
 
     it('throws EntityNotFoundError when service returns left(EntityNotFoundError)', async () => {
       const err = new EntityNotFoundError('Cause', 'Not found');
       mockService.getById.mockResolvedValueOnce(left(err));
       await expect(controller.getCauseById('999')).rejects.toThrow(err);
-      expect(mockService.getById).toHaveBeenCalledWith('999');
+      expect(mockService.getById).toHaveBeenCalledWith('999', ['users', 'actions']);
     });
   });
 
@@ -226,21 +226,21 @@ describe('CausesController', () => {
       };
       mockService.getById.mockResolvedValueOnce(right(domainData));
       await expect(controller.getCauseById('1')).resolves.toEqual(expectedDto);
-      expect(mockService.getById).toHaveBeenCalledWith('1');
+      expect(mockService.getById).toHaveBeenCalledWith('1', ['users', 'actions']);
     });
 
     it('throws RepositoryException when service returns left(RepositoryException)', async () => {
       const err = new RepositoryException('invalid data');
       mockService.getById.mockResolvedValueOnce(left(err));
       await expect(controller.getCauseById('1')).rejects.toThrow(err);
-      expect(mockService.getById).toHaveBeenCalledWith('1');
+      expect(mockService.getById).toHaveBeenCalledWith('1', ['users', 'actions']);
     });
 
     it('throws EntityNotFoundError when service returns left(EntityNotFoundError)', async () => {
       const err = new EntityNotFoundError(Cause.name, 'Not found');
       mockService.getById.mockResolvedValueOnce(left(err));
       await expect(controller.getCauseById('999')).rejects.toThrow(err);
-      expect(mockService.getById).toHaveBeenCalledWith('999');
+      expect(mockService.getById).toHaveBeenCalledWith('999', ['users', 'actions']);
     });
   });
 });

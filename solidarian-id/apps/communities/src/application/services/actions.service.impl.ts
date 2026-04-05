@@ -5,14 +5,20 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Either, left, right } from '@app/ddd/either';
 import { ActionsRepositoryPort } from '../../domain/ports/actions.repository.port';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { ActionRequestEventDto } from '@solidarianid/kafka';
+import { ActionRequestEventDto, EventType } from '@solidarianid/kafka';
 import { Objective } from '../../domain/model/value-objects/objective';
 import { Event } from '../../domain/model/entities/event';
 import { EventPlace } from '../../domain/model/value-objects/event-place';
+import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
+import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 
 @Injectable()
 export class ActionsServiceImpl implements ActionsService {
-  constructor(private readonly actionRepository: ActionsRepositoryPort) {}
+  constructor(
+    private readonly actionRepository: ActionsRepositoryPort,
+    private readonly actionPublisher: ActionsPublisherPort,
+    private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
+  ) {}
 
   async create(actionDto: ActionRequestEventDto): Promise<Either<ValidationError | RepositoryException, Action>> {
     // Create action first (without objectives and events)
@@ -80,6 +86,9 @@ export class ActionsServiceImpl implements ActionsService {
       return left(saveResult.value);
     }
 
+    await this.actionPublisher.publish(EventType.ACTION_CREATED, action);
+    await this.subscriptionsPublisher.publishActionCreated(action);
+
     return right(action);
   }
 
@@ -89,5 +98,9 @@ export class ActionsServiceImpl implements ActionsService {
 
   async getActionById(id: string): Promise<Either<ValidationError, Action>> {
     return await this.actionRepository.findById(id, ['events', 'objectives']);
+  }
+
+  async getByCauseIds(causeIds: string[]): Promise<Either<ValidationError | RepositoryException, Action[]>> {
+    return await this.actionRepository.findAllByCauseIds(causeIds);
   }
 }

@@ -33,6 +33,7 @@ import {
   USERNAME_MIN_LENGTH,
   USERNAME_REGEX,
 } from '@/features/auth/constants/auth.constants';
+import { authService } from '@/features/auth/services/auth.service';
 import { getErrorMessage } from '@/features/axios/errors.handler';
 import logoSolidarian from '@/public/solidarian-logo.png';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -115,11 +116,12 @@ export default function RegisterPage() {
     mode: 'onTouched',
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function onSubmit(data: RegisterFormData) {
     setIsLoading(true);
     try {
-      // TODO: Conectar con authService.register
+      const cleanPhone = '+' + phone;
+      await authService.register(data.username, data.password, data.fullName, cleanPhone, data.city, data.countryCode);
+      toast.success('Registro exitoso! Ahora puedes iniciar sesión.');
     } catch (err) {
       toast.error(getErrorMessage(err));
     } finally {

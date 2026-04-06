@@ -1,7 +1,5 @@
 import { Geist_Mono, Inter } from 'next/font/google';
 
-import { ThemeProvider } from '@/components/theme-provider';
-import { Toaster } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import './globals.css';
 
@@ -23,11 +21,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn('antialiased', fontMono.variable, 'font-sans', inter.variable)}
     >
-      <body>
-        <ThemeProvider>
-          <Toaster richColors closeButton /> {children}
-        </ThemeProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

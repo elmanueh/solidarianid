@@ -1,11 +1,12 @@
-import Link from "next/link"
+import Link from 'next/link';
 
 export default function AppLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
+    // TODO: perez aqui iria el sidebar si al final lo queremos poner
     <div className="min-h-screen">
       <header className="border-b">
         <nav className="mx-auto flex max-w-6xl gap-4 p-4 text-sm">
@@ -18,5 +19,5 @@ export default function AppLayout({
       </header>
       <main className="mx-auto max-w-6xl p-6">{children}</main>
     </div>
-  )
+  );
 }

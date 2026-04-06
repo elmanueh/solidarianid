@@ -19,6 +19,7 @@ try {
 }
 
 import { DataSource } from 'typeorm';
+import { RefreshTokenEntity } from './entities/refresh-token.entity';
 import { UserPreferenceEntity } from './entities/user-preference.entity';
 import { UserEntity } from './entities/user.entity';
 
@@ -51,7 +52,7 @@ if (isTest && process.env.TEST_POSTGRESQL_URI) {
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const AppDataSource = new DataSource({
   ...dbConfig,
-  entities: [UserEntity, UserPreferenceEntity],
+  entities: [UserEntity, UserPreferenceEntity, RefreshTokenEntity],
   migrations: [
     process.env.NODE_ENV === 'production'
       ? 'dist/apps/users/src/infrastructure/persistence/migrations/*.js'

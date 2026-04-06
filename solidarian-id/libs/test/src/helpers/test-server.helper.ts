@@ -1,11 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe, ModuleMetadata } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
+import { INestApplication, ModuleMetadata, ValidationPipe } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MicroserviceOptions } from '@nestjs/microservices';
-import request from 'supertest';
-import type supertest from 'supertest';
+import { Test, TestingModule } from '@nestjs/testing';
+import cookieParser from 'cookie-parser';
 import session from 'express-session';
+import type supertest from 'supertest';
+import request from 'supertest';
 
 export class TestServerHelper {
   private app: INestApplication;
@@ -43,6 +44,7 @@ export class TestServerHelper {
         },
       }),
     );
+    this.app.use(cookieParser());
 
     this.app.useGlobalPipes(
       new ValidationPipe({

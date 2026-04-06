@@ -5,6 +5,7 @@ import type { OpenAPIObject } from '@nestjs/swagger';
 import { dump } from 'js-yaml';
 import { writeFileSync } from 'node:fs';
 import { ValidationPipe } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
 import { Transport } from '@nestjs/microservices';
@@ -41,6 +42,7 @@ async function bootstrap() {
   );
   // Habilitar filtro global de excepciones
   app.useGlobalFilters(new GlobalExceptionFilter());
+  app.use(cookieParser());
 
   app.connectMicroservice({
     transport: Transport.KAFKA,

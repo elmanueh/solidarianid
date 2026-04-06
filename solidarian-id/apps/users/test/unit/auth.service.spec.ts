@@ -1,0 +1,255 @@
+import { left, right } from '@app/ddd/either';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { AuthServiceImpl } from '@app/users/application/services/auth.service.impl';
+import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.exception';
+import { RefreshToken } from '@app/users/domain/model/refresh-token';
+import { User } from '@app/users/domain/model/user';
+import { TokensRepositoryPort } from '@app/users/domain/ports/tokens.repository.port';
+import { UsersService } from '@app/users/domain/services/users.service';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { JwtService } from '@nestjs/jwt';
+import { Test, TestingModule } from '@nestjs/testing';
+import { createHash } from 'node:crypto';
+
+describe('AuthServiceImpl', () => {
+  let service: AuthServiceImpl;
+  let usersService: {
+    authenticate: jest.Mock;
+  };
+  let tokensRepository: {
+    save: jest.Mock;
+    findByUserId: jest.Mock;
+    remove: jest.Mock;
+  };
+  let jwtService: {
+    signAsync: jest.Mock;
+    verifyAsync: jest.Mock;
+  };
+
+  beforeEach(async () => {
+    usersService = {
+      authenticate: jest.fn(),
+    };
+
+    tokensRepository = {
+      save: jest.fn(),
+      findByUserId: jest.fn(),
+      remove: jest.fn(),
+    };
+
+    jwtService = {
+      signAsync: jest.fn(),
+      verifyAsync: jest.fn(),
+    };
+
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        AuthServiceImpl,
+        { provide: UsersService, useValue: usersService },
+        { provide: TokensRepositoryPort, useValue: tokensRepository },
+        { provide: JwtService, useValue: jwtService },
+      ],
+    }).compile();
+
+    service = module.get<AuthServiceImpl>(AuthServiceImpl);
+  });
+
+  it('issues access/refresh tokens with sub=userId and expected TTLs on authenticate', async () => {
+    const user = makeUser('4807f235-f4b4-41c0-939c-c97371219551');
+    usersService.authenticate.mockResolvedValue(right(user));
+    jwtService.signAsync.mockResolvedValueOnce('access-token').mockResolvedValueOnce('refresh-token');
+    tokensRepository.findByUserId.mockResolvedValue(
+      left(new EntityNotFoundException('RefreshToken', '4807f235-f4b4-41c0-939c-c97371219551')),
+    );
+    tokensRepository.save.mockResolvedValue(right(undefined));
+    tokensRepository.remove.mockResolvedValue(right(undefined));
+
+    const result = await service.loginUsernamePassword('testUsername', 'Admin2024!Pass');
+
+    expect(result.isRight()).toBe(true);
+    expect(result.isRight() ? result.value.accessToken : '').toBe('access-token');
+    expect(result.isRight() ? result.value.refreshToken : '').toBe('refresh-token');
+
+    expect(jwtService.signAsync).toHaveBeenNthCalledWith(
+      1,
+      { sub: '4807f235-f4b4-41c0-939c-c97371219551' },
+      expect.objectContaining({ algorithm: 'RS256', expiresIn: '15m' }),
+    );
+    expect(jwtService.signAsync).toHaveBeenNthCalledWith(
+      2,
+      { sub: '4807f235-f4b4-41c0-939c-c97371219551' },
+      expect.objectContaining({ algorithm: 'RS256', expiresIn: '90d' }),
+    );
+    expect(tokensRepository.findByUserId).toHaveBeenCalledWith(
+      expect.objectContaining({ value: '4807f235-f4b4-41c0-939c-c97371219551' }),
+    );
+    expect(tokensRepository.save).toHaveBeenCalledTimes(1);
+  });
+
+  it('revokes existing refresh token before issuing a new one on authenticate', async () => {
+    const user = makeUser('4807f235-f4b4-41c0-939c-c97371219551');
+    usersService.authenticate.mockResolvedValue(right(user));
+
+    const userIdResult = UniqueEntityID.create('4807f235-f4b4-41c0-939c-c97371219551');
+    if (userIdResult.isLeft()) {
+      throw userIdResult.value;
+    }
+
+    const existingRefresh = RefreshToken.create({
+      userId: userIdResult.value,
+      tokenHash: hash('existing-refresh-token'),
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
+      revokedAt: null,
+      rotatedAt: null,
+    });
+
+    if (existingRefresh.isLeft()) {
+      throw existingRefresh.value;
+    }
+
+    tokensRepository.findByUserId.mockResolvedValue(right(existingRefresh.value));
+    jwtService.signAsync.mockResolvedValueOnce('access-token').mockResolvedValueOnce('refresh-token');
+    tokensRepository.save.mockResolvedValue(right(undefined));
+    tokensRepository.remove.mockResolvedValue(right(undefined));
+
+    const result = await service.loginUsernamePassword('testUsername', 'Admin2024!Pass');
+
+    expect(result.isRight()).toBe(true);
+    expect(tokensRepository.save).toHaveBeenCalledTimes(2);
+    expect(tokensRepository.save).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ revokedAt: expect.any(Date) }),
+    );
+    expect(tokensRepository.remove).toHaveBeenCalledTimes(1);
+    expect(tokensRepository.remove).toHaveBeenCalledWith(expect.any(String));
+  });
+
+  it('rotates refresh token and issues new access token on refresh', async () => {
+    jwtService.verifyAsync.mockResolvedValue({ sub: '4807f235-f4b4-41c0-939c-c97371219551' });
+    const userIdResult = UniqueEntityID.create('4807f235-f4b4-41c0-939c-c97371219551');
+    if (userIdResult.isLeft()) {
+      throw userIdResult.value;
+    }
+
+    const activeRefresh = RefreshToken.create({
+      userId: userIdResult.value,
+      tokenHash: hash('old-refresh-token'),
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
+      revokedAt: null,
+      rotatedAt: null,
+    });
+
+    if (activeRefresh.isLeft()) {
+      throw activeRefresh.value;
+    }
+
+    tokensRepository.findByUserId.mockResolvedValue(right(activeRefresh.value));
+    jwtService.signAsync.mockResolvedValueOnce('new-access-token').mockResolvedValueOnce('new-refresh-token');
+    tokensRepository.save.mockResolvedValue(right(undefined));
+    tokensRepository.remove.mockResolvedValue(right(undefined));
+
+    const result = await service.refresh('old-refresh-token');
+
+    expect(result.isRight()).toBe(true);
+    expect(result.isRight() ? result.value.accessToken : '').toBe('new-access-token');
+    expect(result.isRight() ? result.value.refreshToken : '').toBe('new-refresh-token');
+    expect(tokensRepository.findByUserId).toHaveBeenCalledWith(
+      expect.objectContaining({ value: '4807f235-f4b4-41c0-939c-c97371219551' }),
+    );
+    expect(tokensRepository.save).toHaveBeenCalledTimes(2);
+    expect(tokensRepository.remove).toHaveBeenCalledTimes(1);
+  });
+
+  it('revokes refresh session on logout using domain model and save', async () => {
+    const userIdResult = UniqueEntityID.create('4807f235-f4b4-41c0-939c-c97371219551');
+    if (userIdResult.isLeft()) {
+      throw userIdResult.value;
+    }
+
+    const activeRefresh = RefreshToken.create({
+      userId: userIdResult.value,
+      tokenHash: hash('old-refresh-token'),
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
+      revokedAt: null,
+      rotatedAt: null,
+    });
+
+    if (activeRefresh.isLeft()) {
+      throw activeRefresh.value;
+    }
+
+    tokensRepository.findByUserId.mockResolvedValue(right(activeRefresh.value));
+    tokensRepository.save.mockResolvedValue(right(undefined));
+
+    const result = await service.logout('4807f235-f4b4-41c0-939c-c97371219551');
+
+    expect(result.isRight()).toBe(true);
+    expect(tokensRepository.findByUserId).toHaveBeenCalledWith(
+      expect.objectContaining({ value: '4807f235-f4b4-41c0-939c-c97371219551' }),
+    );
+    expect(tokensRepository.save).toHaveBeenCalledTimes(1);
+    expect(tokensRepository.save).toHaveBeenCalledWith(expect.objectContaining({ revokedAt: expect.any(Date) }));
+  });
+
+  it('rejects refresh when cookie token hash does not match stored hash', async () => {
+    jwtService.verifyAsync.mockResolvedValue({ sub: '4807f235-f4b4-41c0-939c-c97371219551' });
+    const userIdResult = UniqueEntityID.create('4807f235-f4b4-41c0-939c-c97371219551');
+    if (userIdResult.isLeft()) {
+      throw userIdResult.value;
+    }
+
+    const activeRefresh = RefreshToken.create({
+      userId: userIdResult.value,
+      tokenHash: 'hash-something-else',
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
+      revokedAt: null,
+      rotatedAt: null,
+    });
+
+    if (activeRefresh.isLeft()) {
+      throw activeRefresh.value;
+    }
+
+    tokensRepository.findByUserId.mockResolvedValue(right(activeRefresh.value));
+
+    const result = await service.refresh('old-refresh-token');
+
+    expect(result.isLeft()).toBe(true);
+    expect(tokensRepository.save).not.toHaveBeenCalled();
+  });
+
+  it('propagates authentication failure during loginUsernamePassword', async () => {
+    usersService.authenticate.mockResolvedValue(left(new LoginInvalidException()));
+
+    const result = await service.loginUsernamePassword('testUsername', 'wrong');
+
+    expect(result.isLeft()).toBe(true);
+    if (result.isLeft()) {
+      expect(result.value).toBeInstanceOf(LoginInvalidException);
+    }
+    expect(jwtService.signAsync).not.toHaveBeenCalled();
+    expect(tokensRepository.save).not.toHaveBeenCalled();
+  });
+});
+
+const hash = (value: string): string => createHash('sha256').update(value).digest('hex');
+
+function makeUser(id: string): User {
+  const user = User.create(
+    {
+      fullName: 'Auth Test User',
+      username: 'authTester',
+      mobilePhone: '+34612345678',
+      passwordHash: '$2b$10$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX',
+      city: 'Madrid',
+      countryCode: 'ES',
+    },
+    id,
+  );
+
+  if (user.isLeft()) {
+    throw user.value;
+  }
+
+  return user.value;
+}

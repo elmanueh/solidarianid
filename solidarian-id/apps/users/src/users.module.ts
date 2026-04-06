@@ -43,5 +43,6 @@ import { UsersController } from './infrastructure/presentation/controllers/users
       useClass: PasswordManagerBcrypt,
     },
   ],
+  exports: [UsersService],
 })
 export class UsersModule {}

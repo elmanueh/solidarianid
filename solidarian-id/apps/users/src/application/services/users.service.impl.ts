@@ -1,5 +1,6 @@
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.exception';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { User } from '@app/users/domain/model/user';
 import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
@@ -73,17 +74,19 @@ export class UsersServiceImpl extends UsersService {
     return right(user.value.id.value);
   }
 
-  async loginUser(username: string, password: string): Promise<Either<Error, boolean>> {
+  async authenticate(username: string, password: string): Promise<Either<LoginInvalidException, User>> {
     const usernameOrError = Username.create(username);
-    if (usernameOrError.isLeft()) return left(usernameOrError.value);
+    if (usernameOrError.isLeft()) return left(new LoginInvalidException());
 
     const userOrError = await this.usersRepository.findByUsername(usernameOrError.value.value);
-
-    if (userOrError.isLeft()) return left(userOrError.value);
+    if (userOrError.isLeft()) return left(new LoginInvalidException());
 
     const passwordMatch = await this.passwordManager.comparePassword(password, userOrError.value.passwordHash);
+    if (!passwordMatch) {
+      return left(new LoginInvalidException());
+    }
 
-    return right(passwordMatch);
+    return right(userOrError.value);
   }
 
   async updateUserProfile(

@@ -1,5 +1,7 @@
 import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.exception';
+import { User } from '@app/users/domain/model/user';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { CauseCategory, DurationPreference } from '@app/value-objects/model/user-preferences';
@@ -15,11 +17,11 @@ export abstract class UsersService {
   abstract registerUser(command: RegisterUserCommand): Promise<Either<Error, string>>;
 
   /**
-   * Inicia sesión de un usuario con su nombre de usuario y contraseña.
+   * Autentica un usuario en base a usuario y contraseña y retorna su identidad de dominio.
    * @param username
    * @param password
    */
-  abstract loginUser(username: string, password: string): Promise<Either<Error, boolean>>;
+  abstract authenticate(username: string, password: string): Promise<Either<LoginInvalidException, User>>;
 
   /**
    * Actualiza el perfil de un usuario existente.

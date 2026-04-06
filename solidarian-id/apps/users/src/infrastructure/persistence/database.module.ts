@@ -1,4 +1,5 @@
 import { getTypeOrmConfig } from '@app/ddd/repository/modules/database-typeorm.module';
+import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entities/refresh-token.entity';
 import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/entities/user-preference.entity';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { DynamicModule, Module } from '@nestjs/common';
@@ -27,9 +28,9 @@ export class DatabaseModule {
           useFactory: (config: ConfigService) =>
             getTypeOrmConfig({
               config,
-              entities: [UserEntity, UserPreferenceEntity],
-              migrationsPath: 'apps/users/src/migrations/*.ts',
-              migrationsDistPath: 'dist/apps/users/src/migrations/*.js',
+              entities: [UserEntity, UserPreferenceEntity, RefreshTokenEntity],
+              migrationsPath: 'apps/users/src/infrastructure/persistence/migrations/*.ts',
+              migrationsDistPath: 'dist/apps/users/src/infrastructure/persistence/migrations/*.js',
             }),
         }),
       ],

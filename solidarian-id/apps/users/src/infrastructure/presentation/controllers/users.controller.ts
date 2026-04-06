@@ -1,5 +1,4 @@
 import { RegisterUserCommand, UsersService } from '@app/users/domain/services/users.service';
-import { LoginUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/login-user.request.dto';
 import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
 import { UpdateUserPreferencesRequestDto } from '@app/users/infrastructure/presentation/dtos/update-user-preferences.request.dto';
 import { UpdateUserProfileDtoRequest } from '@app/users/infrastructure/presentation/dtos/update-user-profile.dto';
@@ -55,24 +54,6 @@ export class UsersController {
     // Si no hay error, retornar 201 Created con Location header
     res.setHeader('Location', `/users/${userResult.value}`);
     res.status(HttpStatus.CREATED).send();
-  }
-
-  @Post('login')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'User login for SolidarianID' })
-  @ApiBody({ type: LoginUserDtoRequest })
-  @ApiOkResponse({
-    description: 'User logged in successfully',
-  })
-  @ApiBadRequestResponse({ description: 'Invalid request payload' })
-  async login(@Body() dto: LoginUserDtoRequest, @Res() res: Response): Promise<void> {
-    const loginResult = await this.usersService.loginUser(dto.username, dto.password);
-
-    if (loginResult.isLeft()) {
-      throw loginResult.value;
-    }
-
-    res.status(loginResult.value ? HttpStatus.OK : HttpStatus.UNAUTHORIZED).send();
   }
 
   @ApiOperation({ summary: 'Update user profile information' })

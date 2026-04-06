@@ -1,0 +1,29 @@
+import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
+
+@Entity({ name: 'auth_refresh_tokens' })
+@Index('UQ_auth_refresh_tokens_user_id', ['userId'], { unique: true })
+export class RefreshTokenEntity {
+  @PrimaryColumn('uuid', { name: 'id' })
+  id: string;
+
+  @Column('uuid', { name: 'user_id' })
+  userId: string;
+
+  @Column({ name: 'token_hash', type: 'varchar', length: 255 })
+  tokenHash: string;
+
+  @Column({ name: 'expires_at', type: 'timestamptz' })
+  expiresAt: Date;
+
+  @Column({ name: 'revoked_at', type: 'timestamptz', nullable: true })
+  revokedAt: Date | null;
+
+  @Column({ name: 'rotated_at', type: 'timestamptz', nullable: true })
+  rotatedAt: Date | null;
+
+  @Column({ name: 'created_at', type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @Column({ name: 'updated_at', type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
+}

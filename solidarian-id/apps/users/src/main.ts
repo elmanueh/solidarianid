@@ -58,9 +58,9 @@ async function bootstrap() {
   await app.startAllMicroservices();
 
   app.enableCors({
-    origin: true,
+    origin: process.env.FRONTEND_URL ?? 'http://localhost:3000',
     exposedHeaders: ['Location'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
     credentials: true,
   });
 

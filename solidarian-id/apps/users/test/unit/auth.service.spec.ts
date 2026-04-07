@@ -73,7 +73,7 @@ describe('AuthServiceImpl', () => {
       2,
       expect.objectContaining({
         sub: '4807f235-f4b4-41c0-939c-c97371219551',
-        jti: expect.any(String),
+        jti: expect.any(String) as string,
       }),
       expect.objectContaining({ algorithm: 'RS256', expiresIn: '90d' }),
     );
@@ -111,11 +111,11 @@ describe('AuthServiceImpl', () => {
 
     const activeRefresh = RefreshToken.create(
       {
-      userId: userIdResult.value,
-      tokenHash: hash('old-refresh-token'),
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
-      revokedAt: null,
-      rotatedAt: null,
+        userId: userIdResult.value,
+        tokenHash: hash('old-refresh-token'),
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60),
+        revokedAt: null,
+        rotatedAt: null,
         deviceId: 'device-A',
       },
       'f0a9db70-4667-4f13-b5a3-f85f5c0cb6ae',

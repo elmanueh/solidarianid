@@ -14,6 +14,20 @@ import {
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
+function getSetCookieHeaders(headers: Record<string, unknown>): string[] {
+  const rawSetCookie = headers['set-cookie'];
+
+  if (Array.isArray(rawSetCookie)) {
+    return rawSetCookie.filter((cookie): cookie is string => typeof cookie === 'string');
+  }
+
+  if (typeof rawSetCookie === 'string') {
+    return [rawSetCookie];
+  }
+
+  return [];
+}
+
 describe('AuthController (e2e)', () => {
   let server!: TestServerHelper;
   let app: INestApplication;
@@ -50,7 +64,7 @@ describe('AuthController (e2e)', () => {
       });
 
       expect(response.status).toBe(HttpStatus.OK);
-      const setCookie = response.header['set-cookie'] as string[];
+      const setCookie = getSetCookieHeaders(response.header as Record<string, unknown>);
       expect(setCookie.some(cookie => cookie.startsWith('AccessToken='))).toBe(true);
       expect(setCookie.some(cookie => cookie.startsWith('RefreshToken='))).toBe(true);
       expect(setCookie.some(cookie => cookie.includes('Path=/;'))).toBe(true);
@@ -121,19 +135,22 @@ describe('AuthController (e2e)', () => {
         password: 'Admin2024!Pass',
       });
 
-      const refreshCookie = (loginResponse.header['set-cookie'] as string[]).find(cookie =>
-        cookie.startsWith('RefreshToken='),
-      );
+      const setCookieHeader = getSetCookieHeaders(loginResponse.header as Record<string, unknown>);
+
+      const refreshCookie = setCookieHeader.find(cookie => cookie.startsWith('RefreshToken='));
 
       expect(refreshCookie).toBeDefined();
+      if (!refreshCookie) {
+        throw new Error('RefreshToken cookie missing in login response');
+      }
 
       const refreshResponse = await server
         .getRequest()
         .post('/api/auth/refresh')
-        .set('Cookie', (refreshCookie as string).split(';')[0]);
+        .set('Cookie', refreshCookie.split(';')[0]);
 
       expect(refreshResponse.status).toBe(HttpStatus.OK);
-      const setCookie = refreshResponse.header['set-cookie'] as string[];
+      const setCookie = getSetCookieHeaders(refreshResponse.header as Record<string, unknown>);
       expect(setCookie.some(cookie => cookie.startsWith('AccessToken='))).toBe(true);
       expect(setCookie.some(cookie => cookie.startsWith('RefreshToken='))).toBe(true);
       expect(refreshResponse.body.accessToken).toBeUndefined();
@@ -160,23 +177,24 @@ describe('AuthController (e2e)', () => {
         .set('X-Device-Id', 'device-B')
         .send({ username: 'testUsername', password: 'Admin2024!Pass' });
 
-      const cookieA = (loginA.header['set-cookie'] as string[]).find(cookie => cookie.startsWith('RefreshToken='));
-      const cookieB = (loginB.header['set-cookie'] as string[]).find(cookie => cookie.startsWith('RefreshToken='));
+      const cookieA = getSetCookieHeaders(loginA.header as Record<string, unknown>).find(cookie =>
+        cookie.startsWith('RefreshToken='),
+      );
+      const cookieB = getSetCookieHeaders(loginB.header as Record<string, unknown>).find(cookie =>
+        cookie.startsWith('RefreshToken='),
+      );
 
       expect(cookieA).toBeDefined();
       expect(cookieB).toBeDefined();
+      if (!cookieA || !cookieB) {
+        throw new Error('RefreshToken cookie missing in login responses');
+      }
 
-      const refreshA = await server
-        .getRequest()
-        .post('/api/auth/refresh')
-        .set('Cookie', (cookieA as string).split(';')[0]);
+      const refreshA = await server.getRequest().post('/api/auth/refresh').set('Cookie', cookieA.split(';')[0]);
 
       expect(refreshA.status).toBe(HttpStatus.OK);
 
-      const refreshB = await server
-        .getRequest()
-        .post('/api/auth/refresh')
-        .set('Cookie', (cookieB as string).split(';')[0]);
+      const refreshB = await server.getRequest().post('/api/auth/refresh').set('Cookie', cookieB.split(';')[0]);
 
       expect(refreshB.status).toBe(HttpStatus.OK);
     });
@@ -187,13 +205,16 @@ describe('AuthController (e2e)', () => {
         password: 'Admin2024!Pass',
       });
 
-      const refreshCookie = (loginResponse.header['set-cookie'] as string[]).find(cookie =>
+      const refreshCookie = getSetCookieHeaders(loginResponse.header as Record<string, unknown>).find(cookie =>
         cookie.startsWith('RefreshToken='),
       );
 
       expect(refreshCookie).toBeDefined();
+      if (!refreshCookie) {
+        throw new Error('RefreshToken cookie missing in login response');
+      }
 
-      const tokenCookie = (refreshCookie as string).split(';')[0];
+      const tokenCookie = refreshCookie.split(';')[0];
 
       const [first, second] = await Promise.all([
         server.getRequest().post('/api/auth/refresh').set('Cookie', tokenCookie),
@@ -209,7 +230,7 @@ describe('AuthController (e2e)', () => {
       const response = await server.getRequest().post('/api/auth/logout');
 
       expect(response.status).toBe(HttpStatus.OK);
-      const setCookie = response.header['set-cookie'] as string[];
+      const setCookie = getSetCookieHeaders(response.header as Record<string, unknown>);
       expect(setCookie.some(cookie => cookie.startsWith('AccessToken=;'))).toBe(true);
       expect(setCookie.some(cookie => cookie.startsWith('RefreshToken=;'))).toBe(true);
     });
@@ -226,36 +247,34 @@ describe('AuthController (e2e)', () => {
         .set('X-Device-Id', 'device-B')
         .send({ username: 'testUsername', password: 'Admin2024!Pass' });
 
-      const cookieA = (loginA.header['set-cookie'] as string[]).find(cookie => cookie.startsWith('RefreshToken='));
-      const cookieB = (loginB.header['set-cookie'] as string[]).find(cookie => cookie.startsWith('RefreshToken='));
+      const cookieA = getSetCookieHeaders(loginA.header as Record<string, unknown>).find(cookie =>
+        cookie.startsWith('RefreshToken='),
+      );
+      const cookieB = getSetCookieHeaders(loginB.header as Record<string, unknown>).find(cookie =>
+        cookie.startsWith('RefreshToken='),
+      );
 
       expect(cookieA).toBeDefined();
       expect(cookieB).toBeDefined();
+      if (!cookieA || !cookieB) {
+        throw new Error('RefreshToken cookie missing in login responses');
+      }
 
-      await server
-        .getRequest()
-        .post('/api/auth/logout')
-        .set('Cookie', (cookieA as string).split(';')[0])
-        .expect(HttpStatus.OK);
+      await server.getRequest().post('/api/auth/logout').set('Cookie', cookieA.split(';')[0]).expect(HttpStatus.OK);
 
       await server
         .getRequest()
         .post('/api/auth/refresh')
-        .set('Cookie', (cookieA as string).split(';')[0])
+        .set('Cookie', cookieA.split(';')[0])
         .expect(HttpStatus.UNAUTHORIZED);
 
-      await server
-        .getRequest()
-        .post('/api/auth/refresh')
-        .set('Cookie', (cookieB as string).split(';')[0])
-        .expect(HttpStatus.OK);
+      await server.getRequest().post('/api/auth/refresh').set('Cookie', cookieB.split(';')[0]).expect(HttpStatus.OK);
     });
 
     it('returns 401 on logout when refresh token has no jti', async () => {
-      const legacyToken = await app.get(JwtService).signAsync(
-        { sub: '4807f235-f4b4-41c0-939c-c97371219551' },
-        { algorithm: 'RS256', expiresIn: '90d' },
-      );
+      const legacyToken = await app
+        .get(JwtService)
+        .signAsync({ sub: '4807f235-f4b4-41c0-939c-c97371219551' }, { algorithm: 'RS256', expiresIn: '90d' });
 
       await server
         .getRequest()

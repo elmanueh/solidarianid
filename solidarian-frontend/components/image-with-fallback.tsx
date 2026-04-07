@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image, { ImageProps } from 'next/image';
 
 interface ImageWithFallbackProps extends Omit<ImageProps, 'src'> {
@@ -14,17 +14,19 @@ export function ImageWithFallback({
   alt,
   ...props
 }: ImageWithFallbackProps) {
-  const [imgSrc, setImgSrc] = useState(src);
   const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    setIsError(false);
+  }, [src]);
 
   return (
     <Image
       {...props}
-      src={isError ? fallbackSrc : imgSrc}
+      src={isError ? fallbackSrc : src}
       alt={alt}
       onError={() => {
         setIsError(true);
-        setImgSrc(fallbackSrc);
       }}
     />
   );

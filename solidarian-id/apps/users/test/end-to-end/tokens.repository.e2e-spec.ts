@@ -8,12 +8,7 @@ import { UsersModule } from '@app/users/users.module';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  KafkaTestModule,
-  PostgreSQLSeeder,
-  PostgreSQLTestModule,
-  TestContainerLifecycle,
-} from '@solidarianid/testing';
+import { KafkaTestModule, PostgreSQLSeeder, PostgreSQLTestModule, TestContainerLifecycle } from '@solidarianid/testing';
 import { createHash } from 'node:crypto';
 import { DataSource } from 'typeorm';
 

@@ -111,11 +111,11 @@ describe('AuthServiceImpl', () => {
 
     const activeRefresh = RefreshToken.create(
       {
-      userId: userIdResult.value,
-      tokenHash: hash('old-refresh-token'),
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
-      revokedAt: null,
-      rotatedAt: null,
+        userId: userIdResult.value,
+        tokenHash: hash('old-refresh-token'),
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60),
+        revokedAt: null,
+        rotatedAt: null,
         deviceId: 'device-A',
       },
       'f0a9db70-4667-4f13-b5a3-f85f5c0cb6ae',

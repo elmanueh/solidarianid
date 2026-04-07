@@ -252,10 +252,9 @@ describe('AuthController (e2e)', () => {
     });
 
     it('returns 401 on logout when refresh token has no jti', async () => {
-      const legacyToken = await app.get(JwtService).signAsync(
-        { sub: '4807f235-f4b4-41c0-939c-c97371219551' },
-        { algorithm: 'RS256', expiresIn: '90d' },
-      );
+      const legacyToken = await app
+        .get(JwtService)
+        .signAsync({ sub: '4807f235-f4b4-41c0-939c-c97371219551' }, { algorithm: 'RS256', expiresIn: '90d' });
 
       await server
         .getRequest()

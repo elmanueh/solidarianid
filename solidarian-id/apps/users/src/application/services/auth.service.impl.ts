@@ -186,8 +186,8 @@ export class AuthServiceImpl extends AuthService {
     const accessToken = await this.jwtService.signAsync(
       { sub: payload.sub },
       {
-      algorithm: 'RS256',
-      expiresIn: AuthServiceImpl.ACCESS_TTL,
+        algorithm: 'RS256',
+        expiresIn: AuthServiceImpl.ACCESS_TTL,
       },
     );
 

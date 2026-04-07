@@ -7,6 +7,7 @@ import type { Request, Response } from 'express';
 
 interface RefreshJwtPayload {
   sub: string;
+  jti?: string;
 }
 
 @Controller('/api/auth')
@@ -19,8 +20,14 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async authenticate(@Body() dto: LoginUserDtoRequest, @Res() response: Response): Promise<void> {
-    const result = await this.authService.loginUsernamePassword(dto.username, dto.password);
+  async authenticate(
+    @Body() dto: LoginUserDtoRequest,
+    @Req() request: Request,
+    @Res() response: Response,
+  ): Promise<void> {
+    const deviceId = this.normalizeDeviceId(request.header('X-Device-Id'));
+
+    const result = await this.authService.loginUsernamePassword(dto.username, dto.password, deviceId);
     if (result.isLeft()) {
       throw result.value;
     }
@@ -59,11 +66,15 @@ export class AuthController {
           algorithms: ['RS256'],
         });
 
-        if (payload.sub) {
-          await this.authService.logout(payload.sub);
+        if (!payload.sub || !payload.jti) {
+          response.status(HttpStatus.UNAUTHORIZED).send();
+          return;
         }
+
+        await this.authService.logoutCurrentSession(payload.jti);
       } catch {
-        // Even with invalid cookie, logout must clear client cookies
+        response.status(HttpStatus.UNAUTHORIZED).send();
+        return;
       }
     }
 
@@ -107,5 +118,10 @@ export class AuthController {
       sameSite: 'lax',
       path: '/api/auth/refresh',
     });
+  }
+
+  private normalizeDeviceId(deviceIdHeader: string | undefined): string | undefined {
+    const normalized = deviceIdHeader?.trim();
+    return normalized ? normalized : undefined;
   }
 }

@@ -14,6 +14,7 @@ describe('RefreshToken domain model', () => {
       expiresAt: new Date(Date.now() + 60_000),
       revokedAt: null,
       rotatedAt: null,
+      deviceId: null,
     });
 
     expect(refresh.isRight()).toBe(true);
@@ -35,6 +36,7 @@ describe('RefreshToken domain model', () => {
       expiresAt: new Date(Date.now() + 60_000),
       revokedAt: null,
       rotatedAt: null,
+      deviceId: null,
     });
 
     const validRefresh = RefreshToken.create({
@@ -43,6 +45,7 @@ describe('RefreshToken domain model', () => {
       expiresAt: new Date(Date.now() + 60_000),
       revokedAt: null,
       rotatedAt: null,
+      deviceId: 'device-x',
     });
 
     expect(invalidRefresh.isLeft()).toBe(true);

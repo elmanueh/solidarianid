@@ -9,6 +9,7 @@ export interface RefreshTokenProps {
   expiresAt: Date;
   revokedAt: Date | null;
   rotatedAt: Date | null;
+  deviceId: string | null;
 }
 
 export class RefreshToken extends Entity<RefreshTokenProps> {
@@ -36,11 +37,20 @@ export class RefreshToken extends Entity<RefreshTokenProps> {
     return this.props.rotatedAt;
   }
 
+  get deviceId(): string | null {
+    return this.props.deviceId;
+  }
+
   isActive(now: Date = new Date()): boolean {
     return !this.props.revokedAt && this.props.expiresAt.getTime() > now.getTime();
   }
 
-  rotate(nextTokenHash: string, nextExpiresAt: Date, at: Date = new Date()): Either<ValidationError, void> {
+  rotate(
+    nextTokenHash: string,
+    nextExpiresAt: Date,
+    at: Date = new Date(),
+    deviceId?: string,
+  ): Either<ValidationError, void> {
     if (!nextTokenHash.trim()) {
       return left(new ValidationError('Refresh token hash cannot be empty'));
     }
@@ -49,6 +59,9 @@ export class RefreshToken extends Entity<RefreshTokenProps> {
     this.props.expiresAt = nextExpiresAt;
     this.props.rotatedAt = at;
     this.props.revokedAt = null;
+    if (deviceId !== undefined) {
+      this.props.deviceId = deviceId;
+    }
 
     return right(undefined);
   }
@@ -88,6 +101,7 @@ export class RefreshToken extends Entity<RefreshTokenProps> {
           expiresAt: props.expiresAt,
           revokedAt: props.revokedAt,
           rotatedAt: props.rotatedAt,
+          deviceId: props.deviceId,
         },
         entityId,
       ),

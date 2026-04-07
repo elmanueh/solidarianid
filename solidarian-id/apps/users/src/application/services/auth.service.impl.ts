@@ -8,16 +8,19 @@ import { UsersService } from '@app/users/domain/services/users.service';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 
 interface JwtIdentityPayload {
   sub: string;
+  jti?: string;
+  nonce?: string;
 }
 
 @Injectable()
 export class AuthServiceImpl extends AuthService {
   private static readonly ACCESS_TTL = '15m';
   private static readonly REFRESH_TTL = '90d';
+  private readonly inFlightRefreshByJti = new Set<string>();
 
   constructor(
     private readonly usersService: UsersService,
@@ -27,13 +30,17 @@ export class AuthServiceImpl extends AuthService {
     super();
   }
 
-  async loginUsernamePassword(username: string, password: string): Promise<Either<LoginInvalidException, AuthTokens>> {
+  async loginUsernamePassword(
+    username: string,
+    password: string,
+    deviceId?: string,
+  ): Promise<Either<LoginInvalidException, AuthTokens>> {
     const userOrError = await this.usersService.authenticate(username, password);
     if (userOrError.isLeft()) {
       return left(userOrError.value);
     }
 
-    return this.issueAndPersistTokens(userOrError.value.id);
+    return this.issueAndPersistTokens(userOrError.value.id, deviceId);
   }
 
   async refresh(refreshToken: string): Promise<Either<Error, AuthTokens>> {
@@ -47,36 +54,106 @@ export class AuthServiceImpl extends AuthService {
       return left(userId.value);
     }
 
-    const activeSessionOrError = await this.tokensRepository.findByUserId(userId.value);
-    if (activeSessionOrError.isLeft()) {
-      return left(activeSessionOrError.value);
+    if (!payloadOrError.value.jti) {
+      return left(new Error('Invalid refresh token'));
     }
 
-    const incomingHash = this.hashToken(refreshToken);
-    if (!activeSessionOrError.value.isActive() || !activeSessionOrError.value.matchesHash(incomingHash)) {
+    const jti = UniqueEntityID.create(payloadOrError.value.jti);
+    if (jti.isLeft()) {
+      return left(jti.value);
+    }
+
+    if (this.inFlightRefreshByJti.has(jti.value.value)) {
       return left(new Error('Invalid refresh session'));
     }
 
-    return this.issueAndPersistTokens(userId.value);
+    this.inFlightRefreshByJti.add(jti.value.value);
+
+    try {
+      const activeSessionOrError = await this.tokensRepository.findByJti(jti.value);
+      if (activeSessionOrError.isLeft()) {
+        return left(activeSessionOrError.value);
+      }
+
+      if (!activeSessionOrError.value.userId.equals(userId.value)) {
+        return left(new Error('Invalid refresh token'));
+      }
+
+      const incomingHash = this.hashToken(refreshToken);
+      if (!activeSessionOrError.value.isActive() || !activeSessionOrError.value.matchesHash(incomingHash)) {
+        return left(new Error('Invalid refresh session'));
+      }
+
+      const payload: JwtIdentityPayload = {
+        sub: userId.value.value,
+        jti: activeSessionOrError.value.id.value,
+        nonce: randomUUID(),
+      };
+
+      const accessToken = await this.jwtService.signAsync(
+        { sub: payload.sub },
+        {
+          algorithm: 'RS256',
+          expiresIn: AuthServiceImpl.ACCESS_TTL,
+        },
+      );
+
+      const nextRefreshToken = await this.jwtService.signAsync(payload, {
+        algorithm: 'RS256',
+        expiresIn: AuthServiceImpl.REFRESH_TTL,
+      });
+
+      const rotateResult = activeSessionOrError.value.rotate(
+        this.hashToken(nextRefreshToken),
+        this.calculateExpiryDate(90),
+        new Date(),
+      );
+      if (rotateResult.isLeft()) {
+        return left(rotateResult.value);
+      }
+
+      const saveResult = await this.tokensRepository.save(activeSessionOrError.value);
+      if (saveResult.isLeft()) {
+        return left(saveResult.value);
+      }
+
+      const persistedSessionOrError = await this.tokensRepository.findByJti(activeSessionOrError.value.id);
+      if (persistedSessionOrError.isLeft()) {
+        return left(persistedSessionOrError.value);
+      }
+
+      if (!persistedSessionOrError.value.matchesHash(this.hashToken(nextRefreshToken))) {
+        return left(new Error('Invalid refresh session'));
+      }
+
+      return right({
+        userId: userId.value.value,
+        accessToken,
+        refreshToken: nextRefreshToken,
+      });
+    } finally {
+      this.inFlightRefreshByJti.delete(jti.value.value);
+    }
   }
 
-  async logout(userId: string): Promise<Either<Error, void>> {
-    const userIdOrError = UniqueEntityID.create(userId);
-    if (userIdOrError.isLeft()) {
-      return left(userIdOrError.value);
+  async logoutCurrentSession(jti: string): Promise<Either<Error, void>> {
+    const jtiOrError = UniqueEntityID.create(jti);
+    if (jtiOrError.isLeft()) {
+      return left(jtiOrError.value);
     }
 
-    const existingRefreshOrError = await this.tokensRepository.findByUserId(userIdOrError.value);
-    if (existingRefreshOrError.isLeft()) {
-      if (existingRefreshOrError.value instanceof EntityNotFoundException) {
+    const sessionOrError = await this.tokensRepository.findByJti(jtiOrError.value);
+    if (sessionOrError.isLeft()) {
+      if (sessionOrError.value instanceof EntityNotFoundException) {
         return right(undefined);
       }
 
-      return left(existingRefreshOrError.value);
+      return left(sessionOrError.value);
     }
 
-    existingRefreshOrError.value.revoke();
-    const saveResult = await this.tokensRepository.save(existingRefreshOrError.value);
+    sessionOrError.value.revoke();
+
+    const saveResult = await this.tokensRepository.save(sessionOrError.value);
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
@@ -84,53 +161,44 @@ export class AuthServiceImpl extends AuthService {
     return right(undefined);
   }
 
-  private async issueAndPersistTokens(userId: UniqueEntityID): Promise<Either<Error, AuthTokens>> {
-    let existingRefreshId: string | null = null;
-
-    const existingRefreshOrError = await this.tokensRepository.findByUserId(userId);
-    if (existingRefreshOrError.isLeft()) {
-      if (!(existingRefreshOrError.value instanceof EntityNotFoundException)) {
-        return left(existingRefreshOrError.value);
-      }
-    } else {
-      existingRefreshId = existingRefreshOrError.value.id.value;
-      existingRefreshOrError.value.revoke();
-      const revokeSaveResult = await this.tokensRepository.save(existingRefreshOrError.value);
-      if (revokeSaveResult.isLeft()) {
-        return left(revokeSaveResult.value);
-      }
-
-      const removeResult = await this.tokensRepository.remove(existingRefreshId);
-      if (removeResult.isLeft()) {
-        return left(removeResult.value);
-      }
-    }
-
-    const payload: JwtIdentityPayload = { sub: userId.value };
-
-    const accessToken = await this.jwtService.signAsync(payload, {
-      algorithm: 'RS256',
-      expiresIn: AuthServiceImpl.ACCESS_TTL,
-    });
-
-    const refreshToken = await this.jwtService.signAsync(payload, {
-      algorithm: 'RS256',
-      expiresIn: AuthServiceImpl.REFRESH_TTL,
-    });
-
+  private async issueAndPersistTokens(userId: UniqueEntityID, deviceId?: string): Promise<Either<Error, AuthTokens>> {
     const refreshEntityOrError = RefreshToken.create({
       userId,
-      tokenHash: this.hashToken(refreshToken),
+      tokenHash: 'pending-refresh-hash',
       expiresAt: this.calculateExpiryDate(90),
       revokedAt: null,
       rotatedAt: new Date(),
+      deviceId: deviceId ?? null,
     });
 
     if (refreshEntityOrError.isLeft()) {
       return left(refreshEntityOrError.value);
     }
 
-    const saveResult = await this.tokensRepository.save(refreshEntityOrError.value);
+    const refreshEntity = refreshEntityOrError.value;
+
+    const payload: JwtIdentityPayload = {
+      sub: userId.value,
+      jti: refreshEntity.id.value,
+      nonce: randomUUID(),
+    };
+
+    const accessToken = await this.jwtService.signAsync(
+      { sub: payload.sub },
+      {
+      algorithm: 'RS256',
+      expiresIn: AuthServiceImpl.ACCESS_TTL,
+      },
+    );
+
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      algorithm: 'RS256',
+      expiresIn: AuthServiceImpl.REFRESH_TTL,
+    });
+
+    refreshEntity.rotate(this.hashToken(refreshToken), this.calculateExpiryDate(90), new Date(), deviceId);
+
+    const saveResult = await this.tokensRepository.save(refreshEntity);
     if (saveResult.isLeft()) {
       return left(saveResult.value);
     }
@@ -148,11 +216,11 @@ export class AuthServiceImpl extends AuthService {
         algorithms: ['RS256'],
       });
 
-      if (!payload.sub) {
+      if (!payload.sub || !payload.jti) {
         return left(new Error('Invalid token payload'));
       }
 
-      return right({ sub: payload.sub });
+      return right({ sub: payload.sub, jti: payload.jti });
     } catch {
       return left(new Error('Invalid refresh token'));
     }

@@ -16,7 +16,18 @@ export abstract class AuthService {
   abstract loginUsernamePassword(
     username: string,
     password: string,
+    deviceId?: string,
   ): Promise<Either<LoginInvalidException, AuthTokens>>;
+
+  /**
+   * Refresca un nuevo access token para un usuario dado su refresh token.
+   * @param refreshToken
+   */
   abstract refresh(refreshToken: string): Promise<Either<Error, AuthTokens>>;
-  abstract logout(userId: string): Promise<Either<Error, void>>;
+
+  /**
+   * Cierra la sesión actual de un usuario revocando su refresh token.
+   * @param jti
+   */
+  abstract logoutCurrentSession(jti: string): Promise<Either<Error, void>>;
 }

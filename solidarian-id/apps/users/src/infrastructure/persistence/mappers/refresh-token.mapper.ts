@@ -16,6 +16,7 @@ export class RefreshTokenMapper implements Mapper<RefreshToken, RefreshTokenEnti
     entity.expiresAt = model.expiresAt;
     entity.revokedAt = model.revokedAt;
     entity.rotatedAt = model.rotatedAt;
+    entity.deviceId = model.deviceId;
 
     return entity;
   }
@@ -33,6 +34,7 @@ export class RefreshTokenMapper implements Mapper<RefreshToken, RefreshTokenEnti
         expiresAt: entity.expiresAt,
         revokedAt: entity.revokedAt,
         rotatedAt: entity.rotatedAt,
+        deviceId: entity.deviceId,
       },
       entity.id,
     );

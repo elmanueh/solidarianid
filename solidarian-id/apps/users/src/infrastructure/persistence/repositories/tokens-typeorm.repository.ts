@@ -1,4 +1,4 @@
-import { Either, left, right } from '@app/ddd/either';
+import { Either, left } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { RepositoryTypeORM } from '@app/ddd/repository/repository-typeorm';
@@ -25,24 +25,18 @@ export class TokensTypeormRepository
     super(tokensRepository, tokenMapper);
   }
 
-  async findByUserId(userId: UniqueEntityID): Promise<Either<RepositoryException | ValidationError, RefreshToken>> {
+  async findByJti(jti: UniqueEntityID): Promise<Either<RepositoryException | ValidationError, RefreshToken>> {
     try {
       const entity = await this.tokensRepository.findOne({
-        where: { userId: userId.value },
+        where: { id: jti.value },
       });
 
       if (!entity) {
-        return left(new EntityNotFoundException('RefreshToken', userId.value));
+        return left(new EntityNotFoundException(jti.value, 'Refresh Token not found'));
       }
-
-      const refreshToken = this.tokenMapper.fromPersistence(entity);
-      if (refreshToken.isLeft()) {
-        return left(refreshToken.value);
-      }
-
-      return right(refreshToken.value);
+      return this.tokenMapper.fromPersistence(entity);
     } catch (error) {
-      return left(new RepositoryException(`Failed to find refresh token by userId: ${userId.value}`, error));
+      return left(new RepositoryException(`Failed to find refresh token by jti: ${jti.value}`, error));
     }
   }
 }

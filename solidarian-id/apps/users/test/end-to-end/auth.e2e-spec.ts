@@ -4,6 +4,7 @@ import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/enti
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { UsersModule } from '@app/users/users.module';
 import { HttpStatus, INestApplication } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import {
   KafkaTestModule,
   PostgreSQLSeeder,
@@ -84,6 +85,29 @@ describe('AuthController (e2e)', () => {
         })
         .expect(HttpStatus.NOT_FOUND);
     });
+
+    it('supports concurrent sessions and persists optional X-Device-Id', async () => {
+      const deviceALogin = await server
+        .getRequest()
+        .post('/api/auth/login')
+        .set('X-Device-Id', 'device-A')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' });
+
+      const deviceBLogin = await server
+        .getRequest()
+        .post('/api/auth/login')
+        .set('X-Device-Id', 'device-B')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' });
+
+      expect(deviceALogin.status).toBe(HttpStatus.OK);
+      expect(deviceBLogin.status).toBe(HttpStatus.OK);
+
+      const tokenRepo = app.get<DataSource>('DataSource').getRepository(RefreshTokenEntity);
+      const sessions = await tokenRepo.find({ where: { userId: '4807f235-f4b4-41c0-939c-c97371219551' } });
+
+      expect(sessions).toHaveLength(2);
+      expect(sessions.map(session => session.deviceId).sort()).toEqual(['device-A', 'device-B']);
+    });
   });
 
   describe('/api/auth/refresh (POST)', () => {
@@ -123,6 +147,61 @@ describe('AuthController (e2e)', () => {
         .set('Cookie', 'RefreshToken=invalid')
         .expect(HttpStatus.UNAUTHORIZED);
     });
+
+    it('refreshes only the targeted session cookie and keeps other session valid', async () => {
+      const loginA = await server
+        .getRequest()
+        .post('/api/auth/login')
+        .set('X-Device-Id', 'device-A')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' });
+      const loginB = await server
+        .getRequest()
+        .post('/api/auth/login')
+        .set('X-Device-Id', 'device-B')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' });
+
+      const cookieA = (loginA.header['set-cookie'] as string[]).find(cookie => cookie.startsWith('RefreshToken='));
+      const cookieB = (loginB.header['set-cookie'] as string[]).find(cookie => cookie.startsWith('RefreshToken='));
+
+      expect(cookieA).toBeDefined();
+      expect(cookieB).toBeDefined();
+
+      const refreshA = await server
+        .getRequest()
+        .post('/api/auth/refresh')
+        .set('Cookie', (cookieA as string).split(';')[0]);
+
+      expect(refreshA.status).toBe(HttpStatus.OK);
+
+      const refreshB = await server
+        .getRequest()
+        .post('/api/auth/refresh')
+        .set('Cookie', (cookieB as string).split(';')[0]);
+
+      expect(refreshB.status).toBe(HttpStatus.OK);
+    });
+
+    it('rejects one request when two concurrent refresh requests use the same token', async () => {
+      const loginResponse = await server.getRequest().post('/api/auth/login').send({
+        username: 'testUsername',
+        password: 'Admin2024!Pass',
+      });
+
+      const refreshCookie = (loginResponse.header['set-cookie'] as string[]).find(cookie =>
+        cookie.startsWith('RefreshToken='),
+      );
+
+      expect(refreshCookie).toBeDefined();
+
+      const tokenCookie = (refreshCookie as string).split(';')[0];
+
+      const [first, second] = await Promise.all([
+        server.getRequest().post('/api/auth/refresh').set('Cookie', tokenCookie),
+        server.getRequest().post('/api/auth/refresh').set('Cookie', tokenCookie),
+      ]);
+
+      expect([first.status, second.status].sort()).toEqual([HttpStatus.OK, HttpStatus.UNAUTHORIZED]);
+    });
   });
 
   describe('/api/auth/logout (POST)', () => {
@@ -133,6 +212,56 @@ describe('AuthController (e2e)', () => {
       const setCookie = response.header['set-cookie'] as string[];
       expect(setCookie.some(cookie => cookie.startsWith('AccessToken=;'))).toBe(true);
       expect(setCookie.some(cookie => cookie.startsWith('RefreshToken=;'))).toBe(true);
+    });
+
+    it('revokes only current session and keeps other session active', async () => {
+      const loginA = await server
+        .getRequest()
+        .post('/api/auth/login')
+        .set('X-Device-Id', 'device-A')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' });
+      const loginB = await server
+        .getRequest()
+        .post('/api/auth/login')
+        .set('X-Device-Id', 'device-B')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' });
+
+      const cookieA = (loginA.header['set-cookie'] as string[]).find(cookie => cookie.startsWith('RefreshToken='));
+      const cookieB = (loginB.header['set-cookie'] as string[]).find(cookie => cookie.startsWith('RefreshToken='));
+
+      expect(cookieA).toBeDefined();
+      expect(cookieB).toBeDefined();
+
+      await server
+        .getRequest()
+        .post('/api/auth/logout')
+        .set('Cookie', (cookieA as string).split(';')[0])
+        .expect(HttpStatus.OK);
+
+      await server
+        .getRequest()
+        .post('/api/auth/refresh')
+        .set('Cookie', (cookieA as string).split(';')[0])
+        .expect(HttpStatus.UNAUTHORIZED);
+
+      await server
+        .getRequest()
+        .post('/api/auth/refresh')
+        .set('Cookie', (cookieB as string).split(';')[0])
+        .expect(HttpStatus.OK);
+    });
+
+    it('returns 401 on logout when refresh token has no jti', async () => {
+      const legacyToken = await app.get(JwtService).signAsync(
+        { sub: '4807f235-f4b4-41c0-939c-c97371219551' },
+        { algorithm: 'RS256', expiresIn: '90d' },
+      );
+
+      await server
+        .getRequest()
+        .post('/api/auth/logout')
+        .set('Cookie', `RefreshToken=${legacyToken}`)
+        .expect(HttpStatus.UNAUTHORIZED);
     });
   });
 });

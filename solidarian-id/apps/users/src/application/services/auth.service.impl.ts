@@ -84,52 +84,25 @@ export class AuthServiceImpl extends AuthService {
         return left(new Error('Invalid refresh session'));
       }
 
-      const payload: JwtIdentityPayload = {
-        sub: userId.value.value,
-        jti: activeSessionOrError.value.id.value,
-        nonce: randomUUID(),
-      };
-
-      const accessToken = await this.jwtService.signAsync(
-        { sub: payload.sub },
-        {
-          algorithm: 'RS256',
-          expiresIn: AuthServiceImpl.ACCESS_TTL,
-        },
-      );
-
-      const nextRefreshToken = await this.jwtService.signAsync(payload, {
-        algorithm: 'RS256',
-        expiresIn: AuthServiceImpl.REFRESH_TTL,
-      });
-
-      const rotateResult = activeSessionOrError.value.rotate(
-        this.hashToken(nextRefreshToken),
-        this.calculateExpiryDate(90),
-        new Date(),
-      );
-      if (rotateResult.isLeft()) {
-        return left(rotateResult.value);
-      }
+      activeSessionOrError.value.touchRefreshedAt();
 
       const saveResult = await this.tokensRepository.save(activeSessionOrError.value);
       if (saveResult.isLeft()) {
         return left(saveResult.value);
       }
 
-      const persistedSessionOrError = await this.tokensRepository.findByJti(activeSessionOrError.value.id);
-      if (persistedSessionOrError.isLeft()) {
-        return left(persistedSessionOrError.value);
-      }
-
-      if (!persistedSessionOrError.value.matchesHash(this.hashToken(nextRefreshToken))) {
-        return left(new Error('Invalid refresh session'));
-      }
+      const accessToken = await this.jwtService.signAsync(
+        { sub: userId.value.value },
+        {
+          algorithm: 'RS256',
+          expiresIn: AuthServiceImpl.ACCESS_TTL,
+        },
+      );
 
       return right({
         userId: userId.value.value,
         accessToken,
-        refreshToken: nextRefreshToken,
+        refreshToken,
       });
     } finally {
       this.inFlightRefreshByJti.delete(jti.value.value);
@@ -167,7 +140,7 @@ export class AuthServiceImpl extends AuthService {
       tokenHash: 'pending-refresh-hash',
       expiresAt: this.calculateExpiryDate(90),
       revokedAt: null,
-      rotatedAt: new Date(),
+      refreshedAt: new Date(),
       deviceId: deviceId ?? null,
     });
 
@@ -196,7 +169,10 @@ export class AuthServiceImpl extends AuthService {
       expiresIn: AuthServiceImpl.REFRESH_TTL,
     });
 
-    refreshEntity.rotate(this.hashToken(refreshToken), this.calculateExpiryDate(90), new Date(), deviceId);
+    const setHashResult = refreshEntity.setTokenHash(this.hashToken(refreshToken));
+    if (setHashResult.isLeft()) {
+      return left(setHashResult.value);
+    }
 
     const saveResult = await this.tokensRepository.save(refreshEntity);
     if (saveResult.isLeft()) {

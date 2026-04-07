@@ -13,7 +13,7 @@ describe('RefreshToken domain model', () => {
       tokenHash: 'hash-valid',
       expiresAt: new Date(Date.now() + 60_000),
       revokedAt: null,
-      rotatedAt: null,
+      refreshedAt: null,
       deviceId: null,
     });
 
@@ -35,7 +35,7 @@ describe('RefreshToken domain model', () => {
       tokenHash: '   ',
       expiresAt: new Date(Date.now() + 60_000),
       revokedAt: null,
-      rotatedAt: null,
+      refreshedAt: null,
       deviceId: null,
     });
 
@@ -44,7 +44,7 @@ describe('RefreshToken domain model', () => {
       tokenHash: 'hash-valid',
       expiresAt: new Date(Date.now() + 60_000),
       revokedAt: null,
-      rotatedAt: null,
+      refreshedAt: null,
       deviceId: 'device-x',
     });
 

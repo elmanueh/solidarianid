@@ -58,7 +58,7 @@ describe('TokensTypeormRepository (e2e)', () => {
         tokenHash,
         expiresAt: new Date(Date.now() + 1000 * 60 * 60),
         revokedAt: null,
-        rotatedAt: null,
+        refreshedAt: null,
         deviceId: 'device-A',
       },
       sessionId,

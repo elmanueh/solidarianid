@@ -129,7 +129,7 @@ describe('AuthController (e2e)', () => {
       await server.getRequest().post('/api/auth/refresh').expect(HttpStatus.UNAUTHORIZED);
     });
 
-    it('issues new cookies when refresh cookie is valid', async () => {
+    it('issues only AccessToken cookie when refresh cookie is valid', async () => {
       const loginResponse = await server.getRequest().post('/api/auth/login').send({
         username: 'testUsername',
         password: 'Admin2024!Pass',
@@ -152,7 +152,7 @@ describe('AuthController (e2e)', () => {
       expect(refreshResponse.status).toBe(HttpStatus.OK);
       const setCookie = getSetCookieHeaders(refreshResponse.header as Record<string, unknown>);
       expect(setCookie.some(cookie => cookie.startsWith('AccessToken='))).toBe(true);
-      expect(setCookie.some(cookie => cookie.startsWith('RefreshToken='))).toBe(true);
+      expect(setCookie.some(cookie => cookie.startsWith('RefreshToken='))).toBe(false);
       expect(refreshResponse.body.accessToken).toBeUndefined();
       expect(refreshResponse.body.refreshToken).toBeUndefined();
     });
@@ -165,7 +165,7 @@ describe('AuthController (e2e)', () => {
         .expect(HttpStatus.UNAUTHORIZED);
     });
 
-    it('refreshes only the targeted session cookie and keeps other session valid', async () => {
+    it('reuses the same refresh cookie per session and keeps other session valid', async () => {
       const loginA = await server
         .getRequest()
         .post('/api/auth/login')
@@ -193,10 +193,57 @@ describe('AuthController (e2e)', () => {
       const refreshA = await server.getRequest().post('/api/auth/refresh').set('Cookie', cookieA.split(';')[0]);
 
       expect(refreshA.status).toBe(HttpStatus.OK);
+      const refreshASetCookie = getSetCookieHeaders(refreshA.header as Record<string, unknown>);
+      expect(refreshASetCookie.some(cookie => cookie.startsWith('RefreshToken='))).toBe(false);
 
       const refreshB = await server.getRequest().post('/api/auth/refresh').set('Cookie', cookieB.split(';')[0]);
 
       expect(refreshB.status).toBe(HttpStatus.OK);
+      const refreshBSetCookie = getSetCookieHeaders(refreshB.header as Record<string, unknown>);
+      expect(refreshBSetCookie.some(cookie => cookie.startsWith('RefreshToken='))).toBe(false);
+    });
+
+    it('keeps refresh session validity window fixed from login time (no expiry extension on refresh)', async () => {
+      const loginResponse = await server.getRequest().post('/api/auth/login').send({
+        username: 'testUsername',
+        password: 'Admin2024!Pass',
+      });
+
+      expect(loginResponse.status).toBe(HttpStatus.OK);
+
+      const tokenRepo = app.get<DataSource>('DataSource').getRepository(RefreshTokenEntity);
+      const [sessionBeforeRefresh] = await tokenRepo.find({
+        where: { userId: '4807f235-f4b4-41c0-939c-c97371219551' },
+      });
+      expect(sessionBeforeRefresh).toBeDefined();
+      if (!sessionBeforeRefresh) {
+        throw new Error('Refresh session missing after login');
+      }
+
+      const expiresAtBefore = sessionBeforeRefresh.expiresAt.getTime();
+
+      const refreshCookie = getSetCookieHeaders(loginResponse.header as Record<string, unknown>).find(cookie =>
+        cookie.startsWith('RefreshToken='),
+      );
+      expect(refreshCookie).toBeDefined();
+      if (!refreshCookie) {
+        throw new Error('RefreshToken cookie missing in login response');
+      }
+
+      const refreshResponse = await server
+        .getRequest()
+        .post('/api/auth/refresh')
+        .set('Cookie', refreshCookie.split(';')[0]);
+
+      expect(refreshResponse.status).toBe(HttpStatus.OK);
+
+      const [sessionAfterRefresh] = await tokenRepo.find({ where: { userId: '4807f235-f4b4-41c0-939c-c97371219551' } });
+      expect(sessionAfterRefresh).toBeDefined();
+      if (!sessionAfterRefresh) {
+        throw new Error('Refresh session missing after refresh');
+      }
+
+      expect(sessionAfterRefresh.expiresAt.getTime()).toBe(expiresAtBefore);
     });
 
     it('rejects one request when two concurrent refresh requests use the same token', async () => {

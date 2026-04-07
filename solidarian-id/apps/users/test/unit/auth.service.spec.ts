@@ -99,7 +99,7 @@ describe('AuthServiceImpl', () => {
     expect(tokensRepository.save).toHaveBeenCalledTimes(2);
   });
 
-  it('rotates only the targeted jti session on refresh', async () => {
+  it('refreshes only access token for the targeted jti session without rotating refresh token', async () => {
     jwtService.verifyAsync.mockResolvedValue({
       sub: '4807f235-f4b4-41c0-939c-c97371219551',
       jti: 'f0a9db70-4667-4f13-b5a3-f85f5c0cb6ae',
@@ -115,7 +115,7 @@ describe('AuthServiceImpl', () => {
         tokenHash: hash('old-refresh-token'),
         expiresAt: new Date(Date.now() + 1000 * 60 * 60),
         revokedAt: null,
-        rotatedAt: null,
+        refreshedAt: null,
         deviceId: 'device-A',
       },
       'f0a9db70-4667-4f13-b5a3-f85f5c0cb6ae',
@@ -127,18 +127,21 @@ describe('AuthServiceImpl', () => {
 
     tokensRepository.findByJti.mockResolvedValue(right(activeRefresh.value));
     tokensRepository.save.mockResolvedValue(right(undefined));
-    jwtService.signAsync.mockResolvedValueOnce('new-access-token').mockResolvedValueOnce('new-refresh-token');
+    jwtService.signAsync.mockResolvedValueOnce('new-access-token');
 
     const result = await service.refresh('old-refresh-token');
 
     expect(result.isRight()).toBe(true);
     expect(result.isRight() ? result.value.accessToken : '').toBe('new-access-token');
-    expect(result.isRight() ? result.value.refreshToken : '').toBe('new-refresh-token');
+    expect(result.isRight() ? result.value.refreshToken : '').toBe('old-refresh-token');
     expect(tokensRepository.findByJti).toHaveBeenCalledWith(
       expect.objectContaining({ value: 'f0a9db70-4667-4f13-b5a3-f85f5c0cb6ae' }),
     );
     expect(tokensRepository.save).toHaveBeenCalledTimes(1);
-    expect(tokensRepository.findByJti).toHaveBeenCalledTimes(2);
+    expect(tokensRepository.findByJti).toHaveBeenCalledTimes(1);
+    expect(tokensRepository.save).toHaveBeenCalledWith(
+      expect.objectContaining({ tokenHash: hash('old-refresh-token') }),
+    );
   });
 
   it('revokes only the current session on logout by jti', async () => {
@@ -153,7 +156,7 @@ describe('AuthServiceImpl', () => {
         tokenHash: hash('logout-refresh-token'),
         expiresAt: new Date(Date.now() + 1000 * 60 * 60),
         revokedAt: null,
-        rotatedAt: null,
+        refreshedAt: null,
         deviceId: null,
       },
       'f0a9db70-4667-4f13-b5a3-f85f5c0cb6ae',
@@ -201,7 +204,7 @@ describe('AuthServiceImpl', () => {
         tokenHash: 'hash-something-else',
         expiresAt: new Date(Date.now() + 1000 * 60 * 60),
         revokedAt: null,
-        rotatedAt: null,
+        refreshedAt: null,
         deviceId: null,
       },
       'f0a9db70-4667-4f13-b5a3-f85f5c0cb6ae',
@@ -259,7 +262,7 @@ describe('AuthServiceImpl', () => {
         tokenHash: hash('old-refresh-token'),
         expiresAt: new Date(Date.now() + 1000 * 60 * 60),
         revokedAt: null,
-        rotatedAt: null,
+        refreshedAt: null,
         deviceId: 'device-A',
       },
       'f0a9db70-4667-4f13-b5a3-f85f5c0cb6ae',
@@ -271,11 +274,12 @@ describe('AuthServiceImpl', () => {
 
     tokensRepository.findByJti.mockResolvedValue(right(activeRefresh.value));
     tokensRepository.save.mockResolvedValue(right(undefined));
-    jwtService.signAsync.mockResolvedValueOnce('new-access-token').mockResolvedValueOnce('new-refresh-token');
+    jwtService.signAsync.mockResolvedValueOnce('new-access-token');
 
     const result = await service.refresh('old-refresh-token');
 
     expect(result.isRight()).toBe(true);
+    expect(result.isRight() ? result.value.refreshToken : '').toBe('old-refresh-token');
     expect(tokensRepository.save).toHaveBeenCalledTimes(1);
   });
 
@@ -295,7 +299,7 @@ describe('AuthServiceImpl', () => {
         tokenHash: hash('old-refresh-token'),
         expiresAt: new Date(Date.now() + 1000 * 60 * 60),
         revokedAt: null,
-        rotatedAt: null,
+        refreshedAt: null,
         deviceId: null,
       },
       'f0a9db70-4667-4f13-b5a3-f85f5c0cb6ae',
@@ -307,11 +311,12 @@ describe('AuthServiceImpl', () => {
 
     tokensRepository.findByJti.mockResolvedValue(right(activeRefresh.value));
     tokensRepository.save.mockResolvedValue(right(undefined));
-    jwtService.signAsync.mockResolvedValueOnce('new-access-token').mockResolvedValueOnce('new-refresh-token');
+    jwtService.signAsync.mockResolvedValueOnce('new-access-token');
 
     const result = await service.refresh('old-refresh-token');
 
     expect(result.isRight()).toBe(true);
+    expect(result.isRight() ? result.value.refreshToken : '').toBe('old-refresh-token');
     expect(tokensRepository.save).toHaveBeenCalledTimes(1);
   });
 

@@ -18,15 +18,12 @@ export class RefreshTokenEntity {
   @Column({ name: 'revoked_at', type: 'timestamptz', nullable: true })
   revokedAt: Date | null;
 
-  @Column({ name: 'rotated_at', type: 'timestamptz', nullable: true })
-  rotatedAt: Date | null;
+  @Column({ name: 'refreshed_at', type: 'timestamptz', nullable: true })
+  refreshedAt: Date | null;
 
   @Column({ name: 'device_id', type: 'varchar', length: 255, nullable: true })
   deviceId: string | null;
 
   @Column({ name: 'created_at', type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
-
-  @Column({ name: 'updated_at', type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
 }

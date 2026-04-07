@@ -51,7 +51,7 @@ export class AuthController {
       return;
     }
 
-    this.setAuthCookies(response, result.value.accessToken, result.value.refreshToken);
+    this.setAccessTokenCookie(response, result.value.accessToken);
     response.status(HttpStatus.OK).send();
   }
 
@@ -83,6 +83,11 @@ export class AuthController {
   }
 
   private setAuthCookies(response: Response, accessToken: string, refreshToken: string): void {
+    this.setAccessTokenCookie(response, accessToken);
+    this.setRefreshTokenCookie(response, refreshToken);
+  }
+
+  private setAccessTokenCookie(response: Response, accessToken: string): void {
     const secure = process.env.NODE_ENV !== 'test';
 
     response.cookie('AccessToken', accessToken, {
@@ -92,6 +97,10 @@ export class AuthController {
       path: '/',
       maxAge: 15 * 60 * 1000,
     });
+  }
+
+  private setRefreshTokenCookie(response: Response, refreshToken: string): void {
+    const secure = process.env.NODE_ENV !== 'test';
 
     response.cookie('RefreshToken', refreshToken, {
       httpOnly: true,

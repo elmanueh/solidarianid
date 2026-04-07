@@ -51,17 +51,17 @@ export function CauseCard({ cause, index }: CauseCardProps) {
             <div className={styles.content.location.wrapper}>
               <span className={styles.content.location.text}>{cause.durationDays} días</span>
             </div>
-            <button
-              onClick={handleFavoriteClick}
-              className={`${styles.favoriteButton.base} ${
-                isFavorite ? styles.favoriteButton.active : styles.favoriteButton.inactive
-              }`}
-            >
-              <Heart size={18} className={isFavorite ? 'fill-current' : ''} />
-            </button>
           </div>
         </div>
       </Link>
+      <button
+        onClick={handleFavoriteClick}
+        className={`${styles.favoriteButton.base} ${
+          isFavorite ? styles.favoriteButton.active : styles.favoriteButton.inactive
+        }`}
+      >
+        <Heart size={18} className={isFavorite ? 'fill-current' : ''} />
+      </button>
     </motion.div>
   );
 }

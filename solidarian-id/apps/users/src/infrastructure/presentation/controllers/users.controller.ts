@@ -1,4 +1,5 @@
 import { RegisterUserCommand, UsersService } from '@app/users/domain/services/users.service';
+import { Public } from '@app/users/infrastructure/auth/decorators/public.decorator';
 import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
 import { UpdateUserPreferencesRequestDto } from '@app/users/infrastructure/presentation/dtos/update-user-preferences.request.dto';
 import { UpdateUserProfileDtoRequest } from '@app/users/infrastructure/presentation/dtos/update-user-profile.dto';
@@ -23,6 +24,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @Public()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Creating an account for SolidarianID' })
   @ApiBody({ type: RegisterUserDtoRequest })

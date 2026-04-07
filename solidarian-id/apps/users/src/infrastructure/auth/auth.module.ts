@@ -5,6 +5,9 @@ import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entiti
 import { RefreshTokenMapper } from '@app/users/infrastructure/persistence/mappers/refresh-token.mapper';
 import { TokensTypeormRepository } from '@app/users/infrastructure/persistence/repositories/tokens-typeorm.repository';
 import { AuthController } from '@app/users/infrastructure/presentation/controllers/auth.controller';
+import { JwtAuthGuard } from '@app/users/infrastructure/auth/guards/jwt-auth.guard';
+import { OwnershipGuard } from '@app/users/infrastructure/auth/guards/ownership.guard';
+import { JwtStrategy } from '@app/users/infrastructure/auth/strategies/jwt.strategy';
 import { UsersModule } from '@app/users/users.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -58,6 +61,9 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
   ],
   providers: [
     RefreshTokenMapper,
+    JwtStrategy,
+    JwtAuthGuard,
+    OwnershipGuard,
     {
       provide: AuthService,
       useClass: AuthServiceImpl,
@@ -68,6 +74,6 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
     },
   ],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, JwtAuthGuard, OwnershipGuard],
 })
 export class AuthModule {}

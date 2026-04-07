@@ -1,4 +1,5 @@
 import { AuthService } from '@app/users/domain/services/auth.service';
+import { Public } from '@app/users/infrastructure/auth/decorators/public.decorator';
 import { LoginUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/login-user.request.dto';
 import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -12,6 +13,7 @@ interface RefreshJwtPayload {
 
 @Controller('/api/auth')
 @ApiTags('Auth')
+@Public()
 export class AuthController {
   constructor(
     private readonly authService: AuthService,

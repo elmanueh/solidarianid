@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import type { Cause } from '@/features/causes/model';
+import { causeCardStyles } from '@/styles/components/cause-card.styles';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 import { ImageWithFallback } from './image-with-fallback';
-import { causeCardStyles } from '@/styles/components/cause-card.styles';
-import type { Cause } from '@/features/causes/model';
 
 type CauseCardData = Cause & {
   imageUrl: string;

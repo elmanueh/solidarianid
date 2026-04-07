@@ -3,9 +3,9 @@
 import { useApolloClient } from "@apollo/client";
 import { useEffect, useState } from "react";
 
+import type { Cause } from "@/features/causes/model";
 import { causesService } from "@/features/causes/services";
 import type { GraphqlClient } from "@/features/graphql";
-import type { Cause } from "@/features/causes/model";
 
 export type RecommendedCause = Cause & {
   imageUrl: string;

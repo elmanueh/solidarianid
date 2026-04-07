@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { KafkaBrokersModule } from '@solidarianid/kafka';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
 
 @Module({
   imports: [

@@ -1,13 +1,10 @@
 type CauseLayoutProps = {
-  children: React.ReactNode
-  params: Promise<{ communityId: string; causeId: string }>
-}
+  children: React.ReactNode;
+  params: Promise<{ communityId: string; causeId: string }>;
+};
 
-export default async function CauseLayout({
-  children,
-  params,
-}: CauseLayoutProps) {
-  const { communityId, causeId } = await params
+export default async function CauseLayout({ children, params }: Readonly<CauseLayoutProps>) {
+  const { communityId, causeId } = await params;
 
   return (
     <section className="space-y-4">
@@ -19,5 +16,5 @@ export default async function CauseLayout({
       </header>
       {children}
     </section>
-  )
+  );
 }

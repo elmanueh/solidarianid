@@ -4,5 +4,5 @@ export default function ProfileSettingsImpactPage() {
       <h1 className="text-2xl font-semibold">Impact Preferences</h1>
       <p className="text-sm text-muted-foreground">Trace: /profile/settings/impact</p>
     </section>
-  )
+  );
 }

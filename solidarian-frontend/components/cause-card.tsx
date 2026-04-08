@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import type { Cause } from '@/features/causes/model';
+import { causeCardStyles } from '@/styles/components/cause-card.styles';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 import { ImageWithFallback } from './image-with-fallback';
-import { causeCardStyles } from '@/styles/components/cause-card.styles';
-import type { Cause } from '@/features/causes/model';
 
 type CauseCardData = Cause & {
   imageUrl: string;
@@ -51,17 +51,17 @@ export function CauseCard({ cause, index }: CauseCardProps) {
             <div className={styles.content.location.wrapper}>
               <span className={styles.content.location.text}>{cause.durationDays} días</span>
             </div>
-            <button
-              onClick={handleFavoriteClick}
-              className={`${styles.favoriteButton.base} ${
-                isFavorite ? styles.favoriteButton.active : styles.favoriteButton.inactive
-              }`}
-            >
-              <Heart size={18} className={isFavorite ? 'fill-current' : ''} />
-            </button>
           </div>
         </div>
       </Link>
+      <button
+        onClick={handleFavoriteClick}
+        className={`${styles.favoriteButton.base} ${
+          isFavorite ? styles.favoriteButton.active : styles.favoriteButton.inactive
+        }`}
+      >
+        <Heart size={18} className={isFavorite ? 'fill-current' : ''} />
+      </button>
     </motion.div>
   );
 }

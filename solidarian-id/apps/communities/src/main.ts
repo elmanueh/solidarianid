@@ -9,7 +9,6 @@ import { dump } from 'js-yaml';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { AppModule } from './app.module';
-import { credentials } from '@grpc/grpc-js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

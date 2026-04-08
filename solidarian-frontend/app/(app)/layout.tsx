@@ -1,4 +1,5 @@
 import { ThemeToggleButton } from '@/components/theme-toggle-button';
+import { ROUTES } from '@/features/routes';
 import Link from 'next/link';
 
 export default function AppLayout({
@@ -11,19 +12,19 @@ export default function AppLayout({
       <header className="border-b border-border bg-background">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4">
           <nav className="flex gap-6 py-4 text-sm font-medium">
-            <Link href="/home" className="text-foreground transition-colors hover:text-chart-2">
+            <Link href={ROUTES.app.home} className="text-foreground transition-colors hover:text-chart-2">
               Home
             </Link>
-            <Link href="/explore" className="text-foreground transition-colors hover:text-chart-2">
+            <Link href={ROUTES.app.explore} className="text-foreground transition-colors hover:text-chart-2">
               Explore
             </Link>
-            <Link href="/favorites" className="text-foreground transition-colors hover:text-chart-5">
+            <Link href={ROUTES.app.favorites} className="text-foreground transition-colors hover:text-chart-5">
               Favorites
             </Link>
-            <Link href="/notifications" className="text-foreground transition-colors hover:text-chart-1">
+            <Link href={ROUTES.app.notifications} className="text-foreground transition-colors hover:text-chart-1">
               Notifications
             </Link>
-            <Link href="/profile" className="text-foreground transition-colors hover:text-chart-4">
+            <Link href={ROUTES.app.profile} className="text-foreground transition-colors hover:text-chart-4">
               Mi SolidarianID
             </Link>
           </nav>

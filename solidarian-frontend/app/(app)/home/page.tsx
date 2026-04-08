@@ -3,6 +3,7 @@
 import { CauseCard } from '@/components/cause-card';
 import { CommunityCard } from '@/components/community-card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ROUTES } from '@/features/routes';
 import { useFeaturedCommunities } from '@/hooks/use-featured-communities';
 import { useRecommendedCauses } from '@/hooks/use-recommended-causes';
 import { homeStyles } from '@/styles/app/home/page.styles';
@@ -34,7 +35,7 @@ export default function HomePage() {
             </div>
             <h3 className={styles.section.title}>Destacadas</h3>
           </div>
-          <Link href="/explore" className={styles.section.viewAllButton}>
+          <Link href={ROUTES.app.explore} className={styles.section.viewAllButton}>
             Ver todas <IconChevronRight size={14} />
           </Link>
         </div>

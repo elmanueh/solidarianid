@@ -1,6 +1,7 @@
 'use client';
 
 import { Community } from '@/features/communities/model/communities.model';
+import { ROUTES } from '@/features/routes';
 import { communityCardStyles } from '@/styles/components/community-card.styles';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -25,7 +26,7 @@ export function CommunityCard({ community, index }: Readonly<CommunityCardProps>
       transition={{ delay: index * 0.1, type: 'spring', stiffness: 100 }}
       className={styles.wrapper}
     >
-      <Link href={`/communities/${community.id}`}>
+      <Link href={ROUTES.communities.detail(community.id)}>
         <div className={styles.image.wrapper}>
           <ImageWithFallback
             src={community.imageUrl}

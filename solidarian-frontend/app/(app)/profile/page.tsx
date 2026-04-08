@@ -1,3 +1,4 @@
+import { ROUTES } from '@/features/routes';
 import Link from 'next/link';
 
 export default function ProfilePage() {
@@ -13,27 +14,27 @@ export default function ProfilePage() {
       <nav>
         <ul className="flex flex-col gap-3">
           <li>
-            <Link href="/profile/settings/requests" className="text-chart-2 transition-colors hover:underline">
+            <Link href={ROUTES.profile.requests} className="text-chart-2 transition-colors hover:underline">
               My Requests
             </Link>
           </li>
           <li>
-            <Link href="/profile/settings/personal-info" className="text-chart-2 transition-colors hover:underline">
+            <Link href={ROUTES.profile.personalInfo} className="text-chart-2 transition-colors hover:underline">
               Personal Info
             </Link>
           </li>
           <li>
-            <Link href="/profile/settings/impact" className="text-chart-2 transition-colors hover:underline">
+            <Link href={ROUTES.profile.impact} className="text-chart-2 transition-colors hover:underline">
               Impact
             </Link>
           </li>
           <li>
-            <Link href="/profile/settings/privacy" className="text-chart-2 transition-colors hover:underline">
+            <Link href={ROUTES.profile.privacy} className="text-chart-2 transition-colors hover:underline">
               Privacy
             </Link>
           </li>
           <li>
-            <Link href="/profile/settings/help" className="text-chart-2 transition-colors hover:underline">
+            <Link href={ROUTES.profile.help} className="text-chart-2 transition-colors hover:underline">
               Help
             </Link>
           </li>

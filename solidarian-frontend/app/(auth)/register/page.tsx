@@ -1,6 +1,5 @@
-"use client"
+'use client';
 
-import logoSolidarian from "@/public/solidarian-logo.png"
 import {
   Button,
   Card,
@@ -17,54 +16,48 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/components/ui"
-import { getErrorMessage } from "@/features/axios/errors.handler"
-import { IconEye, IconEyeOff, IconLogin2 } from "@tabler/icons-react"
-import Image from "next/image"
-import Link from "next/link"
-import { useState } from "react"
-import { toast } from "sonner"
+} from '@/components/ui';
+import { getErrorMessage } from '@/features/axios/errors.handler';
+import { ROUTES } from '@/features/routes';
+import logoSolidarian from '@/public/solidarian-logo.png';
+import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function RegisterPage() {
-  const [fullName, setFullName] = useState("")
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [mobilePhone, setMobilePhone] = useState("")
-  const [city, setCity] = useState("")
-  const [countryCode, setCountryCode] = useState("")
+  const [fullName, setFullName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [mobilePhone, setMobilePhone] = useState('');
+  const [city, setCity] = useState('');
+  const [countryCode, setCountryCode] = useState('');
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     try {
       // TODO: Conectar con authService.register
     } catch (err) {
-      toast.error(getErrorMessage(err))
+      toast.error(getErrorMessage(err));
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-sm sm:max-w-xl">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">SolidarianID</CardTitle>
-          <CardDescription>
-            Regístrate con tu nombre de usuario y contraseña
-          </CardDescription>
+          <CardDescription>Regístrate con tu nombre de usuario y contraseña</CardDescription>
           <CardAction>
-            <Image
-              src={logoSolidarian}
-              alt="SOLIDARIAN"
-              width={80}
-              height={80}
-              className="h-20 w-20"
-            />
+            <Image src={logoSolidarian} alt="SOLIDARIAN" width={80} height={80} className="h-20 w-20" />
           </CardAction>
         </CardHeader>
         <CardContent>
@@ -77,7 +70,7 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="Pablo Peris Solano"
                   value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  onChange={e => setFullName(e.target.value)}
                   required
                   disabled={isLoading}
                 />
@@ -90,7 +83,7 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="pabloperiss"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={e => setUsername(e.target.value)}
                   required
                   disabled={isLoading}
                 />
@@ -101,19 +94,14 @@ export default function RegisterPage() {
                 <InputGroup>
                   <InputGroupInput
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={e => setPassword(e.target.value)}
                     required
                     disabled={isLoading}
                   />
                   <InputGroupAddon align="inline-end">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
+                    <Button type="button" variant="ghost" size="icon" onClick={() => setShowPassword(!showPassword)}>
                       {showPassword ? <IconEyeOff /> : <IconEye />}
                     </Button>
                   </InputGroupAddon>
@@ -127,7 +115,7 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="123456789"
                   value={mobilePhone}
-                  onChange={(e) => setMobilePhone(e.target.value)}
+                  onChange={e => setMobilePhone(e.target.value)}
                   required
                   disabled={isLoading}
                 />
@@ -140,7 +128,7 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="Madrid"
                   value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  onChange={e => setCity(e.target.value)}
                   required
                   disabled={isLoading}
                 />
@@ -153,7 +141,7 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="ES"
                   value={countryCode}
-                  onChange={(e) => setCountryCode(e.target.value)}
+                  onChange={e => setCountryCode(e.target.value)}
                   required
                   disabled={isLoading}
                 />
@@ -162,11 +150,11 @@ export default function RegisterPage() {
               <Field>
                 <Button type="submit" disabled={isLoading}>
                   <IconLogin2 />
-                  {isLoading ? "Registrando..." : "Registrarse"}
+                  {isLoading ? 'Registrando...' : 'Registrarse'}
                 </Button>
 
                 <FieldDescription className="text-center">
-                  ¿Ya tienes cuenta? <Link href="/">Inicia sesión</Link>
+                  ¿Ya tienes cuenta? <Link href={ROUTES.auth.login}>Inicia sesión</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
@@ -174,5 +162,5 @@ export default function RegisterPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

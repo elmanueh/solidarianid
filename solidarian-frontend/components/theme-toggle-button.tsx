@@ -1,21 +1,46 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Sun, Moon } from 'lucide-react';
+import { IconMoon, IconSun } from '@tabler/icons-react';
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
-export function ThemeToggleButton({ className }: { className?: string }) {
-  const { theme, setTheme } = useTheme();
+type ThemeToggleButtonProps = {
+  className?: string;
+};
+
+export function ThemeToggleButton({ className }: Readonly<ThemeToggleButtonProps>) {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <Button type="button" variant="outline" size="icon" className={className} aria-label="Cambiar tema" disabled>
+        <span className="size-5" aria-hidden="true" />
+      </Button>
+    );
+  }
+
+  const isDark = resolvedTheme === 'dark';
+  const Icon = isDark ? IconMoon : IconSun;
+  const nextTheme = isDark ? 'light' : 'dark';
+  const ariaLabel = isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro';
 
   return (
     <Button
+      type="button"
       variant="outline"
-      className={className}
       size="icon"
-      aria-label="Cambiar tema"
-      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      className={className}
+      aria-label={ariaLabel}
+      onClick={() => setTheme(nextTheme)}
     >
-      {theme === 'light' ? <Sun className="size-5" /> : <Moon className="size-5" />}
+      <Icon className="size-5" aria-hidden="true" />
     </Button>
   );
 }

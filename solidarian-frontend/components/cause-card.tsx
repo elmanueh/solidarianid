@@ -2,8 +2,8 @@
 
 import type { Cause } from '@/features/causes/model';
 import { causeCardStyles } from '@/styles/components/cause-card.styles';
+import { IconHeart } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import { Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ImageWithFallback } from './image-with-fallback';
@@ -60,7 +60,7 @@ export function CauseCard({ cause, index }: CauseCardProps) {
           isFavorite ? styles.favoriteButton.active : styles.favoriteButton.inactive
         }`}
       >
-        <Heart size={18} className={isFavorite ? 'fill-current' : ''} />
+        <IconHeart size={18} className={isFavorite ? 'fill-current' : ''} />
       </button>
     </motion.div>
   );

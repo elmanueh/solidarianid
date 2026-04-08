@@ -66,8 +66,8 @@ async function bootstrap() {
     },
   });
 
+  // TODO: revisar esto para produción, ya que puede ser un riesgo de seguridad permitir cualquier origen con credenciales.
   app.enableCors({
-    // Evita el conflicto de CORS entre wildcard y credenciales en navegador.
     origin: true,
     credentials: true,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],

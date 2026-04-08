@@ -1,13 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import { Star, TrendingUp, ChevronRight } from 'lucide-react';
-import { CommunityCard } from '@/components/community-card';
 import { CauseCard } from '@/components/cause-card';
+import { CommunityCard } from '@/components/community-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useFeaturedCommunities } from '@/hooks/use-featured-communities';
 import { useRecommendedCauses } from '@/hooks/use-recommended-causes';
 import { homeStyles } from '@/styles/app/home/page.styles';
+import { IconChevronRight, IconStar, IconTrendingUp } from '@tabler/icons-react';
+import Link from 'next/link';
 
 export default function HomePage() {
   const { communities, loading: loadingCommunities, error: errorCommunities } = useFeaturedCommunities(3);
@@ -30,12 +30,12 @@ export default function HomePage() {
         <div className={styles.section.headerWrapper}>
           <div className="flex items-center gap-3">
             <div className={styles.section.featuredIcon}>
-              <Star size={24} className="fill-chart-1/20" />
+              <IconStar size={24} className="fill-chart-1/20" />
             </div>
             <h3 className={styles.section.title}>Destacadas</h3>
           </div>
           <Link href="/explore" className={styles.section.viewAllButton}>
-            Ver todas <ChevronRight size={14} />
+            Ver todas <IconChevronRight size={14} />
           </Link>
         </div>
 
@@ -64,7 +64,7 @@ export default function HomePage() {
         <div className="flex items-center px-1 lg:px-2">
           <div className="flex items-center gap-3">
             <div className={styles.section.causesIcon}>
-              <TrendingUp size={24} />
+              <IconTrendingUp size={24} />
             </div>
             <h3 className={styles.section.title}>Causas Recomendadas</h3>
           </div>

@@ -14,7 +14,6 @@ export const authService = {
     //   },
     // })
     // return response.data.user
-    return Promise.resolve(null as unknown as User);
   },
 
   refreshToken: async () => {

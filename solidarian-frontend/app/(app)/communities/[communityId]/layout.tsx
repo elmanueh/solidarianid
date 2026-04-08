@@ -1,13 +1,10 @@
 type CommunityLayoutProps = {
-  children: React.ReactNode
-  params: Promise<{ communityId: string }>
-}
+  children: React.ReactNode;
+  params: Promise<{ communityId: string }>;
+};
 
-export default async function CommunityLayout({
-  children,
-  params,
-}: CommunityLayoutProps) {
-  const { communityId } = await params
+export default async function CommunityLayout({ children, params }: Readonly<CommunityLayoutProps>) {
+  const { communityId } = await params;
 
   return (
     <section className="space-y-4">
@@ -17,5 +14,5 @@ export default async function CommunityLayout({
       </header>
       {children}
     </section>
-  )
+  );
 }

@@ -1,11 +1,11 @@
 type CommunityCauseRequestCreatePageProps = {
-  params: Promise<{ communityId: string }>
-}
+  params: Promise<{ communityId: string }>;
+};
 
 export default async function CommunityCauseRequestCreatePage({
   params,
-}: CommunityCauseRequestCreatePageProps) {
-  const { communityId } = await params
+}: Readonly<CommunityCauseRequestCreatePageProps>) {
+  const { communityId } = await params;
 
-  return <p>Create cause request in community: {communityId}</p>
+  return <p>Create cause request in community: {communityId}</p>;
 }

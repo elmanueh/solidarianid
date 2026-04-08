@@ -4,5 +4,5 @@ export default function FavoritesRequestCreatePage() {
       <h1 className="text-2xl font-semibold">Create Community Request</h1>
       <p className="text-sm text-muted-foreground">Trace: /favorites/requests/create</p>
     </section>
-  )
+  );
 }

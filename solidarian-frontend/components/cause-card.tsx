@@ -1,12 +1,8 @@
-'use client';
-
 import { Cause } from '@/features/causes/model/causes.model';
 import { causeCardStyles } from '@/styles/components/cause-card.styles';
-import { IconHeart } from '@tabler/icons-react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
-import { ImageWithFallback } from './image-with-fallback';
+import Image from 'next/image';
+import { JoinCauseButton } from './join-community-button';
 
 type CauseCardData = Cause & {
   imageUrl: string;
@@ -18,26 +14,13 @@ interface CauseCardProps {
 }
 
 export function CauseCard({ cause, index }: Readonly<CauseCardProps>) {
-  const [isFavorite, setIsFavorite] = useState(false);
   const styles = causeCardStyles;
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsFavorite(!isFavorite);
-    // TODO: Llamar a API para guardar favorito
-  };
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
-      className={styles.wrapper}
-    >
+    <div className={styles.wrapper} style={{ animationDelay: `${index * 50}ms` }}>
       <Link href={`/causes/${cause.id}`} className={styles.link}>
         <div className={styles.image.wrapper}>
-          <ImageWithFallback
+          <Image
             src={cause.imageUrl}
             alt={cause.name}
             fill
@@ -54,14 +37,7 @@ export function CauseCard({ cause, index }: Readonly<CauseCardProps>) {
           </div>
         </div>
       </Link>
-      <button
-        onClick={handleFavoriteClick}
-        className={`${styles.favoriteButton.base} ${
-          isFavorite ? styles.favoriteButton.active : styles.favoriteButton.inactive
-        }`}
-      >
-        <IconHeart size={18} className={isFavorite ? 'fill-current' : ''} />
-      </button>
-    </motion.div>
+      <JoinCauseButton causeId={cause.id} />
+    </div>
   );
 }

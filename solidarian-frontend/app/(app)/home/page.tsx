@@ -1,18 +1,123 @@
-'use client';
-
 import { CauseCard } from '@/components/cause-card';
 import { CommunityCard } from '@/components/community-card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Cause } from '@/features/causes/model/causes.model';
+import { causesService } from '@/features/causes/services/causes.service';
+import { Community } from '@/features/communities/model/communities.model';
+import { communitiesService } from '@/features/communities/services/communities.service';
+import { createApolloClient, getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
 import { ROUTES } from '@/features/routes';
-import { useFeaturedCommunities } from '@/hooks/use-featured-communities';
-import { useRecommendedCauses } from '@/hooks/use-recommended-causes';
 import { homeStyles } from '@/styles/app/home/page.styles';
 import { IconChevronRight, IconStar, IconTrendingUp } from '@tabler/icons-react';
 import Link from 'next/link';
+import { unstable_noStore as noStore } from 'next/cache';
 
-export default function HomePage() {
-  const { communities, loading: loadingCommunities, error: errorCommunities } = useFeaturedCommunities(3);
-  const { causes, loading: loadingCauses, error: errorCauses } = useRecommendedCauses(6);
+type FeaturedCommunity = Community & {
+  imageUrl: string;
+};
+
+type RecommendedCause = Cause & {
+  imageUrl: string;
+};
+
+const COMMUNITY_IMAGE_URLS = [
+  'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1529390079861-591de354faf5?w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1475483768296-6163e08872a1?w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1469571486292-b53601020a0b?w=1200&auto=format&fit=crop',
+] as const;
+
+const CAUSE_IMAGE_URLS = [
+  'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1509099863731-ef4bff19e808?w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&auto=format&fit=crop',
+] as const;
+
+const getStableImageIndex = (seed: string, poolSize: number): number => {
+  const sum = seed.split('').reduce((accumulator, character) => accumulator + (character.codePointAt(0) ?? 0), 0);
+
+  return sum % poolSize;
+};
+
+const normalizeLimit = (limit: number): number => {
+  if (!Number.isFinite(limit)) {
+    return 0;
+  }
+
+  return Math.max(0, Math.floor(limit));
+};
+
+const withCommunityImageUrl = (community: Community): FeaturedCommunity => {
+  const imageIndex = getStableImageIndex(community.id, COMMUNITY_IMAGE_URLS.length);
+
+  return {
+    ...community,
+    imageUrl: COMMUNITY_IMAGE_URLS[imageIndex],
+  };
+};
+
+const withCauseImageUrl = (cause: Cause): RecommendedCause => {
+  const imageIndex = getStableImageIndex(cause.id, CAUSE_IMAGE_URLS.length);
+
+  return {
+    ...cause,
+    imageUrl: CAUSE_IMAGE_URLS[imageIndex],
+  };
+};
+
+const toUiErrorMessage = (error: unknown, fallback: string): string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return fallback;
+};
+
+const loadHomeData = async (): Promise<{
+  communities: FeaturedCommunity[];
+  causes: RecommendedCause[];
+  errorCommunities: string | null;
+  errorCauses: string | null;
+}> => {
+  const client = getInstanceServerApolloClient();
+  const featuredLimit = normalizeLimit(3);
+  const causesLimit = normalizeLimit(6);
+
+  const [communitiesResult, causesResult] = await Promise.allSettled([
+    communitiesService.getCommunities(client),
+    causesService.getCauses(client),
+  ]);
+
+  console.log('Cargando los datos para el homepage en el server');
+
+  const communities =
+    communitiesResult.status === 'fulfilled'
+      ? communitiesResult.value.slice(0, featuredLimit).map(withCommunityImageUrl)
+      : [];
+  const causes =
+    causesResult.status === 'fulfilled' ? causesResult.value.slice(0, causesLimit).map(withCauseImageUrl) : [];
+
+  return {
+    communities,
+    causes,
+    errorCommunities:
+      communitiesResult.status === 'rejected'
+        ? toUiErrorMessage(communitiesResult.reason, 'No se pudieron cargar las comunidades destacadas.')
+        : null,
+    errorCauses:
+      causesResult.status === 'rejected'
+        ? toUiErrorMessage(causesResult.reason, 'No se pudieron cargar las causas recomendadas.')
+        : null,
+  };
+};
+
+export default async function HomePage() {
+  noStore();
+
+  const { communities, causes, errorCommunities, errorCauses } = await loadHomeData();
   const user = { name: 'Traer usuario del contexto' }; // TODO: Obtener usuario real desde contexto
   const styles = homeStyles;
 
@@ -43,12 +148,8 @@ export default function HomePage() {
         {/* Grid de Comunidades */}
         {errorCommunities ? (
           <div className={styles.error}>{errorCommunities}</div>
-        ) : loadingCommunities ? (
-          <div className="-mx-4 flex gap-6 overflow-x-auto px-4 pb-8 lg:mx-0 lg:grid lg:grid-cols-3 lg:px-0">
-            {[...Array(3)].map((_, i) => (
-              <Skeleton key={i} className={styles.communities.skeleton} />
-            ))}
-          </div>
+        ) : communities.length === 0 ? (
+          <div className="p-8 text-center text-muted-foreground">No hay comunidades destacadas por mostrar.</div>
         ) : (
           <div className={styles.communities.grid}>
             {communities.map((community, index) => (
@@ -74,12 +175,8 @@ export default function HomePage() {
         {/* Grid de Causas */}
         {errorCauses ? (
           <div className={styles.error}>{errorCauses}</div>
-        ) : loadingCauses ? (
-          <div className={styles.causes.grid}>
-            {[...Array(6)].map((_, i) => (
-              <Skeleton key={i} className={styles.causes.skeleton} />
-            ))}
-          </div>
+        ) : causes.length === 0 ? (
+          <div className="p-8 text-center text-muted-foreground">No hay causas recomendadas por mostrar.</div>
         ) : (
           <div className={styles.causes.grid}>
             {causes.map((cause, index) => (

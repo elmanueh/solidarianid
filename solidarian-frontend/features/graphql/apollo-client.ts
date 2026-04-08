@@ -36,6 +36,8 @@ const errorLink = new ErrorLink(({ error, operation }) => {
 });
 
 export type GraphqlClient = ApolloClient;
+
+
 export const createApolloClient = (): ApolloClient => {
   if (globalThis.window === undefined) {
     return new ApolloClient({
@@ -61,3 +63,12 @@ export const createApolloClient = (): ApolloClient => {
     link: ApolloLink.from([errorLink, link]),
   });
 };
+
+let instanceServerApolloClient: ApolloClient | undefined = undefined;
+
+export const getInstanceServerApolloClient = (): ApolloClient => {
+  if (!instanceServerApolloClient) {
+    instanceServerApolloClient = createApolloClient();
+  }
+  return instanceServerApolloClient;
+}

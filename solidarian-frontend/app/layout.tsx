@@ -1,9 +1,8 @@
 import { Geist_Mono, Inter } from 'next/font/google';
-
 import { ThemeProvider } from '@/components/theme-provider';
-import { ApolloGraphqlProvider } from '@/components/apollo-provider';
 import { cn } from '@/lib/utils';
 import './globals.css';
+import { ApolloGraphqlProvider } from '@/components/apollo-provider';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 

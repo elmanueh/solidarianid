@@ -1,11 +1,8 @@
-'use client';
-
 import { Community } from '@/features/communities/model/communities.model';
 import { ROUTES } from '@/features/routes';
 import { communityCardStyles } from '@/styles/components/community-card.styles';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ImageWithFallback } from './image-with-fallback';
+import Image from 'next/image';
 
 type CommunityCardData = Community & {
   imageUrl: string;
@@ -20,15 +17,10 @@ export function CommunityCard({ community, index }: Readonly<CommunityCardProps>
   const styles = communityCardStyles;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.1, type: 'spring', stiffness: 100 }}
-      className={styles.wrapper}
-    >
+    <div className={styles.wrapper} style={{ animationDelay: `${index * 100}ms` }}>
       <Link href={ROUTES.communities.detail(community.id)}>
         <div className={styles.image.wrapper}>
-          <ImageWithFallback
+          <Image
             src={community.imageUrl}
             alt={community.name}
             fill
@@ -41,6 +33,6 @@ export function CommunityCard({ community, index }: Readonly<CommunityCardProps>
           <p className={styles.content.description}>{community.description}</p>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }

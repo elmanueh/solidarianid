@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function LandingPage() {
   return (
     <div className="min-h-screen">
-      <header className="border-b border-secondary">
+      <header className="border-b border-gray-500">
         <nav className="flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
             <Image src={logoSolidarian} alt="SolidarianID Logo" className="h-10 w-10" />
@@ -114,7 +114,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-gray-50 py-16 sm:py-24">
+      <section className="py-16 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="mb-4 text-3xl sm:text-4xl">Cómo funciona</h2>
@@ -166,7 +166,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-gray-200 py-8">
+      <footer className="border-t border-gray-500 py-8">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2">

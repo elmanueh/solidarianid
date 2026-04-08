@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   Button,
@@ -18,169 +18,167 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/components/ui"
+} from '@/components/ui';
 import {
   PASSWORD_COMPLEXITY_REGEX,
   PASSWORD_MIN_LENGTH,
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
   USERNAME_REGEX,
-} from "@/features/auth/constants/auth.constants"
-import { authService } from "@/features/auth/services/auth.service"
-import { getErrorMessage } from "@/features/axios/errors.handler"
-import logoSolidarian from "@/public/solidarian-logo.png"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { IconEye, IconEyeOff, IconLogin2 } from "@tabler/icons-react"
-import Image from "next/image"
-import Link from "next/link"
-import { useState } from "react"
-import { Controller, useForm } from "react-hook-form"
-import { toast } from "sonner"
-import * as z from "zod"
+} from '@/features/auth/constants/auth.constants';
+import { authService } from '@/features/auth/services/auth.service';
+import { getErrorMessage } from '@/features/axios/errors.handler';
+import fondoLogin from '@/public/fondo-login.jpeg';
+import logoSolidarian from '@/public/solidarian-logo.png';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
 
 const loginFormSchema = z.object({
   username: z
     .string()
-    .min(
-      USERNAME_MIN_LENGTH,
-      `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`
-    )
-    .max(
-      USERNAME_MAX_LENGTH,
-      `Username must not exceed ${USERNAME_MAX_LENGTH} characters.`
-    )
-    .regex(USERNAME_REGEX, "Username must contain only letters and numbers."),
+    .min(USERNAME_MIN_LENGTH, `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`)
+    .max(USERNAME_MAX_LENGTH, `Username must not exceed ${USERNAME_MAX_LENGTH} characters.`)
+    .regex(USERNAME_REGEX, 'Username must contain only letters and numbers.'),
   password: z
     .string()
-    .min(
-      PASSWORD_MIN_LENGTH,
-      `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`
-    )
+    .min(PASSWORD_MIN_LENGTH, `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`)
     .regex(
       PASSWORD_COMPLEXITY_REGEX,
-      "La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial."
+      'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.'
     ),
-})
+});
 
-type LoginFormData = z.infer<typeof loginFormSchema>
+type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
-    mode: "onTouched",
-  })
+    mode: 'onTouched',
+  });
 
   async function onSubmit(data: LoginFormData) {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await authService.login(data.username, data.password)
+      await authService.login(data.username, data.password);
     } catch (err) {
-      toast.error(getErrorMessage(err))
+      toast.error(getErrorMessage(err));
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-full max-w-sm sm:max-w-xl">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">SolidarianID</CardTitle>
-          <CardDescription>
-            Inicia sesión con tu nombre de usuario y contraseña
-          </CardDescription>
-          <CardAction>
-            <Image
-              src={logoSolidarian}
-              alt="SOLIDARIAN"
-              width={80}
-              height={80}
-              className="h-20 w-20"
-              loading="eager"
-            />
-          </CardAction>
-        </CardHeader>
-        <CardContent>
-          <form id="form-login" onSubmit={form.handleSubmit(onSubmit)}>
-            <FieldGroup>
-              <Controller
-                name="username"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>
-                      Nombre de usuario
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      type="text"
-                      aria-invalid={fieldState.invalid}
-                      disabled={isLoading}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="relative hidden text-white lg:block">
+        <Image src={fondoLogin} alt="Background" fill className="object-cover blur-xs" />
 
-              <Controller
-                name="password"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Contraseña</FieldLabel>
-                    <InputGroup>
-                      <InputGroupInput
+        <div className="absolute inset-0 bg-linear-to-r from-black/70 to-black/40" />
+
+        <div className="absolute m-4 flex items-center gap-4">
+          <Image src={logoSolidarian} alt="SOLIDARIAN" className="bg-gray h-12 w-12 rounded-2xl border p-1.5" />
+
+          <h1>Solidarian ID</h1>
+        </div>
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
+          <h2 className="max-w-xl text-center text-5xl font-bold">Conectando personas con propósitos reales.</h2>
+          <p className="max-w-sm text-center text-lg">
+            Únete a la red global donde cada acción cuenta y cada aporte transforma realidades.
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-center">
+        <Card className="w-full max-w-sm sm:max-w-xl">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">Inicia Sesión</CardTitle>
+            <CardDescription>Accede a tu panel de impacto social</CardDescription>
+            <CardAction>
+              <Image src={logoSolidarian} alt="SOLIDARIAN" className="h-20 w-20" />
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            <form id="form-login" onSubmit={form.handleSubmit(onSubmit)}>
+              <FieldGroup>
+                <Controller
+                  name="username"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name}>Nombre de usuario</FieldLabel>
+                      <Input
                         {...field}
                         id={field.name}
-                        type={showPassword ? "text" : "password"}
+                        type="text"
                         aria-invalid={fieldState.invalid}
                         disabled={isLoading}
                       />
-                      <InputGroupAddon align="inline-end">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setShowPassword(!showPassword)}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+
+                <Controller
+                  name="password"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name}>Contraseña</FieldLabel>
+                      <InputGroup>
+                        <InputGroupInput
+                          {...field}
+                          id={field.name}
+                          type={showPassword ? 'text' : 'password'}
+                          aria-invalid={fieldState.invalid}
                           disabled={isLoading}
-                        >
-                          {showPassword ? <IconEyeOff /> : <IconEye />}
-                        </Button>
-                      </InputGroupAddon>
-                    </InputGroup>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-          </form>
-        </CardContent>
+                        />
+                        <InputGroupAddon align="inline-end">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setShowPassword(!showPassword)}
+                            disabled={isLoading}
+                          >
+                            {showPassword ? <IconEyeOff /> : <IconEye />}
+                          </Button>
+                        </InputGroupAddon>
+                      </InputGroup>
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+            </form>
+          </CardContent>
 
-        <CardFooter>
-          <Field>
-            <Button type="submit" form="form-login" disabled={isLoading}>
-              <IconLogin2 />
-              {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
-            </Button>
+          <CardFooter>
+            <Field>
+              <Button type="submit" form="form-login" disabled={isLoading}>
+                <IconLogin2 />
+                {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+              </Button>
 
-            <FieldDescription className="text-center">
-              ¿No tienes cuenta? <Link href="/register">Regístrate</Link>
-            </FieldDescription>
-          </Field>
-        </CardFooter>
-      </Card>
+              <FieldDescription className="text-center">
+                ¿No tienes cuenta? <Link href="/register">Regístrate</Link>
+              </FieldDescription>
+            </Field>
+          </CardFooter>
+        </Card>
+      </div>
     </div>
-  )
+  );
 }

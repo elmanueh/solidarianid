@@ -1,27 +1,19 @@
-import { gql } from "@apollo/client";
+import { RequestStatusChangedEvent } from '@/features/communities/model/communities.model';
+import { gql, TypedDocumentNode } from '@apollo/client';
 
-export const REQUEST_FIELDS_FRAGMENT = gql`
-  fragment RequestFields on Request {
-    id
-    type
-    name
-    description
-    status
-    reason
-    userId
-  }
-`;
+// Subscription: RequestStatusChanged
+export type RequestStatusChangedResult = {
+  requestStatusChanged: RequestStatusChangedEvent;
+};
 
-export const GET_REQUEST_QUERY = gql`
-  query GetRequest($id: ID!) {
-    request(id: $id) {
-      ...RequestFields
-    }
-  }
-  ${REQUEST_FIELDS_FRAGMENT}
-`;
+export type RequestStatusChangedVariables = {
+  userId: string;
+};
 
-export const REQUEST_STATUS_CHANGED_SUBSCRIPTION = gql`
+export const REQUEST_STATUS_CHANGED_SUBSCRIPTION: TypedDocumentNode<
+  RequestStatusChangedResult,
+  RequestStatusChangedVariables
+> = gql`
   subscription RequestStatusChanged($userId: ID!) {
     requestStatusChanged(userId: $userId) {
       id

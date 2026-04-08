@@ -1,76 +1,87 @@
-import { ACTION_FIELDS_FRAGMENT } from "@/features/actions/api";
-import { gql } from "@apollo/client";
+import { Cause, CreateCauseRequestInput } from '@/features/causes/model/causes.model';
+import { gql, TypedDocumentNode } from '@apollo/client';
 
-export const CAUSE_FIELDS_FRAGMENT = gql`
-  fragment CauseFields on Cause {
-    id
-    name
-    description
-    durationDays
-    ods
-    initialDate
-    actions {
-      ...ActionFields
-    }
-    communityId
-    userIds
-  }
-  ${ACTION_FIELDS_FRAGMENT}
-`;
+// Query: GetCauses
+export type GetCausesResult = {
+  causes: Cause[];
+};
 
-export const GET_CAUSES_QUERY = gql`
+export type GetCausesVariables = Record<string, never>;
+
+export const GET_CAUSES_QUERY: TypedDocumentNode<GetCausesResult, GetCausesVariables> = gql`
   query GetCauses {
     causes {
-      ...CauseFields
+      id
+      name
+      description
+      communityId
     }
   }
-  ${CAUSE_FIELDS_FRAGMENT}
 `;
 
-export const GET_CAUSE_QUERY = gql`
-  query GetCause($id: ID!) {
-    cause(id: $id) {
-      ...CauseFields
-    }
-  }
-  ${CAUSE_FIELDS_FRAGMENT}
-`;
+// Mutation: JoinCause
+export type JoinCauseResult = {
+  joinCause: boolean;
+};
 
-export const GET_CAUSES_BY_COMMUNITY_QUERY = gql`
-  query GetCausesByCommunity($communityId: ID!) {
-    causesByCommunity(communityId: $communityId) {
-      ...CauseFields
-    }
-  }
-  ${CAUSE_FIELDS_FRAGMENT}
-`;
+export type JoinCauseVariables = {
+  causeId: string;
+  userId: string;
+};
 
-export const GET_CAUSE_BY_COMMUNITY_QUERY = gql`
-  query GetCauseByCommunity($communityId: ID!, $causeId: ID!) {
-    causeByCommunity(communityId: $communityId, causeId: $causeId) {
-      ...CauseFields
-    }
-  }
-  ${CAUSE_FIELDS_FRAGMENT}
-`;
-
-export const JOIN_CAUSE_MUTATION = gql`
+export const JOIN_CAUSE_MUTATION: TypedDocumentNode<JoinCauseResult, JoinCauseVariables> = gql`
   mutation JoinCause($causeId: ID!, $userId: ID!) {
     joinCause(causeId: $causeId, userId: $userId)
   }
 `;
 
-export const CREATE_CAUSE_REQUEST_MUTATION = gql`
-  mutation CreateCauseRequest($createCauseRequestInput: CreateCauseRequestInput!) {
-    createCauseRequest(createCauseRequestInput: $createCauseRequestInput)
+// Mutation: LeaveCause
+export type LeaveCauseResult = {
+  leaveCause: boolean;
+};
+
+export type LeaveCauseVariables = {
+  causeId: string;
+  userId: string;
+};
+
+export const LEAVE_CAUSE_MUTATION: TypedDocumentNode<LeaveCauseResult, LeaveCauseVariables> = gql`
+  mutation LeaveCause($causeId: ID!, $userId: ID!) {
+    leaveCause(causeId: $causeId, userId: $userId)
   }
 `;
 
-export const CAUSE_CREATED_SUBSCRIPTION = gql`
+// Mutation: CreateCauseRequest
+export type CreateCauseRequestResult = {
+  createCauseRequest: string;
+};
+
+export type CreateCauseRequestVariables = {
+  createCauseRequestInput: CreateCauseRequestInput;
+};
+
+export const CREATE_CAUSE_REQUEST_MUTATION: TypedDocumentNode<CreateCauseRequestResult, CreateCauseRequestVariables> =
+  gql`
+    mutation CreateCauseRequest($createCauseRequestInput: CreateCauseRequestInput!) {
+      createCauseRequest(createCauseRequestInput: $createCauseRequestInput)
+    }
+  `;
+
+// Subscription: CauseCreated
+export type CauseCreatedResult = {
+  causeCreated: Cause;
+};
+
+export type CauseCreatedVariables = {
+  communityId: string;
+};
+
+export const CAUSE_CREATED_SUBSCRIPTION: TypedDocumentNode<CauseCreatedResult, CauseCreatedVariables> = gql`
   subscription CauseCreated($communityId: ID!) {
     causeCreated(communityId: $communityId) {
-      ...CauseFields
+      id
+      name
+      communityId
     }
   }
-  ${CAUSE_FIELDS_FRAGMENT}
 `;

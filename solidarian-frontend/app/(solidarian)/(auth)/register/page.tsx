@@ -35,6 +35,7 @@ import {
 } from '@/features/auth/constants/auth.constants';
 import { authService } from '@/features/auth/services/auth.service';
 import { getErrorMessage } from '@/features/axios/errors.handler';
+import fondoRegister from '@/public/fondo-register.jpeg';
 import logoSolidarian from '@/public/solidarian-logo.png';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
@@ -132,166 +133,188 @@ export default function RegisterPage() {
   const options = useMemo(() => countryList().getData(), []);
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-full max-w-sm sm:max-w-xl">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">SolidarianID</CardTitle>
-          <CardDescription>Regístrate con tu nombre de usuario y contraseña</CardDescription>
-          <CardAction>
-            <Image src={logoSolidarian} alt="SOLIDARIAN" width={80} height={80} className="h-20 w-20" loading="eager" />
-          </CardAction>
-        </CardHeader>
-        <CardContent>
-          <form id="registerForm" onSubmit={form.handleSubmit(onSubmit)}>
-            <FieldGroup>
-              <div className="flex flex-col gap-10 sm:flex-row">
-                <div className="flex flex-col gap-5">
-                  <Controller
-                    name="fullName"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Nombre completo</FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          type="text"
-                          placeholder="Pablo Peris Solano"
-                          aria-invalid={fieldState.invalid}
-                          disabled={isLoading}
-                        />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-
-                  <Controller
-                    name="password"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Contraseña</FieldLabel>
-                        <InputGroup>
-                          <InputGroupInput
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="flex items-center justify-center">
+        <Card className="w-full max-w-sm sm:max-w-xl">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">Crea tu cuenta</CardTitle>
+            <CardDescription>Únete a la mayor red de impacto social del mundo</CardDescription>
+            <CardAction>
+              <Image src={logoSolidarian} alt="SOLIDARIAN" className="h-20 w-20" />
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            <form id="registerForm" onSubmit={form.handleSubmit(onSubmit)}>
+              <FieldGroup>
+                <div className="flex flex-col gap-10 sm:flex-row">
+                  <div className="flex flex-col gap-5">
+                    <Controller
+                      name="fullName"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel htmlFor={field.name}>Nombre completo</FieldLabel>
+                          <Input
                             {...field}
                             id={field.name}
-                            type={showPassword ? 'text' : 'password'}
+                            type="text"
+                            placeholder="Pablo Peris Solano"
                             aria-invalid={fieldState.invalid}
                             disabled={isLoading}
                           />
-                          <InputGroupAddon align="inline-end">
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => setShowPassword(!showPassword)}
-                              disabled={isLoading}
-                            >
-                              {showPassword ? <IconEyeOff /> : <IconEye />}
-                            </Button>
-                          </InputGroupAddon>
-                        </InputGroup>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-
-                  <Controller
-                    name="countryCode"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>País</FieldLabel>
-                        <select
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                          disabled={isLoading}
-                          className="w-full rounded-xl border bg-input px-2 py-2"
-                        >
-                          <option value="">Selecciona un país</option>
-                          {options.map((option: { value: string; label: string }) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-                </div>
-
-                <div className="flex flex-col gap-5">
-                  <Controller
-                    name="username"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Nombre de usuario</FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          type="text"
-                          aria-invalid={fieldState.invalid}
-                          disabled={isLoading}
-                        />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-
-                  <Field>
-                    <FieldLabel>Teléfono</FieldLabel>
-                    <PhoneInput
-                      country="es"
-                      value={phone}
-                      onChange={value => {
-                        setPhone(value);
-                      }}
-                      inputStyle={phoneInputStyle}
-                      buttonStyle={phoneInputStyle}
-                      dropdownStyle={dropdownStyle}
+                          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                      )}
                     />
-                  </Field>
 
-                  <Controller
-                    name="city"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Ciudad</FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          type="text"
-                          placeholder="Murcia"
-                          aria-invalid={fieldState.invalid}
-                          disabled={isLoading}
-                        />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
+                    <Controller
+                      name="password"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel htmlFor={field.name}>Contraseña</FieldLabel>
+                          <InputGroup>
+                            <InputGroupInput
+                              {...field}
+                              id={field.name}
+                              type={showPassword ? 'text' : 'password'}
+                              aria-invalid={fieldState.invalid}
+                              disabled={isLoading}
+                            />
+                            <InputGroupAddon align="inline-end">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setShowPassword(!showPassword)}
+                                disabled={isLoading}
+                              >
+                                {showPassword ? <IconEyeOff /> : <IconEye />}
+                              </Button>
+                            </InputGroupAddon>
+                          </InputGroup>
+                          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                      )}
+                    />
+
+                    <Controller
+                      name="countryCode"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel htmlFor={field.name}>País</FieldLabel>
+                          <select
+                            {...field}
+                            id={field.name}
+                            aria-invalid={fieldState.invalid}
+                            disabled={isLoading}
+                            className="w-full rounded-xl border bg-input px-2 py-2"
+                          >
+                            <option value="">Selecciona un país</option>
+                            {options.map((option: { value: string; label: string }) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                      )}
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-5">
+                    <Controller
+                      name="username"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel htmlFor={field.name}>Nombre de usuario</FieldLabel>
+                          <Input
+                            {...field}
+                            id={field.name}
+                            type="text"
+                            aria-invalid={fieldState.invalid}
+                            disabled={isLoading}
+                          />
+                          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                      )}
+                    />
+
+                    <Field>
+                      <FieldLabel>Teléfono</FieldLabel>
+                      <PhoneInput
+                        country="es"
+                        value={phone}
+                        onChange={value => {
+                          setPhone(value);
+                        }}
+                        inputStyle={phoneInputStyle}
+                        buttonStyle={phoneInputStyle}
+                        dropdownStyle={dropdownStyle}
+                      />
+                    </Field>
+
+                    <Controller
+                      name="city"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel htmlFor={field.name}>Ciudad</FieldLabel>
+                          <Input
+                            {...field}
+                            id={field.name}
+                            type="text"
+                            placeholder="Murcia"
+                            aria-invalid={fieldState.invalid}
+                            disabled={isLoading}
+                          />
+                          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
-            </FieldGroup>
-          </form>
-        </CardContent>
+              </FieldGroup>
+            </form>
+          </CardContent>
 
-        <CardFooter>
-          <Field>
-            <Button type="submit" form="registerForm" disabled={isLoading}>
-              <IconLogin2 />
-              {isLoading ? 'Registrando...' : 'Registrarse'}
-            </Button>
+          <CardFooter>
+            <Field>
+              <Button type="submit" form="registerForm" disabled={isLoading}>
+                <IconLogin2 />
+                {isLoading ? 'Registrando...' : 'Registrarse'}
+              </Button>
 
-            <FieldDescription className="text-center">
-              Ya tienes cuenta? <Link href="/login">Inicia sesión</Link>
-            </FieldDescription>
-          </Field>
-        </CardFooter>
-      </Card>
+              <FieldDescription className="text-center">
+                Ya tienes cuenta? <Link href="/login">Inicia sesión</Link>
+              </FieldDescription>
+            </Field>
+          </CardFooter>
+        </Card>
+      </div>
+
+      <div className="relative hidden text-white lg:block">
+        <Image src={fondoRegister} alt="Background" fill className="object-cover blur-xs" />
+
+        <div className="absolute inset-0 bg-linear-to-r from-black/70 to-black/40" />
+
+        <div className="absolute top-4 right-4 flex items-center gap-4">
+          <h1 className="font-bold">Solidarian ID</h1>
+          <Image
+            src={logoSolidarian}
+            alt="SOLIDARIAN"
+            className="bg-gray h-12 w-12 rounded-2xl border border-gray-500 p-1.5"
+          />
+        </div>
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
+          <h2 className="max-w-xl text-center text-5xl font-bold">Sé el cambio que quieres ver</h2>
+          <p className="max-w-sm text-center text-lg">Crea una cuenta para empezar a ser solidario</p>
+        </div>
+      </div>
     </div>
   );
 }

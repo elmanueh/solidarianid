@@ -90,7 +90,7 @@ export default function LoginPage() {
         <div className="absolute m-4 flex items-center gap-4">
           <Image src={logoSolidarian} alt="SOLIDARIAN" className="bg-gray h-12 w-12 rounded-2xl border p-1.5" />
 
-          <h1>Solidarian ID</h1>
+          <h1 className="font-bold">Solidarian ID</h1>
         </div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">

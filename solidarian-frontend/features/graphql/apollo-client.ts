@@ -1,144 +1,63 @@
-import {
-  ApolloClient,
-  HttpLink,
-  InMemoryCache,
-  split,
-  type NormalizedCacheObject,
-} from "@apollo/client";
-import { ErrorResponse, onError } from "@apollo/client/link/error";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { getMainDefinition } from "@apollo/client/utilities";
-import { createClient } from "graphql-ws";
-import type { DocumentNode } from "graphql";
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
+import { CombinedGraphQLErrors, CombinedProtocolErrors } from '@apollo/client/errors';
+import { ErrorLink } from '@apollo/client/link/error';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { OperationTypeNode } from 'graphql';
+import { createClient } from 'graphql-ws';
 
-const DEFAULT_GRAPHQL_HTTP_URL = "http://localhost:3002/graphql";
-const DEFAULT_GRAPHQL_WS_URL = "ws://localhost:3002/graphql";
+const HTTP_URL = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL ?? 'http://localhost:3002/graphql';
+const WS_URL = process.env.NEXT_PUBLIC_GRAPHQL_WS_URL ?? 'ws://localhost:3002/graphql';
 
-const resolveGraphqlHttpUrl = (): string => {
-  const configuredHttpUrl = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL;
+const httpLink = new HttpLink({
+  uri: HTTP_URL,
+  credentials: 'include',
+});
 
-  if (configuredHttpUrl) {
-    return configuredHttpUrl;
-  }
+const errorLink = new ErrorLink(({ error, operation }) => {
+  const operationName = operation.operationName || 'anonymous';
 
-  return DEFAULT_GRAPHQL_HTTP_URL;
-};
-
-const resolveGraphqlWsUrl = (): string => {
-  const configuredWsUrl = process.env.NEXT_PUBLIC_GRAPHQL_WS_URL;
-
-  if (configuredWsUrl) {
-    return configuredWsUrl;
-  }
-
-  return DEFAULT_GRAPHQL_WS_URL;
-};
-
-const createHttpLink = (): HttpLink =>
-  new HttpLink({
-    uri: resolveGraphqlHttpUrl(),
-    credentials: "include",
-  });
-
-interface ErrorWithMessage {
-  message: string;
-}
-
-const isErrorWithMessage = (value: unknown): value is ErrorWithMessage => {
-  if (typeof value !== "object" || value === null) {
-    return false;
-  }
-
-  const candidate = value as { message?: unknown };
-  return typeof candidate.message === "string";
-};
-
-const collectErrors = (value: unknown): ErrorWithMessage[] => {
-  if (Array.isArray(value)) {
-    return value.filter(isErrorWithMessage);
-  }
-
-  if (isErrorWithMessage(value)) {
-    return [value];
-  }
-
-  return [];
-};
-
-const isConnectivityError = (message: string): boolean => {
-  const normalizedMessage = message.toLowerCase();
-
-  return (
-    normalizedMessage.includes("failed to fetch") ||
-    normalizedMessage.includes("load failed") ||
-    normalizedMessage.includes("networkerror")
-  );
-};
-
-const errorLink = onError((errorContext: ErrorResponse) => {
-  const operationName = errorContext.operation.operationName || "anonymous";
-  const contextMap = errorContext as unknown as Record<string, unknown>;
-  const errors = [
-    ...collectErrors(contextMap["error"]),
-    ...collectErrors(contextMap["graphQLErrors"]),
-    ...collectErrors(contextMap["networkError"]),
-    ...collectErrors(contextMap["protocolErrors"]),
-  ];
-
-  if (errors.length === 0) {
-    console.error(`[GraphQL error][${operationName}] Unexpected error shape`);
+  if (CombinedGraphQLErrors.is(error)) {
+    error.errors.forEach(({ message }) => {
+      console.error(`[GraphQL error][${operationName}] ${message}`);
+    });
     return;
   }
 
-  errors.forEach((error) => {
-    // Keep global logging centralized while UI-specific handling remains in services/hooks.
-    if (isConnectivityError(error.message)) {
-      console.warn(
-        `[GraphQL warning][${operationName}] ${error.message}. Revisa NEXT_PUBLIC_GRAPHQL_HTTP_URL/NEXT_PUBLIC_GRAPHQL_WS_URL.`,
-      );
-      return;
-    }
+  if (CombinedProtocolErrors.is(error)) {
+    error.errors.forEach(({ message }) => {
+      console.error(`[Protocol error][${operationName}] ${message}`);
+    });
+    return;
+  }
 
-    console.error(`[GraphQL error][${operationName}] ${error.message}`);
-  });
+  if (error) {
+    console.error(`[Network error][${operationName}] ${error.message}`);
+  }
 });
 
-const isSubscriptionOperation = (query: DocumentNode): boolean => {
-  const definition = getMainDefinition(query);
-
-  return (
-    definition.kind === "OperationDefinition" &&
-    definition.operation === "subscription"
-  );
-};
-
-export const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
-  const httpLink = createHttpLink();
-
-  if (typeof window === "undefined") {
+export type GraphqlClient = ApolloClient;
+export const createApolloClient = (): ApolloClient => {
+  if (globalThis.window === undefined) {
     return new ApolloClient({
-      link: errorLink.concat(httpLink),
       cache: new InMemoryCache(),
+      link: ApolloLink.from([errorLink, httpLink]),
     });
   }
 
   const wsLink = new GraphQLWsLink(
     createClient({
-      url: resolveGraphqlWsUrl(),
-      shouldRetry: () => true,
-      retryAttempts: 5,
-      lazy: true,
-    }),
+      url: WS_URL,
+    })
   );
 
-  const combinedLink = split(
-    ({ query }) => isSubscriptionOperation(query),
+  const link = ApolloLink.split(
+    ({ operationType }) => operationType === OperationTypeNode.SUBSCRIPTION,
     wsLink,
-    httpLink,
+    httpLink
   );
 
   return new ApolloClient({
-    link: errorLink.concat(combinedLink),
     cache: new InMemoryCache(),
+    link: ApolloLink.from([errorLink, link]),
   });
 };

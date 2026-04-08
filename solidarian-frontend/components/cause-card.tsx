@@ -1,6 +1,6 @@
 'use client';
 
-import type { Cause } from '@/features/causes/model';
+import { Cause } from '@/features/causes/model/causes.model';
 import { causeCardStyles } from '@/styles/components/cause-card.styles';
 import { IconHeart } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
@@ -17,7 +17,7 @@ interface CauseCardProps {
   index: number;
 }
 
-export function CauseCard({ cause, index }: CauseCardProps) {
+export function CauseCard({ cause, index }: Readonly<CauseCardProps>) {
   const [isFavorite, setIsFavorite] = useState(false);
   const styles = causeCardStyles;
 

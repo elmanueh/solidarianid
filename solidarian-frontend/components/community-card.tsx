@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ImageWithFallback } from './image-with-fallback';
+import { Community } from '@/features/communities/model/communities.model';
 import { communityCardStyles } from '@/styles/components/community-card.styles';
-import type { Community } from '@/features/communities/model';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { ImageWithFallback } from './image-with-fallback';
 
 type CommunityCardData = Community & {
   imageUrl: string;
@@ -15,7 +15,7 @@ interface CommunityCardProps {
   index: number;
 }
 
-export function CommunityCard({ community, index }: CommunityCardProps) {
+export function CommunityCard({ community, index }: Readonly<CommunityCardProps>) {
   const styles = communityCardStyles;
 
   return (

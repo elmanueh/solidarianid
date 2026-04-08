@@ -1,6 +1,6 @@
-import { AUTH_ENDPOINTS } from "@/features/auth/constants/api.constants"
-import type { User } from "@/features/auth/model/user"
-import api from "@/features/axios/axios"
+import { AUTH_ENDPOINTS } from '@/features/auth/constants/api.constants';
+import type { User } from '@/features/auth/model/user';
+import api from '@/features/axios/axios';
 
 // FIXME: Añadir Registro y tenemos que hablar el tema de los JWT (refresh, etc)
 export const authService = {
@@ -14,10 +14,11 @@ export const authService = {
     //   },
     // })
     // return response.data.user
+    throw new Error('Login not implemented yet');
   },
 
   refreshToken: async () => {
-    const response = await api.post(AUTH_ENDPOINTS.REFRESH)
-    return response.data.message
+    const response = await api.post(AUTH_ENDPOINTS.REFRESH);
+    return response.data.message;
   },
-}
+};

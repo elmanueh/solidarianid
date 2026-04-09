@@ -1,13 +1,10 @@
 type ActionLayoutProps = {
-  children: React.ReactNode
-  params: Promise<{ communityId: string; causeId: string; actionId: string }>
-}
+  children: React.ReactNode;
+  params: Promise<{ communityId: string; causeId: string; actionId: string }>;
+};
 
-export default async function ActionLayout({
-  children,
-  params,
-}: ActionLayoutProps) {
-  const { communityId, causeId, actionId } = await params
+export default async function ActionLayout({ children, params }: Readonly<ActionLayoutProps>) {
+  const { communityId, causeId, actionId } = await params;
 
   return (
     <section className="space-y-4">
@@ -19,5 +16,5 @@ export default async function ActionLayout({
       </header>
       {children}
     </section>
-  )
+  );
 }

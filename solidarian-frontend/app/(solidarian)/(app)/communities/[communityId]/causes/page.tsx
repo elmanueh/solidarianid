@@ -1,11 +1,9 @@
 type CommunityCausesPageProps = {
-  params: Promise<{ communityId: string }>
-}
+  params: Promise<{ communityId: string }>;
+};
 
-export default async function CommunityCausesPage({
-  params,
-}: CommunityCausesPageProps) {
-  const { communityId } = await params
+export default async function CommunityCausesPage({ params }: Readonly<CommunityCausesPageProps>) {
+  const { communityId } = await params;
 
-  return <p>Active causes for community: {communityId}</p>
+  return <p>Active causes for community: {communityId}</p>;
 }

@@ -15,6 +15,9 @@ import { UserEntity } from './infrastructure/persistence/entities/user.entity';
 import { UserMapper } from './infrastructure/persistence/mappers/user.mapper';
 import { UsersRepositoryTypeORM } from './infrastructure/persistence/repositories/users-typeorm.repository';
 import { UsersController } from './infrastructure/presentation/controllers/users.controller';
+import { AuthorizationGuard } from './infrastructure/authz/guards/authorization.guard';
+import { AUTHZ_POLICY_EVALUATORS, PolicyRegistry } from './infrastructure/authz/policies/policy-registry';
+import { SelfOwnershipPolicy } from './infrastructure/authz/policies/self-ownership.policy';
 
 @Module({
   imports: [
@@ -41,6 +44,14 @@ import { UsersController } from './infrastructure/presentation/controllers/users
     {
       provide: PasswordManager,
       useClass: PasswordManagerBcrypt,
+    },
+    AuthorizationGuard,
+    PolicyRegistry,
+    SelfOwnershipPolicy,
+    {
+      provide: AUTHZ_POLICY_EVALUATORS,
+      useFactory: (selfOwnershipPolicy: SelfOwnershipPolicy) => [selfOwnershipPolicy],
+      inject: [SelfOwnershipPolicy],
     },
   ],
   exports: [UsersService],

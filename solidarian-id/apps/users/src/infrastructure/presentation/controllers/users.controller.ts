@@ -1,10 +1,26 @@
 import { RegisterUserCommand, UsersService } from '@app/users/domain/services/users.service';
 import { Public } from '@app/users/infrastructure/auth/decorators/public.decorator';
+import { JwtAuthGuard } from '@app/users/infrastructure/auth/guards/jwt-auth.guard';
+import { Action, Resource } from '@app/users/infrastructure/authz/constants';
+import { Authorize } from '@app/users/infrastructure/authz/decorators/authorize.decorator';
+import { AuthorizationGuard } from '@app/users/infrastructure/authz/guards/authorization.guard';
 import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
 import { UpdateUserPreferencesRequestDto } from '@app/users/infrastructure/presentation/dtos/update-user-preferences.request.dto';
 import { UpdateUserProfileDtoRequest } from '@app/users/infrastructure/presentation/dtos/update-user-profile.dto';
 import { UserPreferencesResponseDto } from '@app/users/infrastructure/presentation/dtos/user-preferences.response.dto';
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Patch, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -17,6 +33,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import type { Response } from 'express';
+
+const SELF_POLICY = 'self';
+const AuthorizeUserSelf = (action: Action) =>
+  Authorize({
+    action,
+    resource: Resource.USER,
+    policy: SELF_POLICY,
+  });
 
 @Controller('/api/users')
 @ApiTags('Users')
@@ -67,6 +91,8 @@ export class UsersController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeUserSelf(Action.UPDATE)
   async updateUserProfile(
     @Param('id') id: string,
     @Body() updateUserProfileDto: UpdateUserProfileDtoRequest,
@@ -96,6 +122,8 @@ export class UsersController {
   })
   @ApiBadRequestResponse({ description: 'Invalid user ID' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeUserSelf(Action.READ)
   async getUserPreferences(@Param('id', ParseUUIDPipe) id: string): Promise<UserPreferencesResponseDto> {
     const preferencesResult = await this.usersService.getUserPreferences(id);
 
@@ -113,6 +141,8 @@ export class UsersController {
   @ApiNoContentResponse({ description: 'User preferences updated successfully' })
   @ApiBadRequestResponse({ description: 'Invalid request payload' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeUserSelf(Action.UPDATE)
   async updateUserPreferences(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePreferencesDto: UpdateUserPreferencesRequestDto,

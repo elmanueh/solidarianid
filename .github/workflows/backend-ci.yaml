@@ -1,4 +1,4 @@
-name: CI - SolidarianID
+name: CI - SolidarianID - Backend
 
 on:
   # El CI se ejecutará en cada push o pull request a la rama develop
@@ -16,7 +16,7 @@ on:
 
 jobs:
   ci:
-    name: CI Pipeline
+    name: CI Pipeline - Backend
     runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
     permissions:

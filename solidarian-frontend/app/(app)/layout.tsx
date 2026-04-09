@@ -1,4 +1,5 @@
-import Link from 'next/link';
+import { Sidebar } from '@/components/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 
 export default function AppLayout({
   children,
@@ -6,7 +7,7 @@ export default function AppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen">
+    /*<div className="min-h-screen">
       <header className="border-b">
         <nav className="mx-auto flex max-w-6xl gap-4 p-4 text-sm">
           <Link href="/home">Home</Link>
@@ -17,6 +18,10 @@ export default function AppLayout({
         </nav>
       </header>
       <main className="mx-auto max-w-6xl p-6">{children}</main>
-    </div>
+    </div>*/
+    <SidebarProvider>
+      <Sidebar />
+      <main>{children}</main>
+    </SidebarProvider>
   );
 }

@@ -5,7 +5,6 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { OperationTypeNode } from 'graphql';
 import { createClient } from 'graphql-ws';
 
-export type GraphqlClient = ApolloClient;
 const HTTP_URL = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL ?? 'http://localhost:3002/graphql';
 const WS_URL = process.env.NEXT_PUBLIC_GRAPHQL_WS_URL ?? 'ws://localhost:3002/graphql';
 
@@ -36,6 +35,7 @@ const errorLink = new ErrorLink(({ error, operation }) => {
   }
 });
 
+export type GraphqlClient = ApolloClient;
 export const createApolloClient = (): ApolloClient => {
   if (globalThis.window === undefined) {
     return new ApolloClient({

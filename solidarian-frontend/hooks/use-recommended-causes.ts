@@ -1,12 +1,16 @@
 'use client';
 
-import { Cause } from '@/features/causes/model/causes.model';
-import { causesService } from '@/features/causes/services/causes.service';
-import { GraphqlClient } from '@/features/graphql/apollo-client';
+import { GET_CAUSES_QUERY, type GetCausesResult } from '@/features/causes/api/graphql/causes.documents';
+import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { useApolloClient } from '@apollo/client/react';
 import { useEffect, useState } from 'react';
 
-export type RecommendedCause = Cause & {
+export type RecommendedCause = {
+  id: string;
+  name: string;
+  description: string;
+  durationDays: number;
+  communityId: string;
   imageUrl: string;
 };
 
@@ -31,7 +35,7 @@ const getStableImageIndex = (seed: string, poolSize: number): number => {
   return sum % poolSize;
 };
 
-const withImageUrl = (cause: Cause): RecommendedCause => {
+const withImageUrl = (cause: GetCausesResult['causes'][number]): RecommendedCause => {
   const imageIndex = getStableImageIndex(cause.id, CAUSE_IMAGE_URLS.length);
 
   return {
@@ -49,7 +53,7 @@ const normalizeLimit = (limit: number): number => {
 };
 
 export function useRecommendedCauses(limit = 6): UseRecommendedCausesResult {
-  const client = useApolloClient() as GraphqlClient;
+  const graphql = new GraphqlClientService(useApolloClient());
   const [causes, setCauses] = useState<RecommendedCause[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -63,13 +67,13 @@ export function useRecommendedCauses(limit = 6): UseRecommendedCausesResult {
       setError(null);
 
       try {
-        const data = await causesService.getCauses(client);
+        const data = await graphql.query(GET_CAUSES_QUERY, {});
 
         if (cancelled) {
           return;
         }
 
-        setCauses(data.slice(0, normalizedLimit).map(withImageUrl));
+        setCauses(data.causes.slice(0, normalizedLimit).map(withImageUrl));
       } catch (loadError) {
         if (cancelled) {
           return;
@@ -89,7 +93,7 @@ export function useRecommendedCauses(limit = 6): UseRecommendedCausesResult {
     return () => {
       cancelled = true;
     };
-  }, [client, normalizedLimit]);
+  }, [normalizedLimit]);
 
   return {
     causes,

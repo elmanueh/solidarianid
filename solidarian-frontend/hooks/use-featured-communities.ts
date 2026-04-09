@@ -1,12 +1,17 @@
 'use client';
 
-import { Community } from '@/features/communities/model/communities.model';
-import { communitiesService } from '@/features/communities/services/communities.service';
-import { GraphqlClient } from '@/features/graphql/apollo-client';
+import {
+  GET_COMMUNITIES_QUERY,
+  type GetCommunitiesResult,
+} from '@/features/communities/api/graphql/communities.documents';
+import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { useApolloClient } from '@apollo/client/react';
 import { useEffect, useState } from 'react';
 
-export type FeaturedCommunity = Community & {
+export type FeaturedCommunity = {
+  id: string;
+  name: string;
+  description: string;
   imageUrl: string;
 };
 
@@ -30,7 +35,7 @@ const getStableImageIndex = (seed: string, poolSize: number): number => {
   return sum % poolSize;
 };
 
-const withImageUrl = (community: Community): FeaturedCommunity => {
+const withImageUrl = (community: GetCommunitiesResult['communities'][number]): FeaturedCommunity => {
   const imageIndex = getStableImageIndex(community.id, COMMUNITY_IMAGE_URLS.length);
 
   return {
@@ -48,7 +53,7 @@ const normalizeLimit = (limit: number): number => {
 };
 
 export function useFeaturedCommunities(limit = 3): UseFeaturedCommunitiesResult {
-  const client = useApolloClient() as GraphqlClient;
+  const graphql = new GraphqlClientService(useApolloClient());
   const [communities, setCommunities] = useState<FeaturedCommunity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,13 +67,13 @@ export function useFeaturedCommunities(limit = 3): UseFeaturedCommunitiesResult 
       setError(null);
 
       try {
-        const data = await communitiesService.getCommunities(client);
+        const data = await graphql.query(GET_COMMUNITIES_QUERY, {});
 
         if (cancelled) {
           return;
         }
 
-        setCommunities(data.slice(0, normalizedLimit).map(withImageUrl));
+        setCommunities(data.communities.slice(0, normalizedLimit).map(withImageUrl));
       } catch (loadError) {
         if (cancelled) {
           return;
@@ -88,7 +93,7 @@ export function useFeaturedCommunities(limit = 3): UseFeaturedCommunitiesResult 
     return () => {
       cancelled = true;
     };
-  }, [client, normalizedLimit]);
+  }, [normalizedLimit]);
 
   return {
     communities,

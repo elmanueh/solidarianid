@@ -1,9 +1,12 @@
-import { Community, CreateCommunityRequestInput } from '@/features/communities/model/communities.model';
 import { gql, TypedDocumentNode } from '@apollo/client';
 
 // Query: GetCommunities
 export type GetCommunitiesResult = {
-  communities: Community[];
+  communities: {
+    id: string;
+    name: string;
+    description: string;
+  }[];
 };
 
 export type GetCommunitiesVariables = Record<string, never>;
@@ -40,7 +43,18 @@ export type CreateCommunityRequestResult = {
 };
 
 export type CreateCommunityRequestVariables = {
-  createCommunityRequestInput: CreateCommunityRequestInput;
+  createCommunityRequestInput: {
+    name: string;
+    description: string;
+    causeCreationRequests: {
+      name: string;
+      description: string;
+      ods: string[];
+      initialDate: string;
+      durationDays: number;
+    }[];
+    userId: string;
+  };
 };
 
 export const CREATE_COMMUNITY_REQUEST_MUTATION: TypedDocumentNode<

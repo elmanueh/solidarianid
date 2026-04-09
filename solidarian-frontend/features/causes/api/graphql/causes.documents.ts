@@ -1,9 +1,14 @@
-import { Cause, CreateCauseRequestInput } from '@/features/causes/model/causes.model';
 import { gql, TypedDocumentNode } from '@apollo/client';
 
 // Query: GetCauses
 export type GetCausesResult = {
-  causes: Cause[];
+  causes: {
+    id: string;
+    name: string;
+    description: string;
+    durationDays: number;
+    communityId: string;
+  }[];
 };
 
 export type GetCausesVariables = Record<string, never>;
@@ -14,6 +19,7 @@ export const GET_CAUSES_QUERY: TypedDocumentNode<GetCausesResult, GetCausesVaria
       id
       name
       description
+      durationDays
       communityId
     }
   }
@@ -57,7 +63,15 @@ export type CreateCauseRequestResult = {
 };
 
 export type CreateCauseRequestVariables = {
-  createCauseRequestInput: CreateCauseRequestInput;
+  createCauseRequestInput: {
+    name: string;
+    description: string;
+    ods: string[];
+    initialDate: string;
+    durationDays: number;
+    userId: string;
+    communityId: string;
+  };
 };
 
 export const CREATE_CAUSE_REQUEST_MUTATION: TypedDocumentNode<CreateCauseRequestResult, CreateCauseRequestVariables> =
@@ -69,7 +83,13 @@ export const CREATE_CAUSE_REQUEST_MUTATION: TypedDocumentNode<CreateCauseRequest
 
 // Subscription: CauseCreated
 export type CauseCreatedResult = {
-  causeCreated: Cause;
+  causeCreated: {
+    id: string;
+    name: string;
+    description: string;
+    durationDays: number;
+    communityId: string;
+  };
 };
 
 export type CauseCreatedVariables = {
@@ -81,6 +101,8 @@ export const CAUSE_CREATED_SUBSCRIPTION: TypedDocumentNode<CauseCreatedResult, C
     causeCreated(communityId: $communityId) {
       id
       name
+      description
+      durationDays
       communityId
     }
   }

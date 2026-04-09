@@ -1,15 +1,15 @@
-import { Community } from '@/features/communities/model/communities.model';
 import { ROUTES } from '@/features/routes';
 import { communityCardStyles } from '@/styles/components/community-card.styles';
-import Link from 'next/link';
 import Image from 'next/image';
-
-type CommunityCardData = Community & {
-  imageUrl: string;
-};
+import Link from 'next/link';
 
 interface CommunityCardProps {
-  community: CommunityCardData;
+  community: {
+    id: string;
+    name: string;
+    description: string;
+    imageUrl: string;
+  };
   index: number;
 }
 

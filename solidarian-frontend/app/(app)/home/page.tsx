@@ -1,21 +1,31 @@
 import { CauseCard } from '@/components/cause-card';
 import { CommunityCard } from '@/components/community-card';
-import { Cause } from '@/features/causes/model/causes.model';
-import { causesService } from '@/features/causes/services/causes.service';
-import { Community } from '@/features/communities/model/communities.model';
-import { communitiesService } from '@/features/communities/services/communities.service';
+import { GET_CAUSES_QUERY, type GetCausesResult } from '@/features/causes/api/graphql/causes.documents';
+import {
+  GET_COMMUNITIES_QUERY,
+  type GetCommunitiesResult,
+} from '@/features/communities/api/graphql/communities.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
+import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { ROUTES } from '@/features/routes';
 import { homeStyles } from '@/styles/app/home/page.styles';
 import { IconChevronRight, IconStar, IconTrendingUp } from '@tabler/icons-react';
 import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
 
-type FeaturedCommunity = Community & {
+type FeaturedCommunity = {
+  id: string;
+  name: string;
+  description: string;
   imageUrl: string;
 };
 
-type RecommendedCause = Cause & {
+type RecommendedCause = {
+  id: string;
+  name: string;
+  description: string;
+  durationDays: number;
+  communityId: string;
   imageUrl: string;
 };
 
@@ -50,7 +60,7 @@ const normalizeLimit = (limit: number): number => {
   return Math.max(0, Math.floor(limit));
 };
 
-const withCommunityImageUrl = (community: Community): FeaturedCommunity => {
+const withCommunityImageUrl = (community: GetCommunitiesResult['communities'][number]): FeaturedCommunity => {
   const imageIndex = getStableImageIndex(community.id, COMMUNITY_IMAGE_URLS.length);
 
   return {
@@ -59,7 +69,7 @@ const withCommunityImageUrl = (community: Community): FeaturedCommunity => {
   };
 };
 
-const withCauseImageUrl = (cause: Cause): RecommendedCause => {
+const withCauseImageUrl = (cause: GetCausesResult['causes'][number]): RecommendedCause => {
   const imageIndex = getStableImageIndex(cause.id, CAUSE_IMAGE_URLS.length);
 
   return {
@@ -83,22 +93,23 @@ const loadHomeData = async (): Promise<{
   errorCauses: string | null;
 }> => {
   const client = getInstanceServerApolloClient();
+  const graphql = new GraphqlClientService(client);
   const featuredLimit = normalizeLimit(3);
   const causesLimit = normalizeLimit(6);
 
   const [communitiesResult, causesResult] = await Promise.allSettled([
-    communitiesService.getCommunities(client),
-    causesService.getCauses(client),
+    graphql.query(GET_COMMUNITIES_QUERY, {}),
+    graphql.query(GET_CAUSES_QUERY, {}),
   ]);
 
   console.log('Cargando los datos para el homepage en el server');
 
   const communities =
     communitiesResult.status === 'fulfilled'
-      ? communitiesResult.value.slice(0, featuredLimit).map(withCommunityImageUrl)
+      ? communitiesResult.value.communities.slice(0, featuredLimit).map(withCommunityImageUrl)
       : [];
   const causes =
-    causesResult.status === 'fulfilled' ? causesResult.value.slice(0, causesLimit).map(withCauseImageUrl) : [];
+    causesResult.status === 'fulfilled' ? causesResult.value.causes.slice(0, causesLimit).map(withCauseImageUrl) : [];
 
   return {
     communities,

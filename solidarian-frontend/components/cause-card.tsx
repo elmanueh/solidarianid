@@ -1,15 +1,17 @@
-import { Cause } from '@/features/causes/model/causes.model';
+import { JoinCauseButton } from '@/components/join-community-button';
 import { causeCardStyles } from '@/styles/components/cause-card.styles';
-import Link from 'next/link';
 import Image from 'next/image';
-import { JoinCauseButton } from './join-community-button';
-
-type CauseCardData = Cause & {
-  imageUrl: string;
-};
+import Link from 'next/link';
 
 interface CauseCardProps {
-  cause: CauseCardData;
+  cause: {
+    id: string;
+    name: string;
+    description: string;
+    durationDays: number;
+    communityId: string;
+    imageUrl: string;
+  };
   index: number;
 }
 

@@ -1,9 +1,18 @@
-import { RequestStatusChangedEvent } from '@/features/communities/model/communities.model';
+import { RequestStatus, RequestType } from '@/features/communities/constants/requests.model';
 import { gql, TypedDocumentNode } from '@apollo/client';
 
 // Subscription: RequestStatusChanged
 export type RequestStatusChangedResult = {
-  requestStatusChanged: RequestStatusChangedEvent;
+  requestStatusChanged: {
+    id: string;
+    type: RequestType;
+    name: string;
+    description: string;
+    status: RequestStatus;
+    reason?: string | null;
+    userId: string;
+    createdEntityId?: string | null;
+  };
 };
 
 export type RequestStatusChangedVariables = {

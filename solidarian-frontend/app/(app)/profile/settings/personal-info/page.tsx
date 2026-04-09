@@ -4,5 +4,5 @@ export default function ProfileSettingsPersonalInfoPage() {
       <h1 className="text-2xl font-semibold">Personal Information</h1>
       <p className="text-sm text-muted-foreground">Trace: /profile/settings/personal-info</p>
     </section>
-  )
+  );
 }

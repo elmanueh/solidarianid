@@ -1,18 +1,26 @@
+import { Injectable } from '@nestjs/common';
 import { DomainEvent } from './domain-event';
 
+@Injectable()
 export class DomainEvents {
-  private static readonly handlers: Map<string, ((event: DomainEvent) => void)[]> = new Map();
+  private readonly handlers: Map<string, ((event: DomainEvent) => void)[]> = new Map();
+  private readonly globalHandlers: ((event: DomainEvent) => void)[] = [];
 
-  static register<T extends DomainEvent>(eventName: string, handler: (event: T) => void) {
+  register<T extends DomainEvent>(eventName: string, handler: (event: T) => void) {
     if (!this.handlers.has(eventName)) {
       this.handlers.set(eventName, []);
     }
-    this.handlers.get(eventName)!.push(handler as (event: DomainEvent) => void);
+    this.handlers.get(eventName)?.push(handler);
   }
 
-  static dispatch(events: DomainEvent[]) {
+  registerGlobal(handler: (event: DomainEvent) => void) {
+    this.globalHandlers.push(handler);
+  }
+
+  dispatch(events: DomainEvent[]) {
     for (const event of events) {
-      const handlers = this.handlers.get(event.constructor.name) || [];
+      this.globalHandlers.forEach(handler => handler(event));
+      const handlers = this.handlers.get(event.type) || [];
       handlers.forEach(handler => handler(event));
     }
   }

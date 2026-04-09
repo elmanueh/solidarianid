@@ -64,6 +64,7 @@
     "@grpc/grpc-js": "^1.14.3",
     "@grpc/proto-loader": "^0.8.0",
     "@iconify/tailwind": "^1.2.0",
+    "@kurrent/kurrentdb-client": "^1.1.1",
     "@nestjs/apollo": "^13.2.4",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
@@ -97,7 +98,6 @@
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "shallow-equal-object": "^1.1.1",
     "tailwindcss": "^4.1.18",
     "typeorm": "^0.3.28",
     "uuid": "^8.3.2"
@@ -114,6 +114,7 @@
     "@stryker-mutator/core": "^9.4.0",
     "@stryker-mutator/jest-runner": "^9.4.0",
     "@testcontainers/kafka": "^11.11.0",
+    "@testcontainers/kurrentdb": "^11.13.0",
     "@testcontainers/mongodb": "^11.10.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",

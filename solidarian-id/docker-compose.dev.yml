@@ -50,6 +50,7 @@ services:
       - KAFKA_BROKERS=${KAFKA_BROKERS}
       - KAFKA_USERS_CLIENT_ID=${KAFKA_USERS_CLIENT_ID}
       - KAFKA_USERS_CONSUMER_GROUP_ID=${KAFKA_USERS_CONSUMER_GROUP_ID}
+      - EVENT_STORE_URL=${EVENT_STORE_URL}
       - API_BASE_ADMIN_URL=${API_BASE_ADMIN_URL}
       - API_BASE_USERS_URL=${API_BASE_USERS_URL}
       - API_BASE_COMMUNITIES_URL=${API_BASE_COMMUNITIES_URL}
@@ -57,6 +58,8 @@ services:
       postgres:
         condition: service_healthy
       kafka:
+        condition: service_healthy
+      kurrentdb:
         condition: service_healthy
     networks:
       - solidarian_network

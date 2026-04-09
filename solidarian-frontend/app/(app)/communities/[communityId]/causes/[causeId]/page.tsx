@@ -1,9 +1,13 @@
 type CausePageProps = {
-  params: Promise<{ communityId: string; causeId: string }>
-}
+  params: Promise<{ communityId: string; causeId: string }>;
+};
 
-export default async function CausePage({ params }: CausePageProps) {
-  const { communityId, causeId } = await params
+export default async function CausePage({ params }: Readonly<CausePageProps>) {
+  const { communityId, causeId } = await params;
 
-  return <p>Cause detail: {communityId}/{causeId}</p>
+  return (
+    <p>
+      Cause detail: {communityId}/{causeId}
+    </p>
+  );
 }

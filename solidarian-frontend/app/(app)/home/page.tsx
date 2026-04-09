@@ -4,12 +4,12 @@ import { Cause } from '@/features/causes/model/causes.model';
 import { causesService } from '@/features/causes/services/causes.service';
 import { Community } from '@/features/communities/model/communities.model';
 import { communitiesService } from '@/features/communities/services/communities.service';
-import { createApolloClient, getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
+import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
 import { ROUTES } from '@/features/routes';
 import { homeStyles } from '@/styles/app/home/page.styles';
 import { IconChevronRight, IconStar, IconTrendingUp } from '@tabler/icons-react';
-import Link from 'next/link';
 import { unstable_noStore as noStore } from 'next/cache';
+import Link from 'next/link';
 
 type FeaturedCommunity = Community & {
   imageUrl: string;

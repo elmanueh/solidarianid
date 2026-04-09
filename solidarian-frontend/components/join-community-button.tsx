@@ -1,11 +1,14 @@
 'use client';
 
 import { causeCardStyles } from '@/styles/components/cause-card.styles';
-import { useQuery } from '@apollo/client/react';
 import { IconHeart } from '@tabler/icons-react';
 import { useState } from 'react';
 
-export function JoinCauseButton({ causeId }: { causeId: string }) {
+interface JoinCauseButtonProps {
+  causeId: string;
+}
+
+export function JoinCauseButton({ causeId }: Readonly<JoinCauseButtonProps>) {
   const [isFavorite, setIsFavorite] = useState(false);
   const styles = causeCardStyles;
 

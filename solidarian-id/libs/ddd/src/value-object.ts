@@ -1,4 +1,4 @@
-import { shallowEqual } from 'shallow-equal-object';
+import { isDeepStrictEqual } from 'node:util';
 
 export abstract class ValueObject<T> {
   protected readonly props: T;
@@ -14,6 +14,6 @@ export abstract class ValueObject<T> {
     if (vo.props === undefined) {
       return false;
     }
-    return shallowEqual(this.props, vo.props);
+    return isDeepStrictEqual(this.props, vo.props);
   }
 }

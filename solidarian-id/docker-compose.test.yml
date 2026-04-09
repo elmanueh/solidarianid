@@ -42,6 +42,25 @@ services:
     networks:
       - solidarian_test_network
 
+  kurrentdb-test:
+    # kurrentplatform/kurrentdb:26.0
+    image: kurrentplatform/kurrentdb@sha256:968525aaa6fc7011edd1d66259add70ac1d229a4a507b7557f495cacf748654f
+    container_name: kurrentdb_test
+    restart: unless-stopped
+    ports:
+      - '${KURRENTDB_PORT}:2113'
+    environment:
+      KURRENTDB_CLUSTER_SIZE: ${KURRENTDB_CLUSTER_SIZE}
+      KURRENTDB_RUN_PROJECTIONS: ${KURRENTDB_RUN_PROJECTIONS}
+      KURRENTDB_START_STANDARD_PROJECTIONS: ${KURRENTDB_START_STANDARD_PROJECTIONS}
+      KURRENTDB_NODE_PORT: ${KURRENTDB_NODE_PORT}
+      KURRENTDB_INSECURE: ${KURRENTDB_INSECURE}
+      KURRENTDB_ENABLE_ATOM_PUB_OVER_HTTP: ${KURRENTDB_ENABLE_ATOM_PUB_OVER_HTTP}
+    tmpfs:
+      - /var/lib/postgresql/data
+    networks:
+      - solidarian_test_network
+
   kafka-test:
     image: apache/kafka@sha256:0bc1bb2478f45b6cea78864df86acdc11e8df2c5172477819a4d12942cbe5d40
     container_name: kafka_test

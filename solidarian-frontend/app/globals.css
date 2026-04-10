@@ -113,6 +113,8 @@
 }
 
 @theme inline {
+  --color-brand-500: var(--brand-500);
+  --color-brand-ink: var(--brand-ink);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

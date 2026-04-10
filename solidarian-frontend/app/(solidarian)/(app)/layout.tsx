@@ -1,6 +1,9 @@
-import { ThemeToggleButton } from '@/components/theme-toggle-button';
-import { ROUTES } from '@/features/routes';
-import Link from 'next/link';
+import { HeaderBrandDesktop } from '@/components/app-header/header-brand-desktop';
+import { HeaderBrandMobile } from '@/components/app-header/header-brand-mobile';
+import { NotificationBellButton } from '@/components/app-header/notification-bell-button';
+import { SidebarLateral } from '@/components/sidebar';
+import { SidebarMobile } from '@/components/sidebar-mobile';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 export default function AppLayout({
   children,
@@ -8,31 +11,21 @@ export default function AppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // TODO: perez aqui iria el sidebar si al final lo queremos poner
-    <div className="min-h-screen">
-      <header className="border-b border-border bg-background">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4">
-          <nav className="flex gap-6 py-4 text-sm font-medium">
-            <Link href={ROUTES.app.home} className="text-foreground transition-colors hover:text-chart-2">
-              Home
-            </Link>
-            <Link href={ROUTES.app.explore} className="text-foreground transition-colors hover:text-chart-2">
-              Explore
-            </Link>
-            <Link href={ROUTES.app.favorites} className="text-foreground transition-colors hover:text-chart-5">
-              Favorites
-            </Link>
-            <Link href={ROUTES.app.notifications} className="text-foreground transition-colors hover:text-chart-1">
-              Notifications
-            </Link>
-            <Link href={ROUTES.app.profile} className="text-foreground transition-colors hover:text-chart-4">
-              Mi SolidarianID
-            </Link>
-          </nav>
-          <ThemeToggleButton />
-        </div>
-      </header>
-      <main className="mx-auto max-w-6xl p-6">{children}</main>
-    </div>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+        <SidebarLateral />
+
+        <SidebarInset className="flex min-w-0 flex-1 flex-col">
+          <header className="sticky top-0 z-40 flex justify-between rounded-b-2xl border-b border-b-gray-300 bg-background px-5 pt-5 pb-4 md:m-5 md:border-0">
+            <HeaderBrandDesktop />
+            <HeaderBrandMobile />
+            <NotificationBellButton hasNotifications />
+          </header>
+          <main className="flex-1 p-5 md:ps-10">{children}</main>
+        </SidebarInset>
+
+        <SidebarMobile />
+      </div>
+    </SidebarProvider>
   );
 }

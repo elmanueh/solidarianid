@@ -1,5 +1,6 @@
 'use client';
 
+import { ApolloGraphqlProvider } from '@/components/apollo-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui';
 import { AuthInitializer } from '@/features/redux/AuthInitializer';
@@ -14,9 +15,11 @@ export default function SolidarianLayout({
   return (
     <Provider store={store}>
       <AuthInitializer>
-        <ThemeProvider>
-          <Toaster richColors closeButton /> {children}
-        </ThemeProvider>
+        <ApolloGraphqlProvider>
+          <ThemeProvider>
+            <Toaster richColors closeButton /> {children}
+          </ThemeProvider>
+        </ApolloGraphqlProvider>
       </AuthInitializer>
     </Provider>
   );

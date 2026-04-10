@@ -16,7 +16,7 @@ export default function AppLayout({
         <SidebarLateral />
 
         <SidebarInset className="flex min-w-0 flex-1 flex-col">
-          <header className="flex justify-between rounded-b-2xl border-b border-b-gray-300 px-5 pt-5 pb-4 md:m-5 md:border-0">
+          <header className="sticky top-0 z-40 flex justify-between rounded-b-2xl border-b border-b-gray-300 bg-background px-5 pt-5 pb-4 md:m-5 md:border-0">
             <HeaderBrandDesktop />
             <HeaderBrandMobile />
             <NotificationBellButton hasNotifications />

@@ -1,7 +1,7 @@
-import { Geist_Mono, Inter } from 'next/font/google';
-
+import { ApolloGraphqlProvider } from '@/components/apollo-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
+import { Geist_Mono, Inter } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -23,7 +23,9 @@ export default function RootLayout({
       className={cn('antialiased', fontMono.variable, 'font-sans', inter.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ApolloGraphqlProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </ApolloGraphqlProvider>
       </body>
     </html>
   );

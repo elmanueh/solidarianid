@@ -66,6 +66,16 @@ async function bootstrap() {
     },
   });
 
+  // TODO: revisar esto para produción, ya que puede ser un riesgo de seguridad permitir cualquier origen con credenciales.
+  app.enableCors({
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 204,
+    maxAge: 600,
+  });
+
   await app.startAllMicroservices();
 
   app.setGlobalPrefix('api');

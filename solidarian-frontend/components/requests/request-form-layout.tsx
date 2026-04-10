@@ -14,17 +14,17 @@ const REQUEST_VARIANTS = {
   community: {
     label: 'Nueva Comunidad',
     icon: IconBuilding,
-    iconWrapClassName: 'bg-blue-500/10 text-blue-600',
+    iconClassName: 'bg-blue-500/10 text-blue-600',
   },
   cause: {
     label: 'Nueva Causa',
     icon: IconHeart,
-    iconWrapClassName: 'bg-pink-500/10 text-pink-600',
+    iconClassName: 'bg-pink-500/10 text-pink-600',
   },
   action: {
     label: 'Nueva Acción',
     icon: IconBolt,
-    iconWrapClassName: 'bg-emerald-500/10 text-emerald-600',
+    iconClassName: 'bg-emerald-500/10 text-emerald-600',
   },
 } as const;
 
@@ -64,19 +64,17 @@ export function RequestFormLayout({ variant, children }: Readonly<RequestFormLay
           <Link
             href={getReturnHref()}
             aria-label="Volver"
-            className={cn(buttonVariants({ variant: 'ghost', size: 'icon-sm' }))}
+            className={buttonVariants({ variant: 'ghost', size: 'icon-sm' })}
           >
             <IconArrowLeft />
           </Link>
 
-          <div
-            className={cn('flex size-12 shrink-0 items-center justify-center rounded-2xl', config.iconWrapClassName)}
-          >
+          <div className={cn('flex size-12 shrink-0 items-center justify-center rounded-2xl', config.iconClassName)}>
             <config.icon size={24} />
           </div>
 
           <div className="min-w-0 flex-1">
-            <div className="flex flex-col flex-wrap gap-1.5">
+            <div className="flex flex-col gap-1.5">
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">{config.label}</h1>
               <Badge variant="outline" className="h-5 px-2 text-[10px] tracking-[0.3em] uppercase">
                 Solicitud

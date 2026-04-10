@@ -9,7 +9,7 @@ interface RequestSectionCardProps {
 
 export function RequestSectionCard({ title, description, children }: Readonly<RequestSectionCardProps>) {
   return (
-    <Card className={'rounded-2xl border-border bg-card shadow-sm'}>
+    <Card className="overflow-hidden rounded-2xl border border-border bg-muted/10 shadow-sm">
       <CardHeader className="px-4 pt-4 sm:px-5">
         <CardTitle className="text-sm font-semibold tracking-tight text-foreground">{title}</CardTitle>
         {description ? (

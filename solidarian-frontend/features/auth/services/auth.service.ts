@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AUTH_ENDPOINTS } from '@/features/auth/constants/api.constants';
 import type { User } from '@/features/auth/model/user';
 import api from '@/features/axios/axios';

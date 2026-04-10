@@ -18,7 +18,7 @@ import {
   InputGroupInput,
 } from '@/components/ui';
 import { getErrorMessage } from '@/features/axios/errors.handler';
-import logoSolidarian from '@/public/solidarian-logo.png';
+import { ROUTES } from '@/features/routes';
 import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -36,7 +36,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -56,7 +56,7 @@ export default function RegisterPage() {
           <CardTitle className="text-2xl font-bold">SolidarianID</CardTitle>
           <CardDescription>Regístrate con tu nombre de usuario y contraseña</CardDescription>
           <CardAction>
-            <Image src={logoSolidarian} alt="SOLIDARIAN" width={80} height={80} className="h-20 w-20" />
+            <Image src="/solidarian-logo.png" alt="SOLIDARIAN" width={80} height={80} className="h-20 w-20" />
           </CardAction>
         </CardHeader>
         <CardContent>
@@ -153,7 +153,7 @@ export default function RegisterPage() {
                 </Button>
 
                 <FieldDescription className="text-center">
-                  ¿Ya tienes cuenta? <Link href="/">Inicia sesión</Link>
+                  ¿Ya tienes cuenta? <Link href={ROUTES.auth.login}>Inicia sesión</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

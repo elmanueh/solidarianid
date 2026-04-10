@@ -28,14 +28,14 @@ import {
 } from '@/features/auth/constants/auth.constants';
 import { authService } from '@/features/auth/services/auth.service';
 import { getErrorMessage } from '@/features/axios/errors.handler';
-import fondoLogin from '@/public/fondo-login.jpeg';
-import logoSolidarian from '@/public/solidarian-logo.png';
+import { handleLogin } from '@/features/redux/userSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
@@ -59,6 +59,7 @@ type LoginFormData = z.infer<typeof loginFormSchema>;
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
@@ -72,7 +73,8 @@ export default function LoginPage() {
   async function onSubmit(data: LoginFormData) {
     setIsLoading(true);
     try {
-      await authService.login(data.username, data.password);
+      const user = await authService.login(data.username, data.password);
+      dispatch(handleLogin(user));
     } catch (err) {
       toast.error(getErrorMessage(err));
     } finally {
@@ -83,12 +85,25 @@ export default function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="relative hidden text-white lg:block">
-        <Image src={fondoLogin} alt="Background" fill className="object-cover blur-xs" />
+        <Image
+          src={'/fondo-login.jpeg'}
+          alt="Background"
+          fill
+          sizes="50vw"
+          loading="eager"
+          className="object-cover blur-xs"
+        />
 
         <div className="absolute inset-0 bg-linear-to-r from-black/70 to-black/40" />
 
         <div className="absolute m-4 flex items-center gap-4">
-          <Image src={logoSolidarian} alt="SOLIDARIAN" className="bg-gray h-12 w-12 rounded-2xl border p-1.5" />
+          <Image
+            src={'/solidarian-logo.png'}
+            alt="SOLIDARIAN"
+            width={48}
+            height={48}
+            className="bg-gray rounded-2xl border p-1.5"
+          />
 
           <h1 className="font-bold">Solidarian ID</h1>
         </div>
@@ -107,7 +122,13 @@ export default function LoginPage() {
             <CardTitle className="text-2xl font-bold">Inicia Sesión</CardTitle>
             <CardDescription>Accede a tu panel de impacto social</CardDescription>
             <CardAction>
-              <Image src={logoSolidarian} alt="SOLIDARIAN" className="h-20 w-20" />
+              <Image
+                src={'/solidarian-logo.png'}
+                alt="SOLIDARIAN"
+                width={50}
+                height={50}
+                style={{ width: 'auto', height: 'auto' }}
+              />
             </CardAction>
           </CardHeader>
           <CardContent>

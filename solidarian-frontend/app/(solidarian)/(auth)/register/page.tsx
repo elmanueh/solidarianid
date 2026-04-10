@@ -35,8 +35,6 @@ import {
 } from '@/features/auth/constants/auth.constants';
 import { authService } from '@/features/auth/services/auth.service';
 import { getErrorMessage } from '@/features/axios/errors.handler';
-import fondoRegister from '@/public/fondo-register.jpeg';
-import logoSolidarian from '@/public/solidarian-logo.png';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
@@ -140,7 +138,13 @@ export default function RegisterPage() {
             <CardTitle className="text-2xl font-bold">Crea tu cuenta</CardTitle>
             <CardDescription>Únete a la mayor red de impacto social del mundo</CardDescription>
             <CardAction>
-              <Image src={logoSolidarian} alt="SOLIDARIAN" className="h-20 w-20" />
+              <Image
+                src={'/solidarian-logo.png'}
+                alt="SOLIDARIAN"
+                width={50}
+                height={50}
+                style={{ width: 'auto', height: 'auto' }}
+              />
             </CardAction>
           </CardHeader>
           <CardContent>
@@ -297,16 +301,25 @@ export default function RegisterPage() {
       </div>
 
       <div className="relative hidden text-white lg:block">
-        <Image src={fondoRegister} alt="Background" fill className="object-cover blur-xs" />
+        <Image
+          src={'/fondo-register.jpeg'}
+          alt="Background"
+          fill
+          sizes="50vw"
+          loading="eager"
+          className="object-cover blur-xs"
+        />
 
         <div className="absolute inset-0 bg-linear-to-r from-black/70 to-black/40" />
 
         <div className="absolute top-4 right-4 flex items-center gap-4">
           <h1 className="font-bold">Solidarian ID</h1>
           <Image
-            src={logoSolidarian}
+            src={'/solidarian-logo.png'}
             alt="SOLIDARIAN"
-            className="bg-gray h-12 w-12 rounded-2xl border border-gray-500 p-1.5"
+            width={48}
+            height={48}
+            className="bg-gray rounded-2xl border border-gray-500 p-1.5"
           />
         </div>
 

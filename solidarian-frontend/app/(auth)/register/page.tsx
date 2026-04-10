@@ -19,7 +19,6 @@ import {
 } from '@/components/ui';
 import { getErrorMessage } from '@/features/axios/errors.handler';
 import { ROUTES } from '@/features/routes';
-import logoSolidarian from '@/public/solidarian-logo.png';
 import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';

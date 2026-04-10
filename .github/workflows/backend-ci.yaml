@@ -71,7 +71,7 @@ jobs:
 
       - name: Run prettier check
         id: prettier_check
-        continue-on-error: true
+        continue-on-error: false
         run: npx prettier --check '**/*.{ts,js,json,css,html}'
 
       - name: Run linter

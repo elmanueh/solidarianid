@@ -51,7 +51,7 @@ jobs:
 
       - name: Run prettier check
         id: prettier_check
-        continue-on-error: true
+        continue-on-error: false
         run: pnpm run check-format
         
       - name: Run linter

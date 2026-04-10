@@ -1,5 +1,6 @@
 import { CauseCard } from '@/components/cause-card';
 import { CommunityCard } from '@/components/community-card';
+import { HeaderHome } from '@/components/home/header-home';
 import { GET_CAUSES_QUERY, type GetCausesResult } from '@/features/causes/api/graphql/causes.documents';
 import {
   GET_COMMUNITIES_QUERY,
@@ -129,18 +130,12 @@ export default async function HomePage() {
   noStore();
 
   const { communities, causes, errorCommunities, errorCauses } = await loadHomeData();
-  const user = { name: 'Traer usuario del contexto' }; // TODO: Obtener usuario real desde contexto
   const styles = homeStyles;
 
   return (
     <div className={styles.container}>
       {/* Header */}
-      <header className={styles.header.wrapper}>
-        <div className={styles.header.titleWrapper}>
-          <h2 className={styles.header.title}>Hola, {user.name}</h2>
-          <p className={styles.header.subtitle}>Explora comunidades y causas</p>
-        </div>
-      </header>
+      <HeaderHome />
 
       {/* Sección de Comunidades Destacadas */}
       <section className={styles.section.wrapper}>

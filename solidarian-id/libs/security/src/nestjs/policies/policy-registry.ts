@@ -1,4 +1,4 @@
-import { AuthorizationMetadata, PolicyContext, PolicyEvaluator } from '@app/users/infrastructure/authz/contracts';
+import { AuthorizationMetadata, PolicyContext, PolicyEvaluator } from '@solidarianid/security/core';
 import { Inject, Injectable } from '@nestjs/common';
 
 export const AUTHZ_POLICY_EVALUATORS = Symbol('AUTHZ_POLICY_EVALUATORS');

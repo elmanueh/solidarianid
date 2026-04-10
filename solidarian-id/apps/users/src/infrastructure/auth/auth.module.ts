@@ -7,9 +7,6 @@ import { TokensTypeormRepository } from '@app/users/infrastructure/persistence/r
 import { AuthController } from '@app/users/infrastructure/presentation/controllers/auth.controller';
 import { JwtAuthGuard } from '@app/users/infrastructure/auth/guards/jwt-auth.guard';
 import { JwtStrategy } from '@app/users/infrastructure/auth/strategies/jwt.strategy';
-import { AuthorizationGuard } from '@app/users/infrastructure/authz/guards/authorization.guard';
-import { AUTHZ_POLICY_EVALUATORS, PolicyRegistry } from '@app/users/infrastructure/authz/policies/policy-registry';
-import { SelfOwnershipPolicy } from '@app/users/infrastructure/authz/policies/self-ownership.policy';
 import { UsersModule } from '@app/users/users.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -65,14 +62,6 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
     RefreshTokenMapper,
     JwtStrategy,
     JwtAuthGuard,
-    AuthorizationGuard,
-    PolicyRegistry,
-    SelfOwnershipPolicy,
-    {
-      provide: AUTHZ_POLICY_EVALUATORS,
-      useFactory: (selfOwnershipPolicy: SelfOwnershipPolicy) => [selfOwnershipPolicy],
-      inject: [SelfOwnershipPolicy],
-    },
     {
       provide: AuthService,
       useClass: AuthServiceImpl,
@@ -83,6 +72,6 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
     },
   ],
   controllers: [AuthController],
-  exports: [AuthService, JwtAuthGuard, AuthorizationGuard],
+  exports: [AuthService, JwtAuthGuard],
 })
 export class AuthModule {}

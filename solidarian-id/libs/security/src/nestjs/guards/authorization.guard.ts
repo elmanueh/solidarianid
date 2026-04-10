@@ -1,6 +1,6 @@
-import { AUTHORIZE_METADATA_KEY } from '@app/users/infrastructure/authz/decorators/authorize.decorator';
-import { AuthorizationMetadata } from '@app/users/infrastructure/authz/contracts';
-import { PolicyRegistry } from '@app/users/infrastructure/authz/policies/policy-registry';
+import { AuthorizationMetadata } from '@solidarianid/security/core';
+import { AUTHORIZE_METADATA_KEY } from '../decorators/authorize.decorator';
+import { PolicyRegistry } from '../policies/policy-registry';
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import type { Request } from 'express';

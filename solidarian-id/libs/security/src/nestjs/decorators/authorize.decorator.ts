@@ -1,4 +1,4 @@
-import { AuthorizationMetadata } from '@app/users/infrastructure/authz/contracts';
+import { AuthorizationMetadata } from '@solidarianid/security/core';
 import { SetMetadata } from '@nestjs/common';
 
 export const AUTHORIZE_METADATA_KEY = 'authorize';

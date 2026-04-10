@@ -1,9 +1,8 @@
 import { RegisterUserCommand, UsersService } from '@app/users/domain/services/users.service';
 import { Public } from '@app/users/infrastructure/auth/decorators/public.decorator';
 import { JwtAuthGuard } from '@app/users/infrastructure/auth/guards/jwt-auth.guard';
-import { Action, Resource } from '@app/users/infrastructure/authz/constants';
-import { Authorize } from '@app/users/infrastructure/authz/decorators/authorize.decorator';
-import { AuthorizationGuard } from '@app/users/infrastructure/authz/guards/authorization.guard';
+import { Action, Resource } from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize } from '@solidarianid/security/nestjs';
 import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
 import { UpdateUserPreferencesRequestDto } from '@app/users/infrastructure/presentation/dtos/update-user-preferences.request.dto';
 import { UpdateUserProfileDtoRequest } from '@app/users/infrastructure/presentation/dtos/update-user-profile.dto';

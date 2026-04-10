@@ -1,5 +1,4 @@
-import { Resource } from '@app/users/infrastructure/authz/constants';
-import { AuthorizationMetadata, PolicyContext, PolicyEvaluator } from '@app/users/infrastructure/authz/contracts';
+import { AuthorizationMetadata, PolicyContext, PolicyEvaluator, Resource } from '@solidarianid/security/core';
 import { Injectable } from '@nestjs/common';
 
 const SELF_POLICY_NAME = 'self';

@@ -24,6 +24,9 @@
     "types": ["jest", "node"],
     "paths": {
       "@solidarianid/kafka": ["libs/kafka/src/index.ts"],
+      "@solidarianid/security": ["libs/security/src/index.ts"],
+      "@solidarianid/security/core": ["libs/security/src/core/index.ts"],
+      "@solidarianid/security/nestjs": ["libs/security/src/nestjs/index.ts"],
       "@solidarianid/testing": ["libs/test/src/index.ts"],
       "@app/admin": ["apps/admin/src"],
       "@app/admin/*": ["apps/admin/src/*"],

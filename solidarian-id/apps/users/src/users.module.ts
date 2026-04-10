@@ -5,6 +5,7 @@ import { PasswordManagerBcrypt } from '@app/utils/security/password-manager-bcry
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule } from '@solidarianid/kafka';
+import { SecurityAuthorizationModule } from '@solidarianid/security/nestjs';
 import { UsersServiceImpl } from './application/services/users.service.impl';
 import { UsersPublisherPort } from './domain/ports/users.publisher.port';
 import { UsersRepositoryPort } from './domain/ports/users.repository.port';
@@ -15,8 +16,6 @@ import { UserEntity } from './infrastructure/persistence/entities/user.entity';
 import { UserMapper } from './infrastructure/persistence/mappers/user.mapper';
 import { UsersRepositoryTypeORM } from './infrastructure/persistence/repositories/users-typeorm.repository';
 import { UsersController } from './infrastructure/presentation/controllers/users.controller';
-import { AuthorizationGuard } from './infrastructure/authz/guards/authorization.guard';
-import { AUTHZ_POLICY_EVALUATORS, PolicyRegistry } from './infrastructure/authz/policies/policy-registry';
 import { SelfOwnershipPolicy } from './infrastructure/authz/policies/self-ownership.policy';
 
 @Module({
@@ -24,6 +23,7 @@ import { SelfOwnershipPolicy } from './infrastructure/authz/policies/self-owners
     DatabaseModule.forRoot(),
     TypeOrmModule.forFeature([UserEntity, UserPreferenceEntity]),
     KafkaDynamicModule.register(process.env.KAFKA_USERS_CLIENT_ID ?? 'users'),
+    SecurityAuthorizationModule.register({ evaluators: [SelfOwnershipPolicy] }),
   ],
   controllers: [UsersController],
   providers: [
@@ -44,14 +44,6 @@ import { SelfOwnershipPolicy } from './infrastructure/authz/policies/self-owners
     {
       provide: PasswordManager,
       useClass: PasswordManagerBcrypt,
-    },
-    AuthorizationGuard,
-    PolicyRegistry,
-    SelfOwnershipPolicy,
-    {
-      provide: AUTHZ_POLICY_EVALUATORS,
-      useFactory: (selfOwnershipPolicy: SelfOwnershipPolicy) => [selfOwnershipPolicy],
-      inject: [SelfOwnershipPolicy],
     },
   ],
   exports: [UsersService],

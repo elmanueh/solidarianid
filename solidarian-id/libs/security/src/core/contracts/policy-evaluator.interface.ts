@@ -1,4 +1,4 @@
-import { AuthorizationMetadata } from '@app/users/infrastructure/authz/contracts/authorization-metadata';
+import { AuthorizationMetadata } from './authorization-metadata';
 
 export interface PolicyContext {
   subject: { sub: string; jti?: string };

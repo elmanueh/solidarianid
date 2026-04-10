@@ -29,10 +29,12 @@ import {
 import { authService } from '@/features/auth/services/auth.service';
 import { getErrorMessage } from '@/features/axios/errors.handler';
 import { handleLogin } from '@/features/redux/userSlice';
+import { ROUTES } from '@/features/routes';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -60,6 +62,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
@@ -75,6 +78,7 @@ export default function LoginPage() {
     try {
       const user = await authService.login(data.username, data.password);
       dispatch(handleLogin(user));
+      router.push(ROUTES.app.home);
     } catch (err) {
       toast.error(getErrorMessage(err));
     } finally {

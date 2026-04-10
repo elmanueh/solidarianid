@@ -53,11 +53,7 @@ jobs:
         id: prettier_check
         continue-on-error: true
         run: pnpm run check-format
-
-      - name: Run prettier format
-        if: steps.prettier_check.outcome == 'failure'
-        run: pnpm run format
-
+        
       - name: Run linter
         run: pnpm run lint
 
@@ -66,28 +62,3 @@ jobs:
 
       - name: Build project
         run: pnpm run build
-
-      - name: Commit formatted files
-        if: steps.prettier_check.outcome == 'failure'
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-          git add .
-          git commit -m "chore(prettier-formatting): apply prettier formatting" || exit 0
-
-          # Determinar rama destino
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            TARGET_BRANCH="${{ github.head_ref }}"
-          else
-            TARGET_BRANCH="${{ github.ref_name }}"
-          fi
-
-          echo "Pushing to branch: $TARGET_BRANCH"
-
-          # Traer remoto y rebasar para evitar non-fast-forward
-          git fetch origin "$TARGET_BRANCH"
-          git rebase "origin/$TARGET_BRANCH" || (git rebase --abort && exit 1)
-
-          # Push
-          git push origin "HEAD:$TARGET_BRANCH"

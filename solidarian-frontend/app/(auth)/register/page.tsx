@@ -19,7 +19,6 @@ import {
 } from '@/components/ui';
 import { getErrorMessage } from '@/features/axios/errors.handler';
 import { ROUTES } from '@/features/routes';
-import logoSolidarian from '@/public/solidarian-logo.png';
 import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -57,7 +56,7 @@ export default function RegisterPage() {
           <CardTitle className="text-2xl font-bold">SolidarianID</CardTitle>
           <CardDescription>Regístrate con tu nombre de usuario y contraseña</CardDescription>
           <CardAction>
-            <Image src={logoSolidarian} alt="SOLIDARIAN" width={80} height={80} className="h-20 w-20" />
+            <Image src="/solidarian-logo.png" alt="SOLIDARIAN" width={80} height={80} className="h-20 w-20" />
           </CardAction>
         </CardHeader>
         <CardContent>

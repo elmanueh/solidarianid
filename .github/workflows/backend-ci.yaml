@@ -1,4 +1,4 @@
-name: CI - SolidarianID
+name: CI - SolidarianID - Backend
 
 on:
   # El CI se ejecutará en cada push o pull request a la rama develop
@@ -16,7 +16,7 @@ on:
 
 jobs:
   ci:
-    name: CI Pipeline
+    name: CI Pipeline - Backend
     runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
     permissions:
@@ -71,7 +71,7 @@ jobs:
 
       - name: Run prettier check
         id: prettier_check
-        continue-on-error: true
+        continue-on-error: false
         run: npx prettier --check '**/*.{ts,js,json,css,html}'
 
       - name: Run linter

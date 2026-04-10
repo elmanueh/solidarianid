@@ -1,5 +1,9 @@
-import { Sidebar } from '@/components/sidebar';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { HeaderBrandDesktop } from '@/components/app-header/header-brand-desktop';
+import { HeaderBrandMobile } from '@/components/app-header/header-brand-mobile';
+import { NotificationBellButton } from '@/components/app-header/notification-bell-button';
+import { SidebarLateral } from '@/components/sidebar';
+import { SidebarMobile } from '@/components/sidebar-mobile';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 export default function AppLayout({
   children,
@@ -7,21 +11,21 @@ export default function AppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    /*<div className="min-h-screen">
-      <header className="border-b">
-        <nav className="mx-auto flex max-w-6xl gap-4 p-4 text-sm">
-          <Link href="/home">Home</Link>
-          <Link href="/explore">Explore</Link>
-          <Link href="/favorites">Favorites</Link>
-          <Link href="/notifications">Notifications</Link>
-          <Link href="/profile">Profile</Link>
-        </nav>
-      </header>
-      <main className="mx-auto max-w-6xl p-6">{children}</main>
-    </div>*/
     <SidebarProvider>
-      <Sidebar />
-      <main>{children}</main>
+      <div className="flex min-h-screen w-full">
+        <SidebarLateral />
+
+        <SidebarInset className="flex min-w-0 flex-1 flex-col">
+          <header className="flex justify-between rounded-b-2xl border-b border-b-gray-300 px-5 pt-5 pb-4 md:m-5 md:border-0">
+            <HeaderBrandDesktop />
+            <HeaderBrandMobile />
+            <NotificationBellButton hasNotifications />
+          </header>
+          <main className="flex-1 p-5 md:ps-10">{children}</main>
+        </SidebarInset>
+
+        <SidebarMobile />
+      </div>
     </SidebarProvider>
   );
 }

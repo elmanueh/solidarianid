@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroupContent,
@@ -8,7 +9,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  Sidebar as SidebarRoot,
 } from '@/components/ui/sidebar';
 import { ROUTES } from '@/features/routes';
 import { IconHeart, IconHome, IconLogout2, IconSearch, IconUser } from '@tabler/icons-react';
@@ -20,14 +20,14 @@ const navItems = [
   { title: 'Inicio', url: ROUTES.app.home, icon: <IconHome className="size-4" /> },
   { title: 'Explorar comunidades', url: ROUTES.app.explore, icon: <IconSearch className="size-4" /> },
   { title: 'Mis Causas', url: ROUTES.app.favorites, icon: <IconHeart className="size-4" /> },
-  { title: 'Mi Perfil', url: ROUTES.app.notifications, icon: <IconUser className="size-4" /> },
+  { title: 'Mi Perfil', url: ROUTES.app.profile, icon: <IconUser className="size-4" /> },
 ];
 
-export function Sidebar() {
+export function SidebarLateral() {
   const pathname = usePathname();
 
   return (
-    <SidebarRoot>
+    <Sidebar variant="inset">
       <SidebarHeader className="p-6">
         <Link href={ROUTES.app.home} className="group flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-50 p-2 shadow-inner transition-transform group-hover:scale-110">
@@ -40,7 +40,9 @@ export function Sidebar() {
             />
           </div>
           <div className="flex flex-col overflow-hidden">
-            <span className="truncate text-xl font-black tracking-tight text-brand-700">SolidarianID</span>
+            <span className="truncate text-xl font-black tracking-tight text-brand-ink dark:text-primary">
+              SolidarianID
+            </span>
             <span className="text-[8px] leading-none font-bold tracking-widest text-neutral-400 uppercase">
               Social Impact Network
             </span>
@@ -57,10 +59,10 @@ export function Sidebar() {
                   <Link href={item.url} className="block">
                     <SidebarMenuButton
                       isActive={isActive}
-                      className={`mt-1 cursor-pointer rounded-2xl px-4 py-6 text-[10px] font-black tracking-[0.15em] uppercase transition-all ${
+                      className={`mt-1 cursor-pointer rounded-2xl px-4 py-6 text-[10px] font-black tracking-[0.15em] uppercase transition-all dark:text-primary dark:hover:bg-gray-600 ${
                         isActive
-                          ? 'data-active:bg-sidebar-primary! data-active:font-bold data-active:text-sidebar-primary-foreground! data-active:hover:bg-sidebar-primary! data-active:hover:text-sidebar-primary-foreground!'
-                          : 'text-neutral-400 hover:bg-neutral-100 hover:text-brand-700'
+                          ? 'dark:hover:text-secondary data-active:bg-sidebar-primary! data-active:font-bold data-active:text-sidebar-primary-foreground! data-active:hover:bg-sidebar-primary! data-active:hover:text-sidebar-primary-foreground! data-active:dark:bg-blue-800!'
+                          : 'text-neutral-400 hover:bg-neutral-100 hover:text-brand-ink'
                       } `}
                     >
                       {item.icon}
@@ -79,14 +81,14 @@ export function Sidebar() {
             JG
           </div>
           <div className="flex flex-col overflow-hidden">
-            <span className="truncate text-xs font-black tracking-wide text-brand-700 uppercase">Juan García</span>
+            <span className="truncate text-xs font-black tracking-wide text-brand-ink uppercase">Juan García</span>
             <span className="truncate text-[9px] font-bold text-neutral-400">@juan_dev</span>
           </div>
         </div>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              className="ms-3 cursor-pointer items-center rounded-2xl py-6 text-[10px] font-black tracking-widest text-neutral-400 uppercase hover:bg-red-50 hover:text-red-500"
+              className="cursor-pointer items-center rounded-2xl py-6 ps-6 text-[10px] font-black tracking-widest text-neutral-400 uppercase hover:bg-red-50 hover:text-red-500 dark:text-primary dark:hover:bg-red-900"
               onClick={() => {
                 // TODO: Conectar con authService.logout
                 redirect('/');
@@ -98,6 +100,6 @@ export function Sidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-    </SidebarRoot>
+    </Sidebar>
   );
 }

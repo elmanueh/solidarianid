@@ -13,11 +13,12 @@ export class CausesGraphqlMapper {
       name: cause.name,
       description: cause.description,
       durationDays: cause.durationDays,
-      ods: cause.ods,
+      ods: cause.ods.map(Number),
       initialDate: cause.initialDate,
+      actions: [],
       communityId: cause.communityId,
       userIds: cause.userIds,
-    } as CauseGraphql;
+    };
   }
 
   toCause(cause: Cause): CauseGraphql {
@@ -26,7 +27,7 @@ export class CausesGraphqlMapper {
       name: cause.name,
       description: cause.description,
       durationDays: cause.durationDays,
-      ods: cause.ods,
+      ods: cause.ods.map(Number),
       initialDate: cause.initialDate,
       actions: cause.actions.map(action => this.actionsGraphqlMapper.toAction(action)),
       communityId: cause.communityId,

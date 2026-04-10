@@ -1,10 +1,9 @@
 import { CommunitiesModule } from '@app/communities/communities.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { KafkaBrokersModule } from '@solidarianid/kafka';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
+import { KafkaBrokersModule } from '@solidarianid/kafka';
 
 @Module({
   imports: [
@@ -14,7 +13,7 @@ import { join } from 'path';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       graphiql: true,
-      autoSchemaFile: join(process.cwd(), 'apps/communities/src/schema.gql'),
+      autoSchemaFile: true, // TODO: revisar esto para producción
       subscriptions: {
         'graphql-ws': true,
       },

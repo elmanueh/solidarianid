@@ -42,7 +42,6 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import PhoneInput from 'react-phone-input-2';
-// @ts-expect-error CSS para ver la bandera
 import 'react-phone-input-2/lib/style.css';
 import countryList from 'react-select-country-list';
 import { toast } from 'sonner';

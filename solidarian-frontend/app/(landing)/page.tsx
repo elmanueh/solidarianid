@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui';
-import logoSolidarian from '@/public/solidarian-logo.png';
 import { IconBolt, IconGlobe, IconHeart, IconShieldCheck, IconTrendingUp, IconUsersGroup } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,7 +9,13 @@ export default function LandingPage() {
       <header className="border-b border-gray-500">
         <nav className="flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
-            <Image src={logoSolidarian} alt="SolidarianID Logo" className="h-10 w-10" />
+            <Image
+              src={'/solidarian-logo.png'}
+              alt="SolidarianID Logo"
+              width={40}
+              height={40}
+              style={{ width: 'auto', height: 'auto' }}
+            />
             <span className="hidden text-lg font-medium sm:inline">SolidarianID</span>
           </div>
           <div className="flex items-center gap-2">

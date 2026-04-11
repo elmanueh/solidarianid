@@ -2,9 +2,10 @@ import { ActionsList } from '@/components/cause-page/actions-list';
 import CauseHeader from '@/components/cause-page/cause-header';
 import CauseInfoCard from '@/components/cause-page/cause-info-card';
 import { FloatingActionButton } from '@/components/cause-page/floating-action-button';
-import { getErrorMessage } from '@/features/axios/errors.handler';
-import { getCauseByCommunityIdAndCauseId } from '@/features/communities/services/communities.server';
-import { ROUTES } from '@/infrastructure/navigation/routes';
+import { GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY } from '@/features/causes/api/graphql/causes.documents';
+import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
+import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
+import { ROUTES } from '@/features/routes';
 import Link from 'next/link';
 
 interface CausePageProps {
@@ -13,15 +14,14 @@ interface CausePageProps {
 
 export default async function CausePage({ params }: Readonly<CausePageProps>) {
   const { communityId, causeId } = await params;
-
-  let cause: Awaited<ReturnType<typeof getCauseByCommunityIdAndCauseId>> | null = null;
-  let causeLoadError: string | null = null;
-
-  try {
-    cause = await getCauseByCommunityIdAndCauseId(communityId, causeId);
-  } catch (error) {
-    causeLoadError = getErrorMessage(error);
-  }
+  const graphqlCliente = new GraphqlClientService(getInstanceServerApolloClient());
+  const causeLoadError: string | null = null;
+  const cause = (
+    await graphqlCliente.query(GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY, {
+      communityId,
+      causeId,
+    })
+  ).causeByCommunity;
 
   if (!cause) {
     return (

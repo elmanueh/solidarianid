@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
-import { ROUTES } from '@/infrastructure/navigation/routes';
+import { ROUTES } from '@/features/routes';
 import { IconChevronRight, IconLayoutList, IconTargetArrow } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';

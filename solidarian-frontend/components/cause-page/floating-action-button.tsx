@@ -1,4 +1,4 @@
-import { ROUTES } from '@/infrastructure/navigation/routes';
+import { ROUTES } from '@/features/routes';
 import { IconFilePlus } from '@tabler/icons-react';
 import Link from 'next/link';
 

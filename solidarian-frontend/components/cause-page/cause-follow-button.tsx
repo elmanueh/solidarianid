@@ -2,7 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { getErrorMessage } from '@/features/axios/errors.handler';
-import { joinCause, leaveCause } from '@/features/communities/services/communities.client';
+import { JOIN_CAUSE_MUTATION, LEAVE_CAUSE_MUTATION } from '@/features/causes/api/graphql/causes.documents';
+import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
+import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { cn } from '@/lib/utils';
 import { IconHeart } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
@@ -24,6 +26,7 @@ export default function CauseFollowButton({
   const [isFollowing, setIsFollowing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [resolvedUserId, setResolvedUserId] = useState<string | undefined>();
+  const graphqlClient = new GraphqlClientService(getInstanceServerApolloClient());
 
   useEffect(() => {
     try {
@@ -55,7 +58,12 @@ export default function CauseFollowButton({
 
     try {
       if (isFollowing) {
-        const result = await leaveCause(causeId, resolvedUserId);
+        const result = (
+          await graphqlClient.mutate(LEAVE_CAUSE_MUTATION, {
+            causeId,
+            userId: resolvedUserId,
+          })
+        ).leaveCause;
 
         if (result) {
           setIsFollowing(false);
@@ -66,7 +74,12 @@ export default function CauseFollowButton({
         return;
       }
 
-      const result = await joinCause(causeId, resolvedUserId);
+      const result = (
+        await graphqlClient.mutate(JOIN_CAUSE_MUTATION, {
+          causeId,
+          userId: resolvedUserId,
+        })
+      ).joinCause;
 
       if (result) {
         setIsFollowing(true);

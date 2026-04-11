@@ -2,7 +2,7 @@ import BackButton from '@/components/back-button';
 import ShareButton from '@/components/share-button';
 import { Badge } from '@/components/ui/badge';
 import { getSortedOds } from '@/features/causes/constants/ods.constants';
-import { ROUTES } from '@/infrastructure/navigation/routes';
+import { ROUTES } from '@/features/routes';
 import { IconUsers } from '@tabler/icons-react';
 import Image from 'next/image';
 
@@ -36,7 +36,7 @@ export default function CauseHeader({
         className="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-[2px]"
         priority
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-neutral-50 dark:from-neutral-900/10 dark:to-neutral-800" />
+      <div className="absolute inset-0 bg-linear-to-b from-white/10 to-neutral-50 dark:from-neutral-900/10 dark:to-neutral-800" />
 
       <div className="absolute top-6 right-6 left-6 z-10 flex items-center justify-between">
         <BackButton url={ROUTES.communities.detail(communityId)} />

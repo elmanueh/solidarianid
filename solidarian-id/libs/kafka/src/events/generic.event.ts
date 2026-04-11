@@ -5,6 +5,8 @@ export class GenericEvent<TDto> implements DomainEvent {
   readonly occurredOn: Date;
   readonly eventType: EventType;
   readonly data: TDto;
+  readonly id: string;
+  readonly type: string;
 
   constructor(eventType: EventType, data: TDto) {
     this.occurredOn = new Date();

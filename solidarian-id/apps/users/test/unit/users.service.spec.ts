@@ -1,15 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { DomainEvents } from '@app/ddd/domain-events';
+import { Either, left, right } from '@app/ddd/either';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UsersServiceImpl } from '@app/users/application/services/users.service.impl';
+import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
+import { User } from '@app/users/domain/model/user';
 import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
 import { RegisterUserCommand } from '@app/users/domain/services/users.service';
-import { right, left, Either } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { PasswordManager } from '@app/utils/security/password-manager';
-import { User } from '@app/users/domain/model/user';
-import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('UsersService Unit testing', () => {
   let service: UsersServiceImpl;
@@ -24,10 +24,6 @@ describe('UsersService Unit testing', () => {
   let mockPasswordManager: {
     validateAndHashPassword: jest.Mock;
     comparePassword: jest.Mock;
-  };
-
-  let mockKafkaPublisher: {
-    publish: jest.Mock;
   };
 
   const validCommand: RegisterUserCommand = {
@@ -59,16 +55,12 @@ describe('UsersService Unit testing', () => {
       comparePassword: jest.fn(),
     };
 
-    mockKafkaPublisher = {
-      publish: jest.fn(),
-    };
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        DomainEvents,
         UsersServiceImpl,
         { provide: UsersRepositoryPort, useValue: mockRepo },
         { provide: PasswordManager, useValue: mockPasswordManager },
-        { provide: UsersPublisherPort, useValue: mockKafkaPublisher },
       ],
     }).compile();
 

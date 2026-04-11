@@ -1,16 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const getErrorMessage = (err: unknown): string => {
   if (axios.isAxiosError(err)) {
-    if (!err.response) return `Error de red: ${err.code}`;
-
-    const detail = err.response.data?.detail;
-    return typeof detail === "string"
-      ? detail
-      : "Error al procesar la solicitud";
+    return err.response?.data?.error?.message || `Error de red: ${err.code}`;
   }
 
   if (err instanceof Error) return err.message;
 
-  return "Error desconocido";
+  return 'Error desconocido';
 };

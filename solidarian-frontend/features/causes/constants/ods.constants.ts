@@ -1,4 +1,4 @@
-export const ODS_NAMES: Record<number, string> = {
+export const SUSTAINABLE_DEVELOPMENT_GOAL: Record<number, string> = {
   1: 'Sin Pobreza',
   2: 'Hambre Cero',
   3: 'Salud y Bienestar',
@@ -21,5 +21,7 @@ export const ODS_NAMES: Record<number, string> = {
 export function getSortedOds(odsNumbers: number[]): Array<{ num: number; name: string }> {
   if (odsNumbers.length === 0) return [];
 
-  return odsNumbers.map(num => ({ num, name: ODS_NAMES[num] || 'Desconocido' })).sort((a, b) => a.num - b.num);
+  return odsNumbers
+    .map(num => ({ num, name: SUSTAINABLE_DEVELOPMENT_GOAL[num] || 'Desconocido' }))
+    .sort((a, b) => a.num - b.num);
 }

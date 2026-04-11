@@ -5,8 +5,11 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { OperationTypeNode } from 'graphql';
 import { createClient } from 'graphql-ws';
 
-const HTTP_URL = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL ?? 'http://localhost:3002/graphql';
-const WS_URL = process.env.NEXT_PUBLIC_GRAPHQL_WS_URL ?? 'ws://localhost:3002/graphql';
+const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? 'http://localhost:3002/graphql';
+const HTTP_URL = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL ?? GRAPHQL_ENDPOINT;
+const WS_URL =
+  process.env.NEXT_PUBLIC_GRAPHQL_WS_URL ??
+  GRAPHQL_ENDPOINT.replace(/^http(s?):\/\//, (_, secure) => `ws${secure ? 's' : ''}://`);
 
 const httpLink = new HttpLink({
   uri: HTTP_URL,
@@ -31,7 +34,7 @@ const errorLink = new ErrorLink(({ error, operation }) => {
   }
 
   if (error) {
-    console.error(`[Network error][${operationName}] ${error.message}`);
+    console.error(`[Network error][${operationName}] ${error.message} (${HTTP_URL})`);
   }
 });
 

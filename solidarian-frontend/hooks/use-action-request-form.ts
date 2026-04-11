@@ -1,9 +1,17 @@
 'use client';
 
+import {
+  CREATE_ACTION_REQUEST_MUTATION,
+  CreateActionRequestVariables,
+} from '@/features/actions/api/graphql/actions.documents';
 import { getErrorMessage } from '@/features/axios/errors.handler';
+import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
+import { RootState } from '@/features/redux/store';
 import { ROUTES } from '@/features/routes';
+import { useApolloClient } from '@apollo/client/react';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
 interface ActionRequestValues {
@@ -16,29 +24,6 @@ interface ActionRequestValues {
     initialDate: string;
     place: { direction: string; city: string; countryCode: string };
   }[];
-}
-
-interface CreateActionRequestPayload {
-  name: string;
-  description: string;
-  objectives: Array<{
-    name: string;
-    description: string;
-    quantity: number;
-    unit: string;
-  }>;
-  events: Array<{
-    name: string;
-    description: string;
-    initialDate: string;
-    place: {
-      direction: string;
-      city: string;
-      countryCode: string;
-    };
-  }>;
-  causeId: string;
-  userId?: string;
 }
 
 function createEmptyActionForm(): ActionRequestValues {
@@ -62,7 +47,11 @@ function validateRequiredText(value: string, errorMessage: string): string {
   return normalizedValue;
 }
 
-function buildActionRequestPayload(values: ActionRequestValues, causeId: string): CreateActionRequestPayload {
+function buildActionRequestPayload(
+  values: ActionRequestValues,
+  causeId: string,
+  userId: string
+): CreateActionRequestVariables['createActionRequestInput'] {
   const name = validateRequiredText(values.name, 'El nombre de la acción es obligatorio.');
   const description = validateRequiredText(values.description, 'La descripción de la acción es obligatoria.');
 
@@ -74,22 +63,24 @@ function buildActionRequestPayload(values: ActionRequestValues, causeId: string)
     throw new Error('Necesitas añadir al menos un evento antes de enviar la solicitud.');
   }
 
-  const objectives: CreateActionRequestPayload['objectives'] = [];
+  const objectives: CreateActionRequestVariables['createActionRequestInput']['objectives'] = [];
   for (const [, objective] of values.objectives.entries()) {
     objectives.push(objective);
   }
 
-  const events: CreateActionRequestPayload['events'] = [];
+  const events: CreateActionRequestVariables['createActionRequestInput']['events'] = [];
   for (const [, event] of values.events.entries()) {
     events.push(event);
   }
 
-  return { name, description, causeId, objectives, events };
+  return { name, description, causeId, objectives, events, userId };
 }
 
 export default function useActionRequestForm() {
   const router = useRouter();
   const params = useParams<{ communityId: string; causeId: string }>();
+  const graphql = new GraphqlClientService(useApolloClient());
+  const userId = useSelector((state: RootState) => state.auth.currentUser?.id);
 
   const communityId = getRouteParam(params.communityId);
   const causeId = getRouteParam(params.causeId);
@@ -102,10 +93,15 @@ export default function useActionRequestForm() {
       event.preventDefault();
       if (isSubmitting) return;
 
+      if (!userId) {
+        toast.error('Necesitas iniciar sesión para crear una solicitud.');
+        return;
+      }
+
       try {
         setIsSubmitting(true);
-        const payload = buildActionRequestPayload(values, causeId);
-        // TODO: usar grapghql cuando esté disponible
+        const payload = buildActionRequestPayload(values, causeId, userId);
+        await graphql.mutate(CREATE_ACTION_REQUEST_MUTATION, { createActionRequestInput: payload });
 
         toast.success('Solicitud enviada correctamente', {
           description: 'Te avisaremos cuando se revise.',
@@ -118,7 +114,7 @@ export default function useActionRequestForm() {
         setIsSubmitting(false);
       }
     },
-    [causeId, communityId, isSubmitting, router, values]
+    [causeId, communityId, isSubmitting, router, values, userId]
   );
 
   return { values, setValues, handleSubmit, isSubmitting };

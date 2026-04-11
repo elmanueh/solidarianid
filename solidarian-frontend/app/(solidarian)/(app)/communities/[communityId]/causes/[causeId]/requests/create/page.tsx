@@ -4,8 +4,8 @@ import ActionRequestEventsSection from '@/components/requests/action-request-eve
 import ActionRequestObjectivesSection from '@/components/requests/action-request-objectives-section';
 import { RequestFormLayout } from '@/components/requests/request-form-layout';
 import { RequestSectionCard } from '@/components/requests/request-section-card';
-import useActionRequestForm from '@/components/requests/use-action-request-form';
 import { Button, Input, Textarea } from '@/components/ui';
+import useActionRequestForm from '@/hooks/use-action-request-form';
 
 export default function CauseActionRequestCreatePage() {
   const { handleSubmit, isSubmitting, setValues, values } = useActionRequestForm();

@@ -1,7 +1,6 @@
-import { ApolloGraphqlProvider } from '@/components/apollo-provider';
-import { ThemeProvider } from '@/components/theme-provider';
-import { cn } from '@/lib/utils';
 import { Geist_Mono, Inter } from 'next/font/google';
+
+import { cn } from '@/lib/utils';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -22,11 +21,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn('antialiased', fontMono.variable, 'font-sans', inter.variable)}
     >
-      <body>
-        <ApolloGraphqlProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </ApolloGraphqlProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

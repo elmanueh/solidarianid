@@ -1,24 +1,49 @@
-import { AUTH_ENDPOINTS } from '@/features/auth/constants/api.constants';
-import type { User } from '@/features/auth/model/user';
+import { User } from '@/features/auth/model/user';
 import api from '@/features/axios/axios';
+
+const AUTH_ENDPOINTS = {
+  LOGIN: '/users/login',
+  USERS: '/users',
+  ME: '/users/me',
+};
 
 // FIXME: Añadir Registro y tenemos que hablar el tema de los JWT (refresh, etc)
 export const authService = {
-  login: async (email: string, password: string): Promise<User> => {
-    // const params = new URLSearchParams()
-    // params.append("username", email)
-    // params.append("password", password)
-    // const response = await api.post(AUTH_ENDPOINTS.LOGIN, params, {
-    //   headers: {
-    //     "Content-Type": "application/x-www-form-urlencoded",
-    //   },
-    // })
-    // return response.data.user
-    throw new Error('Login not implemented yet');
+  login: async (username: string, password: string): Promise<User> => {
+    // TODO: devolver datos del usuario en el login
+    //await api.post(AUTH_ENDPOINTS.LOGIN, { username, password });
+    return authService.getCurrentUser();
   },
 
-  refreshToken: async () => {
-    const response = await api.post(AUTH_ENDPOINTS.REFRESH);
-    return response.data.message;
+  register: async (
+    username: string,
+    password: string,
+    fullName: string,
+    mobilePhone: string,
+    city: string,
+    countryCode: string
+  ): Promise<void> => {
+    await api.post(AUTH_ENDPOINTS.USERS, {
+      username,
+      password,
+      fullName,
+      mobilePhone,
+      city,
+      countryCode,
+    });
+  },
+
+  getCurrentUser: async (): Promise<User> => {
+    // TODO: Implementar esta función para obtener los datos del usuario autenticado usando el token JWT
+    // const response = await api.get(AUTH_ENDPOINTS.ME);
+    // return response.data as User;
+    return {
+      id: '123',
+      username: 'pablo',
+      fullName: 'Pablo Peris',
+      mobilePhone: '+34123456789',
+      city: 'Totana',
+      countryCode: 'ES',
+    };
   },
 };

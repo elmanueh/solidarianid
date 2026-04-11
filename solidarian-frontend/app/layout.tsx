@@ -1,8 +1,5 @@
-import { Geist_Mono, Inter } from 'next/font/google';
-
-import { ThemeProvider } from '@/components/theme-provider';
-import { Toaster } from '@/components/ui';
 import { cn } from '@/lib/utils';
+import { Geist_Mono, Inter } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -23,10 +20,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn('antialiased', fontMono.variable, 'font-sans', inter.variable)}
     >
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
-        <Toaster />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

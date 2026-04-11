@@ -59,7 +59,7 @@ export function RequestFormLayout({ variant, children }: Readonly<RequestFormLay
 
   return (
     <div className="min-h-screen bg-background pb-24 text-foreground">
-      <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mx-auto flex w-full flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
         <header className="flex items-start gap-4 rounded-2xl border border-border bg-card px-4 py-4 shadow-sm sm:px-6 sm:py-5">
           <Link
             href={getReturnHref()}

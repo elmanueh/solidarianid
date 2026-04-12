@@ -33,7 +33,7 @@ export type GetCauseByCommunityIdAndCauseIdResult = {
     description: string;
     durationDays: number;
     initialDate: string;
-    ods: number[];
+    ods: string[];
     userIds: string[];
     actions: {
       id: string;

@@ -1,7 +1,7 @@
 import ActionsList from '@/components/cause-page/actions-list';
 import CauseHeader from '@/components/cause-page/cause-header';
 import CauseInfoCard from '@/components/cause-page/cause-info-card';
-import { FloatingActionButton } from '@/components/cause-page/floating-action-button';
+import FloatingActionButton from '@/components/cause-page/floating-action-button';
 import { authService } from '@/features/auth/services/auth.service';
 import { GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY } from '@/features/causes/api/graphql/causes.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';

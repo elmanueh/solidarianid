@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import { IconArrowLeft } from '@tabler/icons-react';
 import Link from 'next/link';

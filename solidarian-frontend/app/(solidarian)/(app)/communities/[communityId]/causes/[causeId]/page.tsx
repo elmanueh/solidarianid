@@ -1,4 +1,4 @@
-import { ActionsList } from '@/components/cause-page/actions-list';
+import ActionsList from '@/components/cause-page/actions-list';
 import CauseHeader from '@/components/cause-page/cause-header';
 import CauseInfoCard from '@/components/cause-page/cause-info-card';
 import { FloatingActionButton } from '@/components/cause-page/floating-action-button';
@@ -37,11 +37,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
   }
 
   const imageUrl = '/solidarian-logo.png';
-  const totalObjectives = cause.actions.reduce((sum, action) => sum + action.objectives.length, 0);
-  const totalEvents = cause.actions.reduce((sum, action) => sum + action.events.length, 0);
-  const followersCount = cause.userIds.length;
   const currentUser = await authService.getCurrentUser();
-  const initialIsFollowing = Boolean(currentUser && cause.userIds.includes(currentUser.id));
 
   return (
     <div className="flex min-h-screen flex-col pb-32">
@@ -50,7 +46,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
         causeId={causeId}
         causeName={cause.name}
         causeOds={cause.ods}
-        followersCount={followersCount}
+        followersCount={cause.userIds.length}
         imageUrl={imageUrl}
       />
 
@@ -58,12 +54,12 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
         <div className="px-6">
           <CauseInfoCard
             causeId={causeId}
-            initialIsFollowing={initialIsFollowing}
+            initialIsFollowing={Boolean(currentUser && cause.userIds.includes(currentUser.id))}
             description={cause.description}
             initialDate={cause.initialDate}
             durationDays={cause.durationDays}
-            objectiveCount={totalObjectives}
-            eventCount={totalEvents}
+            objectiveCount={cause.actions.reduce((sum, action) => sum + action.objectives.length, 0)}
+            eventCount={cause.actions.reduce((sum, action) => sum + action.events.length, 0)}
           />
         </div>
 

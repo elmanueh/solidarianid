@@ -1,12 +1,12 @@
+import CauseFollowButton from '@/components/cause-page/cause-follow-button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { IconCalendarEvent, IconClock, IconInfoCircle, IconTargetArrow } from '@tabler/icons-react';
-import CauseFollowButton from './cause-follow-button';
 
 interface CauseInfoCardProps {
   causeId: string;
-  causeUserIds: readonly string[];
+  initialIsFollowing: boolean;
   description: string;
   initialDate: string;
   durationDays: number;
@@ -16,7 +16,7 @@ interface CauseInfoCardProps {
 
 export default function CauseInfoCard({
   causeId,
-  causeUserIds,
+  initialIsFollowing,
   description,
   initialDate,
   durationDays,
@@ -54,7 +54,7 @@ export default function CauseInfoCard({
             </Badge>
           </div>
 
-          <CauseFollowButton causeId={causeId} causeUserIds={causeUserIds} />
+          <CauseFollowButton causeId={causeId} following={initialIsFollowing} />
         </div>
 
         <CardDescription className="min-h-20 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">

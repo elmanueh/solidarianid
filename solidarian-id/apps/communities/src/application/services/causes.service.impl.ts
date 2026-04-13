@@ -5,11 +5,13 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Cause } from '../../domain/model/entities/cause';
 import { CausesRepositoryPort } from '../../domain/ports/causes.repository.port';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { CauseRequestEventDto } from '@solidarianid/kafka';
+import { CauseRequestEventDto, EventType } from '@solidarianid/kafka';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
+import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
+import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 
 @Injectable()
 export class CausesServiceImpl implements CausesService {
@@ -17,6 +19,8 @@ export class CausesServiceImpl implements CausesService {
     private readonly causeRepository: CausesRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communitiesRepository: CommunitiesRepositoryPort,
+    private readonly causesPublisher: CausesPublisherPort,
+    private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
   ) {}
 
   async create(causeEventDto: CauseRequestEventDto): Promise<Either<ValidationError | RepositoryException, Cause>> {
@@ -44,27 +48,40 @@ export class CausesServiceImpl implements CausesService {
       return left(saveResult.value);
     }
 
+    await this.causesPublisher.publish(EventType.CAUSE_CREATED, causeOrError.value);
+    await this.subscriptionsPublisher.publishCauseCreated(causeOrError.value);
+
     return right(causeOrError.value);
   }
 
-  async getAll(): Promise<Either<ValidationError, Cause[]>> {
+  async getAll(): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
     return await this.causeRepository.findAll(['users']);
   }
 
-  async getById(id: string): Promise<Either<ValidationError, Cause>> {
-    return await this.causeRepository.findById(id, ['actions', 'users']);
+  async getById(id: string, relations?: string[]): Promise<Either<ValidationError | RepositoryException, Cause>> {
+    return await this.causeRepository.findById(id, relations || ['users']);
   }
 
-  async getAllByCommunityId(communityId: string, actions: boolean = false): Promise<Either<ValidationError, Cause[]>> {
-    return await this.causeRepository.findAllByCommunityId(communityId, actions);
+  async getAllByCommunityIds(
+    communityIds: string[],
+    relations?: string[],
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
+    return await this.causeRepository.findAllByCommunityIds(communityIds, relations);
+  }
+
+  async getAllByCommunityId(
+    communityId: string,
+    relations?: string[],
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
+    return await this.causeRepository.findAllByCommunityId(communityId, relations);
   }
 
   async getByCommunityIdAndCauseId(
     communityId: string,
     causeId: string,
-    actions: boolean = false,
+    relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause>> {
-    const causeOrError = await this.causeRepository.findByCommunityIdAndCauseId(communityId, causeId, actions);
+    const causeOrError = await this.causeRepository.findByCommunityIdAndCauseId(communityId, causeId, relations);
 
     if (causeOrError.isLeft()) {
       return left(causeOrError.value);

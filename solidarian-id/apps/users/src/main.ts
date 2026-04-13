@@ -1,15 +1,15 @@
-import { NestFactory } from '@nestjs/core';
+import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestFactory } from '@nestjs/core';
+import { Transport } from '@nestjs/microservices';
 import type { OpenAPIObject } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
 import { dump } from 'js-yaml';
 import { writeFileSync } from 'node:fs';
-import { ValidationPipe } from '@nestjs/common';
-import cookieParser from 'cookie-parser';
-import { AppModule } from './app.module';
-import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
-import { Transport } from '@nestjs/microservices';
 import { join } from 'node:path';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -58,6 +58,13 @@ async function bootstrap() {
   });
 
   await app.startAllMicroservices();
+
+  app.enableCors({
+    origin: process.env.FRONTEND_URL ?? 'http://localhost:3000',
+    exposedHeaders: ['Location'],
+    methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
+    credentials: true,
+  });
 
   const port = configService.get<number>('USERS_PORT') ?? 3001;
   console.log(`Server running on port ${port}`);

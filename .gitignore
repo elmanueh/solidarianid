@@ -7,6 +7,11 @@ images/
 *.venv
 
 *.pem
+solidarian-id/scripts/init/postgres/*
+!solidarian-id/scripts/init/postgres/00-create-databases.sql
+
+solidarian-id/scripts/init/mongo/*
+!solidarian-id/scripts/init/mongo/00-seed-admins.js
 
 ### Node ###
 # Logs

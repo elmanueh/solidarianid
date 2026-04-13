@@ -1,10 +1,13 @@
-import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/entities/user-preference.entity';
-import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
+import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
+import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
 import { UsersModule } from '@app/users/users.module';
+import { KurrentDBClient } from '@kurrent/kurrentdb-client';
 import { INestApplication } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
 import {
   KafkaTestModule,
+  KurrentDBSeeder,
+  KurrentDBTestModule,
   PostgreSQLSeeder,
   PostgreSQLTestModule,
   TestContainerLifecycle,
@@ -12,35 +15,51 @@ import {
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
+async function resetState(kurrentdbSeeder: KurrentDBSeeder, postgresSeeder: PostgreSQLSeeder): Promise<void> {
+  const projectionUserIds = await postgresSeeder.getUserProjectionIds();
+  await kurrentdbSeeder.clean(projectionUserIds);
+  await kurrentdbSeeder.seedUsers();
+  await postgresSeeder.clean();
+  await postgresSeeder.seedUsersProjection();
+}
+
 describe('UsersController (e2e)', () => {
   let server!: TestServerHelper;
   let app: INestApplication;
-  let seeder!: PostgreSQLSeeder;
+  let kurrentdbSeeder!: KurrentDBSeeder;
+  let postgreSeeder!: PostgreSQLSeeder;
+  let eventStore!: KurrentDBClient;
 
   beforeAll(async () => {
     const messageModule = await KafkaTestModule.forRoot();
-    const databaseModule = await PostgreSQLTestModule.forRoot([UserEntity, UserPreferenceEntity]);
+    const databaseModule = await PostgreSQLTestModule.forRoot([UserProjectionEntity, CheckpointProjectionEntity]);
+    const kurrentdbModule = await KurrentDBTestModule.forRoot();
+
+    const connectionString = process.env.EVENT_STORE_URL!;
+    eventStore = KurrentDBClient.connectionString(connectionString);
+    kurrentdbSeeder = new KurrentDBSeeder(eventStore);
 
     server = new TestServerHelper();
     app = await server.create({
-      imports: [messageModule, databaseModule, UsersModule],
+      imports: [messageModule, databaseModule, kurrentdbModule, UsersModule],
     });
 
-    const dataSource = app.get<DataSource>('DataSource');
-    seeder = new PostgreSQLSeeder(dataSource);
-  });
+    postgreSeeder = new PostgreSQLSeeder(app.get<DataSource>('DataSource'));
 
-  beforeEach(async () => {
-    await seeder.clean();
-    await seeder.seedUsers();
+    await resetState(kurrentdbSeeder, postgreSeeder);
   });
 
   afterAll(async () => {
     await app.close();
+    await eventStore.dispose();
     await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   describe('/api/users (POST)', () => {
+    beforeEach(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder);
+    });
+
     it('Test 1 - should register new user', async () => {
       await server
         .getRequest()
@@ -190,6 +209,10 @@ describe('UsersController (e2e)', () => {
 
   describe('/api/users/:id (PATCH)', () => {
     const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
+
+    beforeEach(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder);
+    });
 
     // ÉXITO: Solo status 204 NO_CONTENT
     it('Test 1 - should update all fields successfully', async () => {
@@ -432,6 +455,10 @@ describe('UsersController (e2e)', () => {
 
   describe('/api/users/:id/preferences (PUT)', () => {
     const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
+
+    beforeEach(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder);
+    });
 
     it('Test 1 - should update all preferences successfully', async () => {
       await server

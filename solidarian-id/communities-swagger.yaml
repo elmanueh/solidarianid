@@ -197,6 +197,36 @@ paths:
           description: Community or Cause not found
       summary: Retrieve a specific cause for a specific community
       tags: *ref_1
+  /causes/{id}/followers:
+    post:
+      operationId: CausesController_joinCause
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FollowerJoinCauseRequestDto'
+      responses:
+        '201':
+          description: User successfully joined the cause
+        '400':
+          description: The request parameters are invalid
+        '401':
+          description: User is not a member of the community linked to the cause
+        '404':
+          description: Cause or user not found
+        '409':
+          description: User is already following the cause
+        '500':
+          description: Internal server error
+      summary: Join a user as a supporter of a cause
+      tags: *ref_1
   /actions:
     get:
       operationId: ActionsController_getActions
@@ -421,6 +451,15 @@ components:
         - durationDays
         - ods
         - actions
+    FollowerJoinCauseRequestDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Unique identifier of the user following the cause
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+      required:
+        - userId
     EventSummaryResponseDto:
       type: object
       properties:

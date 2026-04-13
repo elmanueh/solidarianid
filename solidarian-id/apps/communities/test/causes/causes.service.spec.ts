@@ -15,6 +15,8 @@ import { User } from '@app/communities/domain/model/entities/user';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
+import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
+import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 
 describe('CausesServiceImpl', () => {
   let service: CausesServiceImpl;
@@ -28,6 +30,12 @@ describe('CausesServiceImpl', () => {
   };
   let mockCommunitiesRepository: {
     findById: jest.Mock;
+  };
+  let mockCausesPublisher: {
+    publish: jest.Mock;
+  };
+  let mockSubscriptionsPublisher: {
+    publishCauseCreated: jest.Mock;
   };
 
   const validCommunityId = 'b1b2c3d4-e5f6-4890-abcd-ef1234567002';
@@ -99,6 +107,12 @@ describe('CausesServiceImpl', () => {
     mockCommunitiesRepository = {
       findById: jest.fn(),
     };
+    mockCausesPublisher = {
+      publish: jest.fn(),
+    };
+    mockSubscriptionsPublisher = {
+      publishCauseCreated: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -106,6 +120,8 @@ describe('CausesServiceImpl', () => {
         { provide: CausesRepositoryPort, useValue: mockCauseRepository },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
         { provide: CommunitiesRepositoryPort, useValue: mockCommunitiesRepository },
+        { provide: CausesPublisherPort, useValue: mockCausesPublisher },
+        { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
       ],
     }).compile();
 
@@ -228,7 +244,7 @@ describe('CausesServiceImpl', () => {
         expect(result.value).toBeInstanceOf(Cause);
         expect(result.value.id.value).toBe(validCauseId);
       }
-      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions', 'users']);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
     });
 
     it('should propagate ValidationError from repository', async () => {
@@ -239,16 +255,16 @@ describe('CausesServiceImpl', () => {
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBe(err);
-      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions', 'users']);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
     });
 
-    it('should request actions relation when fetching by id', async () => {
+    it('should request users relation when fetching by id', async () => {
       const mockCause = createMockCause();
       mockCauseRepository.findById.mockResolvedValueOnce(right(mockCause));
 
       await service.getById(validCauseId);
 
-      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['actions', 'users']);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
     });
   });
 

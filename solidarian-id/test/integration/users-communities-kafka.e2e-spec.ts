@@ -2,6 +2,8 @@ import { Transport } from '@nestjs/microservices';
 import {
   EventTracker,
   KafkaTestModule,
+  KurrentDBTestModule,
+  PostgreSQLSeeder,
   PostgreSQLTestModule,
   TestContainerLifecycle,
   TestServerHelper,
@@ -9,15 +11,15 @@ import {
 import { DataSource, Repository } from 'typeorm';
 
 // Users microservice
-import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/entities/user-preference.entity';
-import { UserEntity as UsersUserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
+import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
+import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
 import { UsersModule } from '@app/users/users.module';
 
 // Communities microservice
 import { CommunitiesModule } from '@app/communities/communities.module';
 import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
-import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
 import { CauseUserEntity } from '@app/communities/infrastructure/persistence/entities/cause-user.entity';
+import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
 import { CommunityUserEntity } from '@app/communities/infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from '@app/communities/infrastructure/persistence/entities/community.entity';
 import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user.entity';
@@ -39,6 +41,7 @@ describe('Users-Communities Kafka Integration', () => {
   let communitiesServer: TestServerHelper;
 
   let usersDataSource: DataSource;
+  let postgresSeeder: PostgreSQLSeeder;
   let communitiesUserRepository: Repository<CommunitiesUserEntity>;
 
   let eventTracker: EventTracker;
@@ -46,11 +49,12 @@ describe('Users-Communities Kafka Integration', () => {
   beforeAll(async () => {
     const kafkaModule = await KafkaTestModule.forRoot();
     const kafkaBroker = TestContainerLifecycle.getInstance().getKafkaBroker();
+    const kurrentdbModule = await KurrentDBTestModule.forRoot();
 
     // PostgreSQL module shared by both microservices
     const databaseModule = await PostgreSQLTestModule.forRoot([
-      UsersUserEntity,
-      UserPreferenceEntity,
+      UserProjectionEntity,
+      CheckpointProjectionEntity,
       CommunitiesUserEntity,
       CommunityEntity,
       CauseEntity,
@@ -67,7 +71,7 @@ describe('Users-Communities Kafka Integration', () => {
     // Users: HTTP + Kafka producer
     usersServer = new TestServerHelper();
     await usersServer.createWithMicroservice(
-      { imports: [kafkaModule, databaseModule, UsersModule] },
+      { imports: [kafkaModule, databaseModule, kurrentdbModule, UsersModule] },
       {
         transport: Transport.KAFKA,
         options: {
@@ -83,6 +87,7 @@ describe('Users-Communities Kafka Integration', () => {
     );
 
     usersDataSource = usersServer.getModule().get<DataSource>(DataSource);
+    postgresSeeder = new PostgreSQLSeeder(usersDataSource);
 
     // Communities: Kafka consumer only
     communitiesServer = new TestServerHelper();
@@ -127,9 +132,7 @@ describe('Users-Communities Kafka Integration', () => {
 
   beforeEach(async () => {
     eventTracker.clear();
-    await usersDataSource.getRepository(UserPreferenceEntity).createQueryBuilder().delete().execute();
-    await usersDataSource.getRepository(UsersUserEntity).createQueryBuilder().delete().execute();
-    await communitiesUserRepository.createQueryBuilder().delete().execute();
+    await postgresSeeder.clean();
   });
 
   afterAll(async () => {

@@ -1,7 +1,7 @@
 import { getTypeOrmConfig } from '@app/ddd/repository/modules/database-typeorm.module';
 import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entities/refresh-token.entity';
-import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/entities/user-preference.entity';
-import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
+import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
+import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -28,9 +28,11 @@ export class DatabaseModule {
           useFactory: (config: ConfigService) =>
             getTypeOrmConfig({
               config,
-              entities: [UserEntity, UserPreferenceEntity, RefreshTokenEntity],
+              entities: [UserProjectionEntity, CheckpointProjectionEntity, RefreshTokenEntity],
               migrationsPath: 'apps/users/src/infrastructure/persistence/migrations/*.ts',
               migrationsDistPath: 'dist/apps/users/src/infrastructure/persistence/migrations/*.js',
+              databaseEnvKey: 'POSTGRES_USERS_DB',
+              migrationsTableName: 'typeorm_migrations_users',
             }),
         }),
       ],

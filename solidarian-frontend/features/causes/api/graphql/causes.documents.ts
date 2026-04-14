@@ -25,6 +25,63 @@ export const GET_CAUSES_QUERY: TypedDocumentNode<GetCausesResult, GetCausesVaria
   }
 `;
 
+// Query: GetCauseByCommunityIdAndCauseId
+export type GetCauseByCommunityIdAndCauseIdResult = {
+  causeByCommunity: {
+    id: string;
+    name: string;
+    description: string;
+    durationDays: number;
+    initialDate: string;
+    ods: string[];
+    userIds: string[];
+    actions: {
+      id: string;
+      name: string;
+      description: string;
+      objectives: {
+        name: string;
+      }[];
+      events: {
+        id: string;
+      }[];
+    }[];
+  };
+};
+
+export type GetCauseByCommunityIdAndCauseIdVariables = {
+  communityId: string;
+  causeId: string;
+};
+
+export const GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY: TypedDocumentNode<
+  GetCauseByCommunityIdAndCauseIdResult,
+  GetCauseByCommunityIdAndCauseIdVariables
+> = gql`
+  query CauseByCommunity($communityId: ID!, $causeId: ID!) {
+    causeByCommunity(communityId: $communityId, causeId: $causeId) {
+      id
+      name
+      description
+      durationDays
+      initialDate
+      ods
+      userIds
+      actions {
+        id
+        name
+        description
+        objectives {
+          name
+        }
+        events {
+          id
+        }
+      }
+    }
+  }
+`;
+
 // Mutation: JoinCause
 export type JoinCauseResult = {
   joinCause: boolean;

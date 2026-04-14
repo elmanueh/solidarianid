@@ -1,5 +1,66 @@
 import { gql, TypedDocumentNode } from '@apollo/client';
 
+// Query: GetAction
+export type GetActionResult = {
+  action: {
+    id: string;
+    name: string;
+    description: string;
+    causeId: string;
+    objectives: {
+      name: string;
+      description: string;
+      unit: string;
+      quantity: number;
+      currentAmount: number;
+    }[];
+    events: {
+      id: string;
+      name: string;
+      description: string;
+      initialDate: string;
+      place: {
+        direction: string;
+        city: string;
+        countryCode: string;
+      };
+    }[];
+  };
+};
+
+export type GetActionVariables = {
+  id: string;
+};
+
+export const GET_ACTION_QUERY: TypedDocumentNode<GetActionResult, GetActionVariables> = gql`
+  query GetAction($id: ID!) {
+    action(id: $id) {
+      id
+      name
+      description
+      causeId
+      objectives {
+        name
+        description
+        unit
+        quantity
+        currentAmount
+      }
+      events {
+        id
+        name
+        description
+        initialDate
+        place {
+          direction
+          city
+          countryCode
+        }
+      }
+    }
+  }
+`;
+
 // Mutation: CreateActionRequest
 export type CreateActionRequestResult = {
   createActionRequest: string;

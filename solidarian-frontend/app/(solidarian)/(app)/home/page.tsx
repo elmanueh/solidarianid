@@ -1,13 +1,11 @@
 import { CauseCard } from '@/components/cause-card';
 import { CommunityCard } from '@/components/community-card';
 import { HeaderHome } from '@/components/home/header-home';
-import { GET_CAUSES_QUERY, type GetCausesResult } from '@/features/causes/api/graphql/causes.documents';
-import {
-  GET_COMMUNITIES_QUERY,
-  type GetCommunitiesResult,
-} from '@/features/communities/api/graphql/communities.documents';
+import { GET_CAUSES_QUERY } from '@/features/causes/api/graphql/causes.documents';
+import { GET_COMMUNITIES_QUERY } from '@/features/communities/api/graphql/communities.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
+import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { ROUTES } from '@/features/routes';
 import { homeStyles } from '@/styles/app/home/page.styles';
 import { IconChevronRight, IconStar, IconTrendingUp } from '@tabler/icons-react';
@@ -30,61 +28,12 @@ type RecommendedCause = {
   imageUrl: string;
 };
 
-const COMMUNITY_IMAGE_URLS = [
-  'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1529390079861-591de354faf5?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1475483768296-6163e08872a1?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1469571486292-b53601020a0b?w=1200&auto=format&fit=crop',
-] as const;
-
-const CAUSE_IMAGE_URLS = [
-  'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1509099863731-ef4bff19e808?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&auto=format&fit=crop',
-] as const;
-
-const getStableImageIndex = (seed: string, poolSize: number): number => {
-  const sum = seed.split('').reduce((accumulator, character) => accumulator + (character.codePointAt(0) ?? 0), 0);
-
-  return sum % poolSize;
-};
-
 const normalizeLimit = (limit: number): number => {
   if (!Number.isFinite(limit)) {
     return 0;
   }
 
   return Math.max(0, Math.floor(limit));
-};
-
-const withCommunityImageUrl = (community: GetCommunitiesResult['communities'][number]): FeaturedCommunity => {
-  const imageIndex = getStableImageIndex(community.id, COMMUNITY_IMAGE_URLS.length);
-
-  return {
-    ...community,
-    imageUrl: COMMUNITY_IMAGE_URLS[imageIndex],
-  };
-};
-
-const withCauseImageUrl = (cause: GetCausesResult['causes'][number]): RecommendedCause => {
-  const imageIndex = getStableImageIndex(cause.id, CAUSE_IMAGE_URLS.length);
-
-  return {
-    ...cause,
-    imageUrl: CAUSE_IMAGE_URLS[imageIndex],
-  };
-};
-
-const toUiErrorMessage = (error: unknown, fallback: string): string => {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return fallback;
 };
 
 const loadHomeData = async (): Promise<{
@@ -103,14 +52,32 @@ const loadHomeData = async (): Promise<{
     graphql.query(GET_CAUSES_QUERY, {}),
   ]);
 
-  console.log('Cargando los datos para el homepage en el server');
+  const communityList =
+    communitiesResult.status === 'fulfilled' ? communitiesResult.value.communities.slice(0, featuredLimit) : [];
+  const causesList = causesResult.status === 'fulfilled' ? causesResult.value.causes.slice(0, causesLimit) : [];
 
-  const communities =
-    communitiesResult.status === 'fulfilled'
-      ? communitiesResult.value.communities.slice(0, featuredLimit).map(withCommunityImageUrl)
-      : [];
-  const causes =
-    causesResult.status === 'fulfilled' ? causesResult.value.causes.slice(0, causesLimit).map(withCauseImageUrl) : [];
+  let communities: FeaturedCommunity[] = [];
+  let causes: RecommendedCause[] = [];
+
+  if (communityList.length > 0) {
+    const imageService = new PexelsImageService();
+    communities = await Promise.all(
+      communityList.map(async community => {
+        const banner = await imageService.getDeterministicBanner({ uuid: community.id, theme: community.name });
+        return { ...community, imageUrl: banner.large };
+      })
+    );
+  }
+
+  if (causesList.length > 0) {
+    const imageService = new PexelsImageService();
+    causes = await Promise.all(
+      causesList.map(async cause => {
+        const banner = await imageService.getDeterministicBanner({ uuid: cause.id, theme: cause.name });
+        return { ...cause, imageUrl: banner.large };
+      })
+    );
+  }
 
   return {
     communities,
@@ -124,6 +91,14 @@ const loadHomeData = async (): Promise<{
         ? toUiErrorMessage(causesResult.reason, 'No se pudieron cargar las causas recomendadas.')
         : null,
   };
+};
+
+const toUiErrorMessage = (error: unknown, fallback: string): string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return fallback;
 };
 
 export default async function HomePage() {

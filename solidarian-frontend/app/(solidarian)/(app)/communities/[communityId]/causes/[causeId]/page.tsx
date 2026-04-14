@@ -6,6 +6,7 @@ import { authService } from '@/features/auth/services/auth.service';
 import { GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY } from '@/features/causes/api/graphql/causes.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
+import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { ROUTES } from '@/features/routes';
 import Link from 'next/link';
 
@@ -36,8 +37,9 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
     );
   }
 
-  const imageUrl = '/solidarian-logo.png';
   const currentUser = await authService.getCurrentUser();
+  const pexelsService = new PexelsImageService();
+  const bannerImage = await pexelsService.getDeterministicBanner({ uuid: causeId, theme: cause.name });
 
   return (
     <div className="flex min-h-screen flex-col pb-32">
@@ -47,7 +49,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
         causeName={cause.name}
         causeOds={cause.ods}
         followersCount={cause.userIds.length}
-        imageUrl={imageUrl}
+        imageUrl={bannerImage.large}
       />
 
       <div className="flex flex-col gap-8 px-0 pt-10 pb-6">
@@ -64,7 +66,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
         </div>
 
         <div className="px-6">
-          <ActionsList communityId={communityId} causeId={causeId} actions={cause.actions} imageUrl={imageUrl} />
+          <ActionsList communityId={communityId} causeId={causeId} actions={cause.actions} />
         </div>
       </div>
 

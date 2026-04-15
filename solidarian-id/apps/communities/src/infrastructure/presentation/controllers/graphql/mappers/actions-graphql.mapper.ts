@@ -28,6 +28,7 @@ export class ActionsGraphqlMapper {
         city: event.place.city,
         countryCode: event.place.countryCode,
       },
+      assistantIds: event.assistants.map(assistant => assistant.id.value),
     };
   }
 

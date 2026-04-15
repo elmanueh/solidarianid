@@ -44,7 +44,7 @@ export default async function ActionPage({ params }: Readonly<ActionPageProps>) 
               <div className="h-4 w-1 rounded-full bg-amber-500" />
               <h3 className="text-lg font-bold text-brand-ink">Colabora con los objetivos</h3>
             </div>
-            <ActionObjectivesList objectives={action.objectives} />
+            <ActionObjectivesList actionId={actionId} objectives={action.objectives} />
           </section>
         </div>
 

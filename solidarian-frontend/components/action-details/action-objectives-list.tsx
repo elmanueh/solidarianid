@@ -1,118 +1,129 @@
 'use client';
 
 import ContributeObjectiveModal from '@/components/action-details/contribute-objective-modal';
-import { GetActionResult } from '@/features/actions/api/graphql/actions.documents';
+import { Badge, Button, Card, CardDescription, CardTitle, Progress } from '@/components/ui';
+import { CONTRIBUTE_OBJECTIVE_MUTATION, GetActionResult } from '@/features/actions/api/graphql/actions.documents';
+import { getErrorMessage } from '@/features/axios/errors.handler';
+import { useAppSelector } from '@/features/redux/redux-hook';
+import { useMutation } from '@apollo/client/react';
 import { IconCircleCheck, IconPlus } from '@tabler/icons-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 interface ActionObjectivesListProps {
+  actionId: string;
   objectives: GetActionResult['action']['objectives'];
 }
 
-export default function ActionObjectivesList({ objectives: initialObjectives }: Readonly<ActionObjectivesListProps>) {
+export default function ActionObjectivesList({
+  actionId,
+  objectives: initialObjectives,
+}: Readonly<ActionObjectivesListProps>) {
+  const userId = useAppSelector(state => state.auth.currentUser?.id);
   const [objectives, setObjectives] = useState(initialObjectives);
-  const [selectedObjectiveIndex, setSelectedObjectiveIndex] = useState<number>(-1);
-
+  const [selectedObjectiveIndex, setSelectedObjectiveIndex] = useState(-1);
+  const [contributeMutation] = useMutation(CONTRIBUTE_OBJECTIVE_MUTATION);
   const selectedObjective = selectedObjectiveIndex >= 0 ? objectives[selectedObjectiveIndex] : null;
 
   const closeModal = () => setSelectedObjectiveIndex(-1);
 
-  const handleContribute = (objectiveIndex: number, contributeValue: number) => {
-    if (!Number.isFinite(contributeValue) || contributeValue <= 0) {
-      toast.error('Por favor, introduce una cantidad válida');
-      return;
-    }
-
+  const handleContribute = async (objectiveIndex: number, contributeValue: number): Promise<void> => {
     const targetObjective = objectives[objectiveIndex];
+    if (!targetObjective) return;
 
-    if (!targetObjective) {
-      return;
+    try {
+      const mutationResult = await contributeMutation({
+        variables: { actionId, objectiveName: targetObjective.name, userId: userId!, amount: contributeValue },
+      });
+
+      const updatedObjective = mutationResult.data?.contributeObjective;
+      if (!updatedObjective) {
+        toast.error('No se pudo actualizar el progreso del objetivo.');
+        return;
+      }
+
+      const contributed = Math.max(0, updatedObjective.currentAmount - targetObjective.currentAmount);
+
+      setObjectives(previous =>
+        previous.map((objective, idx) => (idx === objectiveIndex ? { ...objective, ...updatedObjective } : objective))
+      );
+
+      toast.success('¡Gracias por tu aporte!', {
+        description: `Has contribuido con ${contributed} ${targetObjective.unit} a ${targetObjective.name}`,
+      });
+
+      closeModal();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
     }
-
-    const nextCurrent = Math.min(targetObjective.quantity, targetObjective.currentAmount + contributeValue);
-    const contributed = nextCurrent - targetObjective.currentAmount;
-
-    // TODO: Aquí iría la lógica real para contribuir al objetivo, con graphql
-
-    setObjectives(previous =>
-      previous.map((objective, idx) => (idx === objectiveIndex ? { ...objective, current: nextCurrent } : objective))
-    );
-
-    toast.success('¡Gracias por tu aporte!', {
-      description: `Has contribuido con ${contributed} ${targetObjective.unit} a ${targetObjective.name}`,
-    });
-
-    closeModal();
   };
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="space-y-4">
         {objectives.map((objective, index) => {
           const progress = Math.min(100, (objective.currentAmount / objective.quantity) * 100);
           const remaining = Math.max(0, objective.quantity - objective.currentAmount);
 
           return (
-            <article
+            <Card
               key={`${objective.name}-${index}`}
-              className="group overflow-hidden rounded-[28px] border border-border bg-card p-6 shadow-sm"
+              className="group gap-4 rounded-3xl border-orange-400/10 p-6 shadow-sm transition-colors hover:border-orange-400/25"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex min-w-0 flex-col gap-1">
-                  <span className="text-[10px] font-bold tracking-widest text-amber-600 uppercase">
-                    Objetivo {index + 1}
-                  </span>
-                  <h4 className="text-base font-bold text-foreground">{objective.name}</h4>
-                  <p className="text-sm leading-relaxed text-muted-foreground">{objective.description}</p>
+                  <CardTitle className="text-base font-bold transition-colors group-hover:text-orange-400">
+                    {objective.name}
+                  </CardTitle>
+                  <CardDescription className="text-sm leading-relaxed">{objective.description}</CardDescription>
                 </div>
 
                 {remaining > 0 ? (
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="icon-sm"
                     onClick={() => setSelectedObjectiveIndex(index)}
-                    className="shrink-0 rounded-2xl bg-brand-500/10 p-2.5 text-brand-500 shadow-sm transition-transform hover:bg-brand-500/15 active:scale-90"
+                    className="cursor-pointer rounded-2xl bg-orange-400/10 text-orange-400 hover:bg-orange-400/20 hover:text-orange-500"
                     aria-label={`Contribuir al objetivo ${objective.name}`}
                   >
-                    <IconPlus size={20} />
-                  </button>
+                    <IconPlus className="size-5" />
+                  </Button>
                 ) : null}
               </div>
 
-              <div className="mt-4 flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between text-xs font-bold">
                   <span className="text-muted-foreground">
                     {objective.currentAmount} {objective.unit}
                   </span>
-                  <span className="text-foreground">
+                  <span>
                     {objective.quantity} {objective.unit}
                   </span>
                 </div>
 
-                <div className="h-3 w-full overflow-hidden rounded-full bg-muted/70">
-                  <div
-                    style={{ width: `${progress}%` }}
-                    className="h-full rounded-full bg-linear-to-r from-amber-500 to-amber-300"
-                  />
-                </div>
+                <Progress
+                  value={progress}
+                  className="gap-0 **:data-[slot=progress-indicator]:rounded-full **:data-[slot=progress-indicator]:bg-linear-to-r **:data-[slot=progress-indicator]:from-orange-400 **:data-[slot=progress-indicator]:to-orange-200 **:data-[slot=progress-track]:h-3 **:data-[slot=progress-track]:rounded-full **:data-[slot=progress-track]:bg-muted/70"
+                />
               </div>
 
-              <div className="mt-4 flex items-center justify-between">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <IconCircleCheck
-                    size={14}
-                    className={progress === 100 ? 'text-emerald-600' : 'text-muted-foreground/30'}
-                  />
+                  <IconCircleCheck size={14} className={progress === 100 ? 'text-orange-500' : 'text-orange-400/60'} />
                   <span className="text-[10px] font-bold tracking-wider uppercase">
                     {Math.round(progress)}% logrado
                   </span>
                 </div>
 
-                <span className="text-[10px] font-bold text-amber-600">
+                <Badge
+                  variant="outline"
+                  className="h-auto border-orange-400/25 bg-orange-400/10 px-2 py-0.5 text-[10px] font-bold text-orange-400"
+                >
                   Quedan {remaining} {objective.unit}
-                </span>
+                </Badge>
               </div>
-            </article>
+            </Card>
           );
         })}
       </div>

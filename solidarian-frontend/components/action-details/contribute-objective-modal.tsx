@@ -1,7 +1,18 @@
 'use client';
 
+import {
+  Badge,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  Input,
+} from '@/components/ui';
 import { GetActionResult } from '@/features/actions/api/graphql/actions.documents';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface ContributeObjectiveModalProps {
   objectiveIndex: number;
@@ -17,66 +28,88 @@ export default function ContributeObjectiveModal({
   onContribute,
 }: Readonly<ContributeObjectiveModalProps>) {
   const [contributeValue, setContributeValue] = useState(0);
+  const remaining = Math.max(0, objective.quantity - objective.currentAmount);
 
   const handleContribute = () => {
     if (contributeValue <= 0) {
-      alert('Por favor, introduce una cantidad válida');
+      toast.error('Por favor, introduce una cantidad positiva.');
+      return;
+    }
+
+    if (objective.currentAmount + contributeValue > objective.quantity) {
+      toast.error('La cantidad introducida excede el objetivo', {
+        description: `Solo quedan disponibles ${remaining} ${objective.unit}.`,
+      });
       return;
     }
 
     onContribute(objectiveIndex, contributeValue);
   };
 
+  const handleClose = (isOpen: boolean) => {
+    setContributeValue(0);
+    if (!isOpen) onClose();
+  };
+
   return (
-    <>
-      <button
-        type="button"
-        onClick={onClose}
-        className="fixed inset-0 z-100 bg-foreground/40 backdrop-blur-sm"
-        aria-label="Cerrar modal"
-      />
+    <Dialog open onOpenChange={handleClose}>
+      <DialogContent
+        showCloseButton={false}
+        className="top-auto! right-0! bottom-0! left-0! max-w-none! translate-x-0! translate-y-0! rounded-t-3xl border-orange-400/20 p-6 sm:rounded-t-3xl"
+      >
+        <div className="mx-auto mb-6 h-1.5 w-12 rounded-full bg-muted" />
 
-      <div className="fixed right-0 bottom-0 left-0 z-101 rounded-t-[40px] border-t border-border bg-card p-8 shadow-2xl">
-        <div className="mx-auto mb-8 h-1.5 w-12 rounded-full bg-muted" />
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-xl font-bold text-foreground">Contribuir al objetivo</h3>
-            <p className="text-sm text-muted-foreground">{objective.name}</p>
-          </div>
+        <form
+          className="flex flex-col gap-6"
+          onSubmit={event => {
+            event.preventDefault();
+            handleContribute();
+          }}
+        >
+          <DialogHeader>
+            <Badge
+              variant="outline"
+              className="h-auto w-fit border-orange-400/25 text-[10px] font-bold text-orange-500 uppercase"
+            >
+              Aporte solidario
+            </Badge>
+            <DialogTitle className="text-xl font-bold">Contribuir al objetivo</DialogTitle>
+            <DialogDescription>{objective.name}</DialogDescription>
+          </DialogHeader>
 
           <div className="relative">
-            <input
+            <Input
               type="number"
-              value={contributeValue}
               onChange={e => setContributeValue(Number(e.target.value))}
               placeholder={`Introduce cantidad (${objective.unit})`}
-              className="w-full rounded-3xl border border-border bg-background px-6 py-4 text-lg font-bold text-foreground placeholder:text-muted-foreground focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+              className="h-12 rounded-xl pr-16 text-base font-semibold focus-visible:border-orange-400 focus-visible:ring-orange-400/20"
               autoFocus
             />
-            <div className="absolute top-1/2 right-6 -translate-y-1/2 font-bold text-muted-foreground">
+            <Badge
+              variant="outline"
+              className="pointer-events-none absolute top-1/2 right-3 h-auto -translate-y-1/2 border-orange-400/25 text-[10px] font-bold text-orange-500"
+            >
               {objective.unit}
-            </div>
+            </Badge>
           </div>
 
+          <p className="text-xs text-muted-foreground">
+            Disponible para aportar: <span className="font-bold text-orange-500">{remaining}</span> {objective.unit}
+          </p>
+
           <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 rounded-2xl py-4 font-bold text-muted-foreground transition-colors hover:bg-muted/70"
-            >
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1 cursor-pointer rounded-xl">
               Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={() => handleContribute()}
-              className="flex-2 rounded-2xl bg-brand-500 py-4 font-bold text-white shadow-lg shadow-brand-500/20 transition-transform active:scale-95"
+            </Button>
+            <Button
+              type="submit"
+              className="flex-2 cursor-pointer rounded-xl bg-orange-400 text-white hover:bg-orange-500"
             >
               Confirmar aporte
-            </button>
+            </Button>
           </div>
-        </div>
-      </div>
-    </>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }

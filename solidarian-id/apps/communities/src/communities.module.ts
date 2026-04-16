@@ -1,21 +1,21 @@
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
-import { CommunitiesControllerGrpc } from '@app/communities/infrastructure/presentation/controllers/grpc/communities.controller.grpc';
-import { Module } from '@nestjs/common';
-import { PubSub } from 'graphql-subscriptions';
 import '@app/communities/infrastructure/presentation/controllers/graphql/enums/enum.register';
 import { DateScalar } from '@app/communities/infrastructure/presentation/controllers/graphql/scalars/data.scalar';
+import { CommunitiesControllerGrpc } from '@app/communities/infrastructure/presentation/controllers/grpc/communities.controller.grpc';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
+import { PubSub } from 'graphql-subscriptions';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
 import { CausesServiceImpl } from './application/services/causes.service.impl';
 import { CommunitiesServiceImpl } from './application/services/communities.service.impl';
 import { RequestsServiceImpl } from './application/services/requests.service.impl';
 import { UserServiceImpl } from './application/services/user.service.impl';
-import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
 import { ActionsPublisherPort } from './domain/ports/actions.publisher.port';
-import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
+import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
 import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
+import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
 import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
 import { RequestPublisherPort } from './domain/ports/requests.publisher.port';
@@ -29,9 +29,9 @@ import { RequestsService } from './domain/services/request.service';
 import { UserService } from './domain/services/user.service';
 import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/requests.consumer';
 import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
-import { CommunityEventMapper } from './infrastructure/messaging/mappers/community-event.mapper';
-import { CauseEventMapper } from './infrastructure/messaging/mappers/cause-event.mapper';
 import { ActionEventMapper } from './infrastructure/messaging/mappers/action-event.mapper';
+import { CauseEventMapper } from './infrastructure/messaging/mappers/cause-event.mapper';
+import { CommunityEventMapper } from './infrastructure/messaging/mappers/community-event.mapper';
 import { ActionsKafkaPublisherAdapter } from './infrastructure/messaging/publishers/actions.publisher';
 import { CausesKafkaPublisherAdapter } from './infrastructure/messaging/publishers/causes.publisher';
 import { CommunitiesKafkaPublisherAdapter } from './infrastructure/messaging/publishers/communities.publisher';
@@ -60,25 +60,26 @@ import { CommunitiesQueryTypeOrmRepositoryAdapter } from './infrastructure/persi
 import { CommunitiesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/communities-typeorm.repository';
 import { RequestsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/requests-typeorm.repository';
 import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/users-typeorm.repository';
-import { ActionsController } from './infrastructure/presentation/controllers/rest/actions.controller';
-import { CausesController } from './infrastructure/presentation/controllers/rest/causes.controller';
-import { CommunitiesController } from './infrastructure/presentation/controllers/rest/communities.controller';
+import { GraphqlLoadersService } from './infrastructure/presentation/controllers/graphql/loaders/graphql-loaders.service';
 import { ActionsGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/actions-graphql.mapper';
 import { CausesGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/causes-graphql.mapper';
 import { CommunitiesGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/communities-graphql.mapper';
 import { RequestGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/request-graphql.mapper';
-import { ActionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/actions.resolver';
-import { ActionsSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/actions-subscriptions.resolver';
-import { CausesResolver } from './infrastructure/presentation/controllers/graphql/resolvers/causes.resolver';
-import { RequestResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request.resolver';
-import { RequestController } from './infrastructure/presentation/controllers/rest/request.controller';
-import { CommunitiesResolver } from './infrastructure/presentation/controllers/graphql/resolvers/communities.resolver';
-import { CausesSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/causes-subscriptions.resolver';
-import { RequestSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request-subscriptions.resolver';
 import { UserGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/user-graphql.mapper';
-import { GraphqlLoadersService } from './infrastructure/presentation/controllers/graphql/loaders/graphql-loaders.service';
-import { GraphqlSubscriptionsPublisherAdapter } from './infrastructure/presentation/controllers/graphql/subscriptions/graphql-subscriptions.publisher';
+import { ActionsSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/actions-subscriptions.resolver';
+import { ActionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/actions.resolver';
+import { CausesSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/causes-subscriptions.resolver';
+import { CausesResolver } from './infrastructure/presentation/controllers/graphql/resolvers/causes.resolver';
+import { CommunitiesResolver } from './infrastructure/presentation/controllers/graphql/resolvers/communities.resolver';
+import { RequestSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request-subscriptions.resolver';
+import { RequestResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request.resolver';
 import { GRAPHQL_PUB_SUB } from './infrastructure/presentation/controllers/graphql/subscriptions/community.subscription';
+import { GraphqlSubscriptionsPublisherAdapter } from './infrastructure/presentation/controllers/graphql/subscriptions/graphql-subscriptions.publisher';
+import { ActionsController } from './infrastructure/presentation/controllers/rest/actions.controller';
+import { CausesController } from './infrastructure/presentation/controllers/rest/causes.controller';
+import { CommunitiesController } from './infrastructure/presentation/controllers/rest/communities.controller';
+import { RequestController } from './infrastructure/presentation/controllers/rest/request.controller';
+import { SubscriptionsController } from './infrastructure/presentation/controllers/rest/subscriptions.controller';
 
 @Module({
   imports: [
@@ -103,6 +104,7 @@ import { GRAPHQL_PUB_SUB } from './infrastructure/presentation/controllers/graph
     CausesController,
     ActionsController,
     RequestController,
+    SubscriptionsController,
     UserConsumerAdapter,
     RequestsConsumerAdapter,
     CommunitiesControllerGrpc,

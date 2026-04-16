@@ -1,17 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { CausesService } from '../../domain/services/causes.service';
-import { Either, left, right } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { Cause } from '../../domain/model/entities/cause';
-import { CausesRepositoryPort } from '../../domain/ports/causes.repository.port';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { CauseRequestEventDto, EventType } from '@solidarianid/kafka';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { CausesService } from '@app/communities/domain/services/causes.service';
+import { Either, left, right } from '@app/ddd/either';
+import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Injectable } from '@nestjs/common';
+import { CauseRequestEventDto, EventType } from '@solidarianid/kafka';
+import { Cause } from '../../domain/model/entities/cause';
+import { CausesRepositoryPort } from '../../domain/ports/causes.repository.port';
 
 @Injectable()
 export class CausesServiceImpl implements CausesService {
@@ -130,6 +130,26 @@ export class CausesServiceImpl implements CausesService {
 
     if (saveResult.isLeft()) {
       return left(saveResult.value);
+    }
+
+    return right(undefined);
+  }
+
+  async leaveCause(causeId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>> {
+    const causeOrError = await this.causeRepository.findById(causeId, ['users']);
+
+    if (causeOrError.isLeft()) {
+      return left(causeOrError.value);
+    }
+
+    if (!causeOrError.value.hasFollower(userId)) {
+      return left(new ConflictError('User is not following the cause'));
+    }
+
+    const removeResult = await this.causeRepository.removeFollower(causeId, userId);
+
+    if (removeResult.isLeft()) {
+      return left(removeResult.value);
     }
 
     return right(undefined);

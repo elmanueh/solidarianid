@@ -1,10 +1,10 @@
 import { CausesService } from '@app/communities/domain/services/causes.service';
+import { Cause } from '@app/communities/infrastructure/presentation/controllers/graphql/entities/cause';
+import { ActionsGraphqlMapper } from '@app/communities/infrastructure/presentation/controllers/graphql/mappers/actions-graphql.mapper';
+import { CausesGraphqlMapper } from '@app/communities/infrastructure/presentation/controllers/graphql/mappers/causes-graphql.mapper';
 import { ParseUUIDPipe } from '@nestjs/common';
 import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Cause } from '../entities/cause';
-import { CausesGraphqlMapper } from '../mappers/causes-graphql.mapper';
 import { Action } from '../entities/action';
-import { ActionsGraphqlMapper } from '../mappers/actions-graphql.mapper';
 import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
 
 @Resolver(() => Cause)
@@ -78,6 +78,20 @@ export class CausesResolver {
     @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
   ): Promise<boolean> {
     const result = await this.causesService.joinCause(causeId, userId);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async leaveCause(
+    @Args('causeId', { type: () => ID }, new ParseUUIDPipe()) causeId: string,
+    @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
+  ): Promise<boolean> {
+    const result = await this.causesService.leaveCause(causeId, userId);
 
     if (result.isLeft()) {
       throw result.value;

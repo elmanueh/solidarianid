@@ -1,27 +1,29 @@
-export const SUSTAINABLE_DEVELOPMENT_GOAL: Record<number, string> = {
-  1: 'Sin Pobreza',
-  2: 'Hambre Cero',
-  3: 'Salud y Bienestar',
-  4: 'Educación de Calidad',
-  5: 'Igualdad de Género',
-  6: 'Agua Limpia y Saneamiento',
-  7: 'Energía Asequible',
-  8: 'Trabajo Decente',
-  9: 'Industria e Innovación',
-  10: 'Reducción de Desigualdades',
-  11: 'Ciudades Sostenibles',
-  12: 'Consumo Responsable',
-  13: 'Acción por el Clima',
-  14: 'Vida Submarina',
-  15: 'Vida de Ecosistemas Terrestres',
-  16: 'Paz e Instituciones',
-  17: 'Alianzas para Objetivos',
+const SUSTAINABLE_DEVELOPMENT_GOAL: Record<string, string> = {
+  NoPoverty: 'Sin Pobreza',
+  ZeroHunger: 'Hambre Cero',
+  GoodHealthAndWellBeing: 'Salud y Bienestar',
+  QualityEducation: 'Educación de Calidad',
+  GenderEquality: 'Igualdad de Género',
+  CleanWaterAndSanitation: 'Agua Limpia y Saneamiento',
+  AffordableAndCleanEnergy: 'Energía Asequible',
+  DecentWorkAndEconomicGrowth: 'Trabajo Decente',
+  IndustryInnovationAndInfrastructure: 'Industria e Innovación',
+  ReducedInequalities: 'Reducción de Desigualdades',
+  SustainableCitiesAndCommunities: 'Ciudades Sostenibles',
+  ResponsibleConsumptionAndProduction: 'Consumo Responsable',
+  ClimateAction: 'Acción por el Clima',
+  LifeBelowWater: 'Vida Submarina',
+  LifeOnLand: 'Vida de Ecosistemas Terrestres',
+  PeaceJusticeAndStrongInstitutions: 'Paz e Instituciones',
+  PartnershipsForTheGoals: 'Alianzas para Objetivos',
 };
 
-export function getSortedOds(odsNumbers: number[]): Array<{ num: number; name: string }> {
-  if (odsNumbers.length === 0) return [];
-
-  return odsNumbers
-    .map(num => ({ num, name: SUSTAINABLE_DEVELOPMENT_GOAL[num] || 'Desconocido' }))
+export function getSortedOds(odsValues: readonly string[]) {
+  return [...odsValues]
+    .map(ods => {
+      const num = Object.keys(SUSTAINABLE_DEVELOPMENT_GOAL).indexOf(ods) + 1;
+      return num > 0 ? { num, name: SUSTAINABLE_DEVELOPMENT_GOAL[ods] } : null;
+    })
+    .filter((ods): ods is { num: number; name: string } => ods !== null)
     .sort((a, b) => a.num - b.num);
 }

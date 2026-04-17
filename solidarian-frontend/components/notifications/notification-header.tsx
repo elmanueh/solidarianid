@@ -6,8 +6,8 @@ import { useCallback } from 'react';
 import BackButton from '../back-button';
 
 interface NotificationHeaderProps {
-  userId?: string;
-  onMarkAllAsRead?: () => void;
+  userId: string;
+  onMarkAllAsRead: () => void;
 }
 
 export function NotificationHeader({ userId, onMarkAllAsRead }: NotificationHeaderProps) {
@@ -15,7 +15,7 @@ export function NotificationHeader({ userId, onMarkAllAsRead }: NotificationHead
 
   const handleMarkAsRead = useCallback(async () => {
     await markAllAsRead(userId);
-    onMarkAllAsRead?.();
+    onMarkAllAsRead();
   }, [markAllAsRead, onMarkAllAsRead, userId]);
 
   return (

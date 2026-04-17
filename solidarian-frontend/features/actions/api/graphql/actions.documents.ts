@@ -46,6 +46,7 @@ export type ActionCreatedResult = {
     name: string;
     description: string;
     causeId: string;
+    communityId: string;
   };
 };
 
@@ -60,6 +61,7 @@ export const ACTION_CREATED_SUBSCRIPTION: TypedDocumentNode<ActionCreatedResult,
       name
       description
       causeId
+      communityId
     }
   }
 `;

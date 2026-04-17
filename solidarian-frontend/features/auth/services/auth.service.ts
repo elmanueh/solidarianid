@@ -44,6 +44,7 @@ export const authService = {
       mobilePhone: '+34123456789',
       city: 'Totana',
       countryCode: 'ES',
+      // poner preferencias de notificaciones
     };
   },
 };

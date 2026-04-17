@@ -24,7 +24,7 @@ export class SubscriptionsController {
     private readonly causesRepository: CausesRepositoryPort,
   ) {}
 
-  @Get('users/:userId/subscriptions')
+  @Get('subscriptions/:userId')
   @ApiOperation({ summary: 'Obtener las suscripciones de un usuario' })
   @ApiOkResponse({
     description: 'Suscripciones del usuario obtenidas exitosamente',

@@ -6,7 +6,7 @@ import { Action as ActionGraphql, Event as EventGraphql, Objective as ObjectiveG
 
 @Injectable()
 export class ActionsGraphqlMapper {
-  static toActionFromDomain(action: Action): ActionGraphql {
+  static toActionFromDomain(action: Action, communityId?: string): ActionGraphql {
     return {
       id: action.id.value,
       name: action.name,
@@ -14,6 +14,7 @@ export class ActionsGraphqlMapper {
       objectives: action.objectives.map(objective => ActionsGraphqlMapper.toObjectiveFromDomain(objective)),
       events: action.events.map(event => ActionsGraphqlMapper.toEventFromDomain(event)),
       causeId: action.causeId,
+      communityId: communityId ?? '',
     };
   }
 
@@ -41,8 +42,8 @@ export class ActionsGraphqlMapper {
     };
   }
 
-  toAction(action: Action): ActionGraphql {
-    return ActionsGraphqlMapper.toActionFromDomain(action);
+  toAction(action: Action, communityId?: string): ActionGraphql {
+    return ActionsGraphqlMapper.toActionFromDomain(action, communityId);
   }
 
   toEvent(event: Event): EventGraphql {

@@ -14,6 +14,7 @@ import { join } from 'node:path';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       graphiql: true,
+      introspection: true,
       autoSchemaFile:
         process.env.IN_DOCKER === 'true' ? '/app/schema.gql' : join(process.cwd(), 'apps/communities/src/schema.gql'),
       subscriptions: {

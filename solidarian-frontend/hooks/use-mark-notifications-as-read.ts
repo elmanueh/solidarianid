@@ -1,6 +1,6 @@
 'use client';
 
-import { db } from '@/features/repository/db';
+import notificationsRepository from '@/features/repository/notifications-dexie.repository';
 import { useCallback } from 'react';
 import { NOTIFICATION_UPDATE_EVENT } from './use-notification-status';
 
@@ -12,15 +12,7 @@ interface UseMarkNotificationsAsReadResult {
 export function useMarkNotificationsAsRead(): UseMarkNotificationsAsReadResult {
   const markAllAsRead = useCallback(async (userId?: string): Promise<void> => {
     try {
-      const notifications = userId
-        ? await db.notifications.where('userId').equals(userId).toArray()
-        : await db.notifications.toArray();
-      const unreadNotifications = notifications.filter(n => !n.read);
-
-      await Promise.all(
-        unreadNotifications.map(notification => db.notifications.update(notification.id, { read: true }))
-      );
-
+      await notificationsRepository.markAllAsRead(userId);
       window.dispatchEvent(new Event(NOTIFICATION_UPDATE_EVENT));
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
@@ -30,9 +22,10 @@ export function useMarkNotificationsAsRead(): UseMarkNotificationsAsReadResult {
 
   const markAsRead = useCallback(async (id: string): Promise<void> => {
     try {
-      const notification = await db.notifications.get(id);
+      const notification = await notificationsRepository.findById(id);
+
       if (notification && !notification.read) {
-        await db.notifications.update(id, { read: true });
+        await notificationsRepository.markAsRead(id);
         window.dispatchEvent(new Event(NOTIFICATION_UPDATE_EVENT));
       }
     } catch (error) {

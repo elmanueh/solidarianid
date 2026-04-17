@@ -1,6 +1,6 @@
 'use client';
 
-import { db } from '@/features/repository/db';
+import notificationsRepository from '@/features/repository/notifications-dexie.repository';
 import { useCallback, useEffect, useState } from 'react';
 
 interface UseNotificationStatusResult {
@@ -18,11 +18,13 @@ export function useNotificationStatus({ userId }: UseNotificationStatusProps = {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const updateUnreadCount = useCallback(async (): Promise<void> => {
+    if (!userId) {
+      setUnreadCount(0);
+      return;
+    }
+
     try {
-      const notifications = userId
-        ? await db.notifications.where('userId').equals(userId).toArray()
-        : await db.notifications.toArray();
-      const unread = notifications.filter(n => !n.read).length;
+      const unread = await notificationsRepository.countUnreadByUser(userId);
       setUnreadCount(unread);
     } catch (error) {
       console.error('Error fetching unread notification count:', error);

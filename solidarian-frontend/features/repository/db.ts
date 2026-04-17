@@ -1,13 +1,22 @@
-import { Dexie, type EntityTable } from 'dexie';
-import { Notification, NotificationField } from './entities/notification';
+import { Dexie, type Table } from 'dexie';
+import { Notification, NOTIFICATIONS_SCHEMA } from './entities/notification';
 
-const db = new Dexie('NotificationsDatabase') as Dexie & {
-  notifications: EntityTable<Notification, NotificationField.userId>;
-};
+const SCHEMA_VERSION: number = 1;
 
-db.version(1).stores({
-  notifications: `${NotificationField.id}, ${NotificationField.userId}, ${NotificationField.title}, 
-    ${NotificationField.message}, ${NotificationField.read}, ${NotificationField.createdAt}, ${NotificationField.type}`,
-});
+export class SolidarianDexieDatabase extends Dexie {
+  notifications!: Table<Notification, string>;
 
-export { db };
+  constructor() {
+    super('NotificationsDatabase');
+
+    this.addStorageSchema(SCHEMA_VERSION, {
+      notifications: NOTIFICATIONS_SCHEMA,
+    });
+  }
+
+  addStorageSchema(version: number, stores: { [tableName: string]: string }): void {
+    this.version(version).stores(stores);
+  }
+}
+
+export const db = new SolidarianDexieDatabase();

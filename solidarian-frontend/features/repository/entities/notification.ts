@@ -1,11 +1,13 @@
-export interface Notification {
-  id: string;
+import { Indentificable } from '@/features/repository/repository';
+
+export interface Notification extends Indentificable {
   userId: string;
   title: string;
   message: string;
   read: boolean;
   createdAt: Date;
   type: NotificationType;
+  link: string;
 }
 
 export enum NotificationField {
@@ -16,6 +18,7 @@ export enum NotificationField {
   read = 'read',
   createdAt = 'createdAt',
   type = 'type',
+  link = 'link',
 }
 
 export enum NotificationType {
@@ -24,3 +27,6 @@ export enum NotificationType {
   CAUSE_CREATED,
   ACTION_CREATED,
 }
+
+export const NOTIFICATIONS_SCHEMA = `${NotificationField.id}, ${NotificationField.userId}, ${NotificationField.title},
+  ${NotificationField.message}, ${NotificationField.read}, ${NotificationField.createdAt}, ${NotificationField.type}, ${NotificationField.link}`;

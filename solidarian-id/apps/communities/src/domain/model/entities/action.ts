@@ -3,8 +3,8 @@ import { ActionObjectiveNotFoundError } from '@app/communities/domain/errors/act
 import { Event } from '@app/communities/domain/model/entities/event';
 import { User } from '@app/communities/domain/model/entities/user';
 import { Objective } from '@app/communities/domain/model/value-objects/objective';
-import { AggregateRoot } from '@app/ddd/aggregate-root';
 import { Either, left, right } from '@app/ddd/either';
+import { Entity } from '@app/ddd/entity';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
 import { Name } from '@app/value-objects/model/name';
@@ -26,7 +26,7 @@ interface ActionCreationProps {
   causeId: string;
 }
 
-export class Action extends AggregateRoot<ActionProps> {
+export class Action extends Entity<ActionProps> {
   private constructor(props: ActionProps, id?: UniqueEntityID) {
     super(props, id);
   }

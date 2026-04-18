@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { Cause } from '@app/communities/domain/model/entities/cause';
 import {
@@ -12,6 +12,7 @@ import {
   ApiResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { FollowerJoinCauseRequestDto } from '../../dtos/input/follower-join-cause.request.dto';
 import { CauseDetailResponseDto } from '../../dtos/output/cause-detail.response.dto';
 import { CauseSummaryResponseDto } from '../../dtos/output/cause-summary.response.dto';
@@ -95,6 +96,7 @@ export class CausesController {
   }
 
   @Post('causes/:id/followers')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Join a user as a supporter of a cause' })
   @ApiCreatedResponse({
@@ -107,9 +109,10 @@ export class CausesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async joinCause(
     @Param('id', new ParseUUIDPipe()) causeId: string,
-    @Body() dto: FollowerJoinCauseRequestDto,
+    @Body() _request: FollowerJoinCauseRequestDto,
+    @CurrentUser('sub') actorId: string,
   ): Promise<void> {
-    const result = await this.causesService.joinCause(causeId, dto.userId);
+    const result = await this.causesService.joinCause(causeId, actorId);
 
     if (result.isLeft()) {
       throw result.value;

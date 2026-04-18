@@ -1,25 +1,25 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsString,
-  IsNotEmpty,
-  IsArray,
-  IsEnum,
-  IsDateString,
-  Min,
+  DESCRIPTION_MAX_LENGTH,
+  DESCRIPTION_MIN_LENGTH,
+  NAME_MAX_LENGTH,
+  NAME_MIN_LENGTH,
+} from '@app/value-objects/constants/validation.constants';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import {
   ArrayMinSize,
+  IsArray,
+  IsDateString,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsString,
   MaxLength,
+  Min,
   MinLength,
   ValidateNested,
-  IsInt,
 } from 'class-validator';
-import { Type } from 'class-transformer';
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
-import {
-  NAME_MIN_LENGTH,
-  NAME_MAX_LENGTH,
-  DESCRIPTION_MIN_LENGTH,
-  DESCRIPTION_MAX_LENGTH,
-} from '@app/value-objects/constants/validation.constants';
 
 /**
  * DTO for defining a cause within a community request
@@ -120,12 +120,4 @@ export class CreateCommunityRequestDto {
   @ValidateNested({ each: true })
   @Type(() => CommunityCauseDto)
   causeCreationRequests: CommunityCauseDto[];
-
-  @ApiProperty({
-    description: 'The ID of the user creating the community (will be the administrator)',
-    example: '550e8400-e29b-41d4-a716-446655440000',
-  })
-  @IsString()
-  @IsNotEmpty()
-  userId: string;
 }

@@ -81,14 +81,6 @@ export class CreateCauseRequestDto {
   durationDays: number;
 
   @ApiProperty({
-    description: 'The ID of the user creating the request',
-    example: '550e8400-e29b-41d4-a716-446655440000',
-  })
-  @IsString()
-  @IsNotEmpty()
-  userId: string;
-
-  @ApiProperty({
     description: 'The ID of the community related to the cause request',
     example: '550e8400-e29b-41d4-a716-446655440000',
   })

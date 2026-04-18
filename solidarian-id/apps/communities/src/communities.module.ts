@@ -7,6 +7,7 @@ import '@app/communities/infrastructure/presentation/controllers/graphql/enums/e
 import { DateScalar } from '@app/communities/infrastructure/presentation/controllers/graphql/scalars/data.scalar';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
+import { AuthModule } from './infrastructure/auth/auth.module';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
 import { CausesServiceImpl } from './application/services/causes.service.impl';
 import { CommunitiesServiceImpl } from './application/services/communities.service.impl';
@@ -82,6 +83,7 @@ import { GRAPHQL_PUB_SUB } from './infrastructure/presentation/controllers/graph
 
 @Module({
   imports: [
+    AuthModule,
     DatabaseModule.forRoot(),
     TypeOrmModule.forFeature([
       CommunityEntity,

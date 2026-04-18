@@ -2,17 +2,30 @@ import { AuthModule } from '@app/users/infrastructure/auth/auth.module';
 import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entities/refresh-token.entity';
 import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/entities/user-preference.entity';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
+import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
+import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
 import { UsersModule } from '@app/users/users.module';
+import { KurrentDBClient } from '@kurrent/kurrentdb-client';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
   KafkaTestModule,
+  KurrentDBSeeder,
+  KurrentDBTestModule,
   PostgreSQLSeeder,
   PostgreSQLTestModule,
   TestContainerLifecycle,
   TestServerHelper,
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
+
+async function resetState(kurrentdbSeeder: KurrentDBSeeder, postgresSeeder: PostgreSQLSeeder): Promise<void> {
+  await kurrentdbSeeder.clean();
+  await kurrentdbSeeder.seedUsers();
+  await postgresSeeder.clean();
+  await postgresSeeder.seedUsers();
+  await postgresSeeder.seedUsersProjection();
+}
 
 function getSetCookieHeaders(headers: Record<string, unknown>): string[] {
   const rawSetCookie = headers['set-cookie'];
@@ -32,27 +45,42 @@ describe('AuthController (e2e)', () => {
   let server!: TestServerHelper;
   let app: INestApplication;
   let seeder!: PostgreSQLSeeder;
+  let kurrentdbSeeder!: KurrentDBSeeder;
+  let eventStore!: KurrentDBClient;
 
   beforeAll(async () => {
     const messageModule = await KafkaTestModule.forRoot();
-    const databaseModule = await PostgreSQLTestModule.forRoot([UserEntity, UserPreferenceEntity, RefreshTokenEntity]);
+    const databaseModule = await PostgreSQLTestModule.forRoot([
+      UserEntity,
+      UserPreferenceEntity,
+      RefreshTokenEntity,
+      UserProjectionEntity,
+      CheckpointProjectionEntity,
+    ]);
+    const kurrentdbModule = await KurrentDBTestModule.forRoot();
+
+    const connectionString = process.env.EVENT_STORE_URL!;
+    eventStore = KurrentDBClient.connectionString(connectionString);
+    kurrentdbSeeder = new KurrentDBSeeder(eventStore);
 
     server = new TestServerHelper();
     app = await server.create({
-      imports: [messageModule, databaseModule, UsersModule, AuthModule],
+      imports: [messageModule, databaseModule, kurrentdbModule, UsersModule, AuthModule],
     });
 
     const dataSource = app.get<DataSource>('DataSource');
     seeder = new PostgreSQLSeeder(dataSource);
+
+    await resetState(kurrentdbSeeder, seeder);
   });
 
   beforeEach(async () => {
-    await seeder.clean();
-    await seeder.seedUsers();
+    await resetState(kurrentdbSeeder, seeder);
   });
 
   afterAll(async () => {
     await app.close();
+    await eventStore.dispose();
     await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 

@@ -5,13 +5,11 @@ import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entiti
 import { RefreshTokenMapper } from '@app/users/infrastructure/persistence/mappers/refresh-token.mapper';
 import { TokensTypeormRepository } from '@app/users/infrastructure/persistence/repositories/tokens-typeorm.repository';
 import { AuthController } from '@app/users/infrastructure/presentation/controllers/auth.controller';
-import { JwtAuthGuard } from '@app/users/infrastructure/auth/guards/jwt-auth.guard';
-import { JwtStrategy } from '@app/users/infrastructure/auth/strategies/jwt.strategy';
 import { UsersModule } from '@app/users/users.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
+import { SecurityJwtModule } from '@solidarianid/security/nestjs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { generateKeyPairSync } from 'node:crypto';
 
@@ -42,7 +40,7 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
 @Module({
   imports: [
     UsersModule,
-    PassportModule,
+    SecurityJwtModule.register(),
     TypeOrmModule.forFeature([RefreshTokenEntity]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -60,8 +58,6 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
   ],
   providers: [
     RefreshTokenMapper,
-    JwtStrategy,
-    JwtAuthGuard,
     {
       provide: AuthService,
       useClass: AuthServiceImpl,
@@ -72,6 +68,6 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
     },
   ],
   controllers: [AuthController],
-  exports: [AuthService, JwtAuthGuard],
+  exports: [AuthService],
 })
 export class AuthModule {}

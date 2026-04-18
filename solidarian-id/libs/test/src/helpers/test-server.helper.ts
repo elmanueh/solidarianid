@@ -14,9 +14,10 @@ export class TestServerHelper {
   private agent: supertest.Agent | null = null;
 
   async create(moduleMetadata: ModuleMetadata, globalPrefix?: string): Promise<INestApplication> {
+    const nodeEnv = process.env.NODE_ENV || 'test';
     const configModule = ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
+      envFilePath: [`.env.${nodeEnv}`, '.env.development'],
     });
 
     const enhancedMetadata: ModuleMetadata = {
@@ -69,9 +70,10 @@ export class TestServerHelper {
     microserviceOptions: MicroserviceOptions,
     globalPrefix?: string,
   ): Promise<INestApplication> {
+    const nodeEnv = process.env.NODE_ENV || 'test';
     const configModule = ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
+      envFilePath: [`.env.${nodeEnv}`, '.env.development'],
     });
 
     const enhancedMetadata: ModuleMetadata = {
@@ -83,6 +85,7 @@ export class TestServerHelper {
     this.app = this.moduleRef.createNestApplication({
       logger: false,
     });
+    this.app.use(cookieParser());
 
     this.app.useGlobalPipes(
       new ValidationPipe({

@@ -206,13 +206,13 @@ describe('CommunitiesController', () => {
   describe('joinCommunity', () => {
     it('returns undefined when join is successful', async () => {
       mockService.joinCommunity.mockResolvedValueOnce(right(undefined));
-      await expect(controller.joinCommunity('uuid', { userId: 'user-1' })).resolves.toBeUndefined();
+      await expect(controller.joinCommunity('uuid', {} as any, 'user-1')).resolves.toBeUndefined();
       expect(mockService.joinCommunity).toHaveBeenCalledWith('uuid', 'user-1');
     });
     it('throws error when service returns left', async () => {
       const err = new ValidationError('already member');
       mockService.joinCommunity.mockResolvedValueOnce(left(err));
-      await expect(controller.joinCommunity('uuid', { userId: 'user-1' })).rejects.toThrow(err);
+      await expect(controller.joinCommunity('uuid', {} as any, 'user-1')).rejects.toThrow(err);
     });
   });
 });

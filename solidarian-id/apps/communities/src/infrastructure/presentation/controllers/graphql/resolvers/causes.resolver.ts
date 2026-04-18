@@ -1,11 +1,12 @@
 import { CausesService } from '@app/communities/domain/services/causes.service';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Cause } from '../entities/cause';
 import { CausesGraphqlMapper } from '../mappers/causes-graphql.mapper';
 import { Action } from '../entities/action';
 import { ActionsGraphqlMapper } from '../mappers/actions-graphql.mapper';
 import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
+import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 
 @Resolver(() => Cause)
 export class CausesResolver {
@@ -73,11 +74,12 @@ export class CausesResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard)
   async joinCause(
     @Args('causeId', { type: () => ID }, new ParseUUIDPipe()) causeId: string,
-    @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
+    @CurrentUser('sub') actorId: string,
   ): Promise<boolean> {
-    const result = await this.causesService.joinCause(causeId, userId);
+    const result = await this.causesService.joinCause(causeId, actorId);
 
     if (result.isLeft()) {
       throw result.value;

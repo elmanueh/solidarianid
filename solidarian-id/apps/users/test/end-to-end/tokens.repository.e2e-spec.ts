@@ -7,6 +7,7 @@ import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.
 import { UsersModule } from '@app/users/users.module';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { INestApplication } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { KafkaTestModule, PostgreSQLSeeder, PostgreSQLTestModule, TestContainerLifecycle } from '@solidarianid/testing';
 import { createHash } from 'node:crypto';
@@ -22,7 +23,16 @@ describe('TokensTypeormRepository (e2e)', () => {
     const databaseModule = await PostgreSQLTestModule.forRoot([UserEntity, UserPreferenceEntity, RefreshTokenEntity]);
 
     const moduleRef: TestingModule = await Test.createTestingModule({
-      imports: [messageModule, databaseModule, UsersModule, AuthModule],
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true,
+          envFilePath: [`.env.${process.env.NODE_ENV || 'test'}`, '.env.development'],
+        }),
+        messageModule,
+        databaseModule,
+        UsersModule,
+        AuthModule,
+      ],
     }).compile();
 
     app = moduleRef.createNestApplication();

@@ -264,7 +264,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
       mobilePhone: user.mobilePhone,
     }));
 
-    await repo.insert(defaultUsersProjection);
+    await repo.save(defaultUsersProjection);
   }
 
   // COMMUNITIES APP SEEDS

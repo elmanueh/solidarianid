@@ -912,16 +912,19 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
       throw new Error('DataSource is not initialized');
     }
 
-    const entities = this.dataSource.entityMetadatas;
+    const tables: Array<{ tablename: string }> = await this.dataSource.query(`
+      SELECT tablename
+      FROM pg_tables
+      WHERE schemaname = 'public'
+        AND tablename NOT IN ('migrations')
+    `);
 
-    await this.dataSource.query('SET session_replication_role = replica;');
-
-    for (const entity of entities) {
-      const repository = this.dataSource.getRepository(entity.name);
-      await repository.query(`TRUNCATE TABLE "${entity.tableName}" CASCADE;`);
+    if (tables.length === 0) {
+      return;
     }
 
-    await this.dataSource.query('SET session_replication_role = DEFAULT;');
+    const truncateTargets = tables.map(({ tablename }) => `"public"."${tablename}"`).join(', ');
+    await this.dataSource.query(`TRUNCATE TABLE ${truncateTargets} RESTART IDENTITY CASCADE;`);
   }
 
   /**

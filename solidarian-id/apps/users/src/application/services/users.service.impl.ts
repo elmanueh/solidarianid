@@ -1,5 +1,6 @@
 import { DomainEvents } from '@app/ddd/domain-events';
 import { Either, left, right } from '@app/ddd/either';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.exception';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
@@ -73,12 +74,21 @@ export class UsersServiceImpl extends UsersService {
     return right(user.value.id.value);
   }
 
-  async authenticate(username: string, password: string): Promise<Either<LoginInvalidException, User>> {
+  async authenticate(
+    username: string,
+    password: string,
+  ): Promise<Either<LoginInvalidException | ValidationError | RepositoryException, User>> {
     const usernameOrError = Username.create(username);
     if (usernameOrError.isLeft()) return left(new LoginInvalidException());
 
     const userOrError = await this.usersRepository.findByUsername(usernameOrError.value.value);
-    if (userOrError.isLeft()) return left(new LoginInvalidException());
+    if (userOrError.isLeft()) {
+      if (userOrError.value instanceof EntityNotFoundException) {
+        return left(new LoginInvalidException());
+      }
+
+      return userOrError;
+    }
 
     const passwordMatch = await this.passwordManager.comparePassword(password, userOrError.value.passwordHash);
     if (!passwordMatch) {

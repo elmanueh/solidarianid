@@ -1,6 +1,6 @@
 import { Either, left, right } from '@app/ddd/either';
+import { AuthError } from '@app/ddd/errors/auth-error';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.exception';
 import { RefreshToken } from '@app/users/domain/model/refresh-token';
 import { TokensRepositoryPort } from '@app/users/domain/ports/tokens.repository.port';
 import { AuthService, AuthTokens } from '@app/users/domain/services/auth.service';
@@ -34,10 +34,10 @@ export class AuthServiceImpl extends AuthService {
     username: string,
     password: string,
     deviceId?: string,
-  ): Promise<Either<LoginInvalidException, AuthTokens>> {
+  ): Promise<Either<Error, AuthTokens>> {
     const userOrError = await this.usersService.authenticate(username, password);
     if (userOrError.isLeft()) {
-      return left(userOrError.value);
+      return userOrError;
     }
 
     return this.issueAndPersistTokens(userOrError.value.id, deviceId);
@@ -46,25 +46,25 @@ export class AuthServiceImpl extends AuthService {
   async refresh(refreshToken: string): Promise<Either<Error, AuthTokens>> {
     const payloadOrError = await this.verifyRefreshToken(refreshToken);
     if (payloadOrError.isLeft()) {
-      return left(payloadOrError.value);
+      return payloadOrError;
     }
 
     const userId = UniqueEntityID.create(payloadOrError.value.sub);
     if (userId.isLeft()) {
-      return left(userId.value);
+      return userId;
     }
 
     if (!payloadOrError.value.jti) {
-      return left(new Error('Invalid refresh token'));
+      return left(new AuthError('Invalid refresh token'));
     }
 
     const jti = UniqueEntityID.create(payloadOrError.value.jti);
     if (jti.isLeft()) {
-      return left(jti.value);
+      return left(new AuthError('Invalid refresh token'));
     }
 
     if (this.inFlightRefreshByJti.has(jti.value.value)) {
-      return left(new Error('Invalid refresh session'));
+      return left(new AuthError('Invalid refresh session'));
     }
 
     this.inFlightRefreshByJti.add(jti.value.value);
@@ -72,23 +72,26 @@ export class AuthServiceImpl extends AuthService {
     try {
       const activeSessionOrError = await this.tokensRepository.findByJti(jti.value);
       if (activeSessionOrError.isLeft()) {
-        return left(activeSessionOrError.value);
+        if (activeSessionOrError.value instanceof EntityNotFoundException) {
+          return left(new AuthError('Invalid refresh session'));
+        }
+        return activeSessionOrError;
       }
 
       if (!activeSessionOrError.value.userId.equals(userId.value)) {
-        return left(new Error('Invalid refresh token'));
+        return left(new AuthError('Invalid refresh token'));
       }
 
       const incomingHash = this.hashToken(refreshToken);
       if (!activeSessionOrError.value.isActive() || !activeSessionOrError.value.matchesHash(incomingHash)) {
-        return left(new Error('Invalid refresh session'));
+        return left(new AuthError('Invalid refresh session'));
       }
 
       activeSessionOrError.value.touchRefreshedAt();
 
       const saveResult = await this.tokensRepository.save(activeSessionOrError.value);
       if (saveResult.isLeft()) {
-        return left(saveResult.value);
+        return saveResult;
       }
 
       const accessToken = await this.jwtService.signAsync(
@@ -193,12 +196,12 @@ export class AuthServiceImpl extends AuthService {
       });
 
       if (!payload.sub || !payload.jti) {
-        return left(new Error('Invalid token payload'));
+        return left(new AuthError('Invalid token payload'));
       }
 
       return right({ sub: payload.sub, jti: payload.jti });
     } catch {
-      return left(new Error('Invalid refresh token'));
+      return left(new AuthError('Invalid refresh token'));
     }
   }
 

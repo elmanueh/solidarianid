@@ -1,5 +1,4 @@
 import { Either } from '@app/ddd/either';
-import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.exception';
 
 export interface AuthTokens {
   userId: string;
@@ -17,7 +16,7 @@ export abstract class AuthService {
     username: string,
     password: string,
     deviceId?: string,
-  ): Promise<Either<LoginInvalidException, AuthTokens>>;
+  ): Promise<Either<Error, AuthTokens>>;
 
   /**
    * Refresca un nuevo access token para un usuario dado su refresh token.

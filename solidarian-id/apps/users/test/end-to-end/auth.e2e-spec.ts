@@ -76,6 +76,7 @@ describe('AuthController (e2e)', () => {
 
   beforeEach(async () => {
     await resetState(kurrentdbSeeder, seeder);
+    server.resetAgent();
   });
 
   afterAll(async () => {
@@ -96,7 +97,7 @@ describe('AuthController (e2e)', () => {
       expect(setCookie.some(cookie => cookie.startsWith('AccessToken='))).toBe(true);
       expect(setCookie.some(cookie => cookie.startsWith('RefreshToken='))).toBe(true);
       expect(setCookie.some(cookie => cookie.includes('Path=/;'))).toBe(true);
-      expect(setCookie.some(cookie => cookie.includes('Path=/api/auth/refresh;'))).toBe(true);
+      expect(setCookie.some(cookie => cookie.includes('Path=/api/auth;'))).toBe(true);
       expect(response.body.accessToken).toBeUndefined();
       expect(response.body.refreshToken).toBeUndefined();
     });
@@ -337,13 +338,32 @@ describe('AuthController (e2e)', () => {
 
       await server.getRequest().post('/api/auth/logout').set('Cookie', cookieA.split(';')[0]).expect(HttpStatus.OK);
 
+      const tokenRepo = app.get<DataSource>('DataSource').getRepository(RefreshTokenEntity);
+      const sessionsAfterLogout = await tokenRepo.find({ where: { userId: '4807f235-f4b4-41c0-939c-c97371219551' } });
+
+      expect(sessionsAfterLogout).toHaveLength(2);
+      const revokedSessions = sessionsAfterLogout.filter(session => session.revokedAt !== null);
+      expect(revokedSessions).toHaveLength(1);
+      const activeSessions = sessionsAfterLogout.filter(session => session.revokedAt === null);
+      expect(activeSessions).toHaveLength(1);
+
+      const cookieAValue = cookieA.split(';')[0].replace('RefreshToken=', '');
+      const revokedSessionIds = new Set(revokedSessions.map(session => session.id));
+
+      const expectedUnauthorizedCookie = revokedSessionIds.has(cookieAValue) ? cookieA : cookieB;
+      const expectedAuthorizedCookie = revokedSessionIds.has(cookieAValue) ? cookieB : cookieA;
+
       await server
         .getRequest()
         .post('/api/auth/refresh')
-        .set('Cookie', cookieA.split(';')[0])
+        .set('Cookie', expectedUnauthorizedCookie.split(';')[0])
         .expect(HttpStatus.UNAUTHORIZED);
 
-      await server.getRequest().post('/api/auth/refresh').set('Cookie', cookieB.split(';')[0]).expect(HttpStatus.OK);
+      await server
+        .getRequest()
+        .post('/api/auth/refresh')
+        .set('Cookie', expectedAuthorizedCookie.split(';')[0])
+        .expect(HttpStatus.OK);
     });
 
     it('returns 401 on logout when refresh token has no jti', async () => {

@@ -32,7 +32,7 @@ export class TokensTypeormRepository
       });
 
       if (!entity) {
-        return left(new EntityNotFoundException(jti.value, 'Refresh Token not found'));
+        return left(new EntityNotFoundException('RefreshToken', jti.value));
       }
       return this.tokenMapper.fromPersistence(entity);
     } catch (error) {

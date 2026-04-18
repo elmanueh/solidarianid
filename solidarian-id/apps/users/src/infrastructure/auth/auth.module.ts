@@ -34,7 +34,7 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
     };
   }
 
-  return { privateKey: '', publicKey: '' };
+  throw new Error('JWT_PRIVATE_KEY_BASE64 and JWT_PUBLIC_KEY_BASE64 must be configured outside test environments');
 }
 
 @Module({

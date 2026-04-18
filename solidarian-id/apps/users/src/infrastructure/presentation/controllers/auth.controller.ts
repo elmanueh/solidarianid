@@ -2,7 +2,9 @@ import { AuthService } from '@app/users/domain/services/auth.service';
 import { LoginUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/login-user.request.dto';
 import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ApiTags } from '@nestjs/swagger/dist/decorators/api-use-tags.decorator';
+import { ApiTags } from '@nestjs/swagger';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { JsonWebTokenError } from 'jsonwebtoken';
 import { Public } from '@solidarianid/security/nestjs';
 import type { Request, Response } from 'express';
 
@@ -41,7 +43,7 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   async refresh(@Req() request: Request, @Res() response: Response): Promise<void> {
-    const refreshToken = (request.cookies?.RefreshToken as string | undefined) ?? '';
+    const refreshToken = this.getRefreshTokenFromRequest(request);
     if (!refreshToken) {
       response.status(HttpStatus.UNAUTHORIZED).send();
       return;
@@ -49,8 +51,17 @@ export class AuthController {
 
     const result = await this.authService.refresh(refreshToken);
     if (result.isLeft()) {
-      response.status(HttpStatus.UNAUTHORIZED).send();
-      return;
+      if (result.value instanceof JsonWebTokenError) {
+        response.status(HttpStatus.UNAUTHORIZED).send();
+        return;
+      }
+
+      if (result.value instanceof EntityNotFoundException) {
+        response.status(HttpStatus.UNAUTHORIZED).send();
+        return;
+      }
+
+      throw result.value;
     }
 
     this.setAccessTokenCookie(response, result.value.accessToken);
@@ -60,7 +71,7 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   async logout(@Req() request: Request, @Res() response: Response): Promise<void> {
-    const refreshToken = (request.cookies?.RefreshToken as string | undefined) ?? '';
+    const refreshToken = this.getRefreshTokenFromRequest(request);
 
     if (refreshToken) {
       try {
@@ -73,7 +84,11 @@ export class AuthController {
           return;
         }
 
-        await this.authService.logoutCurrentSession(payload.jti);
+        const logoutResult = await this.authService.logoutCurrentSession(payload.jti);
+        if (logoutResult.isLeft()) {
+          response.status(HttpStatus.UNAUTHORIZED).send();
+          return;
+        }
       } catch {
         response.status(HttpStatus.UNAUTHORIZED).send();
         return;
@@ -108,7 +123,7 @@ export class AuthController {
       httpOnly: true,
       secure,
       sameSite: 'lax',
-      path: '/api/auth/refresh',
+      path: '/api/auth',
       maxAge: 90 * 24 * 60 * 60 * 1000,
     });
   }
@@ -127,12 +142,23 @@ export class AuthController {
       httpOnly: true,
       secure,
       sameSite: 'lax',
-      path: '/api/auth/refresh',
+      path: '/api/auth',
     });
   }
 
   private normalizeDeviceId(deviceIdHeader: string | undefined): string | undefined {
     const normalized = deviceIdHeader?.trim();
     return normalized ? normalized : undefined;
+  }
+
+  private getRefreshTokenFromRequest(request: Request): string {
+    const cookieHeader = request.header('cookie') ?? '';
+    const match = cookieHeader.match(/(?:^|;\s*)RefreshToken=([^;]+)/);
+    if (match?.[1]) {
+      return match[1];
+    }
+
+    const fromCookies = (request.cookies?.RefreshToken as string | undefined) ?? '';
+    return fromCookies;
   }
 }

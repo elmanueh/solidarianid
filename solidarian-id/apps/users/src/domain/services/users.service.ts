@@ -21,7 +21,10 @@ export abstract class UsersService {
    * @param username
    * @param password
    */
-  abstract authenticate(username: string, password: string): Promise<Either<LoginInvalidException, User>>;
+  abstract authenticate(
+    username: string,
+    password: string,
+  ): Promise<Either<LoginInvalidException | ValidationError | RepositoryException, User>>;
 
   /**
    * Actualiza el perfil de un usuario existente.

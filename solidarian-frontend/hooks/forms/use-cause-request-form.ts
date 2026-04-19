@@ -107,14 +107,6 @@ export default function useCauseRequestForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [values, setValues] = useState(createEmptyCauseRequestForm);
-  const odsOptions = useMemo(
-    () =>
-      Object.entries(SUSTAINABLE_DEVELOPMENT_GOAL).map(([value, label], index) => ({
-        value,
-        label: `${index + 1}. ${label}`,
-      })),
-    []
-  );
 
   const toggleOds = useCallback((ods: OdsValue) => {
     setValues(current => {
@@ -172,6 +164,9 @@ export default function useCauseRequestForm() {
     isSubmitting,
     handleSubmit,
     toggleOds,
-    odsOptions,
+    odsOptions: Object.entries(SUSTAINABLE_DEVELOPMENT_GOAL).map(([key, label]) => ({
+      value: key as OdsValue,
+      label: `${key} - ${label}`,
+    })),
   };
 }

@@ -85,6 +85,7 @@ export default function CommunityCauseRequestCreatePage() {
               <Input
                 id="cause-request-initial-date"
                 type="date"
+                min={new Date().toISOString().split('T')[0]}
                 disabled={isSubmitting}
                 value={values.initialDate}
                 onChange={event => setValues(current => ({ ...current, initialDate: event.target.value }))}

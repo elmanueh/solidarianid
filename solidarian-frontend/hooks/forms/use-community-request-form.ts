@@ -1,6 +1,7 @@
 'use client';
 
 import { getErrorMessage } from '@/features/axios/errors.handler';
+import { SUSTAINABLE_DEVELOPMENT_GOAL } from '@/features/causes/constants/ods.constants';
 import {
   CREATE_COMMUNITY_REQUEST_MUTATION,
   CreateCommunityRequestVariables,
@@ -14,32 +15,12 @@ import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
-const COMMUNITY_ODS_OPTIONS = [
-  'NoPoverty',
-  'ZeroHunger',
-  'GoodHealthAndWellBeing',
-  'QualityEducation',
-  'GenderEquality',
-  'CleanWaterAndSanitation',
-  'AffordableAndCleanEnergy',
-  'DecentWorkAndEconomicGrowth',
-  'IndustryInnovationAndInfrastructure',
-  'ReducedInequalities',
-  'SustainableCitiesAndCommunities',
-  'ResponsibleConsumptionAndProduction',
-  'ClimateAction',
-  'LifeBelowWater',
-  'LifeOnLand',
-  'PeaceJusticeAndStrongInstitutions',
-  'PartnershipsForTheGoals',
-] as const;
-
-type CommunityOdsValue = (typeof COMMUNITY_ODS_OPTIONS)[number];
+type CommunityOdsValue = keyof typeof SUSTAINABLE_DEVELOPMENT_GOAL;
 
 interface CommunityCauseValues {
   name: string;
   description: string;
-  ods: CommunityOdsValue;
+  ods: CommunityOdsValue[];
   initialDate: string;
   durationDays: number;
 }
@@ -53,7 +34,7 @@ interface CommunityRequestValues {
 const createEmptyCause = (): CommunityCauseValues => ({
   name: '',
   description: '',
-  ods: 'SustainableCitiesAndCommunities',
+  ods: ['SustainableCitiesAndCommunities'],
   initialDate: '',
   durationDays: 30,
 });
@@ -109,13 +90,22 @@ function buildCommunityRequestPayload(
   return {
     name: validateRequiredText(values.name, 'El nombre de la comunidad es obligatorio.'),
     description: validateRequiredText(values.description, 'La descripcion de la comunidad es obligatoria.'),
-    causeCreationRequests: values.causes.map((cause, index) => ({
-      name: validateRequiredText(cause.name, `El nombre de la causa #${index + 1} es obligatorio.`),
-      description: validateRequiredText(cause.description, `La descripcion de la causa #${index + 1} es obligatoria.`),
-      ods: [cause.ods],
-      initialDate: normalizeInitialDate(cause.initialDate),
-      durationDays: normalizeDurationDays(cause.durationDays),
-    })),
+    causeCreationRequests: values.causes.map((cause, index) => {
+      if (cause.ods.length === 0) {
+        throw new Error(`Debes seleccionar al menos un ODS en la causa #${index + 1}.`);
+      }
+
+      return {
+        name: validateRequiredText(cause.name, `El nombre de la causa #${index + 1} es obligatorio.`),
+        description: validateRequiredText(
+          cause.description,
+          `La descripcion de la causa #${index + 1} es obligatoria.`
+        ),
+        ods: cause.ods,
+        initialDate: normalizeInitialDate(cause.initialDate),
+        durationDays: normalizeDurationDays(cause.durationDays),
+      };
+    }),
     userId,
   };
 }
@@ -199,6 +189,9 @@ export default function useCommunityRequestForm() {
     updateCause,
     isSubmitting,
     handleSubmit,
-    odsOptions: COMMUNITY_ODS_OPTIONS,
+    odsOptions: Object.entries(SUSTAINABLE_DEVELOPMENT_GOAL).map(([key, label]) => ({
+      value: key as CommunityOdsValue,
+      label: `${key} - ${label}`,
+    })),
   };
 }

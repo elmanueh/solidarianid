@@ -13,8 +13,8 @@ import { join } from 'node:path';
     CommunitiesModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      graphiql: process.env.NODE_ENV === 'development',
-      introspection: process.env.NODE_ENV === 'development',
+      graphiql: process.env.NODE_ENV !== 'production',
+      introspection: process.env.NODE_ENV !== 'production',
       autoSchemaFile:
         process.env.IN_DOCKER === 'true' ? '/app/schema.gql' : join(process.cwd(), 'apps/communities/src/schema.gql'),
       subscriptions: {

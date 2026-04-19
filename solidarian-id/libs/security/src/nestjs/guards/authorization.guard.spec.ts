@@ -1,11 +1,15 @@
 import {
   AuthorizationMetadata,
   Action as SecurityAction,
+  CommunityContextResolver,
   EntityType,
+  MembershipPermissionSource,
   MembershipRole,
+  PolicyContext,
   Resource,
 } from '@solidarianid/security/core';
 import { ForbiddenException } from '@nestjs/common';
+import { ExecutionContext } from '@nestjs/common/interfaces/features/execution-context.interface';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthorizationGuard } from './authorization.guard';
@@ -26,6 +30,20 @@ type GuardContextFactoryInput = {
   gqlArgs?: Record<string, unknown>;
 };
 
+type AuthorizationRequest = {
+  user?: { sub: string; jti?: string };
+  params: Record<string, string | undefined>;
+  body?: unknown;
+};
+
+type TestContext = {
+  guard: AuthorizationGuard;
+  executionContext: ExecutionContext;
+  evaluateMock: jest.MockedFunction<PolicyRegistry['evaluate']>;
+  resolveCommunityMock: jest.MockedFunction<CommunityContextResolver['resolve']>;
+  findRoleMock: jest.MockedFunction<MembershipPermissionSource['findRole']>;
+};
+
 const membershipMeta: AuthorizationMetadata = {
   action: SecurityAction.UPDATE,
   resource: Resource.COMMUNITY,
@@ -37,24 +55,34 @@ const membershipMeta: AuthorizationMetadata = {
   },
 };
 
-function createContext(input: GuardContextFactoryInput) {
+function createContext(input: GuardContextFactoryInput): TestContext {
   const reflector = {
     getAllAndOverride: jest.fn().mockReturnValue(input.metadata),
   } as unknown as Reflector;
 
+  const evaluateMock: jest.MockedFunction<PolicyRegistry['evaluate']> = jest.fn().mockResolvedValue(true);
+
   const policyRegistry = {
-    evaluate: jest.fn().mockResolvedValue(true),
+    evaluate: evaluateMock,
   } as unknown as PolicyRegistry;
 
+  const resolveCommunityMock: jest.MockedFunction<CommunityContextResolver['resolve']> = jest
+    .fn()
+    .mockResolvedValue({ communityId: 'community-1' });
+
   const communityContextResolver = {
-    resolve: jest.fn().mockResolvedValue({ communityId: 'community-1' }),
-  };
+    resolve: resolveCommunityMock,
+  } as unknown as CommunityContextResolver;
+
+  const findRoleMock: jest.MockedFunction<MembershipPermissionSource['findRole']> = jest
+    .fn()
+    .mockResolvedValue(MembershipRole.MEMBER);
 
   const membershipPermissionSource = {
-    findRole: jest.fn().mockResolvedValue(MembershipRole.MEMBER),
-  };
+    findRole: findRoleMock,
+  } as unknown as MembershipPermissionSource;
 
-  const request = {
+  const request: AuthorizationRequest = {
     user: input.subjectSub ? { sub: input.subjectSub } : undefined,
     params: input.params ?? {},
     body: input.body,
@@ -67,26 +95,22 @@ function createContext(input: GuardContextFactoryInput) {
     switchToHttp: jest.fn().mockReturnValue({
       getRequest: jest.fn().mockReturnValue(request),
     }),
-  } as any;
+  } as unknown as ExecutionContext;
 
-  (GqlExecutionContext.create as jest.Mock).mockReturnValue({
+  const gqlCreateMock = jest.spyOn(GqlExecutionContext, 'create');
+  gqlCreateMock.mockReturnValue({
     getContext: jest.fn().mockReturnValue({ req: request }),
     getArgs: jest.fn().mockReturnValue(input.gqlArgs ?? {}),
-  });
+  } as unknown as GqlExecutionContext);
 
-  const guard = new AuthorizationGuard(
-    reflector,
-    policyRegistry,
-    communityContextResolver as any,
-    membershipPermissionSource as any,
-  );
+  const guard = new AuthorizationGuard(reflector, policyRegistry, communityContextResolver, membershipPermissionSource);
 
   return {
     guard,
     executionContext,
-    policyRegistry,
-    communityContextResolver,
-    membershipPermissionSource,
+    evaluateMock,
+    resolveCommunityMock,
+    findRoleMock,
   };
 }
 
@@ -96,10 +120,10 @@ describe('AuthorizationGuard', () => {
   });
 
   it('allows when there is no authorization metadata', async () => {
-    const { guard, executionContext, policyRegistry } = createContext({ metadata: undefined });
+    const { guard, executionContext, evaluateMock } = createContext({ metadata: undefined });
 
     await expect(guard.canActivate(executionContext)).resolves.toBe(true);
-    expect((policyRegistry.evaluate as jest.Mock).mock.calls.length).toBe(0);
+    expect(evaluateMock).not.toHaveBeenCalled();
   });
 
   it('denies membership policy when entityId cannot be resolved from params', async () => {
@@ -113,25 +137,27 @@ describe('AuthorizationGuard', () => {
   });
 
   it('dispatches community resolution for membership policy and passes resolved role to policy registry', async () => {
-    const { guard, executionContext, policyRegistry, communityContextResolver, membershipPermissionSource } =
-      createContext({
-        metadata: membershipMeta,
-        subjectSub: 'user-1',
-        params: { id: 'cause-1' },
-      });
+    const { guard, executionContext, evaluateMock, resolveCommunityMock, findRoleMock } = createContext({
+      metadata: membershipMeta,
+      subjectSub: 'user-1',
+      params: { id: 'cause-1' },
+    });
 
     await expect(guard.canActivate(executionContext)).resolves.toBe(true);
 
-    expect(communityContextResolver.resolve).toHaveBeenCalledWith({
+    expect(resolveCommunityMock).toHaveBeenCalledWith({
       entityType: EntityType.CAUSE,
       entityId: 'cause-1',
     });
-    expect(membershipPermissionSource.findRole).toHaveBeenCalledWith({
+    expect(findRoleMock).toHaveBeenCalledWith({
       userId: 'user-1',
       communityId: 'community-1',
     });
 
-    const [, policyContext] = (policyRegistry.evaluate as jest.Mock).mock.calls[0];
+    const policyContext = evaluateMock.mock.calls[0]?.[1] as PolicyContext | undefined;
+    if (!policyContext) {
+      throw new Error('Policy context was not provided to PolicyRegistry.evaluate');
+    }
     expect(policyContext.resolvedCommunityId).toBe('community-1');
     expect(policyContext.resolvedRole).toBe(MembershipRole.MEMBER);
   });
@@ -145,7 +171,7 @@ describe('AuthorizationGuard', () => {
       },
     };
 
-    const { guard, executionContext, communityContextResolver } = createContext({
+    const { guard, executionContext, resolveCommunityMock } = createContext({
       metadata,
       subjectSub: 'user-1',
       type: 'graphql',
@@ -153,7 +179,7 @@ describe('AuthorizationGuard', () => {
     });
 
     await expect(guard.canActivate(executionContext)).resolves.toBe(true);
-    expect(communityContextResolver.resolve).toHaveBeenCalledWith({
+    expect(resolveCommunityMock).toHaveBeenCalledWith({
       entityType: EntityType.CAUSE,
       entityId: 'cause-graphql-1',
     });

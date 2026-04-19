@@ -20,10 +20,10 @@ import {
 import { DataSource } from 'typeorm';
 
 async function resetState(kurrentdbSeeder: KurrentDBSeeder, postgresSeeder: PostgreSQLSeeder): Promise<void> {
-  await kurrentdbSeeder.clean();
+  const projectionUserIds = await postgresSeeder.getUserProjectionIds();
+  await kurrentdbSeeder.clean(projectionUserIds);
   await kurrentdbSeeder.seedUsers();
   await postgresSeeder.clean();
-  await postgresSeeder.seedUsers();
   await postgresSeeder.seedUsersProjection();
 }
 

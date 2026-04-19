@@ -3,8 +3,11 @@ import { KafkaTestContainer } from '../../libs/test/src/kafka.test-container';
 import { KurrentDBTestContainer } from '../../libs/test/src/kurrentdb.test-container';
 import { MongoDBTestContainer } from '../../libs/test/src/mongodb.test-container';
 import { PostgreSQLTestContainer } from '../../libs/test/src/postgresql.test-container';
+import { ensureJwtTestKeys } from './jwt-test-keys';
 
 export default async function globalSetup(): Promise<void> {
+  ensureJwtTestKeys();
+
   const [mongoUri, postgresUri, kafkaBroker, kurrentdbUri] = await Promise.all([
     MongoDBTestContainer.getInstance().start(),
     PostgreSQLTestContainer.getInstance().start(),

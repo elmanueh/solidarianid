@@ -1,5 +1,6 @@
 import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
 import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
+import { UsersProjectionService } from '@app/users/infrastructure/persistence/projections/users-projection.service';
 import { UsersModule } from '@app/users/users.module';
 import { KurrentDBClient } from '@kurrent/kurrentdb-client';
 import { INestApplication } from '@nestjs/common';
@@ -15,13 +16,23 @@ import {
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
-async function resetState(kurrentdbSeeder: KurrentDBSeeder, postgresSeeder: PostgreSQLSeeder): Promise<void> {
-  await kurrentdbSeeder.clean();
-  await kurrentdbSeeder.seedUsers();
+async function resetState(
+  kurrentdbSeeder: KurrentDBSeeder,
+  postgresSeeder: PostgreSQLSeeder,
+  usersProjectionService: UsersProjectionService,
+): Promise<void> {
+  await usersProjectionService.onModuleDestroy();
 
-  await postgresSeeder.clean();
-  const position = await kurrentdbSeeder.getLatestUserCheckpointPosition();
-  await postgresSeeder.seedUsersProjection(position.commit, position.prepare);
+  try {
+    await kurrentdbSeeder.clean();
+    await kurrentdbSeeder.seedUsers();
+
+    await postgresSeeder.clean();
+    const position = await kurrentdbSeeder.getLatestUserCheckpointPosition();
+    await postgresSeeder.seedUsersProjection(position.commit, position.prepare);
+  } finally {
+    await usersProjectionService.onModuleInit();
+  }
 }
 
 describe('UsersController (e2e)', () => {
@@ -29,6 +40,7 @@ describe('UsersController (e2e)', () => {
   let app: INestApplication;
   let kurrentdbSeeder!: KurrentDBSeeder;
   let postgreSeeder!: PostgreSQLSeeder;
+  let usersProjectionService!: UsersProjectionService;
   let eventStore!: KurrentDBClient;
 
   beforeAll(async () => {
@@ -46,8 +58,9 @@ describe('UsersController (e2e)', () => {
     });
 
     postgreSeeder = new PostgreSQLSeeder(app.get<DataSource>('DataSource'));
+    usersProjectionService = app.get(UsersProjectionService);
 
-    await resetState(kurrentdbSeeder, postgreSeeder);
+    await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
   });
 
   afterAll(async () => {
@@ -58,7 +71,7 @@ describe('UsersController (e2e)', () => {
 
   describe('/api/users (POST)', () => {
     beforeEach(async () => {
-      await resetState(kurrentdbSeeder, postgreSeeder);
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
     });
 
     it('Test 1 - should register new user', async () => {
@@ -212,7 +225,7 @@ describe('UsersController (e2e)', () => {
     const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
 
     beforeEach(async () => {
-      await resetState(kurrentdbSeeder, postgreSeeder);
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
     });
 
     // ÉXITO: Solo status 204 NO_CONTENT
@@ -431,7 +444,7 @@ describe('UsersController (e2e)', () => {
     const password: string = 'Admin2024!Pass';
 
     beforeAll(async () => {
-      await resetState(kurrentdbSeeder, postgreSeeder);
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
     });
 
     it('Test 1 - Should return inauthorized if the user not exists', async () => {
@@ -524,7 +537,7 @@ describe('UsersController (e2e)', () => {
     const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
 
     beforeEach(async () => {
-      await resetState(kurrentdbSeeder, postgreSeeder);
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
     });
 
     it('Test 1 - should update all preferences successfully', async () => {

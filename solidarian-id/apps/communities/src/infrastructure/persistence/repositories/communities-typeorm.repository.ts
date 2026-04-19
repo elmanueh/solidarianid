@@ -1,15 +1,15 @@
-import { RepositoryTypeORM } from '@app/ddd/repository/repository-typeorm';
-import { Repository as TypeOrmRepository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CommunityEntity } from '../entities/community.entity';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { CommunityEntityMapper } from '../mappers/community-entity.mapper';
 import { Either, left, right, sequence } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { In } from 'typeorm';
+import { RepositoryTypeORM } from '@app/ddd/repository/repository-typeorm';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { In, Repository as TypeOrmRepository } from 'typeorm';
+import { CommunityUserEntity } from '../entities/community-user.entity';
+import { CommunityEntity } from '../entities/community.entity';
+import { CommunityEntityMapper } from '../mappers/community-entity.mapper';
 
 @Injectable()
 export class CommunitiesRepositoryTypeOrmAdapter
@@ -19,6 +19,8 @@ export class CommunitiesRepositoryTypeOrmAdapter
   constructor(
     @InjectRepository(CommunityEntity)
     private readonly communityRepository: TypeOrmRepository<CommunityEntity>,
+    @InjectRepository(CommunityUserEntity)
+    private readonly communityUserRepository: TypeOrmRepository<CommunityUserEntity>,
     private readonly communityMapper: CommunityEntityMapper,
   ) {
     super(communityRepository, communityMapper);
@@ -47,6 +49,18 @@ export class CommunitiesRepositoryTypeOrmAdapter
       return right(communitiesOrError.value);
     } catch (error) {
       return left(new RepositoryException('Failed to find communities by ids.', error));
+    }
+  }
+
+  async removeMember(
+    communityId: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    try {
+      await this.communityUserRepository.delete({ communityId, userId });
+      return right(undefined);
+    } catch (error) {
+      return left(new RepositoryException('Failed to remove member from community.', error));
     }
   }
 }

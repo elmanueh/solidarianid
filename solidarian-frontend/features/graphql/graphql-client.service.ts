@@ -17,7 +17,6 @@ export class GraphqlClientService {
     if (!response.data) {
       throw new Error('GraphQL query returned no data');
     }
-
     return response.data;
   }
 

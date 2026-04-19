@@ -32,7 +32,7 @@ export default function CommunityHeader({
         fill
         sizes="100vw"
         className="absolute inset-0 h-full w-full object-cover opacity-25"
-        priority
+        loading="eager"
       />
       <div className="absolute inset-0 bg-linear-to-b from-background/0 via-background/10 to-background/92" />
 
@@ -47,7 +47,14 @@ export default function CommunityHeader({
 
       <div className="absolute right-4 bottom-4 left-4 z-10 flex items-end gap-4 sm:right-6 sm:bottom-6 sm:left-6 sm:gap-5">
         <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-3xl border border-border bg-background shadow-md sm:h-28 sm:w-28">
-          <Image src={imageUrl} alt={communityName} fill sizes="112px" className="h-full w-full object-cover" />
+          <Image
+            src={imageUrl}
+            alt={communityName}
+            fill
+            sizes="112px"
+            className="h-full w-full object-cover"
+            loading="eager"
+          />
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col gap-2 pb-1 sm:pb-2">

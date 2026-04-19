@@ -11,15 +11,15 @@ interface CommunityCause {
   description: string;
   durationDays: number;
   ods: string[];
+  imageUrl: string;
 }
 
 interface CommunityCausesListProps {
   communityId: string;
   causes: CommunityCause[];
-  imageUrl: string;
 }
 
-export default function CommunityCausesList({ communityId, causes, imageUrl }: Readonly<CommunityCausesListProps>) {
+export default function CommunityCausesList({ communityId, causes }: Readonly<CommunityCausesListProps>) {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -45,10 +45,11 @@ export default function CommunityCausesList({ communityId, causes, imageUrl }: R
               >
                 <div className="relative h-32 overflow-hidden bg-muted">
                   <Image
-                    src={imageUrl}
+                    src={cause.imageUrl}
                     alt={cause.name}
                     fill
                     sizes="100vw"
+                    loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>

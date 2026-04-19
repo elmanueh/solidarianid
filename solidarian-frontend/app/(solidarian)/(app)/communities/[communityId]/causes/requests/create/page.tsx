@@ -4,7 +4,7 @@ import { RequestFormLayout } from '@/components/requests/request-form-layout';
 import { RequestSectionCard } from '@/components/requests/request-section-card';
 import { Badge, Button, Input, Textarea } from '@/components/ui';
 import useCauseRequestForm from '@/hooks/use-cause-request-form';
-import { IconAlertCircle, IconCalendar, IconClock } from '@tabler/icons-react';
+import { IconCalendar, IconClock } from '@tabler/icons-react';
 
 const DURATION_OPTIONS = [
   { label: '1 mes', value: 30 },
@@ -19,20 +19,6 @@ export default function CommunityCauseRequestCreatePage() {
   return (
     <RequestFormLayout variant="cause">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <RequestSectionCard
-          title="Contexto"
-          description="Solo administradores y creadores de comunidad pueden solicitar causas nuevas."
-        >
-          <div className="rounded-2xl border border-pink-500/20 bg-pink-500/5 p-4">
-            <div className="flex items-start gap-3">
-              <IconAlertCircle className="mt-0.5 shrink-0 text-pink-500" size={18} />
-              <p className="text-sm leading-relaxed text-brand-ink">
-                Define claramente el objetivo de la causa y su relacion con los ODS para facilitar la revision.
-              </p>
-            </div>
-          </div>
-        </RequestSectionCard>
-
         <RequestSectionCard title="Nombre de la causa *" description="Elige un nombre concreto y facil de identificar.">
           <Input
             id="cause-request-name"

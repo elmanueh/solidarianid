@@ -2,7 +2,10 @@ import CommunityHeader from '@/components/community-page/community-header';
 import CommunityTabs from '@/components/community-page/community-tabs';
 import CommunityFloatingActionButton from '@/components/community-page/floating-action-button';
 import { authService } from '@/features/auth/services/auth.service';
-import { GET_COMMUNITY_BY_ID_QUERY } from '@/features/communities/api/graphql/communities.documents';
+import {
+  GET_COMMUNITY_BY_ID_QUERY,
+  type GetCommunityByIdResult,
+} from '@/features/communities/api/graphql/communities.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
@@ -12,6 +15,11 @@ import Link from 'next/link';
 
 type CommunityPageProps = {
   params: Promise<{ communityId: string }>;
+};
+type CommunityMember = {
+  id: string;
+  fullName: string;
+  role: CommunityMemberRole;
 };
 
 type CommunityMemberRole = 'creator' | 'admin' | 'member';
@@ -37,8 +45,52 @@ export default async function CommunityPage({ params }: Readonly<CommunityPagePr
   }
 
   const currentUser = await authService.getCurrentUser();
+  const membersMap = processUsers(community);
 
-  const membersMap = new Map<string, { id: string; fullName: string; role: CommunityMemberRole }>();
+  const members = Array.from(membersMap.values());
+  const memberIds = members.map(member => member.id);
+  const initialIsMember = Boolean(currentUser && memberIds.includes(currentUser.id));
+  const currentUserRole = currentUser ? membersMap.get(currentUser.id)?.role : undefined;
+  const isCurrentUserCreator = currentUserRole === 'creator';
+  const isCurrentUserAdminOrCreator = currentUserRole === 'admin' || currentUserRole === 'creator';
+  const imageService = new PexelsImageService();
+  const imageUrl = (await imageService.getDeterministicBanner({ uuid: community.id, theme: community.name })).large;
+  const causes = await Promise.all(
+    community.causes.map(async cause => ({
+      ...cause,
+      imageUrl: (await imageService.getDeterministicBanner({ uuid: cause.id, theme: cause.name })).large,
+    }))
+  );
+  return (
+    <div className="flex min-h-screen flex-col pb-32">
+      <CommunityHeader
+        communityId={communityId}
+        communityName={community.name}
+        communityDescription={community.description}
+        membersCount={members.length}
+        causesCount={community.causes.length}
+        imageUrl={imageUrl}
+      />
+
+      <div className="flex flex-col gap-8 px-6 pt-10 pb-6">
+        <CommunityTabs
+          communityId={communityId}
+          description={community.description}
+          initialIsMember={initialIsMember}
+          isCurrentUserCreator={isCurrentUserCreator}
+          creatorName={community.creator.fullName}
+          causes={causes}
+          members={members}
+        />
+      </div>
+
+      {isCurrentUserAdminOrCreator ? <CommunityFloatingActionButton communityId={communityId} /> : null}
+    </div>
+  );
+}
+
+function processUsers(community: GetCommunityByIdResult['community']) {
+  const membersMap = new Map<string, CommunityMember>();
 
   membersMap.set(community.creator.id, {
     id: community.creator.id,
@@ -66,36 +118,5 @@ export default async function CommunityPage({ params }: Readonly<CommunityPagePr
     }
   });
 
-  const members = Array.from(membersMap.values());
-  const memberIds = members.map(member => member.id);
-  const initialIsMember = Boolean(currentUser && memberIds.includes(currentUser.id));
-  const imageService = new PexelsImageService();
-  const imageUrl = (await imageService.getDeterministicBanner({ uuid: community.id, theme: community.name })).large;
-
-  return (
-    <div className="flex min-h-screen flex-col pb-32">
-      <CommunityHeader
-        communityId={communityId}
-        communityName={community.name}
-        communityDescription={community.description}
-        membersCount={members.length}
-        causesCount={community.causes.length}
-        imageUrl={imageUrl}
-      />
-
-      <div className="flex flex-col gap-8 px-6 pt-10 pb-6">
-        <CommunityTabs
-          communityId={communityId}
-          description={community.description}
-          imageUrl={imageUrl}
-          initialIsMember={initialIsMember}
-          creatorName={community.creator.fullName}
-          causes={community.causes}
-          members={members}
-        />
-      </div>
-
-      <CommunityFloatingActionButton communityId={communityId} />
-    </div>
-  );
+  return membersMap;
 }

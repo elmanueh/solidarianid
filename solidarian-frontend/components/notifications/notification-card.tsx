@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui';
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui';
 import { Notification, NotificationType } from '@/features/repository/entities/notification';
 import { cn, formatNotificationTime } from '@/lib/utils';
 import { IconAlertOctagon, IconCircleCheck, IconInfoCircle, IconMistOff } from '@tabler/icons-react';
@@ -23,13 +23,12 @@ export function NotificationCard({
   return (
     <Card
       className={cn(
-        'rounded-2xl border bg-card shadow-sm transition-all',
+        'relative rounded-2xl border bg-card shadow-sm transition-all',
         read ? 'border-neutral-100 opacity-80 dark:border-border/70' : 'border-brand-500/20 ring-1 ring-brand-500/5',
         className
       )}
     >
       <Link href={link} className="block">
-        <CardHeader className="hidden" />
         <CardContent className="flex items-start gap-4 p-5">
           <div
             className={cn('flex h-12 w-12 shrink-0 items-center justify-center rounded-xl', visual.containerClassName)}
@@ -45,7 +44,9 @@ export function NotificationCard({
               <span className="text-[10px] font-medium whitespace-nowrap text-neutral-400">
                 {formatNotificationTime(createdAt)}
               </span>
-              {!read && <span className="mt-2 h-2 w-2 rounded-full bg-brand-500" />}
+              {!read && (
+                <span className="absolute top-2 right-2 h-3 w-3 rounded-full bg-brand-500 md:static md:top-auto md:right-auto" />
+              )}
             </div>
 
             <CardDescription className="text-xs leading-relaxed text-neutral-500 dark:text-muted-foreground">

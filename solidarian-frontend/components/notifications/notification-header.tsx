@@ -19,7 +19,7 @@ export function NotificationHeader({ userId, onMarkAllAsRead }: NotificationHead
   }, [markAllAsRead, onMarkAllAsRead, userId]);
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between border-b border-neutral-100 bg-white px-6 py-5 shadow-sm dark:border-border dark:bg-card">
+    <header className="flex items-center justify-between border-b border-neutral-100 bg-white px-6 py-5 shadow-sm dark:border-border dark:bg-card">
       <nav className="flex items-center gap-4">
         <BackButton url={ROUTES.app.home} />
         <h1 className="text-xl font-bold text-brand-ink dark:text-foreground">Notificaciones</h1>
@@ -28,9 +28,10 @@ export function NotificationHeader({ userId, onMarkAllAsRead }: NotificationHead
       <button
         type="button"
         onClick={handleMarkAsRead}
-        className="hover:text-brand-white cursor-pointer text-xs font-bold tracking-widest text-brand-500 uppercase transition-colors"
+        className="hover:text-brand-white cursor-pointer font-bold tracking-widest text-brand-500 uppercase transition-colors"
       >
-        Marcar como leidas
+        <span className="hidden md:inline md:text-xs">Marcar como leídas</span>
+        <span className="inline text-xs md:hidden">Marcar leídas</span>
       </button>
     </header>
   );

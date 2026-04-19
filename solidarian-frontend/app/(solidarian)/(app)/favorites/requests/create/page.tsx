@@ -3,7 +3,7 @@
 import { RequestFormLayout } from '@/components/requests/request-form-layout';
 import { RequestSectionCard } from '@/components/requests/request-section-card';
 import { Button, Input, Textarea } from '@/components/ui';
-import useCommunityRequestForm from '@/hooks/use-community-request-form';
+import useCommunityRequestForm from '@/hooks/forms/use-community-request-form';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 
 export default function FavoritesRequestCreatePage() {

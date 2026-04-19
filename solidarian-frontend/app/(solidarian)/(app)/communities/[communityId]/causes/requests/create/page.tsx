@@ -3,7 +3,7 @@
 import { RequestFormLayout } from '@/components/requests/request-form-layout';
 import { RequestSectionCard } from '@/components/requests/request-section-card';
 import { Badge, Button, Input, Textarea } from '@/components/ui';
-import useCauseRequestForm from '@/hooks/use-cause-request-form';
+import useCauseRequestForm from '@/hooks/forms/use-cause-request-form';
 import { IconCalendar, IconClock } from '@tabler/icons-react';
 
 const DURATION_OPTIONS = [

@@ -5,36 +5,18 @@ import {
   CREATE_CAUSE_REQUEST_MUTATION,
   CreateCauseRequestVariables,
 } from '@/features/causes/api/graphql/causes.documents';
+import { SUSTAINABLE_DEVELOPMENT_GOAL } from '@/features/causes/constants/ods.constants';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { RootState } from '@/features/redux/store';
 import { ROUTES } from '@/features/routes';
 import { useApolloClient } from '@apollo/client/react';
 import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import type { SyntheticEvent } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
-const ODS_OPTIONS = [
-  { value: 'NoPoverty', label: '1. Fin de la pobreza' },
-  { value: 'ZeroHunger', label: '2. Hambre cero' },
-  { value: 'GoodHealthAndWellBeing', label: '3. Salud y bienestar' },
-  { value: 'QualityEducation', label: '4. Educacion de calidad' },
-  { value: 'GenderEquality', label: '5. Igualdad de genero' },
-  { value: 'CleanWaterAndSanitation', label: '6. Agua limpia y saneamiento' },
-  { value: 'AffordableAndCleanEnergy', label: '7. Energia asequible y no contaminante' },
-  { value: 'DecentWorkAndEconomicGrowth', label: '8. Trabajo decente y crecimiento economico' },
-  { value: 'IndustryInnovationAndInfrastructure', label: '9. Industria, innovacion e infraestructura' },
-  { value: 'ReducedInequalities', label: '10. Reduccion de las desigualdades' },
-  { value: 'SustainableCitiesAndCommunities', label: '11. Ciudades y comunidades sostenibles' },
-  { value: 'ResponsibleConsumptionAndProduction', label: '12. Produccion y consumo responsables' },
-  { value: 'ClimateAction', label: '13. Accion por el clima' },
-  { value: 'LifeBelowWater', label: '14. Vida submarina' },
-  { value: 'LifeOnLand', label: '15. Vida de ecosistemas terrestres' },
-  { value: 'PeaceJusticeAndStrongInstitutions', label: '16. Paz, justicia e instituciones solidas' },
-  { value: 'PartnershipsForTheGoals', label: '17. Alianzas para lograr los objetivos' },
-] as const;
-
-type OdsValue = (typeof ODS_OPTIONS)[number]['value'];
+type OdsValue = (typeof SUSTAINABLE_DEVELOPMENT_GOAL)[number][number];
 
 interface CauseRequestValues {
   name: string;
@@ -113,13 +95,22 @@ function buildCauseRequestPayload(
 export default function useCauseRequestForm() {
   const router = useRouter();
   const params = useParams<{ communityId: string }>();
-  const graphql = new GraphqlClientService(useApolloClient());
+  const apolloClient = useApolloClient();
+  const graphql = useMemo(() => new GraphqlClientService(apolloClient), [apolloClient]);
   const userId = useSelector((state: RootState) => state.auth.currentUser?.id);
 
   const communityId = getRouteParam(params.communityId);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [values, setValues] = useState(createEmptyCauseRequestForm);
+  const odsOptions = useMemo(
+    () =>
+      Object.entries(SUSTAINABLE_DEVELOPMENT_GOAL).map(([value, label], index) => ({
+        value,
+        label: `${index + 1}. ${label}`,
+      })),
+    []
+  );
 
   const toggleOds = useCallback((ods: OdsValue) => {
     setValues(current => {
@@ -132,7 +123,7 @@ export default function useCauseRequestForm() {
   }, []);
 
   const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
+    async (event: SyntheticEvent<HTMLFormElement>) => {
       event.preventDefault();
 
       if (isSubmitting) {
@@ -177,6 +168,6 @@ export default function useCauseRequestForm() {
     isSubmitting,
     handleSubmit,
     toggleOds,
-    odsOptions: ODS_OPTIONS,
+    odsOptions,
   };
 }

@@ -1,4 +1,4 @@
-const SUSTAINABLE_DEVELOPMENT_GOAL: Record<string, string> = {
+export const SUSTAINABLE_DEVELOPMENT_GOAL: Record<string, string> = {
   NoPoverty: 'Sin Pobreza',
   ZeroHunger: 'Hambre Cero',
   GoodHealthAndWellBeing: 'Salud y Bienestar',

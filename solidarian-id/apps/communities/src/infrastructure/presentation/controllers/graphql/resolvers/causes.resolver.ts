@@ -7,6 +7,20 @@ import { Action } from '../entities/action';
 import { ActionsGraphqlMapper } from '../mappers/actions-graphql.mapper';
 import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
 import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+import { Action as SecurityAction, EntityType, Resource } from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize } from '@solidarianid/security/nestjs';
+
+const AuthorizeCommunityMemberByCauseArgId = () =>
+  Authorize({
+    action: SecurityAction.UPDATE,
+    resource: Resource.COMMUNITY,
+    policy: 'community.member',
+    entityType: EntityType.CAUSE,
+    entityId: {
+      source: 'args',
+      key: 'causeId',
+    },
+  });
 
 @Resolver(() => Cause)
 export class CausesResolver {
@@ -74,7 +88,8 @@ export class CausesResolver {
   }
 
   @Mutation(() => Boolean)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeCommunityMemberByCauseArgId()
   async joinCause(
     @Args('causeId', { type: () => ID }, new ParseUUIDPipe()) causeId: string,
     @CurrentUser('sub') actorId: string,

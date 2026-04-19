@@ -257,6 +257,7 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
 
   async seedUsersProjection(): Promise<void> {
     const repo = this.dataSource.getRepository(UserProjectionEntity);
+    await repo.clear();
 
     const defaultUsersProjection: UserProjectionEntity[] = DEFAULT_USERS_DATA.map(user => ({
       id: user.id,

@@ -7,6 +7,7 @@ import '@app/communities/infrastructure/presentation/controllers/graphql/enums/e
 import { DateScalar } from '@app/communities/infrastructure/presentation/controllers/graphql/scalars/data.scalar';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
+import { CommunityContextResolver, MembershipPermissionSource } from '@solidarianid/security/core';
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
 import { CausesServiceImpl } from './application/services/causes.service.impl';
@@ -80,6 +81,9 @@ import { UserGraphqlMapper } from './infrastructure/presentation/controllers/gra
 import { GraphqlLoadersService } from './infrastructure/presentation/controllers/graphql/loaders/graphql-loaders.service';
 import { GraphqlSubscriptionsPublisherAdapter } from './infrastructure/presentation/controllers/graphql/subscriptions/graphql-subscriptions.publisher';
 import { GRAPHQL_PUB_SUB } from './infrastructure/presentation/controllers/graphql/subscriptions/community.subscription';
+import { CommunityMembershipPolicyEvaluator, SecurityAuthorizationModule } from '@solidarianid/security/nestjs';
+import { CommunitiesCommunityContextResolverAdapter } from './infrastructure/authz/adapters/communities-community-context-resolver.adapter';
+import { CommunitiesMembershipPermissionSourceAdapter } from './infrastructure/authz/adapters/communities-membership-permission-source.adapter';
 
 @Module({
   imports: [
@@ -99,6 +103,18 @@ import { GRAPHQL_PUB_SUB } from './infrastructure/presentation/controllers/graph
       ObjetiveUserEntity,
     ]),
     KafkaDynamicModule.register(process.env.KAFKA_COMMUNITIES_CLIENT_ID ?? 'communities'),
+    SecurityAuthorizationModule.register({
+      imports: [TypeOrmModule.forFeature([CauseEntity, ActionEntity, CommunityUserEntity])],
+      evaluators: [CommunityMembershipPolicyEvaluator],
+      communityContextResolver: {
+        provide: CommunityContextResolver,
+        useClass: CommunitiesCommunityContextResolverAdapter,
+      },
+      membershipPermissionSource: {
+        provide: MembershipPermissionSource,
+        useClass: CommunitiesMembershipPermissionSourceAdapter,
+      },
+    }),
   ],
   controllers: [
     CommunitiesController,
@@ -211,6 +227,8 @@ import { GRAPHQL_PUB_SUB } from './infrastructure/presentation/controllers/graph
     RequestSubscriptionsResolver,
     UserGraphqlMapper,
     GraphqlLoadersService,
+    CommunitiesCommunityContextResolverAdapter,
+    CommunitiesMembershipPermissionSourceAdapter,
   ],
 })
 export class CommunitiesModule {}

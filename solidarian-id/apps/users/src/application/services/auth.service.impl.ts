@@ -37,7 +37,7 @@ export class AuthServiceImpl extends AuthService {
   ): Promise<Either<Error, AuthTokens>> {
     const userOrError = await this.usersService.authenticate(username, password);
     if (userOrError.isLeft()) {
-      return userOrError;
+      return left(userOrError.value);
     }
 
     return this.issueAndPersistTokens(userOrError.value.id, deviceId);
@@ -46,12 +46,12 @@ export class AuthServiceImpl extends AuthService {
   async refresh(refreshToken: string): Promise<Either<Error, AuthTokens>> {
     const payloadOrError = await this.verifyRefreshToken(refreshToken);
     if (payloadOrError.isLeft()) {
-      return payloadOrError;
+      return left(payloadOrError.value);
     }
 
     const userId = UniqueEntityID.create(payloadOrError.value.sub);
     if (userId.isLeft()) {
-      return userId;
+      return left(userId.value);
     }
 
     if (!payloadOrError.value.jti) {
@@ -75,7 +75,7 @@ export class AuthServiceImpl extends AuthService {
         if (activeSessionOrError.value instanceof EntityNotFoundException) {
           return left(new AuthError('Invalid refresh session'));
         }
-        return activeSessionOrError;
+        return left(activeSessionOrError.value);
       }
 
       if (!activeSessionOrError.value.userId.equals(userId.value)) {
@@ -91,7 +91,7 @@ export class AuthServiceImpl extends AuthService {
 
       const saveResult = await this.tokensRepository.save(activeSessionOrError.value);
       if (saveResult.isLeft()) {
-        return saveResult;
+        return left(saveResult.value);
       }
 
       const accessToken = await this.jwtService.signAsync(

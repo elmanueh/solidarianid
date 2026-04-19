@@ -12,11 +12,24 @@ import {
   ApiResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+import { Action, EntityType, Resource } from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { FollowerJoinCauseRequestDto } from '../../dtos/input/follower-join-cause.request.dto';
 import { CauseDetailResponseDto } from '../../dtos/output/cause-detail.response.dto';
 import { CauseSummaryResponseDto } from '../../dtos/output/cause-summary.response.dto';
 import { CauseDomainMapper } from '../../mappers/cause.mapper';
+
+const AuthorizeCommunityMemberByCauseParamId = () =>
+  Authorize({
+    action: Action.UPDATE,
+    resource: Resource.COMMUNITY,
+    policy: 'community.member',
+    entityType: EntityType.CAUSE,
+    entityId: {
+      source: 'params',
+      key: 'id',
+    },
+  });
 
 @Controller()
 export class CausesController {
@@ -96,7 +109,8 @@ export class CausesController {
   }
 
   @Post('causes/:id/followers')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeCommunityMemberByCauseParamId()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Join a user as a supporter of a cause' })
   @ApiCreatedResponse({

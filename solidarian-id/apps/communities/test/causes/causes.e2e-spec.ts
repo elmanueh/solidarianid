@@ -237,14 +237,14 @@ describe('CausesController (e2e)', () => {
       expect(causeFollower?.userId).toBe(USER_IDS.ANA);
     });
 
-    it('should return 401 when the user is not a member of the cause community', async () => {
+    it('should return 403 when the user is not a member of the cause community', async () => {
       const token = createAccessToken(USER_IDS.PEDRO);
       await server
         .getRequest()
         .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
         .set('Cookie', [`AccessToken=${token}`])
         .send({})
-        .expect(HttpStatus.UNAUTHORIZED);
+        .expect(HttpStatus.FORBIDDEN);
 
       const causeFollower = await causeUserRepository.findOne({
         where: {

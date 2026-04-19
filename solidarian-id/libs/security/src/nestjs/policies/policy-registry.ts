@@ -8,6 +8,10 @@ export class PolicyRegistry {
   constructor(@Inject(AUTHZ_POLICY_EVALUATORS) private readonly evaluators: PolicyEvaluator[]) {}
 
   async evaluate(meta: AuthorizationMetadata, context: PolicyContext): Promise<boolean> {
+    if (!context.subject.sub) {
+      return false;
+    }
+
     const evaluator = this.evaluators.find(candidate => candidate.supports(meta));
 
     if (!evaluator) {

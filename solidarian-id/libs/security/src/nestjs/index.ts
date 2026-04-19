@@ -3,6 +3,7 @@ export * from './decorators/current-user.decorator';
 export * from './decorators/public.decorator';
 export * from './guards/authorization.guard';
 export * from './guards/jwt-auth.guard';
+export * from './policies/community-membership.policy';
 export * from './policies/policy-registry';
 export * from './security-authorization.module';
 export * from './security-jwt.module';

@@ -16,11 +16,12 @@ import {
 import { DataSource } from 'typeorm';
 
 async function resetState(kurrentdbSeeder: KurrentDBSeeder, postgresSeeder: PostgreSQLSeeder): Promise<void> {
-  const projectionUserIds = await postgresSeeder.getUserProjectionIds();
-  await kurrentdbSeeder.clean(projectionUserIds);
+  await kurrentdbSeeder.clean();
   await kurrentdbSeeder.seedUsers();
+
   await postgresSeeder.clean();
-  await postgresSeeder.seedUsersProjection();
+  const position = await kurrentdbSeeder.getLatestUserCheckpointPosition();
+  await postgresSeeder.seedUsersProjection(position.commit, position.prepare);
 }
 
 describe('UsersController (e2e)', () => {

@@ -69,6 +69,10 @@ function normalizeDurationDays(value: number): number {
     throw new Error('La duracion debe ser un numero mayor que 0.');
   }
 
+  if (value > 365) {
+    throw new Error('La duracion no puede exceder 365 dias.');
+  }
+
   return Math.floor(value);
 }
 

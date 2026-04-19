@@ -6,13 +6,6 @@ import { Badge, Button, Input, Textarea } from '@/components/ui';
 import useCauseRequestForm from '@/hooks/forms/use-cause-request-form';
 import { IconCalendar, IconClock } from '@tabler/icons-react';
 
-const DURATION_OPTIONS = [
-  { label: '1 mes', value: 30 },
-  { label: '3 meses', value: 90 },
-  { label: '6 meses', value: 180 },
-  { label: '1 ano', value: 365 },
-] as const;
-
 export default function CommunityCauseRequestCreatePage() {
   const { handleSubmit, isSubmitting, setValues, values, toggleOds, odsOptions } = useCauseRequestForm();
 
@@ -105,21 +98,18 @@ export default function CommunityCauseRequestCreatePage() {
                   Duracion
                 </span>
               </label>
-              <select
+              <Input
                 id="cause-request-duration-days"
+                type="number"
                 disabled={isSubmitting}
-                className="h-10 rounded-md border border-input bg-background px-3 text-sm"
                 value={values.durationDays}
+                min={1}
+                max={365}
+                step={1}
                 onChange={event =>
                   setValues(current => ({ ...current, durationDays: Number(event.target.value) || 0 }))
                 }
-              >
-                {DURATION_OPTIONS.map(duration => (
-                  <option key={duration.value} value={duration.value}>
-                    {duration.label}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
           </div>
         </RequestSectionCard>

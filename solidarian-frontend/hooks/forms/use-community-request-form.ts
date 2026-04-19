@@ -47,6 +47,17 @@ function createEmptyCommunityRequestForm(): CommunityRequestValues {
   };
 }
 
+function isCauseReadyForNextStep(cause: CommunityCauseValues): boolean {
+  return Boolean(
+    cause.name.trim() &&
+    cause.description.trim() &&
+    cause.initialDate &&
+    cause.ods.length > 0 &&
+    Number.isFinite(cause.durationDays) &&
+    cause.durationDays > 0
+  );
+}
+
 function validateRequiredText(value: string, errorMessage: string): string {
   const normalizedValue = value.trim();
 
@@ -122,7 +133,9 @@ export default function useCommunityRequestForm() {
   const addCause = useCallback(() => {
     setValues(current => ({
       ...current,
-      causes: [...current.causes, createEmptyCause()],
+      causes: isCauseReadyForNextStep(current.causes[current.causes.length - 1])
+        ? [...current.causes, createEmptyCause()]
+        : current.causes,
     }));
   }, []);
 

@@ -42,9 +42,9 @@ export default function CommunityRequestCausesSection({
       title="Causas de la comunidad *"
       description="Puedes proponer una o varias causas iniciales para la comunidad."
     >
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 rounded-2xl border border-dashed border-border bg-muted/30 p-4">
         {causes.map((cause, index) => (
-          <div key={`community-cause-${index}`} className="rounded-xl border border-border p-4">
+          <div key={`community-cause-${index}`} className="rounded-xl border border-border bg-background p-4">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-sm font-semibold text-foreground">Causa #{index + 1}</p>
               {causes.length > 1 ? (

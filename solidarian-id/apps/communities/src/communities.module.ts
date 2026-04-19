@@ -11,6 +11,7 @@ import { ActionsServiceImpl } from './application/services/actions.service.impl'
 import { CausesServiceImpl } from './application/services/causes.service.impl';
 import { CommunitiesServiceImpl } from './application/services/communities.service.impl';
 import { RequestsServiceImpl } from './application/services/requests.service.impl';
+import { SubscriptionsServiceImpl } from './application/services/subscriptions.service.impl';
 import { UserServiceImpl } from './application/services/user.service.impl';
 import { ActionsPublisherPort } from './domain/ports/actions.publisher.port';
 import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
@@ -26,6 +27,7 @@ import { ActionsService } from './domain/services/actions.service';
 import { CausesService } from './domain/services/causes.service';
 import { CommunitiesService } from './domain/services/communities.service';
 import { RequestsService } from './domain/services/request.service';
+import { SubscriptionsService } from './domain/services/subscriptions.service';
 import { UserService } from './domain/services/user.service';
 import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/requests.consumer';
 import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
@@ -126,6 +128,10 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
     {
       provide: RequestsService,
       useClass: RequestsServiceImpl,
+    },
+    {
+      provide: SubscriptionsService,
+      useClass: SubscriptionsServiceImpl,
     },
     // Repositories
     {

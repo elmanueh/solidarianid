@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { IconShield, IconUser } from '@tabler/icons-react';
+import { UserAvatar } from '@/components/user-avatar';
+import { IconShield } from '@tabler/icons-react';
 
 type CommunityMemberRole = 'creator' | 'admin' | 'member';
 
@@ -46,19 +47,10 @@ export default function CommunityMembersList({ members }: Readonly<CommunityMemb
         <CardContent className="divide-y divide-border p-0">
           {members.length > 0 ? (
             members.map(member => {
-              const initials = member.fullName
-                .split(' ')
-                .filter(Boolean)
-                .slice(0, 2)
-                .map(fragment => fragment[0]?.toUpperCase() ?? '')
-                .join('');
-
               return (
                 <div key={member.id} className="flex items-center justify-between gap-3 px-5 py-4 sm:px-6">
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="grid size-10 shrink-0 place-items-center rounded-full bg-muted text-xs font-bold text-brand-ink">
-                      {initials || <IconUser size={16} />}
-                    </div>
+                    <UserAvatar username={member.fullName} size="lg" />
                     <span className="truncate text-sm font-semibold text-brand-ink dark:text-foreground">
                       {member.fullName}
                     </span>

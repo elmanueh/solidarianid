@@ -1,5 +1,6 @@
 import CommunityJoinButton from '@/components/community-page/community-join-button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui';
+import { UserAvatar } from '@/components/user-avatar';
 import { Separator } from '@base-ui/react';
 import { IconInfoCircle } from '@tabler/icons-react';
 
@@ -42,7 +43,10 @@ export function CommunityInfoCard({
         <div className="mt-4 grid grid-cols-1 gap-3 text-sm sm:grid-cols-3">
           <div className="rounded-2xl border border-border bg-background px-4 py-3">
             <p className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Creador</p>
-            <p className="mt-1 font-semibold text-brand-ink dark:text-foreground">{creatorName}</p>
+            <div className="mt-2 flex items-center gap-2">
+              <UserAvatar username={creatorName} size="sm" />
+              <p className="min-w-0 truncate font-semibold text-brand-ink dark:text-foreground">{creatorName}</p>
+            </div>
           </div>
           <div className="rounded-2xl border border-border bg-background px-4 py-3">
             <p className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Causas activas</p>

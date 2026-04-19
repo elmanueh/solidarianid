@@ -5,6 +5,8 @@ solidarian-id/data
 main.css
 images/
 *.venv
+!solidarian-frontend/features/images/
+!solidarian-frontend/features/images/**
 
 *.pem
 solidarian-id/scripts/init/postgres/*

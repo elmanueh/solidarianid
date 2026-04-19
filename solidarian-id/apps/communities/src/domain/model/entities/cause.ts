@@ -1,11 +1,11 @@
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { Either, left, right, sequence } from '@app/ddd/either';
+import { Entity } from '@app/ddd/entity';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
 import { Duration } from '@app/value-objects/model/duration';
 import { Name } from '@app/value-objects/model/name';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Entity } from '@app/ddd/entity';
 import { Action } from './action';
 
 export interface CauseProps {
@@ -89,6 +89,18 @@ export class Cause extends Entity<CauseProps> {
     if (!this.hasFollower(userId)) {
       this.props.userIds.push(userIdOrError.value);
     }
+
+    return right(undefined);
+  }
+
+  removeFollower(userId: string): Either<ValidationError, void> {
+    const userIdOrError = UniqueEntityID.create(userId);
+
+    if (userIdOrError.isLeft()) {
+      return left(userIdOrError.value);
+    }
+
+    this.props.userIds = this.props.userIds.filter(currentUserId => currentUserId.value !== userId);
 
     return right(undefined);
   }

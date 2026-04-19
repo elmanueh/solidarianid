@@ -1,14 +1,13 @@
 import { CausesService } from '@app/communities/domain/services/causes.service';
+import { Cause } from '@app/communities/infrastructure/presentation/controllers/graphql/entities/cause';
+import { ActionsGraphqlMapper } from '@app/communities/infrastructure/presentation/controllers/graphql/mappers/actions-graphql.mapper';
+import { CausesGraphqlMapper } from '@app/communities/infrastructure/presentation/controllers/graphql/mappers/causes-graphql.mapper';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Cause } from '../entities/cause';
-import { CausesGraphqlMapper } from '../mappers/causes-graphql.mapper';
+import { EntityType, Resource, Action as SecurityAction } from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { Action } from '../entities/action';
-import { ActionsGraphqlMapper } from '../mappers/actions-graphql.mapper';
 import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
-import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
-import { Action as SecurityAction, EntityType, Resource } from '@solidarianid/security/core';
-import { AuthorizationGuard, Authorize } from '@solidarianid/security/nestjs';
 
 const AuthorizeCommunityMemberByCauseArgId = () =>
   Authorize({
@@ -95,6 +94,22 @@ export class CausesResolver {
     @CurrentUser('sub') actorId: string,
   ): Promise<boolean> {
     const result = await this.causesService.joinCause(causeId, actorId);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeCommunityMemberByCauseArgId()
+  async leaveCause(
+    @Args('causeId', { type: () => ID }, new ParseUUIDPipe()) causeId: string,
+    @CurrentUser('sub') actorId: string,
+  ): Promise<boolean> {
+    const result = await this.causesService.leaveCause(causeId, actorId);
 
     if (result.isLeft()) {
       throw result.value;

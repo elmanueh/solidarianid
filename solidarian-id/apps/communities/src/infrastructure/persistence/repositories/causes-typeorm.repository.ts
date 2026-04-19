@@ -1,16 +1,16 @@
+import { Cause } from '@app/communities/domain/model/entities/cause';
+import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
+import { CauseUserEntity } from '@app/communities/infrastructure/persistence/entities/cause-user.entity';
+import { Either, left, right, sequence } from '@app/ddd/either';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { RepositoryTypeORM } from '@app/ddd/repository/repository-typeorm';
-import { Repository as TypeOrmRepository } from 'typeorm';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { In, Repository as TypeOrmRepository } from 'typeorm';
 import { CauseEntity } from '../entities/cause.entity';
-import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CauseEntityMapper } from '../mappers/cause-entity.mapper';
-import { Either, left, right, sequence } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { In } from 'typeorm';
 
 @Injectable()
 export class CausesRepositoryTypeOrmAdapter
@@ -20,6 +20,8 @@ export class CausesRepositoryTypeOrmAdapter
   constructor(
     @InjectRepository(CauseEntity)
     private readonly causeRepository: TypeOrmRepository<CauseEntity>,
+    @InjectRepository(CauseUserEntity)
+    private readonly causeUserRepository: TypeOrmRepository<CauseUserEntity>,
     private readonly causeMapper: CauseEntityMapper,
   ) {
     super(causeRepository, causeMapper);
@@ -96,5 +98,14 @@ export class CausesRepositoryTypeOrmAdapter
     }
 
     return right(causeOrError.value);
+  }
+
+  async removeFollower(causeId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>> {
+    try {
+      await this.causeUserRepository.delete({ causeId, userId });
+      return right(undefined);
+    } catch (error) {
+      return left(new RepositoryException('Failed to remove follower from cause.', error));
+    }
   }
 }

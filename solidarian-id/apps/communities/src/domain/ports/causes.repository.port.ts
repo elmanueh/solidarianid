@@ -1,8 +1,8 @@
-import { Repository } from '@app/ddd/repository/repository';
-import { Cause } from '../model/entities/cause';
+import { Cause } from '@app/communities/domain/model/entities/cause';
 import { Either } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { Repository } from '@app/ddd/repository/repository';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 
 export abstract class CausesRepositoryPort extends Repository<Cause> {
   abstract findAllByCommunityIds(
@@ -18,4 +18,8 @@ export abstract class CausesRepositoryPort extends Repository<Cause> {
     causeId: string,
     relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause>>;
+  abstract removeFollower(
+    causeId: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>>;
 }

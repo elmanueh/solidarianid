@@ -1,22 +1,22 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { CausesServiceImpl } from '@app/communities/application/services/causes.service.impl';
-import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
+import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
+import { Community } from '@app/communities/domain/model/aggregates/community';
 import { Cause } from '@app/communities/domain/model/entities/cause';
-import { CauseRequestEventDto } from '@solidarianid/kafka';
+import { User } from '@app/communities/domain/model/entities/user';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { User } from '@app/communities/domain/model/entities/user';
-import { Community } from '@app/communities/domain/model/aggregates/community';
-import { ConflictError } from '@app/ddd/errors/conflict-error';
-import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
+import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { left, right } from '@app/ddd/either';
+import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { Test, TestingModule } from '@nestjs/testing';
+import { CauseRequestEventDto } from '@solidarianid/kafka';
 
 describe('CausesServiceImpl', () => {
   let service: CausesServiceImpl;
@@ -24,6 +24,7 @@ describe('CausesServiceImpl', () => {
     findAll: jest.Mock;
     findById: jest.Mock;
     save: jest.Mock;
+    removeFollower: jest.Mock;
   };
   let mockUsersRepository: {
     findById: jest.Mock;
@@ -100,6 +101,7 @@ describe('CausesServiceImpl', () => {
       findAll: jest.fn(),
       findById: jest.fn(),
       save: jest.fn(),
+      removeFollower: jest.fn(),
     };
     mockUsersRepository = {
       findById: jest.fn(),
@@ -331,6 +333,52 @@ describe('CausesServiceImpl', () => {
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(UserPermissionError);
+      expect(mockCauseRepository.save).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('leaveCause', () => {
+    it('should remove a follower when the user is already supporting the cause', async () => {
+      const causeOrError = Cause.create(
+        {
+          name: 'Test Cause',
+          description: 'A valid test cause description with more than 20 characters',
+          ods: [SustainableDevelopmentGoal.NoPoverty],
+          initialDate: new Date('2026-01-01'),
+          durationDays: 90,
+          communityId: validCommunityId,
+          userIds: [validUserId],
+        },
+        validCauseId,
+      );
+      const user = createMockUser();
+
+      if (causeOrError.isLeft()) throw new Error('Failed to create mock cause');
+
+      mockCauseRepository.findById.mockResolvedValueOnce(right(causeOrError.value));
+      mockUsersRepository.findById.mockResolvedValueOnce(right(user));
+      mockCauseRepository.removeFollower.mockResolvedValueOnce(right(undefined));
+
+      const result = await service.leaveCause(validCauseId, validUserId);
+
+      expect(result.isRight()).toBe(true);
+      expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
+      expect(mockCauseRepository.removeFollower).toHaveBeenCalledWith(validCauseId, validUserId);
+      expect(mockCauseRepository.save).not.toHaveBeenCalled();
+    });
+
+    it('should return ConflictError when the user is not following the cause', async () => {
+      const cause = createMockCause();
+      const user = createMockUser();
+
+      mockCauseRepository.findById.mockResolvedValueOnce(right(cause));
+      mockUsersRepository.findById.mockResolvedValueOnce(right(user));
+
+      const result = await service.leaveCause(validCauseId, validUserId);
+
+      expect(result.isLeft()).toBe(true);
+      expect(result.value).toBeInstanceOf(ConflictError);
+      expect(mockCauseRepository.removeFollower).not.toHaveBeenCalled();
       expect(mockCauseRepository.save).not.toHaveBeenCalled();
     });
   });

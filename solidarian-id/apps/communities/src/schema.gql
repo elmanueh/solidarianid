@@ -115,7 +115,9 @@ type RequestStatusChangedEvent {
   createdEntityId: ID
 }
 
-"""Date custom scalar type"""
+"""
+Date custom scalar type
+"""
 scalar Date
 
 type Query {
@@ -132,6 +134,7 @@ type Query {
 
 type Mutation {
   joinCause(causeId: ID!): Boolean!
+  leaveCause(causeId: ID!): Boolean!
   createCommunityRequest(createCommunityRequestInput: CreateCommunityRequestInput!): String!
   createCauseRequest(createCauseRequestInput: CreateCauseRequestInput!): String!
   createActionRequest(createActionRequestInput: CreateActionRequestInput!): String!

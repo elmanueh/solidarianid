@@ -1,4 +1,5 @@
 import { JoinCauseButton } from '@/components/join-community-button';
+import { ROUTES } from '@/features/routes';
 import { causeCardStyles } from '@/styles/components/cause-card.styles';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,7 +21,7 @@ export function CauseCard({ cause, index }: Readonly<CauseCardProps>) {
 
   return (
     <div className={styles.wrapper} style={{ animationDelay: `${index * 50}ms` }}>
-      <Link href={`/causes/${cause.id}`} className={styles.link}>
+      <Link href={ROUTES.communities.causeDetail(cause.communityId, cause.id)} className={styles.link}>
         <div className={styles.image.wrapper}>
           <Image
             src={cause.imageUrl}

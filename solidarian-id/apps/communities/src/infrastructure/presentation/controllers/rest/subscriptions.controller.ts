@@ -1,5 +1,5 @@
 import { SubscriptionsService } from '@app/communities/domain/services/subscriptions.service';
-import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Param, ParseUUIDPipe, Query } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
@@ -8,6 +8,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { SubscriptionsCriteriaRequestDto } from '../../dtos/input/subscriptions-criteria.request.dto';
 import { UserSubscriptionsResponseDto } from '../../dtos/output/user-subscriptions.response.dto';
 
 @Controller()
@@ -32,8 +33,9 @@ export class SubscriptionsController {
   })
   async getUserSubscriptions(
     @Param('userId', new ParseUUIDPipe()) userId: string,
+    @Query() criteria: SubscriptionsCriteriaRequestDto,
   ): Promise<UserSubscriptionsResponseDto> {
-    const subscriptionsOrError = await this.subscriptionsService.getUserSubscriptions(userId);
+    const subscriptionsOrError = await this.subscriptionsService.getUserSubscriptions(userId, criteria);
 
     if (subscriptionsOrError.isLeft()) {
       throw subscriptionsOrError.value;

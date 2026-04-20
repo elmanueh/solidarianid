@@ -1,5 +1,7 @@
 export type UserSubscriptionsResponse = {
-  pendingRequestIds: string[];
+  requestIds: string[];
   followedCauseIds: string[];
   followedCommunityIds: string[];
+  eventIds: string[];
+  objectiveIds: string[];
 };

@@ -5,11 +5,35 @@ import type { UserSubscriptionsResponse } from '@/features/notifications/api/gra
 import { Notification, NotificationType } from '@/features/repository/entities/notification';
 import { ROUTES } from '@/features/routes';
 
+interface UserSubscriptionsCriteria {
+  requestType?: 'cause' | 'community' | 'action';
+  requestStatus?: 'pending' | 'approved' | 'rejected';
+  includeRequestIds?: boolean;
+  includeFollowedCauseIds?: boolean;
+  includeFollowedCommunityIds?: boolean;
+  includeEventIds?: boolean;
+  includeObjectiveIds?: boolean;
+}
+
 export async function fetchUserSubscriptions(
   communitiesApiBase: string,
-  userId: string
+  userId: string,
+  criteria?: UserSubscriptionsCriteria
 ): Promise<UserSubscriptionsResponse> {
-  const response = await fetch(`${communitiesApiBase}/api/subscriptions/${userId}`, {
+  const params = new URLSearchParams();
+
+  if (criteria) {
+    Object.entries(criteria).forEach(([key, value]) => {
+      if (value !== undefined) {
+        params.set(key, String(value));
+      }
+    });
+  }
+
+  const queryString = params.toString();
+  const url = `${communitiesApiBase}/api/subscriptions/${userId}${queryString ? `?${queryString}` : ''}`;
+
+  const response = await fetch(url, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

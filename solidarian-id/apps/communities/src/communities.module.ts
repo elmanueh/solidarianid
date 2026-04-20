@@ -19,6 +19,8 @@ import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
 import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
 import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
+import { EventsRepositoryPort } from './domain/ports/events.repository.port';
+import { ObjectivesRepositoryPort } from './domain/ports/objectives.repository.port';
 import { RequestPublisherPort } from './domain/ports/requests.publisher.port';
 import { RequestsRepositoryPort } from './domain/ports/requests.repository.port';
 import { SubscriptionsPublisherPort } from './domain/ports/subscriptions-publisher.port';
@@ -60,6 +62,8 @@ import { ActionsRepositoryTypeOrmAdapter } from './infrastructure/persistence/re
 import { CausesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/causes-typeorm.repository';
 import { CommunitiesQueryTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/communities-query-typeorm.repository';
 import { CommunitiesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/communities-typeorm.repository';
+import { EventsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/events-typeorm.repository';
+import { ObjectivesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/objectives-typeorm.repository';
 import { RequestsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/requests-typeorm.repository';
 import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/users-typeorm.repository';
 import { GraphqlLoadersService } from './infrastructure/presentation/controllers/graphql/loaders/graphql-loaders.service';
@@ -153,6 +157,14 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
     {
       provide: RequestsRepositoryPort,
       useClass: RequestsRepositoryTypeOrmAdapter,
+    },
+    {
+      provide: EventsRepositoryPort,
+      useClass: EventsRepositoryTypeOrmAdapter,
+    },
+    {
+      provide: ObjectivesRepositoryPort,
+      useClass: ObjectivesRepositoryTypeOrmAdapter,
     },
     {
       provide: UsersRepositoryPort,

@@ -80,7 +80,14 @@ export function useNotificationSubscriptions({ userId, enabled = true }: UseNoti
       subscriptions.push({ unsubscribe: () => requestSubscription.unsubscribe() });
 
       try {
-        const data = await fetchUserSubscriptions(communitiesApiBase, userId);
+        const data = await fetchUserSubscriptions(communitiesApiBase, userId, {
+          includeRequestIds: true,
+          requestStatus: 'pending',
+          includeEventIds: false,
+          includeObjectiveIds: false,
+          includeFollowedCauseIds: true,
+          includeFollowedCommunityIds: true,
+        });
         const followedCommunityIds = Array.from(new Set(data.followedCommunityIds));
         const followedCauseIds = Array.from(new Set(data.followedCauseIds));
 

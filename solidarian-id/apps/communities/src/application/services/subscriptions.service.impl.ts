@@ -1,9 +1,15 @@
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { EventsRepositoryPort } from '@app/communities/domain/ports/events.repository.port';
+import { ObjectivesRepositoryPort } from '@app/communities/domain/ports/objectives.repository.port';
 import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { SubscriptionsService } from '@app/communities/domain/services/subscriptions.service';
+import {
+  SubscriptionsSearchCriteria,
+  SubscriptionsService,
+} from '@app/communities/domain/services/subscriptions.service';
 import { UserSubscriptionsResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/user-subscriptions.response.dto';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
@@ -17,12 +23,15 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communitiesRepository: CommunitiesRepositoryPort,
     private readonly causesRepository: CausesRepositoryPort,
+    private readonly eventsRepository: EventsRepositoryPort,
+    private readonly objectivesRepository: ObjectivesRepositoryPort,
   ) {
     super();
   }
 
   async getUserSubscriptions(
     userId: string,
+    criteria: SubscriptionsSearchCriteria = {},
   ): Promise<Either<ValidationError | RepositoryException, UserSubscriptionsResponseDto>> {
     const userOrError = await this.usersRepository.findById(userId);
 
@@ -30,27 +39,56 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
       return left(userOrError.value);
     }
 
-    const requestsOrError = await this.requestsRepository.findByUserId(userId);
-    const pendingRequestIds = requestsOrError.isLeft()
-      ? []
-      : requestsOrError.value.filter(req => req.status === RequestStatus.PENDING).map(req => req.id.value);
+    const includeRequestIds = criteria.includeRequestIds ?? true;
+    const includeFollowedCauseIds = criteria.includeFollowedCauseIds ?? true;
+    const includeFollowedCommunityIds = criteria.includeFollowedCommunityIds ?? true;
+    const includeEventIds = criteria.includeEventIds ?? true;
+    const includeObjectiveIds = criteria.includeObjectiveIds ?? true;
+    const statusFilter = criteria.requestStatus ?? RequestStatus.PENDING;
+    const typeFilter = criteria.requestType;
 
-    const causesOrError = await this.causesRepository.findAll(['users']);
-    const followedCauseIds = causesOrError.isLeft()
-      ? []
-      : causesOrError.value.filter(cause => cause.userIds.includes(userId)).map(cause => cause.id.value);
+    let requestIds: string[] = [];
+    if (includeRequestIds) {
+      const requestsOrError = await this.getRequestsByCriteria(userId, typeFilter);
+      requestIds = requestsOrError.isLeft()
+        ? []
+        : requestsOrError.value.filter(req => req.status === statusFilter).map(req => req.id.value);
+    }
 
-    const communitiesOrError = await this.communitiesRepository.findAll(['members', 'members.user']);
-    const followedCommunityIds = communitiesOrError.isLeft()
-      ? []
-      : communitiesOrError.value
-          .filter(community => community.members.some(member => member.id.value === userId))
-          .map(community => community.id.value);
+    let followedCauseIds: string[] = [];
+    if (includeFollowedCauseIds) {
+      const causesOrError = await this.causesRepository.findAllFollowedCauseIdsByUserId(userId);
+      followedCauseIds = causesOrError.isLeft() ? [] : causesOrError.value;
+    }
+
+    let followedCommunityIds: string[] = [];
+    if (includeFollowedCommunityIds) {
+      const communitiesOrError = await this.communitiesRepository.findAllFollowedCommunityIdsByUserId(userId);
+      followedCommunityIds = communitiesOrError.isLeft() ? [] : communitiesOrError.value;
+    }
+
+    const eventIdsOrError = includeEventIds ? await this.eventsRepository.findAllEventIdsByUserId(userId) : right([]);
+    const eventIds = eventIdsOrError.isLeft() ? [] : eventIdsOrError.value;
+
+    const objectiveIdsOrError = includeObjectiveIds
+      ? await this.objectivesRepository.findAllObjectiveIdsByUserId(userId)
+      : right([]);
+    const objectiveIds = objectiveIdsOrError.isLeft() ? [] : objectiveIdsOrError.value;
 
     return right({
-      pendingRequestIds,
+      requestIds,
       followedCauseIds,
       followedCommunityIds,
+      eventIds,
+      objectiveIds,
     });
+  }
+
+  private async getRequestsByCriteria(userId: string, requestType?: RequestType) {
+    if (!requestType) {
+      return await this.requestsRepository.findByUserId(userId);
+    }
+
+    return await this.requestsRepository.findByUserIdAndType(userId, requestType);
   }
 }

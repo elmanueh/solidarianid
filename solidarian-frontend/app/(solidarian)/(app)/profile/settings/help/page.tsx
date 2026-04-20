@@ -1,8 +1,174 @@
+import {
+  IconArrowLeft,
+  IconBook,
+  IconExternalLink,
+  IconHelpCircle,
+  IconMail,
+  IconShieldCheck,
+} from '@tabler/icons-react';
+import Link from 'next/link';
+import type { ReactNode } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { ROUTES } from '@/features/routes';
+
+type SupportChannel = {
+  icon: ReactNode;
+  label: string;
+  description: string;
+  accentClassName: string;
+  href?: string;
+};
+
+const faqs = [
+  {
+    question: '¿Cómo puedo unirme a una comunidad?',
+    answer:
+      "Puedes unirte a cualquier comunidad desde su perfil pulsando el botón 'Seguir'. Una vez dentro, recibirás notificaciones sobre sus causas y acciones.",
+  },
+  {
+    question: '¿Qué diferencia hay entre una Causa y una Acción?',
+    answer:
+      'Una Causa es el objetivo general, por ejemplo reforestación, mientras que las Acciones son proyectos específicos con objetivos y eventos concretos dentro de esa causa.',
+  },
+  {
+    question: '¿Puedo participar si no estoy registrado?',
+    answer:
+      'Sí, los usuarios no registrados pueden apoyar causas introduciendo su nombre y email, y recibirán actualizaciones sobre el progreso por correo electrónico.',
+  },
+  {
+    question: '¿Cómo se miden mis contribuciones?',
+    answer:
+      'En tu perfil encontrarás estadísticas que reflejan tu impacto: horas de voluntariado, donaciones realizadas y acciones en las que has participado.',
+  },
+] as const;
+
+const supportChannels: SupportChannel[] = [
+  {
+    icon: <IconMail size={20} />,
+    label: 'Email',
+    description: 'soporte@solidarianid.org',
+    accentClassName: 'bg-brand-ink/10 text-brand-ink dark:bg-brand-500/10 dark:text-brand-500',
+    href: 'mailto:soporte@solidarianid.org',
+  },
+];
+
 export default function ProfileSettingsHelpPage() {
   return (
-    <section className="space-y-2">
-      <h1 className="text-2xl font-semibold">Help Center</h1>
-      <p className="text-sm text-muted-foreground">Trace: /profile/settings/help</p>
-    </section>
+    <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-brand-500/10 blur-3xl dark:bg-brand-500/15" />
+        <div className="absolute top-1/3 right-0 h-64 w-64 rounded-full bg-brand-ink/5 blur-3xl dark:bg-brand-500/10" />
+      </div>
+
+      <div className="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-4 pt-4 pb-24 sm:px-6 lg:px-8">
+        <header className="sticky top-4 z-20 rounded-4xl border border-border/70 bg-background/90 px-4 py-4 shadow-sm backdrop-blur-xl dark:bg-background/80">
+          <div className="flex items-center gap-4">
+            <Link
+              href={ROUTES.app.profile}
+              aria-label="Volver a configuración"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-background text-foreground shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none"
+            >
+              <IconArrowLeft size={20} />
+            </Link>
+
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-black tracking-[0.28em] text-muted-foreground uppercase">
+                Centro de ayuda
+              </p>
+              <h1 className="truncate text-xl font-black tracking-tight text-brand-ink sm:text-2xl dark:text-foreground">
+                Ayuda y Soporte
+              </h1>
+            </div>
+          </div>
+        </header>
+
+        <main className="flex flex-1 flex-col gap-8 pt-8">
+          <section className="grid gap-4 sm:grid-cols-2">
+            {supportChannels.map(channel => (
+              <div
+                key={channel.label}
+                className="group rounded-[28px] border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-500/30 hover:shadow-xl hover:shadow-brand-500/5"
+              >
+                <SupportCard
+                  icon={channel.icon}
+                  label={channel.label}
+                  description={channel.description}
+                  accentClassName={channel.accentClassName}
+                  href={channel.href}
+                />
+              </div>
+            ))}
+          </section>
+
+          <section className="space-y-4">
+            <div className="flex items-center justify-between px-2">
+              <h2 className="text-[10px] font-black tracking-[0.28em] text-muted-foreground uppercase">
+                Preguntas Frecuentes
+              </h2>
+              <IconBook size={16} className="text-muted-foreground/60" />
+            </div>
+
+            <div className="space-y-3">
+              {faqs.map(faq => (
+                <article
+                  key={faq.question}
+                  className="rounded-[28px] border border-border bg-card p-5 shadow-sm transition-all hover:border-brand-500/25 hover:shadow-lg hover:shadow-brand-500/5"
+                >
+                  <h3 className="mb-2 text-sm font-black tracking-tight text-brand-ink sm:text-base dark:text-foreground">
+                    {faq.question}
+                  </h3>
+                  <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">{faq.answer}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+function SupportCard({
+  icon,
+  label,
+  description,
+  accentClassName,
+  href,
+}: {
+  icon: ReactNode;
+  label: string;
+  description: string;
+  accentClassName: string;
+  href?: string;
+}) {
+  const content = (
+    <>
+      <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${accentClassName}`}>{icon}</div>
+      <div className="flex min-w-0 flex-col gap-0.5">
+        <span className="text-sm font-black tracking-tight text-foreground">{label}</span>
+        <span className="truncate text-xs font-medium text-muted-foreground">{description}</span>
+      </div>
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className="flex h-full flex-col gap-3 rounded-3xl focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none"
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className="flex h-full w-full flex-col gap-3 rounded-3xl text-left focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none"
+    >
+      {content}
+    </button>
   );
 }

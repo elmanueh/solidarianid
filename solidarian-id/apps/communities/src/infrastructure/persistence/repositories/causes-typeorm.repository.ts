@@ -27,6 +27,23 @@ export class CausesRepositoryTypeOrmAdapter
     super(causeRepository, causeMapper);
   }
 
+  async findAllFollowedCauseIdsByUserId(userId: string): Promise<Either<RepositoryException, string[]>> {
+    try {
+      const followers = await this.causeUserRepository.find({
+        where: { userId },
+        select: {
+          causeId: true,
+        },
+      });
+
+      const causeIds = Array.from(new Set(followers.map(follower => follower.causeId)));
+
+      return right(causeIds);
+    } catch (error) {
+      return left(new RepositoryException(`Failed to find followed causes by user id ${userId}.`, error));
+    }
+  }
+
   async findAllByCommunityIds(
     communityIds: string[],
     relations: string[] = ['users'],

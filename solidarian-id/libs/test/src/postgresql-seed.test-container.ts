@@ -2,6 +2,7 @@ import { MemberType } from '@app/communities/domain/model/enums/member-type';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
+import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
 import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
 import { IDatabaseSeeder } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
@@ -250,21 +251,25 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
     }
   }
 
-  async getUserProjectionIds(): Promise<string[]> {
-    const repo = this.dataSource.getRepository(UserProjectionEntity);
-    return repo.find().then(users => users.map(u => u.id));
-  }
-
-  async seedUsersProjection(): Promise<void> {
-    const repo = this.dataSource.getRepository(UserProjectionEntity);
-
+  async seedUsersProjection(commit: bigint, prepare: bigint): Promise<void> {
+    const repoUser = this.dataSource.getRepository(UserProjectionEntity);
     const defaultUsersProjection: UserProjectionEntity[] = DEFAULT_USERS_DATA.map(user => ({
       id: user.id,
       username: user.username,
       mobilePhone: user.mobilePhone,
     }));
 
-    await repo.insert(defaultUsersProjection);
+    await repoUser.insert(defaultUsersProjection);
+
+    const repoCheckpoint = this.dataSource.getRepository(CheckpointProjectionEntity);
+    const checkpointProjection: CheckpointProjectionEntity = {
+      projectionName: 'users-index',
+      commitPosition: commit.toString(),
+      preparePosition: prepare.toString(),
+      updatedAt: new Date(),
+    };
+
+    await repoCheckpoint.save(checkpointProjection);
   }
 
   // COMMUNITIES APP SEEDS

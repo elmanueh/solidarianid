@@ -89,37 +89,13 @@ export class UsersProjectionService implements OnModuleInit, OnModuleDestroy {
 
     const event = resolvedEvent.event;
     if (!event) {
-      const checkpointResult = await this.checkpointsRepository.save(
-        Object.assign(new CheckpointProjectionEntity(), {
-          projectionName: this.PROJECTION_NAME,
-          commitPosition: position.commit.toString(),
-          preparePosition: position.prepare.toString(),
-          updatedAt: new Date(),
-        }),
-      );
-
-      if (checkpointResult.isLeft()) {
-        throw checkpointResult.value;
-      }
-
+      await this.saveCheckpoint(position);
       return;
     }
 
     const projection = this.mapProjectionFromEvent(event.type, event.data as Record<string, unknown>);
     if (!projection) {
-      const checkpointResult = await this.checkpointsRepository.save(
-        Object.assign(new CheckpointProjectionEntity(), {
-          projectionName: this.PROJECTION_NAME,
-          commitPosition: position.commit.toString(),
-          preparePosition: position.prepare.toString(),
-          updatedAt: new Date(),
-        }),
-      );
-
-      if (checkpointResult.isLeft()) {
-        throw checkpointResult.value;
-      }
-
+      await this.saveCheckpoint(position);
       return;
     }
 
@@ -144,6 +120,10 @@ export class UsersProjectionService implements OnModuleInit, OnModuleDestroy {
       throw projectionResult.value;
     }
 
+    await this.saveCheckpoint(position);
+  }
+
+  private async saveCheckpoint(position: Position): Promise<void> {
     const checkpointResult = await this.checkpointsRepository.save(
       Object.assign(new CheckpointProjectionEntity(), {
         projectionName: this.PROJECTION_NAME,

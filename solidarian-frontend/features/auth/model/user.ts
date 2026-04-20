@@ -5,4 +5,5 @@ export interface User {
   mobilePhone: string;
   city: string;
   countryCode: string;
+  // poner preferencias de notificaciones
 }

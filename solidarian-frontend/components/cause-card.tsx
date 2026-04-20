@@ -28,6 +28,8 @@ export function CauseCard({ cause, index }: Readonly<CauseCardProps>) {
             fill
             className={styles.image.img}
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            priority={index === 0}
           />
         </div>
         <div className={styles.content.wrapper}>

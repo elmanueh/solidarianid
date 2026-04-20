@@ -19,6 +19,9 @@ export class Action {
 
   @Field(() => ID)
   causeId: string;
+
+  @Field(() => ID)
+  communityId: string;
 }
 
 @ObjectType()

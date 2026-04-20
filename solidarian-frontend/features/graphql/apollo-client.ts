@@ -5,7 +5,7 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { OperationTypeNode } from 'graphql';
 import { createClient } from 'graphql-ws';
 
-const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? 'http://localhost:3002/graphql';
+const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? 'http://localhost:8090/graphql';
 const HTTP_URL = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL ?? GRAPHQL_ENDPOINT;
 const WS_URL =
   process.env.NEXT_PUBLIC_GRAPHQL_WS_URL ??
@@ -34,7 +34,8 @@ const errorLink = new ErrorLink(({ error, operation }) => {
   }
 
   if (error) {
-    console.error(`[Network error][${operationName}] ${error.message} (${HTTP_URL})`);
+    const endpoint = operation.operationType === OperationTypeNode.SUBSCRIPTION ? WS_URL : HTTP_URL;
+    console.error(`[Network error][${operationName}] ${error.message} (${endpoint})`);
   }
 });
 
@@ -50,6 +51,8 @@ export const createApolloClient = (): ApolloClient => {
   const wsLink = new GraphQLWsLink(
     createClient({
       url: WS_URL,
+      keepAlive: 15000,
+      lazyCloseTimeout: 30000,
     })
   );
 

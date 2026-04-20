@@ -1,7 +1,7 @@
+import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
+import { EventPlaceEntity } from '@app/communities/infrastructure/persistence/entities/event-place.entity';
+import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
-import { EventPlaceEntity } from './event-place.entity';
-import { ActionEntity } from './action.entity';
-import { EventUserEntity } from './event-user.entity';
 
 @Entity('event')
 export class EventEntity {
@@ -27,6 +27,9 @@ export class EventEntity {
   @JoinColumn({ name: 'actionId' })
   action: ActionEntity;
 
-  @OneToMany(() => EventUserEntity, eventUser => eventUser.event)
+  @OneToMany(() => EventUserEntity, eventUser => eventUser.event, {
+    cascade: true,
+    orphanedRowAction: 'delete',
+  })
   assistants: EventUserEntity[];
 }

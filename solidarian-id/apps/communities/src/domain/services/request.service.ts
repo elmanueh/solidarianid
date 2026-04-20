@@ -56,4 +56,12 @@ export abstract class RequestsService {
    * @param id Unique identifier of the request
    */
   abstract getRequestById(id: string): Promise<Either<ValidationError | RepositoryException, Request<RequestProps>>>;
+
+  /**
+   * Retrieves requests by user ID.
+   * @param userId Unique identifier of the user
+   */
+  abstract getRequestsByUserId(
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, Request<RequestProps>[]>>;
 }

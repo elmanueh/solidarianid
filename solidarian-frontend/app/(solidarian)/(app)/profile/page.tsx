@@ -6,7 +6,6 @@ import {
   IconFilePlus,
   IconInfoCircle,
   IconLogout2,
-  IconPlus,
   IconSettings,
   IconShare,
   IconShieldCheck,
@@ -21,10 +20,10 @@ import { useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { toast } from 'sonner';
 
-import { ROUTES } from '@/features/routes';
-import { SidebarMenuButton } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui';
 import { useAppSelector } from '@/features/redux/redux-hook';
+import { ROUTES } from '@/features/routes';
+import { useProfileImpactStats } from '@/hooks/use-profile-impact-stats';
 
 type Stat = {
   label: string;
@@ -33,38 +32,37 @@ type Stat = {
   colorClassName: string;
 };
 
-const stats: Stat[] = [
-  {
-    label: 'Aportes',
-    value: '145€',
-    icon: <IconTargetArrow className="text-chart-3" />,
-    colorClassName: 'bg-chart-3/10',
-  },
-  {
-    label: 'Objetivos',
-    value: 8,
-    icon: <IconStar className="text-chart-4" />,
-    colorClassName: 'bg-chart-4/10',
-  },
-  {
-    label: 'Eventos',
-    value: 3,
-    icon: <IconCalendarEvent className="text-brand-500" />,
-    colorClassName: 'bg-brand-500/10',
-  },
-  {
-    label: 'Comunidades',
-    value: 5,
-    icon: <IconUsers className="text-brand-ink" />,
-    colorClassName: 'bg-brand-ink/10',
-  },
-];
-
 export default function ProfilePage() {
   const router = useRouter();
   const user = useAppSelector(state => state.auth.currentUser);
+  const { data: impactStats, loading: impactStatsLoading, error: impactStatsError } = useProfileImpactStats(user?.id);
 
-  const isTheSameUser = user;
+  const stats: Stat[] = [
+    {
+      label: 'Aportes',
+      value: impactStatsLoading || impactStatsError ? '—' : (impactStats?.contributions ?? 0),
+      icon: <IconTargetArrow className="text-chart-3" />,
+      colorClassName: 'bg-chart-3/10',
+    },
+    {
+      label: 'Objetivos',
+      value: impactStatsLoading || impactStatsError ? '—' : (impactStats?.objectives ?? 0),
+      icon: <IconStar className="text-chart-4" />,
+      colorClassName: 'bg-chart-4/10',
+    },
+    {
+      label: 'Eventos',
+      value: impactStatsLoading || impactStatsError ? '—' : (impactStats?.events ?? 0),
+      icon: <IconCalendarEvent className="text-brand-500" />,
+      colorClassName: 'bg-brand-500/10',
+    },
+    {
+      label: 'Comunidades',
+      value: impactStatsLoading || impactStatsError ? '—' : (impactStats?.communities ?? 0),
+      icon: <IconUsers className="text-brand-ink" />,
+      colorClassName: 'bg-brand-ink/10',
+    },
+  ];
 
   const handleLogout = () => {
     toast.info('Sesión cerrada');
@@ -83,7 +81,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/** TODO: use Share Button in order to  */}
         <div className="hidden items-center gap-2 self-start rounded-3xl border border-border bg-card px-6 py-4 shadow-sm md:flex">
           <IconShare size={14} className="text-muted-foreground/70" />
           <span className="text-[10px] font-black tracking-widest text-muted-foreground uppercase">
@@ -99,6 +96,10 @@ export default function ProfilePage() {
           </div>
           <h3 className="text-xl font-black tracking-widest text-brand-ink uppercase">Tu Impacto</h3>
         </div>
+
+        {impactStatsError ? (
+          <p className="px-4 text-sm font-medium text-muted-foreground">No se pudieron cargar tus stats de impacto.</p>
+        ) : null}
 
         <div className="grid grid-cols-2 gap-6 px-4 lg:grid-cols-4">
           {stats.map((stat, index) => (

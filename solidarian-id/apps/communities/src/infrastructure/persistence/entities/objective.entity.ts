@@ -1,6 +1,6 @@
+import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
+import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
-import { ActionEntity } from './action.entity';
-import { ObjetiveUserEntity } from './objetive-user.entity';
 
 @Entity('objective')
 export class ObjectiveEntity {
@@ -26,6 +26,9 @@ export class ObjectiveEntity {
   @JoinColumn({ name: 'actionId' })
   action: ActionEntity;
 
-  @OneToMany(() => ObjetiveUserEntity, objectiveUser => objectiveUser.objective)
+  @OneToMany(() => ObjetiveUserEntity, objectiveUser => objectiveUser.objective, {
+    cascade: true,
+    orphanedRowAction: 'delete',
+  })
   contributors: ObjetiveUserEntity[];
 }

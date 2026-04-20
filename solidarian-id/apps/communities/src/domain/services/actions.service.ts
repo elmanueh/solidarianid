@@ -1,12 +1,21 @@
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Action } from '@app/communities/domain/model/entities/action';
+import { Objective } from '@app/communities/domain/model/value-objects/objective';
 import { Either } from '@app/ddd/either';
-import { Action } from '../model/entities/action';
-import { ActionRequestEventDto } from '@solidarianid/kafka';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { ActionRequestEventDto } from '@solidarianid/kafka';
 
 export abstract class ActionsService {
   abstract getActions(): Promise<Either<ValidationError, Action[]>>;
   abstract getActionById(id: string): Promise<Either<ValidationError, Action>>;
   abstract getByCauseIds(causeIds: string[]): Promise<Either<ValidationError | RepositoryException, Action[]>>;
   abstract create(actionDto: ActionRequestEventDto): Promise<Either<ValidationError | RepositoryException, Action>>;
+  abstract joinEvent(eventId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>>;
+  abstract leaveEvent(eventId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>>;
+  abstract contributeObjective(
+    actionId: string,
+    objectiveName: string,
+    userId: string,
+    amount: number,
+  ): Promise<Either<ValidationError | RepositoryException, Objective>>;
 }

@@ -1,13 +1,14 @@
+import { ObjectiveContributionExceedsRemainingError } from '@app/communities/domain/errors/objective-contribution-exceeds-remaining.error';
+import { User } from '@app/communities/domain/model/entities/user';
 import { Either, left, right } from '@app/ddd/either';
+import { ValueObject } from '@app/ddd/value-object';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { CurrentAmount } from '@app/value-objects/model/current-amount';
 import { Description } from '@app/value-objects/model/description';
 import { Name } from '@app/value-objects/model/name';
 import { Quantity } from '@app/value-objects/model/quantity';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { Unit } from '@app/value-objects/model/unit';
-import { CurrentAmount } from '@app/value-objects/model/current-amount';
-import { ValueObject } from '@app/ddd/value-object';
-import { User } from '@app/communities/domain/model/entities/user';
 
 export interface ObjectiveProps {
   name: Name;
@@ -60,6 +61,30 @@ export class Objective extends ValueObject<ObjectiveProps> {
 
   get currentAmount(): number {
     return this.props.currentAmount.value;
+  }
+
+  get remainingAmount(): number {
+    return Math.max(0, this.quantity - this.currentAmount);
+  }
+
+  private hasContributor(user: User): boolean {
+    return this.props.contributors.some(contributor => contributor.id.value === user.id.value);
+  }
+
+  contribute(user: User, amount: number): Either<ValidationError, Objective> {
+    const remaining = this.remainingAmount;
+    if (amount > remaining) return left(new ObjectiveContributionExceedsRemainingError(amount, remaining));
+
+    const nextContributors = this.hasContributor(user) ? [...this.contributors] : [...this.contributors, user];
+    return Objective.create({
+      name: this.name,
+      description: this.description,
+      quantity: this.quantity,
+      unit: this.unit,
+      actionId: this.actionId,
+      contributors: nextContributors,
+      currentAmount: this.currentAmount + amount,
+    });
   }
 
   /**

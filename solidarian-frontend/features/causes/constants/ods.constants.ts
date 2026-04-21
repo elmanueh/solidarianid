@@ -1,4 +1,4 @@
-const SUSTAINABLE_DEVELOPMENT_GOAL: Record<string, string> = {
+export const SUSTAINABLE_DEVELOPMENT_GOAL: Record<string, string> = {
   NoPoverty: 'Sin Pobreza',
   ZeroHunger: 'Hambre Cero',
   GoodHealthAndWellBeing: 'Salud y Bienestar',
@@ -17,6 +17,12 @@ const SUSTAINABLE_DEVELOPMENT_GOAL: Record<string, string> = {
   PeaceJusticeAndStrongInstitutions: 'Paz e Instituciones',
   PartnershipsForTheGoals: 'Alianzas para Objetivos',
 };
+
+export const ODS_OPTIONS = Object.keys(SUSTAINABLE_DEVELOPMENT_GOAL).map((value, index) => ({
+  value,
+  num: index + 1,
+  label: SUSTAINABLE_DEVELOPMENT_GOAL[value],
+}));
 
 export function getSortedOds(odsValues: readonly string[]) {
   return [...odsValues]

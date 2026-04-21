@@ -1,3 +1,5 @@
+import { ExploreClient } from '@/components/explore/explore-client';
+
 export default function ExplorePage() {
-  return <h1 className="text-2xl font-semibold">Explore</h1>;
+  return <ExploreClient />;
 }

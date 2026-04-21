@@ -40,7 +40,7 @@ export async function fetchUserSubscriptions(
   });
 
   if (!response.ok) {
-    console.error(`Error fetching user subscriptions: ${response.status} ${response.statusText}`);
+    throw new Error(`Failed to fetch user subscriptions: ${response.statusText}`);
   }
 
   return (await response.json()) as UserSubscriptionsResponse;

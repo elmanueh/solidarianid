@@ -38,8 +38,8 @@ export default function ProfilePage() {
 
   const stats: Stat[] = [
     {
-      label: 'Aportes',
-      value: impactStatsLoading || impactStatsError ? '—' : (impactStats?.contributions ?? 0),
+      label: 'Solicitudes',
+      value: impactStatsLoading || impactStatsError ? '—' : (impactStats?.requests ?? 0),
       icon: <IconTargetArrow className="text-chart-3" />,
       colorClassName: 'bg-chart-3/10',
     },
@@ -145,11 +145,6 @@ export default function ProfilePage() {
               href={ROUTES.profile.impact}
               icon={<IconSettings size={18} />}
               label="Preferencias de Impacto"
-            />
-            <ProfileLink
-              href={ROUTES.profile.privacy}
-              icon={<IconShieldCheck size={18} />}
-              label="Privacidad y Seguridad"
             />
             <ProfileLink href={ROUTES.profile.help} icon={<IconInfoCircle size={18} />} label="Centro de Ayuda" />
           </div>

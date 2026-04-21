@@ -5,14 +5,14 @@ import type { UserSubscriptionsResponse } from '@/features/notifications/api/gra
 import { useRetrieveData } from '@/hooks/generics/retrieve-data-custom-hook';
 
 export type ProfileImpactStats = {
-  contributions: number;
+  requests: number;
   objectives: number;
   events: number;
   communities: number;
 };
 
 const DEFAULT_PROFILE_IMPACT_STATS: ProfileImpactStats = {
-  contributions: 0,
+  requests: 0,
   objectives: 0,
   events: 0,
   communities: 0,
@@ -47,7 +47,7 @@ async function fetchProfileImpactStats(userId: string): Promise<ProfileImpactSta
   const subscriptions = (await response.json()) as UserSubscriptionsResponse;
 
   return {
-    contributions: countUniqueIds(subscriptions.requestIds),
+    requests: countUniqueIds(subscriptions.requestIds),
     objectives: countUniqueIds(subscriptions.objectiveIds),
     events: countUniqueIds(subscriptions.eventIds),
     communities: countUniqueIds(subscriptions.followedCommunityIds),

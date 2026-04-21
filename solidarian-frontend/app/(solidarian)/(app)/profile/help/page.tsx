@@ -1,24 +1,10 @@
-import {
-  IconArrowLeft,
-  IconBook,
-  IconExternalLink,
-  IconHelpCircle,
-  IconMail,
-  IconShieldCheck,
-} from '@tabler/icons-react';
+import { IconArrowLeft, IconBook, IconMail } from '@tabler/icons-react';
 import Link from 'next/link';
-import type { ReactNode } from 'react';
 
-import { Button } from '@/components/ui/button';
+import { SupportCard, type SupportCardProps } from '@/components/profile/help/help-page-component';
 import { ROUTES } from '@/features/routes';
 
-type SupportChannel = {
-  icon: ReactNode;
-  label: string;
-  description: string;
-  accentClassName: string;
-  href?: string;
-};
+type SupportChannel = SupportCardProps;
 
 const faqs = [
   {
@@ -90,13 +76,7 @@ export default function ProfileSettingsHelpPage() {
                 key={channel.label}
                 className="group rounded-[28px] border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-500/30 hover:shadow-xl hover:shadow-brand-500/5"
               >
-                <SupportCard
-                  icon={channel.icon}
-                  label={channel.label}
-                  description={channel.description}
-                  accentClassName={channel.accentClassName}
-                  href={channel.href}
-                />
+                <SupportCard {...channel} />
               </div>
             ))}
           </section>
@@ -126,49 +106,5 @@ export default function ProfileSettingsHelpPage() {
         </main>
       </div>
     </div>
-  );
-}
-
-function SupportCard({
-  icon,
-  label,
-  description,
-  accentClassName,
-  href,
-}: {
-  icon: ReactNode;
-  label: string;
-  description: string;
-  accentClassName: string;
-  href?: string;
-}) {
-  const content = (
-    <>
-      <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${accentClassName}`}>{icon}</div>
-      <div className="flex min-w-0 flex-col gap-0.5">
-        <span className="text-sm font-black tracking-tight text-foreground">{label}</span>
-        <span className="truncate text-xs font-medium text-muted-foreground">{description}</span>
-      </div>
-    </>
-  );
-
-  if (href) {
-    return (
-      <Link
-        href={href}
-        className="flex h-full flex-col gap-3 rounded-3xl focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none"
-      >
-        {content}
-      </Link>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      className="flex h-full w-full flex-col gap-3 rounded-3xl text-left focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none"
-    >
-      {content}
-    </button>
   );
 }

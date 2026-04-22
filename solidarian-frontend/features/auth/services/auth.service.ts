@@ -3,6 +3,7 @@ import api from '@/features/axios/axios';
 
 const AUTH_ENDPOINTS = {
   LOGIN: '/auth/login',
+  LOGOUT: '/auth/logout',
   USERS: '/users',
   ME: '/users/me',
 };
@@ -29,6 +30,10 @@ export const authService = {
       city,
       countryCode,
     });
+  },
+
+  logout: async (): Promise<void> => {
+    await api.post(AUTH_ENDPOINTS.LOGOUT);
   },
 
   getCurrentUser: async (): Promise<User> => {

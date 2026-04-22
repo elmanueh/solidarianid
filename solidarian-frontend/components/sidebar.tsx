@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { authService } from '@/features/auth/services/auth.service';
 import { ROUTES } from '@/features/routes';
 import { IconHeart, IconHome, IconLogout2, IconSearch, IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
@@ -90,7 +91,7 @@ export function SidebarLateral() {
             <SidebarMenuButton
               className="cursor-pointer items-center rounded-2xl py-6 ps-6 text-[10px] font-black tracking-widest text-neutral-400 uppercase hover:bg-red-50 hover:text-red-500 dark:text-primary dark:hover:bg-red-900"
               onClick={() => {
-                // TODO: Conectar con authService.logout
+                authService.logout();
                 redirect('/');
               }}
             >

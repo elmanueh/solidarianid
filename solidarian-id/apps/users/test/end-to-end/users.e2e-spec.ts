@@ -1,7 +1,7 @@
+import { AuthModule } from '@app/users/infrastructure/auth/auth.module';
+import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entities/refresh-token.entity';
 import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
 import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
-import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entities/refresh-token.entity';
-import { AuthModule } from '@app/users/infrastructure/auth/auth.module';
 import { UsersProjectionService } from '@app/users/infrastructure/persistence/projections/users-projection.service';
 import { UsersModule } from '@app/users/users.module';
 import { KurrentDBClient } from '@kurrent/kurrentdb-client';

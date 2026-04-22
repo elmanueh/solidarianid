@@ -16,6 +16,7 @@ import { UserServiceImpl } from './application/services/user.service.impl';
 import { ActionsPublisherPort } from './domain/ports/actions.publisher.port';
 import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
 import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
+import { CausesQueryRepositoryPort } from './domain/ports/causes-query.repository.port';
 import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
 import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
@@ -60,6 +61,7 @@ import { RequestEntityMapper } from './infrastructure/persistence/mappers/reques
 import { UserEntityMapper } from './infrastructure/persistence/mappers/user-entity.mapper';
 import { ActionsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/actions-typeorm.repository';
 import { CausesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/causes-typeorm.repository';
+import { CausesQueryTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/causes-query-typeorm.repository';
 import { CommunitiesQueryTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/communities-query-typeorm.repository';
 import { CommunitiesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/communities-typeorm.repository';
 import { EventsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/events-typeorm.repository';
@@ -149,6 +151,10 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
     {
       provide: CausesRepositoryPort,
       useClass: CausesRepositoryTypeOrmAdapter,
+    },
+    {
+      provide: CausesQueryRepositoryPort,
+      useClass: CausesQueryTypeOrmRepositoryAdapter,
     },
     {
       provide: ActionsRepositoryPort,

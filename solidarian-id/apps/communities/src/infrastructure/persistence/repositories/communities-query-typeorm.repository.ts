@@ -1,6 +1,10 @@
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
+import { ExploreCommunitiesCriteria } from '@app/communities/application/services/explore-communities.criteria';
+import { ExploreCommunityData } from '@app/communities/application/services/explore-community.data';
+import { ExplorePaginatedResultData } from '@app/communities/application/services/explore-paginated-result.data';
+import { ExploreSortOrder } from '@app/communities/application/services/explore-sort-order';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityEntity } from '../entities/community.entity';
@@ -13,6 +17,62 @@ export class CommunitiesQueryTypeOrmRepositoryAdapter implements CommunitiesQuer
   constructor(
     @InjectRepository(CommunityEntity) private readonly communityRepository: TypeOrmRepository<CommunityEntity>,
   ) {}
+
+  async findExplore(
+    criteria: ExploreCommunitiesCriteria,
+  ): Promise<Either<RepositoryException, ExplorePaginatedResultData<ExploreCommunityData>>> {
+    const safePage = Number.isFinite(criteria.page) ? Math.max(1, Math.floor(criteria.page)) : 1;
+    const safePageSize = Number.isFinite(criteria.pageSize) ? Math.max(1, Math.floor(criteria.pageSize)) : 10;
+    const normalizedSearch = criteria.search?.trim().toLocaleLowerCase() ?? '';
+    const sortOrder = criteria.sortOrder === ExploreSortOrder.DESC ? 'DESC' : 'ASC';
+
+    const baseQueryBuilder = this.communityRepository.createQueryBuilder('community');
+
+    if (normalizedSearch) {
+      baseQueryBuilder.where('LOWER(community.name) LIKE :search', {
+        search: `%${normalizedSearch}%`,
+      });
+    }
+
+    let total: number;
+
+    try {
+      total = await baseQueryBuilder.getCount();
+    } catch (error) {
+      return left(new RepositoryException('Failed to count communities for explore query', error));
+    }
+
+    const totalPages = Math.max(1, Math.ceil(total / safePageSize));
+    const boundedPage = Math.min(safePage, totalPages);
+    const offset = (boundedPage - 1) * safePageSize;
+
+    const queryBuilder = baseQueryBuilder
+      .clone()
+      .orderBy('community.name', sortOrder)
+      .addOrderBy('community.id', 'ASC')
+      .skip(offset)
+      .take(safePageSize);
+
+    let communities: CommunityEntity[];
+
+    try {
+      communities = await queryBuilder.getMany();
+    } catch (error) {
+      return left(new RepositoryException('Failed to retrieve communities for explore query', error));
+    }
+
+    return right({
+      items: communities.map(community => ({
+        id: community.id,
+        name: community.name,
+        description: community.description,
+      })),
+      total,
+      page: boundedPage,
+      pageSize: safePageSize,
+      totalPages,
+    });
+  }
 
   async findOrderByMostUsers(limit?: number): Promise<Either<RepositoryException, RankingCommunitiesByUsersData[]>> {
     const queryBuilder = this.communityRepository

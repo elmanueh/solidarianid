@@ -5,6 +5,7 @@ import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import type { OpenAPIObject } from '@nestjs/swagger';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
 import { dump } from 'js-yaml';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -43,6 +44,7 @@ async function bootstrap() {
   );
   // Habilitar filtro global de excepciones
   app.useGlobalFilters(new GlobalExceptionFilter());
+  app.use(cookieParser());
 
   app.connectMicroservice({
     transport: Transport.KAFKA,
@@ -71,7 +73,7 @@ async function bootstrap() {
     origin: true,
     credentials: true,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type'],
     optionsSuccessStatus: 204,
     maxAge: 600,
   });

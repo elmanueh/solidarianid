@@ -224,6 +224,8 @@ Resources:
               environment:
                 - NODE_ENV=${!NODE_ENV}
                 - IN_DOCKER=true
+                - JWT_PRIVATE_KEY_BASE64=${!JWT_PRIVATE_KEY_BASE64}
+                - JWT_PUBLIC_KEY_BASE64=${!JWT_PUBLIC_KEY_BASE64}
                 - POSTGRES_HOST=${!POSTGRES_HOST}
                 - POSTGRES_PORT=${!POSTGRES_PORT}
                 - POSTGRES_USER=${!POSTGRES_USER}
@@ -252,6 +254,8 @@ Resources:
               environment:
                 - NODE_ENV=${!NODE_ENV}
                 - IN_DOCKER=true
+                - JWT_PRIVATE_KEY_BASE64=${!JWT_PRIVATE_KEY_BASE64}
+                - JWT_PUBLIC_KEY_BASE64=${!JWT_PUBLIC_KEY_BASE64}
                 - POSTGRES_HOST=${!POSTGRES_HOST}
                 - POSTGRES_PORT=${!POSTGRES_PORT}
                 - POSTGRES_USER=${!POSTGRES_USER}

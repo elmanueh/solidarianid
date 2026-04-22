@@ -2,10 +2,24 @@ import { CausesService } from '@app/communities/domain/services/causes.service';
 import { Cause } from '@app/communities/infrastructure/presentation/controllers/graphql/entities/cause';
 import { ActionsGraphqlMapper } from '@app/communities/infrastructure/presentation/controllers/graphql/mappers/actions-graphql.mapper';
 import { CausesGraphqlMapper } from '@app/communities/infrastructure/presentation/controllers/graphql/mappers/causes-graphql.mapper';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { EntityType, Resource, Action as SecurityAction } from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { Action } from '../entities/action';
 import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
+
+const AuthorizeCommunityMemberByCauseArgId = () =>
+  Authorize({
+    action: SecurityAction.UPDATE,
+    resource: Resource.COMMUNITY,
+    policy: 'community.member',
+    entityType: EntityType.CAUSE,
+    entityId: {
+      source: 'args',
+      key: 'causeId',
+    },
+  });
 
 @Resolver(() => Cause)
 export class CausesResolver {
@@ -73,11 +87,13 @@ export class CausesResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeCommunityMemberByCauseArgId()
   async joinCause(
     @Args('causeId', { type: () => ID }, new ParseUUIDPipe()) causeId: string,
-    @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
+    @CurrentUser('sub') actorId: string,
   ): Promise<boolean> {
-    const result = await this.causesService.joinCause(causeId, userId);
+    const result = await this.causesService.joinCause(causeId, actorId);
 
     if (result.isLeft()) {
       throw result.value;
@@ -87,11 +103,13 @@ export class CausesResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeCommunityMemberByCauseArgId()
   async leaveCause(
     @Args('causeId', { type: () => ID }, new ParseUUIDPipe()) causeId: string,
-    @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
+    @CurrentUser('sub') actorId: string,
   ): Promise<boolean> {
-    const result = await this.causesService.leaveCause(causeId, userId);
+    const result = await this.causesService.leaveCause(causeId, actorId);
 
     if (result.isLeft()) {
       throw result.value;

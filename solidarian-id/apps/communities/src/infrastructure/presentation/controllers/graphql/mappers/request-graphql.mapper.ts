@@ -21,7 +21,6 @@ export class RequestGraphqlMapper {
         initialDate: cause.initialDate.toISOString(),
         durationDays: cause.durationDays,
       })),
-      userId: input.userId,
     };
   }
 
@@ -32,7 +31,6 @@ export class RequestGraphqlMapper {
       ods: input.ods,
       initialDate: input.initialDate.toISOString(),
       durationDays: input.durationDays,
-      userId: input.userId,
       communityId: input.communityId,
     };
   }
@@ -57,7 +55,6 @@ export class RequestGraphqlMapper {
           countryCode: event.place.countryCode,
         },
       })),
-      userId: input.userId,
       causeId: input.causeId,
     };
   }

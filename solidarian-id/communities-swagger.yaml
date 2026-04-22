@@ -386,13 +386,7 @@ components:
         - dataRange
     MemberJoinCommunityRequestDto:
       type: object
-      properties:
-        userId:
-          type: string
-          description: Unique identifier of the user joining the community
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-      required:
-        - userId
+      properties: {}
     ActionSummaryResponseDto:
       type: object
       properties:
@@ -453,13 +447,7 @@ components:
         - actions
     FollowerJoinCauseRequestDto:
       type: object
-      properties:
-        userId:
-          type: string
-          description: Unique identifier of the user following the cause
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-      required:
-        - userId
+      properties: {}
     EventSummaryResponseDto:
       type: object
       properties:
@@ -639,17 +627,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CommunityCauseDto'
-        userId:
-          type: string
-          description: >-
-            The ID of the user creating the community (will be the
-            administrator)
-          example: 550e8400-e29b-41d4-a716-446655440000
       required:
         - name
         - description
         - causeCreationRequests
-        - userId
     CreateCauseRequestDto:
       type: object
       properties:
@@ -705,10 +686,6 @@ components:
           description: Duration of the cause in days (must be a positive integer)
           example: 90
           minimum: 1
-        userId:
-          type: string
-          description: The ID of the user creating the request
-          example: 550e8400-e29b-41d4-a716-446655440000
         communityId:
           type: string
           description: The ID of the community related to the cause request
@@ -719,7 +696,6 @@ components:
         - ods
         - initialDate
         - durationDays
-        - userId
         - communityId
     ActionObjectiveDto:
       type: object
@@ -838,10 +814,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ActionEventDto'
-        userId:
-          type: string
-          description: The ID of the user creating the request
-          example: 550e8400-e29b-41d4-a716-446655440000
         causeId:
           type: string
           description: The ID of the cause related to the action request
@@ -851,7 +823,6 @@ components:
         - description
         - objectives
         - events
-        - userId
         - causeId
     UserEvent:
       type: object

@@ -115,7 +115,9 @@ type RequestStatusChangedEvent {
   createdEntityId: ID
 }
 
-"""Date custom scalar type"""
+"""
+Date custom scalar type
+"""
 scalar Date
 
 type Query {
@@ -131,19 +133,18 @@ type Query {
 }
 
 type Mutation {
-  joinCause(causeId: ID!, userId: ID!): Boolean!
-  leaveCause(causeId: ID!, userId: ID!): Boolean!
+  joinCause(causeId: ID!): Boolean!
+  leaveCause(causeId: ID!): Boolean!
   createCommunityRequest(createCommunityRequestInput: CreateCommunityRequestInput!): String!
   createCauseRequest(createCauseRequestInput: CreateCauseRequestInput!): String!
   createActionRequest(createActionRequestInput: CreateActionRequestInput!): String!
-  joinCommunity(communityId: ID!, userId: ID!): Boolean!
+  joinCommunity(communityId: ID!): Boolean!
 }
 
 input CreateCommunityRequestInput {
   name: String!
   description: String!
   causeCreationRequests: [CommunityCauseRequestInput!]!
-  userId: String!
 }
 
 input CommunityCauseRequestInput {
@@ -160,7 +161,6 @@ input CreateCauseRequestInput {
   ods: [SustainableDevelopmentGoal!]!
   initialDate: Date!
   durationDays: Int!
-  userId: String!
   communityId: String!
 }
 
@@ -169,7 +169,6 @@ input CreateActionRequestInput {
   description: String!
   objectives: [ActionObjectiveInput!]!
   events: [ActionEventInput!]!
-  userId: String!
   causeId: String!
 }
 

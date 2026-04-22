@@ -7,6 +7,11 @@ import { CausesController } from '@app/communities/infrastructure/presentation/c
 import { EntityNotFoundError } from 'typeorm';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { Cause } from '@app/communities/domain/model/entities/cause';
+import {
+  AUTHZ_COMMUNITY_CONTEXT_RESOLVER,
+  AUTHZ_MEMBERSHIP_PERMISSION_SOURCE,
+  PolicyRegistry,
+} from '@solidarianid/security/nestjs';
 
 describe('CausesController', () => {
   let controller: CausesController;
@@ -16,7 +21,27 @@ describe('CausesController', () => {
     mockService = { getAll: jest.fn(), getById: jest.fn() };
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CausesController],
-      providers: [{ provide: CausesService, useValue: mockService }],
+      providers: [
+        { provide: CausesService, useValue: mockService },
+        {
+          provide: PolicyRegistry,
+          useValue: {
+            evaluate: jest.fn().mockResolvedValue(true),
+          },
+        },
+        {
+          provide: AUTHZ_COMMUNITY_CONTEXT_RESOLVER,
+          useValue: {
+            resolve: jest.fn(),
+          },
+        },
+        {
+          provide: AUTHZ_MEMBERSHIP_PERMISSION_SOURCE,
+          useValue: {
+            findRole: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<CausesController>(CausesController);

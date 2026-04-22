@@ -10,6 +10,7 @@ import {
   ParseUUIDPipe,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CommunitySummaryResponseDto } from '../../dtos/output/community-summary.response.dto';
 import { Community } from '@app/communities/domain/model/aggregates/community';
@@ -24,6 +25,7 @@ import {
 } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
+import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { MemberJoinCommunityRequestDto } from '../../dtos/input/member-join-community.request.dto';
 import { CommunityDetailResponseDto } from '../../dtos/output/community-detail.response.dto';
 import { CommunityLastUsersJoinedSummaryResponseDto } from '../../dtos/output/community-last-users-joined-summary.response.dto';
@@ -135,6 +137,7 @@ export class CommunitiesController {
   }
 
   @Post(':id/members')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Join a user to a community' })
   @ApiCreatedResponse({
@@ -145,9 +148,10 @@ export class CommunitiesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async joinCommunity(
     @Param('id', new ParseUUIDPipe()) communityId: string,
-    @Body() dto: MemberJoinCommunityRequestDto,
+    @Body() _request: MemberJoinCommunityRequestDto,
+    @CurrentUser('sub') actorId: string,
   ): Promise<void> {
-    const result = await this.communitiesService.joinCommunity(communityId, dto.userId);
+    const result = await this.communitiesService.joinCommunity(communityId, actorId);
 
     if (result.isLeft()) {
       throw result.value;

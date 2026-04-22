@@ -22,6 +22,9 @@ const baseJestConfig: Config = {
     '^@charts/(.*)$': '<rootDir>/libs/charts/src/$1',
     '^@charts$': '<rootDir>/libs/charts/src',
     '^@frontend/design-tokens/(.*)$': '<rootDir>/libs/design-tokens/src/$1',
+    '^@solidarianid/security$': '<rootDir>/libs/security/src',
+    '^@solidarianid/security/core$': '<rootDir>/libs/security/src/core/index.ts',
+    '^@solidarianid/security/nestjs$': '<rootDir>/libs/security/src/nestjs/index.ts',
   },
 
   transform: {

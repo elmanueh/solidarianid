@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { Cause } from '@app/communities/domain/model/entities/cause';
 import {
@@ -12,10 +12,24 @@ import {
   ApiResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Action, EntityType, Resource } from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { FollowerJoinCauseRequestDto } from '../../dtos/input/follower-join-cause.request.dto';
 import { CauseDetailResponseDto } from '../../dtos/output/cause-detail.response.dto';
 import { CauseSummaryResponseDto } from '../../dtos/output/cause-summary.response.dto';
 import { CauseDomainMapper } from '../../mappers/cause.mapper';
+
+const AuthorizeCommunityMemberByCauseParamId = () =>
+  Authorize({
+    action: Action.UPDATE,
+    resource: Resource.COMMUNITY,
+    policy: 'community.member',
+    entityType: EntityType.CAUSE,
+    entityId: {
+      source: 'params',
+      key: 'id',
+    },
+  });
 
 @Controller()
 export class CausesController {
@@ -95,6 +109,8 @@ export class CausesController {
   }
 
   @Post('causes/:id/followers')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeCommunityMemberByCauseParamId()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Join a user as a supporter of a cause' })
   @ApiCreatedResponse({
@@ -107,9 +123,10 @@ export class CausesController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async joinCause(
     @Param('id', new ParseUUIDPipe()) causeId: string,
-    @Body() dto: FollowerJoinCauseRequestDto,
+    @Body() _request: FollowerJoinCauseRequestDto,
+    @CurrentUser('sub') actorId: string,
   ): Promise<void> {
-    const result = await this.causesService.joinCause(causeId, dto.userId);
+    const result = await this.causesService.joinCause(causeId, actorId);
 
     if (result.isLeft()) {
       throw result.value;

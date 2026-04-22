@@ -18,6 +18,7 @@ export abstract class RequestsService {
    */
   abstract createCommunityRequest(
     createCommunityRequestDto: CreateCommunityRequestDto,
+    actorId: string,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>>;
 
   /**
@@ -26,6 +27,7 @@ export abstract class RequestsService {
    */
   abstract createCauseRequest(
     createCauseRequestDto: CreateCauseRequestDto,
+    actorId: string,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>>;
   /**
    * Creates an action request.
@@ -33,6 +35,7 @@ export abstract class RequestsService {
    */
   abstract createActionRequest(
     createActionRequestDto: CreateActionRequestDto,
+    actorId: string,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>>;
 
   /**

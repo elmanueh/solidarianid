@@ -23,12 +23,19 @@ import { CommunityUserEntity } from '../../src/infrastructure/persistence/entiti
 import { CommunitiesModule } from '@app/communities/communities.module';
 import { CauseSummaryResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/cause-summary.response.dto';
 import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
+import { JwtService } from '@nestjs/jwt';
 
 describe('CausesController (e2e)', () => {
   let server!: TestServerHelper;
   let seeder!: PostgreSQLSeeder;
   let app: INestApplication;
   let causeUserRepository: Repository<CauseUserEntity>;
+
+  const createAccessToken = (userId: string): string => {
+    const privateKey = Buffer.from(process.env.JWT_PRIVATE_KEY_BASE64 ?? '', 'base64').toString('utf8');
+    const jwtService = new JwtService({ privateKey });
+    return jwtService.sign({ sub: userId }, { algorithm: 'RS256', expiresIn: '15m' });
+  };
 
   beforeAll(async () => {
     const messageModule = await KafkaTestModule.forRoot();
@@ -209,12 +216,13 @@ describe('CausesController (e2e)', () => {
 
   describe('/causes/:id/followers (POST)', () => {
     it('should allow a community member to follow a cause', async () => {
-      const payload = { userId: USER_IDS.ANA };
+      const token = createAccessToken(USER_IDS.ANA);
 
       await server
         .getRequest()
         .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
-        .send(payload)
+        .set('Cookie', [`AccessToken=${token}`])
+        .send({})
         .expect(HttpStatus.CREATED);
 
       const causeFollower = await causeUserRepository.findOne({
@@ -229,12 +237,14 @@ describe('CausesController (e2e)', () => {
       expect(causeFollower?.userId).toBe(USER_IDS.ANA);
     });
 
-    it('should return 401 when the user is not a member of the cause community', async () => {
+    it('should return 403 when the user is not a member of the cause community', async () => {
+      const token = createAccessToken(USER_IDS.PEDRO);
       await server
         .getRequest()
         .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
-        .send({ userId: USER_IDS.PEDRO })
-        .expect(HttpStatus.UNAUTHORIZED);
+        .set('Cookie', [`AccessToken=${token}`])
+        .send({})
+        .expect(HttpStatus.FORBIDDEN);
 
       const causeFollower = await causeUserRepository.findOne({
         where: {
@@ -247,18 +257,20 @@ describe('CausesController (e2e)', () => {
     });
 
     it('should return 409 when the user already follows the cause', async () => {
-      const payload = { userId: USER_IDS.ANA };
+      const token = createAccessToken(USER_IDS.ANA);
 
       await server
         .getRequest()
         .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
-        .send(payload)
+        .set('Cookie', [`AccessToken=${token}`])
+        .send({})
         .expect(HttpStatus.CREATED);
 
       await server
         .getRequest()
         .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
-        .send(payload)
+        .set('Cookie', [`AccessToken=${token}`])
+        .send({})
         .expect(HttpStatus.CONFLICT);
     });
   });

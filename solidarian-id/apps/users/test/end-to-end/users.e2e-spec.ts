@@ -1,3 +1,5 @@
+import { AuthModule } from '@app/users/infrastructure/auth/auth.module';
+import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entities/refresh-token.entity';
 import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
 import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
 import { UsersProjectionService } from '@app/users/infrastructure/persistence/projections/users-projection.service';
@@ -45,7 +47,11 @@ describe('UsersController (e2e)', () => {
 
   beforeAll(async () => {
     const messageModule = await KafkaTestModule.forRoot();
-    const databaseModule = await PostgreSQLTestModule.forRoot([UserProjectionEntity, CheckpointProjectionEntity]);
+    const databaseModule = await PostgreSQLTestModule.forRoot([
+      UserProjectionEntity,
+      CheckpointProjectionEntity,
+      RefreshTokenEntity,
+    ]);
     const kurrentdbModule = await KurrentDBTestModule.forRoot();
 
     const connectionString = process.env.EVENT_STORE_URL!;
@@ -54,7 +60,7 @@ describe('UsersController (e2e)', () => {
 
     server = new TestServerHelper();
     app = await server.create({
-      imports: [messageModule, databaseModule, kurrentdbModule, UsersModule],
+      imports: [messageModule, databaseModule, kurrentdbModule, UsersModule, AuthModule],
     });
 
     postgreSeeder = new PostgreSQLSeeder(app.get<DataSource>('DataSource'));
@@ -226,6 +232,11 @@ describe('UsersController (e2e)', () => {
 
     beforeEach(async () => {
       await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
+      await server
+        .getRequest()
+        .post('/api/auth/login')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' })
+        .expect(HttpStatus.OK);
     });
 
     // ÉXITO: Solo status 204 NO_CONTENT
@@ -428,14 +439,14 @@ describe('UsersController (e2e)', () => {
       await server.getRequest().patch(`/api/users/${existingUserId}`).send({}).expect(HttpStatus.BAD_REQUEST);
     });
 
-    it('Test 16 - user not found (invalid UUID) → 404', async () => {
+    it('Test 16 - should return 403 when trying to update another user', async () => {
       await server
         .getRequest()
         .patch('/api/users/00000000-0000-0000-0000-000000000000')
         .send({
           username: 'updatedUsername',
         })
-        .expect(HttpStatus.NOT_FOUND);
+        .expect(HttpStatus.FORBIDDEN);
     });
   });
 
@@ -508,6 +519,15 @@ describe('UsersController (e2e)', () => {
   describe('/api/users/:id/preferences (GET)', () => {
     const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
 
+    beforeEach(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
+      await server
+        .getRequest()
+        .post('/api/auth/login')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' })
+        .expect(HttpStatus.OK);
+    });
+
     it('Test 1 - should get user preferences successfully', async () => {
       const response = await server.getRequest().get(`/api/users/${existingUserId}/preferences`).expect(HttpStatus.OK);
 
@@ -521,15 +541,15 @@ describe('UsersController (e2e)', () => {
       expect(typeof response.body.notificationsEnabled).toBe('boolean');
     });
 
-    it('Test 2 - should return 404 for non-existent user', async () => {
+    it('Test 2 - should return 403 for non-owned user preferences', async () => {
       await server
         .getRequest()
         .get('/api/users/00000000-0000-0000-0000-000000000000/preferences')
-        .expect(HttpStatus.NOT_FOUND);
+        .expect(HttpStatus.FORBIDDEN);
     });
 
-    it('Test 3 - should return 400 for invalid user ID format', async () => {
-      await server.getRequest().get('/api/users/invalid-uuid/preferences').expect(HttpStatus.BAD_REQUEST);
+    it('Test 3 - should return 403 for invalid/non-owned user id before reaching service', async () => {
+      await server.getRequest().get('/api/users/invalid-uuid/preferences').expect(HttpStatus.FORBIDDEN);
     });
   });
 
@@ -538,6 +558,12 @@ describe('UsersController (e2e)', () => {
 
     beforeEach(async () => {
       await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
+
+      await server
+        .getRequest()
+        .post('/api/auth/login')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' })
+        .expect(HttpStatus.OK);
     });
 
     it('Test 1 - should update all preferences successfully', async () => {
@@ -738,7 +764,7 @@ describe('UsersController (e2e)', () => {
         .expect(HttpStatus.BAD_REQUEST);
     });
 
-    it('Test 18 - should fail for non-existent user → 404', async () => {
+    it('Test 18 - should fail with 403 for non-owned user → 403', async () => {
       await server
         .getRequest()
         .patch('/api/users/00000000-0000-0000-0000-000000000000/preferences')
@@ -748,7 +774,7 @@ describe('UsersController (e2e)', () => {
           durationPreferences: ['short_term'],
           notificationsEnabled: true,
         })
-        .expect(HttpStatus.NOT_FOUND);
+        .expect(HttpStatus.FORBIDDEN);
     });
 
     it('Test 19 - should fail with extra fields (forbidNonWhitelisted) → 400', async () => {

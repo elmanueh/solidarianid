@@ -5,6 +5,8 @@ import { CreateCauseRequestInput } from '../inputs/request/create-cause-request.
 import { CreateActionRequestInput } from '../inputs/request/create-action-request.input';
 import { Request } from '../entities/request';
 import { RequestGraphqlMapper } from '../mappers/request-graphql.mapper';
+import { UseGuards } from '@nestjs/common';
+import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 
 @Resolver(() => Request)
 export class RequestResolver {
@@ -14,11 +16,13 @@ export class RequestResolver {
   ) {}
 
   @Mutation(() => String)
+  @UseGuards(JwtAuthGuard)
   async createCommunityRequest(
     @Args('createCommunityRequestInput') createCommunityRequestInput: CreateCommunityRequestInput,
+    @CurrentUser('sub') actorId: string,
   ): Promise<string> {
     const dto = this.requestGraphqlMapper.toCreateCommunityRequestDto(createCommunityRequestInput);
-    const uniqueId = await this.requestsService.createCommunityRequest(dto);
+    const uniqueId = await this.requestsService.createCommunityRequest(dto, actorId);
 
     if (uniqueId.isLeft()) {
       throw uniqueId.value;
@@ -28,11 +32,13 @@ export class RequestResolver {
   }
 
   @Mutation(() => String)
+  @UseGuards(JwtAuthGuard)
   async createCauseRequest(
     @Args('createCauseRequestInput') createCauseRequestInput: CreateCauseRequestInput,
+    @CurrentUser('sub') actorId: string,
   ): Promise<string> {
     const dto = this.requestGraphqlMapper.toCreateCauseRequestDto(createCauseRequestInput);
-    const uniqueId = await this.requestsService.createCauseRequest(dto);
+    const uniqueId = await this.requestsService.createCauseRequest(dto, actorId);
 
     if (uniqueId.isLeft()) {
       throw uniqueId.value;
@@ -42,11 +48,13 @@ export class RequestResolver {
   }
 
   @Mutation(() => String)
+  @UseGuards(JwtAuthGuard)
   async createActionRequest(
     @Args('createActionRequestInput') createActionRequestInput: CreateActionRequestInput,
+    @CurrentUser('sub') actorId: string,
   ): Promise<string> {
     const dto = this.requestGraphqlMapper.toCreateActionRequestDto(createActionRequestInput);
-    const uniqueId = await this.requestsService.createActionRequest(dto);
+    const uniqueId = await this.requestsService.createActionRequest(dto, actorId);
 
     if (uniqueId.isLeft()) {
       throw uniqueId.value;

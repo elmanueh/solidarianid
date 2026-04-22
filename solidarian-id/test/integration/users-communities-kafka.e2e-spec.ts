@@ -1,4 +1,5 @@
 import { Transport } from '@nestjs/microservices';
+import { JwtService } from '@nestjs/jwt';
 import {
   EventTracker,
   KafkaTestModule,
@@ -10,9 +11,17 @@ import {
 } from '@solidarianid/testing';
 import { DataSource, Repository } from 'typeorm';
 
+function createAccessToken(userId: string): string {
+  const privateKey = Buffer.from(process.env.JWT_PRIVATE_KEY_BASE64 ?? '', 'base64').toString('utf8');
+  const jwtService = new JwtService({ privateKey });
+  return jwtService.sign({ sub: userId }, { algorithm: 'RS256', expiresIn: '15m' });
+}
+
 // Users microservice
 import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
 import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
+import { AuthModule } from '@app/users/infrastructure/auth/auth.module';
+import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entities/refresh-token.entity';
 import { UsersModule } from '@app/users/users.module';
 
 // Communities microservice
@@ -55,6 +64,7 @@ describe('Users-Communities Kafka Integration', () => {
     const databaseModule = await PostgreSQLTestModule.forRoot([
       UserProjectionEntity,
       CheckpointProjectionEntity,
+      RefreshTokenEntity,
       CommunitiesUserEntity,
       CommunityEntity,
       CauseEntity,
@@ -71,7 +81,7 @@ describe('Users-Communities Kafka Integration', () => {
     // Users: HTTP + Kafka producer
     usersServer = new TestServerHelper();
     await usersServer.createWithMicroservice(
-      { imports: [kafkaModule, databaseModule, kurrentdbModule, UsersModule] },
+      { imports: [kafkaModule, databaseModule, kurrentdbModule, UsersModule, AuthModule] },
       {
         transport: Transport.KAFKA,
         options: {
@@ -237,7 +247,14 @@ describe('Users-Communities Kafka Integration', () => {
         mobilePhone: '+34699333444',
       };
 
-      await usersServer.getRequest().patch(`/api/users/${userId}`).send(updatePayload).expect(204);
+      const accessToken = createAccessToken(userId);
+
+      await usersServer
+        .getRequest()
+        .patch(`/api/users/${userId}`)
+        .set('Cookie', `AccessToken=${accessToken}`)
+        .send(updatePayload)
+        .expect(204);
 
       await eventTracker.waitFor(`user:${userId}`);
 

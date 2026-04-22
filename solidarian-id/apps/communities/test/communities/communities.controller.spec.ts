@@ -7,6 +7,7 @@ import { CommunitiesController } from '@app/communities/infrastructure/presentat
 import { EntityNotFoundError } from 'typeorm';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { CommunityRankingUserResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/community-ranking-user.response.dto';
+import { MemberJoinCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/member-join-community.request.dto';
 
 describe('CommunitiesController', () => {
   let controller: CommunitiesController;
@@ -206,13 +207,15 @@ describe('CommunitiesController', () => {
   describe('joinCommunity', () => {
     it('returns undefined when join is successful', async () => {
       mockService.joinCommunity.mockResolvedValueOnce(right(undefined));
-      await expect(controller.joinCommunity('uuid', { userId: 'user-1' })).resolves.toBeUndefined();
+      const joinRequestDto = new MemberJoinCommunityRequestDto();
+      await expect(controller.joinCommunity('uuid', joinRequestDto, 'user-1')).resolves.toBeUndefined();
       expect(mockService.joinCommunity).toHaveBeenCalledWith('uuid', 'user-1');
     });
     it('throws error when service returns left', async () => {
       const err = new ValidationError('already member');
       mockService.joinCommunity.mockResolvedValueOnce(left(err));
-      await expect(controller.joinCommunity('uuid', { userId: 'user-1' })).rejects.toThrow(err);
+      const joinRequestDto = new MemberJoinCommunityRequestDto();
+      await expect(controller.joinCommunity('uuid', joinRequestDto, 'user-1')).rejects.toThrow(err);
     });
   });
 });

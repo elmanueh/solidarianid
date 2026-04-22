@@ -126,8 +126,8 @@ export default function ProfileSettingsRequestsPage() {
   const showEmptyState = !loading && !hasError && filteredRequests.length === 0;
 
   return (
-    <div className="flex min-h-screen flex-col bg-muted/40 pb-24 text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border bg-card/90 px-4 py-6 pt-10 shadow-sm backdrop-blur-md">
+    <div className="flex min-h-screen flex-col pb-24 text-foreground">
+      <header className="sticky top-0 z-50 border-b border-border px-4 py-6 pt-10 shadow-sm backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4">
           <div className="flex min-w-0 items-center gap-4">
             <Button

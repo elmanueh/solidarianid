@@ -7,15 +7,21 @@ type ExploreResultsGridProps = {
   mode: ExploreMode;
   communities: ExploreCommunityItem[];
   causes: ExploreCauseItem[];
+  emptyMessage?: string;
 };
 
-export function ExploreResultsGrid({ mode, communities, causes }: Readonly<ExploreResultsGridProps>) {
+export function ExploreResultsGrid({
+  mode,
+  communities,
+  causes,
+  emptyMessage = 'No hay resultados para los criterios seleccionados.',
+}: Readonly<ExploreResultsGridProps>) {
   const styles = explorePageStyles;
 
   const hasNoResults = mode === 'communities' ? communities.length === 0 : causes.length === 0;
 
   if (hasNoResults) {
-    return <div className={styles.results.empty}>No hay resultados para los criterios seleccionados.</div>;
+    return <div className={styles.results.empty}>{emptyMessage}</div>;
   }
 
   return (

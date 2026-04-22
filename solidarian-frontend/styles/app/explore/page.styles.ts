@@ -16,6 +16,8 @@ export const explorePageStyles = {
   results: {
     count: 'px-1 text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase lg:px-2',
     grid: 'grid grid-cols-1 gap-6 px-1 md:grid-cols-2 lg:grid-cols-3 lg:px-0',
+    status:
+      'flex min-h-60 flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-border bg-card px-6 text-center text-sm font-bold text-muted-foreground',
     empty:
       'flex min-h-60 items-center justify-center rounded-3xl border border-dashed border-border bg-card px-6 text-center text-sm font-bold text-muted-foreground',
   },

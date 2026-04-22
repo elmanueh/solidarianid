@@ -2,6 +2,8 @@ export type ExploreMode = 'communities' | 'causes';
 
 export type ExploreSort = 'name_asc' | 'name_desc';
 
+export type ExploreApiSortOrder = 'asc' | 'desc';
+
 export type ExploreCommunityItem = {
   id: string;
   name: string;
@@ -33,6 +35,35 @@ export type ExplorePaginatedResult<T> = {
   pageSize: number;
   totalPages: number;
 };
+
+export type ExploreCommunitiesApiQuery = {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  sortOrder?: ExploreApiSortOrder;
+};
+
+export type ExploreCausesApiQuery = ExploreCommunitiesApiQuery & {
+  ods?: string[];
+};
+
+export type ExploreCommunityApiItem = {
+  id: string;
+  name: string;
+  description: string;
+};
+
+export type ExploreCauseApiItem = {
+  id: string;
+  communityId: string;
+  name: string;
+  description: string;
+  ods: Array<number | string>;
+};
+
+export type ExploreCommunitiesApiResponse = ExplorePaginatedResult<ExploreCommunityApiItem>;
+
+export type ExploreCausesApiResponse = ExplorePaginatedResult<ExploreCauseApiItem>;
 
 export const EXPLORE_DEFAULTS = {
   mode: 'communities' as ExploreMode,

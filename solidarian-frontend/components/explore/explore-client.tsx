@@ -4,6 +4,7 @@ import { ExploreControls } from '@/components/explore/explore-controls';
 import { ExploreHeader } from '@/components/explore/explore-header';
 import { ExplorePagination } from '@/components/explore/explore-pagination';
 import { ExploreResultsGrid } from '@/components/explore/explore-results-grid';
+import { Skeleton } from '@/components/ui/skeleton';
 import { ExploreService } from '@/features/explore/services/explore.service';
 import {
   EXPLORE_DEFAULTS,
@@ -14,7 +15,8 @@ import {
   ExploreSort,
 } from '@/features/explore/model/explore.types';
 import { explorePageStyles } from '@/styles/app/explore/page.styles';
-import { useMemo, useState } from 'react';
+import { IconAlertTriangle, IconLoader } from '@tabler/icons-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const exploreService = new ExploreService();
 
@@ -42,6 +44,12 @@ export function ExploreClient() {
   const [draftSearch, setDraftSearch] = useState(EXPLORE_DEFAULTS.search);
   const [search, setSearch] = useState(EXPLORE_DEFAULTS.search);
   const [selectedOds, setSelectedOds] = useState<string[]>([]);
+  const [communities, setCommunities] = useState<ExplorePaginatedResult<ExploreCommunityItem>>(emptyCommunitiesResult);
+  const [causes, setCauses] = useState<ExplorePaginatedResult<ExploreCauseItem>>(emptyCausesResult);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const latestRequestId = useRef(0);
+
   const query = useMemo(
     () => ({
       page,
@@ -53,20 +61,59 @@ export function ExploreClient() {
     [mode, page, search, sort, selectedOds]
   );
 
-  const communities: ExplorePaginatedResult<ExploreCommunityItem> = useMemo(() => {
-    if (mode !== 'communities') {
-      return emptyCommunitiesResult;
-    }
+  useEffect(() => {
+    let cancelled = false;
+    const requestId = latestRequestId.current + 1;
+    latestRequestId.current = requestId;
 
-    return exploreService.getCommunities(query);
-  }, [mode, query]);
+    const loadExploreData = async () => {
+      setLoading(true);
+      setError(null);
 
-  const causes: ExplorePaginatedResult<ExploreCauseItem> = useMemo(() => {
-    if (mode !== 'causes') {
-      return emptyCausesResult;
-    }
+      try {
+        if (mode === 'communities') {
+          const result = await exploreService.getCommunities(query);
 
-    return exploreService.getCauses(query);
+          if (cancelled || latestRequestId.current !== requestId) {
+            return;
+          }
+
+          setCommunities(result);
+          return;
+        }
+
+        const result = await exploreService.getCauses(query);
+
+        if (cancelled || latestRequestId.current !== requestId) {
+          return;
+        }
+
+        setCauses(result);
+      } catch (loadError) {
+        if (cancelled || latestRequestId.current !== requestId) {
+          return;
+        }
+
+        setError(loadError instanceof Error ? loadError.message : 'No se pudo cargar el contenido de explore.');
+
+        if (mode === 'communities') {
+          setCommunities(emptyCommunitiesResult);
+          return;
+        }
+
+        setCauses(emptyCausesResult);
+      } finally {
+        if (!cancelled && latestRequestId.current === requestId) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void loadExploreData();
+
+    return () => {
+      cancelled = true;
+    };
   }, [mode, query]);
 
   const handleModeChange = (nextMode: ExploreMode) => {
@@ -119,8 +166,28 @@ export function ExploreClient() {
     () => (mode === 'communities' ? communities.total : causes.total),
     [mode, communities, causes]
   );
+  const displayedTotal = loading || error ? 0 : currentTotal;
   const currentPageSize = EXPLORE_DEFAULTS.pageSize;
-  const hasPagination = currentTotal > currentPageSize;
+  const hasPagination = !loading && !error && currentTotal > currentPageSize;
+
+  const renderLoadingState = () => (
+    <div className={styles.results.status}>
+      <IconLoader size={22} className="animate-spin" />
+      <p>Cargando resultados...</p>
+      <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: currentPageSize }).map((_, index) => (
+          <Skeleton key={`explore-skeleton-${index}`} className="h-80 rounded-[2rem]" />
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderErrorState = () => (
+    <div className={styles.results.status}>
+      <IconAlertTriangle size={22} className="text-destructive" />
+      <p>{error}</p>
+    </div>
+  );
 
   return (
     <div className={styles.container}>
@@ -138,9 +205,15 @@ export function ExploreClient() {
         onClearOds={handleClearOds}
       />
 
-      <p className={styles.results.count}>Mostrando {currentTotal} resultados totales</p>
+      <p className={styles.results.count}>Mostrando {displayedTotal} resultados totales</p>
 
-      <ExploreResultsGrid mode={mode} communities={communities.items} causes={causes.items} />
+      {loading ? (
+        renderLoadingState()
+      ) : error ? (
+        renderErrorState()
+      ) : (
+        <ExploreResultsGrid mode={mode} communities={communities.items} causes={causes.items} />
+      )}
 
       {hasPagination ? (
         <ExplorePagination page={page} setPage={setPage} totalItems={currentTotal} pageSize={currentPageSize} />

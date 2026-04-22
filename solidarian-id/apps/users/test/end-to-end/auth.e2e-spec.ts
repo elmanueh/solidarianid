@@ -4,6 +4,7 @@ import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/enti
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
 import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
+import { UsersProjectionService } from '@app/users/infrastructure/persistence/projections/users-projection.service';
 import { UsersModule } from '@app/users/users.module';
 import { KurrentDBClient } from '@kurrent/kurrentdb-client';
 import { HttpStatus, INestApplication } from '@nestjs/common';
@@ -19,14 +20,6 @@ import {
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
-async function resetState(kurrentdbSeeder: KurrentDBSeeder, postgresSeeder: PostgreSQLSeeder): Promise<void> {
-  const projectionUserIds = await postgresSeeder.getUserProjectionIds();
-  await kurrentdbSeeder.clean(projectionUserIds);
-  await kurrentdbSeeder.seedUsers();
-  await postgresSeeder.clean();
-  await postgresSeeder.seedUsersProjection();
-}
-
 function getSetCookieHeaders(headers: Record<string, unknown>): string[] {
   const rawSetCookie = headers['set-cookie'];
 
@@ -41,11 +34,31 @@ function getSetCookieHeaders(headers: Record<string, unknown>): string[] {
   return [];
 }
 
+async function resetState(
+  kurrentdbSeeder: KurrentDBSeeder,
+  postgresSeeder: PostgreSQLSeeder,
+  usersProjectionService: UsersProjectionService,
+): Promise<void> {
+  await usersProjectionService.onModuleDestroy();
+
+  try {
+    await kurrentdbSeeder.clean();
+    await kurrentdbSeeder.seedUsers();
+
+    await postgresSeeder.clean();
+    const position = await kurrentdbSeeder.getLatestUserCheckpointPosition();
+    await postgresSeeder.seedUsersProjection(position.commit, position.prepare);
+  } finally {
+    await usersProjectionService.onModuleInit();
+  }
+}
+
 describe('AuthController (e2e)', () => {
   let server!: TestServerHelper;
   let app: INestApplication;
   let seeder!: PostgreSQLSeeder;
   let kurrentdbSeeder!: KurrentDBSeeder;
+  let usersProjectionService!: UsersProjectionService;
   let eventStore!: KurrentDBClient;
 
   beforeAll(async () => {
@@ -70,12 +83,13 @@ describe('AuthController (e2e)', () => {
 
     const dataSource = app.get<DataSource>('DataSource');
     seeder = new PostgreSQLSeeder(dataSource);
+    usersProjectionService = app.get(UsersProjectionService);
 
-    await resetState(kurrentdbSeeder, seeder);
+    await resetState(kurrentdbSeeder, seeder, usersProjectionService);
   });
 
   beforeEach(async () => {
-    await resetState(kurrentdbSeeder, seeder);
+    await resetState(kurrentdbSeeder, seeder, usersProjectionService);
     server.resetAgent();
   });
 

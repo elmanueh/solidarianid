@@ -42,11 +42,6 @@ const supportChannels: SupportChannel[] = [
 export default function ProfileSettingsHelpPage() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-brand-500/10 blur-3xl dark:bg-brand-500/15" />
-        <div className="absolute top-1/3 right-0 h-64 w-64 rounded-full bg-brand-ink/5 blur-3xl dark:bg-brand-500/10" />
-      </div>
-
       <div className="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-4 pt-4 pb-24 sm:px-6 lg:px-8">
         <header className="sticky top-4 z-20 rounded-4xl border border-border/70 bg-background/90 px-4 py-4 shadow-sm backdrop-blur-xl dark:bg-background/80">
           <div className="flex items-center gap-4">

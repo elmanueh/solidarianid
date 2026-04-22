@@ -45,7 +45,7 @@ export function RequestFilterGrid({ cards, onSelect, selectedFilter }: RequestFi
             aria-pressed={isSelected}
             onClick={() => onSelect(card.value)}
             className={cn(
-              'group flex min-h-32 flex-col justify-between rounded-2xl border-2 p-3 text-left transition-all hover:-translate-y-0.5',
+              'group flex min-h-32 cursor-pointer flex-col justify-between rounded-2xl border-2 p-3 text-left transition-all hover:-translate-y-0.5',
               isSelected ? card.activeClassName : 'border-border bg-card'
             )}
           >

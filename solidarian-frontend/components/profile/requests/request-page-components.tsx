@@ -171,13 +171,13 @@ export function EmptyRequestsState({ selectedFilter, selectedStatusLabel, onClea
       <h2 className="mt-6 text-xl font-extrabold tracking-tight text-brand-ink dark:text-foreground">{title}</h2>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed font-medium text-muted-foreground">{description}</p>
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+      <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
         {selectedFilter !== 'all' ? (
           <Button
             type="button"
             variant="outline"
             onClick={onClearFilter}
-            className="rounded-2xl border-border bg-card text-brand-ink hover:bg-muted hover:text-brand-ink"
+            className="h-12 w-full rounded-2xl border-border bg-card px-5 text-brand-ink hover:bg-muted hover:text-brand-ink sm:w-auto"
           >
             Ver todas
           </Button>
@@ -187,7 +187,7 @@ export function EmptyRequestsState({ selectedFilter, selectedStatusLabel, onClea
           variant="default"
           nativeButton={false}
           render={<Link href={ROUTES.favorites.requestsCreate} />}
-          className="h-12 gap-2 rounded-2xl bg-brand-500 px-6 text-[10px] font-black tracking-[0.22em] text-primary-foreground uppercase shadow-xl transition-all hover:shadow-2xl active:scale-95"
+          className="h-12 w-full justify-center gap-2 rounded-2xl bg-brand-500 px-6 text-xs font-black tracking-[0.18em] text-primary-foreground uppercase shadow-xl transition-all hover:shadow-2xl active:scale-95 sm:w-auto sm:text-[10px] sm:tracking-[0.22em]"
         >
           <IconPlus size={18} />
           Crear solicitud

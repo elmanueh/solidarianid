@@ -38,12 +38,13 @@ export const authService = {
     // const response = await api.get(AUTH_ENDPOINTS.ME);
     // return response.data as User;
     return {
-      id: '8183ff86-7821-4469-94ad-6ac4d278586b',
+      id: 'b59be55b-8380-4642-9bef-c5f553399ad5',
       username: 'pablo',
       fullName: 'Pablo Peris',
       mobilePhone: '+34123456789',
       city: 'Totana',
       countryCode: 'ES',
+      // poner preferencias de notificaciones
     };
   },
 };

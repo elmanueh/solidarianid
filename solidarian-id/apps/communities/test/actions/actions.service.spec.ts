@@ -1,15 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ActionsServiceImpl } from '@app/communities/application/services/actions.service.impl';
-import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
-import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
-import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { Action } from '@app/communities/domain/model/entities/action';
-import { ActionRequestEventDto } from '@solidarianid/kafka';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
+import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
+import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { left, right } from '@app/ddd/either';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ActionRequestEventDto } from '@solidarianid/kafka';
 
 describe('ActionsServiceImpl', () => {
   let service: ActionsServiceImpl;
@@ -23,6 +24,9 @@ describe('ActionsServiceImpl', () => {
   };
   let mockSubscriptionsPublisher: {
     publishActionCreated: jest.Mock;
+  };
+  let mockUsersRepository: {
+    findById: jest.Mock;
   };
 
   const validCauseId = 'c1b2c3d4-e5f6-4890-abcd-ef1234567003';
@@ -86,11 +90,15 @@ describe('ActionsServiceImpl', () => {
     mockSubscriptionsPublisher = {
       publishActionCreated: jest.fn(),
     };
+    mockUsersRepository = {
+      findById: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ActionsServiceImpl,
         { provide: ActionsRepositoryPort, useValue: mockActionRepository },
+        { provide: UsersRepositoryPort, useValue: mockUsersRepository },
         { provide: ActionsPublisherPort, useValue: mockActionsPublisher },
         { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
       ],
@@ -297,7 +305,11 @@ describe('ActionsServiceImpl', () => {
         expect(result.value).toBeInstanceOf(Action);
         expect(result.value.id.value).toBe(validActionId);
       }
-      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, ['events', 'objectives']);
+      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, [
+        'events',
+        'events.assistants',
+        'objectives',
+      ]);
     });
 
     it('should propagate ValidationError from repository', async () => {
@@ -308,7 +320,11 @@ describe('ActionsServiceImpl', () => {
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBe(err);
-      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, ['events', 'objectives']);
+      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, [
+        'events',
+        'events.assistants',
+        'objectives',
+      ]);
     });
 
     it('should request events and objectives relations when fetching by id', async () => {
@@ -317,7 +333,11 @@ describe('ActionsServiceImpl', () => {
 
       await service.getActionById(validActionId);
 
-      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, ['events', 'objectives']);
+      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, [
+        'events',
+        'events.assistants',
+        'objectives',
+      ]);
     });
   });
 });

@@ -166,7 +166,7 @@ export default function ProfilePage() {
             <Button
               type="button"
               onClick={handleLogout}
-              className="h-auto w-full justify-center gap-3 rounded-[28px] border border-destructive/20 bg-destructive/10 p-5 text-[10px] font-black tracking-[0.2em] text-destructive uppercase shadow-sm transition-all hover:bg-destructive hover:text-destructive-foreground hover:shadow-xl active:scale-95"
+              className="h-auto w-full cursor-pointer justify-center gap-3 rounded-[28px] border border-destructive/20 bg-destructive/10 p-5 text-[10px] font-black tracking-[0.2em] text-destructive uppercase shadow-sm transition-all hover:bg-destructive hover:text-destructive-foreground hover:shadow-xl active:scale-95"
             >
               <IconLogout2 size={18} />
               <span>Cerrar Sesión Ahora</span>

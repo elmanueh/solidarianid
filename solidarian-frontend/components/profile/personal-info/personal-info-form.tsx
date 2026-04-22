@@ -16,6 +16,7 @@ import { getErrorMessage } from '@/features/axios/errors.handler';
 import { useAppDispatch, useAppSelector } from '@/features/redux/redux-hook';
 import { updateCurrentUser } from '@/features/redux/userSlice';
 import { ROUTES } from '@/features/routes';
+import { Button } from '@base-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconAt, IconCheck, IconMapPin, IconPhone, IconUser, IconWorld } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
@@ -257,14 +258,14 @@ export default function PersonalInfoForm() {
           })}
         </div>
 
-        <button
+        <Button
           type="submit"
           disabled={!currentUser || !isDirty || isSubmitting}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-brand-500 px-4 py-4 text-sm font-bold text-white shadow-sm transition-transform active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-brand-500 px-4 py-4 text-sm font-bold text-white shadow-sm transition-transform active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
         >
           <IconCheck size={18} />
           {isSubmitting ? 'Guardando...' : 'Guardar cambios'}
-        </button>
+        </Button>
       </motion.form>
     </section>
   );

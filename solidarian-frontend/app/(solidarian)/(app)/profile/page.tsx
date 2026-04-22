@@ -157,9 +157,9 @@ export default function ProfilePage() {
             <h3 className="text-xl font-black tracking-widest text-brand-ink uppercase">Cuenta</h3>
           </div>
           <div className="flex flex-col items-center justify-center gap-6 rounded-[40px] border border-border bg-card p-10 text-center shadow-sm">
-            <div className="flex flex-col gap-2">
+            <div className="flex w-full flex-col items-center gap-2">
               <h4 className="text-lg font-black tracking-tight text-brand-ink">¿Deseas cerrar tu sesión?</h4>
-              <p className="max-w-50 text-[10px] leading-loose font-bold tracking-widest text-muted-foreground uppercase">
+              <p className="w-50 max-w-sm text-center text-[10px] leading-loose font-bold tracking-widest text-muted-foreground uppercase">
                 Tu progreso de impacto se guardará de forma segura.
               </p>
             </div>

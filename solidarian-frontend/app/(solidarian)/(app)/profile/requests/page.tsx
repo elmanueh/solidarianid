@@ -127,7 +127,7 @@ export default function ProfileSettingsRequestsPage() {
 
   return (
     <div className="flex min-h-screen flex-col pb-24 text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border px-4 py-6 pt-10 shadow-sm backdrop-blur-md">
+      <header className="sticky top-20 z-50 border-b border-border bg-background px-4 py-6 pt-10 shadow-sm backdrop-blur backdrop-opacity-100 backdrop-filter">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4">
           <div className="flex min-w-0 items-center gap-4">
             <Button

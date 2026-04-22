@@ -18,7 +18,7 @@ const DEFAULT_PROFILE_IMPACT_STATS: ProfileImpactStats = {
   communities: 0,
 };
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8090/api/v1';
+const apiBaseUrl = process.env.NEXT_PUBLIC_GATEWAY_URL ?? 'http://localhost:8090/api/';
 
 const countUniqueIds = (ids: string[]): number => new Set(ids).size;
 
@@ -32,7 +32,7 @@ async function fetchProfileImpactStats(userId: string): Promise<ProfileImpactSta
     requestStatus: 'approved',
   });
 
-  const response = await fetch(`${apiBaseUrl}/subscriptions/${encodeURIComponent(userId)}?${queryParams.toString()}`, {
+  const response = await fetch(`${apiBaseUrl}subscriptions/${encodeURIComponent(userId)}?${queryParams.toString()}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -41,6 +41,7 @@ async function fetchProfileImpactStats(userId: string): Promise<ProfileImpactSta
   });
 
   if (!response.ok) {
+    console.error(`Error fetching profile impact stats: ${response.status} ${response.statusText}`);
     throw new Error(`No se pudieron cargar los stats del perfil (${response.status}).`);
   }
 

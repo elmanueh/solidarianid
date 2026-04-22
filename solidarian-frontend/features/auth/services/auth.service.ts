@@ -47,7 +47,7 @@ export const authService = {
     // const response = await api.get(AUTH_ENDPOINTS.ME);
     // return response.data as User;
     return {
-      id: 'b59be55b-8380-4642-9bef-c5f553399ad5',
+      id: '205591ab-83e9-4441-bbd6-945ff974054e',
       username: 'pablo',
       fullName: 'Pablo Peris',
       mobilePhone: '+34123456789',

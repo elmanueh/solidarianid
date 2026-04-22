@@ -66,6 +66,12 @@ export abstract class UsersService {
       notificationsEnabled: boolean;
     }>,
   ): Promise<Either<ValidationError | RepositoryException, void>>;
+
+  /**
+   * Obtiene un usuario por su ID.
+   * @param userId
+   */
+  abstract getUserById(userId: string): Promise<Either<RepositoryException, User>>;
 }
 
 export interface RegisterUserCommand {

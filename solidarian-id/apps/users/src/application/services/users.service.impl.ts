@@ -224,4 +224,14 @@ export class UsersServiceImpl extends UsersService {
 
     return right(false);
   }
+
+  async getUserById(userId: string): Promise<Either<RepositoryException, User>> {
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    return right(userOrError.value);
+  }
 }

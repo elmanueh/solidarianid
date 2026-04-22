@@ -4,6 +4,7 @@ import { UserPreferenceEntity } from '@app/users/infrastructure/persistence/enti
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
 import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
+import { UsersProjectionService } from '@app/users/infrastructure/persistence/projections/users-projection.service';
 import { UsersModule } from '@app/users/users.module';
 import { KurrentDBClient } from '@kurrent/kurrentdb-client';
 import { HttpStatus, INestApplication } from '@nestjs/common';
@@ -19,11 +20,23 @@ import {
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
-async function resetState(kurrentdbSeeder: KurrentDBSeeder, postgresSeeder: PostgreSQLSeeder): Promise<void> {
-  await kurrentdbSeeder.clean();
-  await kurrentdbSeeder.seedUsers();
-  await postgresSeeder.clean();
-  await postgresSeeder.seedUsersProjection(0n, 0n);
+async function resetState(
+  kurrentdbSeeder: KurrentDBSeeder,
+  postgresSeeder: PostgreSQLSeeder,
+  usersProjectionService: UsersProjectionService,
+): Promise<void> {
+  await usersProjectionService.onModuleDestroy();
+
+  try {
+    await kurrentdbSeeder.clean();
+    await kurrentdbSeeder.seedUsers();
+
+    await postgresSeeder.clean();
+    const position = await kurrentdbSeeder.getLatestUserCheckpointPosition();
+    await postgresSeeder.seedUsersProjection(position.commit, position.prepare);
+  } finally {
+    await usersProjectionService.onModuleInit();
+  }
 }
 
 function getSetCookieHeaders(headers: Record<string, unknown>): string[] {

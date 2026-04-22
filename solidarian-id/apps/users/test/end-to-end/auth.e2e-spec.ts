@@ -20,11 +20,10 @@ import {
 import { DataSource } from 'typeorm';
 
 async function resetState(kurrentdbSeeder: KurrentDBSeeder, postgresSeeder: PostgreSQLSeeder): Promise<void> {
-  const projectionUserIds = await postgresSeeder.getUserProjectionIds();
-  await kurrentdbSeeder.clean(projectionUserIds);
+  await kurrentdbSeeder.clean();
   await kurrentdbSeeder.seedUsers();
   await postgresSeeder.clean();
-  await postgresSeeder.seedUsersProjection();
+  await postgresSeeder.seedUsersProjection(0n, 0n);
 }
 
 function getSetCookieHeaders(headers: Record<string, unknown>): string[] {

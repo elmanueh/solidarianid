@@ -19,6 +19,9 @@ export class Action {
 
   @Field(() => ID)
   causeId: string;
+
+  @Field(() => ID)
+  communityId: string;
 }
 
 @ObjectType()
@@ -49,6 +52,9 @@ export class Event {
 
   @Field(() => EventPlace)
   place: EventPlace;
+
+  @Field(() => [ID])
+  assistantIds: string[];
 }
 
 @ObjectType()

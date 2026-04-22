@@ -26,6 +26,8 @@ export function CommunityCard({ community, index }: Readonly<CommunityCardProps>
             fill
             className={styles.image.img}
             sizes="(max-width: 768px) 280px, (max-width: 1024px) 33vw, 384px"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            priority={index === 0}
           />
         </div>
         <div className={styles.content.wrapper}>

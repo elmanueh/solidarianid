@@ -33,9 +33,9 @@ const supportChannels: SupportChannel[] = [
   {
     icon: <IconMail size={20} />,
     label: 'Email',
-    description: 'soporte@solidarianid.org',
+    description: 'soporte@solidarianid.com',
     accentClassName: 'bg-brand-ink/10 text-brand-ink dark:bg-brand-500/10 dark:text-brand-500',
-    href: 'mailto:soporte@solidarianid.org',
+    href: 'mailto:soporte@solidarianid.com',
   },
 ];
 

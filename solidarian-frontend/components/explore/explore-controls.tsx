@@ -7,7 +7,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ODS_OPTIONS } from '@/features/causes/constants/ods.constants';
 import { ExploreMode, ExploreSort } from '@/features/explore/model/explore.types';
 import { cn } from '@/lib/utils';
-import { exploreControlsStyles } from '@/styles/components/explore-controls.styles';
 import { IconArrowDown, IconArrowUp, IconSearch } from '@tabler/icons-react';
 import { KeyboardEvent } from 'react';
 
@@ -34,8 +33,6 @@ export function ExploreControls({
   onToggleOds,
   onClearOds,
 }: Readonly<ExploreControlsProps>) {
-  const styles = exploreControlsStyles;
-
   const handleSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key !== 'Enter') {
       return;
@@ -46,18 +43,18 @@ export function ExploreControls({
   };
 
   return (
-    <section className={styles.wrapper}>
-      <div className={styles.topRow}>
-        <div className={styles.searchAndButtonRow}>
-          <div className={styles.searchWrapper}>
-            <InputGroup className={styles.searchInputGroup}>
+    <section className="'flex flex-col gap-4 rounded-3xl border border-border bg-card p-4 shadow-sm lg:p-5">
+      <div className="flex flex-col gap-3 lg:grid lg:grid-cols-[minmax(0,60%)_minmax(0,40%)] lg:items-stretch">
+        <div className="flex w-full items-stretch gap-0">
+          <div className="min-w-0 flex-1">
+            <InputGroup className="h-12 rounded-s-[1.6rem] rounded-e-none border-border bg-background shadow-xs ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-chart-2/30 has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-chart-2/15">
               <InputGroupAddon>
-                <InputGroupText className={styles.searchInputText}>
+                <InputGroupText className="text-[11px] font-black tracking-[0.1em] text-muted-foreground uppercase">
                   <IconSearch size={16} />
                 </InputGroupText>
               </InputGroupAddon>
               <InputGroupInput
-                className={styles.searchInput}
+                className="text-[11px] font-bold tracking-[0.08em] uppercase placeholder:font-bold placeholder:tracking-[0.08em] placeholder:uppercase"
                 value={draftSearch}
                 onChange={event => onDraftSearchChange(event.target.value)}
                 onBlur={onSearchCommit}
@@ -68,17 +65,24 @@ export function ExploreControls({
             </InputGroup>
           </div>
 
-          <Button type="button" className={styles.searchButtonInline} onClick={onSearchCommit}>
+          <Button
+            type="button"
+            className="h-12 rounded-s-none rounded-e-[1.6rem] border border-sidebar-primary/20 bg-sidebar-primary px-5 text-[10px] font-black tracking-[0.18em] text-sidebar-primary-foreground uppercase shadow-md shadow-sidebar-primary/20 hover:bg-sidebar-primary/90"
+            onClick={onSearchCommit}
+          >
             <IconSearch size={14} />
             BUSCAR
           </Button>
         </div>
 
-        <div className={styles.actionsRow}>
+        <div className="flex flex-wrap items-center gap-2 lg:min-w-0 lg:justify-end">
           <Button
             type="button"
             variant="outline"
-            className={cn(styles.sortButton, sort === 'name_asc' ? styles.sortAsc : styles.sortDesc)}
+            className={cn(
+              'h-12 min-w-42 rounded-[1.6rem] border border-chart-2/20 bg-chart-2/5 px-4 text-[10px] font-black tracking-[0.18em] uppercase shadow-xs hover:bg-chart-2/10',
+              sort === 'name_asc' ? 'text-chart-2' : 'text-sidebar-primary'
+            )}
             onClick={onToggleSort}
           >
             {sort === 'name_asc' ? <IconArrowUp size={14} /> : <IconArrowDown size={14} />}
@@ -88,11 +92,11 @@ export function ExploreControls({
           {mode === 'causes' ? (
             <>
               {selectedOds.length > 0 ? (
-                <div className={styles.odsFilter.compoundWrapper}>
+                <div className="inline-flex items-stretch">
                   <Button
                     type="button"
                     variant="outline"
-                    className={styles.odsFilter.clearInlineButton}
+                    className="h-11 min-w-32 rounded-s-[1.3rem] rounded-e-none border border-border bg-background px-3 text-[10px] font-black tracking-[0.14em] text-muted-foreground uppercase shadow-xs hover:bg-muted hover:text-foreground"
                     onClick={onClearOds}
                   >
                     LIMPIAR ODS
@@ -100,19 +104,31 @@ export function ExploreControls({
                   <Popover>
                     <PopoverTrigger
                       render={<button type="button" />}
-                      className={cn(styles.odsFilter.triggerInline, styles.odsFilter.triggerActive)}
+                      className={cn(
+                        'h-11 min-w-44 rounded-s-none rounded-e-[1.3rem] border border-chart-2/20 bg-chart-2/5 px-4 text-[10px] font-black tracking-[0.16em] text-chart-2 uppercase shadow-xs hover:bg-chart-2/10',
+                        'border-chart-2/20 bg-chart-2/5 text-chart-2'
+                      )}
                     >
                       FILTRAR POR ODS ({selectedOds.length})
                     </PopoverTrigger>
-                    <PopoverContent className={styles.odsFilter.popover} align="end" sideOffset={8}>
-                      <p className={styles.odsFilter.popoverTitle}>OBJETIVOS DE DESARROLLO SOSTENIBLE</p>
-                      <div className={styles.odsFilter.popoverList}>
+                    <PopoverContent
+                      className="w-86 rounded-2xl border border-border bg-popover p-3 shadow-md"
+                      align="end"
+                      sideOffset={8}
+                    >
+                      <p className="text-[10px] font-black tracking-[0.16em] text-foreground uppercase">
+                        OBJETIVOS DE DESARROLLO SOSTENIBLE
+                      </p>
+                      <div className="mt-2 max-h-64 space-y-1 overflow-auto pr-1">
                         {ODS_OPTIONS.map(option => {
                           const isChecked = selectedOds.includes(option.value);
                           return (
-                            <label key={option.value} className={styles.odsFilter.popoverItem}>
+                            <label
+                              key={option.value}
+                              className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-muted"
+                            >
                               <Checkbox checked={isChecked} onCheckedChange={() => onToggleOds(option.value)} />
-                              <span className={styles.odsFilter.popoverLabel}>
+                              <span className="text-[10px] font-bold tracking-[0.08em] text-foreground uppercase">
                                 ODS {option.num} · {option.label}
                               </span>
                             </label>
@@ -127,21 +143,30 @@ export function ExploreControls({
                   <PopoverTrigger
                     render={<button type="button" />}
                     className={cn(
-                      styles.odsFilter.trigger,
-                      selectedOds.length > 0 ? styles.odsFilter.triggerActive : undefined
+                      'h-11 min-w-44 rounded-[1.3rem] border border-border bg-background px-4 text-[10px] font-black tracking-[0.16em] text-muted-foreground uppercase shadow-xs hover:bg-muted',
+                      selectedOds.length > 0 ? 'border-chart-2/20 bg-chart-2/5 text-chart-2' : undefined
                     )}
                   >
                     FILTRAR POR ODS
                   </PopoverTrigger>
-                  <PopoverContent className={styles.odsFilter.popover} align="end" sideOffset={8}>
-                    <p className={styles.odsFilter.popoverTitle}>OBJETIVOS DE DESARROLLO SOSTENIBLE</p>
-                    <div className={styles.odsFilter.popoverList}>
+                  <PopoverContent
+                    className="w-86 rounded-2xl border border-border bg-popover p-3 shadow-md"
+                    align="end"
+                    sideOffset={8}
+                  >
+                    <p className="text-[10px] font-black tracking-[0.16em] text-foreground uppercase">
+                      OBJETIVOS DE DESARROLLO SOSTENIBLE
+                    </p>
+                    <div className="mt-2 max-h-64 space-y-1 overflow-auto pr-1">
                       {ODS_OPTIONS.map(option => {
                         const isChecked = selectedOds.includes(option.value);
                         return (
-                          <label key={option.value} className={styles.odsFilter.popoverItem}>
+                          <label
+                            key={option.value}
+                            className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-muted"
+                          >
                             <Checkbox checked={isChecked} onCheckedChange={() => onToggleOds(option.value)} />
-                            <span className={styles.odsFilter.popoverLabel}>
+                            <span className="text-[10px] font-bold tracking-[0.08em] text-foreground uppercase">
                               ODS {option.num} · {option.label}
                             </span>
                           </label>

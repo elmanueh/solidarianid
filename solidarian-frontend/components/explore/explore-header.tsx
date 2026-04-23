@@ -1,6 +1,5 @@
-import { explorePageStyles } from '@/styles/app/explore/page.styles';
-import { ExploreMode } from '@/features/explore/model/explore.types';
 import { Button } from '@/components/ui/button';
+import { ExploreMode } from '@/features/explore/model/explore.types';
 import { cn } from '@/lib/utils';
 
 type ExploreHeaderProps = {
@@ -9,22 +8,30 @@ type ExploreHeaderProps = {
 };
 
 export function ExploreHeader({ mode, onModeChange }: Readonly<ExploreHeaderProps>) {
-  const styles = explorePageStyles;
-
   return (
-    <header className={styles.header.wrapper}>
-      <div className={styles.header.textWrapper}>
-        <h2 className={styles.header.title}>Explorar Impacto</h2>
-        <p className={styles.header.subtitle}>Encuentra comunidades y causas cerca de ti</p>
+    <header className="flex flex-col gap-4 px-1 lg:flex-row lg:items-end lg:justify-between lg:px-2">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-3xl leading-none font-black tracking-tight text-foreground uppercase md:text-5xl">
+          Explorar Impacto
+        </h2>
+        <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase opacity-80 md:text-base">
+          Encuentra comunidades y causas cerca de ti
+        </p>
       </div>
 
-      <div className={styles.header.modeToggle.wrapper} role="group" aria-label="MODO DE EXPLORACIÓN">
+      <div
+        className="grid h-12 w-full grid-cols-2 rounded-[1.6rem] border border-border bg-muted p-1 shadow-xs sm:w-auto sm:min-w-80"
+        role="group"
+        aria-label="MODO DE EXPLORACIÓN"
+      >
         <Button
           type="button"
           variant="ghost"
           className={cn(
-            styles.header.modeToggle.option,
-            mode === 'communities' ? styles.header.modeToggle.optionActive : styles.header.modeToggle.optionInactive
+            'h-10 rounded-[1.2rem] px-4 text-[10px] font-black tracking-[0.18em] uppercase transition-all',
+            mode === 'communities'
+              ? 'bg-sidebar-primary text-sidebar-primary-foreground shadow-md'
+              : 'text-muted-foreground hover:text-foreground'
           )}
           aria-pressed={mode === 'communities'}
           onClick={() => onModeChange('communities')}
@@ -35,8 +42,10 @@ export function ExploreHeader({ mode, onModeChange }: Readonly<ExploreHeaderProp
           type="button"
           variant="ghost"
           className={cn(
-            styles.header.modeToggle.option,
-            mode === 'causes' ? styles.header.modeToggle.optionActive : styles.header.modeToggle.optionInactive
+            'h-10 rounded-[1.2rem] px-4 text-[10px] font-black tracking-[0.18em] uppercase transition-all',
+            mode === 'causes'
+              ? 'bg-sidebar-primary text-sidebar-primary-foreground shadow-md'
+              : 'text-muted-foreground hover:text-foreground'
           )}
           aria-pressed={mode === 'causes'}
           onClick={() => onModeChange('causes')}

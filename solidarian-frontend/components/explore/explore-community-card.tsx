@@ -1,6 +1,5 @@
-import { ROUTES } from '@/features/routes';
 import { ExploreCommunityItem } from '@/features/explore/model/explore.types';
-import { exploreCardStyles } from '@/styles/components/explore-card.styles';
+import { ROUTES } from '@/features/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -9,26 +8,28 @@ type ExploreCommunityCardProps = {
 };
 
 export function ExploreCommunityCard({ community }: Readonly<ExploreCommunityCardProps>) {
-  const styles = exploreCardStyles;
-
   return (
-    <article className={styles.wrapper}>
+    <article className="group flex h-full flex-col overflow-hidden rounded-[34px] border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-chart-2/30 hover:shadow-lg hover:shadow-chart-2/10">
       <Link href={ROUTES.communities.detail(community.id)}>
-        <div className={styles.image.wrapper}>
+        <div className="relative h-44 overflow-hidden md:h-48">
           <Image
             src={community.imageUrl}
             alt={community.name}
             fill
-            className={styles.image.img}
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 1024px) 100vw, 33vw"
           />
-          <span className={styles.image.typeBadge}>Comunidad</span>
+          <span className="absolute top-4 left-4 rounded-full border border-border bg-card/95 px-3 py-1 text-[9px] font-black tracking-[0.18em] text-chart-2 uppercase backdrop-blur-sm">
+            Comunidad
+          </span>
         </div>
-        <div className={styles.content.wrapper}>
-          <h3 className={styles.content.title}>{community.name}</h3>
-          <p className={styles.content.description}>{community.description}</p>
-          <div className={styles.content.metaRow}>
-            <span className={styles.content.actionHint}>Ver comunidad</span>
+        <div className="flex flex-1 flex-col gap-3 p-6">
+          <h3 className="line-clamp-1 text-xl font-black tracking-tight text-foreground">{community.name}</h3>
+          <p className="line-clamp-3 text-[11px] leading-relaxed font-bold tracking-wide text-muted-foreground uppercase">
+            {community.description}
+          </p>
+          <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
+            <span className="text-[10px] font-black tracking-[0.12em] text-chart-2 uppercase">Ver comunidad</span>
           </div>
         </div>
       </Link>

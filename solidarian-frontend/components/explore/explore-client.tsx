@@ -5,7 +5,6 @@ import { ExploreHeader } from '@/components/explore/explore-header';
 import { ExplorePagination } from '@/components/explore/explore-pagination';
 import { ExploreResultsGrid } from '@/components/explore/explore-results-grid';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ExploreService } from '@/features/explore/services/explore.service';
 import {
   EXPLORE_DEFAULTS,
   ExploreCauseItem,
@@ -14,7 +13,7 @@ import {
   ExplorePaginatedResult,
   ExploreSort,
 } from '@/features/explore/model/explore.types';
-import { explorePageStyles } from '@/styles/app/explore/page.styles';
+import { ExploreService } from '@/features/explore/services/explore.service';
 import { IconAlertTriangle, IconLoader } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -37,7 +36,6 @@ const emptyCausesResult: ExplorePaginatedResult<ExploreCauseItem> = {
 };
 
 export function ExploreClient() {
-  const styles = explorePageStyles;
   const [mode, setMode] = useState<ExploreMode>(EXPLORE_DEFAULTS.mode);
   const [page, setPage] = useState(EXPLORE_DEFAULTS.page);
   const [sort, setSort] = useState<ExploreSort>(EXPLORE_DEFAULTS.sort);
@@ -171,7 +169,7 @@ export function ExploreClient() {
   const hasPagination = !loading && !error && currentTotal > currentPageSize;
 
   const renderLoadingState = () => (
-    <div className={styles.results.status}>
+    <div className="flex min-h-60 flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-border bg-card px-6 text-center text-sm font-bold text-muted-foreground">
       <IconLoader size={22} className="animate-spin" />
       <p>Cargando resultados...</p>
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -183,14 +181,14 @@ export function ExploreClient() {
   );
 
   const renderErrorState = () => (
-    <div className={styles.results.status}>
+    <div className="flex min-h-60 flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-border bg-card px-6 text-center text-sm font-bold text-muted-foreground">
       <IconAlertTriangle size={22} className="text-destructive" />
       <p>{error}</p>
     </div>
   );
 
   return (
-    <div className={styles.container}>
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 pb-10 lg:gap-10">
       <ExploreHeader mode={mode} onModeChange={handleModeChange} />
 
       <ExploreControls
@@ -205,7 +203,9 @@ export function ExploreClient() {
         onClearOds={handleClearOds}
       />
 
-      <p className={styles.results.count}>Mostrando {displayedTotal} resultados totales</p>
+      <p className="px-1 text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase lg:px-2">
+        Mostrando {displayedTotal} resultados totales
+      </p>
 
       {loading ? (
         renderLoadingState()

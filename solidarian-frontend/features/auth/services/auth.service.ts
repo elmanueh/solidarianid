@@ -1,6 +1,8 @@
 import { User } from '@/features/auth/model/user';
 import api from '@/features/axios/axios';
 
+export type UpdateUserProfilePayload = Pick<User, 'fullName' | 'username' | 'mobilePhone' | 'city' | 'countryCode'>;
+
 const AUTH_ENDPOINTS = {
   LOGIN: '/users/login',
   USERS: '/users',
@@ -9,7 +11,10 @@ const AUTH_ENDPOINTS = {
 
 // FIXME: Añadir Registro y tenemos que hablar el tema de los JWT (refresh, etc)
 export const authService = {
-  login: async (username: string, password: string): Promise<User> => {
+  login: async (_username: string, _password: string): Promise<User> => {
+    void _username;
+    void _password;
+
     // TODO: devolver datos del usuario en el login
     //await api.post(AUTH_ENDPOINTS.LOGIN, { username, password });
     return authService.getCurrentUser();
@@ -31,6 +36,10 @@ export const authService = {
       city,
       countryCode,
     });
+  },
+
+  updateUserProfile: async (userId: string, payload: UpdateUserProfilePayload): Promise<void> => {
+    await api.patch(`${AUTH_ENDPOINTS.USERS}/${userId}`, payload);
   },
 
   getCurrentUser: async (): Promise<User> => {

@@ -1,4 +1,3 @@
-import { JoinCauseButton } from '@/components/join-community-button';
 import { ROUTES } from '@/features/routes';
 import { causeCardStyles } from '@/styles/components/cause-card.styles';
 import Image from 'next/image';
@@ -42,7 +41,6 @@ export function CauseCard({ cause, index }: Readonly<CauseCardProps>) {
           </div>
         </div>
       </Link>
-      <JoinCauseButton causeId={cause.id} />
     </div>
   );
 }

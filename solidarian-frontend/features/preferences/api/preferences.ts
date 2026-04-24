@@ -38,9 +38,6 @@ export async function getPreferences(userId: string): Promise<UserPreferencesPro
     : `http://localhost:8090/api/users/${userId}/preferences`;
   const response = await fetch(url, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     credentials: 'include',
   });
 

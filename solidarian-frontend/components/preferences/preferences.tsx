@@ -192,14 +192,14 @@ export function PreferencesStepper() {
           {stepper.state.isLast ? (
             <PreferencesButton
               name="Guardar Cambios"
-              className="bg-success px-8 py-4 tracking-[0.2em] text-white shadow-lg shadow-success/20 active:scale-95"
+              className="bg-success px-8 py-4 tracking-[0.2em] text-white shadow-lg shadow-success/20 hover:bg-green-700 active:scale-95"
               handleAction={handleSavePreferences}
             />
           ) : (
             <PreferencesButton
               name="Continuar"
               iconRight={<IconChevronRight size={16} />}
-              className="bg-preferences-ink px-8 py-4 tracking-[0.2em] text-white hover:bg-preferences-primary active:scale-95 dark:bg-blue-950 hover:dark:bg-blue-500"
+              className="bg-sidebar-primary px-8 py-4 tracking-[0.2em] text-white hover:bg-brand-ink active:scale-95 dark:bg-blue-950"
               handleAction={() => stepper.navigation.next()}
             />
           )}

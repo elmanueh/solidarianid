@@ -1,13 +1,10 @@
 'use client';
 
-import {
-  GET_COMMUNITIES_QUERY,
-  type GetCommunitiesResult,
-} from '@/features/communities/api/graphql/communities.documents';
+import { GET_COMMUNITIES_QUERY } from '@/features/communities/api/graphql/communities.documents';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { useApolloClient } from '@apollo/client/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export type FeaturedCommunity = {
   id: string;
@@ -33,7 +30,8 @@ const normalizeLimit = (limit: number): number => {
 };
 
 export function useFeaturedCommunities(limit = 3): UseFeaturedCommunitiesResult {
-  const graphql = new GraphqlClientService(useApolloClient());
+  const apolloClient = useApolloClient();
+  const graphql = useMemo(() => new GraphqlClientService(apolloClient), [apolloClient]);
   const [communities, setCommunities] = useState<FeaturedCommunity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,7 +78,7 @@ export function useFeaturedCommunities(limit = 3): UseFeaturedCommunitiesResult 
     return () => {
       cancelled = true;
     };
-  }, [normalizedLimit]);
+  }, [normalizedLimit, graphql]);
 
   return {
     communities,

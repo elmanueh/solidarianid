@@ -1,4 +1,5 @@
 import { gql, TypedDocumentNode } from '@apollo/client';
+import { OdsId } from '@/features/causes/constants/ods.constants';
 
 // Query: GetCommunities
 export type GetCommunitiesResult = {
@@ -21,6 +22,67 @@ export const GET_COMMUNITIES_QUERY: TypedDocumentNode<GetCommunitiesResult, GetC
   }
 `;
 
+// Query: GetCommunityById
+export type GetCommunityByIdResult = {
+  community: {
+    id: string;
+    name: string;
+    description: string;
+    creator: {
+      id: string;
+      fullName: string;
+    };
+    admins: {
+      id: string;
+      fullName: string;
+    }[];
+    members: {
+      id: string;
+      fullName: string;
+    }[];
+    causes: {
+      id: string;
+      name: string;
+      description: string;
+      durationDays: number;
+      ods: OdsId[];
+    }[];
+  };
+};
+
+export type GetCommunityByIdVariables = {
+  id: string;
+};
+
+export const GET_COMMUNITY_BY_ID_QUERY: TypedDocumentNode<GetCommunityByIdResult, GetCommunityByIdVariables> = gql`
+  query Community($id: ID!) {
+    community(id: $id) {
+      id
+      name
+      description
+      creator {
+        id
+        fullName
+      }
+      admins {
+        id
+        fullName
+      }
+      members {
+        id
+        fullName
+      }
+      causes {
+        id
+        name
+        description
+        durationDays
+        ods
+      }
+    }
+  }
+`;
+
 // Mutation: JoinCommunity
 export type JoinCommunityResult = {
   joinCommunity: boolean;
@@ -34,6 +96,22 @@ export type JoinCommunityVariables = {
 export const JOIN_COMMUNITY_MUTATION: TypedDocumentNode<JoinCommunityResult, JoinCommunityVariables> = gql`
   mutation JoinCommunity($communityId: ID!, $userId: ID!) {
     joinCommunity(communityId: $communityId, userId: $userId)
+  }
+`;
+
+// Mutation: LeaveCommunity
+export type LeaveCommunityResult = {
+  leaveCommunity: boolean;
+};
+
+export type LeaveCommunityVariables = {
+  communityId: string;
+  userId: string;
+};
+
+export const LEAVE_COMMUNITY_MUTATION: TypedDocumentNode<LeaveCommunityResult, LeaveCommunityVariables> = gql`
+  mutation LeaveCommunity($communityId: ID!, $userId: ID!) {
+    leaveCommunity(communityId: $communityId, userId: $userId)
   }
 `;
 

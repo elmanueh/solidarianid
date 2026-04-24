@@ -1,4 +1,5 @@
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
+import { AuthModule } from '@app/communities/infrastructure/auth/auth.module';
 import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
 import '@app/communities/infrastructure/presentation/controllers/graphql/enums/enum.register';
 import { DateScalar } from '@app/communities/infrastructure/presentation/controllers/graphql/scalars/data.scalar';
@@ -33,7 +34,6 @@ import { CommunitiesService } from './domain/services/communities.service';
 import { RequestsService } from './domain/services/request.service';
 import { SubscriptionsService } from './domain/services/subscriptions.service';
 import { UserService } from './domain/services/user.service';
-import { AuthModule } from './infrastructure/auth/auth.module';
 import { CommunitiesCommunityContextResolverAdapter } from './infrastructure/authz/adapters/communities-community-context-resolver.adapter';
 import { CommunitiesMembershipPermissionSourceAdapter } from './infrastructure/authz/adapters/communities-membership-permission-source.adapter';
 import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/requests.consumer';

@@ -20,8 +20,8 @@ var ChartsLib = (() => {
   var __toCommonJS = mod => __copyProps(__defProp({}, '__esModule', { value: true }), mod);
 
   // libs/charts/src/plugins/plugins.ts
-  var plugins_exports = {};
-  __export(plugins_exports, {
+  var callbacks_exports = {};
+  __export(callbacks_exports, {
     hydrateCallbacks: () => hydrateCallbacks,
   });
 
@@ -37,5 +37,5 @@ var ChartsLib = (() => {
     delete config._serializedCallbacks;
     return config;
   }
-  return __toCommonJS(plugins_exports);
+  return __toCommonJS(callbacks_exports);
 })();

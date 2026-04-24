@@ -20,6 +20,20 @@ import {
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
+function getSetCookieHeaders(headers: Record<string, unknown>): string[] {
+  const rawSetCookie = headers['set-cookie'];
+
+  if (Array.isArray(rawSetCookie)) {
+    return rawSetCookie.filter((cookie): cookie is string => typeof cookie === 'string');
+  }
+
+  if (typeof rawSetCookie === 'string') {
+    return [rawSetCookie];
+  }
+
+  return [];
+}
+
 async function resetState(
   kurrentdbSeeder: KurrentDBSeeder,
   postgresSeeder: PostgreSQLSeeder,
@@ -39,25 +53,12 @@ async function resetState(
   }
 }
 
-function getSetCookieHeaders(headers: Record<string, unknown>): string[] {
-  const rawSetCookie = headers['set-cookie'];
-
-  if (Array.isArray(rawSetCookie)) {
-    return rawSetCookie.filter((cookie): cookie is string => typeof cookie === 'string');
-  }
-
-  if (typeof rawSetCookie === 'string') {
-    return [rawSetCookie];
-  }
-
-  return [];
-}
-
 describe('AuthController (e2e)', () => {
   let server!: TestServerHelper;
   let app: INestApplication;
   let seeder!: PostgreSQLSeeder;
   let kurrentdbSeeder!: KurrentDBSeeder;
+  let usersProjectionService!: UsersProjectionService;
   let eventStore!: KurrentDBClient;
 
   beforeAll(async () => {
@@ -82,12 +83,13 @@ describe('AuthController (e2e)', () => {
 
     const dataSource = app.get<DataSource>('DataSource');
     seeder = new PostgreSQLSeeder(dataSource);
+    usersProjectionService = app.get(UsersProjectionService);
 
-    await resetState(kurrentdbSeeder, seeder);
+    await resetState(kurrentdbSeeder, seeder, usersProjectionService);
   });
 
   beforeEach(async () => {
-    await resetState(kurrentdbSeeder, seeder);
+    await resetState(kurrentdbSeeder, seeder, usersProjectionService);
     server.resetAgent();
   });
 

@@ -200,9 +200,6 @@ export default function useCommunityRequestForm() {
     updateCause,
     isSubmitting,
     handleSubmit,
-    odsOptions: ODS_OPTIONS.map(({ id, label }) => ({
-      value: id,
-      label: `${id} - ${label}`,
-    })),
+    odsOptions: ODS_OPTIONS,
   };
 }

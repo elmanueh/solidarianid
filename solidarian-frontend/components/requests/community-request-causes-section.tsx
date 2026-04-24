@@ -154,7 +154,9 @@ export default function CommunityRequestCausesSection({
                                 }}
                                 className="flex w-full touch-manipulation items-center justify-between rounded-md px-2 py-2 text-left text-xs hover:bg-muted"
                               >
-                                <span>{odsOption.label}</span>
+                                <span>
+                                  {odsOption.id} - {odsOption.label}
+                                </span>
                                 {isSelected ? <IconCheck size={14} className="text-brand-500" /> : null}
                               </button>
                             );

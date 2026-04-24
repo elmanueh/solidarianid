@@ -2,7 +2,7 @@ import { IconChevronRight } from '@tabler/icons-react';
 
 export function PreferencesInfo() {
   return (
-    <div className="flex items-start gap-4 rounded-4xl border border-neutral-100 bg-neutral-50 p-6 dark:bg-blue-950">
+    <div className="mt-4 flex items-start gap-4 rounded-4xl border border-neutral-400 bg-neutral-50 p-6 dark:bg-blue-950">
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-preferences-primary/10 text-preferences-primary">
         <IconChevronRight size={20} />
       </div>

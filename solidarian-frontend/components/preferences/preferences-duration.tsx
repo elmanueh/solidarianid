@@ -54,7 +54,7 @@ export function PreferencesDuration({ durations, setDurations }: Readonly<Prefer
               onClick={() => toggleCategory(durationKey)}
               aria-pressed={isSelected}
               className={cn(
-                'w-full rounded-2xl border px-4 py-4 text-left transition-all',
+                'w-full cursor-pointer rounded-2xl border px-4 py-4 text-left transition-all',
                 isSelected
                   ? 'border-warning bg-warning/10 text-preferences-ink shadow-md shadow-warning/20'
                   : 'border-preferences-border bg-preferences-surface text-preferences-muted hover:border-warning/40 hover:bg-preferences-panel'

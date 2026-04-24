@@ -56,7 +56,7 @@ export function PreferencesCategory({ categories, setCategories }: Readonly<Pref
               onClick={() => toggleCategory(categoryValue)}
               aria-pressed={isSelected}
               className={cn(
-                'flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition-all',
+                'flex w-full cursor-pointer items-center justify-between rounded-2xl border px-4 py-3 text-left transition-all',
                 isSelected
                   ? 'border-preferences-primary bg-preferences-primary/10 text-preferences-ink shadow-md shadow-preferences-primary/20'
                   : 'border-preferences-border bg-preferences-surface text-preferences-muted hover:border-preferences-primary/40 hover:bg-preferences-panel'

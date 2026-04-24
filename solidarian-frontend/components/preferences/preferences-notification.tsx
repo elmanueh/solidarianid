@@ -37,7 +37,7 @@ export function PreferencesNotification({
             onClick={() => setNotificationsEnabled(!notificationsEnabled)}
             aria-pressed={notificationsEnabled}
             className={cn(
-              'flex h-12 w-24 items-center rounded-full p-2 shadow-inner transition-colors duration-500',
+              'flex h-12 w-24 cursor-pointer items-center rounded-full p-2 shadow-inner transition-colors duration-500',
               notificationsEnabled ? 'bg-success' : 'bg-preferences-track-off'
             )}
           >

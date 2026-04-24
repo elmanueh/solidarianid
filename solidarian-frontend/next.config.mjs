@@ -8,6 +8,14 @@ const nextConfig = {
   turbopack: {
     root: projectRoot,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/photos',
+        destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL ?? 'http://localhost:8090'}/photos`,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

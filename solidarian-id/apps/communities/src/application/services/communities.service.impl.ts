@@ -12,6 +12,9 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Injectable } from '@nestjs/common';
 import { CommunityRequestEventDto, EventType } from '@solidarianid/kafka';
 import { CommunityLastUsersJoinedData } from './community-last-users-joined.data';
+import { ExploreCommunitiesCriteria } from './explore-communities.criteria';
+import { ExploreCommunityData } from './explore-community.data';
+import { ExplorePaginatedResultData } from './explore-paginated-result.data';
 import { RankingCommunitiesByUsersData } from './community-ranking.data';
 
 @Injectable()
@@ -82,6 +85,12 @@ export class CommunitiesServiceImpl implements CommunitiesService {
 
   async getCommunities(): Promise<Either<RepositoryException | ValidationError, Community[]>> {
     return await this.communityRepository.findAll(['members', 'members.user']);
+  }
+
+  async getExploreCommunities(
+    criteria: ExploreCommunitiesCriteria,
+  ): Promise<Either<ValidationError | RepositoryException, ExplorePaginatedResultData<ExploreCommunityData>>> {
+    return await this.communityQueryRepository.findExplore(criteria);
   }
 
   async getCommunityById(

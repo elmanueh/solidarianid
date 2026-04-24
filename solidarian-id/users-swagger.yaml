@@ -65,6 +65,51 @@ paths:
           description: Internal server error
       summary: Update user profile information
       tags: *ref_0
+  /api/users/{id}/preferences:
+    get:
+      operationId: UsersController_getUserPreferences
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User preferences retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferencesResponseDto'
+        '400':
+          description: Invalid user ID
+        '500':
+          description: Internal server error
+      summary: Get user preferences
+      tags: *ref_0
+    patch:
+      operationId: UsersController_updateUserPreferences
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserPreferencesRequestDto'
+      responses:
+        '204':
+          description: User preferences updated successfully
+        '400':
+          description: Invalid request payload
+        '500':
+          description: Internal server error
+      summary: Update user preferences
+      tags: *ref_0
 info:
   title: 'SolidarianID: Users Microservice'
   description: The SolidarianID`s Users Microservice API documentation
@@ -165,3 +210,169 @@ components:
           type: string
           description: ISO 3166-1 alpha-2 country code
           example: ES
+    UserPreferencesResponseDto:
+      type: object
+      properties:
+        preferredSDGs:
+          type: array
+          description: SDGs (Objetivos de Desarrollo Sostenible) preferidos por el usuario
+          example:
+            - 1
+            - 2
+            - 4
+            - 10
+          items:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+        preferredCategories:
+          type: array
+          description: Categorías temáticas de causas que interesan al usuario
+          example:
+            - pobreza
+            - educación
+            - salud
+          items:
+            type: string
+            enum:
+              - pobreza
+              - alimentación
+              - educación
+              - salud
+              - medio ambiente
+              - agua potable
+              - ayuda humanitaria
+              - desarrollo comunitario
+              - derechos humanos
+              - infancia
+              - tercera edad
+              - igualdad de género
+              - vivienda
+              - refugiados
+              - discapacidad
+              - desarrollo sostenible
+              - empleo
+              - cultura
+              - tecnología
+        durationPreferences:
+          type: array
+          description: Preferencias de duración de actividades y proyectos
+          example:
+            - short_term
+            - medium_term
+          items:
+            type: string
+            enum:
+              - short_term
+              - medium_term
+              - long_term
+              - any
+        notificationsEnabled:
+          type: boolean
+          description: >-
+            Indica si el usuario desea recibir notificaciones sobre nuevas
+            causas
+          example: true
+      required:
+        - preferredSDGs
+        - preferredCategories
+        - durationPreferences
+        - notificationsEnabled
+    UpdateUserPreferencesRequestDto:
+      type: object
+      properties:
+        preferredSDGs:
+          type: array
+          description: SDGs (Objetivos de Desarrollo Sostenible) preferidos por el usuario
+          example:
+            - 1
+            - 2
+            - 4
+            - 10
+          maxItems: 17
+          items:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+        preferredCategories:
+          type: array
+          description: Categorías temáticas de causas que interesan al usuario
+          example:
+            - pobreza
+            - educación
+            - ayuda humanitaria
+          maxItems: 10
+          items:
+            type: string
+            enum:
+              - pobreza
+              - alimentación
+              - educación
+              - salud
+              - medio ambiente
+              - agua potable
+              - ayuda humanitaria
+              - desarrollo comunitario
+              - derechos humanos
+              - infancia
+              - tercera edad
+              - igualdad de género
+              - vivienda
+              - refugiados
+              - discapacidad
+              - desarrollo sostenible
+              - empleo
+              - cultura
+              - tecnología
+        durationPreferences:
+          type: array
+          description: Preferencias de duración de actividades y proyectos
+          example:
+            - short_term
+            - medium_term
+          maxItems: 4
+          items:
+            type: string
+            enum:
+              - short_term
+              - medium_term
+              - long_term
+              - any
+        notificationsEnabled:
+          type: boolean
+          description: >-
+            Indica si el usuario desea recibir notificaciones sobre nuevas
+            causas
+          example: true

@@ -66,7 +66,7 @@ export function ExplorePagination({ page, setPage, totalItems, pageSize }: Reado
             onClick={handleGoToPrevious}
             aria-disabled={isFirstPage}
             className={cn(
-              'size-12 rounded-2xl border border-border bg-card text-muted-foreground shadow-xs hover:bg-muted',
+              'size-12 cursor-pointer rounded-2xl border border-border bg-card text-muted-foreground shadow-xs hover:bg-muted',
               isFirstPage ? 'pointer-events-none opacity-50' : undefined
             )}
           >
@@ -90,7 +90,7 @@ export function ExplorePagination({ page, setPage, totalItems, pageSize }: Reado
                 size="icon"
                 isActive={visiblePage === page}
                 className={cn(
-                  'size-12 rounded-2xl border border-border text-[12px] font-black shadow-xs',
+                  'size-12 cursor-pointer rounded-2xl border border-border text-[12px] font-black shadow-xs',
                   visiblePage === page
                     ? 'border-sidebar-primary bg-sidebar-primary text-sidebar-primary-foreground shadow-md'
                     : 'bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -112,7 +112,7 @@ export function ExplorePagination({ page, setPage, totalItems, pageSize }: Reado
             onClick={handleGoToNext}
             aria-disabled={isLastPage}
             className={cn(
-              'size-12 rounded-2xl border border-border bg-card text-sidebar-primary shadow-xs hover:bg-muted',
+              'size-12 cursor-pointer rounded-2xl border border-border bg-card text-sidebar-primary shadow-xs hover:bg-muted',
               isLastPage ? 'pointer-events-none opacity-50' : undefined
             )}
           >

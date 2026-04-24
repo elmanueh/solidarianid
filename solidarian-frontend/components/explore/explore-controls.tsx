@@ -49,7 +49,7 @@ export function ExploreControls({
           <div className="min-w-0 flex-1">
             <InputGroup className="h-12 rounded-s-[1.6rem] rounded-e-none border-border bg-background shadow-xs ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-chart-2/30 has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-chart-2/15">
               <InputGroupAddon>
-                <InputGroupText className="text-[11px] font-black tracking-[0.1em] text-muted-foreground uppercase">
+                <InputGroupText className="text-[11px] font-black tracking-widest text-muted-foreground uppercase">
                   <IconSearch size={16} />
                 </InputGroupText>
               </InputGroupAddon>
@@ -67,7 +67,7 @@ export function ExploreControls({
 
           <Button
             type="button"
-            className="h-12 rounded-s-none rounded-e-[1.6rem] border border-sidebar-primary/20 bg-sidebar-primary px-5 text-[10px] font-black tracking-[0.18em] text-sidebar-primary-foreground uppercase shadow-md shadow-sidebar-primary/20 hover:bg-sidebar-primary/90"
+            className="h-12 cursor-pointer rounded-s-none rounded-e-[1.6rem] border border-sidebar-primary/20 bg-sidebar-primary px-5 text-[10px] font-black tracking-[0.18em] text-sidebar-primary-foreground uppercase shadow-md shadow-sidebar-primary/20 hover:bg-sidebar-primary/90"
             onClick={onSearchCommit}
           >
             <IconSearch size={14} />
@@ -80,7 +80,7 @@ export function ExploreControls({
             type="button"
             variant="outline"
             className={cn(
-              'h-12 min-w-42 rounded-[1.6rem] border border-chart-2/20 bg-chart-2/5 px-4 text-[10px] font-black tracking-[0.18em] uppercase shadow-xs hover:bg-chart-2/10',
+              'h-12 min-w-42 cursor-pointer rounded-[1.6rem] border border-chart-2/20 bg-chart-2/5 px-4 text-[10px] font-black tracking-[0.18em] uppercase shadow-xs hover:bg-chart-2/10',
               sort === 'name_asc' ? 'text-chart-2' : 'text-sidebar-primary'
             )}
             onClick={onToggleSort}
@@ -96,7 +96,7 @@ export function ExploreControls({
                   <Button
                     type="button"
                     variant="outline"
-                    className="h-11 min-w-32 rounded-s-[1.3rem] rounded-e-none border border-border bg-background px-3 text-[10px] font-black tracking-[0.14em] text-muted-foreground uppercase shadow-xs hover:bg-muted hover:text-foreground"
+                    className="h-11 min-w-32 cursor-pointer rounded-s-[1.3rem] rounded-e-none border border-border bg-background px-3 text-[10px] font-black tracking-[0.14em] text-muted-foreground uppercase shadow-xs hover:bg-muted hover:text-foreground"
                     onClick={onClearOds}
                   >
                     LIMPIAR ODS
@@ -105,7 +105,7 @@ export function ExploreControls({
                     <PopoverTrigger
                       render={<button type="button" />}
                       className={cn(
-                        'h-11 min-w-44 rounded-s-none rounded-e-[1.3rem] border border-chart-2/20 bg-chart-2/5 px-4 text-[10px] font-black tracking-[0.16em] text-chart-2 uppercase shadow-xs hover:bg-chart-2/10',
+                        'h-11 min-w-44 cursor-pointer rounded-s-none rounded-e-[1.3rem] border border-chart-2/20 bg-chart-2/5 px-4 text-[10px] font-black tracking-[0.16em] text-chart-2 uppercase shadow-xs hover:bg-chart-2/10',
                         'border-chart-2/20 bg-chart-2/5 text-chart-2'
                       )}
                     >
@@ -125,7 +125,7 @@ export function ExploreControls({
                           return (
                             <label
                               key={option.id}
-                              className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-muted"
+                              className="flex cursor-pointer items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-muted"
                             >
                               <Checkbox checked={isChecked} onCheckedChange={() => onToggleOds(option.id)} />
                               <span className="text-[10px] font-bold tracking-[0.08em] text-foreground uppercase">
@@ -143,7 +143,7 @@ export function ExploreControls({
                   <PopoverTrigger
                     render={<button type="button" />}
                     className={cn(
-                      'h-11 min-w-44 rounded-[1.3rem] border border-border bg-background px-4 text-[10px] font-black tracking-[0.16em] text-muted-foreground uppercase shadow-xs hover:bg-muted',
+                      'h-11 min-w-44 cursor-pointer rounded-[1.3rem] border border-border bg-background px-4 text-[10px] font-black tracking-[0.16em] text-muted-foreground uppercase shadow-xs hover:bg-muted',
                       selectedOds.length > 0 ? 'border-chart-2/20 bg-chart-2/5 text-chart-2' : undefined
                     )}
                   >
@@ -163,7 +163,7 @@ export function ExploreControls({
                         return (
                           <label
                             key={option.id}
-                            className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-muted"
+                            className="flex cursor-pointer items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-muted"
                           >
                             <Checkbox checked={isChecked} onCheckedChange={() => onToggleOds(option.id)} />
                             <span className="text-[10px] font-bold tracking-[0.08em] text-foreground uppercase">

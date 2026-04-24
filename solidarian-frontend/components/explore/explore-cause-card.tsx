@@ -12,8 +12,8 @@ export function ExploreCauseCard({ cause }: Readonly<ExploreCauseCardProps>) {
   const sortedOds = getSortedOds(cause.ods);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[34px] border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-chart-2/30 hover:shadow-lg hover:shadow-chart-2/10">
-      <Link href={ROUTES.communities.causeDetail(cause.communityId, cause.id)}>
+    <article className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[34px] border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-chart-2/30 hover:shadow-lg hover:shadow-chart-2/10">
+      <Link href={ROUTES.communities.causeDetail(cause.communityId, cause.id)} className="block cursor-pointer">
         <div className="relative h-44 overflow-hidden md:h-48">
           <Image
             src={cause.imageUrl}

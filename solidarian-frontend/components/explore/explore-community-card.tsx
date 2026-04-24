@@ -9,8 +9,8 @@ type ExploreCommunityCardProps = {
 
 export function ExploreCommunityCard({ community }: Readonly<ExploreCommunityCardProps>) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[34px] border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-chart-2/30 hover:shadow-lg hover:shadow-chart-2/10">
-      <Link href={ROUTES.communities.detail(community.id)}>
+    <article className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[34px] border border-border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-chart-2/30 hover:shadow-lg hover:shadow-chart-2/10">
+      <Link href={ROUTES.communities.detail(community.id)} className="block cursor-pointer">
         <div className="relative h-44 overflow-hidden md:h-48">
           <Image
             src={community.imageUrl}

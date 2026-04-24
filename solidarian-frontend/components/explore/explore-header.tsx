@@ -28,7 +28,7 @@ export function ExploreHeader({ mode, onModeChange }: Readonly<ExploreHeaderProp
           type="button"
           variant="ghost"
           className={cn(
-            'h-10 rounded-[1.2rem] px-4 text-[10px] font-black tracking-[0.18em] uppercase transition-all',
+            'h-10 cursor-pointer rounded-[1.2rem] px-4 text-[10px] font-black tracking-[0.18em] uppercase transition-all',
             mode === 'communities'
               ? 'bg-sidebar-primary text-sidebar-primary-foreground shadow-md'
               : 'text-muted-foreground hover:text-foreground'
@@ -42,7 +42,7 @@ export function ExploreHeader({ mode, onModeChange }: Readonly<ExploreHeaderProp
           type="button"
           variant="ghost"
           className={cn(
-            'h-10 rounded-[1.2rem] px-4 text-[10px] font-black tracking-[0.18em] uppercase transition-all',
+            'h-10 cursor-pointer rounded-[1.2rem] px-4 text-[10px] font-black tracking-[0.18em] uppercase transition-all',
             mode === 'causes'
               ? 'bg-sidebar-primary text-sidebar-primary-foreground shadow-md'
               : 'text-muted-foreground hover:text-foreground'

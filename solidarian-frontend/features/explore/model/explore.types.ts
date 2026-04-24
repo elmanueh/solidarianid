@@ -46,7 +46,7 @@ export type ExploreCommunitiesApiQuery = {
 };
 
 export type ExploreCausesApiQuery = ExploreCommunitiesApiQuery & {
-  ods?: string[];
+  ods?: OdsId[];
 };
 
 export type ExploreCommunityApiItem = {

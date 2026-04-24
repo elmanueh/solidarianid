@@ -1,7 +1,7 @@
 'use client';
 
 import { getErrorMessage } from '@/features/axios/errors.handler';
-import { SUSTAINABLE_DEVELOPMENT_GOAL } from '@/features/causes/constants/ods.constants';
+import { ODS_OPTIONS, OdsId } from '@/features/causes/constants/ods.constants';
 import {
   CREATE_COMMUNITY_REQUEST_MUTATION,
   CreateCommunityRequestVariables,
@@ -15,12 +15,10 @@ import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
-type CommunityOdsValue = keyof typeof SUSTAINABLE_DEVELOPMENT_GOAL;
-
 interface CommunityCauseValues {
   name: string;
   description: string;
-  ods: CommunityOdsValue[];
+  ods: OdsId[];
   initialDate: string;
   durationDays: number;
 }
@@ -34,7 +32,7 @@ interface CommunityRequestValues {
 const createEmptyCause = (): CommunityCauseValues => ({
   name: '',
   description: '',
-  ods: ['SustainableCitiesAndCommunities'],
+  ods: [ODS_OPTIONS[0].id],
   initialDate: '',
   durationDays: 30,
 });
@@ -202,9 +200,9 @@ export default function useCommunityRequestForm() {
     updateCause,
     isSubmitting,
     handleSubmit,
-    odsOptions: Object.entries(SUSTAINABLE_DEVELOPMENT_GOAL).map(([key, label], index) => ({
-      value: key as CommunityOdsValue,
-      label: `${index + 1}. ${key} - ${label}`,
+    odsOptions: ODS_OPTIONS.map(({ id, label }) => ({
+      value: id,
+      label: `${id} - ${label}`,
     })),
   };
 }

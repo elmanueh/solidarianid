@@ -2,25 +2,21 @@
 
 import { RequestSectionCard } from '@/components/requests/request-section-card';
 import { Badge, Button, Input, Popover, PopoverContent, PopoverTrigger, Textarea } from '@/components/ui';
+import { OdsId, OdsOption } from '@/features/causes/constants/ods.constants';
 import { IconCheck, IconChevronDown, IconPlus, IconTrash } from '@tabler/icons-react';
 import { useState } from 'react';
-
-interface OdsOption {
-  value: string;
-  label: string;
-}
 
 interface CauseSectionItem {
   name: string;
   description: string;
-  ods: string[];
+  ods: OdsId[];
   initialDate: string;
   durationDays: number;
 }
 
 interface CauseSectionProps {
   causes: CauseSectionItem[];
-  odsOptions: OdsOption[];
+  odsOptions: ReadonlyArray<OdsOption>;
   isSubmitting: boolean;
   addCause: () => void;
   removeCause: (index: number) => void;
@@ -135,22 +131,21 @@ export default function CommunityRequestCausesSection({
                             const query = (odsSearchByCause[index] ?? '').trim().toLowerCase();
                             if (!query) return true;
                             return (
-                              odsOption.label.toLowerCase().includes(query) ||
-                              odsOption.value.toLowerCase().includes(query)
+                              odsOption.label.toLowerCase().includes(query) || odsOption.id.toString().includes(query)
                             );
                           })
                           .map(odsOption => {
-                            const isSelected = cause.ods.includes(odsOption.value);
+                            const isSelected = cause.ods.includes(odsOption.id);
 
                             return (
                               <button
-                                key={odsOption.value}
+                                key={odsOption.id}
                                 type="button"
                                 disabled={isSubmitting}
                                 onClick={() => {
                                   const nextOds = isSelected
-                                    ? cause.ods.filter(currentOds => currentOds !== odsOption.value)
-                                    : [...cause.ods, odsOption.value];
+                                    ? cause.ods.filter(currentOds => currentOds !== odsOption.id)
+                                    : [...cause.ods, odsOption.id];
 
                                   updateCause(index, {
                                     ...cause,
@@ -171,7 +166,7 @@ export default function CommunityRequestCausesSection({
                   {cause.ods.length > 0 ? (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {cause.ods.map(selectedOds => {
-                        const option = odsOptions.find(odsOption => odsOption.value === selectedOds);
+                        const option = odsOptions.find(odsOption => odsOption.id === selectedOds);
                         return (
                           <Badge
                             key={selectedOds}

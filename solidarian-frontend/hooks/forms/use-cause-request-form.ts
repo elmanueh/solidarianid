@@ -5,7 +5,7 @@ import {
   CREATE_CAUSE_REQUEST_MUTATION,
   CreateCauseRequestVariables,
 } from '@/features/causes/api/graphql/causes.documents';
-import { SUSTAINABLE_DEVELOPMENT_GOAL } from '@/features/causes/constants/ods.constants';
+import { ODS_OPTIONS, OdsId } from '@/features/causes/constants/ods.constants';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { RootState } from '@/features/redux/store';
 import { ROUTES } from '@/features/routes';
@@ -16,7 +16,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
-type OdsValue = (typeof SUSTAINABLE_DEVELOPMENT_GOAL)[number][number];
+type OdsValue = OdsId;
 
 interface CauseRequestValues {
   name: string;
@@ -164,9 +164,9 @@ export default function useCauseRequestForm() {
     isSubmitting,
     handleSubmit,
     toggleOds,
-    odsOptions: Object.entries(SUSTAINABLE_DEVELOPMENT_GOAL).map(([key, label]) => ({
-      value: key as OdsValue,
-      label: `${key} - ${label}`,
+    odsOptions: ODS_OPTIONS.map(({ id, label }) => ({
+      value: id,
+      label: `${id} - ${label}`,
     })),
   };
 }

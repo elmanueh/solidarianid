@@ -3,6 +3,7 @@
 import CommunityCausesList from '@/components/community-page/community-causes-list';
 import { CommunityInfoCard } from '@/components/community-page/community-info-card';
 import CommunityMembersList from '@/components/community-page/community-members-list';
+import { OdsId } from '@/features/causes/constants/ods.constants';
 import { useState } from 'react';
 
 type CommunityTab = 'info' | 'causes' | 'members';
@@ -19,7 +20,7 @@ interface CommunityTabsProps {
     name: string;
     description: string;
     durationDays: number;
-    ods: string[];
+    ods: OdsId[];
     imageUrl: string;
   }[];
   members: {

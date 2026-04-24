@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
+import { OdsId } from '@/features/causes/constants/ods.constants';
 import { ROUTES } from '@/features/routes';
 import { IconChevronRight, IconHeartHandshake } from '@tabler/icons-react';
 import Image from 'next/image';
@@ -10,7 +11,7 @@ interface CommunityCause {
   name: string;
   description: string;
   durationDays: number;
-  ods: string[];
+  ods: OdsId[];
   imageUrl: string;
 }
 

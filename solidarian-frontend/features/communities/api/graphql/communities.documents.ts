@@ -1,4 +1,5 @@
 import { gql, TypedDocumentNode } from '@apollo/client';
+import { OdsId } from '@/features/causes/constants/ods.constants';
 
 // Query: GetCommunities
 export type GetCommunitiesResult = {
@@ -44,7 +45,7 @@ export type GetCommunityByIdResult = {
       name: string;
       description: string;
       durationDays: number;
-      ods: string[];
+      ods: OdsId[];
     }[];
   };
 };

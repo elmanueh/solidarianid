@@ -66,7 +66,7 @@ export default function CommunityCauseRequestCreatePage() {
             <div className="mt-3 flex flex-wrap gap-2">
               {values.ods.map(selectedOds => (
                 <Badge key={selectedOds} variant="outline" className="border-pink-500/30 bg-pink-500/10 text-pink-700">
-                  {selectedOds}
+                  {odsOptions.find(option => option.value === selectedOds)?.label ?? selectedOds}
                 </Badge>
               ))}
             </div>

@@ -7,7 +7,6 @@ import {
   IconLogout2,
   IconSettings,
   IconShare,
-  IconShieldCheck,
   IconStar,
   IconTargetArrow,
   IconUser,
@@ -19,6 +18,7 @@ import type { ReactNode } from 'react';
 import { toast } from 'sonner';
 
 import { ProfileLink } from '@/components/profile/profile-link';
+import { ThemeButton } from '@/components/theme-button';
 import { Button } from '@/components/ui';
 import { useAppSelector } from '@/features/redux/redux-hook';
 import { ROUTES } from '@/features/routes';
@@ -85,6 +85,10 @@ export default function ProfilePage() {
           <span className="text-[10px] font-black tracking-widest text-muted-foreground uppercase">
             solidarianid/{user?.username}
           </span>
+        </div>
+
+        <div className="inline text-center sm:hidden">
+          <ThemeButton />
         </div>
       </header>
 

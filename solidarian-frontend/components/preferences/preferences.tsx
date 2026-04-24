@@ -1,7 +1,7 @@
 'use client';
 
+import { PreferencesCardHeader } from '@/components/preferences/preferences-card-header';
 import { type DurationKey, PreferencesDuration } from '@/components/preferences/preferences-duration';
-import { PreferencesCardHeader } from '@/components/preferences/preferences-header';
 import { OdsId } from '@/features/causes/constants/ods.constants';
 import { setPreferences } from '@/features/preferences/api/preferences';
 import { useAppSelector } from '@/features/redux/redux-hook';

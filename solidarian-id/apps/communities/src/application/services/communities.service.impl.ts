@@ -7,6 +7,7 @@ import { UsersRepositoryPort } from '@app/communities/domain/ports/users.reposit
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { Either, left, right } from '@app/ddd/either';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
@@ -141,5 +142,19 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     await this.communitiesPublisher.publish(EventType.COMMUNITY_MEMBER_JOINED, communityOrError.value);
 
     return right(saveResult.value);
+  }
+
+  async getUserMemberCommunities(userId: string): Promise<Either<ValidationError | RepositoryException, Community[]>> {
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      if (userOrError.value instanceof EntityNotFoundException) {
+        return left(new EntityNotFoundException('User', userId));
+      }
+
+      return left(userOrError.value);
+    }
+
+    return await this.communityRepository.findAllByMemberId(userId, ['members', 'members.user']);
   }
 }

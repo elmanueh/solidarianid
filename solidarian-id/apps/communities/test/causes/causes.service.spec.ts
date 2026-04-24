@@ -12,6 +12,7 @@ import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscr
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { left, right } from '@app/ddd/either';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
@@ -22,6 +23,8 @@ describe('CausesServiceImpl', () => {
   let service: CausesServiceImpl;
   let mockCauseRepository: {
     findAll: jest.Mock;
+    findAllByFollowerId: jest.Mock;
+    findAllFollowedCauseIdsByUserId: jest.Mock;
     findById: jest.Mock;
     save: jest.Mock;
     removeFollower: jest.Mock;
@@ -99,6 +102,8 @@ describe('CausesServiceImpl', () => {
   beforeEach(async () => {
     mockCauseRepository = {
       findAll: jest.fn(),
+      findAllByFollowerId: jest.fn(),
+      findAllFollowedCauseIdsByUserId: jest.fn(),
       findById: jest.fn(),
       save: jest.fn(),
       removeFollower: jest.fn(),
@@ -267,6 +272,47 @@ describe('CausesServiceImpl', () => {
       await service.getById(validCauseId);
 
       expect(mockCauseRepository.findById).toHaveBeenCalledWith(validCauseId, ['users']);
+    });
+  });
+
+  describe('getUserFollowedCauses', () => {
+    it('should normalize generic repository not found errors to User not found', async () => {
+      mockUsersRepository.findById.mockResolvedValueOnce(left(new EntityNotFoundException('Entity', validUserId)));
+
+      const result = await service.getUserFollowedCauses(validUserId);
+
+      expect(result.isLeft()).toBe(true);
+      if (result.isLeft()) {
+        expect(result.value.message).toContain(`User with ID ${validUserId}`);
+      }
+    });
+
+    it('should return empty array when the user has no followed causes', async () => {
+      mockUsersRepository.findById.mockResolvedValueOnce(right(createMockUser()));
+      mockCauseRepository.findAllByFollowerId.mockResolvedValueOnce(right([]));
+
+      const result = await service.getUserFollowedCauses(validUserId);
+
+      expect(result).toEqual(right([]));
+      expect(mockCauseRepository.findAllByFollowerId).toHaveBeenCalledWith(validUserId, ['users']);
+    });
+
+    it('should return followed causes directly from repository query', async () => {
+      const causes = [
+        { ...createMockCause(), id: { value: 'c1b2c3d4-e5f6-4890-abcd-ef1234567999' } },
+        { ...createMockCause(), id: { value: validCauseId } },
+      ];
+
+      mockUsersRepository.findById.mockResolvedValueOnce(right(createMockUser()));
+      mockCauseRepository.findAllByFollowerId.mockResolvedValueOnce(right(causes));
+
+      const result = await service.getUserFollowedCauses(validUserId);
+
+      expect(result.isRight()).toBe(true);
+      if (result.isRight()) {
+        expect(result.value).toEqual(causes);
+      }
+      expect(mockCauseRepository.findAllByFollowerId).toHaveBeenCalledWith(validUserId, ['users']);
     });
   });
 

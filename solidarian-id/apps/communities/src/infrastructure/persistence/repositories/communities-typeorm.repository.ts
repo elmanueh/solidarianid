@@ -43,6 +43,44 @@ export class CommunitiesRepositoryTypeOrmAdapter
     }
   }
 
+  async findAllByMemberId(
+    userId: string,
+    relations: string[] = ['members', 'members.user'],
+  ): Promise<Either<ValidationError | RepositoryException, Community[]>> {
+    try {
+      const queryBuilder = this.communityRepository
+        .createQueryBuilder('community')
+        .innerJoin('community.members', 'membership', 'membership.userId = :userId', { userId })
+        .distinct(true);
+
+      if (relations.includes('members')) {
+        queryBuilder.leftJoinAndSelect('community.members', 'members');
+      }
+
+      if (relations.includes('members.user')) {
+        if (!relations.includes('members')) {
+          queryBuilder.leftJoinAndSelect('community.members', 'members');
+        }
+        queryBuilder.leftJoinAndSelect('members.user', 'memberUser');
+      }
+
+      if (relations.includes('causes')) {
+        queryBuilder.leftJoinAndSelect('community.causes', 'causes');
+      }
+
+      const entities = await queryBuilder.getMany();
+      const communitiesOrError = sequence(entities.map(entity => this.communityMapper.fromPersistence(entity)));
+
+      if (communitiesOrError.isLeft()) {
+        return left(communitiesOrError.value);
+      }
+
+      return right(communitiesOrError.value);
+    } catch (error) {
+      return left(new RepositoryException(`Failed to find communities by user id ${userId}.`, error));
+    }
+  }
+
   async findAllByIds(
     ids: string[],
     relations: string[] = ['members', 'members.user'],

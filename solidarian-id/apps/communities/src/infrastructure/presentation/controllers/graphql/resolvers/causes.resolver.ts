@@ -39,6 +39,17 @@ export class CausesResolver {
   }
 
   @Query(() => [Cause])
+  async userFollowedCauses(@Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string): Promise<Cause[]> {
+    const causesOrError = await this.causesService.getUserFollowedCauses(userId);
+
+    if (causesOrError.isLeft()) {
+      throw causesOrError.value;
+    }
+
+    return causesOrError.value.map(cause => this.causesGraphqlMapper.toCauseBase(cause));
+  }
+
+  @Query(() => [Cause])
   async causesByCommunity(
     @Args('communityId', { type: () => ID }, new ParseUUIDPipe()) communityId: string,
   ): Promise<Cause[]> {

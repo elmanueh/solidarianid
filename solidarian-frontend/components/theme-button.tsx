@@ -8,7 +8,7 @@ export function ThemeButton() {
   const isDark = theme === 'dark';
 
   return (
-    <Button variant={'outline'} onClick={() => setTheme(isDark ? 'light' : 'dark')}>
+    <Button variant={'outline'} onClick={() => setTheme(isDark ? 'light' : 'dark')} className={'cursor-pointer'}>
       {isDark ? <IconSun /> : <IconMoon />} Cambiar tema
     </Button>
   );

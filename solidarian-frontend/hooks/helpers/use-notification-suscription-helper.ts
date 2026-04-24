@@ -20,6 +20,14 @@ export async function fetchUserSubscriptions(
   userId: string,
   criteria?: UserSubscriptionsCriteria
 ): Promise<UserSubscriptionsResponse> {
+  const emptyResponse: UserSubscriptionsResponse = {
+    requestIds: [],
+    followedCauseIds: [],
+    followedCommunityIds: [],
+    eventIds: [],
+    objectiveIds: [],
+  };
+
   const params = new URLSearchParams();
 
   if (criteria) {
@@ -33,17 +41,27 @@ export async function fetchUserSubscriptions(
   const queryString = params.toString();
   const url = `${communitiesApiBase}/api/subscriptions/${userId}${queryString ? `?${queryString}` : ''}`;
 
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-  });
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      credentials: 'include',
+    });
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch user subscriptions: ${response.statusText}`);
+    if (!response.ok) {
+      console.warn(
+        `Unable to load user subscriptions from ${url} (${response.status}). Notifications will continue without community or cause subscriptions.`
+      );
+      return emptyResponse;
+    }
+
+    return (await response.json()) as UserSubscriptionsResponse;
+  } catch (error) {
+    console.warn(
+      `Unable to load user subscriptions from ${url}. Notifications will continue without community or cause subscriptions.`,
+      error
+    );
+    return emptyResponse;
   }
-
-  return (await response.json()) as UserSubscriptionsResponse;
 }
 
 export function toRequestStatusNotification(event: RequestStatusChangedResult['requestStatusChanged']): Notification {

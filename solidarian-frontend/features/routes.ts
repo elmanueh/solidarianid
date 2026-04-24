@@ -14,7 +14,7 @@ export const ROUTES = {
   profile: {
     requests: '/profile/requests',
     personalInfo: '/profile/personal-info',
-    impact: '/profile/impact',
+    impact: '/register/onboarding',
     privacy: '/profile/privacy',
     help: '/profile/help',
   },

@@ -21,6 +21,31 @@ export const GET_COMMUNITIES_QUERY: TypedDocumentNode<GetCommunitiesResult, GetC
   }
 `;
 
+export type GetFavoriteCommunitiesByUserResult = {
+  userMemberCommunities: {
+    id: string;
+    name: string;
+    description: string;
+  }[];
+};
+
+export type GetFavoriteCommunitiesByUserVariables = {
+  userId: string;
+};
+
+export const GET_FAVORITE_COMMUNITIES_BY_USER_QUERY: TypedDocumentNode<
+  GetFavoriteCommunitiesByUserResult,
+  GetFavoriteCommunitiesByUserVariables
+> = gql`
+  query GetFavoriteCommunitiesByUser($userId: ID!) {
+    userMemberCommunities(userId: $userId) {
+      id
+      name
+      description
+    }
+  }
+`;
+
 // Mutation: JoinCommunity
 export type JoinCommunityResult = {
   joinCommunity: boolean;

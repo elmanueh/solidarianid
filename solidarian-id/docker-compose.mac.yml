@@ -153,6 +153,8 @@ services:
     restart: unless-stopped
     ports:
       - '8090:80'
+    environment:
+      PEXELS_API_KEY: ${PEXELS_API_KEY}
     networks:
       - solidarian_network
 

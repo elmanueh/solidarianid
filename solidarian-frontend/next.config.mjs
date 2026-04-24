@@ -8,15 +8,19 @@ const nextConfig = {
   turbopack: {
     root: __dirname,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/photos',
+        destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL ?? 'http://localhost:8090'}/photos`,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'images.pexels.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
       },
     ],
   },

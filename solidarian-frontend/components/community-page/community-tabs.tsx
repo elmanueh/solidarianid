@@ -40,7 +40,7 @@ function TabButton({ active, onClick, label }: Readonly<{ active: boolean; onCli
     <button
       type="button"
       onClick={onClick}
-      className={`border-b-2 px-1 py-3 text-xs font-bold tracking-wider whitespace-nowrap uppercase transition-colors ${
+      className={`cursor-pointer border-b-2 px-1 py-3 text-xs font-bold tracking-wider whitespace-nowrap uppercase transition-colors ${
         active ? 'border-brand-500 text-brand-500' : 'border-transparent text-muted-foreground hover:text-brand-ink'
       }`}
     >

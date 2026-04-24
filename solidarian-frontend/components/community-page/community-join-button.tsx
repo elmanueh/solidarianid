@@ -7,6 +7,7 @@ import {
   LEAVE_COMMUNITY_MUTATION,
 } from '@/features/communities/api/graphql/communities.documents';
 import { useAppSelector } from '@/features/redux/redux-hook';
+import { cn } from '@/lib/utils';
 import { useMutation } from '@apollo/client/react';
 import { IconCheck, IconUserPlus } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -70,7 +71,12 @@ export default function CommunityJoinButton({ communityId, initialIsMember }: Re
       type="button"
       onClick={handleToggleCommunityMembership}
       disabled={isLoading}
-      className="h-11 rounded-full px-5 text-xs font-bold tracking-wider uppercase"
+      className={cn(
+        'h-11 cursor-pointer rounded-full px-5 text-xs font-bold tracking-wider uppercase',
+        isMember
+          ? 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+          : 'bg-brand-500 text-white hover:bg-brand-ink'
+      )}
       variant={isMember ? 'outline' : 'default'}
       aria-label={isMember ? 'Dejar la comunidad' : 'Unirse a la comunidad'}
       aria-busy={isLoading}

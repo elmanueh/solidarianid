@@ -1,21 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { ActionsService } from '../../domain/services/actions.service';
-import { Action } from '../../domain/model/entities/action';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { Either, left, right } from '@app/ddd/either';
-import { ActionsRepositoryPort } from '../../domain/ports/actions.repository.port';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { ActionRequestEventDto, EventType } from '@solidarianid/kafka';
-import { Objective } from '../../domain/model/value-objects/objective';
-import { Event } from '../../domain/model/entities/event';
-import { EventPlace } from '../../domain/model/value-objects/event-place';
+import { Action } from '@app/communities/domain/model/entities/action';
+import { Event } from '@app/communities/domain/model/entities/event';
+import { EventPlace } from '@app/communities/domain/model/value-objects/event-place';
+import { Objective } from '@app/communities/domain/model/value-objects/objective';
 import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
+import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
 import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { ActionsService } from '@app/communities/domain/services/actions.service';
+import { Either, left, right } from '@app/ddd/either';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Injectable } from '@nestjs/common';
+import { ActionRequestEventDto, EventType } from '@solidarianid/kafka';
 
 @Injectable()
 export class ActionsServiceImpl implements ActionsService {
   constructor(
     private readonly actionRepository: ActionsRepositoryPort,
+    private readonly usersRepository: UsersRepositoryPort,
     private readonly actionPublisher: ActionsPublisherPort,
     private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
   ) {}
@@ -97,10 +99,73 @@ export class ActionsServiceImpl implements ActionsService {
   }
 
   async getActionById(id: string): Promise<Either<ValidationError, Action>> {
-    return await this.actionRepository.findById(id, ['events', 'objectives']);
+    return await this.actionRepository.findById(id, ['events', 'events.assistants', 'objectives']);
   }
 
   async getByCauseIds(causeIds: string[]): Promise<Either<ValidationError | RepositoryException, Action[]>> {
     return await this.actionRepository.findAllByCauseIds(causeIds);
+  }
+
+  async joinEvent(eventId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>> {
+    const userOrError = await this.usersRepository.findById(userId);
+    if (userOrError.isLeft()) return left(userOrError.value);
+    const user = userOrError.value;
+
+    const actionOrError = await this.actionRepository.findByEventId(eventId);
+    if (actionOrError.isLeft()) return left(actionOrError.value);
+    const action = actionOrError.value;
+
+    const joinResult = action.joinEvent(eventId, user);
+    if (joinResult.isLeft()) return left(joinResult.value);
+
+    const saveResult = await this.actionRepository.save(action);
+    if (saveResult.isLeft()) return left(saveResult.value);
+
+    return right(undefined);
+  }
+
+  async leaveEvent(eventId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>> {
+    const userOrError = await this.usersRepository.findById(userId);
+    if (userOrError.isLeft()) return left(userOrError.value);
+    const user = userOrError.value;
+
+    const actionOrError = await this.actionRepository.findByEventId(eventId);
+    if (actionOrError.isLeft()) return left(actionOrError.value);
+    const action = actionOrError.value;
+
+    const leaveResult = action.leaveEvent(eventId, user);
+    if (leaveResult.isLeft()) return left(leaveResult.value);
+
+    const removeAssistantResult = await this.actionRepository.removeAssistant(eventId, userId);
+    if (removeAssistantResult.isLeft()) return left(removeAssistantResult.value);
+
+    const saveResult = await this.actionRepository.save(action);
+    if (saveResult.isLeft()) return left(saveResult.value);
+
+    return right(undefined);
+  }
+
+  async contributeObjective(
+    actionId: string,
+    objectiveName: string,
+    userId: string,
+    amount: number,
+  ): Promise<Either<ValidationError | RepositoryException, Objective>> {
+    const userOrError = await this.usersRepository.findById(userId);
+    if (userOrError.isLeft()) return left(userOrError.value);
+    const user = userOrError.value;
+
+    const actionOrError = await this.actionRepository.findById(actionId, ['objectives', 'objectives.contributors']);
+    if (actionOrError.isLeft()) return left(actionOrError.value);
+    const action = actionOrError.value;
+
+    const contributeResult = action.contributeObjective(objectiveName, user, amount);
+    if (contributeResult.isLeft()) return left(contributeResult.value);
+    const updatedObjective = contributeResult.value;
+
+    const saveResult = await this.actionRepository.save(action);
+    if (saveResult.isLeft()) return left(saveResult.value);
+
+    return right(updatedObjective);
   }
 }

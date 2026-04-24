@@ -95,6 +95,12 @@ const loadHomeData = async (): Promise<{
 
 const toUiErrorMessage = (error: unknown, fallback: string): string => {
   if (error instanceof Error) {
+    const message = error.message.trim().toLowerCase();
+
+    if (message === 'fetch failed' || message.includes('failed to fetch') || message.includes('network error')) {
+      return fallback;
+    }
+
     return error.message;
   }
 
@@ -128,7 +134,15 @@ export default async function HomePage() {
 
         {/* Grid de Comunidades */}
         {errorCommunities ? (
-          <div className={styles.error}>{errorCommunities}</div>
+          <div className={styles.error.wrapper}>
+            <p className={styles.error.title}>No hemos podido cargar las comunidades destacadas</p>
+            <p className={styles.error.text}>
+              {errorCommunities} Mientras tanto, puedes seguir explorando el catálogo completo.
+            </p>
+            <Link href={ROUTES.app.explore} className={styles.error.link}>
+              Ir a explorar <IconChevronRight size={14} />
+            </Link>
+          </div>
         ) : communities.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground">No hay comunidades destacadas por mostrar.</div>
         ) : (
@@ -155,7 +169,15 @@ export default async function HomePage() {
 
         {/* Grid de Causas */}
         {errorCauses ? (
-          <div className={styles.error}>{errorCauses}</div>
+          <div className={styles.error.wrapper}>
+            <p className={styles.error.title}>No hemos podido cargar las causas recomendadas</p>
+            <p className={styles.error.text}>
+              {errorCauses} Puedes seguir navegando por las comunidades para encontrar alternativas.
+            </p>
+            <Link href={ROUTES.app.explore} className={styles.error.link}>
+              Explorar comunidades <IconChevronRight size={14} />
+            </Link>
+          </div>
         ) : causes.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground">No hay causas recomendadas por mostrar.</div>
         ) : (

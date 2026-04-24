@@ -26,6 +26,23 @@ export class CommunitiesRepositoryTypeOrmAdapter
     super(communityRepository, communityMapper);
   }
 
+  async findAllFollowedCommunityIdsByUserId(userId: string): Promise<Either<RepositoryException, string[]>> {
+    try {
+      const memberships = await this.communityUserRepository.find({
+        where: { userId },
+        select: {
+          communityId: true,
+        },
+      });
+
+      const communityIds = Array.from(new Set(memberships.map(member => member.communityId)));
+
+      return right(communityIds);
+    } catch (error) {
+      return left(new RepositoryException(`Failed to find followed communities by user id ${userId}.`, error));
+    }
+  }
+
   async findAllByIds(
     ids: string[],
     relations: string[] = ['members', 'members.user'],

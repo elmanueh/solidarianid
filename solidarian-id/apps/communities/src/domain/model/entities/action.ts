@@ -1,11 +1,14 @@
+import { ActionEventNotFoundError } from '@app/communities/domain/errors/action-event-not-found.error';
+import { ActionObjectiveNotFoundError } from '@app/communities/domain/errors/action-objective-not-found.error';
+import { Event } from '@app/communities/domain/model/entities/event';
+import { User } from '@app/communities/domain/model/entities/user';
+import { Objective } from '@app/communities/domain/model/value-objects/objective';
 import { Either, left, right } from '@app/ddd/either';
 import { Entity } from '@app/ddd/entity';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
 import { Name } from '@app/value-objects/model/name';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Objective } from '../value-objects/objective';
-import { Event } from './event';
 
 export interface ActionProps {
   name: Name;
@@ -54,6 +57,34 @@ export class Action extends Entity<ActionProps> {
 
   addEvent(event: Event): void {
     this.props.events.push(event);
+  }
+
+  joinEvent(eventId: string, user: User): Either<ValidationError, void> {
+    const event = this.props.events.find(event => event.id.value === eventId);
+    if (!event) return left(new ActionEventNotFoundError(eventId, this.id.value));
+
+    return event.joinAssistant(user);
+  }
+
+  leaveEvent(eventId: string, user: User): Either<ValidationError, void> {
+    const event = this.props.events.find(event => event.id.value === eventId);
+    if (!event) return left(new ActionEventNotFoundError(eventId, this.id.value));
+
+    return event.leaveAssistant(user);
+  }
+
+  contributeObjective(objectiveName: string, user: User, amount: number): Either<ValidationError, Objective> {
+    const objective = this.props.objectives.find(objective => objective.name === objectiveName);
+    if (!objective) return left(new ActionObjectiveNotFoundError(objectiveName, this.id.value));
+
+    const contributeResult = objective.contribute(user, amount);
+    if (contributeResult.isLeft()) return left(contributeResult.value);
+    const updatedObjective = contributeResult.value;
+
+    const objectiveIndex = this.props.objectives.findIndex(obj => obj.name === objectiveName);
+    this.props.objectives[objectiveIndex] = updatedObjective;
+
+    return right(updatedObjective);
   }
 
   /**

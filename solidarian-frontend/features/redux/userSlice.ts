@@ -16,10 +16,20 @@ export const authSlice = createSlice({
     handleLogin: (state, action: PayloadAction<User>) => {
       state.currentUser = action.payload;
     },
+    updateCurrentUser: (state, action: PayloadAction<Partial<User>>) => {
+      if (!state.currentUser) {
+        return;
+      }
+
+      state.currentUser = {
+        ...state.currentUser,
+        ...action.payload,
+      };
+    },
     handleLogout: state => {
       state.currentUser = null;
     },
   },
 });
 
-export const { handleLogin, handleLogout } = authSlice.actions;
+export const { handleLogin, updateCurrentUser, handleLogout } = authSlice.actions;

@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
+import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { ROUTES } from '@/features/routes';
 import { IconChevronRight, IconLayoutList, IconTargetArrow } from '@tabler/icons-react';
 import Image from 'next/image';
@@ -9,10 +10,17 @@ interface ActionsListProps {
   communityId: string;
   causeId: string;
   actions: { id: string; name: string; description: string }[];
-  imageUrl: string;
 }
 
-export default function ActionsList({ communityId, causeId, actions, imageUrl }: Readonly<ActionsListProps>) {
+export default async function ActionsList({ communityId, causeId, actions }: Readonly<ActionsListProps>) {
+  const pexelsService = new PexelsImageService();
+  const actionCards = await Promise.all(
+    actions.map(async action => ({
+      ...action,
+      imageUrl: (await pexelsService.getDeterministicBanner({ uuid: action.id, theme: action.name })).large,
+    }))
+  );
+
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -24,12 +32,12 @@ export default function ActionsList({ communityId, causeId, actions, imageUrl }:
           variant="outline"
           className="h-auto border-border bg-background px-2.5 py-1 text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
         >
-          {actions.length} acciones
+          {actionCards.length} acciones
         </Badge>
       </div>
       <div className="grid grid-cols-1 gap-4">
-        {actions.length > 0 ? (
-          actions.map(action => {
+        {actionCards.length > 0 ? (
+          actionCards.map(action => {
             return (
               <article key={action.id}>
                 <Link
@@ -38,7 +46,7 @@ export default function ActionsList({ communityId, causeId, actions, imageUrl }:
                 >
                   <div className="relative h-32 overflow-hidden bg-muted">
                     <Image
-                      src={imageUrl}
+                      src={action.imageUrl}
                       alt={action.name}
                       fill
                       sizes="100vw"

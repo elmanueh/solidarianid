@@ -14,9 +14,6 @@ importers:
       '@base-ui/react':
         specifier: ^1.3.0
         version: 1.3.0(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@dicebear/avatars':
-        specifier: ^4.10.8
-        version: 4.10.8
       '@dicebear/collection':
         specifier: ^9.4.2
         version: 9.4.2(@dicebear/core@9.4.2)
@@ -41,6 +38,12 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      dexie:
+        specifier: ^4.4.2
+        version: 4.4.2
+      dexie-react-hooks:
+        specifier: ^4.4.0
+        version: 4.4.0(dexie@4.4.2)(react@19.2.5)
       framer-motion:
         specifier: ^12.38.0
         version: 12.38.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -329,10 +332,6 @@ packages:
     engines: {node: '>=18.0.0'}
     peerDependencies:
       '@dicebear/core': ^9.0.0
-
-  '@dicebear/avatars@4.10.8':
-    resolution: {integrity: sha512-jni3+W1yRRh4sJYmuQUZ8JpKI9aEEud53TUcxNFtntdRyOUJygIFdC5JPKNac58eALnBTZZ4ox7b+oeo0Ux/oA==}
-    deprecated: 'This package is deprecated. Use ''@dicebear/core'' instead. Read more: https://dicebear.com/how-to-use/js-library'
 
   '@dicebear/big-ears-neutral@9.4.2':
     resolution: {integrity: sha512-M8Ozmzza4eY4hpLOYULgJxMYmBA0CsBnrE15/xw6LZkEREXnrX5z0NJsf8hUfdyF6BWZ+RBgzoiav32DAC5zcg==}
@@ -1597,10 +1596,6 @@ packages:
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
-  deep-rename-keys@0.2.1:
-    resolution: {integrity: sha512-RHd9ABw4Fvk+gYDWqwOftG849x0bYOySl/RgX0tLI9i27ZIeSO91mLZJEp7oPHOMFqHvpgu21YptmDt0FYD/0A==}
-    engines: {node: '>=0.10.0'}
-
   deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
@@ -1636,6 +1631,15 @@ packages:
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
+
+  dexie-react-hooks@4.4.0:
+    resolution: {integrity: sha512-ObLXBS5+4BJU8vtSvBx6b9fY6zZYgniAtwxzjCHsUQadgbqYN6935X2/1TWw4Rf2N1aZV1io5/ziox4vKuxABA==}
+    peerDependencies:
+      dexie: '>=4.2.0-alpha.1 <5.0.0'
+      react: '>=16'
+
+  dexie@4.4.2:
+    resolution: {integrity: sha512-zMtV8q79EFE5U8FKZvt0Y/77PCU/Hr/RDxv1EDeo228L+m/HTbeN2AjoQm674rhQCX8n3ljK87lajt7UQuZfvw==}
 
   diff@8.0.4:
     resolution: {integrity: sha512-DPi0FmjiSU5EvQV0++GFDOJ9ASQUVFh5kD+OzOnYdi7n3Wpm9hWWGfB/O2blfHcMVTL5WkQXSnRiK9makhrcnw==}
@@ -1858,9 +1862,6 @@ packages:
   etag@1.8.1:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
-
-  eventemitter3@2.0.3:
-    resolution: {integrity: sha512-jLN68Dx5kyFHaePoXWPsCGW5qdyZQtLYHkxkg02/Mz6g0kYpDx4FyP6XfArhQdlOC4b8Mv+EMxPo/8La7Tzghg==}
 
   eventsource-parser@3.0.6:
     resolution: {integrity: sha512-Vo1ab+QXPzZ4tCa8SwIHJFaSzy4R6SHf7BY79rFBDf0idraZWAkYrDjDj8uWaSm3S2TK+hJ7/t1CEmZ7jXw+pg==}
@@ -2220,9 +2221,6 @@ packages:
     resolution: {integrity: sha512-wa56o2/ElJMYqjCjGkXri7it5FbebW5usLw/nPmCMs5DeZ7eziSYZhSmPRn0txqeW4LnAmQQU7FgqLpsEFKM4A==}
     engines: {node: '>= 0.4'}
 
-  is-buffer@1.1.6:
-    resolution: {integrity: sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==}
-
   is-bun-module@2.0.0:
     resolution: {integrity: sha512-gNCGbnnnnFAUGKeZ9PdbyeGYJqewpmc2aKHUEMO5nQPWU9lOmv7jcmQIv+qHD8fXW6W7qfuCwX4rY9LNRjXrkQ==}
 
@@ -2439,10 +2437,6 @@ packages:
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
-
-  kind-of@3.2.2:
-    resolution: {integrity: sha512-NOW9QQXMoZGg/oqnVNoNTTIFEIid1627WCffUBJEdMxYApq7mNE7CpzucIPc+ZQg25Phej7IJSmX3hO+oblOtQ==}
-    engines: {node: '>=0.10.0'}
 
   kleur@3.0.3:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
@@ -2964,9 +2958,6 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
-  pure-color@1.3.0:
-    resolution: {integrity: sha512-QFADYnsVoBMw1srW7OVKEYjG+MbIa49s54w1MA1EDY6r2r/sTcKKYqRX1f4GYvnXP7eN/Pe9HFcX+hwzmrXRHA==}
-
   qs@6.15.1:
     resolution: {integrity: sha512-6YHEFRL9mfgcAvql/XhwTvf5jKcOiiupt2FiJxHkiX1z4j7WL8J/jRHYLluORvc1XxB5rV20KoeK00gVJamspg==}
     engines: {node: '>=0.6'}
@@ -3040,10 +3031,6 @@ packages:
   regexp.prototype.flags@1.5.4:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
     engines: {node: '>= 0.4'}
-
-  rename-keys@1.2.0:
-    resolution: {integrity: sha512-U7XpAktpbSgHTRSNRrjKSrjYkZKuhUukfoBlXWXUExCAqhzh1TU3BDRAfJmarcl5voKS+pbKU9MvyLWKZ4UEEg==}
-    engines: {node: '>= 0.8.0'}
 
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
@@ -3297,9 +3284,6 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  svgson@5.3.1:
-    resolution: {integrity: sha512-qdPgvUNWb40gWktBJnbJRelWcPzkLed/ShhnRsjbayXz8OtdPOzbil9jtiZdrYvSDumAz/VNQr6JaNfPx/gvPA==}
-
   tabbable@6.4.0:
     resolution: {integrity: sha512-05PUHKSNE8ou2dwIxTngl4EzcnsCDZGJ/iCLtDflR/SHB/ny14rXc+qU5P4mG9JkusiV7EivzY9Mhm55AzAvCg==}
 
@@ -3503,12 +3487,6 @@ packages:
   wsl-utils@0.3.1:
     resolution: {integrity: sha512-g/eziiSUNBSsdDJtCLB8bdYEUMj4jR7AGeUo96p/3dTafgjHhpF4RiCFPiRILwjQoDXx5MqkBr4fwWtR3Ky4Wg==}
     engines: {node: '>=20'}
-
-  xml-lexer@0.2.2:
-    resolution: {integrity: sha512-G0i98epIwiUEiKmMcavmVdhtymW+pCAohMRgybyIME9ygfVu8QheIi+YoQh3ngiThsT0SQzJT4R0sKDEv8Ou0w==}
-
-  xml-reader@2.4.3:
-    resolution: {integrity: sha512-xWldrIxjeAMAu6+HSf9t50ot1uL5M+BtOidRCWHXIeewvSeIpscWCsp4Zxjk8kHHhdqFBrfK8U0EJeCcnyQ/gA==}
 
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
@@ -3802,12 +3780,6 @@ snapshots:
   '@dicebear/avataaars@9.4.2(@dicebear/core@9.4.2)':
     dependencies:
       '@dicebear/core': 9.4.2
-
-  '@dicebear/avatars@4.10.8':
-    dependencies:
-      '@types/json-schema': 7.0.15
-      pure-color: 1.3.0
-      svgson: 5.3.1
 
   '@dicebear/big-ears-neutral@9.4.2(@dicebear/core@9.4.2)':
     dependencies:
@@ -4945,11 +4917,6 @@ snapshots:
 
   deep-is@0.1.4: {}
 
-  deep-rename-keys@0.2.1:
-    dependencies:
-      kind-of: 3.2.2
-      rename-keys: 1.2.0
-
   deepmerge@4.3.1: {}
 
   default-browser-id@5.0.1: {}
@@ -4978,6 +4945,13 @@ snapshots:
   depd@2.0.0: {}
 
   detect-libc@2.1.2: {}
+
+  dexie-react-hooks@4.4.0(dexie@4.4.2)(react@19.2.5):
+    dependencies:
+      dexie: 4.4.2
+      react: 19.2.5
+
+  dexie@4.4.2: {}
 
   diff@8.0.4: {}
 
@@ -5338,8 +5312,6 @@ snapshots:
   esutils@2.0.3: {}
 
   etag@1.8.1: {}
-
-  eventemitter3@2.0.3: {}
 
   eventsource-parser@3.0.6: {}
 
@@ -5718,8 +5690,6 @@ snapshots:
       call-bound: 1.0.4
       has-tostringtag: 1.0.2
 
-  is-buffer@1.1.6: {}
-
   is-bun-module@2.0.0:
     dependencies:
       semver: 7.7.4
@@ -5904,10 +5874,6 @@ snapshots:
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
-
-  kind-of@3.2.2:
-    dependencies:
-      is-buffer: 1.1.6
 
   kleur@3.0.3: {}
 
@@ -6348,8 +6314,6 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  pure-color@1.3.0: {}
-
   qs@6.15.1:
     dependencies:
       side-channel: 1.1.0
@@ -6433,8 +6397,6 @@ snapshots:
       get-proto: 1.0.1
       gopd: 1.2.0
       set-function-name: 2.0.2
-
-  rename-keys@1.2.0: {}
 
   require-directory@2.1.1: {}
 
@@ -6794,11 +6756,6 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svgson@5.3.1:
-    dependencies:
-      deep-rename-keys: 0.2.1
-      xml-reader: 2.4.3
-
   tabbable@6.4.0: {}
 
   tagged-tag@1.0.0: {}
@@ -7050,15 +7007,6 @@ snapshots:
     dependencies:
       is-wsl: 3.1.1
       powershell-utils: 0.1.0
-
-  xml-lexer@0.2.2:
-    dependencies:
-      eventemitter3: 2.0.3
-
-  xml-reader@2.4.3:
-    dependencies:
-      eventemitter3: 2.0.3
-      xml-lexer: 0.2.2
 
   y18n@5.0.8: {}
 

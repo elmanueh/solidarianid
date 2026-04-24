@@ -1,7 +1,6 @@
 import { UserCreatedEvent } from '@app/users/domain/events/user-created.event';
-import { jsonEvent, KurrentDBClient } from '@kurrent/kurrentdb-client';
+import { BACKWARDS, END, jsonEvent, KurrentDBClient, Position, streamNameFilter } from '@kurrent/kurrentdb-client';
 import { IDatabaseSeeder } from '@solidarianid/testing';
-import { randomUUID } from 'node:crypto';
 
 type UserSeed = {
   id: string;
@@ -98,11 +97,10 @@ const defaultUsers: UserSeed[] = [
 ];
 
 export class KurrentDBSeeder implements IDatabaseSeeder {
-  private readonly seededUserIds = new Set(defaultUsers.map(user => user.id));
-
   constructor(private readonly eventStore: KurrentDBClient) {}
 
-  async clean(userIds: string[] = Array.from(this.seededUserIds)): Promise<void> {
+  async clean(): Promise<void> {
+    const userIds = Array.from(defaultUsers.map(user => user.id));
     const streamNames = Array.from(new Set(userIds.map(userId => this.userStream(userId))));
     await Promise.allSettled(streamNames.map(streamName => this.eventStore.deleteStream(streamName)));
   }
@@ -116,7 +114,6 @@ export class KurrentDBSeeder implements IDatabaseSeeder {
     const allUsers = [...defaultUsers, ...users];
 
     for (const user of allUsers) {
-      this.seededUserIds.add(user.id);
       await this.eventStore.appendToStream(
         this.userStream(user.id),
         jsonEvent({
@@ -136,10 +133,25 @@ export class KurrentDBSeeder implements IDatabaseSeeder {
             durationPreferences: ['any'],
             notificationsEnabled: true,
           },
-          id: randomUUID(),
         }),
       );
     }
+  }
+
+  async getLatestUserCheckpointPosition(): Promise<Position> {
+    const events = this.eventStore.readAll({
+      fromPosition: END,
+      direction: BACKWARDS,
+      maxCount: 1,
+      filter: streamNameFilter({ prefixes: ['user-'] }),
+    });
+
+    for await (const event of events) {
+      const position = event.event?.position;
+      if (position) return position;
+    }
+
+    throw new Error('Unable to resolve latest user checkpoint position from KurrentDB.');
   }
 
   private userStream(userId: string): string {

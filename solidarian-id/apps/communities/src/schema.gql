@@ -9,6 +9,7 @@ type Action {
   objectives: [Objective!]!
   events: [Event!]!
   causeId: ID!
+  communityId: ID!
 }
 
 type EventPlace {
@@ -23,6 +24,7 @@ type Event {
   description: String!
   initialDate: Date!
   place: EventPlace!
+  assistantIds: [ID!]!
 }
 
 type Objective {
@@ -65,6 +67,23 @@ enum SustainableDevelopmentGoal {
   PartnershipsForTheGoals
 }
 
+type User {
+  id: ID!
+  fullName: String!
+  email: String
+  mobilePhone: String
+}
+
+type Community {
+  id: ID!
+  name: String!
+  description: String!
+  creator: User!
+  admins: [User!]!
+  members: [User!]!
+  causes: [Cause!]!
+}
+
 type Request {
   id: ID!
   type: RequestType!
@@ -85,23 +104,6 @@ enum RequestStatus {
   PENDING
   APPROVED
   REJECTED
-}
-
-type User {
-  id: ID!
-  fullName: String!
-  email: String
-  mobilePhone: String
-}
-
-type Community {
-  id: ID!
-  name: String!
-  description: String!
-  creator: User!
-  admins: [User!]!
-  members: [User!]!
-  causes: [Cause!]!
 }
 
 type RequestStatusChangedEvent {
@@ -126,11 +128,15 @@ type Query {
   causesByCommunity(communityId: ID!): [Cause!]!
   causeByCommunity(communityId: ID!, causeId: ID!): Cause!
   request(id: ID!): Request!
+  getRequestsByUserId(userId: ID!): [Request!]!
   communities: [Community!]!
   community(id: ID!): Community!
 }
 
 type Mutation {
+  joinEvent(eventId: ID!, userId: ID!): Boolean!
+  leaveEvent(eventId: ID!, userId: ID!): Boolean!
+  contributeObjective(actionId: ID!, objectiveName: String!, userId: ID!, amount: Int!): Objective!
   joinCause(causeId: ID!, userId: ID!): Boolean!
   leaveCause(causeId: ID!, userId: ID!): Boolean!
   createCommunityRequest(createCommunityRequestInput: CreateCommunityRequestInput!): String!

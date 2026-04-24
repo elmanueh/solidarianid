@@ -12,12 +12,11 @@ export const ROUTES = {
     profile: '/profile',
   },
   profile: {
-    settings: '/profile/settings',
-    requests: '/profile/settings/requests',
-    personalInfo: '/profile/settings/personal-info',
-    impact: '/profile/settings/impact',
-    privacy: '/profile/settings/privacy',
-    help: '/profile/settings/help',
+    requests: '/profile/requests',
+    personalInfo: '/profile/personal-info',
+    impact: '/profile/impact',
+    privacy: '/profile/privacy',
+    help: '/profile/help',
   },
   favorites: {
     requestsCreate: '/favorites/requests/create',

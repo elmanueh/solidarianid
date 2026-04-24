@@ -344,4 +344,16 @@ export class RequestsServiceImpl extends RequestsService {
 
     return right(requestOrError.value);
   }
+
+  async getRequestsByUserId(
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, Request<RequestProps>[]>> {
+    const requestsOrError = await this.requestsRepository.findByUserId(userId);
+
+    if (requestsOrError.isLeft()) {
+      return left(requestsOrError.value);
+    }
+
+    return right(requestsOrError.value);
+  }
 }

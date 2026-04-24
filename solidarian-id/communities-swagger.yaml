@@ -343,6 +343,88 @@ paths:
             inesperado
       summary: Crear una solicitud de acción benéfica
       tags: *ref_3
+  /subscriptions/{userId}:
+    get:
+      operationId: SubscriptionsController_getUserSubscriptions
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: requestType
+          required: false
+          in: query
+          description: Tipo de solicitud a filtrar
+          schema:
+            example: cause
+            type: string
+            enum:
+              - cause
+              - community
+              - action
+        - name: requestStatus
+          required: false
+          in: query
+          description: Estado de solicitud a filtrar. Por defecto se usa pending.
+          schema:
+            example: pending
+            type: string
+            enum:
+              - pending
+              - approved
+              - rejected
+        - name: includeRequestIds
+          required: false
+          in: query
+          description: Incluye IDs de solicitudes en la respuesta
+          schema:
+            default: true
+            type: boolean
+        - name: includeFollowedCauseIds
+          required: false
+          in: query
+          description: Incluye IDs de causas seguidas en la respuesta
+          schema:
+            default: true
+            type: boolean
+        - name: includeFollowedCommunityIds
+          required: false
+          in: query
+          description: Incluye IDs de comunidades seguidas en la respuesta
+          schema:
+            default: true
+            type: boolean
+        - name: includeEventIds
+          required: false
+          in: query
+          description: Incluye IDs de eventos a los que se ha unido el usuario
+          schema:
+            default: true
+            type: boolean
+        - name: includeObjectiveIds
+          required: false
+          in: query
+          description: Incluye IDs de objetivos a los que contribuye el usuario
+          schema:
+            default: true
+            type: boolean
+      responses:
+        '200':
+          description: Suscripciones del usuario obtenidas exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSubscriptionsResponseDto'
+        '400':
+          description: El ID de usuario proporcionado es inválido
+        '404':
+          description: Usuario no encontrado
+        '500':
+          description: Error interno del servidor
+      summary: Obtener las suscripciones de un usuario
+      tags:
+        - Subscriptions
 info:
   title: 'SolidarianID: Communities Microservice'
   description: The SolidarianID`s Communities Microservice API documentation
@@ -824,6 +906,58 @@ components:
         - objectives
         - events
         - causeId
+    UserSubscriptionsResponseDto:
+      type: object
+      properties:
+        requestIds:
+          description: >-
+            Array de IDs de solicitudes del usuario según el criterio de
+            búsqueda
+          example:
+            - 550e8400-e29b-41d4-a716-446655440000
+            - 550e8400-e29b-41d4-a716-446655440001
+          type: array
+          items:
+            type: string
+        followedCauseIds:
+          description: Array de IDs de causas que el usuario sigue
+          example:
+            - 550e8400-e29b-41d4-a716-446655440000
+            - 550e8400-e29b-41d4-a716-446655440001
+          type: array
+          items:
+            type: string
+        followedCommunityIds:
+          description: Array de IDs de comunidades que el usuario sigue
+          example:
+            - 550e8400-e29b-41d4-a716-446655440000
+            - 550e8400-e29b-41d4-a716-446655440001
+          type: array
+          items:
+            type: string
+        eventIds:
+          description: Array de IDs de eventos a los que está suscrito el usuario
+          example:
+            - 550e8400-e29b-41d4-a716-446655440010
+            - 550e8400-e29b-41d4-a716-446655440011
+          type: array
+          items:
+            type: string
+        objectiveIds:
+          description: >-
+            Array de IDs de objetivos a los que contribuye el usuario (formato
+            actionId:objectiveName)
+          example:
+            - 550e8400-e29b-41d4-a716-446655440020:Recaudacion inicial
+          type: array
+          items:
+            type: string
+      required:
+        - requestIds
+        - followedCauseIds
+        - followedCommunityIds
+        - eventIds
+        - objectiveIds
     UserEvent:
       type: object
       properties: {}

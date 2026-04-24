@@ -1,6 +1,8 @@
 import { User } from '@/features/auth/model/user';
 import api from '@/features/axios/axios';
 
+export type UpdateUserProfilePayload = Pick<User, 'fullName' | 'username' | 'mobilePhone' | 'city' | 'countryCode'>;
+
 const AUTH_ENDPOINTS = {
   LOGIN: '/users/login',
   USERS: '/users',
@@ -9,7 +11,10 @@ const AUTH_ENDPOINTS = {
 
 // FIXME: Añadir Registro y tenemos que hablar el tema de los JWT (refresh, etc)
 export const authService = {
-  login: async (username: string, password: string): Promise<User> => {
+  login: async (_username: string, _password: string): Promise<User> => {
+    void _username;
+    void _password;
+
     // TODO: devolver datos del usuario en el login
     //await api.post(AUTH_ENDPOINTS.LOGIN, { username, password });
     return authService.getCurrentUser();
@@ -33,12 +38,16 @@ export const authService = {
     });
   },
 
+  updateUserProfile: async (userId: string, payload: UpdateUserProfilePayload): Promise<void> => {
+    await api.patch(`${AUTH_ENDPOINTS.USERS}/${userId}`, payload);
+  },
+
   getCurrentUser: async (): Promise<User> => {
     // TODO: Implementar esta función para obtener los datos del usuario autenticado usando el token JWT
     // const response = await api.get(AUTH_ENDPOINTS.ME);
     // return response.data as User;
     return {
-      id: 'b59be55b-8380-4642-9bef-c5f553399ad5',
+      id: '205591ab-83e9-4441-bbd6-945ff974054e',
       username: 'pablo',
       fullName: 'Pablo Peris',
       mobilePhone: '+34123456789',

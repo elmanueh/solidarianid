@@ -23,7 +23,7 @@ export const ROUTES = {
   },
   communities: {
     detail: (communityId: string) => `/communities/${communityId}`,
-    causes: (communityId: string) => `/communities/${communityId}/causes`,
+    causes: (communityId: string) => `/communities/${communityId}`,
     causeDetail: (communityId: string, causeId: string) => `/communities/${communityId}/causes/${causeId}`,
     causeRequestCreate: (communityId: string, causeId: string) =>
       `/communities/${communityId}/causes/${causeId}/requests/create`,

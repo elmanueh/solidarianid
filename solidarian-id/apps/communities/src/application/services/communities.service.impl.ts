@@ -142,4 +142,37 @@ export class CommunitiesServiceImpl implements CommunitiesService {
 
     return right(saveResult.value);
   }
+
+  async leaveCommunity(
+    communityId: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const communityOrError = await this.communityRepository.findById(communityId, ['members', 'members.user']);
+
+    if (communityOrError.isLeft()) {
+      return left(communityOrError.value);
+    }
+
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    if (!communityOrError.value.hasMember(userOrError.value)) {
+      return left(new ConflictError('User is not a member of the community'));
+    }
+
+    if (communityOrError.value.isCreator(userOrError.value)) {
+      return left(new ConflictError('Community creator cannot leave the community'));
+    }
+
+    const removeMemberResult = await this.communityRepository.removeMember(communityId, userId);
+
+    if (removeMemberResult.isLeft()) {
+      return left(removeMemberResult.value);
+    }
+
+    return right(undefined);
+  }
 }

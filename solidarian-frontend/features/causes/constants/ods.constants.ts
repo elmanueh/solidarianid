@@ -1,5 +1,10 @@
 export type OdsId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17;
 
+export interface OdsOption {
+  id: OdsId;
+  label: string;
+}
+
 export const ODS_LABELS: Record<OdsId, string> = {
   1: 'Sin Pobreza',
   2: 'Hambre Cero',
@@ -40,11 +45,9 @@ const ODS_ENUM_NAME_TO_ID: Record<string, OdsId> = {
   PartnershipsForTheGoals: 17,
 };
 
-export const ODS_OPTIONS: ReadonlyArray<{ id: OdsId; label: string }> = (
-  Object.keys(ODS_LABELS) as Array<`${OdsId}`>
-).map(key => {
+export const ODS_OPTIONS: ReadonlyArray<OdsOption> = (Object.keys(ODS_LABELS) as Array<`${OdsId}`>).map(key => {
   const id = Number(key) as OdsId;
-  return { id, label: ODS_LABELS[id] };
+  return { id, label: `${ODS_LABELS[id]}` };
 });
 
 export function toOdsId(value: number | string): OdsId | null {

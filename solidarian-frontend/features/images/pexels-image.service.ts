@@ -17,11 +17,7 @@ export class PexelsImageService {
   private readonly fallbackImageUrl = 'https://images.pexels.com/photos/1182691/pexels-photo-1182691.jpeg';
 
   constructor() {
-    const apiKey = process.env.PEXELS_API_KEY;
-    if (!apiKey) {
-      throw new PexelsError('PEXELS_API_KEY environment variable is not set');
-    }
-    this.apiKey = apiKey;
+    this.apiKey = process.env.PEXELS_API_KEY ?? '';
   }
 
   private hashUuid(uuid: string): number {
@@ -72,6 +68,10 @@ export class PexelsImageService {
   }
 
   private async searchPhotos(theme: string): Promise<PexelsPhoto[]> {
+    if (!this.apiKey) {
+      throw new PexelsError('PEXELS_API_KEY environment variable is not set');
+    }
+
     const keywords = this.extractSearchKeywords(theme);
     const cacheKey = keywords.toLowerCase();
     const cached = globalSearchCache.get(cacheKey);

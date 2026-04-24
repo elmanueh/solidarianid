@@ -48,7 +48,12 @@ export default function FavoritesRequestCreatePage() {
           updateCause={updateCause}
         />
 
-        <Button type="submit" disabled={isSubmitting} size="lg" className="w-full">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          size="lg"
+          className="w-full cursor-pointer bg-blue-700 hover:bg-blue-500"
+        >
           {isSubmitting ? 'Enviando...' : 'Enviar solicitud'}
         </Button>
       </form>

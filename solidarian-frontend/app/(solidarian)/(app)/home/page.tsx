@@ -48,8 +48,8 @@ const loadHomeData = async (): Promise<{
   const causesLimit = normalizeLimit(6);
 
   const [communitiesResult, causesResult] = await Promise.allSettled([
-    graphql.query(GET_COMMUNITIES_QUERY, {}),
-    graphql.query(GET_CAUSES_QUERY, {}),
+    graphql.query(GET_COMMUNITIES_QUERY, {}, { retry: { attempts: 3, initialDelayMs: 1000 } }),
+    graphql.query(GET_CAUSES_QUERY, {}, { retry: { attempts: 3, initialDelayMs: 1000 } }),
   ]);
 
   const communityList =
@@ -98,6 +98,16 @@ const toUiErrorMessage = (error: unknown, fallback: string): string => {
     const message = error.message.trim().toLowerCase();
 
     if (message === 'fetch failed' || message.includes('failed to fetch') || message.includes('network error')) {
+      return fallback;
+    }
+
+    if (
+      message.includes('response not successful') ||
+      message.includes('status code 501') ||
+      message.includes('status code 502') ||
+      message.includes('status code 503') ||
+      message.includes('status code 504')
+    ) {
       return fallback;
     }
 

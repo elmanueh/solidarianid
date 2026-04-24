@@ -54,7 +54,7 @@ export default function CommunityRequestCausesSection({
                   size="sm"
                   disabled={isSubmitting}
                   onClick={() => removeCause(index)}
-                  className="text-destructive"
+                  className="cursor-pointer text-destructive"
                 >
                   <IconTrash size={14} />
                   Eliminar
@@ -103,7 +103,7 @@ export default function CommunityRequestCausesSection({
                       type="button"
                       id={`community-request-cause-ods-${index}`}
                       disabled={isSubmitting}
-                      className="flex h-auto min-h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm md:m-0"
+                      className="flex h-auto min-h-10 w-full cursor-pointer items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm md:m-0"
                     >
                       <span className="line-clamp-1 text-left text-muted-foreground">
                         {cause.ods.length > 0
@@ -205,6 +205,7 @@ export default function CommunityRequestCausesSection({
                         initialDate: event.target.value,
                       })
                     }
+                    className="cursor-pointer"
                   />
                 </div>
               </div>

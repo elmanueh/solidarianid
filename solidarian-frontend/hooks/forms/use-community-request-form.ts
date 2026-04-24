@@ -202,9 +202,9 @@ export default function useCommunityRequestForm() {
     updateCause,
     isSubmitting,
     handleSubmit,
-    odsOptions: Object.entries(SUSTAINABLE_DEVELOPMENT_GOAL).map(([key, label]) => ({
+    odsOptions: Object.entries(SUSTAINABLE_DEVELOPMENT_GOAL).map(([key, label], index) => ({
       value: key as CommunityOdsValue,
-      label: `${key} - ${label}`,
+      label: `${index + 1}. ${key} - ${label}`,
     })),
   };
 }

@@ -50,7 +50,7 @@ export default function CommunityCauseRequestCreatePage() {
                   type="button"
                   disabled={isSubmitting}
                   onClick={() => toggleOds(option.value)}
-                  className={`rounded-xl border px-3 py-2 text-left text-xs font-semibold transition-colors ${
+                  className={`cursor-pointer rounded-xl border px-3 py-2 text-left text-xs font-semibold transition-colors ${
                     isSelected
                       ? 'border-pink-500/40 bg-pink-500/10 text-pink-700 dark:text-pink-300'
                       : 'border-border bg-background text-muted-foreground hover:border-pink-500/30 hover:text-brand-ink'
@@ -115,7 +115,12 @@ export default function CommunityCauseRequestCreatePage() {
           </div>
         </RequestSectionCard>
 
-        <Button type="submit" disabled={isSubmitting} size="lg" className="w-full">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          size="lg"
+          className="w-full cursor-pointer bg-pink-700 hover:bg-pink-500"
+        >
           {isSubmitting ? 'Enviando...' : 'Enviar solicitud'}
         </Button>
       </form>

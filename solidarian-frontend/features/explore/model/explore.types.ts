@@ -1,3 +1,5 @@
+import { OdsId } from '@/features/causes/constants/ods.constants';
+
 export type ExploreMode = 'communities' | 'causes';
 
 export type ExploreSort = 'name_asc' | 'name_desc';
@@ -16,7 +18,7 @@ export type ExploreCauseItem = {
   communityId: string;
   name: string;
   description: string;
-  ods: string[];
+  ods: OdsId[];
   imageUrl: string;
 };
 
@@ -25,7 +27,7 @@ export type ExploreListQuery = {
   pageSize?: number;
   search?: string;
   sort?: ExploreSort;
-  ods?: string[];
+  ods?: OdsId[];
 };
 
 export type ExplorePaginatedResult<T> = {
@@ -58,7 +60,7 @@ export type ExploreCauseApiItem = {
   communityId: string;
   name: string;
   description: string;
-  ods: Array<number | string>;
+  ods: number[];
 };
 
 export type ExploreCommunitiesApiResponse = ExplorePaginatedResult<ExploreCommunityApiItem>;

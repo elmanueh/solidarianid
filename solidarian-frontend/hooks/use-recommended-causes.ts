@@ -2,6 +2,7 @@
 
 import { GET_CAUSES_QUERY, type GetCausesResult } from '@/features/causes/api/graphql/causes.documents';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
+import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { useApolloClient } from '@apollo/client/react';
 import { useEffect, useState } from 'react';
 
@@ -20,29 +21,7 @@ interface UseRecommendedCausesResult {
   error: string | null;
 }
 
-const CAUSE_IMAGE_URLS = [
-  'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1509099863731-ef4bff19e808?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&auto=format&fit=crop',
-] as const;
-
-const getStableImageIndex = (seed: string, poolSize: number): number => {
-  const sum = seed.split('').reduce((accumulator, character) => accumulator + (character.codePointAt(0) ?? 0), 0);
-
-  return sum % poolSize;
-};
-
-const withImageUrl = (cause: GetCausesResult['causes'][number]): RecommendedCause => {
-  const imageIndex = getStableImageIndex(cause.id, CAUSE_IMAGE_URLS.length);
-
-  return {
-    ...cause,
-    imageUrl: CAUSE_IMAGE_URLS[imageIndex],
-  };
-};
+const imageService = new PexelsImageService();
 
 const normalizeLimit = (limit: number): number => {
   if (!Number.isFinite(limit)) {
@@ -73,7 +52,14 @@ export function useRecommendedCauses(limit = 6): UseRecommendedCausesResult {
           return;
         }
 
-        setCauses(data.causes.slice(0, normalizedLimit).map(withImageUrl));
+        const nextCauses = await Promise.all(
+          data.causes.slice(0, normalizedLimit).map(async cause => {
+            const banner = await imageService.getDeterministicBanner({ uuid: cause.id, theme: cause.name });
+            return { ...cause, imageUrl: banner.large };
+          })
+        );
+
+        setCauses(nextCauses);
       } catch (loadError) {
         if (cancelled) {
           return;

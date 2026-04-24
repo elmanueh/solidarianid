@@ -81,7 +81,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-1',
     name: 'Pulmones Verdes Escolares',
     description: 'Plantación participativa en patios y entornos de centros educativos.',
-    ods: ['ClimateAction', 'LifeOnLand'],
+    ods: [13, 15],
     imageUrl: 'https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg',
   },
   {
@@ -89,7 +89,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-2',
     name: 'Limpieza de Costas',
     description: 'Recogida de residuos y separación de plásticos en tramos de playa.',
-    ods: ['LifeBelowWater', 'ResponsibleConsumptionAndProduction'],
+    ods: [14, 12],
     imageUrl: 'https://images.pexels.com/photos/7656746/pexels-photo-7656746.jpeg',
   },
   {
@@ -97,7 +97,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-3',
     name: 'Alfabetización Digital',
     description: 'Talleres básicos de informática para personas en riesgo de exclusión.',
-    ods: ['QualityEducation', 'ReducedInequalities'],
+    ods: [4, 10],
     imageUrl: 'https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg',
   },
   {
@@ -105,7 +105,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-4',
     name: 'Movimiento Saludable',
     description: 'Rutas semanales de actividad física adaptada para todas las edades.',
-    ods: ['GoodHealthAndWellBeing'],
+    ods: [3],
     imageUrl: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg',
   },
   {
@@ -113,7 +113,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-5',
     name: 'Acompañamiento a Mayores',
     description: 'Red de visitas y llamadas para reducir soledad no deseada.',
-    ods: ['GoodHealthAndWellBeing', 'ReducedInequalities'],
+    ods: [3, 10],
     imageUrl: 'https://images.pexels.com/photos/7551616/pexels-photo-7551616.jpeg',
   },
   {
@@ -121,7 +121,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-6',
     name: 'Rescate de Animales',
     description: 'Operativos de rescate y cuidado temporal para adopción responsable.',
-    ods: ['LifeOnLand'],
+    ods: [15],
     imageUrl: 'https://images.pexels.com/photos/4587996/pexels-photo-4587996.jpeg',
   },
   {
@@ -129,7 +129,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-7',
     name: 'Huerta de Barrio',
     description: 'Producción comunitaria de alimentos con prácticas agroecológicas.',
-    ods: ['ZeroHunger', 'ClimateAction'],
+    ods: [2, 13],
     imageUrl: 'https://images.pexels.com/photos/4505166/pexels-photo-4505166.jpeg',
   },
   {
@@ -137,7 +137,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-8',
     name: 'Refuerzo Escolar Inclusivo',
     description: 'Apoyo académico para niñas y niños con recursos pedagógicos abiertos.',
-    ods: ['QualityEducation', 'ReducedInequalities'],
+    ods: [4, 10],
     imageUrl: 'https://images.pexels.com/photos/8471835/pexels-photo-8471835.jpeg',
   },
   {
@@ -145,7 +145,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-9',
     name: 'Chequeos de Barrio',
     description: 'Jornadas de prevención y promoción de hábitos saludables.',
-    ods: ['GoodHealthAndWellBeing'],
+    ods: [3],
     imageUrl: 'https://images.pexels.com/photos/6129688/pexels-photo-6129688.jpeg',
   },
   {
@@ -153,7 +153,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-10',
     name: 'Reciclaje en Acción',
     description: 'Campañas de separación de residuos y puntos limpios itinerantes.',
-    ods: ['ResponsibleConsumptionAndProduction', 'ClimateAction'],
+    ods: [12, 13],
     imageUrl: 'https://images.pexels.com/photos/802221/pexels-photo-802221.jpeg',
   },
   {
@@ -161,7 +161,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-11',
     name: 'Voluntariado Activo',
     description: 'Activación de voluntariado local en iniciativas con impacto medible.',
-    ods: ['PartnershipsForTheGoals', 'ReducedInequalities'],
+    ods: [17, 10],
     imageUrl: 'https://images.pexels.com/photos/6647037/pexels-photo-6647037.jpeg',
   },
   {
@@ -169,7 +169,7 @@ export const exploreCausesMock: ExploreCauseItem[] = [
     communityId: 'community-12',
     name: 'Impulso Emprendedor Rural',
     description: 'Mentoría y formación para proyectos productivos comunitarios.',
-    ods: ['DecentWorkAndEconomicGrowth', 'ReducedInequalities'],
+    ods: [8, 10],
     imageUrl: 'https://images.pexels.com/photos/2132250/pexels-photo-2132250.jpeg',
   },
 ];

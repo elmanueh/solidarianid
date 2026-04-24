@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@/components/ui/input-group';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ODS_OPTIONS } from '@/features/causes/constants/ods.constants';
+import { ODS_OPTIONS, OdsId } from '@/features/causes/constants/ods.constants';
 import { ExploreMode, ExploreSort } from '@/features/explore/model/explore.types';
 import { cn } from '@/lib/utils';
 import { IconArrowDown, IconArrowUp, IconSearch } from '@tabler/icons-react';
@@ -14,11 +14,11 @@ type ExploreControlsProps = {
   mode: ExploreMode;
   draftSearch: string;
   sort: ExploreSort;
-  selectedOds: string[];
+  selectedOds: OdsId[];
   onDraftSearchChange: (value: string) => void;
   onSearchCommit: () => void;
   onToggleSort: () => void;
-  onToggleOds: (ods: string) => void;
+  onToggleOds: (ods: OdsId) => void;
   onClearOds: () => void;
 };
 
@@ -121,15 +121,15 @@ export function ExploreControls({
                       </p>
                       <div className="mt-2 max-h-64 space-y-1 overflow-auto pr-1">
                         {ODS_OPTIONS.map(option => {
-                          const isChecked = selectedOds.includes(option.value);
+                          const isChecked = selectedOds.includes(option.id);
                           return (
                             <label
-                              key={option.value}
+                              key={option.id}
                               className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-muted"
                             >
-                              <Checkbox checked={isChecked} onCheckedChange={() => onToggleOds(option.value)} />
+                              <Checkbox checked={isChecked} onCheckedChange={() => onToggleOds(option.id)} />
                               <span className="text-[10px] font-bold tracking-[0.08em] text-foreground uppercase">
-                                ODS {option.num} · {option.label}
+                                ODS {option.id} · {option.label}
                               </span>
                             </label>
                           );
@@ -159,15 +159,15 @@ export function ExploreControls({
                     </p>
                     <div className="mt-2 max-h-64 space-y-1 overflow-auto pr-1">
                       {ODS_OPTIONS.map(option => {
-                        const isChecked = selectedOds.includes(option.value);
+                        const isChecked = selectedOds.includes(option.id);
                         return (
                           <label
-                            key={option.value}
+                            key={option.id}
                             className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-muted"
                           >
-                            <Checkbox checked={isChecked} onCheckedChange={() => onToggleOds(option.value)} />
+                            <Checkbox checked={isChecked} onCheckedChange={() => onToggleOds(option.id)} />
                             <span className="text-[10px] font-bold tracking-[0.08em] text-foreground uppercase">
-                              ODS {option.num} · {option.label}
+                              ODS {option.id} · {option.label}
                             </span>
                           </label>
                         );

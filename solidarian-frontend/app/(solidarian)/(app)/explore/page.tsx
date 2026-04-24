@@ -16,6 +16,7 @@ import {
 import { ExploreService } from '@/features/explore/services/explore.service';
 import { IconAlertTriangle, IconLoader } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { OdsId } from '@/features/causes/constants/ods.constants';
 
 const exploreService = new ExploreService();
 
@@ -40,7 +41,7 @@ export default function ExplorePage() {
   const [sort, setSort] = useState<ExploreSort>(EXPLORE_DEFAULTS.sort);
   const [draftSearch, setDraftSearch] = useState(EXPLORE_DEFAULTS.search);
   const [search, setSearch] = useState(EXPLORE_DEFAULTS.search);
-  const [selectedOds, setSelectedOds] = useState<string[]>([]);
+  const [selectedOds, setSelectedOds] = useState<OdsId[]>([]);
   const [communities, setCommunities] = useState<ExplorePaginatedResult<ExploreCommunityItem>>(emptyCommunitiesResult);
   const [causes, setCauses] = useState<ExplorePaginatedResult<ExploreCauseItem>>(emptyCausesResult);
   const [loading, setLoading] = useState(true);
@@ -141,7 +142,7 @@ export default function ExplorePage() {
     setPage(EXPLORE_DEFAULTS.page);
   };
 
-  const handleToggleOds = (ods: string) => {
+  const handleToggleOds = (ods: OdsId) => {
     setSelectedOds(current => {
       const exists = current.includes(ods);
       const next = exists ? current.filter(item => item !== ods) : [...current, ods];

@@ -8,6 +8,8 @@
   --font-size: 16px;
   --brand-500: #40a9ff;
   --brand-ink: #1a2d54;
+  --warning: #f7941d;
+  --success: #7cc342;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
@@ -49,7 +51,9 @@
 
 .dark {
   --brand-500: #40a9ff;
-  --brand-ink: oklch(0.92 0.03 252);
+  --brand-ink: oklch(95.73% 0.00754 260.888);
+  --warning: #ffad4d;
+  --success: #9ad95e;
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
@@ -89,6 +93,16 @@
 @theme inline {
   --color-brand-500: var(--brand-500);
   --color-brand-ink: var(--brand-ink);
+  --color-preferences-primary: var(--brand-500);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --color-preferences-ink: var(--brand-ink);
+  --color-preferences-surface: var(--card);
+  --color-preferences-panel: var(--muted);
+  --color-preferences-border: var(--border);
+  --color-preferences-muted: var(--muted-foreground);
+  --color-preferences-subtle: var(--muted);
+  --color-preferences-track-off: var(--switch-background);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

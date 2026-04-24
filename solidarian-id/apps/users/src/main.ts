@@ -57,8 +57,13 @@ async function bootstrap() {
 
   await app.startAllMicroservices();
 
+  const frontendOrigins = (configService.get<string>('FRONTEND_URL') ?? 'http://localhost:3000,http://localhost:3003')
+    .split(',')
+    .map(origin => origin.trim())
+    .filter(Boolean);
+
   app.enableCors({
-    origin: process.env.FRONTEND_URL ?? 'http://localhost:3000',
+    origin: frontendOrigins,
     exposedHeaders: ['Location'],
     methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
     credentials: true,

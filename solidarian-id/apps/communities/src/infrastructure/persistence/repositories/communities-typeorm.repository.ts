@@ -68,4 +68,16 @@ export class CommunitiesRepositoryTypeOrmAdapter
       return left(new RepositoryException('Failed to find communities by ids.', error));
     }
   }
+
+  async removeMember(
+    communityId: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    try {
+      await this.communityUserRepository.delete({ communityId, userId });
+      return right(undefined);
+    } catch (error) {
+      return left(new RepositoryException('Failed to remove member from community.', error));
+    }
+  }
 }

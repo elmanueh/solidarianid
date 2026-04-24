@@ -5,7 +5,7 @@ import ActionRequestObjectivesSection from '@/components/requests/action-request
 import { RequestFormLayout } from '@/components/requests/request-form-layout';
 import { RequestSectionCard } from '@/components/requests/request-section-card';
 import { Button, Input, Textarea } from '@/components/ui';
-import useActionRequestForm from '@/hooks/use-action-request-form';
+import useActionRequestForm from '@/hooks/forms/use-action-request-form';
 
 export default function CauseActionRequestCreatePage() {
   const { handleSubmit, isSubmitting, setValues, values } = useActionRequestForm();

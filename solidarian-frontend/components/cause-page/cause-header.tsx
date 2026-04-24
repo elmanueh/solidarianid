@@ -10,7 +10,7 @@ interface CauseHeaderProps {
   communityId: string;
   causeId: string;
   causeName: string;
-  causeOds: string[];
+  causeOds: Array<number | string>;
   followersCount: number;
   imageUrl: string;
 }

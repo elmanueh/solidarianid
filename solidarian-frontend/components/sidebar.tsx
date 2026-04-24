@@ -1,5 +1,6 @@
 'use client';
 
+import { ThemeButton } from '@/components/theme-button';
 import {
   Sidebar,
   SidebarContent,
@@ -9,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { ROUTES } from '@/features/routes';
 import { IconHeart, IconHome, IconLogout2, IconSearch, IconUser } from '@tabler/icons-react';
@@ -76,6 +78,8 @@ export function SidebarLateral() {
         </SidebarGroupContent>
       </SidebarContent>
       <SidebarFooter>
+        <ThemeButton />
+
         <div className="flex items-center gap-3 rounded-2xl border border-brand-500/10 bg-brand-500/5 p-4">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-500 text-xs font-black text-white shadow-lg shadow-brand-500/20">
             JG
@@ -86,6 +90,8 @@ export function SidebarLateral() {
           </div>
         </div>
         <SidebarMenu>
+          <SidebarSeparator />
+
           <SidebarMenuItem>
             <SidebarMenuButton
               className="cursor-pointer items-center rounded-2xl py-6 ps-6 text-[10px] font-black tracking-widest text-neutral-400 uppercase hover:bg-red-50 hover:text-red-500 dark:text-primary dark:hover:bg-red-900"

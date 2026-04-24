@@ -74,7 +74,7 @@ export type CreateCommunityRequestVariables = {
     causeCreationRequests: {
       name: string;
       description: string;
-      ods: string[];
+      ods: number[];
       initialDate: string;
       durationDays: number;
     }[];

@@ -1,6 +1,5 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { Action } from './action';
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 
 @ObjectType()
 export class Cause {
@@ -16,8 +15,8 @@ export class Cause {
   @Field(() => Int)
   durationDays: number;
 
-  @Field(() => [SustainableDevelopmentGoal])
-  ods: SustainableDevelopmentGoal[];
+  @Field(() => [Int])
+  ods: number[];
 
   @Field(() => Date)
   initialDate: Date;

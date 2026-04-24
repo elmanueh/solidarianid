@@ -1,6 +1,5 @@
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsArray, IsDate, IsEnum, IsInt, IsString, Min } from 'class-validator';
+import { IsArray, IsDate, IsInt, IsString, Max, Min } from 'class-validator';
 
 @InputType()
 export class CommunityCauseRequestInput {
@@ -12,10 +11,12 @@ export class CommunityCauseRequestInput {
   @IsString()
   description: string;
 
-  @Field(() => [SustainableDevelopmentGoal])
+  @Field(() => [Int])
   @IsArray()
-  @IsEnum(SustainableDevelopmentGoal, { each: true })
-  ods: SustainableDevelopmentGoal[];
+  @IsInt({ each: true })
+  @Min(1, { each: true })
+  @Max(17, { each: true })
+  ods!: number[];
 
   @Field(() => Date)
   @IsDate()

@@ -62,7 +62,7 @@ export type GetCauseByCommunityIdAndCauseIdResult = {
     description: string;
     durationDays: number;
     initialDate: string;
-    ods: string[];
+    ods: number[];
     userIds: string[];
     actions: {
       id: string;
@@ -152,7 +152,7 @@ export type CreateCauseRequestVariables = {
   createCauseRequestInput: {
     name: string;
     description: string;
-    ods: string[];
+    ods: number[];
     initialDate: string;
     durationDays: number;
     userId: string;

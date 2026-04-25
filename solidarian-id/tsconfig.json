@@ -43,8 +43,7 @@
       "@solidarianid/testing": ["libs/test/src/index.ts"],
       "@solidarianid/grpc": ["libs/grpc-common/src"],
       "@solidarianid/grpc/*": ["libs/grpc-common/src/*"]
-    },
-    "baseUrl": "./"
+    }
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"],

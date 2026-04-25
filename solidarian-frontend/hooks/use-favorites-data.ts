@@ -9,6 +9,7 @@ import {
   type GetFavoriteCommunitiesByUserResult,
 } from '@/features/communities/api/graphql/communities.documents';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
+import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { useApolloClient } from '@apollo/client/react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -31,28 +32,7 @@ type UseFavoritesDataResult = {
   causesState: FavoritesSectionState<FavoriteCause>;
 };
 
-const COMMUNITY_IMAGE_URLS = [
-  'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1529390079861-591de354faf5?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1475483768296-6163e08872a1?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&auto=format&fit=crop',
-] as const;
-
-const CAUSE_IMAGE_URLS = [
-  'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1509099863731-ef4bff19e808?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&auto=format&fit=crop',
-] as const;
-
-const getStableImageIndex = (seed: string, poolSize: number): number => {
-  const sum = seed.split('').reduce((accumulator, character) => accumulator + (character.codePointAt(0) ?? 0), 0);
-
-  return sum % poolSize;
-};
+const imageService = new PexelsImageService();
 
 const getErrorMessage = (error: unknown, fallback: string): string => {
   if (error instanceof Error) {
@@ -102,11 +82,15 @@ export function useFavoritesData(currentUserId?: string): UseFavoritesDataResult
       }
 
       if (communitiesResult.status === 'fulfilled') {
+        const communities = await Promise.all(
+          communitiesResult.value.userMemberCommunities.map(async community => {
+            const banner = await imageService.getDeterministicBanner({ uuid: community.id, theme: community.name });
+            return { ...community, imageUrl: banner.large };
+          })
+        );
+
         setCommunitiesState({
-          items: communitiesResult.value.userMemberCommunities.map(community => ({
-            ...community,
-            imageUrl: COMMUNITY_IMAGE_URLS[getStableImageIndex(community.id, COMMUNITY_IMAGE_URLS.length)],
-          })),
+          items: communities,
           loading: false,
           error: null,
         });
@@ -119,11 +103,15 @@ export function useFavoritesData(currentUserId?: string): UseFavoritesDataResult
       }
 
       if (causesResult.status === 'fulfilled') {
+        const causes = await Promise.all(
+          causesResult.value.userFollowedCauses.map(async cause => {
+            const banner = await imageService.getDeterministicBanner({ uuid: cause.id, theme: cause.name });
+            return { ...cause, imageUrl: banner.large };
+          })
+        );
+
         setCausesState({
-          items: causesResult.value.userFollowedCauses.map(cause => ({
-            ...cause,
-            imageUrl: CAUSE_IMAGE_URLS[getStableImageIndex(cause.id, CAUSE_IMAGE_URLS.length)],
-          })),
+          items: causes,
           loading: false,
           error: null,
         });

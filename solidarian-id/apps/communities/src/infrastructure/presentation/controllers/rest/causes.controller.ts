@@ -12,30 +12,18 @@ import {
   ApiResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { Action, EntityType, Resource } from '@solidarianid/security/core';
-import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { ExploreCausesQueryDto } from '../../dtos/input/explore-causes.query.dto';
 import { CauseDetailResponseDto } from '../../dtos/output/cause-detail.response.dto';
 import { CauseSummaryResponseDto } from '../../dtos/output/cause-summary.response.dto';
 import { ExploreCausesResponseDto } from '../../dtos/output/explore-causes.response.dto';
 import { CauseDomainMapper } from '../../mappers/cause.mapper';
 
-const AuthorizeCommunityMemberByCauseParamId = () =>
-  Authorize({
-    action: Action.UPDATE,
-    resource: Resource.COMMUNITY,
-    policy: 'community.member',
-    entityType: EntityType.CAUSE,
-    entityId: {
-      source: 'params',
-      key: 'id',
-    },
-  });
-
 @Controller()
 export class CausesController {
   constructor(private readonly causesService: CausesService) {}
 
+  //DEPRECATED - usa GraphQL
   @Get('causes')
   @ApiOperation({ summary: 'Retrieve all charitable causes' })
   @ApiOkResponse({
@@ -54,6 +42,7 @@ export class CausesController {
   }
 
   @Get('causes/explore')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Retrieve causes for explore page' })
   @ApiOkResponse({
     description: 'Paginated list of causes for explore',
@@ -71,6 +60,7 @@ export class CausesController {
     return CauseDomainMapper.toExploreCausesResponseDto(causes.value);
   }
 
+  //DEPRECATED - usa GraphQL
   @Get('causes/:id')
   @ApiOperation({ summary: 'Retrieve a charitable cause by ID' })
   @ApiOkResponse({
@@ -88,6 +78,7 @@ export class CausesController {
     return CauseDomainMapper.toCauseDetailDto(cause.value);
   }
 
+  //DEPRECATED - usa GraphQL
   @Get('communities/:communityId/causes')
   @ApiOperation({ summary: 'Retrieve all causes for a specific community' })
   @ApiOkResponse({
@@ -108,6 +99,7 @@ export class CausesController {
     return causes.value.map((cause: Cause) => CauseDomainMapper.toCauseSummaryDto(cause));
   }
 
+  //DEPRECATED - usa GraphQL
   @Get('communities/:communityId/causes/:causeId')
   @ApiOperation({ summary: 'Retrieve a specific cause for a specific community' })
   @ApiOkResponse({
@@ -127,9 +119,8 @@ export class CausesController {
     return CauseDomainMapper.toCauseDetailDto(cause.value);
   }
 
+  //DEPRECATED - usa GraphQL
   @Post('causes/:id/followers')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
-  @AuthorizeCommunityMemberByCauseParamId()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Join a user as a supporter of a cause' })
   @ApiCreatedResponse({

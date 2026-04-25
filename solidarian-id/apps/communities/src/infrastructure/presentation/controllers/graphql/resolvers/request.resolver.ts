@@ -6,7 +6,13 @@ import { CreateActionRequestInput } from '../inputs/request/create-action-reques
 import { Request } from '../entities/request';
 import { RequestGraphqlMapper } from '../mappers/request-graphql.mapper';
 import { UseGuards } from '@nestjs/common';
-import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+import {
+  Action as SecurityAction,
+  Resource,
+  CommunityMembershipPolicy,
+  UsersPolicy,
+} from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 
 @Resolver(() => Request)
 export class RequestResolver {
@@ -32,7 +38,13 @@ export class RequestResolver {
   }
 
   @Mutation(() => String)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Authorize({
+    action: SecurityAction.CREATE,
+    resource: Resource.COMMUNITY,
+    policy: CommunityMembershipPolicy.CREATOR_ONLY,
+    entityId: 'createCauseRequestInput.communityId',
+  })
   async createCauseRequest(
     @Args('createCauseRequestInput') createCauseRequestInput: CreateCauseRequestInput,
     @CurrentUser('sub') actorId: string,
@@ -48,7 +60,13 @@ export class RequestResolver {
   }
 
   @Mutation(() => String)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Authorize({
+    action: SecurityAction.CREATE,
+    policy: CommunityMembershipPolicy.CREATOR_ONLY,
+    resource: Resource.CAUSE,
+    entityId: 'createActionRequestInput.causeId',
+  })
   async createActionRequest(
     @Args('createActionRequestInput') createActionRequestInput: CreateActionRequestInput,
     @CurrentUser('sub') actorId: string,
@@ -75,6 +93,13 @@ export class RequestResolver {
   }
 
   @Query(() => [Request])
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Authorize({
+    action: SecurityAction.READ,
+    resource: Resource.USER,
+    policy: UsersPolicy.SELF_ONLY,
+    entityId: 'userId',
+  })
   async getRequestsByUserId(@Args('userId', { type: () => ID }) userId: string): Promise<Request[]> {
     const requestsOrError = await this.requestsService.getRequestsByUserId(userId);
 

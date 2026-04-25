@@ -10,6 +10,7 @@ import { ActionDomainMapper } from '../../mappers/action.mapper';
 export class ActionsController {
   constructor(private readonly actionsService: ActionsService) {}
 
+  //DEPRECATED - usa GraphQL
   @Get('actions')
   @ApiOperation({ summary: 'Retrieve all charitable actions' })
   @ApiOkResponse({
@@ -27,6 +28,7 @@ export class ActionsController {
     return actions.value.map((action: Action) => ActionDomainMapper.toActionSummaryDto(action));
   }
 
+  //DEPRECATED - usa GraphQL
   @Get('actions/:id')
   @ApiOperation({ summary: 'Retrieve a charitable action by ID' })
   @ApiOkResponse({

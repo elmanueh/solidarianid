@@ -8,7 +8,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
 import { CommunityContextResolver, MembershipPermissionSource } from '@solidarianid/security/core';
-import { CommunityMembershipPolicyEvaluator, SecurityAuthorizationModule } from '@solidarianid/security/nestjs';
+import {
+  CommunityMembershipPolicyEvaluator,
+  SecurityAuthorizationModule,
+  SelfOnlyPolicyEvaluator,
+} from '@solidarianid/security/nestjs';
 import { PubSub } from 'graphql-subscriptions';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
 import { CausesServiceImpl } from './application/services/causes.service.impl';
@@ -113,8 +117,8 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
     ]),
     KafkaDynamicModule.register(process.env.KAFKA_COMMUNITIES_CLIENT_ID ?? 'communities'),
     SecurityAuthorizationModule.register({
-      imports: [TypeOrmModule.forFeature([CauseEntity, ActionEntity, CommunityUserEntity])],
-      evaluators: [CommunityMembershipPolicyEvaluator],
+      imports: [TypeOrmModule.forFeature([CauseEntity, ActionEntity, EventEntity, CommunityUserEntity])],
+      evaluators: [CommunityMembershipPolicyEvaluator, SelfOnlyPolicyEvaluator],
       communityContextResolver: {
         provide: CommunityContextResolver,
         useClass: CommunitiesCommunityContextResolverAdapter,

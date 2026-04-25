@@ -4,22 +4,10 @@ import { ActionsGraphqlMapper } from '@app/communities/infrastructure/presentati
 import { CausesGraphqlMapper } from '@app/communities/infrastructure/presentation/controllers/graphql/mappers/causes-graphql.mapper';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { EntityType, Resource, Action as SecurityAction } from '@solidarianid/security/core';
+import { CommunityMembershipPolicy, Resource, Action as SecurityAction } from '@solidarianid/security/core';
 import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { Action } from '../entities/action';
 import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
-
-const AuthorizeCommunityMemberByCauseArgId = () =>
-  Authorize({
-    action: SecurityAction.UPDATE,
-    resource: Resource.COMMUNITY,
-    policy: 'community.member',
-    entityType: EntityType.CAUSE,
-    entityId: {
-      source: 'args',
-      key: 'causeId',
-    },
-  });
 
 @Resolver(() => Cause)
 export class CausesResolver {
@@ -31,6 +19,7 @@ export class CausesResolver {
   ) {}
 
   @Query(() => [Cause])
+  @UseGuards(JwtAuthGuard)
   async causes(): Promise<Cause[]> {
     const causesOrError = await this.causesService.getAll();
 
@@ -42,6 +31,7 @@ export class CausesResolver {
   }
 
   @Query(() => Cause)
+  @UseGuards(JwtAuthGuard)
   async cause(@Args('id', { type: () => ID }, new ParseUUIDPipe()) id: string): Promise<Cause> {
     const causeOrError = await this.causesService.getById(id);
 
@@ -53,6 +43,13 @@ export class CausesResolver {
   }
 
   @Query(() => [Cause])
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Authorize({
+    action: SecurityAction.READ,
+    resource: Resource.CAUSE,
+    policy: CommunityMembershipPolicy.MEMBER_OR_CREATOR,
+    entityId: 'userId',
+  })
   async userFollowedCauses(@Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string): Promise<Cause[]> {
     const causesOrError = await this.causesService.getUserFollowedCauses(userId);
 
@@ -64,6 +61,7 @@ export class CausesResolver {
   }
 
   @Query(() => [Cause])
+  @UseGuards(JwtAuthGuard)
   async causesByCommunity(
     @Args('communityId', { type: () => ID }, new ParseUUIDPipe()) communityId: string,
   ): Promise<Cause[]> {
@@ -77,6 +75,7 @@ export class CausesResolver {
   }
 
   @Query(() => Cause)
+  @UseGuards(JwtAuthGuard)
   async causeByCommunity(
     @Args('communityId', { type: () => ID }, new ParseUUIDPipe()) communityId: string,
     @Args('causeId', { type: () => ID }, new ParseUUIDPipe()) causeId: string,
@@ -99,7 +98,12 @@ export class CausesResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
-  @AuthorizeCommunityMemberByCauseArgId()
+  @Authorize({
+    action: SecurityAction.UPDATE,
+    resource: Resource.CAUSE,
+    policy: CommunityMembershipPolicy.MEMBER_ONLY,
+    entityId: 'causeId',
+  })
   async joinCause(
     @Args('causeId', { type: () => ID }, new ParseUUIDPipe()) causeId: string,
     @CurrentUser('sub') actorId: string,
@@ -115,7 +119,12 @@ export class CausesResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
-  @AuthorizeCommunityMemberByCauseArgId()
+  @Authorize({
+    action: SecurityAction.UPDATE,
+    resource: Resource.CAUSE,
+    policy: CommunityMembershipPolicy.MEMBER_ONLY,
+    entityId: 'causeId',
+  })
   async leaveCause(
     @Args('causeId', { type: () => ID }, new ParseUUIDPipe()) causeId: string,
     @CurrentUser('sub') actorId: string,

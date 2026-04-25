@@ -20,6 +20,7 @@ import type { Request, Response } from 'express';
 export class RequestController {
   constructor(private readonly requestsService: RequestsService) {}
 
+  //DEPRECATED - usa GraphQL
   @Post('community-requests')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
@@ -55,6 +56,7 @@ export class RequestController {
     return response.status(201).location(locationUrl).send();
   }
 
+  //DEPRECATED - usa GraphQL
   @Post('cause-requests')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
@@ -90,6 +92,7 @@ export class RequestController {
     return response.status(201).location(locationUrl).send();
   }
 
+  //DEPRECATED - usa GraphQL
   @Post('action-requests')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)

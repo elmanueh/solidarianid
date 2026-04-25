@@ -93,6 +93,12 @@ describe('CommunitiesController (e2e)', () => {
     });
   });
 
+  describe('/communities/explore (GET)', () => {
+    it('should return 401 when JWT is missing', async () => {
+      await server.getRequest().get('/api/communities/explore').expect(HttpStatus.UNAUTHORIZED);
+    });
+  });
+
   describe('/communities/:id (GET)', () => {
     it('should return community detail with causes', async () => {
       const response = await server.getRequest().get(`/api/communities/${COMMUNITY_IDS.AFRICA}`).expect(HttpStatus.OK);

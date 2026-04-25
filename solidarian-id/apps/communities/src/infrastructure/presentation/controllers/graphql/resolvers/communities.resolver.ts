@@ -1,7 +1,13 @@
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+import {
+  Action as SecurityAction,
+  Resource,
+  UsersPolicy,
+  CommunityMembershipPolicy,
+} from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { Cause } from '../entities/cause';
 import { Community } from '../entities/community';
 import { User } from '../entities/user';
@@ -21,6 +27,7 @@ export class CommunitiesResolver {
   ) {}
 
   @Query(() => [Community])
+  @UseGuards(JwtAuthGuard)
   async communities(): Promise<Community[]> {
     const communitiesOrError = await this.communitiesService.getCommunities();
     if (communitiesOrError.isLeft()) throw communitiesOrError.value;
@@ -29,6 +36,7 @@ export class CommunitiesResolver {
   }
 
   @Query(() => Community)
+  @UseGuards(JwtAuthGuard)
   async community(@Args('id', { type: () => ID }, new ParseUUIDPipe()) id: string): Promise<Community> {
     const communityOrError = await this.communitiesService.getCommunityById(id);
     if (communityOrError.isLeft()) throw communityOrError.value;
@@ -37,6 +45,13 @@ export class CommunitiesResolver {
   }
 
   @Query(() => [Community])
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Authorize({
+    action: SecurityAction.READ,
+    resource: Resource.USER,
+    policy: UsersPolicy.SELF_ONLY,
+    entityId: 'userId',
+  })
   async userMemberCommunities(
     @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
   ): Promise<Community[]> {
@@ -90,11 +105,18 @@ export class CommunitiesResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Authorize({
+    action: SecurityAction.UPDATE,
+    resource: Resource.COMMUNITY,
+    policy: CommunityMembershipPolicy.MEMBER_ONLY,
+    entityId: 'communityId',
+  })
   async leaveCommunity(
     @Args('communityId', { type: () => ID }, new ParseUUIDPipe()) communityId: string,
-    @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
+    @CurrentUser('sub') actorId: string,
   ): Promise<boolean> {
-    const result = await this.communitiesService.leaveCommunity(communityId, userId);
+    const result = await this.communitiesService.leaveCommunity(communityId, actorId);
     if (result.isLeft()) throw result.value;
 
     return true;

@@ -81,6 +81,7 @@ export class CommunitiesController {
   }
 
   @Get('explore')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Retrieve communities for explore page' })
   @ApiOkResponse({
     description: 'Paginated list of communities for explore',
@@ -98,6 +99,7 @@ export class CommunitiesController {
     return CommunityDomainMapper.toExploreCommunitiesResponseDto(communities.value);
   }
 
+  //DEPRECATED - usa GraphQL
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve a charitable community by ID' })
   @ApiOkResponse({
@@ -122,6 +124,7 @@ export class CommunitiesController {
     return CommunityDomainMapper.toCommunityDetailDto(community.value);
   }
 
+  //DEPRECATED - usa gRPC
   async getCommunitiesOrderByMostUsers(limit?: number): Promise<CommunityRankingUserResponseDto[]> {
     const communities = await this.communitiesService.getOrderByMostUsers(limit);
     if (communities.isLeft()) {
@@ -154,6 +157,7 @@ export class CommunitiesController {
     return CommunityDomainMapper.toCommunityLastUsersJoinedSummaryResponseDto(joinedUsersData.value);
   }
 
+  //DEPRECATED - usa GraphQL
   @Post(':id/members')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)

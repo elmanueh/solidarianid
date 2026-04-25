@@ -5,10 +5,10 @@
 
 export const communityCardStyles = {
   wrapper:
-    'group flex min-w-70 flex-col overflow-hidden rounded-[40px] border border-border bg-card shadow-lg dark:shadow-2xl transition-all hover:border-chart-2/30 hover:shadow-xl hover:shadow-chart-2/10 dark:hover:shadow-chart-2/20 active:scale-95 lg:min-w-0',
+    'group flex min-w-70 flex-col overflow-visible rounded-[40px] border border-border bg-card shadow-lg dark:shadow-2xl transition-all hover:border-chart-2/30 hover:shadow-xl hover:shadow-chart-2/10 dark:hover:shadow-chart-2/20 active:scale-95 lg:min-w-0',
 
   image: {
-    wrapper: 'relative h-48 overflow-hidden md:h-56',
+    wrapper: 'relative h-48 overflow-hidden rounded-t-[40px] md:h-56',
     img: 'object-cover transition-transform duration-1000 group-hover:scale-110',
     badge:
       'absolute top-4 left-4 flex items-center gap-2 rounded-2xl border border-border bg-card/95 px-4 py-2 shadow-sm backdrop-blur-md',

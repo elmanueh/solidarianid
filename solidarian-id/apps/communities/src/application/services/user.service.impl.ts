@@ -5,8 +5,8 @@ import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { UserEventDto } from 'libs/kafka/src/dtos/user.event.dto';
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { UserEventDto } from '@solidarianid/kafka';
 
 @Injectable()
 export class UserServiceImpl implements UserService {

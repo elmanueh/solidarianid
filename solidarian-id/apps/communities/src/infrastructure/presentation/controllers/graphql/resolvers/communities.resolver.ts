@@ -35,6 +35,19 @@ export class CommunitiesResolver {
     return this.communitiesGraphqlMapper.toCommunityBase(communityOrError.value);
   }
 
+  @Query(() => [Community])
+  async userMemberCommunities(
+    @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
+  ): Promise<Community[]> {
+    const communitiesOrError = await this.communitiesService.getUserMemberCommunities(userId);
+
+    if (communitiesOrError.isLeft()) {
+      throw communitiesOrError.value;
+    }
+
+    return communitiesOrError.value.map(community => this.communitiesGraphqlMapper.toCommunityBase(community));
+  }
+
   @ResolveField(() => User)
   async creator(@Parent() community: Community): Promise<User> {
     const membersData = await this.graphqlLoaders.communityMembersByCommunityId.load(community.id);

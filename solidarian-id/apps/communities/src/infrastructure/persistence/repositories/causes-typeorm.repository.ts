@@ -44,6 +44,42 @@ export class CausesRepositoryTypeOrmAdapter
     }
   }
 
+  async findAllByFollowerId(
+    userId: string,
+    relations: string[] = ['users'],
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
+    try {
+      const queryBuilder = this.causeRepository
+        .createQueryBuilder('cause')
+        .innerJoin('cause.users', 'follower', 'follower.userId = :userId', { userId })
+        .distinct(true);
+
+      if (relations.includes('users')) {
+        queryBuilder.leftJoinAndSelect('cause.users', 'users');
+      }
+
+      if (relations.includes('actions')) {
+        queryBuilder.leftJoinAndSelect('cause.actions', 'actions');
+      }
+
+      if (relations.includes('community')) {
+        queryBuilder.leftJoinAndSelect('cause.community', 'community');
+      }
+
+      const causeEntities = await queryBuilder.getMany();
+
+      const causes = sequence(causeEntities.map(entity => this.causeMapper.fromPersistence(entity)));
+
+      if (causes.isLeft()) {
+        return left(causes.value);
+      }
+
+      return right(causes.value);
+    } catch (error) {
+      return left(new RepositoryException(`Failed to find causes by user id ${userId}.`, error));
+    }
+  }
+
   async findAllByCommunityIds(
     communityIds: string[],
     relations: string[] = ['users'],

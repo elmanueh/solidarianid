@@ -27,6 +27,7 @@ export abstract class CausesService {
     relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Cause>>;
   abstract create(causeEventDto: CauseRequestEventDto): Promise<Either<ValidationError | RepositoryException, Cause>>;
+  abstract getUserFollowedCauses(userId: string): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
   abstract joinCause(causeId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>>;
   abstract leaveCause(causeId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>>;
 }

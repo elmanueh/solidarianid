@@ -7,6 +7,7 @@ import { UsersRepositoryPort } from '@app/communities/domain/ports/users.reposit
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { Either, left, right } from '@app/ddd/either';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
@@ -71,6 +72,20 @@ export class CausesServiceImpl implements CausesService {
 
   async getById(id: string, relations?: string[]): Promise<Either<ValidationError | RepositoryException, Cause>> {
     return await this.causeRepository.findById(id, relations || ['users']);
+  }
+
+  async getUserFollowedCauses(userId: string): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      if (userOrError.value instanceof EntityNotFoundException) {
+        return left(new EntityNotFoundException('User', userId));
+      }
+
+      return left(userOrError.value);
+    }
+
+    return await this.causeRepository.findAllByFollowerId(userId, ['users']);
   }
 
   async getAllByCommunityIds(

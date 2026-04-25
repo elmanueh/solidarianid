@@ -2,8 +2,7 @@ import { Community } from '@app/communities/domain/model/aggregates/community';
 import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { KafkaPublisher, Topics } from '@solidarianid/kafka';
-import { CommunityEventDto } from 'libs/kafka/src/events/community.event';
+import { CommunityEventDto, KafkaPublisher, Topics } from '@solidarianid/kafka';
 import { CommunityEventMapper } from '../mappers/community-event.mapper';
 
 @Injectable()

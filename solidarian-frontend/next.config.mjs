@@ -1,12 +1,20 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: {
-    root: __dirname,
+    root: projectRoot,
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/photos',
+        destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL ?? 'http://localhost:8090'}/photos`,
+      },
+    ];
   },
   images: {
     remotePatterns: [

@@ -6,6 +6,7 @@ import { User } from '@app/communities/domain/model/entities/user';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
+import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
@@ -37,6 +38,9 @@ describe('CausesServiceImpl', () => {
   };
   let mockCausesPublisher: {
     publish: jest.Mock;
+  };
+  let mockCausesQueryRepository: {
+    findExplore: jest.Mock;
   };
   let mockSubscriptionsPublisher: {
     publishCauseCreated: jest.Mock;
@@ -117,6 +121,9 @@ describe('CausesServiceImpl', () => {
     mockCausesPublisher = {
       publish: jest.fn(),
     };
+    mockCausesQueryRepository = {
+      findExplore: jest.fn(),
+    };
     mockSubscriptionsPublisher = {
       publishCauseCreated: jest.fn(),
     };
@@ -125,6 +132,7 @@ describe('CausesServiceImpl', () => {
       providers: [
         CausesServiceImpl,
         { provide: CausesRepositoryPort, useValue: mockCauseRepository },
+        { provide: CausesQueryRepositoryPort, useValue: mockCausesQueryRepository },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
         { provide: CommunitiesRepositoryPort, useValue: mockCommunitiesRepository },
         { provide: CausesPublisherPort, useValue: mockCausesPublisher },

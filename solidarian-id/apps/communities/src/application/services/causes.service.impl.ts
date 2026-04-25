@@ -1,5 +1,6 @@
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
+import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
@@ -11,6 +12,9 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { CauseRequestEventDto, EventType } from '@solidarianid/kafka';
+import { ExploreCauseData } from '../../application/services/explore-cause.data';
+import { ExploreCausesCriteria } from '../../application/services/explore-causes.criteria';
+import { ExplorePaginatedResultData } from '../../application/services/explore-paginated-result.data';
 import { Cause } from '../../domain/model/entities/cause';
 import { CausesRepositoryPort } from '../../domain/ports/causes.repository.port';
 
@@ -18,6 +22,7 @@ import { CausesRepositoryPort } from '../../domain/ports/causes.repository.port'
 export class CausesServiceImpl implements CausesService {
   constructor(
     private readonly causeRepository: CausesRepositoryPort,
+    private readonly causesQueryRepository: CausesQueryRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communitiesRepository: CommunitiesRepositoryPort,
     private readonly causesPublisher: CausesPublisherPort,
@@ -57,6 +62,12 @@ export class CausesServiceImpl implements CausesService {
 
   async getAll(): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
     return await this.causeRepository.findAll(['users']);
+  }
+
+  async getExploreCauses(
+    criteria: ExploreCausesCriteria,
+  ): Promise<Either<ValidationError | RepositoryException, ExplorePaginatedResultData<ExploreCauseData>>> {
+    return await this.causesQueryRepository.findExplore(criteria);
   }
 
   async getById(id: string, relations?: string[]): Promise<Either<ValidationError | RepositoryException, Cause>> {

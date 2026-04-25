@@ -14,6 +14,9 @@ import { Injectable } from '@nestjs/common';
 import { CommunityRequestEventDto, EventType } from '@solidarianid/kafka';
 import { CommunityLastUsersJoinedData } from './community-last-users-joined.data';
 import { RankingCommunitiesByUsersData } from './community-ranking.data';
+import { ExploreCommunitiesCriteria } from './explore-communities.criteria';
+import { ExploreCommunityData } from './explore-community.data';
+import { ExplorePaginatedResultData } from './explore-paginated-result.data';
 
 @Injectable()
 export class CommunitiesServiceImpl implements CommunitiesService {
@@ -83,6 +86,12 @@ export class CommunitiesServiceImpl implements CommunitiesService {
 
   async getCommunities(): Promise<Either<RepositoryException | ValidationError, Community[]>> {
     return await this.communityRepository.findAll(['members', 'members.user']);
+  }
+
+  async getExploreCommunities(
+    criteria: ExploreCommunitiesCriteria,
+  ): Promise<Either<ValidationError | RepositoryException, ExplorePaginatedResultData<ExploreCommunityData>>> {
+    return await this.communityQueryRepository.findExplore(criteria);
   }
 
   async getCommunityById(
@@ -156,5 +165,38 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     }
 
     return await this.communityRepository.findAllByMemberId(userId, ['members', 'members.user']);
+  }
+
+  async leaveCommunity(
+    communityId: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const communityOrError = await this.communityRepository.findById(communityId, ['members', 'members.user']);
+
+    if (communityOrError.isLeft()) {
+      return left(communityOrError.value);
+    }
+
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    if (!communityOrError.value.hasMember(userOrError.value)) {
+      return left(new ConflictError('User is not a member of the community'));
+    }
+
+    if (communityOrError.value.isCreator(userOrError.value)) {
+      return left(new ConflictError('Community creator cannot leave the community'));
+    }
+
+    const removeMemberResult = await this.communityRepository.removeMember(communityId, userId);
+
+    if (removeMemberResult.isLeft()) {
+      return left(removeMemberResult.value);
+    }
+
+    return right(undefined);
   }
 }

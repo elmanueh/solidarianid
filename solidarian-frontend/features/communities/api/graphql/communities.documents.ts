@@ -1,5 +1,5 @@
-import { gql, TypedDocumentNode } from '@apollo/client';
 import { OdsId } from '@/features/causes/constants/ods.constants';
+import { gql, TypedDocumentNode } from '@apollo/client';
 
 // Query: GetCommunities
 export type GetCommunitiesResult = {
@@ -15,6 +15,31 @@ export type GetCommunitiesVariables = Record<string, never>;
 export const GET_COMMUNITIES_QUERY: TypedDocumentNode<GetCommunitiesResult, GetCommunitiesVariables> = gql`
   query GetCommunities {
     communities {
+      id
+      name
+      description
+    }
+  }
+`;
+
+export type GetFavoriteCommunitiesByUserResult = {
+  userMemberCommunities: {
+    id: string;
+    name: string;
+    description: string;
+  }[];
+};
+
+export type GetFavoriteCommunitiesByUserVariables = {
+  userId: string;
+};
+
+export const GET_FAVORITE_COMMUNITIES_BY_USER_QUERY: TypedDocumentNode<
+  GetFavoriteCommunitiesByUserResult,
+  GetFavoriteCommunitiesByUserVariables
+> = gql`
+  query GetFavoriteCommunitiesByUser($userId: ID!) {
+    userMemberCommunities(userId: $userId) {
       id
       name
       description

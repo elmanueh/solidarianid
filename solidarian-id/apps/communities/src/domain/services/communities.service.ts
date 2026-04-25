@@ -34,7 +34,9 @@ export abstract class CommunitiesService {
     communityId: string,
     userId: string,
   ): Promise<Either<ValidationError | RepositoryException, void>>;
-
+  abstract getUserMemberCommunities(
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, Community[]>>;
   abstract leaveCommunity(
     communityId: string,
     userId: string,

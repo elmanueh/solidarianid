@@ -19,6 +19,9 @@ describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;
   let mockCommunityRepo: {
     findAll: jest.Mock;
+    findAllByIds: jest.Mock;
+    findAllByMemberId: jest.Mock;
+    findAllFollowedCommunityIdsByUserId: jest.Mock;
     findById: jest.Mock;
     save: jest.Mock;
   };
@@ -65,6 +68,9 @@ describe('CommunitiesServiceImpl', () => {
   beforeEach(async () => {
     mockCommunityRepo = {
       findAll: jest.fn(),
+      findAllByIds: jest.fn(),
+      findAllByMemberId: jest.fn(),
+      findAllFollowedCommunityIdsByUserId: jest.fn(),
       findById: jest.fn(),
       save: jest.fn(),
     };
@@ -132,6 +138,48 @@ describe('CommunitiesServiceImpl', () => {
       mockCommunityRepo.findById.mockResolvedValueOnce(left(err));
       await expect(service.getCommunityById('1')).resolves.toEqual(left(err));
       expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['members', 'members.user']);
+    });
+  });
+
+  describe('getUserMemberCommunities', () => {
+    it('normalizes generic repository not found errors to User not found', async () => {
+      mockUsersRepo.findById.mockResolvedValueOnce(left(new EntityNotFoundException('Entity', validUserId)));
+
+      const result = await service.getUserMemberCommunities(validUserId);
+
+      expect(result.isLeft()).toBe(true);
+      if (result.isLeft()) {
+        expect(result.value.message).toContain(`User with ID ${validUserId}`);
+      }
+    });
+
+    it('returns empty array when the user has no communities', async () => {
+      const mockUser = createMockUser();
+      mockUsersRepo.findById.mockResolvedValueOnce(right(mockUser));
+      mockCommunityRepo.findAllByMemberId.mockResolvedValueOnce(right([]));
+
+      await expect(service.getUserMemberCommunities(validUserId)).resolves.toEqual(right([]));
+      expect(mockCommunityRepo.findAllByIds).not.toHaveBeenCalled();
+      expect(mockCommunityRepo.findAllByMemberId).toHaveBeenCalledWith(validUserId, ['members', 'members.user']);
+    });
+
+    it('returns communities directly from repository query', async () => {
+      const mockUser = createMockUser();
+      const communities = [
+        { id: { value: '550e8400-e29b-41d4-a716-446655440099' }, name: 'Second', description: 'desc' },
+        { id: { value: validCommunityId }, name: 'First', description: 'desc' },
+      ];
+
+      mockUsersRepo.findById.mockResolvedValueOnce(right(mockUser));
+      mockCommunityRepo.findAllByMemberId.mockResolvedValueOnce(right(communities));
+
+      const result = await service.getUserMemberCommunities(validUserId);
+
+      expect(result.isRight()).toBe(true);
+      if (result.isRight()) {
+        expect(result.value).toEqual(communities);
+      }
+      expect(mockCommunityRepo.findAllByMemberId).toHaveBeenCalledWith(validUserId, ['members', 'members.user']);
     });
   });
 

@@ -7,7 +7,7 @@
 
 export const causeCardStyles = {
   wrapper:
-    'group flex flex-col gap-4 overflow-hidden rounded-4xl border border-border bg-card p-5 shadow-sm dark:shadow-md transition-all hover:border-chart-4/40 hover:shadow-xl hover:shadow-muted/50 dark:hover:shadow-black/20 active:scale-98',
+    'group flex flex-col gap-4 overflow-visible rounded-4xl border border-border bg-card p-5 shadow-sm dark:shadow-md transition-all hover:border-chart-4/40 hover:shadow-xl hover:shadow-muted/50 dark:hover:shadow-black/20 active:scale-98',
 
   link: 'flex w-full flex-col gap-4',
 

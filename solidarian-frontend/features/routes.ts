@@ -12,19 +12,18 @@ export const ROUTES = {
     profile: '/profile',
   },
   profile: {
-    settings: '/profile/settings',
-    requests: '/profile/settings/requests',
-    personalInfo: '/profile/settings/personal-info',
-    impact: '/profile/settings/impact',
-    privacy: '/profile/settings/privacy',
-    help: '/profile/settings/help',
+    requests: '/profile/requests',
+    personalInfo: '/profile/personal-info',
+    impact: '/register/onboarding',
+    privacy: '/profile/privacy',
+    help: '/profile/help',
   },
   favorites: {
     requestsCreate: '/favorites/requests/create',
   },
   communities: {
     detail: (communityId: string) => `/communities/${communityId}`,
-    causes: (communityId: string) => `/communities/${communityId}/causes`,
+    causes: (communityId: string) => `/communities/${communityId}`,
     causeDetail: (communityId: string, causeId: string) => `/communities/${communityId}/causes/${causeId}`,
     causeRequestCreate: (communityId: string, causeId: string) =>
       `/communities/${communityId}/causes/${causeId}/requests/create`,

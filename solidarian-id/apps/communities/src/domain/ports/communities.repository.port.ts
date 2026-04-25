@@ -10,4 +10,9 @@ export abstract class CommunitiesRepositoryPort extends Repository<Community> {
     ids: string[],
     relations?: string[],
   ): Promise<Either<ValidationError | RepositoryException, Community[]>>;
+
+  abstract removeMember(
+    communityId: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>>;
 }

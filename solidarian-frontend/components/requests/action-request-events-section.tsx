@@ -128,6 +128,7 @@ export default function ActionRequestEventsSection({
         />
         <Input
           type="datetime-local"
+          min={new Date().toISOString().slice(0, 16)}
           value={newEvent.initialDate}
           onChange={event => setNewEvent(current => ({ ...current, initialDate: event.target.value }))}
           disabled={isSubmitting}

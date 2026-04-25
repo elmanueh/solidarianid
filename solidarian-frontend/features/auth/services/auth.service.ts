@@ -1,6 +1,8 @@
 import { User } from '@/features/auth/model/user';
 import api from '@/features/axios/axios';
 
+export type UpdateUserProfilePayload = Pick<User, 'fullName' | 'username' | 'mobilePhone' | 'city' | 'countryCode'>;
+
 const AUTH_ENDPOINTS = {
   LOGIN: '/auth/login',
   LOGOUT: '/auth/logout',
@@ -39,5 +41,9 @@ export const authService = {
   getCurrentUser: async (): Promise<User> => {
     const response = await api.get(AUTH_ENDPOINTS.ME);
     return response.data as User;
+  },
+
+  updateUserProfile: async (userId: string, payload: UpdateUserProfilePayload): Promise<void> => {
+    await api.patch(`${AUTH_ENDPOINTS.USERS}/${userId}`, payload);
   },
 };

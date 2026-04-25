@@ -73,4 +73,15 @@ export class RequestResolver {
 
     return this.requestGraphqlMapper.toGraphqlRequest(requestOrError.value);
   }
+
+  @Query(() => [Request])
+  async getRequestsByUserId(@Args('userId', { type: () => ID }) userId: string): Promise<Request[]> {
+    const requestsOrError = await this.requestsService.getRequestsByUserId(userId);
+
+    if (requestsOrError.isLeft()) {
+      throw requestsOrError.value;
+    }
+
+    return requestsOrError.value.map(request => this.requestGraphqlMapper.toGraphqlRequest(request));
+  }
 }

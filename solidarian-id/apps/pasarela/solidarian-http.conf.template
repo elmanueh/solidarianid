@@ -26,11 +26,7 @@ server {
     proxy_pass https://api.pexels.com/v1/search;
   }
 
-  location ~ ^/api/users(/|$) {
-    proxy_pass http://users-app:3001;
-  }
-
-  location ~ ^/api/auth(/|$) {
+  location ~ ^/api/(users|auth)(/|$) {
     proxy_pass http://users-app:3001;
   }
 

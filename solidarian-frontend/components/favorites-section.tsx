@@ -48,7 +48,7 @@ export function FavoritesSection<T extends { id: string }>({
           type="button"
           onClick={onViewMore}
           disabled={items.length === 0 && !loading}
-          className="flex items-center gap-2 rounded-2xl border border-chart-2/10 px-4 py-2.5 text-[10px] font-black tracking-[0.25em] text-chart-2 uppercase shadow-sm transition-all hover:bg-chart-2/5 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex cursor-pointer items-center gap-2 rounded-2xl border border-chart-2/10 px-4 py-2.5 text-[10px] font-black tracking-[0.25em] text-chart-2 uppercase shadow-sm transition-all hover:bg-chart-2/5 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Ver más <IconChevronRight size={14} />
         </button>
@@ -65,7 +65,7 @@ export function FavoritesSection<T extends { id: string }>({
           <button
             type="button"
             onClick={onScrollLeft}
-            className="absolute top-1/2 left-0 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-lg transition hover:bg-muted lg:flex"
+            className="absolute top-1/2 left-0 z-10 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-border bg-background shadow-lg transition hover:bg-muted lg:flex"
             aria-label={`Desplazar ${title.toLowerCase()} a la izquierda`}
           >
             <IconChevronLeft size={22} />
@@ -73,7 +73,7 @@ export function FavoritesSection<T extends { id: string }>({
 
           <div
             ref={carouselRef}
-            className="scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-4 lg:mx-0 lg:px-12"
+            className="scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 py-10 lg:mx-0 lg:px-12 lg:py-12"
           >
             {previewItems.map((item, index) => (
               <div key={item.id} className="min-w-[280px] snap-center md:min-w-[340px] lg:min-w-[360px]">
@@ -85,7 +85,7 @@ export function FavoritesSection<T extends { id: string }>({
           <button
             type="button"
             onClick={onScrollRight}
-            className="absolute top-1/2 right-0 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background shadow-lg transition hover:bg-muted lg:flex"
+            className="absolute top-1/2 right-0 z-10 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-border bg-background shadow-lg transition hover:bg-muted lg:flex"
             aria-label={`Desplazar ${title.toLowerCase()} a la derecha`}
           >
             <IconChevronRight size={22} />

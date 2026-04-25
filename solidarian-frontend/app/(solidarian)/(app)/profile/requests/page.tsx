@@ -155,7 +155,7 @@ export default function ProfileSettingsRequestsPage() {
             variant="default"
             size="icon-lg"
             nativeButton={false}
-            render={<Link href={ROUTES.favorites.requestsCreate} aria-label="Crear solicitud" />}
+            render={<Link href={ROUTES.explore.requestsCreate} aria-label="Crear solicitud" />}
             className="size-12 rounded-2xl bg-brand-500 text-primary-foreground shadow-xl transition-all hover:shadow-2xl active:scale-95"
           >
             <IconPlus size={24} />

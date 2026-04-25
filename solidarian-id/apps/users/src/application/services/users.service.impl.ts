@@ -6,9 +6,11 @@ import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.ex
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { User } from '@app/users/domain/model/user';
 import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
+import { AuthService } from '@app/users/domain/services/auth.service';
 import { RegisterUserCommand, UpdateUserProfileCommand, UsersService } from '@app/users/domain/services/users.service';
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Email } from '@app/value-objects/model/email';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { CauseCategory, DurationPreference } from '@app/value-objects/model/user-preferences';
@@ -23,6 +25,42 @@ export class UsersServiceImpl extends UsersService {
     private readonly domainEvents: DomainEvents,
   ) {
     super();
+  }
+
+  async getOrRegisterUserIfNotExists(
+    getOrRegisterUserCommand: RegisterUserCommand,
+  ): Promise<Either<ValidationError | RepositoryException, User>> {
+    const { username } = getOrRegisterUserCommand;
+
+    const userOrError = await this.usersRepository.findByUsername(username);
+    // Si el usuario existe, retornarlo
+    if (userOrError.isRight()) {
+      return right(userOrError.value);
+    }
+
+    // Si el error es distinto a "no encontrado", retornar el error
+    if (!(userOrError.value instanceof EntityNotFoundException)) {
+      return left(userOrError.value);
+    }
+
+    // Si el usuario no existe, registrarlo y retornarlo
+    return this.registerAndGetCreatedUser(getOrRegisterUserCommand);
+  }
+
+  private async registerAndGetCreatedUser(
+    command: RegisterUserCommand,
+  ): Promise<Either<ValidationError | RepositoryException, User>> {
+    const registerResult = await this.registerUser(command);
+    if (registerResult.isLeft()) {
+      return left(registerResult.value as ValidationError | RepositoryException);
+    }
+
+    const createdUserOrError = await this.usersRepository.findById(registerResult.value);
+    if (createdUserOrError.isLeft()) {
+      return left(createdUserOrError.value);
+    }
+
+    return right(createdUserOrError.value);
   }
 
   async registerUser(command: RegisterUserCommand): Promise<Either<Error, string>> {

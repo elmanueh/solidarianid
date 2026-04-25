@@ -20,6 +20,20 @@ import {
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
+function getSetCookieHeaders(headers: Record<string, unknown>): string[] {
+  const rawSetCookie = headers['set-cookie'];
+
+  if (Array.isArray(rawSetCookie)) {
+    return rawSetCookie.filter((cookie): cookie is string => typeof cookie === 'string');
+  }
+
+  if (typeof rawSetCookie === 'string') {
+    return [rawSetCookie];
+  }
+
+  return [];
+}
+
 async function resetState(
   kurrentdbSeeder: KurrentDBSeeder,
   postgresSeeder: PostgreSQLSeeder,
@@ -37,20 +51,6 @@ async function resetState(
   } finally {
     await usersProjectionService.onModuleInit();
   }
-}
-
-function getSetCookieHeaders(headers: Record<string, unknown>): string[] {
-  const rawSetCookie = headers['set-cookie'];
-
-  if (Array.isArray(rawSetCookie)) {
-    return rawSetCookie.filter((cookie): cookie is string => typeof cookie === 'string');
-  }
-
-  if (typeof rawSetCookie === 'string') {
-    return [rawSetCookie];
-  }
-
-  return [];
 }
 
 describe('AuthController (e2e)', () => {

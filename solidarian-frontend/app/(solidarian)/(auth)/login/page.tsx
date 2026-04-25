@@ -14,10 +14,12 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldSeparator,
   Input,
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
+  Separator,
 } from '@/components/ui';
 import {
   PASSWORD_COMPLEXITY_REGEX,
@@ -31,7 +33,7 @@ import { getErrorMessage } from '@/features/axios/errors.handler';
 import { handleLogin } from '@/features/redux/userSlice';
 import { ROUTES } from '@/features/routes';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
+import { IconBrandGoogle, IconBrandGoogleFilled, IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -85,6 +87,8 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   }
+
+  async function onOauthSubmit() {}
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -195,6 +199,15 @@ export default function LoginPage() {
               <Button type="submit" form="form-login" disabled={isLoading}>
                 <IconLogin2 />
                 {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+              </Button>
+
+              <FieldSeparator>
+                <span>o</span>
+              </FieldSeparator>
+
+              <Button type="submit" onSubmit={onOauthSubmit}>
+                <IconBrandGoogle stroke={2} />
+                Iniciar sesión con Google
               </Button>
 
               <FieldDescription className="text-center">

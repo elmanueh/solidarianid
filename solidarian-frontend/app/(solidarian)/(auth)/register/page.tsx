@@ -292,7 +292,7 @@ export default function RegisterPage() {
               </Button>
 
               <FieldDescription className="text-center">
-                Ya tienes cuenta? <Link href="/login">Inicia sesión</Link>
+                ¿Ya tienes cuenta? <Link href="/login">Inicia sesión</Link>
               </FieldDescription>
             </Field>
           </CardFooter>

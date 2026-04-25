@@ -1,6 +1,6 @@
-import { ROUTES } from '@/features/routes';
 import { store } from '@/features/redux/store';
 import { handleLogout } from '@/features/redux/userSlice';
+import { ROUTES } from '@/features/routes';
 import axios, { AxiosError, type AxiosRequestConfig } from 'axios';
 
 type RetriableRequestConfig = AxiosRequestConfig & {
@@ -21,15 +21,15 @@ const shouldSkipSessionRecovery = (url?: string): boolean => {
 };
 
 const redirectToLogin = (): void => {
-  if (typeof window === 'undefined') {
+  if (globalThis.window === undefined) {
     return;
   }
 
-  if (window.location.pathname === ROUTES.auth.login) {
+  if (globalThis.location.pathname === ROUTES.auth.login) {
     return;
   }
 
-  window.location.replace(ROUTES.auth.login);
+  globalThis.location.replace(ROUTES.auth.login);
 };
 
 const refreshClient = axios.create({
@@ -56,11 +56,11 @@ api.interceptors.response.use(
     const originalRequest = error.config as RetriableRequestConfig | undefined;
 
     if (!originalRequest || error.response?.status !== 401 || shouldSkipSessionRecovery(originalRequest.url)) {
-      return Promise.reject(error);
+      throw error;
     }
 
     if (originalRequest._sessionRetried) {
-      return Promise.reject(error);
+      throw error;
     }
 
     originalRequest._sessionRetried = true;
@@ -75,7 +75,7 @@ api.interceptors.response.use(
         redirectToLogin();
       }
 
-      return Promise.reject(refreshError);
+      return refreshError;
     }
   }
 );

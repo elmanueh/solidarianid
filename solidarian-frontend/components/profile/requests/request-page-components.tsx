@@ -186,7 +186,7 @@ export function EmptyRequestsState({ selectedFilter, selectedStatusLabel, onClea
         <Button
           variant="default"
           nativeButton={false}
-          render={<Link href={ROUTES.favorites.requestsCreate} />}
+          render={<Link href={ROUTES.explore.requestsCreate} />}
           className="h-12 w-full justify-center gap-2 rounded-2xl bg-brand-500 px-6 text-xs font-black tracking-[0.18em] text-primary-foreground uppercase shadow-xl transition-all hover:shadow-2xl active:scale-95 sm:w-auto sm:text-[10px] sm:tracking-[0.22em]"
         >
           <IconPlus size={18} />

@@ -12,16 +12,16 @@ interface PexelsSearchResponse {
 const globalSearchCache = new Map<string, PexelsPhoto[]>();
 
 export class PexelsImageService {
-  private readonly apiKey: string;
-  private readonly baseUrl = 'https://api.pexels.com/v1';
+  private readonly gatewayBaseUrl =
+    process.env.NEXT_PUBLIC_GATEWAY_URL ?? process.env.GATEWAY_BASE_URL ?? 'http://localhost:8090';
   private readonly fallbackImageUrl = 'https://images.pexels.com/photos/1182691/pexels-photo-1182691.jpeg';
 
-  constructor() {
-    const apiKey = process.env.PEXELS_API_KEY;
-    if (!apiKey) {
-      throw new PexelsError('PEXELS_API_KEY environment variable is not set');
+  private getPhotosEndpoint(): string {
+    if (typeof window !== 'undefined') {
+      return '/photos';
     }
-    this.apiKey = apiKey;
+
+    return new URL('/photos', this.gatewayBaseUrl).toString();
   }
 
   private hashUuid(uuid: string): number {
@@ -78,9 +78,9 @@ export class PexelsImageService {
     if (cached) return cached;
 
     try {
+      const photosEndpoint = this.getPhotosEndpoint();
       const response = await fetch(
-        `${this.baseUrl}/search?query=${encodeURIComponent(keywords)}&per_page=30&orientation=landscape&size=large&order=popular`,
-        { headers: { Authorization: this.apiKey } }
+        `${photosEndpoint}?query=${encodeURIComponent(keywords)}&per_page=30&orientation=landscape&size=large&order=popular`
       );
 
       if (!response.ok) throw new PexelsError(`API error: ${response.status}`);

@@ -1,3 +1,4 @@
+import { OdsId } from '@/features/causes/constants/ods.constants';
 import { gql, TypedDocumentNode } from '@apollo/client';
 
 // Query: GetCommunities
@@ -21,6 +22,92 @@ export const GET_COMMUNITIES_QUERY: TypedDocumentNode<GetCommunitiesResult, GetC
   }
 `;
 
+export type GetFavoriteCommunitiesByUserResult = {
+  userMemberCommunities: {
+    id: string;
+    name: string;
+    description: string;
+  }[];
+};
+
+export type GetFavoriteCommunitiesByUserVariables = {
+  userId: string;
+};
+
+export const GET_FAVORITE_COMMUNITIES_BY_USER_QUERY: TypedDocumentNode<
+  GetFavoriteCommunitiesByUserResult,
+  GetFavoriteCommunitiesByUserVariables
+> = gql`
+  query GetFavoriteCommunitiesByUser($userId: ID!) {
+    userMemberCommunities(userId: $userId) {
+      id
+      name
+      description
+    }
+  }
+`;
+
+// Query: GetCommunityById
+export type GetCommunityByIdResult = {
+  community: {
+    id: string;
+    name: string;
+    description: string;
+    creator: {
+      id: string;
+      fullName: string;
+    };
+    admins: {
+      id: string;
+      fullName: string;
+    }[];
+    members: {
+      id: string;
+      fullName: string;
+    }[];
+    causes: {
+      id: string;
+      name: string;
+      description: string;
+      durationDays: number;
+      ods: OdsId[];
+    }[];
+  };
+};
+
+export type GetCommunityByIdVariables = {
+  id: string;
+};
+
+export const GET_COMMUNITY_BY_ID_QUERY: TypedDocumentNode<GetCommunityByIdResult, GetCommunityByIdVariables> = gql`
+  query Community($id: ID!) {
+    community(id: $id) {
+      id
+      name
+      description
+      creator {
+        id
+        fullName
+      }
+      admins {
+        id
+        fullName
+      }
+      members {
+        id
+        fullName
+      }
+      causes {
+        id
+        name
+        description
+        durationDays
+        ods
+      }
+    }
+  }
+`;
+
 // Mutation: JoinCommunity
 export type JoinCommunityResult = {
   joinCommunity: boolean;
@@ -37,6 +124,22 @@ export const JOIN_COMMUNITY_MUTATION: TypedDocumentNode<JoinCommunityResult, Joi
   }
 `;
 
+// Mutation: LeaveCommunity
+export type LeaveCommunityResult = {
+  leaveCommunity: boolean;
+};
+
+export type LeaveCommunityVariables = {
+  communityId: string;
+  userId: string;
+};
+
+export const LEAVE_COMMUNITY_MUTATION: TypedDocumentNode<LeaveCommunityResult, LeaveCommunityVariables> = gql`
+  mutation LeaveCommunity($communityId: ID!, $userId: ID!) {
+    leaveCommunity(communityId: $communityId, userId: $userId)
+  }
+`;
+
 // Mutation: CreateCommunityRequest
 export type CreateCommunityRequestResult = {
   createCommunityRequest: string;
@@ -49,7 +152,7 @@ export type CreateCommunityRequestVariables = {
     causeCreationRequests: {
       name: string;
       description: string;
-      ods: string[];
+      ods: number[];
       initialDate: string;
       durationDays: number;
     }[];

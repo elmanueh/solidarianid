@@ -1,6 +1,6 @@
 import { Cause } from '@app/communities/domain/model/entities/cause';
 import { CausesService } from '@app/communities/domain/services/causes.service';
-import { Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Query, UseGuards } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -16,6 +16,8 @@ import { Action, EntityType, Resource } from '@solidarianid/security/core';
 import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { CauseDetailResponseDto } from '../../dtos/output/cause-detail.response.dto';
 import { CauseSummaryResponseDto } from '../../dtos/output/cause-summary.response.dto';
+import { ExploreCausesQueryDto } from '../../dtos/input/explore-causes.query.dto';
+import { ExploreCausesResponseDto } from '../../dtos/output/explore-causes.response.dto';
 import { CauseDomainMapper } from '../../mappers/cause.mapper';
 
 const AuthorizeCommunityMemberByCauseParamId = () =>
@@ -49,6 +51,24 @@ export class CausesController {
     }
 
     return causes.value.map((cause: Cause) => CauseDomainMapper.toCauseSummaryDto(cause));
+  }
+
+  @Get('causes/explore')
+  @ApiOperation({ summary: 'Retrieve causes for explore page' })
+  @ApiOkResponse({
+    description: 'Paginated list of causes for explore',
+    type: ExploreCausesResponseDto,
+  })
+  @ApiBadRequestResponse({ description: 'The request parameters are invalid' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  async getExploreCauses(@Query() query: ExploreCausesQueryDto): Promise<ExploreCausesResponseDto> {
+    const causes = await this.causesService.getExploreCauses(query);
+
+    if (causes.isLeft()) {
+      throw causes.value;
+    }
+
+    return CauseDomainMapper.toExploreCausesResponseDto(causes.value);
   }
 
   @Get('causes/:id')

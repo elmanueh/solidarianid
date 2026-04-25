@@ -6,6 +6,10 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 
 export abstract class CausesRepositoryPort extends Repository<Cause> {
   abstract findAllFollowedCauseIdsByUserId(userId: string): Promise<Either<RepositoryException, string[]>>;
+  abstract findAllByFollowerId(
+    userId: string,
+    relations?: string[],
+  ): Promise<Either<ValidationError | RepositoryException, Cause[]>>;
   abstract findAllByCommunityIds(
     communityIds: string[],
     relations?: string[],

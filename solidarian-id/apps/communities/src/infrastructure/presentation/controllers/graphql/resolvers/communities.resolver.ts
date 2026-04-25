@@ -5,10 +5,10 @@ import { Community } from '../entities/community';
 import { CommunitiesGraphqlMapper } from '../mappers/communities-graphql.mapper';
 import { User } from '../entities/user';
 import { Cause } from '../entities/cause';
-import { UserGraphqlMapper } from '../mappers/user-graphql.mapper';
-import { CausesGraphqlMapper } from '../mappers/causes-graphql.mapper';
 import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
 import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+import { CausesGraphqlMapper } from '../mappers/causes-graphql.mapper';
+import { UserGraphqlMapper } from '../mappers/user-graphql.mapper';
 
 @Resolver(() => Community)
 export class CommunitiesResolver {
@@ -34,6 +34,19 @@ export class CommunitiesResolver {
     if (communityOrError.isLeft()) throw communityOrError.value;
 
     return this.communitiesGraphqlMapper.toCommunityBase(communityOrError.value);
+  }
+
+  @Query(() => [Community])
+  async userMemberCommunities(
+    @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
+  ): Promise<Community[]> {
+    const communitiesOrError = await this.communitiesService.getUserMemberCommunities(userId);
+
+    if (communitiesOrError.isLeft()) {
+      throw communitiesOrError.value;
+    }
+
+    return communitiesOrError.value.map(community => this.communitiesGraphqlMapper.toCommunityBase(community));
   }
 
   @ResolveField(() => User)
@@ -71,6 +84,17 @@ export class CommunitiesResolver {
     @CurrentUser('sub') actorId: string,
   ): Promise<boolean> {
     const result = await this.communitiesService.joinCommunity(communityId, actorId);
+    if (result.isLeft()) throw result.value;
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async leaveCommunity(
+    @Args('communityId', { type: () => ID }, new ParseUUIDPipe()) communityId: string,
+    @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
+  ): Promise<boolean> {
+    const result = await this.communitiesService.leaveCommunity(communityId, userId);
     if (result.isLeft()) throw result.value;
 
     return true;

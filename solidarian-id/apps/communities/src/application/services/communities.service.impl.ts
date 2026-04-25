@@ -7,12 +7,16 @@ import { UsersRepositoryPort } from '@app/communities/domain/ports/users.reposit
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { Either, left, right } from '@app/ddd/either';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { CommunityRequestEventDto, EventType } from '@solidarianid/kafka';
 import { CommunityLastUsersJoinedData } from './community-last-users-joined.data';
 import { RankingCommunitiesByUsersData } from './community-ranking.data';
+import { ExploreCommunitiesCriteria } from './explore-communities.criteria';
+import { ExploreCommunityData } from './explore-community.data';
+import { ExplorePaginatedResultData } from './explore-paginated-result.data';
 
 @Injectable()
 export class CommunitiesServiceImpl implements CommunitiesService {
@@ -84,6 +88,12 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     return await this.communityRepository.findAll(['members', 'members.user']);
   }
 
+  async getExploreCommunities(
+    criteria: ExploreCommunitiesCriteria,
+  ): Promise<Either<ValidationError | RepositoryException, ExplorePaginatedResultData<ExploreCommunityData>>> {
+    return await this.communityQueryRepository.findExplore(criteria);
+  }
+
   async getCommunityById(
     id: string,
     relations: string[] = ['members', 'members.user'],
@@ -141,5 +151,52 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     await this.communitiesPublisher.publish(EventType.COMMUNITY_MEMBER_JOINED, communityOrError.value);
 
     return right(saveResult.value);
+  }
+
+  async getUserMemberCommunities(userId: string): Promise<Either<ValidationError | RepositoryException, Community[]>> {
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      if (userOrError.value instanceof EntityNotFoundException) {
+        return left(new EntityNotFoundException('User', userId));
+      }
+
+      return left(userOrError.value);
+    }
+
+    return await this.communityRepository.findAllByMemberId(userId, ['members', 'members.user']);
+  }
+
+  async leaveCommunity(
+    communityId: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const communityOrError = await this.communityRepository.findById(communityId, ['members', 'members.user']);
+
+    if (communityOrError.isLeft()) {
+      return left(communityOrError.value);
+    }
+
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    if (!communityOrError.value.hasMember(userOrError.value)) {
+      return left(new ConflictError('User is not a member of the community'));
+    }
+
+    if (communityOrError.value.isCreator(userOrError.value)) {
+      return left(new ConflictError('Community creator cannot leave the community'));
+    }
+
+    const removeMemberResult = await this.communityRepository.removeMember(communityId, userId);
+
+    if (removeMemberResult.isLeft()) {
+      return left(removeMemberResult.value);
+    }
+
+    return right(undefined);
   }
 }

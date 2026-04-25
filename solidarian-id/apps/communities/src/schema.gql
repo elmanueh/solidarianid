@@ -127,12 +127,14 @@ type Query {
   action(id: ID!): Action!
   causes: [Cause!]!
   cause(id: ID!): Cause!
+  userFollowedCauses(userId: ID!): [Cause!]!
   causesByCommunity(communityId: ID!): [Cause!]!
   causeByCommunity(communityId: ID!, causeId: ID!): Cause!
   request(id: ID!): Request!
   getRequestsByUserId(userId: ID!): [Request!]!
   communities: [Community!]!
   community(id: ID!): Community!
+  userMemberCommunities(userId: ID!): [Community!]!
 }
 
 type Mutation {

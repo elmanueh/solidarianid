@@ -242,6 +242,8 @@ describe('Users-Communities Kafka Integration', () => {
       });
       expect(initialCommunitiesUser?.fullName).toBe('Original Name');
 
+      eventTracker.clear();
+
       const updatePayload = {
         fullName: 'Updated Name',
         mobilePhone: '+34699333444',

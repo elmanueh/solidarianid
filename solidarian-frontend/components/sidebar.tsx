@@ -1,5 +1,6 @@
 'use client';
 
+import { ThemeButton } from '@/components/theme-button';
 import {
   Sidebar,
   SidebarContent,
@@ -9,7 +10,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
+import { UserAvatar } from '@/components/user-avatar';
+import { useAppSelector } from '@/features/redux/redux-hook';
 import { ROUTES } from '@/features/routes';
 import { IconHeart, IconHome, IconLogout2, IconSearch, IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
@@ -25,6 +29,9 @@ const navItems = [
 
 export function SidebarLateral() {
   const pathname = usePathname();
+  const currentUser = useAppSelector(state => state.auth.currentUser);
+  const displayName = currentUser?.fullName?.trim() || 'Usuario';
+  const usernameAlias = `@${displayName.toLowerCase().replace(/\s+/g, '_')}`;
 
   return (
     <Sidebar variant="inset">
@@ -76,16 +83,18 @@ export function SidebarLateral() {
         </SidebarGroupContent>
       </SidebarContent>
       <SidebarFooter>
+        <ThemeButton />
+
         <div className="flex items-center gap-3 rounded-2xl border border-brand-500/10 bg-brand-500/5 p-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-500 text-xs font-black text-white shadow-lg shadow-brand-500/20">
-            JG
-          </div>
+          <UserAvatar username={displayName} />
           <div className="flex flex-col overflow-hidden">
-            <span className="truncate text-xs font-black tracking-wide text-brand-ink uppercase">Juan García</span>
-            <span className="truncate text-[9px] font-bold text-neutral-400">@juan_dev</span>
+            <span className="truncate text-xs font-black tracking-wide text-brand-ink uppercase">{displayName}</span>
+            <span className="truncate text-[9px] font-bold text-neutral-400">{usernameAlias}</span>
           </div>
         </div>
         <SidebarMenu>
+          <SidebarSeparator />
+
           <SidebarMenuItem>
             <SidebarMenuButton
               className="cursor-pointer items-center rounded-2xl py-6 ps-6 text-[10px] font-black tracking-widest text-neutral-400 uppercase hover:bg-red-50 hover:text-red-500 dark:text-primary dark:hover:bg-red-900"

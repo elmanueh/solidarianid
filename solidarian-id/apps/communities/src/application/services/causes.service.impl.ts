@@ -1,15 +1,20 @@
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
+import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { Either, left, right } from '@app/ddd/either';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { CauseRequestEventDto, EventType } from '@solidarianid/kafka';
+import { ExploreCauseData } from '../../application/services/explore-cause.data';
+import { ExploreCausesCriteria } from '../../application/services/explore-causes.criteria';
+import { ExplorePaginatedResultData } from '../../application/services/explore-paginated-result.data';
 import { Cause } from '../../domain/model/entities/cause';
 import { CausesRepositoryPort } from '../../domain/ports/causes.repository.port';
 
@@ -17,6 +22,7 @@ import { CausesRepositoryPort } from '../../domain/ports/causes.repository.port'
 export class CausesServiceImpl implements CausesService {
   constructor(
     private readonly causeRepository: CausesRepositoryPort,
+    private readonly causesQueryRepository: CausesQueryRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communitiesRepository: CommunitiesRepositoryPort,
     private readonly causesPublisher: CausesPublisherPort,
@@ -58,8 +64,28 @@ export class CausesServiceImpl implements CausesService {
     return await this.causeRepository.findAll(['users']);
   }
 
+  async getExploreCauses(
+    criteria: ExploreCausesCriteria,
+  ): Promise<Either<ValidationError | RepositoryException, ExplorePaginatedResultData<ExploreCauseData>>> {
+    return await this.causesQueryRepository.findExplore(criteria);
+  }
+
   async getById(id: string, relations?: string[]): Promise<Either<ValidationError | RepositoryException, Cause>> {
     return await this.causeRepository.findById(id, relations || ['users']);
+  }
+
+  async getUserFollowedCauses(userId: string): Promise<Either<ValidationError | RepositoryException, Cause[]>> {
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      if (userOrError.value instanceof EntityNotFoundException) {
+        return left(new EntityNotFoundException('User', userId));
+      }
+
+      return left(userOrError.value);
+    }
+
+    return await this.causeRepository.findAllByFollowerId(userId, ['users']);
   }
 
   async getAllByCommunityIds(

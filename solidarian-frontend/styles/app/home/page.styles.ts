@@ -38,5 +38,10 @@ export const homeStyles = {
     skeleton: 'h-70 rounded-4xl',
   },
 
-  error: 'p-8 text-center text-destructive',
+  error: {
+    wrapper: 'rounded-3xl border border-border/70 bg-muted/40 px-6 py-5 shadow-sm backdrop-blur-sm',
+    title: 'text-sm font-black tracking-wide text-foreground',
+    text: 'mt-2 text-sm leading-6 text-muted-foreground',
+    link: 'mt-4 inline-flex items-center gap-2 rounded-full border border-border/70 bg-background px-4 py-2 text-xs font-bold tracking-wide text-foreground transition-colors hover:bg-muted',
+  },
 } as const;

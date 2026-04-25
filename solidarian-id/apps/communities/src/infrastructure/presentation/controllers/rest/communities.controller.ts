@@ -28,6 +28,8 @@ import { CommunityDetailResponseDto } from '../../dtos/output/community-detail.r
 import { CommunityLastUsersJoinedSummaryResponseDto } from '../../dtos/output/community-last-users-joined-summary.response.dto';
 import { CommunityRankingUserResponseDto } from '../../dtos/output/community-ranking-user.response.dto';
 import { CommunitySummaryResponseDto } from '../../dtos/output/community-summary.response.dto';
+import { ExploreCommunitiesQueryDto } from '../../dtos/input/explore-communities.query.dto';
+import { ExploreCommunitiesResponseDto } from '../../dtos/output/explore-communities.response.dto';
 import { CommunityDomainMapper } from '../../mappers/community.mapper';
 
 @Controller('communities')
@@ -76,6 +78,24 @@ export class CommunitiesController {
     }
 
     return communities.value.map((community: Community) => CommunityDomainMapper.toCommunitySummaryDto(community));
+  }
+
+  @Get('explore')
+  @ApiOperation({ summary: 'Retrieve communities for explore page' })
+  @ApiOkResponse({
+    description: 'Paginated list of communities for explore',
+    type: ExploreCommunitiesResponseDto,
+  })
+  @ApiBadRequestResponse({ description: 'The request parameters are invalid' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  async getExploreCommunities(@Query() query: ExploreCommunitiesQueryDto): Promise<ExploreCommunitiesResponseDto> {
+    const communities = await this.communitiesService.getExploreCommunities(query);
+
+    if (communities.isLeft()) {
+      throw communities.value;
+    }
+
+    return CommunityDomainMapper.toExploreCommunitiesResponseDto(communities.value);
   }
 
   @Get(':id')

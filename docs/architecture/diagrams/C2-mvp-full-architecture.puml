@@ -1,94 +1,142 @@
-@startuml C2-Container-Full-Architecture
+@startuml C2-Container-SolidarianID
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 !$ICONURL = "https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v3.0.0/icons"
-
 !include $ICONURL/common.puml
 !include $ICONURL/devicons/database.puml
-
 !include $ICONURL/govicons/user_military.puml
 !include $ICONURL/govicons/user_suit.puml
 !include $ICONURL/font-awesome-5/user_shield.puml
-!include $ICONURL/font-awesome-5/user.puml
 !include $ICONURL/font-awesome-5/users.puml
-
-!include $ICONURL/font-awesome-5/cog.puml
-!include $ICONURL/font-awesome-5/eye.puml
 !include $ICONURL/devicons2/apachekafka_original.puml
 !include $ICONURL/devicons2/mongodb.puml
 !include $ICONURL/devicons2/postgresql.puml
 !include $ICONURL/devicons2/nestjs_original.puml
+!include $ICONURL/devicons2/nextjs_line.puml
+!include $ICONURL/devicons2/nginx_original.puml
 
 LAYOUT_WITH_LEGEND()
-
-' Configuración de estilos
 skinparam ArrowThickness 2
 
-title Arquitectura Completa de SolidarianID
+title Arquitectura de Contenedores - SolidarianID
 
-' Definición de Tags para definir colores de contenedores
-AddElementTag("monolith", $bgColor="#6C3483", $fontColor="#FFFFFF")
-AddElementTag("monolith-database", $bgColor="#00943eff", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)
-AddElementTag("microservice", $bgColor="#db7a03ff", $fontColor="#FFFFFF")
-AddElementTag("microservice-database", $bgColor="#1C2833", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)  
-AddElementTag("message-broker", $bgColor="#530176ff", $fontColor="#ffffff", $borderColor="#FFFFFF", $borderThickness=2)
+' ── Tags ────────────────────────────────────────────────────────────
+AddElementTag("monolith",              $bgColor="#6C3483", $fontColor="#FFFFFF")
+AddElementTag("monolith-database",     $bgColor="#00943e", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)
+AddElementTag("microservice",          $bgColor="#db7a03", $fontColor="#FFFFFF")
+AddElementTag("microservice-database", $bgColor="#1C2833", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)
+AddElementTag("message-broker",        $bgColor="#530176", $fontColor="#FFFFFF", $borderColor="#FFFFFF", $borderThickness=2)
+AddElementTag("frontend",              $bgColor="#1f6feb", $fontColor="#FFFFFF")
+AddElementTag("proxy",                 $bgColor="#5f6a72", $fontColor="#FFFFFF")
 
-' Definición de Actores
-Person(admin, "Administrador de la plataforma", "Personal autorizado de SolidarianID", $sprite="user_military")
+' ══════════════════════════════════════════════════════════════════
+' CAPA 1 — Actores / Usuarios
+' ══════════════════════════════════════════════════════════════════
+Person(admin,          "Administrador",       "Personal autorizado de SolidarianID",                        $sprite="user_military")
+Person(communityAdmin, "Admin. de comunidad", "Gestiona causas y eventos dentro de su comunidad",           $sprite="user_suit")
+Person(userRegistered, "Usuario registrado",  "Ha creado cuenta e iniciado sesión en SolidarianID",         $sprite="user_shield")
 
-' Actores de la aplicación principal (agrupados)
-Person(communityAdmin, "Administrador de comunidad", "Usuarios con privilegios para gestionar causas y eventos dentro de su comunidad", $sprite="user_suit")
-Person(ong, "ONG", "Organización No Gubernamental que colabora con SolidarianID", $sprite="users")
-Person(userNotRegistered, "Usuario no registrado", "Usuario que navega por el sitio web público sin haberse registrado", $sprite="user")
-Person(userRegistered, "Usuario registrado", "Usuario que ha creado una cuenta en SolidarianID y ha iniciado sesión", $sprite="user_shield")
+' ══════════════════════════════════════════════════════════════════
+' CAPA 2 — Frontend Principal
+' ══════════════════════════════════════════════════════════════════
+Container(mainFrontend, "Frontend principal", "Next.js 14 (App Router)", "SPA/SSR/PWA para usuarios finales. Consume la API REST expuesta por Nginx", $sprite="nextjs_line", $tags="frontend")
 
-' Layout para alinear actores de la app principal
-Lay_R(communityAdmin, ong)
-Lay_R(ong, userNotRegistered)
-Lay_R(userNotRegistered, userRegistered)
+' ══════════════════════════════════════════════════════════════════
+' CAPA 3 — Proxy Reverso
+' ══════════════════════════════════════════════════════════════════
+Container(nginxProxy, "Proxy reverso", "Nginx", "Punto de entrada HTTP(S). Enruta tráfico hacia el frontend, la API y el panel de administración", $sprite="nginx_original", $tags="proxy")
 
-' Contexto de la aplicación de administración en alto nivel
-System_Boundary(adminAppBoundary, "Aplicación de Administración - Monolito NestJS - SolidarianID") {
-  Container(adminMonolith, "Monolito MVC de administración", "Monolito NestJS", "Gestiona peticiones HTTP y renderiza vistas Handlebars", $sprite="nestjs_original", $tags="monolith")
-  ContainerDb(adminDatabase, "Base de Datos de Administración", "MongoDB (TBD)", "Almacena administradores, usuarios, causas, comunidades, eventos, SDGs", $sprite="mongodb", $tags="monolith-database")
-}
-' Contexto de la aplicación principal en alto nivel
-System_Boundary(principalAppBoundary, "Aplicación Principal (MVP) - Microservicios NestJS - SolidarianID") {
+' ══════════════════════════════════════════════════════════════════
+' CAPA 4 — Aplicaciones y Microservicios
+' ══════════════════════════════════════════════════════════════════
+System_Boundary(mvpBoundary, "Aplicación Principal (MVP) — Next.js + Microservicios NestJS") {
+
   System_Boundary(userServiceBoundary, "Microservicio de Usuarios") {
-    Container(userService, "Microservicio de Usuarios", "NestJS Microservicio", "Gestiona el registro, autenticación y perfil de usuarios", $sprite="nestjs_original", $tags="microservice")
-    ContainerDb(userDatabase, "Base de Datos de Usuarios", "PostgreSQL (TBD)", "Almacena datos de usuarios registrados", $sprite="postgresql", $tags="microservice-database")
+    Container(userService, "User Service", "NestJS", "Registro, autenticación y gestión del perfil de usuario", $sprite="nestjs_original", $tags="microservice")
+    ContainerDb(userDatabase, "Users DB", "KurrentDB", "Event store: streams de eventos y proyecciones de usuarios", $sprite="database", $tags="microservice-database")
+    ContainerDb(userProjectionDatabase, "User Projections DB", "PostgreSQL", "Proyecciones de consulta optimizadas para usuarios", $sprite="postgresql", $tags="microservice-database")
   }
+
   System_Boundary(communitiesServiceBoundary, "Microservicio de Comunidades") {
-    Container(communitiesService, "Microservicio de Comunidades", "NestJS Microservicio", "Gestiona comunidades y la asociación de usuarios a comunidades", $sprite="nestjs_original", $tags="microservice")
-    ContainerDb(communitiesDatabase, "Base de Datos de Comunidades", "PostgreSQL (TBD)", "Almacena datos relacionados con comunidades y sus miembros", $sprite="postgresql", $tags="microservice-database")
+    Container(communitiesService, "Communities Service", "NestJS", "Gestión de comunidades y asociación de miembros", $sprite="nestjs_original", $tags="microservice")
+    ContainerDb(communitiesDatabase, "Communities DB", "PostgreSQL", "Datos relacionales de comunidades y membresías", $sprite="postgresql", $tags="microservice-database")
   }
 }
 
-' Kafka al final para que quede abajo
-ContainerQueue(kafkaBroker, "Apache Kafka", "Broker de mensajería", $sprite="apachekafka_original", $tags="message-broker")
+System_Boundary(adminBoundary, "Aplicación de Administración — Monolito NestJS MVC") {
+  Container(adminMonolith, "Admin Monolith", "NestJS MVC", "Gestiona peticiones HTTP y renderiza vistas Handlebars para el panel de administración", $sprite="nestjs_original", $tags="monolith")
+  ContainerDb(adminDatabase, "Admin DB", "MongoDB", "Almacena administradores, usuarios, causas, comunidades, eventos y SDGs", $sprite="mongodb", $tags="monolith-database")
+}
 
-' Layout para posicionar Kafka abajo del todo
-Lay_D(adminDatabase, kafkaBroker)
-Lay_D(userDatabase, kafkaBroker)
+' ══════════════════════════════════════════════════════════════════
+' CAPA 5 — Bus de Eventos
+' ══════════════════════════════════════════════════════════════════
+ContainerQueue(kafkaBroker, "Apache Kafka", "Broker de mensajería", "Canal de sincronización asíncrona entre microservicios y monolito", $sprite="apachekafka_original", $tags="message-broker")
+
+' ══════════════════════════════════════════════════════════════════
+' LAYOUT — 5 capas verticales
+' ══════════════════════════════════════════════════════════════════
+
+' Capa 1: usuarios en horizontal
+Lay_R(admin, communityAdmin)
+Lay_R(communityAdmin, userRegistered)
+
+' Capa 1 → Capa 2
+Lay_D(communityAdmin, mainFrontend)
+
+' Capa 2 → Capa 3
+Lay_D(mainFrontend, nginxProxy)
+
+' Capa 3 → Capa 4: nginx ancla hacia ambos sistemas
+Lay_D(nginxProxy, userService)
+Lay_D(nginxProxy, adminMonolith)
+
+' Capa 4: MVP a la izquierda, Admin a la derecha
+Lay_R(userService,        communitiesService)
+Lay_R(communitiesService, adminMonolith)
+
+' DBs debajo de sus servicios (permanecen dentro de capa 4)
+Lay_D(userService,        userDatabase)
+Lay_D(communitiesService, communitiesDatabase)
+Lay_D(adminMonolith,      adminDatabase)
+
+' Proyección de usuarios debajo de la User DB, pero alineada a la izquierda para evitar cruces
+Lay_R(userDatabase,        userProjectionDatabase)
+
+' Capa 4 → Capa 5
+Lay_D(userDatabase,        kafkaBroker)
 Lay_D(communitiesDatabase, kafkaBroker)
+Lay_D(adminDatabase,       kafkaBroker)
 
-' Relaciones de alto nivel de la aplicación de administración
-BiRel_Down(admin, adminAppBoundary, "Accede a la aplicación de administración", "HTTPS")
-BiRel_Down(adminMonolith, adminDatabase, " Lee/Escribe datos de administración", "NoSQL queries MongoDB")
-BiRel_Down(adminMonolith, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
+' ══════════════════════════════════════════════════════════════════
+' RELACIONES
+' ══════════════════════════════════════════════════════════════════
 
+' Usuarios → Frontend (capa 1 → 2)
+Rel_D(communityAdmin, mainFrontend, "A1 · Gestiona causas y eventos",        "HTTPS")
+Rel_D(userRegistered, mainFrontend, "A2 · Inicia sesión y usa la plataforma", "HTTPS")
 
-' Relaciones de alto nivel de la aplicación principal
-Rel_Down(communityAdmin, principalAppBoundary, "Gestiona causas y eventos", "HTTPS")
-Rel_Down(ong, principalAppBoundary, "Colabora con la plataforma", "HTTPS")
-Rel_Down(userNotRegistered, principalAppBoundary, "Navega por el sitio web público", "HTTPS")
-Rel_Down(userRegistered, principalAppBoundary, "Inicia sesión y utiliza la plataforma", "HTTPS")
+' Admin → Nginx directo (capa 1 → 3, saltando frontend)
+Rel_D(admin, nginxProxy, "B1 · Accede al panel de administración", "HTTPS")
 
-BiRel_Down(userService, userDatabase, " Lee/Escribe datos de usuarios", "SQL queries PostgreSQL")
-BiRel_Down(userService, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
-BiRel_Down(communitiesService, communitiesDatabase, " Lee/Escribe datos de comunidades", "SQL queries PostgreSQL")
-BiRel_Down(communitiesService, kafkaBroker, "Publica / consume eventos de dominio", "Kafka Protocol")
+' Frontend → Nginx (capa 2 → 3)
+Rel_D(mainFrontend, nginxProxy, "A3 · Solicitudes de API", "HTTPS / REST")
 
+' Nginx → Microservicios (capa 3 → 4)
+Rel_D(nginxProxy, userService,        "A4 · Peticiones de identidad",           "HTTP interno")
+Rel_D(nginxProxy, communitiesService, "A5 · Peticiones de comunidades",         "HTTP interno")
+Rel_D(nginxProxy, adminMonolith,      "B2 · Redirige tráfico administrativo",   "HTTP interno")
+
+' Microservicios → BBDDs (dentro de capa 4)
+Rel_D(userService,        userDatabase,        "A6 · Escribe y lee streams de eventos",   "TCP / gRPC")
+Rel_D(userService,        userProjectionDatabase, "A7 · Lee proyecciones de usuarios", "SQL")
+Rel_D(communitiesService, communitiesDatabase, "A8 · Lee y escribe datos de comunidades", "SQL")
+Rel_D(adminMonolith,      adminDatabase,       "B3 · Lee y escribe datos de administración", "MongoDB Wire Protocol")
+
+' BBDDs / Servicios → Kafka (capa 4 → 5)
+Rel_D(adminMonolith,      kafkaBroker, "S1 · Publica y consume eventos", "Kafka Protocol")
+Rel_D(userService,        kafkaBroker, "S2 · Publica y consume eventos", "Kafka Protocol")
+Rel_D(communitiesService, kafkaBroker, "S3 · Publica y consume eventos", "Kafka Protocol")
 
 SHOW_LEGEND()
 @enduml

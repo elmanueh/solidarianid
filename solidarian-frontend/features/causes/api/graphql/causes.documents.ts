@@ -25,6 +25,35 @@ export const GET_CAUSES_QUERY: TypedDocumentNode<GetCausesResult, GetCausesVaria
   }
 `;
 
+export type GetFavoriteCausesByUserResult = {
+  userFollowedCauses: {
+    id: string;
+    name: string;
+    description: string;
+    durationDays: number;
+    communityId: string;
+  }[];
+};
+
+export type GetFavoriteCausesByUserVariables = {
+  userId: string;
+};
+
+export const GET_FAVORITE_CAUSES_BY_USER_QUERY: TypedDocumentNode<
+  GetFavoriteCausesByUserResult,
+  GetFavoriteCausesByUserVariables
+> = gql`
+  query GetFavoriteCausesByUser($userId: ID!) {
+    userFollowedCauses(userId: $userId) {
+      id
+      name
+      description
+      durationDays
+      communityId
+    }
+  }
+`;
+
 // Query: GetCauseByCommunityIdAndCauseId
 export type GetCauseByCommunityIdAndCauseIdResult = {
   causeByCommunity: {
@@ -33,7 +62,7 @@ export type GetCauseByCommunityIdAndCauseIdResult = {
     description: string;
     durationDays: number;
     initialDate: string;
-    ods: string[];
+    ods: number[];
     userIds: string[];
     actions: {
       id: string;
@@ -123,7 +152,7 @@ export type CreateCauseRequestVariables = {
   createCauseRequestInput: {
     name: string;
     description: string;
-    ods: string[];
+    ods: number[];
     initialDate: string;
     durationDays: number;
     userId: string;

@@ -14,7 +14,7 @@ export const ROUTES = {
   profile: {
     requests: '/profile/requests',
     personalInfo: '/profile/personal-info',
-    impact: '/profile/impact',
+    impact: '/register/onboarding',
     privacy: '/profile/privacy',
     help: '/profile/help',
   },
@@ -23,7 +23,7 @@ export const ROUTES = {
   },
   communities: {
     detail: (communityId: string) => `/communities/${communityId}`,
-    causes: (communityId: string) => `/communities/${communityId}/causes`,
+    causes: (communityId: string) => `/communities/${communityId}`,
     causeDetail: (communityId: string, causeId: string) => `/communities/${communityId}/causes/${causeId}`,
     causeRequestCreate: (communityId: string, causeId: string) =>
       `/communities/${communityId}/causes/${causeId}/requests/create`,

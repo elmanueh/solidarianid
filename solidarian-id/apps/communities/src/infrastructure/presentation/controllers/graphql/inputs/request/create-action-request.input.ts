@@ -28,9 +28,5 @@ export class CreateActionRequestInput {
 
   @Field()
   @IsUUID()
-  userId: string;
-
-  @Field()
-  @IsUUID()
   causeId: string;
 }

@@ -8,6 +8,7 @@ images/
 !solidarian-frontend/features/images/
 !solidarian-frontend/features/images/**
 
+*.pem
 solidarian-id/scripts/init/postgres/*
 !solidarian-id/scripts/init/postgres/00-create-databases.sql
 
@@ -175,4 +176,6 @@ out
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+.atl*
+.gga
 .atl

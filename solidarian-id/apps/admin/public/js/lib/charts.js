@@ -19,11 +19,13 @@ var ChartsLib = (() => {
   };
   var __toCommonJS = mod => __copyProps(__defProp({}, '__esModule', { value: true }), mod);
 
-  // libs/charts/src/plugins/callbacks.ts
+  // libs/charts/src/plugins/plugins.ts
   var callbacks_exports = {};
   __export(callbacks_exports, {
     hydrateCallbacks: () => hydrateCallbacks,
   });
+
+  // libs/charts/src/plugins/callbacks.ts
   function hydrateCallbacks(config) {
     config.options = config.options || {};
     config.options.plugins = config.options.plugins || {};

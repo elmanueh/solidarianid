@@ -29,9 +29,5 @@ export class CreateCauseRequestInput {
 
   @Field()
   @IsUUID()
-  userId: string;
-
-  @Field()
-  @IsUUID()
   communityId: string;
 }

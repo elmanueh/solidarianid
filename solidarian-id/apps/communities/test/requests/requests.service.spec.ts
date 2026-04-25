@@ -140,7 +140,6 @@ describe('RequestsServiceImpl', () => {
     const validCommunityDto: CreateCommunityRequestDto = {
       name: 'Comunidad de Prueba',
       description: 'Esta es una descripción válida para la comunidad de prueba con más de 20 caracteres',
-      userId: validUserId,
       causeCreationRequests: [
         {
           name: 'Causa de Prueba',
@@ -157,7 +156,7 @@ describe('RequestsServiceImpl', () => {
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
       mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
 
-      const result = await service.createCommunityRequest(validCommunityDto);
+      const result = await service.createCommunityRequest(validCommunityDto, validUserId);
 
       expect(result.isRight()).toBe(true);
       expect(mockUsersRepository.findById).toHaveBeenCalledWith(validUserId);
@@ -169,7 +168,7 @@ describe('RequestsServiceImpl', () => {
       const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
-      const result = await service.createCommunityRequest(validCommunityDto);
+      const result = await service.createCommunityRequest(validCommunityDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(EntityNotFoundException);
@@ -185,7 +184,7 @@ describe('RequestsServiceImpl', () => {
         name: 'ab', // Demasiado corto
       };
 
-      const result = await service.createCommunityRequest(invalidDto);
+      const result = await service.createCommunityRequest(invalidDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(ValidationError);
@@ -197,7 +196,7 @@ describe('RequestsServiceImpl', () => {
       const repoError = new RepositoryException('Database error');
       mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
 
-      const result = await service.createCommunityRequest(validCommunityDto);
+      const result = await service.createCommunityRequest(validCommunityDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(RepositoryException);
@@ -209,7 +208,6 @@ describe('RequestsServiceImpl', () => {
     const validCauseDto: CreateCauseRequestDto = {
       name: 'Causa Benéfica de Prueba',
       description: 'Esta es una descripción válida para la causa benéfica con más de 20 caracteres',
-      userId: validUserId,
       communityId: validCommunityId,
       ods: [SustainableDevelopmentGoal.ZeroHunger],
       initialDate: '2026-02-01T00:00:00.000Z',
@@ -222,7 +220,7 @@ describe('RequestsServiceImpl', () => {
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
       mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
 
-      const result = await service.createCauseRequest(validCauseDto);
+      const result = await service.createCauseRequest(validCauseDto, validUserId);
 
       expect(result.isRight()).toBe(true);
       expect(mockUsersRepository.findById).toHaveBeenCalledWith(validUserId);
@@ -235,7 +233,7 @@ describe('RequestsServiceImpl', () => {
       const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
-      const result = await service.createCauseRequest(validCauseDto);
+      const result = await service.createCauseRequest(validCauseDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(EntityNotFoundException);
@@ -251,7 +249,7 @@ describe('RequestsServiceImpl', () => {
         description: 'corta', // Demasiado corta
       };
 
-      const result = await service.createCauseRequest(invalidDto);
+      const result = await service.createCauseRequest(invalidDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(ValidationError);
@@ -264,7 +262,7 @@ describe('RequestsServiceImpl', () => {
       const repoError = new RepositoryException('Database error');
       mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
 
-      const result = await service.createCauseRequest(validCauseDto);
+      const result = await service.createCauseRequest(validCauseDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(RepositoryException);
@@ -277,10 +275,9 @@ describe('RequestsServiceImpl', () => {
 
       const dtoWithUnauthorizedUser: CreateCauseRequestDto = {
         ...validCauseDto,
-        userId: unauthorizedUserId,
       };
 
-      const result = await service.createCauseRequest(dtoWithUnauthorizedUser);
+      const result = await service.createCauseRequest(dtoWithUnauthorizedUser, unauthorizedUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(UserPermissionError);
@@ -292,7 +289,6 @@ describe('RequestsServiceImpl', () => {
     const validActionDto: CreateActionRequestDto = {
       name: 'Acción Solidaria de Prueba',
       description: 'Esta es una descripción válida para la acción solidaria con más de 20 caracteres',
-      userId: validUserId,
       causeId: validCauseId,
       objectives: [
         {
@@ -323,7 +319,7 @@ describe('RequestsServiceImpl', () => {
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
       mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
 
-      const result = await service.createActionRequest(validActionDto);
+      const result = await service.createActionRequest(validActionDto, validUserId);
 
       expect(result).toBeDefined();
       expect(result.isRight()).toBe(true);
@@ -337,7 +333,7 @@ describe('RequestsServiceImpl', () => {
       const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
-      const result = await service.createActionRequest(validActionDto);
+      const result = await service.createActionRequest(validActionDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(EntityNotFoundException);
@@ -354,7 +350,7 @@ describe('RequestsServiceImpl', () => {
         name: 'ab', // Demasiado corto
       };
 
-      const result = await service.createActionRequest(invalidDto);
+      const result = await service.createActionRequest(invalidDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(ValidationError);
@@ -368,7 +364,7 @@ describe('RequestsServiceImpl', () => {
       const repoError = new RepositoryException('Database error');
       mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
 
-      const result = await service.createActionRequest(validActionDto);
+      const result = await service.createActionRequest(validActionDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(RepositoryException);
@@ -382,7 +378,7 @@ describe('RequestsServiceImpl', () => {
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
       mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
 
-      await service.createActionRequest(validActionDto);
+      await service.createActionRequest(validActionDto, validUserId);
 
       expect(mockRequestPublisher.publish).toHaveBeenCalledTimes(1);
       expect(mockRequestPublisher.publish).toHaveBeenCalledWith(
@@ -400,10 +396,9 @@ describe('RequestsServiceImpl', () => {
 
       const dtoWithUnauthorizedUser: CreateActionRequestDto = {
         ...validActionDto,
-        userId: unauthorizedUserId,
       };
 
-      const result = await service.createActionRequest(dtoWithUnauthorizedUser);
+      const result = await service.createActionRequest(dtoWithUnauthorizedUser, unauthorizedUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(UserPermissionError);

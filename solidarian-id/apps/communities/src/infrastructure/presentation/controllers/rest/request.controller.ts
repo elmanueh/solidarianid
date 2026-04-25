@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Res, HttpCode, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { CreateCommunityRequestDto } from '../../dtos/input/create-request-community.request.dto';
 import { CreateCauseRequestDto } from '../../dtos/input/create-request-cause.request.dto';
 import { CreateActionRequestDto } from '../../dtos/input/create-request-action.request.dto';
@@ -12,6 +12,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import type { Request, Response } from 'express';
 
 @Controller()
@@ -20,6 +21,7 @@ export class RequestController {
   constructor(private readonly requestsService: RequestsService) {}
 
   @Post('community-requests')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Crear una solicitud de comunidad' })
   @ApiBody({ type: CreateCommunityRequestDto })
@@ -38,10 +40,11 @@ export class RequestController {
   })
   async createCommunityRequest(
     @Body() createCommunityRequestDto: CreateCommunityRequestDto,
+    @CurrentUser('sub') actorId: string,
     @Res() response: Response,
     @Req() request: Request,
   ) {
-    const uniqueId = await this.requestsService.createCommunityRequest(createCommunityRequestDto);
+    const uniqueId = await this.requestsService.createCommunityRequest(createCommunityRequestDto, actorId);
 
     if (uniqueId.isLeft()) {
       throw uniqueId.value;
@@ -53,6 +56,7 @@ export class RequestController {
   }
 
   @Post('cause-requests')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Crear una solicitud de causa benéfica' })
   @ApiBody({ type: CreateCauseRequestDto })
@@ -71,10 +75,11 @@ export class RequestController {
   })
   async createCauseRequest(
     @Body() createCauseRequestDto: CreateCauseRequestDto,
+    @CurrentUser('sub') actorId: string,
     @Res() response: Response,
     @Req() request: Request,
   ) {
-    const uniqueId = await this.requestsService.createCauseRequest(createCauseRequestDto);
+    const uniqueId = await this.requestsService.createCauseRequest(createCauseRequestDto, actorId);
 
     if (uniqueId.isLeft()) {
       throw uniqueId.value;
@@ -86,6 +91,7 @@ export class RequestController {
   }
 
   @Post('action-requests')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Crear una solicitud de acción benéfica' })
   @ApiBody({ type: CreateActionRequestDto })
@@ -104,10 +110,11 @@ export class RequestController {
   })
   async createActionRequest(
     @Body() createActionRequestDto: CreateActionRequestDto,
+    @CurrentUser('sub') actorId: string,
     @Res() response: Response,
     @Req() request: Request,
   ) {
-    const uniqueId = await this.requestsService.createActionRequest(createActionRequestDto);
+    const uniqueId = await this.requestsService.createActionRequest(createActionRequestDto, actorId);
 
     if (uniqueId.isLeft()) {
       throw uniqueId.value;

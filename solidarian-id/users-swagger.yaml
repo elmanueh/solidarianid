@@ -24,23 +24,6 @@ paths:
       summary: Creating an account for SolidarianID
       tags: &ref_0
         - Users
-  /api/users/login:
-    post:
-      operationId: UsersController_login
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginUserDtoRequest'
-      responses:
-        '200':
-          description: User logged in successfully
-        '400':
-          description: Invalid request payload
-      summary: User login for SolidarianID
-      tags: *ref_0
   /api/users/{id}:
     patch:
       operationId: UsersController_updateUserProfile
@@ -110,6 +93,37 @@ paths:
           description: Internal server error
       summary: Update user preferences
       tags: *ref_0
+  /api/auth/login:
+    post:
+      operationId: AuthController_authenticate
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserDtoRequest'
+      responses:
+        '200':
+          description: ''
+      tags: &ref_1
+        - Auth
+  /api/auth/refresh:
+    post:
+      operationId: AuthController_refresh
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_1
+  /api/auth/logout:
+    post:
+      operationId: AuthController_logout
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_1
 info:
   title: 'SolidarianID: Users Microservice'
   description: The SolidarianID`s Users Microservice API documentation
@@ -162,25 +176,6 @@ components:
         - password
         - city
         - countryCode
-    LoginUserDtoRequest:
-      type: object
-      properties:
-        username:
-          type: string
-          description: Username for the user´containing only alphanumeric characters
-          example: johnDoe
-          minLength: 2
-          maxLength: 16
-        password:
-          type: string
-          description: >-
-            Password for the user account with at least a symbol, a number, and
-            an uppercase letter
-          example: SecureP@ssw0rd
-          minLength: 12
-      required:
-        - username
-        - password
     UpdateUserProfileDtoRequest:
       type: object
       properties:
@@ -376,3 +371,22 @@ components:
             Indica si el usuario desea recibir notificaciones sobre nuevas
             causas
           example: true
+    LoginUserDtoRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Username for the user´containing only alphanumeric characters
+          example: johnDoe
+          minLength: 2
+          maxLength: 16
+        password:
+          type: string
+          description: >-
+            Password for the user account with at least a symbol, a number, and
+            an uppercase letter
+          example: SecureP@ssw0rd
+          minLength: 12
+      required:
+        - username
+        - password

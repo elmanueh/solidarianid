@@ -1,4 +1,5 @@
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
+import { AuthModule } from '@app/communities/infrastructure/auth/auth.module';
 import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
 import '@app/communities/infrastructure/presentation/controllers/graphql/enums/enum.register';
 import { DateScalar } from '@app/communities/infrastructure/presentation/controllers/graphql/scalars/data.scalar';
@@ -6,6 +7,8 @@ import { CommunitiesControllerGrpc } from '@app/communities/infrastructure/prese
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
+import { CommunityContextResolver, MembershipPermissionSource } from '@solidarianid/security';
+import { CommunityMembershipPolicyEvaluator, SecurityAuthorizationModule } from '@solidarianid/security/nestjs';
 import { PubSub } from 'graphql-subscriptions';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
 import { CausesServiceImpl } from './application/services/causes.service.impl';
@@ -32,6 +35,8 @@ import { CommunitiesService } from './domain/services/communities.service';
 import { RequestsService } from './domain/services/request.service';
 import { SubscriptionsService } from './domain/services/subscriptions.service';
 import { UserService } from './domain/services/user.service';
+import { CommunitiesCommunityContextResolverAdapter } from './infrastructure/authz/adapters/communities-community-context-resolver.adapter';
+import { CommunitiesMembershipPermissionSourceAdapter } from './infrastructure/authz/adapters/communities-membership-permission-source.adapter';
 import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/requests.consumer';
 import { UserConsumerAdapter } from './infrastructure/messaging/consumer/user.consumer';
 import { ActionEventMapper } from './infrastructure/messaging/mappers/action-event.mapper';
@@ -91,6 +96,7 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
 
 @Module({
   imports: [
+    AuthModule,
     DatabaseModule.forRoot(),
     TypeOrmModule.forFeature([
       CommunityEntity,
@@ -106,6 +112,18 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
       ObjetiveUserEntity,
     ]),
     KafkaDynamicModule.register(process.env.KAFKA_COMMUNITIES_CLIENT_ID ?? 'communities'),
+    SecurityAuthorizationModule.register({
+      imports: [TypeOrmModule.forFeature([CauseEntity, ActionEntity, CommunityUserEntity])],
+      evaluators: [CommunityMembershipPolicyEvaluator],
+      communityContextResolver: {
+        provide: CommunityContextResolver,
+        useClass: CommunitiesCommunityContextResolverAdapter,
+      },
+      membershipPermissionSource: {
+        provide: MembershipPermissionSource,
+        useClass: CommunitiesMembershipPermissionSourceAdapter,
+      },
+    }),
   ],
   controllers: [
     CommunitiesController,
@@ -235,6 +253,8 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
     RequestSubscriptionsResolver,
     UserGraphqlMapper,
     GraphqlLoadersService,
+    CommunitiesCommunityContextResolverAdapter,
+    CommunitiesMembershipPermissionSourceAdapter,
   ],
 })
 export class CommunitiesModule {}

@@ -1,12 +1,13 @@
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
-import { ParseUUIDPipe } from '@nestjs/common';
 import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Cause } from '../entities/cause';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Community } from '../entities/community';
-import { User } from '../entities/user';
-import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
-import { CausesGraphqlMapper } from '../mappers/causes-graphql.mapper';
 import { CommunitiesGraphqlMapper } from '../mappers/communities-graphql.mapper';
+import { User } from '../entities/user';
+import { Cause } from '../entities/cause';
+import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
+import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+import { CausesGraphqlMapper } from '../mappers/causes-graphql.mapper';
 import { UserGraphqlMapper } from '../mappers/user-graphql.mapper';
 
 @Resolver(() => Community)
@@ -77,11 +78,12 @@ export class CommunitiesResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard)
   async joinCommunity(
     @Args('communityId', { type: () => ID }, new ParseUUIDPipe()) communityId: string,
-    @Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string,
+    @CurrentUser('sub') actorId: string,
   ): Promise<boolean> {
-    const result = await this.communitiesService.joinCommunity(communityId, userId);
+    const result = await this.communitiesService.joinCommunity(communityId, actorId);
     if (result.isLeft()) throw result.value;
 
     return true;

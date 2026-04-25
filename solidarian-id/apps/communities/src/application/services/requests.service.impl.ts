@@ -61,8 +61,9 @@ export class RequestsServiceImpl extends RequestsService {
    */
   async createCommunityRequest(
     dto: CreateCommunityRequestDto,
+    actorId: string,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>> {
-    const userOrError = await this.userRepository.findById(dto.userId);
+    const userOrError = await this.userRepository.findById(actorId);
 
     if (userOrError.isLeft()) {
       return left(userOrError.value);
@@ -109,8 +110,9 @@ export class RequestsServiceImpl extends RequestsService {
    */
   async createCauseRequest(
     dto: CreateCauseRequestDto,
+    actorId: string,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>> {
-    const userOrError = await this.userRepository.findById(dto.userId);
+    const userOrError = await this.userRepository.findById(actorId);
     const communityOrError = await this.communityRepository.findById(dto.communityId, ['members', 'members.user']);
 
     if (communityOrError.isLeft()) {
@@ -162,8 +164,9 @@ export class RequestsServiceImpl extends RequestsService {
    */
   async createActionRequest(
     dto: CreateActionRequestDto,
+    actorId: string,
   ): Promise<Either<ValidationError | RepositoryException, UniqueEntityID>> {
-    const userOrError = await this.userRepository.findById(dto.userId);
+    const userOrError = await this.userRepository.findById(actorId);
     const causeOrError = await this.causeRepository.findById(dto.causeId);
 
     if (causeOrError.isLeft()) {

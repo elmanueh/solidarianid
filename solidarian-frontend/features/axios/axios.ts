@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-// FIXME: Poner URL del backend
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8090/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || '/api',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

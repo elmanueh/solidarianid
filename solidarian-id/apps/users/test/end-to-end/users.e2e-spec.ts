@@ -455,7 +455,7 @@ describe('UsersController (e2e)', () => {
     });
   });
 
-  describe('/api/users/login (POST)', () => {
+  describe('/api/auth/login (POST)', () => {
     const username: string = 'testUsername';
     const password: string = 'Admin2024!Pass';
 
@@ -463,21 +463,21 @@ describe('UsersController (e2e)', () => {
       await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
     });
 
-    it('Test 1 - Should return inauthorized if the user not exists', async () => {
+    it('Test 1 - Should return Unauthorized if the user does not exist', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           username: 'NonExistentUser',
           password,
         })
-        .expect(HttpStatus.NOT_FOUND);
+        .expect(HttpStatus.UNAUTHORIZED);
     });
 
     it('Test 2 - Should login successfully', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           username,
           password,
@@ -488,7 +488,7 @@ describe('UsersController (e2e)', () => {
     it('Test 3 - Should return Bad Request for missing password', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           username,
         })
@@ -498,7 +498,7 @@ describe('UsersController (e2e)', () => {
     it('Test 4 - Should return Bad Request for missing username', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           password,
         })
@@ -506,13 +506,13 @@ describe('UsersController (e2e)', () => {
     });
 
     it('Test 5 - Should return Bad Request for empty body', async () => {
-      await server.getRequest().post('/api/users/login').send({}).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/auth/login').send({}).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('Test 6 - Should return Unauthorized for wrong password', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           username,
           password: 'Wrong@Password123',

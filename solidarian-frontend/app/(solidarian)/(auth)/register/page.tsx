@@ -35,10 +35,12 @@ import {
 } from '@/features/auth/constants/auth.constants';
 import { authService } from '@/features/auth/services/auth.service';
 import { getErrorMessage } from '@/features/axios/errors.handler';
+import { ROUTES } from '@/features/routes';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import PhoneInput from 'react-phone-input-2';
@@ -88,6 +90,7 @@ export default function RegisterPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setPhoneInputStyle({
@@ -119,6 +122,7 @@ export default function RegisterPage() {
     try {
       const cleanPhone = '+' + phone;
       await authService.register(data.username, data.password, data.fullName, cleanPhone, data.city, data.countryCode);
+      router.push(ROUTES.auth.login);
       toast.success('Registro exitoso! Ahora puedes iniciar sesión.');
     } catch (err) {
       toast.error(getErrorMessage(err));

@@ -4,6 +4,7 @@ import { User } from '@/features/auth/model/user';
 import { authService } from '@/features/auth/services/auth.service';
 import { handleLogin } from '@/features/redux/userSlice';
 import { IconLoaderQuarter } from '@tabler/icons-react';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -21,7 +22,9 @@ export function AuthInitializer({ children }: { children: React.ReactNode }) {
 
         dispatch(handleLogin(user));
       } catch (error) {
-        console.error('Error fetching current user:', error);
+        if (!axios.isAxiosError(error) || error.response?.status !== 401) {
+          console.error('Error fetching current user:', error);
+        }
         return;
       } finally {
         setLoading(false);

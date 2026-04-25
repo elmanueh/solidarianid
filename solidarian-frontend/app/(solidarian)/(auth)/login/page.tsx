@@ -78,6 +78,7 @@ export default function LoginPage() {
     try {
       const user = await authService.login(data.username, data.password);
       dispatch(handleLogin(user));
+      toast.success('Inicio exitoso!');
       router.push(ROUTES.app.home);
     } catch (err) {
       toast.error(getErrorMessage(err));

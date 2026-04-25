@@ -1,12 +1,13 @@
 import { AuthService } from '@app/users/domain/services/auth.service';
 import { LoginUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/login-user.request.dto';
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ApiTags } from '@nestjs/swagger';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { Public } from '@solidarianid/security/nestjs';
 import type { Request, Response } from 'express';
+import { GoogleOAuthGuard } from 'libs/security/src/nestjs/guards/google-oauth.guard';
 
 interface RefreshJwtPayload {
   sub: string;
@@ -39,6 +40,16 @@ export class AuthController {
     this.setAuthCookies(response, result.value.accessToken, result.value.refreshToken);
     response.status(HttpStatus.OK).send();
   }
+
+  @Public()
+  @UseGuards(GoogleOAuthGuard)
+  @Get('google/login')
+  googleLogin() {}
+
+  @Public()
+  @UseGuards(GoogleOAuthGuard)
+  @Get('google/callback')
+  googleCallback() {}
 
   @Post('refresh')
   @HttpCode(HttpStatus.OK)

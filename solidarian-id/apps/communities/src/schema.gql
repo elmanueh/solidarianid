@@ -40,31 +40,11 @@ type Cause {
   name: String!
   description: String!
   durationDays: Int!
-  ods: [SustainableDevelopmentGoal!]!
+  ods: [Int!]!
   initialDate: Date!
   actions: [Action!]!
   communityId: ID!
   userIds: [ID!]!
-}
-
-enum SustainableDevelopmentGoal {
-  NoPoverty
-  ZeroHunger
-  GoodHealthAndWellBeing
-  QualityEducation
-  GenderEquality
-  CleanWaterAndSanitation
-  AffordableAndCleanEnergy
-  DecentWorkAndEconomicGrowth
-  IndustryInnovationAndInfrastructure
-  ReducedInequalities
-  SustainableCitiesAndCommunities
-  ResponsibleConsumptionAndProduction
-  ClimateAction
-  LifeBelowWater
-  LifeOnLand
-  PeaceJusticeAndStrongInstitutions
-  PartnershipsForTheGoals
 }
 
 type User {
@@ -117,9 +97,7 @@ type RequestStatusChangedEvent {
   createdEntityId: ID
 }
 
-"""
-Date custom scalar type
-"""
+"""Date custom scalar type"""
 scalar Date
 
 type Query {
@@ -138,15 +116,16 @@ type Query {
 }
 
 type Mutation {
-  joinCause(causeId: ID!): Boolean!
-  leaveCause(causeId: ID!): Boolean!
   joinEvent(eventId: ID!, userId: ID!): Boolean!
   leaveEvent(eventId: ID!, userId: ID!): Boolean!
   contributeObjective(actionId: ID!, objectiveName: String!, userId: ID!, amount: Int!): Objective!
+  joinCause(causeId: ID!): Boolean!
+  leaveCause(causeId: ID!): Boolean!
   createCommunityRequest(createCommunityRequestInput: CreateCommunityRequestInput!): String!
   createCauseRequest(createCauseRequestInput: CreateCauseRequestInput!): String!
   createActionRequest(createActionRequestInput: CreateActionRequestInput!): String!
   joinCommunity(communityId: ID!): Boolean!
+  leaveCommunity(communityId: ID!, userId: ID!): Boolean!
 }
 
 input CreateCommunityRequestInput {
@@ -158,7 +137,7 @@ input CreateCommunityRequestInput {
 input CommunityCauseRequestInput {
   name: String!
   description: String!
-  ods: [SustainableDevelopmentGoal!]!
+  ods: [Int!]!
   initialDate: Date!
   durationDays: Int!
 }
@@ -166,7 +145,7 @@ input CommunityCauseRequestInput {
 input CreateCauseRequestInput {
   name: String!
   description: String!
-  ods: [SustainableDevelopmentGoal!]!
+  ods: [Int!]!
   initialDate: Date!
   durationDays: Int!
   communityId: String!

@@ -1,7 +1,12 @@
 import { User } from '@/features/auth/model/user';
 import api from '@/features/axios/axios';
+import type { AxiosRequestConfig } from 'axios';
 
 export type UpdateUserProfilePayload = Pick<User, 'fullName' | 'username' | 'mobilePhone' | 'city' | 'countryCode'>;
+
+type GetCurrentUserOptions = {
+  skipLoginRedirect?: boolean;
+};
 
 const AUTH_ENDPOINTS = {
   LOGIN: '/auth/login',
@@ -38,8 +43,14 @@ export const authService = {
     await api.post(AUTH_ENDPOINTS.LOGOUT);
   },
 
-  getCurrentUser: async (): Promise<User> => {
-    const response = await api.get(AUTH_ENDPOINTS.ME);
+  getCurrentUser: async (options?: GetCurrentUserOptions): Promise<User> => {
+    const requestConfig: AxiosRequestConfig & { _skipLoginRedirect?: boolean } = {};
+
+    if (options?.skipLoginRedirect) {
+      requestConfig._skipLoginRedirect = true;
+    }
+
+    const response = await api.get(AUTH_ENDPOINTS.ME, requestConfig);
     return response.data as User;
   },
 

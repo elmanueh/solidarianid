@@ -30,6 +30,10 @@ server {
     proxy_pass http://users-app:3001;
   }
 
+  location ~ ^/api/auth(/|$) {
+    proxy_pass http://users-app:3001;
+  }
+
   location ~ ^/api/(communities|causes|actions|requests|community-requests|cause-requests|action-requests|subscriptions)(/|$) {
     proxy_pass http://communities-app:3002;
   }

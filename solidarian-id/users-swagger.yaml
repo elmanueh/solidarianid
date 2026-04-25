@@ -9,17 +9,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RegisterUserDtoRequest"
+              $ref: '#/components/schemas/RegisterUserDtoRequest'
       responses:
-        "201":
+        '201':
           description: User created successfully
-        "400":
+        '400':
           description: Invalid request payload
-        "409":
+        '409':
           description: >-
             Either the username or the phone number (or both) were registered
             previously
-        "500":
+        '500':
           description: Internal server error
       summary: Creating an account for SolidarianID
       tags: &ref_0
@@ -38,13 +38,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateUserProfileDtoRequest"
+              $ref: '#/components/schemas/UpdateUserProfileDtoRequest'
       responses:
-        "204":
+        '204':
           description: User profile updated successfully
-        "400":
+        '400':
           description: Invalid request payload
-        "500":
+        '500':
           description: Internal server error
       summary: Update user profile information
       tags: *ref_0
@@ -58,15 +58,15 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: User preferences retrieved successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserPreferencesResponseDto"
-        "400":
+                $ref: '#/components/schemas/UserPreferencesResponseDto'
+        '400':
           description: Invalid user ID
-        "500":
+        '500':
           description: Internal server error
       summary: Get user preferences
       tags: *ref_0
@@ -83,13 +83,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateUserPreferencesRequestDto"
+              $ref: '#/components/schemas/UpdateUserPreferencesRequestDto'
       responses:
-        "204":
+        '204':
           description: User preferences updated successfully
-        "400":
+        '400':
           description: Invalid request payload
-        "500":
+        '500':
           description: Internal server error
       summary: Update user preferences
       tags: *ref_0
@@ -98,13 +98,13 @@ paths:
       operationId: UsersController_getMe
       parameters: []
       responses:
-        "200":
+        '200':
           description: User info retrieved successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserResponseDto"
-        "500":
+                $ref: '#/components/schemas/UserResponseDto'
+        '500':
           description: Internal server error
       summary: Get user info
       tags: *ref_0
@@ -117,10 +117,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginUserDtoRequest"
+              $ref: '#/components/schemas/LoginUserDtoRequest'
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
       tags: &ref_1
         - Auth
   /api/auth/refresh:
@@ -128,21 +128,21 @@ paths:
       operationId: AuthController_refresh
       parameters: []
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
       tags: *ref_1
   /api/auth/logout:
     post:
       operationId: AuthController_logout
       parameters: []
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
       tags: *ref_1
 info:
-  title: "SolidarianID: Users Microservice"
+  title: 'SolidarianID: Users Microservice'
   description: The SolidarianID`s Users Microservice API documentation
-  version: "0.1"
+  version: '0.1'
   contact: {}
 tags: []
 servers: []
@@ -166,7 +166,7 @@ components:
         mobilePhone:
           type: string
           description: Mobile phone number of the user in E.164 format
-          example: "+34612345678"
+          example: '+34612345678'
         password:
           type: string
           description: >-
@@ -209,7 +209,7 @@ components:
         mobilePhone:
           type: string
           description: Mobile phone number of the user in E.164 format
-          example: "+34612345678"
+          example: '+34612345678'
         city:
           type: string
           description: City where the user resides
@@ -296,7 +296,8 @@ components:
         notificationsEnabled:
           type: boolean
           description: >-
-            Indica si el usuario desea recibir notificaciones sobre nuevas causas
+            Indica si el usuario desea recibir notificaciones sobre nuevas
+            causas
           example: true
       required:
         - preferredSDGs
@@ -382,7 +383,8 @@ components:
         notificationsEnabled:
           type: boolean
           description: >-
-            Indica si el usuario desea recibir notificaciones sobre nuevas causas
+            Indica si el usuario desea recibir notificaciones sobre nuevas
+            causas
           example: true
     UserResponseDto:
       type: object
@@ -402,7 +404,7 @@ components:
         mobilePhone:
           type: string
           description: Mobile phone number of the user in E.164 format
-          example: "+34612345678"
+          example: '+34612345678'
         city:
           type: string
           description: City where the user resides
@@ -414,7 +416,7 @@ components:
         preferences:
           description: User preferences including SDGs and categories
           allOf:
-            - $ref: "#/components/schemas/UserPreferencesResponseDto"
+            - $ref: '#/components/schemas/UserPreferencesResponseDto'
       required:
         - id
         - fullName

@@ -563,7 +563,6 @@ describe('UsersController (e2e)', () => {
 
     beforeEach(async () => {
       await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
-
       await server
         .getRequest()
         .post('/api/auth/login')

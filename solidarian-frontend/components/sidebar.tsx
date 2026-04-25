@@ -32,7 +32,7 @@ export function SidebarLateral() {
   const pathname = usePathname();
   const currentUser = useAppSelector(state => state.auth.currentUser);
   const displayName = currentUser?.fullName?.trim() || 'Usuario';
-  const usernameAlias = `@${displayName.toLowerCase().replace(/\s+/g, '_')}`;
+  const usernameAlias = `@${displayName.toLowerCase().replaceAll(/\s+/g, '_')}`;
 
   return (
     <Sidebar variant="inset">

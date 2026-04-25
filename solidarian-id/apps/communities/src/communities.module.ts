@@ -1,4 +1,5 @@
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
+import { AuthModule } from '@app/communities/infrastructure/auth/auth.module';
 import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
 import '@app/communities/infrastructure/presentation/controllers/graphql/enums/enum.register';
 import { DateScalar } from '@app/communities/infrastructure/presentation/controllers/graphql/scalars/data.scalar';
@@ -17,8 +18,8 @@ import { SubscriptionsServiceImpl } from './application/services/subscriptions.s
 import { UserServiceImpl } from './application/services/user.service.impl';
 import { ActionsPublisherPort } from './domain/ports/actions.publisher.port';
 import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
-import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
 import { CausesQueryRepositoryPort } from './domain/ports/causes-query.repository.port';
+import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
 import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
 import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
@@ -34,7 +35,6 @@ import { CommunitiesService } from './domain/services/communities.service';
 import { RequestsService } from './domain/services/request.service';
 import { SubscriptionsService } from './domain/services/subscriptions.service';
 import { UserService } from './domain/services/user.service';
-import { AuthModule } from './infrastructure/auth/auth.module';
 import { CommunitiesCommunityContextResolverAdapter } from './infrastructure/authz/adapters/communities-community-context-resolver.adapter';
 import { CommunitiesMembershipPermissionSourceAdapter } from './infrastructure/authz/adapters/communities-membership-permission-source.adapter';
 import { RequestsConsumerAdapter } from './infrastructure/messaging/consumer/requests.consumer';
@@ -65,8 +65,8 @@ import { ObjectiveEntityMapper } from './infrastructure/persistence/mappers/obje
 import { RequestEntityMapper } from './infrastructure/persistence/mappers/request-entity.mapper';
 import { UserEntityMapper } from './infrastructure/persistence/mappers/user-entity.mapper';
 import { ActionsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/actions-typeorm.repository';
-import { CausesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/causes-typeorm.repository';
 import { CausesQueryTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/causes-query-typeorm.repository';
+import { CausesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/causes-typeorm.repository';
 import { CommunitiesQueryTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/communities-query-typeorm.repository';
 import { CommunitiesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/communities-typeorm.repository';
 import { EventsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/events-typeorm.repository';

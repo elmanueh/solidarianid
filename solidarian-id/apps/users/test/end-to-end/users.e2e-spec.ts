@@ -45,6 +45,14 @@ describe('UsersController (e2e)', () => {
   let usersProjectionService!: UsersProjectionService;
   let eventStore!: KurrentDBClient;
 
+  async function loginAsSeededUser(): Promise<void> {
+    await server
+      .getRequest()
+      .post('/api/auth/login')
+      .send({ username: 'testUsername', password: 'Admin2024!Pass' })
+      .expect(HttpStatus.OK);
+  }
+
   beforeAll(async () => {
     const messageModule = await KafkaTestModule.forRoot();
     const databaseModule = await PostgreSQLTestModule.forRoot([
@@ -232,11 +240,8 @@ describe('UsersController (e2e)', () => {
 
     beforeEach(async () => {
       await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
-      await server
-        .getRequest()
-        .post('/api/auth/login')
-        .send({ username: 'testUsername', password: 'Admin2024!Pass' })
-        .expect(HttpStatus.OK);
+      server.resetAgent();
+      await loginAsSeededUser();
     });
 
     // ÉXITO: Solo status 204 NO_CONTENT

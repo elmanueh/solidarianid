@@ -32,7 +32,6 @@ export class DatabaseModule {
               migrationsPath: 'apps/users/src/infrastructure/persistence/migrations/*.ts',
               migrationsDistPath: 'dist/apps/users/src/infrastructure/persistence/migrations/*.js',
               databaseEnvKey: 'POSTGRES_USERS_DB',
-              migrationsTableName: 'typeorm_migrations_users',
             }),
         }),
       ],

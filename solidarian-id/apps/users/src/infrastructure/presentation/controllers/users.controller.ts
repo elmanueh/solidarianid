@@ -28,16 +28,16 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { Action, Resource } from '@solidarianid/security/core';
+import { Action, Resource, UsersPolicy } from '@solidarianid/security/core';
 import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard, Public } from '@solidarianid/security/nestjs';
 import type { Response } from 'express';
 
-const SELF_POLICY = 'self';
 const AuthorizeUserSelf = (action: Action) =>
   Authorize({
     action,
+    entityId: 'id',
     resource: Resource.USER,
-    policy: SELF_POLICY,
+    policy: UsersPolicy.SELF_ONLY,
   });
 
 @Controller('/api/users')
@@ -92,7 +92,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @AuthorizeUserSelf(Action.UPDATE)
   async updateUserProfile(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserProfileDto: UpdateUserProfileDtoRequest,
     @Res() response: Response,
   ) {
@@ -169,7 +169,6 @@ export class UsersController {
   })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @UseGuards(JwtAuthGuard)
-  @AuthorizeUserSelf(Action.READ)
   async getMe(@CurrentUser('sub') userId: string): Promise<UserResponseDto> {
     const userResult = await this.usersService.getUserById(userId);
 

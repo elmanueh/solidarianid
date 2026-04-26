@@ -15,7 +15,7 @@ import { KurrentDBClient } from '@kurrent/kurrentdb-client';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule } from '@solidarianid/kafka';
-import { SecurityAuthorizationModule } from '@solidarianid/security/nestjs';
+import { SecurityAuthorizationModule, SelfOnlyPolicyEvaluator } from '@solidarianid/security/nestjs';
 import { UsersServiceImpl } from './application/services/users.service.impl';
 import { UsersPublisherPort } from './domain/ports/users.publisher.port';
 import { UsersRepositoryPort } from './domain/ports/users.repository.port';
@@ -24,14 +24,13 @@ import { UserEventMapper } from './infrastructure/messaging/mappers/user.event.m
 import { UsersKafkaPublisherAdapter } from './infrastructure/messaging/producer/user.publisher';
 import { UserMapper } from './infrastructure/persistence/mappers/user.mapper';
 import { UsersController } from './infrastructure/presentation/controllers/users.controller';
-import { SelfOwnershipPolicy } from './infrastructure/authz/policies/self-ownership.policy';
 
 @Module({
   imports: [
     DatabaseModule.forRoot(),
     TypeOrmModule.forFeature([UserProjectionEntity, CheckpointProjectionEntity]),
     KafkaDynamicModule.register(process.env.KAFKA_USERS_CLIENT_ID ?? 'users'),
-    SecurityAuthorizationModule.register({ evaluators: [SelfOwnershipPolicy] }),
+    SecurityAuthorizationModule.register({ evaluators: [SelfOnlyPolicyEvaluator] }),
   ],
   controllers: [UsersController],
   providers: [

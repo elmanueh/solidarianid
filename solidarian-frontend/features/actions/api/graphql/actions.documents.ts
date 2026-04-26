@@ -88,7 +88,6 @@ export type CreateActionRequestVariables = {
         countryCode: string;
       };
     }[];
-    userId: string;
     causeId: string;
   };
 };
@@ -109,12 +108,11 @@ export type JoinEventResult = {
 
 export type JoinEventVariables = {
   eventId: string;
-  userId: string;
 };
 
 export const JOIN_EVENT_MUTATION: TypedDocumentNode<JoinEventResult, JoinEventVariables> = gql`
-  mutation JoinEvent($eventId: ID!, $userId: ID!) {
-    joinEvent(eventId: $eventId, userId: $userId)
+  mutation JoinEvent($eventId: ID!) {
+    joinEvent(eventId: $eventId)
   }
 `;
 
@@ -125,12 +123,11 @@ export type LeaveEventResult = {
 
 export type LeaveEventVariables = {
   eventId: string;
-  userId: string;
 };
 
 export const LEAVE_EVENT_MUTATION: TypedDocumentNode<LeaveEventResult, LeaveEventVariables> = gql`
-  mutation LeaveEvent($eventId: ID!, $userId: ID!) {
-    leaveEvent(eventId: $eventId, userId: $userId)
+  mutation LeaveEvent($eventId: ID!) {
+    leaveEvent(eventId: $eventId)
   }
 `;
 
@@ -148,14 +145,13 @@ export type ContributeObjectiveResult = {
 export type ContributeObjectiveVariables = {
   actionId: string;
   objectiveName: string;
-  userId: string;
   amount: number;
 };
 
 export const CONTRIBUTE_OBJECTIVE_MUTATION: TypedDocumentNode<ContributeObjectiveResult, ContributeObjectiveVariables> =
   gql`
-    mutation ContributeObjective($actionId: ID!, $objectiveName: String!, $userId: ID!, $amount: Int!) {
-      contributeObjective(actionId: $actionId, objectiveName: $objectiveName, userId: $userId, amount: $amount) {
+    mutation ContributeObjective($actionId: ID!, $objectiveName: String!, $amount: Int!) {
+      contributeObjective(actionId: $actionId, objectiveName: $objectiveName, amount: $amount) {
         name
         description
         unit

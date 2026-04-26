@@ -1,8 +1,9 @@
 import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
 import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
+import { EventEntity } from '@app/communities/infrastructure/persistence/entities/event.entity';
 import {
   CommunityContextResolver,
-  EntityType,
+  Resource,
   ResolveCommunityContextInput,
   ResolvedCommunityContext,
 } from '@solidarianid/security/core';
@@ -17,21 +18,27 @@ export class CommunitiesCommunityContextResolverAdapter extends CommunityContext
     private readonly causeRepository: TypeOrmRepository<CauseEntity>,
     @InjectRepository(ActionEntity)
     private readonly actionRepository: TypeOrmRepository<ActionEntity>,
+    @InjectRepository(EventEntity)
+    private readonly eventRepository: TypeOrmRepository<EventEntity>,
   ) {
     super();
   }
 
   async resolve(input: ResolveCommunityContextInput): Promise<ResolvedCommunityContext | null> {
-    if (input.entityType === EntityType.COMMUNITY) {
+    if (input.resource === Resource.COMMUNITY) {
       return { communityId: input.entityId };
     }
 
-    if (input.entityType === EntityType.CAUSE) {
+    if (input.resource === Resource.CAUSE) {
       return this.resolveFromCause(input.entityId);
     }
 
-    if (input.entityType === EntityType.ACTION) {
+    if (input.resource === Resource.ACTION) {
       return this.resolveFromAction(input.entityId);
+    }
+
+    if (input.resource === Resource.EVENT) {
+      return this.resolveFromEvent(input.entityId);
     }
 
     return null;
@@ -57,6 +64,22 @@ export class CommunitiesCommunityContextResolverAdapter extends CommunityContext
       .innerJoin('action.cause', 'cause')
       .select('cause.communityId', 'communityId')
       .where('action.id = :actionId', { actionId })
+      .getRawOne<{ communityId: string }>();
+
+    if (!row?.communityId) {
+      return null;
+    }
+
+    return { communityId: row.communityId };
+  }
+
+  private async resolveFromEvent(eventId: string): Promise<ResolvedCommunityContext | null> {
+    const row = await this.eventRepository
+      .createQueryBuilder('event')
+      .innerJoin('event.action', 'action')
+      .innerJoin('action.cause', 'cause')
+      .select('cause.communityId', 'communityId')
+      .where('event.id = :eventId', { eventId })
       .getRawOne<{ communityId: string }>();
 
     if (!row?.communityId) {

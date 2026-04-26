@@ -23,15 +23,15 @@ paths:
           schema:
             type: number
       responses:
-        "200":
+        '200':
           description: List of communities (default)
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/"
-        "500":
+                  $ref: '#/components/schemas/'
+        '500':
           description: Internal server error
       summary: Retrieve all charitable communities
       tags: &ref_0
@@ -78,15 +78,15 @@ paths:
               - asc
               - desc
       responses:
-        "200":
+        '200':
           description: Paginated list of communities for explore
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExploreCommunitiesResponseDto"
-        "400":
+                $ref: '#/components/schemas/ExploreCommunitiesResponseDto'
+        '400':
           description: The request parameters are invalid
-        "500":
+        '500':
           description: Internal server error
       summary: Retrieve communities for explore page
       tags: *ref_0
@@ -100,17 +100,17 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Community details
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CommunityDetailResponseDto"
-        "400":
+                $ref: '#/components/schemas/CommunityDetailResponseDto'
+        '400':
           description: The provided ID is invalid
-        "404":
+        '404':
           description: Community not found
-        "500":
+        '500':
           description: Internal server error
       summary: Retrieve a charitable community by ID
       tags: *ref_0
@@ -129,16 +129,16 @@ paths:
           schema:
             type: number
       responses:
-        "200":
+        '200':
           description: Summary of users joined per month
           content:
             application/json:
               schema:
                 $ref: >-
                   #/components/schemas/CommunityLastUsersJoinedSummaryResponseDto
-        "400":
+        '400':
           description: The request parameters are invalid
-        "500":
+        '500':
           description: Internal server error
       summary: Retrieve the number of users who joined a community in the last months
       tags: *ref_0
@@ -151,20 +151,14 @@ paths:
           in: path
           schema:
             type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MemberJoinCommunityRequestDto"
       responses:
-        "201":
+        '201':
           description: User successfully joined the community
-        "400":
+        '400':
           description: The request parameters are invalid
-        "409":
+        '409':
           description: User is already a member of the community
-        "500":
+        '500':
           description: Internal server error
       summary: Join a user to a community
       tags: *ref_0
@@ -173,14 +167,14 @@ paths:
       operationId: CausesController_getCauses
       parameters: []
       responses:
-        "200":
+        '200':
           description: List of causes
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/"
+                  $ref: '#/components/schemas/'
       summary: Retrieve all charitable causes
       tags: &ref_1
         - Causes
@@ -234,7 +228,7 @@ paths:
           schema:
             example:
               - ODS_6
-              - "14"
+              - '14'
             type: array
             items:
               type: number
@@ -257,15 +251,15 @@ paths:
                 - 16
                 - 17
       responses:
-        "200":
+        '200':
           description: Paginated list of causes for explore
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExploreCausesResponseDto"
-        "400":
+                $ref: '#/components/schemas/ExploreCausesResponseDto'
+        '400':
           description: The request parameters are invalid
-        "500":
+        '500':
           description: Internal server error
       summary: Retrieve causes for explore page
       tags: *ref_1
@@ -279,13 +273,13 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Cause details
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CauseDetailResponseDto"
-        "404":
+                $ref: '#/components/schemas/CauseDetailResponseDto'
+        '404':
           description: Cause not found
       summary: Retrieve a charitable cause by ID
       tags: *ref_1
@@ -299,15 +293,15 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: List of causes for the specified community
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/"
-        "404":
+                  $ref: '#/components/schemas/'
+        '404':
           description: Community not found
       summary: Retrieve all causes for a specific community
       tags: *ref_1
@@ -326,13 +320,13 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Details of the specified cause for the specified community
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CauseDetailResponseDto"
-        "404":
+                $ref: '#/components/schemas/CauseDetailResponseDto'
+        '404':
           description: Community or Cause not found
       summary: Retrieve a specific cause for a specific community
       tags: *ref_1
@@ -345,24 +339,18 @@ paths:
           in: path
           schema:
             type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/FollowerJoinCauseRequestDto"
       responses:
-        "201":
+        '201':
           description: User successfully joined the cause
-        "400":
+        '400':
           description: The request parameters are invalid
-        "401":
+        '401':
           description: User is not a member of the community linked to the cause
-        "404":
+        '404':
           description: Cause or user not found
-        "409":
+        '409':
           description: User is already following the cause
-        "500":
+        '500':
           description: Internal server error
       summary: Join a user as a supporter of a cause
       tags: *ref_1
@@ -371,14 +359,14 @@ paths:
       operationId: ActionsController_getActions
       parameters: []
       responses:
-        "200":
+        '200':
           description: List of actions
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/"
+                  $ref: '#/components/schemas/'
       summary: Retrieve all charitable actions
       tags: &ref_2
         - Actions
@@ -392,12 +380,12 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Action details
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActionDetailResponseDto"
+                $ref: '#/components/schemas/ActionDetailResponseDto'
       summary: Retrieve a charitable action by ID
       tags: *ref_2
   /community-requests:
@@ -409,19 +397,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateCommunityRequestDto"
+              $ref: '#/components/schemas/CreateCommunityRequestDto'
       responses:
-        "201":
+        '201':
           description: Solicitud de comunidad creada exitosamente
-        "400":
+        '400':
           description: >-
             Datos de entrada inválidos. Errores de validación en nombre,
             descripción, razón o en las causas asociadas
-        "409":
+        '409':
           description: >-
             Ya existe una solicitud de comunidad con el mismo nombre o conflicto
             en la base de datos
-        "500":
+        '500':
           description: >-
             Error interno del servidor. Error en la capa de persistencia o error
             inesperado
@@ -437,19 +425,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateCauseRequestDto"
+              $ref: '#/components/schemas/CreateCauseRequestDto'
       responses:
-        "201":
+        '201':
           description: Solicitud de causa benéfica creada exitosamente
-        "400":
+        '400':
           description: >-
             Datos de entrada inválidos. Errores de validación en nombre,
             descripción, ODS, fecha inicial o duración
-        "409":
+        '409':
           description: >-
             Ya existe una solicitud de causa con el mismo nombre o conflicto en
             la base de datos
-        "500":
+        '500':
           description: >-
             Error interno del servidor. Error en la capa de persistencia o error
             inesperado
@@ -464,19 +452,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateActionRequestDto"
+              $ref: '#/components/schemas/CreateActionRequestDto'
       responses:
-        "201":
+        '201':
           description: Solicitud de acción benéfica creada exitosamente
-        "400":
+        '400':
           description: >-
             Datos de entrada inválidos. Errores de validación en nombre,
             descripción, objetivos, eventos o lugares
-        "409":
+        '409':
           description: >-
             Ya existe una solicitud de acción con el mismo nombre o conflicto en
             la base de datos
-        "500":
+        '500':
           description: >-
             Error interno del servidor. Error en la capa de persistencia o error
             inesperado
@@ -549,25 +537,25 @@ paths:
             default: true
             type: boolean
       responses:
-        "200":
+        '200':
           description: Suscripciones del usuario obtenidas exitosamente
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserSubscriptionsResponseDto"
-        "400":
+                $ref: '#/components/schemas/UserSubscriptionsResponseDto'
+        '400':
           description: El ID de usuario proporcionado es inválido
-        "404":
+        '404':
           description: Usuario no encontrado
-        "500":
+        '500':
           description: Error interno del servidor
       summary: Obtener las suscripciones de un usuario
       tags:
         - Subscriptions
 info:
-  title: "SolidarianID: Communities Microservice"
+  title: 'SolidarianID: Communities Microservice'
   description: The SolidarianID`s Communities Microservice API documentation
-  version: "0.1"
+  version: '0.1'
   contact: {}
 tags: []
 servers: []
@@ -598,7 +586,7 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/ExploreCommunityItemResponseDto"
+            $ref: '#/components/schemas/ExploreCommunityItemResponseDto'
         total:
           type: number
           example: 24
@@ -645,19 +633,10 @@ components:
           description: Data range showing users joined per period
           type: array
           items:
-            $ref: "#/components/schemas/CommunityLastUsersJoinedPeriodResponseDto"
+            $ref: '#/components/schemas/CommunityLastUsersJoinedPeriodResponseDto'
       required:
         - communityName
         - dataRange
-    MemberJoinCommunityRequestDto:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: Unique identifier of the user joining the community
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-      required:
-        - userId
     ExploreCauseItemResponseDto:
       type: object
       properties:
@@ -697,7 +676,7 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/ExploreCauseItemResponseDto"
+            $ref: '#/components/schemas/ExploreCauseItemResponseDto'
         total:
           type: number
           example: 24
@@ -766,7 +745,7 @@ components:
           description: List of actions associated with this cause
           type: array
           items:
-            $ref: "#/components/schemas/ActionSummaryResponseDto"
+            $ref: '#/components/schemas/ActionSummaryResponseDto'
       required:
         - id
         - name
@@ -774,9 +753,6 @@ components:
         - durationDays
         - ods
         - actions
-    FollowerJoinCauseRequestDto:
-      type: object
-      properties: {}
     EventSummaryResponseDto:
       type: object
       properties:
@@ -796,7 +772,7 @@ components:
           format: date-time
           type: string
           description: Event start date and time
-          example: "2026-02-15T10:00:00Z"
+          example: '2026-02-15T10:00:00Z'
         place:
           type: object
           description: Event location details
@@ -858,12 +834,12 @@ components:
           description: List of events associated with this action
           type: array
           items:
-            $ref: "#/components/schemas/EventSummaryResponseDto"
+            $ref: '#/components/schemas/EventSummaryResponseDto'
         objectives:
           description: List of objectives for this action
           type: array
           items:
-            $ref: "#/components/schemas/ObjetiveSummaryResponseDto"
+            $ref: '#/components/schemas/ObjetiveSummaryResponseDto'
       required:
         - id
         - name
@@ -883,7 +859,8 @@ components:
           type: string
           description: Description of the cause
           example: >-
-            Programa de apoyo educativo para niños en situación de vulnerabilidad
+            Programa de apoyo educativo para niños en situación de
+            vulnerabilidad
           minLength: 15
           maxLength: 200
         ods:
@@ -917,7 +894,7 @@ components:
         initialDate:
           type: string
           description: Initial date when the cause starts (ISO 8601 format)
-          example: "2026-02-01T00:00:00.000Z"
+          example: '2026-02-01T00:00:00.000Z'
           format: date-time
         durationDays:
           type: number
@@ -954,7 +931,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/CommunityCauseDto"
+            $ref: '#/components/schemas/CommunityCauseDto'
       required:
         - name
         - description
@@ -1007,7 +984,7 @@ components:
         initialDate:
           type: string
           description: Initial date when the cause starts (ISO 8601 format)
-          example: "2026-01-15T00:00:00.000Z"
+          example: '2026-01-15T00:00:00.000Z'
           format: date-time
         durationDays:
           type: number
@@ -1091,18 +1068,19 @@ components:
           type: string
           description: Description of the event
           example: >-
-            Evento público para recolectar donaciones de alimentos no perecederos
+            Evento público para recolectar donaciones de alimentos no
+            perecederos
           minLength: 15
           maxLength: 200
         initialDate:
           type: string
           description: Date and time when the event starts (ISO 8601 format)
-          example: "2026-01-20T10:00:00.000Z"
+          example: '2026-01-20T10:00:00.000Z'
           format: date-time
         place:
           description: Physical location where the event will take place
           allOf:
-            - $ref: "#/components/schemas/EventPlaceDto"
+            - $ref: '#/components/schemas/EventPlaceDto'
       required:
         - name
         - description
@@ -1132,7 +1110,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ActionObjectiveDto"
+            $ref: '#/components/schemas/ActionObjectiveDto'
         events:
           description: >-
             In-person events associated with this action. Must include at least
@@ -1140,7 +1118,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ActionEventDto"
+            $ref: '#/components/schemas/ActionEventDto'
         causeId:
           type: string
           description: The ID of the cause related to the action request
@@ -1156,7 +1134,8 @@ components:
       properties:
         requestIds:
           description: >-
-            Array de IDs de solicitudes del usuario según el criterio de búsqueda
+            Array de IDs de solicitudes del usuario según el criterio de
+            búsqueda
           example:
             - 550e8400-e29b-41d4-a716-446655440000
             - 550e8400-e29b-41d4-a716-446655440001

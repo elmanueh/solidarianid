@@ -105,6 +105,12 @@ describe('CausesController (e2e)', () => {
     });
   });
 
+  describe('/api/causes/explore (GET)', () => {
+    it('should return 401 when JWT is missing', async () => {
+      await server.getRequest().get('/api/causes/explore').expect(HttpStatus.UNAUTHORIZED);
+    });
+  });
+
   describe('/causes/:id (GET)', () => {
     it('should return cause detail by ID', async () => {
       const response = await server.getRequest().get(`/api/causes/${CAUSE_IDS.AGUA_KENIA}`).expect(HttpStatus.OK);

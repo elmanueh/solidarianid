@@ -10,12 +10,12 @@ export abstract class ActionsService {
   abstract getActionById(id: string): Promise<Either<ValidationError, Action>>;
   abstract getByCauseIds(causeIds: string[]): Promise<Either<ValidationError | RepositoryException, Action[]>>;
   abstract create(actionDto: ActionRequestEventDto): Promise<Either<ValidationError | RepositoryException, Action>>;
-  abstract joinEvent(eventId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>>;
-  abstract leaveEvent(eventId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>>;
+  abstract joinEvent(eventId: string, actorId: string): Promise<Either<ValidationError | RepositoryException, void>>;
+  abstract leaveEvent(eventId: string, actorId: string): Promise<Either<ValidationError | RepositoryException, void>>;
   abstract contributeObjective(
     actionId: string,
     objectiveName: string,
-    userId: string,
+    actorId: string,
     amount: number,
   ): Promise<Either<ValidationError | RepositoryException, Objective>>;
 }

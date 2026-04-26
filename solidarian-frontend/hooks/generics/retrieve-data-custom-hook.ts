@@ -54,7 +54,7 @@ export function useRetrieveData<T>(queryFn: QueryFn<T>, dependencies: Dependency
     return () => {
       cancelled = true;
     };
-  }, dependencies);
+  }, [queryFnRef, ...dependencies]);
 
   return {
     data,

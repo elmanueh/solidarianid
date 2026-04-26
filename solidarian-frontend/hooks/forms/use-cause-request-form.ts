@@ -78,8 +78,7 @@ function normalizeDurationDays(value: number): number {
 
 function buildCauseRequestPayload(
   values: CauseRequestValues,
-  communityId: string,
-  userId: string
+  communityId: string
 ): CreateCauseRequestVariables['createCauseRequestInput'] {
   if (values.ods.length === 0) {
     throw new Error('Debes seleccionar al menos un ODS.');
@@ -91,7 +90,6 @@ function buildCauseRequestPayload(
     ods: values.ods,
     initialDate: normalizeInitialDate(values.initialDate),
     durationDays: normalizeDurationDays(values.durationDays),
-    userId,
     communityId,
   };
 }
@@ -138,7 +136,7 @@ export default function useCauseRequestForm() {
 
       try {
         setIsSubmitting(true);
-        const payload = buildCauseRequestPayload(values, communityId, userId);
+        const payload = buildCauseRequestPayload(values, communityId);
 
         await graphql.mutate(CREATE_CAUSE_REQUEST_MUTATION, {
           createCauseRequestInput: payload,

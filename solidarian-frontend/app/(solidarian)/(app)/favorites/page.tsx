@@ -208,7 +208,7 @@ export default function FavoritesPage() {
         items={communitiesState.items}
         loading={favoritesIntroLoading && communitiesState.items.length === 0}
         error={communitiesState.error}
-        emptyMessage="Todavía no seguís ninguna comunidad."
+        emptyMessage="Todavía no eres miembro de ninguna comunidad."
         carouselRef={communitiesCarouselRef}
         onViewMore={() => handleOpenModal('communities')}
         onScrollLeft={() => scrollCarousel(communitiesCarouselRef, 'left')}
@@ -223,7 +223,7 @@ export default function FavoritesPage() {
         items={causesState.items}
         loading={favoritesIntroLoading && causesState.items.length === 0}
         error={causesState.error}
-        emptyMessage="Todavía no seguís ninguna causa."
+        emptyMessage="Todavía no sigues ninguna causa."
         carouselRef={causesCarouselRef}
         onViewMore={() => handleOpenModal('causes')}
         onScrollLeft={() => scrollCarousel(causesCarouselRef, 'left')}

@@ -31,7 +31,7 @@ export function useNotificationSubscriptions({ userId, enabled = true }: UseNoti
   const apolloClient = useApolloClient();
   const subscriptionsRef = useRef<Array<{ unsubscribe: () => void }>>([]);
   const activeUserIdRef = useRef<string | null>(null);
-  const communitiesApiBase = process.env.NEXT_PUBLIC_GATEWAY_URL ?? 'http://localhost:8090';
+  const communitiesApiBase = '';
 
   const saveNotificationToDexie = useCallback(async (notification: Notification): Promise<void> => {
     try {

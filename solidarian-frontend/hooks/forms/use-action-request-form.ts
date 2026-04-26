@@ -10,7 +10,7 @@ import { RootState } from '@/features/redux/store';
 import { ROUTES } from '@/features/routes';
 import { useApolloClient } from '@apollo/client/react';
 import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
@@ -79,7 +79,8 @@ function buildActionRequestPayload(
 export default function useActionRequestForm() {
   const router = useRouter();
   const params = useParams<{ communityId: string; causeId: string }>();
-  const graphql = new GraphqlClientService(useApolloClient());
+  const apolloClient = useApolloClient();
+  const graphql = useMemo(() => new GraphqlClientService(apolloClient), [apolloClient]);
   const userId = useSelector((state: RootState) => state.auth.currentUser?.id);
 
   const communityId = getRouteParam(params.communityId);
@@ -114,7 +115,7 @@ export default function useActionRequestForm() {
         setIsSubmitting(false);
       }
     },
-    [causeId, communityId, isSubmitting, router, values, userId]
+    [causeId, communityId, isSubmitting, router, values, userId, graphql]
   );
 
   return { values, setValues, handleSubmit, isSubmitting };

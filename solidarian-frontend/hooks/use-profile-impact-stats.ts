@@ -18,7 +18,7 @@ const DEFAULT_PROFILE_IMPACT_STATS: ProfileImpactStats = {
   communities: 0,
 };
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_GATEWAY_URL ?? 'http://localhost:8090/api/';
+const apiBaseUrl = '/api/';
 
 const countUniqueIds = (ids: string[]): number => new Set(ids).size;
 

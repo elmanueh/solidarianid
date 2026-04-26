@@ -1,9 +1,8 @@
 import { NotificationStrategy } from '@app/communities/application/services/strategies/notification.strategy';
 import { SubscriptionPayload } from '@app/communities/application/services/web-push.service.impl';
-import { Cause } from '@app/communities/domain/model/entities/cause';
 import { Subscription } from '@app/communities/domain/model/entities/subscription';
 import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
-import { NotificationEvent } from '@app/communities/domain/services/notification.service';
+import { CauseNotificationEvent, NotificationEvent } from '@app/communities/domain/services/notification.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -19,7 +18,7 @@ export class CauseNotificationStrategy implements NotificationStrategy {
       return [[], undefined];
     }
 
-    const causeEvent = event as Cause;
+    const causeEvent = event as CauseNotificationEvent;
 
     const subscriptions = await this.subscriptionRepository.findByCommunityId(causeEvent.communityId);
 
@@ -36,7 +35,7 @@ export class CauseNotificationStrategy implements NotificationStrategy {
         type: 'CAUSE',
         data: {
           communityId: causeEvent.communityId,
-          causeId: causeEvent.id.value,
+          causeId: causeEvent.id,
         },
       },
     ];

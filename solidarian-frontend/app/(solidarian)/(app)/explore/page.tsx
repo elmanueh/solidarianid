@@ -208,13 +208,15 @@ export default function ExplorePage() {
         Mostrando {displayedTotal} resultados totales
       </p>
 
-      {loading ? (
-        renderLoadingState()
-      ) : error ? (
-        renderErrorState()
-      ) : (
-        <ExploreResultsGrid mode={mode} communities={communities.items} causes={causes.items} />
-      )}
+      <div className={!hasPagination ? 'pb-6' : undefined}>
+        {loading ? (
+          renderLoadingState()
+        ) : error ? (
+          renderErrorState()
+        ) : (
+          <ExploreResultsGrid mode={mode} communities={communities.items} causes={causes.items} />
+        )}
+      </div>
 
       {hasPagination ? (
         <ExplorePagination page={page} setPage={setPage} totalItems={currentTotal} pageSize={currentPageSize} />

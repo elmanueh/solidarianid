@@ -179,3 +179,7 @@ out
 .atl*
 .gga
 .atl
+
+# PWA & Serwist
+public/sw*
+public/swe-worker*

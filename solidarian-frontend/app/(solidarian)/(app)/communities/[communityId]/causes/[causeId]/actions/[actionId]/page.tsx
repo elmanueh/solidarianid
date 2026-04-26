@@ -3,6 +3,10 @@ import ActionHeader from '@/components/action-details/action-header';
 import ActionInfoCard from '@/components/action-details/action-info-card';
 import ActionObjectivesList from '@/components/action-details/action-objectives-list';
 import { GET_ACTION_QUERY, type GetActionResult } from '@/features/actions/api/graphql/actions.documents';
+import {
+  GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY,
+  type GetCauseByCommunityIdAndCauseIdResult,
+} from '@/features/causes/api/graphql/causes.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { isEntityNotFoundGraphQLError } from '@/features/graphql/graphql-error.utils';
@@ -16,7 +20,27 @@ interface ActionPageProps {
 export default async function ActionPage({ params }: Readonly<ActionPageProps>) {
   const { communityId, causeId, actionId } = await params;
   const graphql = new GraphqlClientService(await getInstanceServerApolloClient());
+  let cause: GetCauseByCommunityIdAndCauseIdResult['causeByCommunity'] | undefined;
   let action: GetActionResult['action'] | undefined;
+
+  try {
+    cause = (
+      await graphql.query(GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY, {
+        communityId,
+        causeId,
+      })
+    ).causeByCommunity;
+  } catch (error) {
+    if (isEntityNotFoundGraphQLError(error)) {
+      notFound();
+    }
+
+    throw error;
+  }
+
+  if (!cause) {
+    notFound();
+  }
 
   try {
     action = (await graphql.query(GET_ACTION_QUERY, { id: actionId })).action;
@@ -29,6 +53,10 @@ export default async function ActionPage({ params }: Readonly<ActionPageProps>) 
   }
 
   if (action?.causeId !== causeId) {
+    notFound();
+  }
+
+  if (!cause.actions.some(({ id }) => id === actionId)) {
     notFound();
   }
 

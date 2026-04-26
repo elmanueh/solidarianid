@@ -123,6 +123,22 @@ paths:
           description: ''
       tags: &ref_1
         - Auth
+  /api/auth/google/login:
+    get:
+      operationId: AuthController_googleLogin
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_1
+  /api/auth/google/callback:
+    get:
+      operationId: AuthController_googleCallback
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_1
   /api/auth/refresh:
     post:
       operationId: AuthController_refresh
@@ -162,7 +178,7 @@ components:
           description: Username for the new user´containing only alphanumeric characters
           example: johnDoe
           minLength: 2
-          maxLength: 16
+          maxLength: 30
         mobilePhone:
           type: string
           description: Mobile phone number of the user in E.164 format
@@ -205,7 +221,7 @@ components:
           description: Username for the new user´containing only alphanumeric characters
           example: johnDoe
           minLength: 2
-          maxLength: 16
+          maxLength: 30
         mobilePhone:
           type: string
           description: Mobile phone number of the user in E.164 format
@@ -433,7 +449,7 @@ components:
           description: Username for the user´containing only alphanumeric characters
           example: johnDoe
           minLength: 2
-          maxLength: 16
+          maxLength: 30
         password:
           type: string
           description: >-

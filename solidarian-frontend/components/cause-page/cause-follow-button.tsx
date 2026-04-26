@@ -26,13 +26,9 @@ export default function CauseFollowButton({ causeId, following }: Readonly<Cause
   const [leaveCause, { loading: leavingCause }] = useMutation(LEAVE_CAUSE_MUTATION);
   const [isFollowing, setIsFollowing] = useState(following);
   const isLoading = joiningCause || leavingCause;
+  if (!currentUserId) return null;
 
   const handleFollow = async () => {
-    if (!currentUserId) {
-      toast.error('Debes iniciar sesion para seguir esta causa');
-      return;
-    }
-
     try {
       if (isFollowing) {
         const result = await leaveCause({ variables: { causeId } });

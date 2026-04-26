@@ -99,9 +99,9 @@ export class CommunitiesController {
     return CommunityDomainMapper.toExploreCommunitiesResponseDto(communities.value);
   }
 
-  //DEPRECATED - usa GraphQL
+  /** @deprecated Usa GraphQL en su lugar. */
   @Get(':id')
-  @ApiOperation({ summary: 'Retrieve a charitable community by ID' })
+  @ApiOperation({ summary: 'Retrieve a charitable community by ID', deprecated: true })
   @ApiOkResponse({
     description: 'Community details',
     type: CommunityDetailResponseDto,
@@ -124,7 +124,7 @@ export class CommunitiesController {
     return CommunityDomainMapper.toCommunityDetailDto(community.value);
   }
 
-  //DEPRECATED - usa gRPC
+  /** @deprecated Usa gRPC en su lugar. */
   async getCommunitiesOrderByMostUsers(limit?: number): Promise<CommunityRankingUserResponseDto[]> {
     const communities = await this.communitiesService.getOrderByMostUsers(limit);
     if (communities.isLeft()) {
@@ -157,11 +157,11 @@ export class CommunitiesController {
     return CommunityDomainMapper.toCommunityLastUsersJoinedSummaryResponseDto(joinedUsersData.value);
   }
 
-  //DEPRECATED - usa GraphQL
+  /** @deprecated Usa GraphQL en su lugar. */
   @Post(':id/members')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Join a user to a community' })
+  @ApiOperation({ summary: 'Join a user to a community', deprecated: true })
   @ApiCreatedResponse({
     description: 'User successfully joined the community',
   })

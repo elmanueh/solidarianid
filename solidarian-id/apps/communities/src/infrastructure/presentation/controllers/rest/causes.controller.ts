@@ -23,9 +23,9 @@ import { CauseDomainMapper } from '../../mappers/cause.mapper';
 export class CausesController {
   constructor(private readonly causesService: CausesService) {}
 
-  //DEPRECATED - usa GraphQL
+  /** @deprecated Usa GraphQL en su lugar. */
   @Get('causes')
-  @ApiOperation({ summary: 'Retrieve all charitable causes' })
+  @ApiOperation({ summary: 'Retrieve all charitable causes', deprecated: true })
   @ApiOkResponse({
     description: 'List of causes',
     type: [CauseSummaryResponseDto],
@@ -60,9 +60,9 @@ export class CausesController {
     return CauseDomainMapper.toExploreCausesResponseDto(causes.value);
   }
 
-  //DEPRECATED - usa GraphQL
+  /** @deprecated Usa GraphQL en su lugar. */
   @Get('causes/:id')
-  @ApiOperation({ summary: 'Retrieve a charitable cause by ID' })
+  @ApiOperation({ summary: 'Retrieve a charitable cause by ID', deprecated: true })
   @ApiOkResponse({
     description: 'Cause details',
     type: CauseDetailResponseDto,
@@ -78,9 +78,9 @@ export class CausesController {
     return CauseDomainMapper.toCauseDetailDto(cause.value);
   }
 
-  //DEPRECATED - usa GraphQL
+  /** @deprecated Usa GraphQL en su lugar. */
   @Get('communities/:communityId/causes')
-  @ApiOperation({ summary: 'Retrieve all causes for a specific community' })
+  @ApiOperation({ summary: 'Retrieve all causes for a specific community', deprecated: true })
   @ApiOkResponse({
     description: 'List of causes for the specified community',
     type: [CauseSummaryResponseDto],
@@ -99,9 +99,9 @@ export class CausesController {
     return causes.value.map((cause: Cause) => CauseDomainMapper.toCauseSummaryDto(cause));
   }
 
-  //DEPRECATED - usa GraphQL
+  /** @deprecated Usa GraphQL en su lugar. */
   @Get('communities/:communityId/causes/:causeId')
-  @ApiOperation({ summary: 'Retrieve a specific cause for a specific community' })
+  @ApiOperation({ summary: 'Retrieve a specific cause for a specific community', deprecated: true })
   @ApiOkResponse({
     description: 'Details of the specified cause for the specified community',
     type: CauseDetailResponseDto,
@@ -119,11 +119,11 @@ export class CausesController {
     return CauseDomainMapper.toCauseDetailDto(cause.value);
   }
 
-  //DEPRECATED - usa GraphQL
+  /** @deprecated Usa GraphQL en su lugar. */
   @Post('causes/:id/followers')
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Join a user as a supporter of a cause' })
+  @ApiOperation({ summary: 'Join a user as a supporter of a cause', deprecated: true })
   @ApiCreatedResponse({
     description: 'User successfully joined the cause',
   })

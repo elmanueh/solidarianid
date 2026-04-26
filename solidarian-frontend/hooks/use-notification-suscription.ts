@@ -31,12 +31,11 @@ export function useNotificationSubscriptions({ userId, enabled = true }: UseNoti
   const apolloClient = useApolloClient();
   const subscriptionsRef = useRef<Array<{ unsubscribe: () => void }>>([]);
   const activeUserIdRef = useRef<string | null>(null);
-  const communitiesApiBase = '';
 
   const saveNotificationToDexie = useCallback(async (notification: Notification): Promise<void> => {
     try {
       await notificationsRepository.save(notification);
-      window.dispatchEvent(new Event(NOTIFICATION_UPDATE_EVENT));
+      globalThis.dispatchEvent(new Event(NOTIFICATION_UPDATE_EVENT));
     } catch (error) {
       console.error('Error saving notification to Dexie:', error);
     }
@@ -80,7 +79,7 @@ export function useNotificationSubscriptions({ userId, enabled = true }: UseNoti
       subscriptions.push({ unsubscribe: () => requestSubscription.unsubscribe() });
 
       try {
-        const data = await fetchUserSubscriptions(communitiesApiBase, userId, {
+        const data = await fetchUserSubscriptions('', userId, {
           includeRequestIds: true,
           requestStatus: 'pending',
           includeEventIds: false,
@@ -142,5 +141,5 @@ export function useNotificationSubscriptions({ userId, enabled = true }: UseNoti
       subscriptionsRef.current = [];
       activeUserIdRef.current = null;
     };
-  }, [userId, enabled, apolloClient, communitiesApiBase, saveNotificationToDexie]);
+  }, [userId, enabled, apolloClient, saveNotificationToDexie]);
 }

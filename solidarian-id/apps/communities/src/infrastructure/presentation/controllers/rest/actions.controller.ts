@@ -1,6 +1,6 @@
+import { Action } from '@app/communities/domain/model/entities/action';
 import { ActionsService } from '@app/communities/domain/services/actions.service';
 import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
-import { Action } from '@app/communities/domain/model/entities/action';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { ActionDetailResponseDto } from '../../dtos/output/action-detail.response.dto';
 import { ActionSummaryResponseDto } from '../../dtos/output/action-summary.response.dto';
@@ -10,9 +10,9 @@ import { ActionDomainMapper } from '../../mappers/action.mapper';
 export class ActionsController {
   constructor(private readonly actionsService: ActionsService) {}
 
-  //DEPRECATED - usa GraphQL
+  /** @deprecated Usa GraphQL en su lugar. */
   @Get('actions')
-  @ApiOperation({ summary: 'Retrieve all charitable actions' })
+  @ApiOperation({ summary: 'Retrieve all charitable actions', deprecated: true })
   @ApiOkResponse({
     description: 'List of actions',
     type: [ActionSummaryResponseDto],
@@ -28,9 +28,9 @@ export class ActionsController {
     return actions.value.map((action: Action) => ActionDomainMapper.toActionSummaryDto(action));
   }
 
-  //DEPRECATED - usa GraphQL
+  /** @deprecated Usa GraphQL en su lugar. */
   @Get('actions/:id')
-  @ApiOperation({ summary: 'Retrieve a charitable action by ID' })
+  @ApiOperation({ summary: 'Retrieve a charitable action by ID', deprecated: true })
   @ApiOkResponse({
     description: 'Action details',
     type: ActionDetailResponseDto,

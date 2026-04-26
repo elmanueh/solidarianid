@@ -19,6 +19,8 @@ export interface RegisterUserDto {
 export interface CreatedUser {
   id: string;
   username: string;
+  password: string;
+  authCookies?: string;
 }
 
 export interface UpdateUserPreferencesDto {
@@ -35,7 +37,6 @@ export interface UpdateUserPreferencesDto {
 export interface CommunityRequestDto {
   name: string;
   description: string;
-  userId: string;
   causeCreationRequests: CauseCreationRequest[];
 }
 
@@ -61,7 +62,6 @@ export interface CauseCreationRequest {
 export interface CauseRequestDto {
   name: string;
   description: string;
-  userId: string;
   communityId: string;
   ods: number[];
   initialDate: string;
@@ -102,7 +102,6 @@ export interface EventDto {
 export interface ActionRequestDto {
   name: string;
   description: string;
-  userId: string;
   causeId: string;
   objectives: ObjectiveDto[];
   events: EventDto[];

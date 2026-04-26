@@ -12,6 +12,9 @@ import type { Country } from './types';
 /** Deterministic seed for reproducible fake data */
 export const FAKER_SEED = 12345;
 
+/** Shared password used for all seeded users */
+export const SEED_USER_PASSWORD = 'Password@1234';
+
 // =============================================================================
 // Data Volume Configuration
 // =============================================================================

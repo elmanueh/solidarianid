@@ -1,20 +1,27 @@
 'use client';
 
+import { useTheme } from '@/components/theme-provider';
 import { Button } from '@/components/ui';
 import { IconMoon, IconSun } from '@tabler/icons-react';
-import { useTheme } from 'next-themes';
 
 export function ThemeButton() {
-  const { setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
+  if (!resolvedTheme) {
+    return (
+      <Button type="button" variant={'outline'} className={'cursor-pointer'} disabled>
+        <span className="relative inline-flex size-5 shrink-0" aria-hidden="true" />
+        {` Cambiar tema`}
+      </Button>
+    );
+  }
+
+  const isDark = resolvedTheme === 'dark';
 
   return (
     <Button
       type="button"
       variant={'outline'}
-      onClick={() => {
-        const isDark = document.documentElement.classList.contains('dark');
-        setTheme(isDark ? 'light' : 'dark');
-      }}
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
       className={'cursor-pointer'}
     >
       <span className="relative inline-flex size-5 shrink-0" aria-hidden="true">

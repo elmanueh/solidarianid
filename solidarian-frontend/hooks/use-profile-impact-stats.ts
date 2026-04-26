@@ -1,7 +1,7 @@
 'use client';
 
+import { APP_URLS } from '@/features/config/urls';
 import type { UserSubscriptionsResponse } from '@/features/notifications/api/graphql/notifications.documents';
-
 import { useRetrieveData } from '@/hooks/generics/retrieve-data-custom-hook';
 
 export type ProfileImpactStats = {
@@ -30,7 +30,7 @@ async function fetchProfileImpactStats(userId: string): Promise<ProfileImpactSta
     requestStatus: 'approved',
   });
 
-  const response = await fetch(`/api/subscriptions/${encodeURIComponent(userId)}?${queryParams.toString()}`, {
+  const response = await fetch(`${APP_URLS.api.subscriptions.byUser(userId)}?${queryParams.toString()}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

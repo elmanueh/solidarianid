@@ -1,6 +1,7 @@
 import { CauseKey } from '@/components/preferences/preferences-category';
 import { DurationKey } from '@/components/preferences/preferences-duration';
 import { OdsId } from '@/features/causes/constants/ods.constants';
+import { APP_URLS } from '@/features/config/urls';
 
 export interface UserPreferencesProps {
   preferredSDGs: OdsId[];
@@ -13,7 +14,7 @@ export interface UserPreferencesProps {
 }
 
 export async function setPreferences(preferences: UserPreferencesProps, userId: string) {
-  const url = `/api/users/${userId}/preferences`;
+  const url = APP_URLS.api.users.preferences(userId);
 
   const response = await fetch(url, {
     method: 'PATCH',
@@ -31,7 +32,7 @@ export async function setPreferences(preferences: UserPreferencesProps, userId: 
 }
 
 export async function getPreferences(userId: string): Promise<UserPreferencesProps> {
-  const url = `/api/users/${userId}/preferences`;
+  const url = APP_URLS.api.users.preferences(userId);
   const response = await fetch(url, {
     method: 'GET',
     credentials: 'include',

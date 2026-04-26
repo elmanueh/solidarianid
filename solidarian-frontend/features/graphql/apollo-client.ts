@@ -1,13 +1,13 @@
+import { APP_URLS } from '@/features/config/urls';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
 import { CombinedGraphQLErrors, CombinedProtocolErrors } from '@apollo/client/errors';
 import { ErrorLink } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { OperationTypeNode } from 'graphql';
 import { createClient } from 'graphql-ws';
-import { HTTP_URL, WS_URL } from '@/features/graphql/graphql-config';
 
 const httpLink = new HttpLink({
-  uri: HTTP_URL,
+  uri: APP_URLS.graphql.http,
   credentials: 'include',
 });
 
@@ -29,7 +29,8 @@ const errorLink = new ErrorLink(({ error, operation }) => {
   }
 
   if (error) {
-    const endpoint = operation.operationType === OperationTypeNode.SUBSCRIPTION ? WS_URL : HTTP_URL;
+    const endpoint =
+      operation.operationType === OperationTypeNode.SUBSCRIPTION ? APP_URLS.graphql.ws : APP_URLS.graphql.http;
     console.error(`[Network error][${operationName}] ${error.message} (${endpoint})`);
   }
 });
@@ -45,7 +46,7 @@ export const createApolloClient = (): ApolloClient => {
 
   const wsLink = new GraphQLWsLink(
     createClient({
-      url: WS_URL,
+      url: APP_URLS.graphql.ws,
       keepAlive: 15000,
       lazyCloseTimeout: 30000,
     })

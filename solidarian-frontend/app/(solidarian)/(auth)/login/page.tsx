@@ -29,6 +29,7 @@ import {
 } from '@/features/auth/constants/auth.constants';
 import { authService } from '@/features/auth/services/auth.service';
 import { getErrorMessage } from '@/features/axios/errors.handler';
+import { APP_URLS } from '@/features/config/urls';
 import { handleLogin } from '@/features/redux/userSlice';
 import { ROUTES } from '@/features/routes';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -59,10 +60,8 @@ const loginFormSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
-const GOOGLE_OAUTH_LOGIN_URL = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_LOGIN_URL;
-
 function onGoogleOauthSubmit() {
-  globalThis.location.assign(GOOGLE_OAUTH_LOGIN_URL || '');
+  globalThis.location.assign(APP_URLS.auth.googleOauthLogin);
 }
 
 export default function LoginPage() {

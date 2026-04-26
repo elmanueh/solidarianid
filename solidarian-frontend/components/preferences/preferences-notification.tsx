@@ -1,3 +1,5 @@
+'use client';
+import { usePwa } from '@/hooks/pwa/use-pwa';
 import { cn } from '@/lib/utils';
 import { IconBell } from '@tabler/icons-react';
 
@@ -10,6 +12,8 @@ export function PreferencesNotification({
   notificationsEnabled,
   setNotificationsEnabled,
 }: Readonly<PreferencesNotificationProps>) {
+  const pwa = usePwa();
+
   return (
     <div className="flex flex-col gap-8 py-4">
       <div className="rounded-[48px] border border-preferences-border bg-preferences-panel p-10">
@@ -34,7 +38,21 @@ export function PreferencesNotification({
 
           <button
             type="button"
-            onClick={() => setNotificationsEnabled(!notificationsEnabled)}
+            onClick={async () => {
+              if (notificationsEnabled) {
+                await pwa.unsubscribe();
+                setNotificationsEnabled(false);
+                return;
+              }
+
+              const permission = await pwa.requestNotificationPermission();
+              if (permission !== 'granted') {
+                return;
+              }
+
+              await pwa.subscribe();
+              setNotificationsEnabled(true);
+            }}
             aria-pressed={notificationsEnabled}
             className={cn(
               'flex h-12 w-24 cursor-pointer items-center rounded-full p-2 shadow-inner transition-colors duration-500',

@@ -1,6 +1,7 @@
 import type { ActionCreatedResult } from '@/features/actions/api/graphql/actions.documents';
 import type { CauseCreatedResult } from '@/features/causes/api/graphql/causes.documents';
 import type { RequestStatusChangedResult } from '@/features/communities/api/graphql/requests.documents';
+import { APP_URLS } from '@/features/config/urls';
 import type { UserSubscriptionsResponse } from '@/features/notifications/api/graphql/notifications.documents';
 import { Notification, NotificationType } from '@/features/repository/entities/notification';
 import { ROUTES } from '@/features/routes';
@@ -16,7 +17,6 @@ interface UserSubscriptionsCriteria {
 }
 
 export async function fetchUserSubscriptions(
-  communitiesApiBase: string,
   userId: string,
   criteria?: UserSubscriptionsCriteria
 ): Promise<UserSubscriptionsResponse> {
@@ -38,9 +38,9 @@ export async function fetchUserSubscriptions(
     });
   }
 
-  const subscriptionsUrl = new URL(`/api/subscriptions/${encodeURIComponent(userId)}`, communitiesApiBase);
-  subscriptionsUrl.search = params.toString();
-  const url = subscriptionsUrl.toString();
+  const query = params.toString();
+  const baseUrl = APP_URLS.api.subscriptions.byUser(userId);
+  const url = query ? `${baseUrl}?${query}` : baseUrl;
 
   try {
     const response = await fetch(url, {

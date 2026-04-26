@@ -79,7 +79,7 @@ export function useNotificationSubscriptions({ userId, enabled = true }: UseNoti
       subscriptions.push({ unsubscribe: () => requestSubscription.unsubscribe() });
 
       try {
-        const data = await fetchUserSubscriptions('', userId, {
+        const data = await fetchUserSubscriptions(userId, {
           includeRequestIds: true,
           requestStatus: 'pending',
           includeEventIds: false,

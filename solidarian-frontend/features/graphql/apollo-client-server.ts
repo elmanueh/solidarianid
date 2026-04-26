@@ -1,9 +1,9 @@
+import { APP_URLS } from '@/features/config/urls';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
 import { CombinedGraphQLErrors, CombinedProtocolErrors } from '@apollo/client/errors';
 import { ErrorLink } from '@apollo/client/link/error';
 import { OperationTypeNode } from 'graphql';
 import { headers } from 'next/headers';
-import { HTTP_URL, WS_URL } from '@/features/graphql/graphql-config';
 
 const errorLink = new ErrorLink(({ error, operation }) => {
   const operationName = operation.operationName || 'anonymous';
@@ -23,7 +23,8 @@ const errorLink = new ErrorLink(({ error, operation }) => {
   }
 
   if (error) {
-    const endpoint = operation.operationType === OperationTypeNode.SUBSCRIPTION ? WS_URL : HTTP_URL;
+    const endpoint =
+      operation.operationType === OperationTypeNode.SUBSCRIPTION ? APP_URLS.graphql.ws : APP_URLS.graphql.http;
     console.error(`[Network error][${operationName}] ${error.message} (${endpoint})`);
   }
 });
@@ -33,7 +34,7 @@ export const getInstanceServerApolloClient = async (): Promise<ApolloClient> => 
   const cookieHeader = requestHeaders.get('cookie') ?? '';
 
   const serverHttpLink = new HttpLink({
-    uri: HTTP_URL,
+    uri: APP_URLS.graphql.http,
     credentials: 'include',
     headers: cookieHeader ? { cookie: cookieHeader } : undefined,
   });

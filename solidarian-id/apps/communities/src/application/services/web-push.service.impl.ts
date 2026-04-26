@@ -23,6 +23,7 @@ export type SubscriptionPayload = {
 export class WebPushService extends NotificationServicePort {
   private readonly strategies: NotificationStrategy[];
   private readonly ttlSeconds = 60 * 60;
+  private readonly isConfigured: boolean;
 
   constructor(
     private readonly requestStrategy: RequestNotificationStrategy,
@@ -31,10 +32,30 @@ export class WebPushService extends NotificationServicePort {
   ) {
     super();
     this.strategies = [this.requestStrategy, this.causeStrategy, this.actionStrategy] as NotificationStrategy[];
-    webpush.setVapidDetails(process.env.VAPID_SUBJECT!, process.env.VAPID_PUBLIC_KEY!, process.env.VAPID_PRIVATE_KEY!);
+
+    const vapidSubject = process.env.VAPID_SUBJECT;
+    const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
+    const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+
+    if (!vapidSubject || !vapidPublicKey || !vapidPrivateKey) {
+      this.isConfigured = false;
+
+      if (process.env.NODE_ENV === 'test') {
+        return;
+      }
+
+      throw new Error('Missing VAPID configuration for WebPushService.');
+    }
+
+    this.isConfigured = true;
+    webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
   }
 
   async sendNotification(event: NotificationEvent) {
+    if (!this.isConfigured) {
+      return;
+    }
+
     const strategy = this.strategies.find(s => s.canHandle(event));
 
     if (!strategy) {

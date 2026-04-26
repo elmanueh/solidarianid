@@ -71,8 +71,8 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
-    "@nestjs/jwt": "^11.0.2",
     "@nestjs/graphql": "^13.2.4",
+    "@nestjs/jwt": "^11.0.2",
     "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^11.1.17",
     "@nestjs/mongoose": "^11.0.4",
@@ -100,6 +100,7 @@
     "kafkajs": "^2.2.4",
     "mongoose": "^9.0.2",
     "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pdfkit": "^0.17.2",
@@ -134,6 +135,7 @@
     "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.19.3",
+    "@types/passport-google-oauth20": "^2.0.17",
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
     "@types/pdfkit": "^0.17.4",
@@ -160,7 +162,7 @@
     "ts-node": "^10.9.2",
     "ts-proto": "^2.11.5",
     "typescript": "^5.9.3",
-    "webpack": "^5.105.4",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.20.0",
+    "webpack": "^5.105.4"
   }
 }

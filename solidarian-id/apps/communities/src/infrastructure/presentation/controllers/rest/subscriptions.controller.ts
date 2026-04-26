@@ -1,5 +1,19 @@
 import { SubscriptionsService } from '@app/communities/domain/services/subscriptions.service';
-import { Controller, Get, Param, ParseUUIDPipe, Query } from '@nestjs/common';
+import { PushSubscriptionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/push-subscription.request.dto';
+import { PushSubscriptionCreatedResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/push-subscription-created.response.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
@@ -8,15 +22,17 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { SubscriptionsCriteriaRequestDto } from '../../dtos/input/subscriptions-criteria.request.dto';
 import { UserSubscriptionsResponseDto } from '../../dtos/output/user-subscriptions.response.dto';
+import { SubscriptionDomainMapper } from '../../mappers/subscription.mapper';
 
-@Controller()
+@Controller('subscriptions')
 @ApiTags('Subscriptions')
 export class SubscriptionsController {
   constructor(private readonly subscriptionsService: SubscriptionsService) {}
 
-  @Get('subscriptions/:userId')
+  @Get(':userId')
   @ApiOperation({ summary: 'Obtener las suscripciones de un usuario' })
   @ApiOkResponse({
     description: 'Suscripciones del usuario obtenidas exitosamente',
@@ -42,5 +58,35 @@ export class SubscriptionsController {
     }
 
     return subscriptionsOrError.value;
+  }
+
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async pushSubscription(
+    @CurrentUser('sub') userId: string,
+    @Body() pushSubscriptionRequestDto: PushSubscriptionRequestDto,
+  ): Promise<PushSubscriptionCreatedResponseDto> {
+    const { endpoint, p256dh, auth } = pushSubscriptionRequestDto;
+
+    const pushSubscription = await this.subscriptionsService.pushSubscription(userId, endpoint, p256dh, auth);
+
+    if (pushSubscription.isLeft()) {
+      throw pushSubscription.value;
+    }
+
+    return SubscriptionDomainMapper.toSubscriptionDto(pushSubscription.value);
+  }
+
+  @Delete(':endpoint')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteSubscription(@Param('endpoint') endpoint: string) {
+    const result = await this.subscriptionsService.deleteSubscription(endpoint);
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return undefined;
   }
 }

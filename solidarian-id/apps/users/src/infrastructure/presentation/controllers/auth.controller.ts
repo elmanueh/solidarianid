@@ -153,7 +153,7 @@ export class AuthController {
   }
 
   private setAccessTokenCookie(response: Response, accessToken: string): void {
-    const secure = process.env.NODE_ENV !== 'test';
+    const secure = process.env.NODE_ENV !== 'test' && this.configService.get<boolean>('DOCKER_LOCAL') !== true;
 
     response.cookie('AccessToken', accessToken, {
       httpOnly: true,
@@ -165,19 +165,19 @@ export class AuthController {
   }
 
   private setRefreshTokenCookie(response: Response, refreshToken: string): void {
-    const secure = process.env.NODE_ENV !== 'test';
+    const secure = process.env.NODE_ENV !== 'test' && this.configService.get<boolean>('DOCKER_LOCAL') !== true;
 
     response.cookie('RefreshToken', refreshToken, {
       httpOnly: true,
       secure,
       sameSite: 'lax',
-      path: '/api/auth',
+      path: '/',
       maxAge: 90 * 24 * 60 * 60 * 1000,
     });
   }
 
   private clearAuthCookies(response: Response): void {
-    const secure = process.env.NODE_ENV !== 'test';
+    const secure = process.env.NODE_ENV !== 'test' && this.configService.get<boolean>('DOCKER_LOCAL') !== true;
 
     response.clearCookie('AccessToken', {
       httpOnly: true,

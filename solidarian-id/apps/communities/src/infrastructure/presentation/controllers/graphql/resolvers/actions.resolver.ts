@@ -106,7 +106,7 @@ export class ActionsResolver {
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Authorize({
     action: SecurityAction.UPDATE,
-    resource: Resource.EVENT,
+    resource: Resource.ACTION,
     policy: CommunityMembershipPolicy.MEMBER_OR_CREATOR,
     entityId: 'actionId',
   })

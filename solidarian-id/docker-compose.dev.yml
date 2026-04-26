@@ -6,7 +6,7 @@ services:
     container_name: solidarian_admin_app
     restart: unless-stopped
     ports:
-      - '${ADMIN_PORT}:3000'
+      - "${ADMIN_PORT}:3000"
     environment:
       - NODE_ENV=${NODE_ENV}
       - MONGO_HOST=${MONGO_HOST}
@@ -38,10 +38,13 @@ services:
     container_name: solidarian_users_app
     restart: unless-stopped
     ports:
-      - '${USERS_PORT}:3001'
+      - "${USERS_PORT}:3001"
     environment:
       - NODE_ENV=${NODE_ENV}
       - IN_DOCKER=true
+      - FRONTEND_URL=${FRONTEND_URL}
+      - JWT_PRIVATE_KEY_BASE64=${JWT_PRIVATE_KEY_BASE64}
+      - JWT_PUBLIC_KEY_BASE64=${JWT_PUBLIC_KEY_BASE64}
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -71,8 +74,8 @@ services:
     container_name: solidarian_communities_app
     restart: unless-stopped
     ports:
-      - '${COMMUNITIES_PORT}:3002'
-      - '${COMMUNITIES_GRPC_PORT:-50052}:50052'
+      - "${COMMUNITIES_PORT}:3002"
+      - "${COMMUNITIES_GRPC_PORT:-50052}:50052"
     environment:
       - NODE_ENV=${NODE_ENV}
       - IN_DOCKER=true
@@ -88,6 +91,11 @@ services:
       - API_BASE_ADMIN_URL=${API_BASE_ADMIN_URL}
       - API_BASE_USERS_URL=${API_BASE_USERS_URL}
       - API_BASE_COMMUNITIES_URL=${API_BASE_COMMUNITIES_URL}
+      - JWT_PRIVATE_KEY_BASE64=${JWT_PRIVATE_KEY_BASE64}
+      - JWT_PUBLIC_KEY_BASE64=${JWT_PUBLIC_KEY_BASE64}
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
+      - VAPID_SUBJECT=${VAPID_SUBJECT}
     depends_on:
       postgres:
         condition: service_healthy

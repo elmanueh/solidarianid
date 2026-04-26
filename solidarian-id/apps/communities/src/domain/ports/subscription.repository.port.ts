@@ -10,5 +10,5 @@ export abstract class SubscriptionsRepositoryPort extends Repository<Subscriptio
     communityId: string,
   ): Promise<Either<RepositoryException | ValidationError, Subscription[]>>;
   abstract findByCauseId(causeId: string): Promise<Either<RepositoryException | ValidationError, Subscription[]>>;
-  abstract deleteByEndpoint(endpoint: string): Promise<Either<RepositoryException, void>>;
+  abstract deleteByEndpointAndUserId(endpoint: string, userId: string): Promise<Either<RepositoryException, void>>;
 }

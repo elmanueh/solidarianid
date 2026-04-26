@@ -25,13 +25,15 @@ export class SubscriptionTypeOrmAdapter
     super(subscriptionRepository, subscriptionMapper);
   }
 
-  async deleteByEndpoint(endpoint: string): Promise<Either<RepositoryException, void>> {
+  async deleteByEndpointAndUserId(endpoint: string, userId: string): Promise<Either<RepositoryException, void>> {
     try {
-      await this.subscriptionRepository.delete({ endpoint });
+      await this.subscriptionRepository.delete({ endpoint, userId });
       return right(undefined);
     } catch (error: any) {
       return left(
-        new RepositoryException(`Failed to delete Subscription with endpoint ${endpoint}: ${error?.message}`),
+        new RepositoryException(
+          `Failed to delete Subscription with endpoint ${endpoint} and user ${userId}: ${error?.message}`,
+        ),
       );
     }
   }

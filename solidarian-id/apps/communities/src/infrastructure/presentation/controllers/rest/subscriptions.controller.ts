@@ -90,9 +90,10 @@ export class SubscriptionsController {
   }
 
   @Delete(':endpoint')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteSubscription(@Param('endpoint') endpoint: string) {
-    const result = await this.subscriptionsService.deleteSubscription(endpoint);
+  async deleteSubscription(@Param('endpoint') endpoint: string, @CurrentUser('sub') userId: string) {
+    const result = await this.subscriptionsService.deleteSubscription(endpoint, userId);
 
     if (result.isLeft()) {
       throw result.value;

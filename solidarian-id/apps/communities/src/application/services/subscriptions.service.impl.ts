@@ -111,8 +111,8 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
     return right(subscription.value);
   }
 
-  async deleteSubscription(endpoint: string): Promise<Either<RepositoryException, void>> {
-    const deleteResult = await this.subscriptionsRepository.deleteByEndpoint(endpoint);
+  async deleteSubscription(endpoint: string, userId: string): Promise<Either<RepositoryException, void>> {
+    const deleteResult = await this.subscriptionsRepository.deleteByEndpointAndUserId(endpoint, userId);
     if (deleteResult.isLeft()) {
       return left(deleteResult.value);
     }

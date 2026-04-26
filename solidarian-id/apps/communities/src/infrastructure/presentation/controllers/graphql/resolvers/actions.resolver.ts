@@ -4,7 +4,7 @@ import { Action, Objective } from '@app/communities/infrastructure/presentation/
 import { ActionsGraphqlMapper } from '@app/communities/infrastructure/presentation/controllers/graphql/mappers/actions-graphql.mapper';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Action as SecurityAction, Resource, CommunityMembershipPolicy } from '@solidarianid/security/core';
+import { CommunityMembershipPolicy, Resource, Action as SecurityAction } from '@solidarianid/security/core';
 import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 
 @Resolver(() => Action)

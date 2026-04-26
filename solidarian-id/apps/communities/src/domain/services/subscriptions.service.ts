@@ -29,5 +29,8 @@ export abstract class SubscriptionsService {
     auth: string,
   ): Promise<Either<ValidationError | RepositoryException, Subscription>>;
 
-  abstract deleteSubscription(endpoint: string): Promise<Either<ValidationError | RepositoryException, void>>;
+  abstract deleteSubscription(
+    endpoint: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>>;
 }

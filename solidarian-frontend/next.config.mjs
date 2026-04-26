@@ -12,11 +12,11 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL}/api/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL ?? ''}/api/:path*`,
       },
       {
         source: '/photos',
-        destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL}/photos`,
+        destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL ?? ''}/photos`,
       },
     ];
   },

@@ -22,6 +22,7 @@ export type SubscriptionPayload = {
 @Injectable()
 export class WebPushService extends NotificationServicePort {
   private readonly strategies: NotificationStrategy[];
+  private readonly ttlSeconds = 60 * 60;
 
   constructor(
     private readonly requestStrategy: RequestNotificationStrategy,
@@ -46,7 +47,9 @@ export class WebPushService extends NotificationServicePort {
       return;
     }
 
-    await Promise.all(
+    const payloadJson = JSON.stringify(payload);
+
+    await Promise.allSettled(
       subscriptions.map(subscription =>
         webpush.sendNotification(
           {
@@ -56,7 +59,10 @@ export class WebPushService extends NotificationServicePort {
               auth: subscription.auth,
             },
           },
-          JSON.stringify(payload),
+          payloadJson,
+          {
+            TTL: this.ttlSeconds,
+          },
         ),
       ),
     );

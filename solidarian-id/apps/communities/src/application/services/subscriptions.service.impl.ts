@@ -78,13 +78,15 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
       : right([]);
     const objectiveIds = objectiveIdsOrError.isLeft() ? [] : objectiveIdsOrError.value;
 
-    return right({
+    const response = {
       requestIds,
       followedCauseIds,
       followedCommunityIds,
       eventIds,
       objectiveIds,
-    });
+    };
+
+    return right(response);
   }
 
   private async getRequestsByCriteria(userId: string, requestType?: RequestType) {
@@ -101,7 +103,26 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
     p256dh: string,
     auth: string,
   ): Promise<Either<ValidationError | RepositoryException, Subscription>> {
-    const subscription = Subscription.create({ userId, endpoint, p256dh, auth });
+    const followedIdsOrError = await this.getUserSubscriptions(userId, {
+      requestStatus: RequestStatus.PENDING,
+      includeRequestIds: true,
+      includeFollowedCauseIds: true,
+      includeFollowedCommunityIds: true,
+    });
+
+    if (followedIdsOrError.isLeft()) {
+      return left(followedIdsOrError.value);
+    }
+
+    const subscription = Subscription.create({
+      userId,
+      endpoint,
+      p256dh,
+      auth,
+      requestIds: followedIdsOrError.value.requestIds,
+      followedCommunityIds: followedIdsOrError.value.followedCommunityIds,
+      followedCauseIds: followedIdsOrError.value.followedCauseIds,
+    });
 
     if (subscription.isLeft()) {
       return left(subscription.value);

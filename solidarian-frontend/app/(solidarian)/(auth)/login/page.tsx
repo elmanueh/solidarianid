@@ -59,8 +59,11 @@ const loginFormSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
-const GOOGLE_OAUTH_LOGIN_URL =
-  process.env.NEXT_PUBLIC_GOOGLE_OAUTH_LOGIN_URL ?? 'http://localhost:3001/api/auth/google/login';
+const GOOGLE_OAUTH_LOGIN_URL = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_LOGIN_URL;
+
+function onGoogleOauthSubmit() {
+  globalThis.location.assign(GOOGLE_OAUTH_LOGIN_URL || '');
+}
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -88,10 +91,6 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false);
     }
-  }
-
-  function onGoogleOauthSubmit() {
-    window.location.assign(GOOGLE_OAUTH_LOGIN_URL);
   }
 
   return (

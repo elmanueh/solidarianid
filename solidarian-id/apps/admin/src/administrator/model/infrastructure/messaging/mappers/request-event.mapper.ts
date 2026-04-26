@@ -36,6 +36,7 @@ export class RequestEventMapper extends Mapper<Request<any>, RequestEventDto> {
     const dto = this.fillBase(new CommunityRequestEventDto(), request);
 
     dto.causeRequests = request.causes.map(cause => ({
+      id: cause.id.value,
       name: cause.name,
       description: cause.description,
       status: cause.status,

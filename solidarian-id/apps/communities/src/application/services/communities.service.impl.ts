@@ -57,16 +57,19 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     const community = communityOrError.value;
 
     for (const causeRequest of communityDto.causeRequests) {
-      const causeOrError = Cause.create({
-        name: causeRequest.name,
-        description: causeRequest.description,
-        initialDate: new Date(causeRequest.initialDate),
-        durationDays: causeRequest.durationDays,
-        ods: causeRequest.ods,
-        actions: [],
-        communityId: community.id.value,
-        userIds: [communityDto.userId],
-      });
+      const causeOrError = Cause.create(
+        {
+          name: causeRequest.name,
+          description: causeRequest.description,
+          initialDate: new Date(causeRequest.initialDate),
+          durationDays: causeRequest.durationDays,
+          ods: causeRequest.ods,
+          actions: [],
+          communityId: community.id.value,
+          userIds: [communityDto.userId],
+        },
+        causeRequest.id,
+      );
 
       if (causeOrError.isLeft()) {
         return left(causeOrError.value);

@@ -6,28 +6,14 @@ import { RefreshTokenMapper } from '@app/users/infrastructure/persistence/mapper
 import { TokensTypeormRepository } from '@app/users/infrastructure/persistence/repositories/tokens-typeorm.repository';
 import { AuthController } from '@app/users/infrastructure/presentation/controllers/auth.controller';
 import { UsersModule } from '@app/users/users.module';
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { SecurityJwtModule } from '@solidarianid/security/nestjs';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GoogleStrategy, SecurityJwtModule } from '@solidarianid/security/nestjs';
 import { generateKeyPairSync } from 'node:crypto';
-import { GoogleStrategy } from '@solidarianid/security/nestjs';
 
-const shouldEnableGoogleStrategy = process.env.NODE_ENV !== 'test';
-
-const authProviders = [
-  ...(shouldEnableGoogleStrategy ? [GoogleStrategy] : []),
-  RefreshTokenMapper,
-  {
-    provide: AuthService,
-    useClass: AuthServiceImpl,
-  },
-  {
-    provide: TokensRepositoryPort,
-    useClass: TokensTypeormRepository,
-  },
-];
+const googleProvider = process.env.NODE_ENV === 'test' ? [] : [GoogleStrategy as Provider];
 
 function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey: string } {
   const privateKey = Buffer.from(config.get<string>('JWT_PRIVATE_KEY_BASE64') ?? '', 'base64').toString('utf8');
@@ -72,7 +58,18 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
       },
     }),
   ],
-  providers: authProviders,
+  providers: [
+    ...googleProvider,
+    RefreshTokenMapper,
+    {
+      provide: AuthService,
+      useClass: AuthServiceImpl,
+    },
+    {
+      provide: TokensRepositoryPort,
+      useClass: TokensTypeormRepository,
+    },
+  ],
   controllers: [AuthController],
   exports: [AuthService],
 })

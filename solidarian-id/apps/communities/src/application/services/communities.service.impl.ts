@@ -208,7 +208,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
       return left(removeMemberResult.value);
     }
 
-    const subscriptionSyncResult = await this.syncUserCommunitySubscriptions(userId, communityId, 'remove');
+    const subscriptionSyncResult = await this.syncUserCommunitySubscriptions(actorId, communityId, 'remove');
 
     if (subscriptionSyncResult.isLeft()) {
       return left(subscriptionSyncResult.value);

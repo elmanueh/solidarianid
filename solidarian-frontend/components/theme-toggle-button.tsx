@@ -1,9 +1,8 @@
 'use client';
 
+import { useTheme } from '@/components/theme-provider';
 import { Button } from '@/components/ui/button';
 import { IconMoon, IconSun } from '@tabler/icons-react';
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
 
 type ThemeToggleButtonProps = {
   className?: string;
@@ -11,14 +10,7 @@ type ThemeToggleButtonProps = {
 
 export function ThemeToggleButton({ className }: Readonly<ThemeToggleButtonProps>) {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
+  if (!resolvedTheme) {
     return (
       <Button type="button" variant="outline" size="icon" className={className} aria-label="Cambiar tema" disabled>
         <span className="size-5" aria-hidden="true" />

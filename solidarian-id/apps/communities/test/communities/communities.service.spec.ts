@@ -7,6 +7,7 @@ import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communit
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
+import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
@@ -31,6 +32,9 @@ describe('CommunitiesServiceImpl', () => {
   };
   let mockPublisher: {
     publish: jest.Mock;
+  };
+  let mockSubscriptionsPublisher: {
+    publishCauseCreated: jest.Mock;
   };
   let mockSubscriptionsRepository: {
     findByUserId: jest.Mock;
@@ -88,6 +92,10 @@ describe('CommunitiesServiceImpl', () => {
       publish: jest.fn(),
     };
 
+    mockSubscriptionsPublisher = {
+      publishCauseCreated: jest.fn().mockResolvedValue(undefined),
+    };
+
     mockSubscriptionsRepository = {
       findByUserId: jest.fn().mockResolvedValue(right([])),
       save: jest.fn().mockResolvedValue(right(undefined)),
@@ -101,6 +109,7 @@ describe('CommunitiesServiceImpl', () => {
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
         { provide: CommunitiesPublisherPort, useValue: mockPublisher },
         { provide: SubscriptionsRepositoryPort, useValue: mockSubscriptionsRepository },
+        { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
       ],
     }).compile();
 

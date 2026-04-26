@@ -7,8 +7,12 @@ import { CommunitiesControllerGrpc } from '@app/communities/infrastructure/prese
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
-import { CommunityContextResolver, MembershipPermissionSource } from '@solidarianid/security';
-import { CommunityMembershipPolicyEvaluator, SecurityAuthorizationModule } from '@solidarianid/security/nestjs';
+import { CommunityContextResolver, MembershipPermissionSource } from '@solidarianid/security/core';
+import {
+  CommunityMembershipPolicyEvaluator,
+  SecurityAuthorizationModule,
+  SelfOnlyPolicyEvaluator,
+} from '@solidarianid/security/nestjs';
 import { PubSub } from 'graphql-subscriptions';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
 import { CausesServiceImpl } from './application/services/causes.service.impl';
@@ -22,8 +26,8 @@ import { SubscriptionsServiceImpl } from './application/services/subscriptions.s
 import { UserServiceImpl } from './application/services/user.service.impl';
 import { ActionsPublisherPort } from './domain/ports/actions.publisher.port';
 import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
-import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
 import { CausesQueryRepositoryPort } from './domain/ports/causes-query.repository.port';
+import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
 import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
 import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
@@ -73,8 +77,8 @@ import { RequestEntityMapper } from './infrastructure/persistence/mappers/reques
 import { SubscriptionMapper } from './infrastructure/persistence/mappers/subscription.mapper';
 import { UserEntityMapper } from './infrastructure/persistence/mappers/user-entity.mapper';
 import { ActionsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/actions-typeorm.repository';
-import { CausesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/causes-typeorm.repository';
 import { CausesQueryTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/causes-query-typeorm.repository';
+import { CausesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/causes-typeorm.repository';
 import { CommunitiesQueryTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/communities-query-typeorm.repository';
 import { CommunitiesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/communities-typeorm.repository';
 import { EventsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/events-typeorm.repository';
@@ -123,8 +127,8 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
     ]),
     KafkaDynamicModule.register(process.env.KAFKA_COMMUNITIES_CLIENT_ID ?? 'communities'),
     SecurityAuthorizationModule.register({
-      imports: [TypeOrmModule.forFeature([CauseEntity, ActionEntity, CommunityUserEntity])],
-      evaluators: [CommunityMembershipPolicyEvaluator],
+      imports: [TypeOrmModule.forFeature([CauseEntity, ActionEntity, EventEntity, CommunityUserEntity])],
+      evaluators: [CommunityMembershipPolicyEvaluator, SelfOnlyPolicyEvaluator],
       communityContextResolver: {
         provide: CommunityContextResolver,
         useClass: CommunitiesCommunityContextResolverAdapter,

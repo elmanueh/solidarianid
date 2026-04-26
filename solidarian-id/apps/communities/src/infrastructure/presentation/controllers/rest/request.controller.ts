@@ -20,10 +20,11 @@ import type { Request, Response } from 'express';
 export class RequestController {
   constructor(private readonly requestsService: RequestsService) {}
 
+  /** @deprecated Usa GraphQL en su lugar. */
   @Post('community-requests')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Crear una solicitud de comunidad' })
+  @ApiOperation({ summary: 'Crear una solicitud de comunidad', deprecated: true })
   @ApiBody({ type: CreateCommunityRequestDto })
   @ApiCreatedResponse({
     description: 'Solicitud de comunidad creada exitosamente',
@@ -55,10 +56,11 @@ export class RequestController {
     return response.status(201).location(locationUrl).send();
   }
 
+  /** @deprecated Usa GraphQL en su lugar. */
   @Post('cause-requests')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Crear una solicitud de causa benéfica' })
+  @ApiOperation({ summary: 'Crear una solicitud de causa benéfica', deprecated: true })
   @ApiBody({ type: CreateCauseRequestDto })
   @ApiCreatedResponse({
     description: 'Solicitud de causa benéfica creada exitosamente',
@@ -90,10 +92,11 @@ export class RequestController {
     return response.status(201).location(locationUrl).send();
   }
 
+  /** @deprecated Usa GraphQL en su lugar. */
   @Post('action-requests')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Crear una solicitud de acción benéfica' })
+  @ApiOperation({ summary: 'Crear una solicitud de acción benéfica', deprecated: true })
   @ApiBody({ type: CreateActionRequestDto })
   @ApiCreatedResponse({
     description: 'Solicitud de acción benéfica creada exitosamente',

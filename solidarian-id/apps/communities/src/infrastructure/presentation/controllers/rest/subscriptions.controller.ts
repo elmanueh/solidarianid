@@ -22,10 +22,19 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+import { Action, Resource, UsersPolicy } from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { SubscriptionsCriteriaRequestDto } from '../../dtos/input/subscriptions-criteria.request.dto';
 import { UserSubscriptionsResponseDto } from '../../dtos/output/user-subscriptions.response.dto';
 import { SubscriptionDomainMapper } from '../../mappers/subscription.mapper';
+
+const AuthorizeUserSelf = (action: Action) =>
+  Authorize({
+    action,
+    resource: Resource.USER,
+    entityId: 'userId',
+    policy: UsersPolicy.SELF_ONLY,
+  });
 
 @Controller('subscriptions')
 @ApiTags('Subscriptions')
@@ -33,6 +42,8 @@ export class SubscriptionsController {
   constructor(private readonly subscriptionsService: SubscriptionsService) {}
 
   @Get(':userId')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @AuthorizeUserSelf(Action.READ)
   @ApiOperation({ summary: 'Obtener las suscripciones de un usuario' })
   @ApiOkResponse({
     description: 'Suscripciones del usuario obtenidas exitosamente',
@@ -48,7 +59,7 @@ export class SubscriptionsController {
     description: 'Error interno del servidor',
   })
   async getUserSubscriptions(
-    @Param('userId', new ParseUUIDPipe()) userId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
     @Query() criteria: SubscriptionsCriteriaRequestDto,
   ): Promise<UserSubscriptionsResponseDto> {
     const subscriptionsOrError = await this.subscriptionsService.getUserSubscriptions(userId, criteria);

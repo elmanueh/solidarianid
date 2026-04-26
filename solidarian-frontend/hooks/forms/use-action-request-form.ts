@@ -49,8 +49,7 @@ function validateRequiredText(value: string, errorMessage: string): string {
 
 function buildActionRequestPayload(
   values: ActionRequestValues,
-  causeId: string,
-  userId: string
+  causeId: string
 ): CreateActionRequestVariables['createActionRequestInput'] {
   const name = validateRequiredText(values.name, 'El nombre de la acción es obligatorio.');
   const description = validateRequiredText(values.description, 'La descripción de la acción es obligatoria.');
@@ -73,7 +72,7 @@ function buildActionRequestPayload(
     events.push(event);
   }
 
-  return { name, description, causeId, objectives, events, userId };
+  return { name, description, causeId, objectives, events };
 }
 
 export default function useActionRequestForm() {
@@ -101,7 +100,7 @@ export default function useActionRequestForm() {
 
       try {
         setIsSubmitting(true);
-        const payload = buildActionRequestPayload(values, causeId, userId);
+        const payload = buildActionRequestPayload(values, causeId);
         await graphql.mutate(CREATE_ACTION_REQUEST_MUTATION, { createActionRequestInput: payload });
 
         toast.success('Solicitud enviada correctamente', {

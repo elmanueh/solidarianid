@@ -6,6 +6,7 @@ export * from './guards/google-oauth.guard';
 export * from './guards/jwt-auth.guard';
 export * from './policies/community-membership.policy';
 export * from './policies/policy-registry';
+export * from './policies/self-only.policy';
 export * from './security-authorization.module';
 export * from './security-jwt.module';
 export * from './strategies/jwt.strategy';

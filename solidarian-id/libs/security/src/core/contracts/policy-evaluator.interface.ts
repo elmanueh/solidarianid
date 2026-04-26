@@ -3,10 +3,9 @@ import { AuthorizationMetadata } from './authorization-metadata';
 
 export interface PolicyContext {
   subject: { sub: string; jti?: string };
+  resolvedEntityId?: string;
   resolvedCommunityId?: string;
   resolvedRole?: MembershipRole | null;
-  params: Record<string, string | undefined>;
-  body?: unknown;
 }
 
 export interface PolicyEvaluator {

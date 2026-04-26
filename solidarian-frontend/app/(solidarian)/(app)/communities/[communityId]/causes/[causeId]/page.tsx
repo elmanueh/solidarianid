@@ -2,9 +2,9 @@ import ActionsList from '@/components/cause-page/actions-list';
 import CauseHeader from '@/components/cause-page/cause-header';
 import CauseInfoCard from '@/components/cause-page/cause-info-card';
 import FloatingActionButton from '@/components/cause-page/floating-action-button';
-import { authService } from '@/features/auth/services/auth.service';
+import { authServiceServer } from '@/features/auth/services/auth.service.server';
 import { GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY } from '@/features/causes/api/graphql/causes.documents';
-import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
+import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { ROUTES } from '@/features/routes';
@@ -16,7 +16,7 @@ interface CausePageProps {
 
 export default async function CausePage({ params }: Readonly<CausePageProps>) {
   const { communityId, causeId } = await params;
-  const graphqlCliente = new GraphqlClientService(getInstanceServerApolloClient());
+  const graphqlCliente = new GraphqlClientService(await getInstanceServerApolloClient());
   const cause = (
     await graphqlCliente.query(GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY, {
       communityId,
@@ -37,7 +37,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
     );
   }
 
-  const currentUser = await authService.getCurrentUser();
+  const currentUser = await authServiceServer.getCurrentUser();
   const pexelsService = new PexelsImageService();
   const bannerImage = await pexelsService.getDeterministicBanner({ uuid: causeId, theme: cause.name });
 

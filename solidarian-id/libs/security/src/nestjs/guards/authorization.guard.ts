@@ -44,24 +44,20 @@ export class AuthorizationGuard implements CanActivate {
     }
 
     const request = resolveRequestFromContext(context) as AuthorizationRequest;
-    const runtimeEntityId = this.resolveRuntimeEntityId(metadata, context, request);
+    const actorId = request.user?.sub;
+    const targetEntityId = this.resolveRuntimeEntityId(metadata.entityId, context, request);
 
     let resolvedCommunityId: string | undefined;
     let resolvedRole: MembershipRole | null | undefined;
 
     if (isCommunityMembershipPolicy(metadata.policy)) {
-      if (
-        !metadata.entityType ||
-        !runtimeEntityId ||
-        !this.communityContextResolver ||
-        !this.membershipPermissionSource
-      ) {
+      if (!metadata.resource || !targetEntityId || !this.communityContextResolver || !this.membershipPermissionSource) {
         throw new ForbiddenException('Forbidden by authorization policy');
       }
 
       const communityContext = await this.communityContextResolver.resolve({
-        entityType: metadata.entityType,
-        entityId: runtimeEntityId,
+        resource: metadata.resource,
+        entityId: targetEntityId,
       });
 
       if (!communityContext?.communityId) {
@@ -70,7 +66,7 @@ export class AuthorizationGuard implements CanActivate {
 
       resolvedCommunityId = communityContext.communityId;
       resolvedRole = await this.membershipPermissionSource.findRole({
-        userId: request.user?.sub ?? '',
+        userId: actorId ?? '',
         communityId: communityContext.communityId,
       });
     }
@@ -80,10 +76,9 @@ export class AuthorizationGuard implements CanActivate {
         sub: request.user?.sub ?? '',
         jti: request.user?.jti,
       },
+      resolvedEntityId: targetEntityId,
       resolvedCommunityId,
       resolvedRole,
-      params: request.params,
-      body: request.body,
     });
 
     if (!allowed) {
@@ -94,35 +89,46 @@ export class AuthorizationGuard implements CanActivate {
   }
 
   private resolveRuntimeEntityId(
-    metadata: AuthorizationMetadata,
+    entityIdDescriptor: string | undefined,
     context: ExecutionContext,
     request: AuthorizationRequest,
   ): string | undefined {
-    if (!metadata.entityId) {
+    if (!entityIdDescriptor) {
       return undefined;
     }
 
-    const selector = metadata.entityId;
-
-    if (selector.source === 'params') {
-      return request.params?.[selector.key];
+    if (context.getType<string>() === 'graphql') {
+      const gqlArgs = GqlExecutionContext.create(context).getArgs<Record<string, unknown>>();
+      return this.resolvePath(gqlArgs, entityIdDescriptor);
     }
 
-    if (selector.source === 'body') {
-      if (typeof request.body === 'object' && request.body !== null) {
-        const value = (request.body as Record<string, unknown>)[selector.key];
-        return typeof value === 'string' ? value : undefined;
+    return this.resolvePath(request.params, entityIdDescriptor) ?? this.resolvePath(request.body, entityIdDescriptor);
+  }
+
+  private resolvePath(source: unknown, path: string): string | undefined {
+    if (!source || typeof source !== 'object') {
+      return undefined;
+    }
+
+    const sourceAsRecord = source as Record<string, unknown>;
+
+    const direct = sourceAsRecord[path];
+    if (typeof direct === 'string') {
+      return direct;
+    }
+
+    if (!path.includes('.')) {
+      return undefined;
+    }
+
+    const resolved = path.split('.').reduce<unknown>((acc, segment) => {
+      if (!acc || typeof acc !== 'object') {
+        return undefined;
       }
 
-      return undefined;
-    }
+      return (acc as Record<string, unknown>)[segment];
+    }, sourceAsRecord);
 
-    if (context.getType<string>() !== 'graphql') {
-      return undefined;
-    }
-
-    const gqlArgs = GqlExecutionContext.create(context).getArgs<Record<string, unknown>>();
-    const value = gqlArgs?.[selector.key];
-    return typeof value === 'string' ? value : undefined;
+    return typeof resolved === 'string' ? resolved : undefined;
   }
 }

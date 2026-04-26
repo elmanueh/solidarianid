@@ -1,5 +1,4 @@
 export * from './constants/action.enum';
-export * from './constants/entity-type.enum';
 export * from './constants/membership-role.enum';
 export * from './constants/resource.enum';
 export * from './contracts/authorization-metadata';

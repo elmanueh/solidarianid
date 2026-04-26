@@ -13,9 +13,7 @@ export interface UserPreferencesProps {
 }
 
 export async function setPreferences(preferences: UserPreferencesProps, userId: string) {
-  const url = process.env.NEXT_PUBLIC_GATEWAY_URL
-    ? `${process.env.NEXT_PUBLIC_GATEWAY_URL}/api/users/${userId}/preferences`
-    : `http://localhost:8090/api/users/${userId}/preferences`;
+  const url = `/api/users/${userId}/preferences`;
 
   const response = await fetch(url, {
     method: 'PATCH',
@@ -33,9 +31,7 @@ export async function setPreferences(preferences: UserPreferencesProps, userId: 
 }
 
 export async function getPreferences(userId: string): Promise<UserPreferencesProps> {
-  const url = process.env.NEXT_PUBLIC_GATEWAY_URL
-    ? `${process.env.NEXT_PUBLIC_GATEWAY_URL}/api/users/${userId}/preferences`
-    : `http://localhost:8090/api/users/${userId}/preferences`;
+  const url = `/api/users/${userId}/preferences`;
   const response = await fetch(url, {
     method: 'GET',
     credentials: 'include',

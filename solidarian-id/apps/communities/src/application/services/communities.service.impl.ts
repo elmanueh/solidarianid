@@ -177,7 +177,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
 
   async leaveCommunity(
     communityId: string,
-    userId: string,
+    actorId: string,
   ): Promise<Either<ValidationError | RepositoryException, void>> {
     const communityOrError = await this.communityRepository.findById(communityId, ['members', 'members.user']);
 
@@ -185,7 +185,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
       return left(communityOrError.value);
     }
 
-    const userOrError = await this.usersRepository.findById(userId);
+    const userOrError = await this.usersRepository.findById(actorId);
 
     if (userOrError.isLeft()) {
       return left(userOrError.value);
@@ -199,7 +199,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
       return left(new ConflictError('Community creator cannot leave the community'));
     }
 
-    const removeMemberResult = await this.communityRepository.removeMember(communityId, userId);
+    const removeMemberResult = await this.communityRepository.removeMember(communityId, actorId);
 
     if (removeMemberResult.isLeft()) {
       return left(removeMemberResult.value);

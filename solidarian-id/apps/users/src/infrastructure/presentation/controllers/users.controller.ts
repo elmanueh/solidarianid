@@ -1,10 +1,9 @@
 import { RegisterUserCommand, UsersService } from '@app/users/domain/services/users.service';
-import { Action, Resource } from '@solidarianid/security/core';
-import { AuthorizationGuard, Authorize, JwtAuthGuard, Public } from '@solidarianid/security/nestjs';
 import { RegisterUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/register-user.request.dto';
 import { UpdateUserPreferencesRequestDto } from '@app/users/infrastructure/presentation/dtos/update-user-preferences.request.dto';
 import { UpdateUserProfileDtoRequest } from '@app/users/infrastructure/presentation/dtos/update-user-profile.dto';
 import { UserPreferencesResponseDto } from '@app/users/infrastructure/presentation/dtos/user-preferences.response.dto';
+import { UserResponseDto } from '@app/users/infrastructure/presentation/dtos/user.response.dto';
 import {
   Body,
   Controller,
@@ -29,14 +28,16 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Action, Resource, UsersPolicy } from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard, Public } from '@solidarianid/security/nestjs';
 import type { Response } from 'express';
 
-const SELF_POLICY = 'self';
 const AuthorizeUserSelf = (action: Action) =>
   Authorize({
     action,
+    entityId: 'id',
     resource: Resource.USER,
-    policy: SELF_POLICY,
+    policy: UsersPolicy.SELF_ONLY,
   });
 
 @Controller('/api/users')
@@ -91,7 +92,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @AuthorizeUserSelf(Action.UPDATE)
   async updateUserProfile(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserProfileDto: UpdateUserProfileDtoRequest,
     @Res() response: Response,
   ) {
@@ -157,5 +158,48 @@ export class UsersController {
     }
 
     response.status(HttpStatus.NO_CONTENT).send();
+  }
+
+  @Get('me')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get user info' })
+  @ApiOkResponse({
+    description: 'User info retrieved successfully',
+    type: UserResponseDto,
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+  @UseGuards(JwtAuthGuard)
+  async getMe(@CurrentUser('sub') userId: string): Promise<UserResponseDto> {
+    const userResult = await this.usersService.getUserById(userId);
+
+    if (userResult.isLeft()) {
+      throw userResult.value;
+    }
+
+    const userPreferencesResult = await this.usersService.getUserPreferences(userId);
+
+    if (userPreferencesResult.isLeft()) {
+      throw userPreferencesResult.value;
+    }
+
+    const user = userResult.value;
+    const preferences = userPreferencesResult.value;
+
+    const userResponse: UserResponseDto = {
+      id: user.id.value,
+      fullName: user.fullName,
+      username: user.username,
+      mobilePhone: user.mobilePhone,
+      city: user.city,
+      countryCode: user.countryCode,
+      preferences: {
+        preferredSDGs: preferences.preferredSDGs,
+        preferredCategories: preferences.preferredCategories,
+        durationPreferences: preferences.durationPreferences,
+        notificationsEnabled: preferences.notificationsEnabled,
+      },
+    };
+
+    return userResponse;
   }
 }

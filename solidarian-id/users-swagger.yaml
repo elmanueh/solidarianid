@@ -93,6 +93,21 @@ paths:
           description: Internal server error
       summary: Update user preferences
       tags: *ref_0
+  /api/users/me:
+    get:
+      operationId: UsersController_getMe
+      parameters: []
+      responses:
+        '200':
+          description: User info retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDto'
+        '500':
+          description: Internal server error
+      summary: Get user info
+      tags: *ref_0
   /api/auth/login:
     post:
       operationId: AuthController_authenticate
@@ -371,6 +386,45 @@ components:
             Indica si el usuario desea recibir notificaciones sobre nuevas
             causas
           example: true
+    UserResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User unique identifier
+          example: ef160968-67bb-432d-b833-b4eb29f7d73c
+        fullName:
+          type: string
+          description: Full name of the user
+          example: John Doe
+        username:
+          type: string
+          description: Username for the user account
+          example: johndoe
+        mobilePhone:
+          type: string
+          description: Mobile phone number of the user in E.164 format
+          example: '+34612345678'
+        city:
+          type: string
+          description: City where the user resides
+          example: Madrid
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          example: ES
+        preferences:
+          description: User preferences including SDGs and categories
+          allOf:
+            - $ref: '#/components/schemas/UserPreferencesResponseDto'
+      required:
+        - id
+        - fullName
+        - username
+        - mobilePhone
+        - city
+        - countryCode
+        - preferences
     LoginUserDtoRequest:
       type: object
       properties:

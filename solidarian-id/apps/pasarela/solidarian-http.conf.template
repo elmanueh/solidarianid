@@ -26,7 +26,7 @@ server {
     proxy_pass https://api.pexels.com/v1/search;
   }
 
-  location ~ ^/api/users(/|$) {
+  location ~ ^/api/(users|auth)(/|$) {
     proxy_pass http://users-app:3001;
   }
 

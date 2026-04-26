@@ -1,20 +1,15 @@
 import {
   AuthorizationMetadata,
-  CommunityMembershipPolicy as CommunityMembershipPolicyName,
+  CommunityMembershipPolicy,
+  isCommunityMembershipPolicy,
   MembershipRole,
   PolicyContext,
   PolicyEvaluator,
 } from '@solidarianid/security/core';
 
-const COMMUNITY_MEMBERSHIP_POLICIES: ReadonlySet<CommunityMembershipPolicyName> = new Set([
-  'community.member',
-  'community.creator',
-  'community.member_or_creator',
-]);
-
 export class CommunityMembershipPolicyEvaluator implements PolicyEvaluator {
   supports(meta: AuthorizationMetadata): boolean {
-    return COMMUNITY_MEMBERSHIP_POLICIES.has(meta.policy as CommunityMembershipPolicyName);
+    return isCommunityMembershipPolicy(meta.policy);
   }
 
   evaluate(meta: AuthorizationMetadata, context: PolicyContext): boolean {
@@ -24,16 +19,16 @@ export class CommunityMembershipPolicyEvaluator implements PolicyEvaluator {
       return false;
     }
 
-    if (meta.policy === 'community.member') {
+    if (meta.policy === CommunityMembershipPolicy.MEMBER_OR_CREATOR) {
       return role === MembershipRole.MEMBER || role === MembershipRole.CREATOR;
     }
 
-    if (meta.policy === 'community.creator') {
+    if (meta.policy === CommunityMembershipPolicy.MEMBER_ONLY) {
+      return role === MembershipRole.MEMBER;
+    }
+
+    if (meta.policy === CommunityMembershipPolicy.CREATOR_ONLY) {
       return role === MembershipRole.CREATOR;
-    }
-
-    if (meta.policy === 'community.member_or_creator') {
-      return role === MembershipRole.MEMBER || role === MembershipRole.CREATOR;
     }
 
     return false;

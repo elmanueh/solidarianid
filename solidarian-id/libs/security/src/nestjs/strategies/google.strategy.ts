@@ -11,10 +11,15 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     private readonly configService: ConfigService,
     private readonly userService: UsersService,
   ) {
+    const callbackURL =
+      configService.get<string>('OAUTH_GOOGLE_CALLBACK_URI') ??
+      configService.get<string>('OAUTH_GOOGLE_CALLBACK_URL') ??
+      '';
+
     super({
       clientID: configService.get<string>('OAUTH_GOOGLE_CLIENT_ID') ?? '',
       clientSecret: configService.get<string>('OAUTH_GOOGLE_CLIENT_SECRET') ?? '',
-      callbackURL: configService.get<string>('OAUTH_GOOGLE_CALLBACK_URI') ?? '',
+      callbackURL,
       scope: ['email', 'profile'],
     });
   }

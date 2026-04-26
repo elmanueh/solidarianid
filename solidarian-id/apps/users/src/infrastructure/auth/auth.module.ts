@@ -14,6 +14,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { generateKeyPairSync } from 'node:crypto';
 import { GoogleStrategy } from '@solidarianid/security/nestjs';
 
+const shouldEnableGoogleStrategy = process.env.NODE_ENV !== 'test';
+
+const authProviders = [
+  ...(shouldEnableGoogleStrategy ? [GoogleStrategy] : []),
+  RefreshTokenMapper,
+  {
+    provide: AuthService,
+    useClass: AuthServiceImpl,
+  },
+  {
+    provide: TokensRepositoryPort,
+    useClass: TokensTypeormRepository,
+  },
+];
+
 function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey: string } {
   const privateKey = Buffer.from(config.get<string>('JWT_PRIVATE_KEY_BASE64') ?? '', 'base64').toString('utf8');
   const publicKey = Buffer.from(config.get<string>('JWT_PUBLIC_KEY_BASE64') ?? '', 'base64').toString('utf8');
@@ -57,18 +72,7 @@ function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey:
       },
     }),
   ],
-  providers: [
-    GoogleStrategy,
-    RefreshTokenMapper,
-    {
-      provide: AuthService,
-      useClass: AuthServiceImpl,
-    },
-    {
-      provide: TokensRepositoryPort,
-      useClass: TokensTypeormRepository,
-    },
-  ],
+  providers: authProviders,
   controllers: [AuthController],
   exports: [AuthService],
 })

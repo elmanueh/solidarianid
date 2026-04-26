@@ -179,3 +179,5 @@ out
 .atl*
 .gga
 .atl
+
+commits-counter.sh

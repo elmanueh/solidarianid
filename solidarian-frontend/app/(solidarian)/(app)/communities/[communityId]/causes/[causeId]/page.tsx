@@ -55,6 +55,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
   }
 
   const canSeeFloatingActionButton = currentUser && community.creator.id === currentUser.id;
+  const canShowFollowButton = !currentUser || community.creator.id !== currentUser.id;
   const pexelsService = new PexelsImageService();
   const bannerImage = await pexelsService.getDeterministicBanner({ uuid: causeId, theme: cause.name });
 
@@ -74,6 +75,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
           <CauseInfoCard
             causeId={causeId}
             initialIsFollowing={Boolean(currentUser && cause.userIds.includes(currentUser.id))}
+            showFollowButton={canShowFollowButton}
             description={cause.description}
             initialDate={cause.initialDate}
             durationDays={cause.durationDays}

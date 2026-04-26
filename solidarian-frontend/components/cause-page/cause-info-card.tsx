@@ -8,6 +8,7 @@ import { IconCalendarEvent, IconClock, IconInfoCircle, IconTargetArrow } from '@
 interface CauseInfoCardProps {
   causeId: string;
   initialIsFollowing: boolean;
+  showFollowButton: boolean;
   description: string;
   initialDate: string;
   durationDays: number;
@@ -18,6 +19,7 @@ interface CauseInfoCardProps {
 export default function CauseInfoCard({
   causeId,
   initialIsFollowing,
+  showFollowButton,
   description,
   initialDate,
   durationDays,
@@ -47,7 +49,7 @@ export default function CauseInfoCard({
             </Badge>
           </div>
 
-          <CauseFollowButton causeId={causeId} following={initialIsFollowing} />
+          {showFollowButton && <CauseFollowButton causeId={causeId} following={initialIsFollowing} />}
         </div>
 
         <CardDescription className="min-h-20 text-sm leading-relaxed text-muted-foreground">

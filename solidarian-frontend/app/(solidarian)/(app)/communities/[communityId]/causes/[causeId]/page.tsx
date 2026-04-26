@@ -4,6 +4,7 @@ import CauseInfoCard from '@/components/cause-page/cause-info-card';
 import FloatingActionButton from '@/components/cause-page/floating-action-button';
 import { authServiceServer } from '@/features/auth/services/auth.service.server';
 import { GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY } from '@/features/causes/api/graphql/causes.documents';
+import { GET_COMMUNITY_BY_ID_QUERY } from '@/features/communities/api/graphql/communities.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
@@ -38,6 +39,22 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
   }
 
   const currentUser = await authServiceServer.getCurrentUser();
+  const community = (await graphqlCliente.query(GET_COMMUNITY_BY_ID_QUERY, { id: communityId })).community;
+
+  if (!community) {
+    return (
+      <div className="flex min-h-screen items-center justify-center px-4">
+        <div className="max-w-md space-y-4 rounded-2xl border border-dashed p-8 text-center">
+          <p className="font-semibold text-[#1A2D54]">Comunidad no encontrada</p>
+          <Link href={ROUTES.app.home} className="inline-block text-sm text-[#40A9FF] underline">
+            Volver al inicio
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const canSeeFloatingActionButton = currentUser && community.creator.id === currentUser.id;
   const pexelsService = new PexelsImageService();
   const bannerImage = await pexelsService.getDeterministicBanner({ uuid: causeId, theme: cause.name });
 
@@ -70,7 +87,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
         </div>
       </div>
 
-      <FloatingActionButton communityId={communityId} causeId={causeId} />
+      {canSeeFloatingActionButton && <FloatingActionButton communityId={communityId} causeId={causeId} />}
     </div>
   );
 }

@@ -21,6 +21,9 @@ export class SubscriptionEntity {
   createdAt: Date;
 
   @Column('uuid', { array: true, default: [] })
+  requestIds: string[];
+
+  @Column('uuid', { array: true, default: [] })
   communityFollowedIds: string[];
 
   @Column('uuid', { array: true, default: [] })

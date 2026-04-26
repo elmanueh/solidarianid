@@ -15,8 +15,9 @@ export class SubscriptionMapper extends Mapper<Subscription, SubscriptionEntity>
     entity.createdAt = model.createdAt;
     entity.p256dh = model.p256dh;
     entity.auth = model.auth;
-    entity.communityFollowedIds = model.communityFollowedIds;
-    entity.causeFollowedIds = model.causeFollowedIds;
+    entity.requestIds = model.requestIds;
+    entity.communityFollowedIds = model.followedCommunityIds;
+    entity.causeFollowedIds = model.followedCauseIds;
     return entity;
   }
 
@@ -28,8 +29,9 @@ export class SubscriptionMapper extends Mapper<Subscription, SubscriptionEntity>
         p256dh: entity.p256dh,
         auth: entity.auth,
         createdAt: entity.createdAt,
-        communityFollowedIds: entity.communityFollowedIds,
-        causeFollowedIds: entity.causeFollowedIds,
+        requestIds: entity.requestIds,
+        followedCommunityIds: entity.communityFollowedIds,
+        followedCauseIds: entity.causeFollowedIds,
       },
       entity.id,
     );

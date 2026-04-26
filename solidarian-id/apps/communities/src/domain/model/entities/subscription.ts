@@ -5,14 +5,14 @@ import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { sequence } from '../../../../../../libs/ddd/src/either';
 
 export interface SubscriptionProps {
-  id: UniqueEntityID;
   userId: UniqueEntityID;
   endpoint: string;
   p256dh: string;
   auth: string;
   createdAt: Date;
-  communityFollowedIds: UniqueEntityID[];
-  causeFollowedIds: UniqueEntityID[];
+  requestIds: UniqueEntityID[];
+  followedCommunityIds: UniqueEntityID[];
+  followedCauseIds: UniqueEntityID[];
 }
 
 interface SubscriptionCreationProps {
@@ -21,8 +21,9 @@ interface SubscriptionCreationProps {
   p256dh: string;
   auth: string;
   createdAt?: Date;
-  communityFollowedIds?: string[];
-  causeFollowedIds?: string[];
+  requestIds?: string[];
+  followedCommunityIds?: string[];
+  followedCauseIds?: string[];
 }
 
 export class Subscription extends Entity<SubscriptionProps> {
@@ -50,12 +51,42 @@ export class Subscription extends Entity<SubscriptionProps> {
     return this.props.createdAt;
   }
 
-  get communityFollowedIds(): string[] {
-    return this.props.communityFollowedIds.map(id => id.value);
+  get followedCommunityIds(): string[] {
+    return this.props.followedCommunityIds.map(id => id.value);
   }
 
-  get causeFollowedIds(): string[] {
-    return this.props.causeFollowedIds.map(id => id.value);
+  get followedCauseIds(): string[] {
+    return this.props.followedCauseIds.map(id => id.value);
+  }
+
+  get requestIds(): string[] {
+    return this.props.requestIds?.map(id => id.value) ?? [];
+  }
+
+  followPendingRequest(requestId: string): Either<ValidationError, void> {
+    const requestUniqueId = UniqueEntityID.create(requestId);
+
+    if (requestUniqueId.isLeft()) {
+      return left(requestUniqueId.value);
+    }
+
+    if (!this.props.requestIds?.some(currentId => currentId.value === requestId)) {
+      this.props.requestIds = [...(this.props.requestIds ?? []), requestUniqueId.value];
+    }
+
+    return right(undefined);
+  }
+
+  unfollowPendingRequest(requestId: string): Either<ValidationError, void> {
+    const requestUniqueId = UniqueEntityID.create(requestId);
+
+    if (requestUniqueId.isLeft()) {
+      return left(requestUniqueId.value);
+    }
+
+    this.props.requestIds = this.props.requestIds?.filter(currentId => currentId.value !== requestId);
+
+    return right(undefined);
   }
 
   followCommunity(communityId: string): Either<ValidationError, void> {
@@ -65,8 +96,8 @@ export class Subscription extends Entity<SubscriptionProps> {
       return left(communityUniqueId.value);
     }
 
-    if (!this.props.communityFollowedIds.some(currentId => currentId.value === communityId)) {
-      this.props.communityFollowedIds.push(communityUniqueId.value);
+    if (!this.props.followedCommunityIds.some(currentId => currentId.value === communityId)) {
+      this.props.followedCommunityIds.push(communityUniqueId.value);
     }
 
     return right(undefined);
@@ -79,7 +110,7 @@ export class Subscription extends Entity<SubscriptionProps> {
       return left(communityUniqueId.value);
     }
 
-    this.props.communityFollowedIds = this.props.communityFollowedIds.filter(
+    this.props.followedCommunityIds = this.props.followedCommunityIds.filter(
       currentId => currentId.value !== communityId,
     );
 
@@ -93,8 +124,8 @@ export class Subscription extends Entity<SubscriptionProps> {
       return left(causeUniqueId.value);
     }
 
-    if (!this.props.causeFollowedIds.some(currentId => currentId.value === causeId)) {
-      this.props.causeFollowedIds.push(causeUniqueId.value);
+    if (!this.props.followedCauseIds.some(currentId => currentId.value === causeId)) {
+      this.props.followedCauseIds.push(causeUniqueId.value);
     }
 
     return right(undefined);
@@ -107,7 +138,7 @@ export class Subscription extends Entity<SubscriptionProps> {
       return left(causeUniqueId.value);
     }
 
-    this.props.causeFollowedIds = this.props.causeFollowedIds.filter(currentId => currentId.value !== causeId);
+    this.props.followedCauseIds = this.props.followedCauseIds.filter(currentId => currentId.value !== causeId);
 
     return right(undefined);
   }
@@ -125,13 +156,19 @@ export class Subscription extends Entity<SubscriptionProps> {
       return left(userId.value);
     }
 
-    const communitiesIdOrError = sequence(props.communityFollowedIds?.map(id => UniqueEntityID.create(id)));
+    const requestPendingFollowedIdsOrError = sequence(props.requestIds?.map(id => UniqueEntityID.create(id)));
+
+    if (requestPendingFollowedIdsOrError.isLeft()) {
+      return left(requestPendingFollowedIdsOrError.value);
+    }
+
+    const communitiesIdOrError = sequence(props.followedCommunityIds?.map(id => UniqueEntityID.create(id)));
 
     if (communitiesIdOrError.isLeft()) {
       return left(communitiesIdOrError.value);
     }
 
-    const causesIdOrError = sequence(props.causeFollowedIds?.map(id => UniqueEntityID.create(id)));
+    const causesIdOrError = sequence(props.followedCauseIds?.map(id => UniqueEntityID.create(id)));
 
     if (causesIdOrError.isLeft()) {
       return left(causesIdOrError.value);
@@ -140,14 +177,14 @@ export class Subscription extends Entity<SubscriptionProps> {
     return right(
       new Subscription(
         {
-          id: uniqueId.value,
           userId: userId.value,
           endpoint: props.endpoint,
           p256dh: props.p256dh,
           auth: props.auth,
           createdAt: props.createdAt ?? new Date(),
-          communityFollowedIds: communitiesIdOrError.value,
-          causeFollowedIds: causesIdOrError.value,
+          requestIds: requestPendingFollowedIdsOrError.value,
+          followedCommunityIds: communitiesIdOrError.value,
+          followedCauseIds: causesIdOrError.value,
         },
         uniqueId.value,
       ),

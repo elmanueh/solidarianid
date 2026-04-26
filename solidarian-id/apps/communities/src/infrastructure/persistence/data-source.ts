@@ -1,3 +1,4 @@
+import { SubscriptionEntity } from '@app/communities/infrastructure/persistence/entities/subscription.entity';
 import { getTypeOrmConfig } from '@app/ddd/repository/modules/database-typeorm.module';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { ActionEntity } from './entities/action.entity';
@@ -24,6 +25,7 @@ const COMMUNITIES_ENTITIES = [
   EventUserEntity,
   ObjetiveUserEntity,
   RequestEntity,
+  SubscriptionEntity,
 ];
 
 const AppDataSource = new DataSource(

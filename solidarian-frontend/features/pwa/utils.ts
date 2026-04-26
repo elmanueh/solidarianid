@@ -20,9 +20,15 @@ export async function getCurrentPushSubscription(): Promise<PushSubscription | n
 
 export async function subscribeToPush(): Promise<PushSubscription | null> {
   const registration = await globalThis.navigator.serviceWorker.ready;
+  const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+
+  if (!vapidPublicKey) {
+    throw new Error('Missing NEXT_PUBLIC_VAPID_PUBLIC_KEY environment variable.');
+  }
+
   const sub = await registration.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(process.env.VAPID_PUBLIC_KEY || ''),
+    applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
   });
 
   return sub;
@@ -40,7 +46,7 @@ export function getNotificationUrl(data?: StoredNotificationData): string {
   switch (data.type) {
     case 'ACTION':
       if (data.communityId && data.actionId) {
-        return `/communities/${data.communityId}/actions/${data.actionId}`;
+        return `/communities/${data.communityId}/causes/${data.causeId}/actions/${data.actionId}`;
       }
       return '/notifications';
 
@@ -52,7 +58,7 @@ export function getNotificationUrl(data?: StoredNotificationData): string {
 
     case 'REQUEST_STATUS_CHANGED':
       if (data.requestId) {
-        return `/requests/${data.requestId}`;
+        return `/requests`;
       }
       return '/notifications';
 

@@ -16,7 +16,9 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -74,6 +76,17 @@ export class SubscriptionsController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Registrar una push subscription del usuario autenticado' })
+  @ApiCreatedResponse({
+    description: 'Suscripción push registrada correctamente',
+    type: PushSubscriptionCreatedResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'El cuerpo de la petición es inválido o faltan campos requeridos',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Error interno del servidor',
+  })
   async pushSubscription(
     @CurrentUser('sub') userId: string,
     @Body() pushSubscriptionRequestDto: PushSubscriptionRequestDto,
@@ -85,20 +98,28 @@ export class SubscriptionsController {
     if (pushSubscription.isLeft()) {
       throw pushSubscription.value;
     }
-
     return SubscriptionDomainMapper.toSubscriptionDto(pushSubscription.value);
   }
 
   @Delete(':endpoint')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Eliminar una push subscription del usuario autenticado' })
+  @ApiNoContentResponse({
+    description: 'Suscripción push eliminada correctamente',
+  })
+  @ApiBadRequestResponse({
+    description: 'El endpoint proporcionado no es válido',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Error interno del servidor',
+  })
   async deleteSubscription(@Param('endpoint') endpoint: string, @CurrentUser('sub') userId: string) {
     const result = await this.subscriptionsService.deleteSubscription(endpoint, userId);
 
     if (result.isLeft()) {
       throw result.value;
     }
-
     return undefined;
   }
 }

@@ -122,7 +122,7 @@ export class UserPreferences extends ValueObject<UserPreferencesProps> {
       preferredSDGs: [],
       preferredCategories: [],
       durationPreferences: [DurationPreference.ANY],
-      notificationsEnabled: true,
+      notificationsEnabled: false,
     });
   }
 

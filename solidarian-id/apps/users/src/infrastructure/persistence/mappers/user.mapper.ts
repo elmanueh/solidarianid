@@ -42,7 +42,7 @@ export class UserMapper implements Mapper<User, UserEntity> {
         preferredSDGs: entity.preferences.preferredSDGs || [],
         preferredCategories: entity.preferences.preferredCategories || [],
         durationPreferences: entity.preferences.durationPreferences || [],
-        notificationsEnabled: entity.preferences.notificationsEnabled ?? true,
+        notificationsEnabled: entity.preferences.notificationsEnabled ?? false,
       });
 
       if (preferencesOrError.isLeft()) {

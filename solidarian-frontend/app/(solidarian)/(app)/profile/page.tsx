@@ -20,6 +20,7 @@ import { toast } from 'sonner';
 import { ProfileLink } from '@/components/profile/profile-link';
 import { ThemeButton } from '@/components/theme-button';
 import { Button } from '@/components/ui';
+import { authService } from '@/features/auth/services/auth.service';
 import { useAppSelector } from '@/features/redux/redux-hook';
 import { ROUTES } from '@/features/routes';
 import { useProfileImpactStats } from '@/hooks/use-profile-impact-stats';
@@ -63,10 +64,11 @@ export default function ProfilePage() {
     },
   ];
 
-  const handleLogout = () => {
+  async function handleLogout() {
     toast.info('Sesión cerrada');
+    await authService.logout();
     router.push('/');
-  };
+  }
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-10 px-2 pb-24 lg:gap-16 lg:pb-12">

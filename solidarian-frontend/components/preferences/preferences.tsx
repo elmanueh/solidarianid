@@ -76,7 +76,7 @@ export function PreferencesStepper() {
         preferredCategories: currentUser?.preferences.preferredCategories || [],
         preferredSDGs: currentUser?.preferences.preferredSDGs || [],
         durationPreferences: currentUser?.preferences.durationPreferences || [],
-        notificationsEnabled: currentUser?.preferences.notificationsEnabled ?? true,
+        notificationsEnabled: currentUser?.preferences.notificationsEnabled ?? false,
       },
     [currentUser, formPreferences]
   );
@@ -93,7 +93,7 @@ export function PreferencesStepper() {
       return;
     }
 
-    const initialNotificationsEnabled = currentUser.preferences.notificationsEnabled ?? true;
+    const initialNotificationsEnabled = currentUser.preferences.notificationsEnabled ?? false;
 
     try {
       setIsSaving(true);

@@ -3,12 +3,15 @@ import { handleLogout } from '@/features/redux/userSlice';
 import { ROUTES } from '@/features/routes';
 import axios, { AxiosError, type AxiosRequestConfig } from 'axios';
 
+// Browser-only Axios client.
+// Keep REST calls on Next origin via relative /api.
+
 type RetriableRequestConfig = AxiosRequestConfig & {
   _sessionRetried?: boolean;
   _skipLoginRedirect?: boolean;
 };
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+const API_BASE_URL = '/api';
 
 const AUTH_RECOVERY_EXCLUDED_PATHS = new Set(['/auth/login', '/auth/logout', '/auth/refresh']);
 

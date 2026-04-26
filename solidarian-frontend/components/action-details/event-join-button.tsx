@@ -77,9 +77,9 @@ export default function EventJoinButton({
 
     try {
       if (nextJoined) {
-        await joinEventMutation({ variables: { eventId, userId } });
+        await joinEventMutation({ variables: { eventId } });
       } else {
-        await leaveEventMutation({ variables: { eventId, userId } });
+        await leaveEventMutation({ variables: { eventId } });
       }
 
       toast(nextJoined ? '¡Te has unido al evento!' : 'Has cancelado tu asistencia', {

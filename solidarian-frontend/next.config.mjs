@@ -12,7 +12,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_USERS_URL}/api/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL}/api/:path*`,
       },
       {
         source: '/photos',

@@ -4,7 +4,12 @@ import { ActionsGraphqlMapper } from '@app/communities/infrastructure/presentati
 import { CausesGraphqlMapper } from '@app/communities/infrastructure/presentation/controllers/graphql/mappers/causes-graphql.mapper';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { CommunityMembershipPolicy, Resource, Action as SecurityAction } from '@solidarianid/security/core';
+import {
+  CommunityMembershipPolicy,
+  Resource,
+  Action as SecurityAction,
+  UsersPolicy,
+} from '@solidarianid/security/core';
 import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
 import { Action } from '../entities/action';
 import { GraphqlLoadersService } from '../loaders/graphql-loaders.service';
@@ -46,8 +51,8 @@ export class CausesResolver {
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Authorize({
     action: SecurityAction.READ,
-    resource: Resource.CAUSE,
-    policy: CommunityMembershipPolicy.MEMBER_OR_CREATOR,
+    resource: Resource.USER,
+    policy: UsersPolicy.SELF_ONLY,
     entityId: 'userId',
   })
   async userFollowedCauses(@Args('userId', { type: () => ID }, new ParseUUIDPipe()) userId: string): Promise<Cause[]> {

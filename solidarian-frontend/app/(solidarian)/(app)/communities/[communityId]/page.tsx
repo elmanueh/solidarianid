@@ -1,12 +1,12 @@
 import CommunityHeader from '@/components/community-page/community-header';
 import CommunityTabs from '@/components/community-page/community-tabs';
 import CommunityFloatingActionButton from '@/components/community-page/floating-action-button';
-import { authService } from '@/features/auth/services/auth.service';
+import { authServiceServer } from '@/features/auth/services/auth.service.server';
 import {
   GET_COMMUNITY_BY_ID_QUERY,
   type GetCommunityByIdResult,
 } from '@/features/communities/api/graphql/communities.documents';
-import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
+import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { ROUTES } from '@/features/routes';
@@ -28,7 +28,7 @@ export default async function CommunityPage({ params }: Readonly<CommunityPagePr
   noStore();
 
   const { communityId } = await params;
-  const graphqlClient = new GraphqlClientService(getInstanceServerApolloClient());
+  const graphqlClient = new GraphqlClientService(await getInstanceServerApolloClient());
   const community = (await graphqlClient.query(GET_COMMUNITY_BY_ID_QUERY, { id: communityId })).community;
 
   if (!community) {
@@ -44,7 +44,7 @@ export default async function CommunityPage({ params }: Readonly<CommunityPagePr
     );
   }
 
-  const currentUser = await authService.getCurrentUser();
+  const currentUser = await authServiceServer.getCurrentUser();
   const membersMap = processUsers(community);
 
   const members = Array.from(membersMap.values());

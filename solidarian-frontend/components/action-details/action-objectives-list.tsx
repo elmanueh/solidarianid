@@ -4,7 +4,6 @@ import ContributeObjectiveModal from '@/components/action-details/contribute-obj
 import { Badge, Button, Card, CardDescription, CardTitle, Progress } from '@/components/ui';
 import { CONTRIBUTE_OBJECTIVE_MUTATION, GetActionResult } from '@/features/actions/api/graphql/actions.documents';
 import { getErrorMessage } from '@/features/axios/errors.handler';
-import { useAppSelector } from '@/features/redux/redux-hook';
 import { useMutation } from '@apollo/client/react';
 import { IconCircleCheck, IconPlus } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -19,7 +18,6 @@ export default function ActionObjectivesList({
   actionId,
   objectives: initialObjectives,
 }: Readonly<ActionObjectivesListProps>) {
-  const userId = useAppSelector(state => state.auth.currentUser?.id);
   const [objectives, setObjectives] = useState(initialObjectives);
   const [selectedObjectiveIndex, setSelectedObjectiveIndex] = useState(-1);
   const [contributeMutation] = useMutation(CONTRIBUTE_OBJECTIVE_MUTATION);
@@ -33,7 +31,7 @@ export default function ActionObjectivesList({
 
     try {
       const mutationResult = await contributeMutation({
-        variables: { actionId, objectiveName: targetObjective.name, userId: userId!, amount: contributeValue },
+        variables: { actionId, objectiveName: targetObjective.name, amount: contributeValue },
       });
 
       const updatedObjective = mutationResult.data?.contributeObjective;

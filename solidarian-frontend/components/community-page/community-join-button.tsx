@@ -40,7 +40,6 @@ export default function CommunityJoinButton({ communityId, initialIsMember }: Re
         const result = await leaveCommunity({
           variables: {
             communityId,
-            userId: currentUserId,
           },
         });
 
@@ -52,7 +51,6 @@ export default function CommunityJoinButton({ communityId, initialIsMember }: Re
         const result = await joinCommunity({
           variables: {
             communityId,
-            userId: currentUserId,
           },
         });
 

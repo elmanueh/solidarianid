@@ -4,12 +4,7 @@ import { ErrorLink } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { OperationTypeNode } from 'graphql';
 import { createClient } from 'graphql-ws';
-
-const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? 'http://localhost:8090/graphql';
-const HTTP_URL = process.env.NEXT_PUBLIC_GRAPHQL_HTTP_URL ?? GRAPHQL_ENDPOINT;
-const WS_URL =
-  process.env.NEXT_PUBLIC_GRAPHQL_WS_URL ??
-  GRAPHQL_ENDPOINT.replace(/^http(s?):\/\//, (_, secure) => `ws${secure ? 's' : ''}://`);
+import { HTTP_URL, WS_URL } from '@/features/graphql/graphql-config';
 
 const httpLink = new HttpLink({
   uri: HTTP_URL,
@@ -66,13 +61,4 @@ export const createApolloClient = (): ApolloClient => {
     cache: new InMemoryCache(),
     link: ApolloLink.from([errorLink, link]),
   });
-};
-
-let instanceServerApolloClient: ApolloClient | undefined = undefined;
-
-export const getInstanceServerApolloClient = (): ApolloClient => {
-  if (!instanceServerApolloClient) {
-    instanceServerApolloClient = createApolloClient();
-  }
-  return instanceServerApolloClient;
 };

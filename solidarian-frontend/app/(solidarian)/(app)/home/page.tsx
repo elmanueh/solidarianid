@@ -3,7 +3,7 @@ import { CommunityCard } from '@/components/community-card';
 import { HeaderHome } from '@/components/home/header-home';
 import { GET_CAUSES_QUERY } from '@/features/causes/api/graphql/causes.documents';
 import { GET_COMMUNITIES_QUERY } from '@/features/communities/api/graphql/communities.documents';
-import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
+import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { ROUTES } from '@/features/routes';
@@ -42,7 +42,7 @@ const loadHomeData = async (): Promise<{
   errorCommunities: string | null;
   errorCauses: string | null;
 }> => {
-  const client = getInstanceServerApolloClient();
+  const client = await getInstanceServerApolloClient();
   const graphql = new GraphqlClientService(client);
   const featuredLimit = normalizeLimit(3);
   const causesLimit = normalizeLimit(6);

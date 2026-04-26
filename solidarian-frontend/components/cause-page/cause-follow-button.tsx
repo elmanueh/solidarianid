@@ -28,17 +28,20 @@ export default function CauseFollowButton({ causeId, following }: Readonly<Cause
   const isLoading = joiningCause || leavingCause;
 
   const handleFollow = async () => {
-    const userId = currentUserId!;
+    if (!currentUserId) {
+      toast.error('Debes iniciar sesion para seguir esta causa');
+      return;
+    }
 
     try {
       if (isFollowing) {
-        const result = await leaveCause({ variables: { causeId, userId } });
+        const result = await leaveCause({ variables: { causeId } });
         if (result.data?.leaveCause) {
           setIsFollowing(false);
           toast.success('Has dejado de seguir esta causa');
         }
       } else {
-        const result = await joinCause({ variables: { causeId, userId } });
+        const result = await joinCause({ variables: { causeId } });
         if (result.data?.joinCause) {
           setIsFollowing(true);
           toast.success('Ahora sigues esta causa');

@@ -2,6 +2,9 @@ import { User } from '@/features/auth/model/user';
 import api from '@/features/axios/axios';
 import type { AxiosRequestConfig } from 'axios';
 
+// Browser-oriented auth service.
+// Server components must use auth.service.server.ts.
+
 export type UpdateUserProfilePayload = Pick<User, 'fullName' | 'username' | 'mobilePhone' | 'city' | 'countryCode'>;
 
 type GetCurrentUserOptions = {

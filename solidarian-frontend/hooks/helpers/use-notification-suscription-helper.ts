@@ -39,7 +39,8 @@ export async function fetchUserSubscriptions(
   }
 
   const queryString = params.toString();
-  const url = `${communitiesApiBase}/api/subscriptions/${userId}${queryString ? `?${queryString}` : ''}`;
+  const normalizedBase = communitiesApiBase.replace(/\/$/, '');
+  const url = `${normalizedBase}/api/subscriptions/${userId}${queryString ? `?${queryString}` : ''}`;
 
   try {
     const response = await fetch(url, {

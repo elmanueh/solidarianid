@@ -115,12 +115,11 @@ export type JoinCommunityResult = {
 
 export type JoinCommunityVariables = {
   communityId: string;
-  userId: string;
 };
 
 export const JOIN_COMMUNITY_MUTATION: TypedDocumentNode<JoinCommunityResult, JoinCommunityVariables> = gql`
-  mutation JoinCommunity($communityId: ID!, $userId: ID!) {
-    joinCommunity(communityId: $communityId, userId: $userId)
+  mutation JoinCommunity($communityId: ID!) {
+    joinCommunity(communityId: $communityId)
   }
 `;
 
@@ -131,12 +130,11 @@ export type LeaveCommunityResult = {
 
 export type LeaveCommunityVariables = {
   communityId: string;
-  userId: string;
 };
 
 export const LEAVE_COMMUNITY_MUTATION: TypedDocumentNode<LeaveCommunityResult, LeaveCommunityVariables> = gql`
-  mutation LeaveCommunity($communityId: ID!, $userId: ID!) {
-    leaveCommunity(communityId: $communityId, userId: $userId)
+  mutation LeaveCommunity($communityId: ID!) {
+    leaveCommunity(communityId: $communityId)
   }
 `;
 
@@ -156,7 +154,6 @@ export type CreateCommunityRequestVariables = {
       initialDate: string;
       durationDays: number;
     }[];
-    userId: string;
   };
 };
 

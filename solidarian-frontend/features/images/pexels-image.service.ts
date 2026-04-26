@@ -1,3 +1,4 @@
+import { APP_URLS } from '@/features/config/urls';
 import {
   BannerImageResult,
   GetDeterministicBannerParams,
@@ -12,17 +13,7 @@ interface PexelsSearchResponse {
 const globalSearchCache = new Map<string, PexelsPhoto[]>();
 
 export class PexelsImageService {
-  private readonly gatewayBaseUrl =
-    process.env.NEXT_PUBLIC_GATEWAY_URL ?? process.env.GATEWAY_BASE_URL ?? 'http://localhost:8090';
   private readonly fallbackImageUrl = 'https://images.pexels.com/photos/1182691/pexels-photo-1182691.jpeg';
-
-  private getPhotosEndpoint(): string {
-    if (typeof window !== 'undefined') {
-      return '/photos';
-    }
-
-    return new URL('/photos', this.gatewayBaseUrl).toString();
-  }
 
   private hashUuid(uuid: string): number {
     let hash = 0;
@@ -78,9 +69,8 @@ export class PexelsImageService {
     if (cached) return cached;
 
     try {
-      const photosEndpoint = this.getPhotosEndpoint();
       const response = await fetch(
-        `${photosEndpoint}?query=${encodeURIComponent(keywords)}&per_page=30&orientation=landscape&size=large&order=popular`
+        `${APP_URLS.gateway.photos()}?query=${encodeURIComponent(keywords)}&per_page=30&orientation=landscape&size=large&order=popular`
       );
 
       if (!response.ok) throw new PexelsError(`API error: ${response.status}`);

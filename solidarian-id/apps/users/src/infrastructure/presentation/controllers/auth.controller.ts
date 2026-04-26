@@ -15,9 +15,12 @@ interface RefreshJwtPayload {
 }
 
 interface OAuthAuthenticatedUser {
-  id?: {
-    value?: string;
+  user?: {
+    id?: {
+      value?: string;
+    };
   };
+  newUser?: boolean;
   oauthErrorMessage?: string;
 }
 
@@ -60,7 +63,9 @@ export class AuthController {
   async googleCallback(@Req() request: Request, @Res() response: Response): Promise<void> {
     try {
       const oauthUser = request.user as OAuthAuthenticatedUser | undefined;
-      const userId = oauthUser?.id?.value;
+      const userId = oauthUser?.user?.id?.value;
+      const newUser = oauthUser?.newUser;
+
       const oauthErrorMessage = oauthUser?.oauthErrorMessage;
 
       if (!userId) {
@@ -77,7 +82,7 @@ export class AuthController {
       }
 
       this.setAuthCookies(response, result.value.accessToken, result.value.refreshToken);
-      response.redirect(this.resolveGoogleSuccessRedirectUrl());
+      response.redirect(this.resolveGoogleSuccessRedirectUrl(newUser));
     } catch (error) {
       response.redirect(this.buildGoogleFailureRedirectUrl(this.extractErrorMessage(error)));
     }
@@ -205,19 +210,22 @@ export class AuthController {
     return fromCookies;
   }
 
-  private resolveGoogleSuccessRedirectUrl(): string {
-    const explicitSuccessUrl = this.configService.get<string>('OAUTH_SUCCESS_REDIRECT_URL')?.trim();
-    if (explicitSuccessUrl) {
-      return explicitSuccessUrl;
+  private resolveGoogleSuccessRedirectUrl(newUser?: boolean): string {
+    const defaultSuccessUrlIfExists = this.configService.get<string>('OAUTH_SUCCESS_REDIRECT_URL_IF_EXISTS')?.trim();
+    const defaultSuccessUrlIfNotExists = this.configService
+      .get<string>('OAUTH_SUCCESS_REDIRECT_URL_IF_NOT_EXISTS')
+      ?.trim();
+
+    if (newUser === true && defaultSuccessUrlIfNotExists) {
+      return defaultSuccessUrlIfNotExists;
     }
 
-    const frontendRaw = this.configService.get<string>('FRONTEND_URL') ?? '';
-    const firstFrontend = frontendRaw
-      .split(',')
-      .map(url => url.trim())
-      .find(Boolean);
+    if (newUser === false && defaultSuccessUrlIfExists) {
+      return defaultSuccessUrlIfExists;
+    }
 
-    return firstFrontend || '/home';
+    const fallbackUrl = `${this.configService.get<string>('FRONTEND_URL')?.trim() ?? ''}/home`;
+    return fallbackUrl;
   }
 
   private resolveGoogleFailureRedirectUrl(): string {

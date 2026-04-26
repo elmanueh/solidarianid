@@ -27,13 +27,13 @@ export class UsersServiceImpl extends UsersService {
 
   async getOrRegisterUserIfNotExists(
     getOrRegisterUserCommand: RegisterUserCommand,
-  ): Promise<Either<ValidationError | RepositoryException, User>> {
+  ): Promise<Either<ValidationError | RepositoryException, { user: User; newUser: boolean }>> {
     const { username } = getOrRegisterUserCommand;
 
     const userOrError = await this.usersRepository.findByUsername(username);
     // Si el usuario existe, retornarlo
     if (userOrError.isRight()) {
-      return right(userOrError.value);
+      return right({ user: userOrError.value, newUser: false });
     }
 
     // Si el error es distinto a "no encontrado", retornar el error
@@ -47,7 +47,7 @@ export class UsersServiceImpl extends UsersService {
 
   private async registerAndGetCreatedUser(
     command: RegisterUserCommand,
-  ): Promise<Either<ValidationError | RepositoryException, User>> {
+  ): Promise<Either<ValidationError | RepositoryException, { user: User; newUser: boolean }>> {
     const registerResult = await this.registerUser(command);
     if (registerResult.isLeft()) {
       return left(registerResult.value as ValidationError | RepositoryException);
@@ -58,7 +58,7 @@ export class UsersServiceImpl extends UsersService {
       return left(createdUserOrError.value);
     }
 
-    return right(createdUserOrError.value);
+    return right({ user: createdUserOrError.value, newUser: true });
   }
 
   async registerUser(command: RegisterUserCommand): Promise<Either<Error, string>> {

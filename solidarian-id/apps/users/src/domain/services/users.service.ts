@@ -15,7 +15,7 @@ export abstract class UsersService {
    */
   abstract getOrRegisterUserIfNotExists(
     getOrRegisterUserCommand: RegisterUserCommand,
-  ): Promise<Either<ValidationError | RepositoryException, User>>;
+  ): Promise<Either<ValidationError | RepositoryException, { user: User; newUser: boolean }>>;
 
   /**
    *  Registra un nuevo usuario genérico en el sistema.

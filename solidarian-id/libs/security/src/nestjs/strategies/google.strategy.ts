@@ -11,10 +11,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     private readonly configService: ConfigService,
     private readonly userService: UsersService,
   ) {
-    const callbackURL =
-      configService.get<string>('OAUTH_GOOGLE_CALLBACK_URI') ??
-      configService.get<string>('OAUTH_GOOGLE_CALLBACK_URL') ??
-      '';
+    const callbackURL = configService.get<string>('OAUTH_GOOGLE_CALLBACK_URI') ?? '';
 
     super({
       clientID: configService.get<string>('OAUTH_GOOGLE_CLIENT_ID') ?? '',
@@ -54,9 +51,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
           ? userOrError.value.message
           : 'Unknown error during Google OAuth user registration';
 
-      return done(null, { oauthErrorMessage });
+      return done(userOrError.value, false, { oauthErrorMessage });
     }
 
-    return done(null, userOrError.value);
+    return done(null, { user: userOrError.value.user, newUser: userOrError.value.newUser });
   }
 }

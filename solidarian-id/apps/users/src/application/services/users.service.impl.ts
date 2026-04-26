@@ -6,11 +6,9 @@ import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.ex
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { User } from '@app/users/domain/model/user';
 import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
-import { AuthService } from '@app/users/domain/services/auth.service';
 import { RegisterUserCommand, UpdateUserProfileCommand, UsersService } from '@app/users/domain/services/users.service';
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { Email } from '@app/value-objects/model/email';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { CauseCategory, DurationPreference } from '@app/value-objects/model/user-preferences';

@@ -1,16 +1,27 @@
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { AuthService } from '@app/users/domain/services/auth.service';
 import { LoginUserDtoRequest } from '@app/users/infrastructure/presentation/dtos/login-user.request.dto';
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ApiTags } from '@nestjs/swagger';
-import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { JsonWebTokenError } from 'jsonwebtoken';
-import { Public } from '@solidarianid/security/nestjs';
+import { GoogleOAuthGuard, Public } from '@solidarianid/security/nestjs';
 import type { Request, Response } from 'express';
+import { JsonWebTokenError } from 'jsonwebtoken';
 
 interface RefreshJwtPayload {
   sub: string;
   jti?: string;
+}
+
+interface OAuthAuthenticatedUser {
+  user?: {
+    id?: {
+      value?: string;
+    };
+  };
+  newUser?: boolean;
+  oauthErrorMessage?: string;
 }
 
 @Controller('/api/auth')
@@ -20,6 +31,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Post('login')
@@ -38,6 +50,42 @@ export class AuthController {
 
     this.setAuthCookies(response, result.value.accessToken, result.value.refreshToken);
     response.status(HttpStatus.OK).send();
+  }
+
+  @Public()
+  @UseGuards(GoogleOAuthGuard)
+  @Get('google/login')
+  googleLogin() {}
+
+  @Public()
+  @UseGuards(GoogleOAuthGuard)
+  @Get('google/callback')
+  async googleCallback(@Req() request: Request, @Res() response: Response): Promise<void> {
+    try {
+      const oauthUser = request.user as OAuthAuthenticatedUser | undefined;
+      const userId = oauthUser?.user?.id?.value;
+      const newUser = oauthUser?.newUser;
+
+      const oauthErrorMessage = oauthUser?.oauthErrorMessage;
+
+      if (!userId) {
+        response.redirect(this.buildGoogleFailureRedirectUrl(oauthErrorMessage ?? 'OAuth user not found'));
+        return;
+      }
+
+      const deviceId = this.normalizeDeviceId(request.header('X-Device-Id'));
+      const result = await this.authService.loginAuthenticatedUser(userId, deviceId);
+
+      if (result.isLeft()) {
+        response.redirect(this.buildGoogleFailureRedirectUrl(this.extractErrorMessage(result.value)));
+        return;
+      }
+
+      this.setAuthCookies(response, result.value.accessToken, result.value.refreshToken);
+      response.redirect(this.resolveGoogleSuccessRedirectUrl(newUser));
+    } catch (error) {
+      response.redirect(this.buildGoogleFailureRedirectUrl(this.extractErrorMessage(error)));
+    }
   }
 
   @Post('refresh')
@@ -160,5 +208,64 @@ export class AuthController {
 
     const fromCookies = (request.cookies?.RefreshToken as string | undefined) ?? '';
     return fromCookies;
+  }
+
+  private resolveGoogleSuccessRedirectUrl(newUser?: boolean): string {
+    const defaultSuccessUrlIfExists = this.configService.get<string>('OAUTH_SUCCESS_REDIRECT_URL_IF_EXISTS')?.trim();
+    const defaultSuccessUrlIfNotExists = this.configService
+      .get<string>('OAUTH_SUCCESS_REDIRECT_URL_IF_NOT_EXISTS')
+      ?.trim();
+
+    if (newUser === true && defaultSuccessUrlIfNotExists) {
+      return defaultSuccessUrlIfNotExists;
+    }
+
+    if (newUser === false && defaultSuccessUrlIfExists) {
+      return defaultSuccessUrlIfExists;
+    }
+
+    const fallbackUrl = `${this.configService.get<string>('FRONTEND_URL')?.trim() ?? ''}/home`;
+    return fallbackUrl;
+  }
+
+  private resolveGoogleFailureRedirectUrl(): string {
+    const explicitFailureUrl = this.configService.get<string>('OAUTH_FAILURE_REDIRECT_URL')?.trim();
+    if (explicitFailureUrl) {
+      return explicitFailureUrl;
+    }
+
+    const frontendRaw = this.configService.get<string>('FRONTEND_URL') ?? '';
+    const firstFrontend = frontendRaw
+      .split(',')
+      .map(url => url.trim())
+      .find(Boolean);
+
+    return firstFrontend || '/login';
+  }
+
+  private buildGoogleFailureRedirectUrl(errorMessage: string): string {
+    const baseFailureUrl = this.resolveGoogleFailureRedirectUrl();
+    const normalizedErrorMessage = errorMessage?.trim() || 'oauth_failed';
+
+    try {
+      const url = new URL(baseFailureUrl);
+      url.searchParams.set('errorMessage', normalizedErrorMessage);
+      return url.toString();
+    } catch {
+      const separator = baseFailureUrl.includes('?') ? '&' : '?';
+      return `${baseFailureUrl}${separator}errorMessage=${encodeURIComponent(normalizedErrorMessage)}`;
+    }
+  }
+
+  private extractErrorMessage(error: unknown): string {
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+
+    if (typeof error === 'string' && error.trim()) {
+      return error;
+    }
+
+    return 'oauth_failed';
   }
 }

@@ -25,6 +25,42 @@ export class UsersServiceImpl extends UsersService {
     super();
   }
 
+  async getOrRegisterUserIfNotExists(
+    getOrRegisterUserCommand: RegisterUserCommand,
+  ): Promise<Either<ValidationError | RepositoryException, { user: User; newUser: boolean }>> {
+    const { username } = getOrRegisterUserCommand;
+
+    const userOrError = await this.usersRepository.findByUsername(username);
+    // Si el usuario existe, retornarlo
+    if (userOrError.isRight()) {
+      return right({ user: userOrError.value, newUser: false });
+    }
+
+    // Si el error es distinto a "no encontrado", retornar el error
+    if (!(userOrError.value instanceof EntityNotFoundException)) {
+      return left(userOrError.value);
+    }
+
+    // Si el usuario no existe, registrarlo y retornarlo
+    return this.registerAndGetCreatedUser(getOrRegisterUserCommand);
+  }
+
+  private async registerAndGetCreatedUser(
+    command: RegisterUserCommand,
+  ): Promise<Either<ValidationError | RepositoryException, { user: User; newUser: boolean }>> {
+    const registerResult = await this.registerUser(command);
+    if (registerResult.isLeft()) {
+      return left(registerResult.value as ValidationError | RepositoryException);
+    }
+
+    const createdUserOrError = await this.usersRepository.findById(registerResult.value);
+    if (createdUserOrError.isLeft()) {
+      return left(createdUserOrError.value);
+    }
+
+    return right({ user: createdUserOrError.value, newUser: true });
+  }
+
   async registerUser(command: RegisterUserCommand): Promise<Either<Error, string>> {
     // 1. Hashear la contraseña desde el principio para evitar trabajo innecesario
     const passwordHashingResult = await this.passwordManager.validateAndHashPassword(command.password);

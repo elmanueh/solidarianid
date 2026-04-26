@@ -122,6 +122,7 @@ export class CausesController {
   //DEPRECATED - usa GraphQL
   @Post('causes/:id/followers')
   @HttpCode(HttpStatus.CREATED)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Join a user as a supporter of a cause' })
   @ApiCreatedResponse({
     description: 'User successfully joined the cause',

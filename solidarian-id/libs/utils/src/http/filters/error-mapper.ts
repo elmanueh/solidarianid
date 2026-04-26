@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { AuthError } from '@app/ddd/errors/auth-error';
+import { AuthorizationError } from '@app/ddd/errors/authorization-error';
 import { DomainError } from '@app/ddd/errors/domain-error';
+import { ForbiddenException } from '@nestjs/common';
 
 export class ErrorMapper {
   static toHttp(error: Error) {
@@ -23,6 +25,10 @@ export class ErrorMapper {
 
     if (error instanceof AuthError) {
       return new UnauthorizedException(error.message);
+    }
+
+    if (error instanceof AuthorizationError) {
+      return new ForbiddenException(error.message);
     }
 
     if (error instanceof ValidationError || error instanceof DomainError) {

@@ -1,10 +1,17 @@
 import type { MetadataRoute } from 'next';
 
+export const APP_NAME = 'SolidarianID';
+export const APP_DEFAULT_TITLE = 'SolidarianID';
+export const APP_TITLE_TEMPLATE = '%s | SolidarianID';
+export const APP_DESCRIPTION =
+  'SolidarianID is a platform that connects volunteers with communities in need, fostering solidarity and collective action for a better world.';
+export const APP_THEME_COLOR = '#ffffff';
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Next.js PWA',
-    short_name: 'NextPWA',
-    description: 'A Progressive Web App built with Next.js',
+    name: APP_NAME,
+    short_name: APP_NAME,
+    description: APP_DESCRIPTION,
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
@@ -12,14 +19,16 @@ export default function manifest(): MetadataRoute.Manifest {
     prefer_related_applications: false,
     icons: [
       {
-        src: '/icon-192x192.png',
+        src: '/web-app-manifest-192x192.png',
         sizes: '192x192',
         type: 'image/png',
+        purpose: 'maskable',
       },
       {
-        src: '/icon-512x512.png',
+        src: '/web-app-manifest-512x512.png',
         sizes: '512x512',
         type: 'image/png',
+        purpose: 'maskable',
       },
     ],
   };

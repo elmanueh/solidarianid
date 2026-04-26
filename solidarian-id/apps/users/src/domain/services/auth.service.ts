@@ -19,6 +19,12 @@ export abstract class AuthService {
   ): Promise<Either<Error, AuthTokens>>;
 
   /**
+   * Inicia sesión de un usuario ya autenticado externamente (por ejemplo, OAuth).
+   * @param userId
+   */
+  abstract loginAuthenticatedUser(userId: string, deviceId?: string): Promise<Either<Error, AuthTokens>>;
+
+  /**
    * Refresca un nuevo access token para un usuario dado su refresh token.
    * @param refreshToken
    */

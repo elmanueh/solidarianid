@@ -43,6 +43,15 @@ export class AuthServiceImpl extends AuthService {
     return this.issueAndPersistTokens(userOrError.value.id, deviceId);
   }
 
+  async loginAuthenticatedUser(userId: string, deviceId?: string): Promise<Either<Error, AuthTokens>> {
+    const userIdOrError = UniqueEntityID.create(userId);
+    if (userIdOrError.isLeft()) {
+      return left(userIdOrError.value);
+    }
+
+    return this.issueAndPersistTokens(userIdOrError.value, deviceId);
+  }
+
   async refresh(refreshToken: string): Promise<Either<Error, AuthTokens>> {
     const payloadOrError = await this.verifyRefreshToken(refreshToken);
     if (payloadOrError.isLeft()) {

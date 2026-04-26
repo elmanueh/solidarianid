@@ -11,6 +11,13 @@ import { CauseCategory, DurationPreference } from '@app/value-objects/model/user
  */
 export abstract class UsersService {
   /**
+   * Obtiene la información de un usuario dado su username
+   */
+  abstract getOrRegisterUserIfNotExists(
+    getOrRegisterUserCommand: RegisterUserCommand,
+  ): Promise<Either<ValidationError | RepositoryException, { user: User; newUser: boolean }>>;
+
+  /**
    *  Registra un nuevo usuario genérico en el sistema.
    * @param command
    */

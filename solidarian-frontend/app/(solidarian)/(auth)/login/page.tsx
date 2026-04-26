@@ -14,6 +14,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldSeparator,
   Input,
   InputGroup,
   InputGroupAddon,
@@ -31,7 +32,7 @@ import { getErrorMessage } from '@/features/axios/errors.handler';
 import { handleLogin } from '@/features/redux/userSlice';
 import { ROUTES } from '@/features/routes';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
+import { IconBrandGoogle, IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -57,6 +58,12 @@ const loginFormSchema = z.object({
 });
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
+
+const GOOGLE_OAUTH_LOGIN_URL = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_LOGIN_URL;
+
+function onGoogleOauthSubmit() {
+  globalThis.location.assign(GOOGLE_OAUTH_LOGIN_URL || '');
+}
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -196,6 +203,15 @@ export default function LoginPage() {
               <Button type="submit" form="form-login" disabled={isLoading}>
                 <IconLogin2 />
                 {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+              </Button>
+
+              <FieldSeparator>
+                <span>o</span>
+              </FieldSeparator>
+
+              <Button type="button" onClick={onGoogleOauthSubmit} disabled={isLoading}>
+                <IconBrandGoogle stroke={2} />
+                Iniciar sesión con Google
               </Button>
 
               <FieldDescription className="text-center">

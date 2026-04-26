@@ -4,6 +4,7 @@ import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communit
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
+import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { Either, left, right } from '@app/ddd/either';
@@ -27,6 +28,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     private readonly communityQueryRepository: CommunitiesQueryRepositoryPort,
     private readonly communitiesPublisher: CommunitiesPublisherPort,
     private readonly subscriptionsRepository: SubscriptionsRepositoryPort,
+    private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
   ) {}
 
   async create(
@@ -84,7 +86,33 @@ export class CommunitiesServiceImpl implements CommunitiesService {
       return left(saveResult.value);
     }
 
+    const communitySubscriptionSyncResult = await this.syncUserCommunitySubscriptions(
+      communityDto.userId,
+      community.id.value,
+      'add',
+    );
+
+    if (communitySubscriptionSyncResult.isLeft()) {
+      return left(communitySubscriptionSyncResult.value);
+    }
+
+    for (const cause of community.causes) {
+      const causeSubscriptionSyncResult = await this.syncUserCauseSubscriptions(
+        communityDto.userId,
+        cause.id.value,
+        'add',
+      );
+
+      if (causeSubscriptionSyncResult.isLeft()) {
+        return left(causeSubscriptionSyncResult.value);
+      }
+    }
+
     await this.communitiesPublisher.publish(EventType.COMMUNITY_CREATED, community);
+
+    for (const cause of community.causes) {
+      await this.subscriptionsPublisher.publishCauseCreated(cause);
+    }
 
     return right(community);
   }
@@ -160,7 +188,6 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     }
 
     await this.communitiesPublisher.publish(EventType.COMMUNITY_MEMBER_JOINED, communityOrError.value);
-
     return right(saveResult.value);
   }
 
@@ -242,7 +269,37 @@ export class CommunitiesServiceImpl implements CommunitiesService {
         return left(saveResult.value);
       }
     }
+    return right(undefined);
+  }
 
+  private async syncUserCauseSubscriptions(
+    userId: string,
+    causeId: string,
+    action: 'add' | 'remove',
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const subscriptionsOrError = await this.subscriptionsRepository.findByUserId(userId);
+
+    if (subscriptionsOrError.isLeft()) {
+      return left(subscriptionsOrError.value);
+    }
+
+    if (subscriptionsOrError.value.length === 0) {
+      return right(undefined);
+    }
+
+    for (const subscription of subscriptionsOrError.value) {
+      const mutationResult = action === 'add' ? subscription.followCause(causeId) : subscription.unfollowCause(causeId);
+
+      if (mutationResult.isLeft()) {
+        return left(mutationResult.value);
+      }
+
+      const saveResult = await this.subscriptionsRepository.save(subscription);
+
+      if (saveResult.isLeft()) {
+        return left(saveResult.value);
+      }
+    }
     return right(undefined);
   }
 }

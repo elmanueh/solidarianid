@@ -9,6 +9,7 @@ import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repos
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
 import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
+import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
 import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { ActionsService } from '@app/communities/domain/services/actions.service';
@@ -49,6 +50,7 @@ export class RequestsServiceImpl extends RequestsService {
     private readonly causesService: CausesService,
     private readonly actionsService: ActionsService,
     private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
+    private readonly subscriptionsRepository: SubscriptionsRepositoryPort,
   ) {
     super();
   }
@@ -95,6 +97,15 @@ export class RequestsServiceImpl extends RequestsService {
 
     if (saveResult.isLeft()) {
       return left(saveResult.value);
+    }
+
+    const requestSubscriptionOrError = await this.syncUserRequestSubscriptions(
+      actorId,
+      communityRequestOrError.value.id.value,
+    );
+
+    if (requestSubscriptionOrError.isLeft()) {
+      return left(requestSubscriptionOrError.value);
     }
 
     await this.requestPublisher.publish(EventType.REQUEST_CREATED, communityRequestOrError.value);
@@ -149,6 +160,15 @@ export class RequestsServiceImpl extends RequestsService {
 
     if (saveResult.isLeft()) {
       return left(saveResult.value);
+    }
+
+    const requestSubscriptionOrError = await this.syncUserRequestSubscriptions(
+      actorId,
+      causeRequestOrError.value.id.value,
+    );
+
+    if (requestSubscriptionOrError.isLeft()) {
+      return left(requestSubscriptionOrError.value);
     }
 
     await this.requestPublisher.publish(EventType.REQUEST_CREATED, causeRequestOrError.value);
@@ -229,6 +249,15 @@ export class RequestsServiceImpl extends RequestsService {
 
     if (saveResult.isLeft()) {
       return left(saveResult.value);
+    }
+
+    const requestSubscriptionOrError = await this.syncUserRequestSubscriptions(
+      actorId,
+      actionRequestOrError.value.id.value,
+    );
+
+    if (requestSubscriptionOrError.isLeft()) {
+      return left(requestSubscriptionOrError.value);
     }
 
     await this.requestPublisher.publish(EventType.REQUEST_CREATED, actionRequestOrError.value);
@@ -355,5 +384,35 @@ export class RequestsServiceImpl extends RequestsService {
     }
 
     return right(requestsOrError.value);
+  }
+
+  private async syncUserRequestSubscriptions(
+    userId: string,
+    requestId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const subscriptionsOrError = await this.subscriptionsRepository.findByUserId(userId);
+
+    if (subscriptionsOrError.isLeft()) {
+      return right(undefined);
+    }
+
+    if (subscriptionsOrError.value.length === 0) {
+      return right(undefined);
+    }
+
+    for (const subscription of subscriptionsOrError.value) {
+      const resultOrError = subscription.followPendingRequest(requestId);
+
+      if (resultOrError.isLeft()) {
+        return left(resultOrError.value);
+      }
+
+      const saveResult = await this.subscriptionsRepository.save(subscription);
+
+      if (saveResult.isLeft()) {
+        return left(saveResult.value);
+      }
+    }
+    return right(undefined);
   }
 }

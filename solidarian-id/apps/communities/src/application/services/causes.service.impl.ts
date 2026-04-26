@@ -56,6 +56,16 @@ export class CausesServiceImpl implements CausesService {
       return left(saveResult.value);
     }
 
+    const subscriptionSyncResult = await this.syncUserCauseSubscriptions(
+      causeEventDto.userId,
+      causeOrError.value.id.value,
+      'add',
+    );
+
+    if (subscriptionSyncResult.isLeft()) {
+      return left(subscriptionSyncResult.value);
+    }
+
     await this.causesPublisher.publish(EventType.CAUSE_CREATED, causeOrError.value);
     await this.subscriptionsPublisher.publishCauseCreated(causeOrError.value);
 
@@ -219,7 +229,6 @@ export class CausesServiceImpl implements CausesService {
         return left(saveResult.value);
       }
     }
-
     return right(undefined);
   }
 }

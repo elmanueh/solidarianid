@@ -12,7 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { SecurityJwtModule } from '@solidarianid/security/nestjs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { generateKeyPairSync } from 'node:crypto';
-import { GoogleStrategy } from 'libs/security/src/nestjs/strategies/google.strategy';
+import { GoogleStrategy } from '@solidarianid/security/nestjs';
 
 function resolveJwtKeys(config: ConfigService): { privateKey: string; publicKey: string } {
   const privateKey = Buffer.from(config.get<string>('JWT_PRIVATE_KEY_BASE64') ?? '', 'base64').toString('utf8');

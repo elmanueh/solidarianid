@@ -19,7 +19,6 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-  Separator,
 } from '@/components/ui';
 import {
   PASSWORD_COMPLEXITY_REGEX,
@@ -33,7 +32,7 @@ import { getErrorMessage } from '@/features/axios/errors.handler';
 import { handleLogin } from '@/features/redux/userSlice';
 import { ROUTES } from '@/features/routes';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { IconBrandGoogle, IconBrandGoogleFilled, IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
+import { IconBrandGoogle, IconEye, IconEyeOff, IconLogin2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -59,6 +58,9 @@ const loginFormSchema = z.object({
 });
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
+
+const GOOGLE_OAUTH_LOGIN_URL =
+  process.env.NEXT_PUBLIC_GOOGLE_OAUTH_LOGIN_URL ?? 'http://localhost:3001/api/auth/google/login';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +90,9 @@ export default function LoginPage() {
     }
   }
 
-  async function onOauthSubmit() {}
+  function onGoogleOauthSubmit() {
+    window.location.assign(GOOGLE_OAUTH_LOGIN_URL);
+  }
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -205,7 +209,7 @@ export default function LoginPage() {
                 <span>o</span>
               </FieldSeparator>
 
-              <Button type="submit" onSubmit={onOauthSubmit}>
+              <Button type="button" onClick={onGoogleOauthSubmit} disabled={isLoading}>
                 <IconBrandGoogle stroke={2} />
                 Iniciar sesión con Google
               </Button>

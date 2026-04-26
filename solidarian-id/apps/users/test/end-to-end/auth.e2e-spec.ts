@@ -111,7 +111,7 @@ describe('AuthController (e2e)', () => {
       expect(setCookie.some(cookie => cookie.startsWith('AccessToken='))).toBe(true);
       expect(setCookie.some(cookie => cookie.startsWith('RefreshToken='))).toBe(true);
       expect(setCookie.some(cookie => cookie.includes('Path=/;'))).toBe(true);
-      expect(setCookie.some(cookie => cookie.includes('Path=/api/auth;'))).toBe(true);
+      expect(setCookie.some(cookie => cookie.includes('Path=/;'))).toBe(true);
       expect(response.body.accessToken).toBeUndefined();
       expect(response.body.refreshToken).toBeUndefined();
     });

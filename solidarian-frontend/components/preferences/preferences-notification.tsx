@@ -1,19 +1,18 @@
 'use client';
-import { usePwa } from '@/hooks/pwa/use-pwa';
 import { cn } from '@/lib/utils';
 import { IconBell } from '@tabler/icons-react';
 
 interface PreferencesNotificationProps {
   notificationsEnabled: boolean;
   setNotificationsEnabled: (enabled: boolean) => void;
+  disabled?: boolean;
 }
 
 export function PreferencesNotification({
   notificationsEnabled,
   setNotificationsEnabled,
+  disabled = false,
 }: Readonly<PreferencesNotificationProps>) {
-  const pwa = usePwa();
-
   return (
     <div className="flex flex-col gap-8 py-4">
       <div className="rounded-[48px] border border-preferences-border bg-preferences-panel p-10">
@@ -38,25 +37,19 @@ export function PreferencesNotification({
 
           <button
             type="button"
-            onClick={async () => {
-              if (notificationsEnabled) {
-                await pwa.unsubscribe();
-                setNotificationsEnabled(false);
+            onClick={() => {
+              if (disabled) {
                 return;
               }
 
-              const permission = await pwa.requestNotificationPermission();
-              if (permission !== 'granted') {
-                return;
-              }
-
-              await pwa.subscribe();
-              setNotificationsEnabled(true);
+              setNotificationsEnabled(!notificationsEnabled);
             }}
             aria-pressed={notificationsEnabled}
+            disabled={disabled}
             className={cn(
               'flex h-12 w-24 cursor-pointer items-center rounded-full p-2 shadow-inner transition-colors duration-500',
-              notificationsEnabled ? 'bg-success' : 'bg-preferences-track-off'
+              notificationsEnabled ? 'bg-success' : 'bg-preferences-track-off',
+              disabled && 'cursor-not-allowed opacity-60'
             )}
           >
             <span

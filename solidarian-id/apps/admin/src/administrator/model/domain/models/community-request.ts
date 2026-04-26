@@ -27,10 +27,6 @@ interface ReconstituteCommunityRequestProps extends ReconstituteRequestProps {
 }
 
 export class CommunityRequest extends Request<CommunityRequestProps> {
-  get causes(): ReadonlyArray<CauseRequest> {
-    return this.props.causes;
-  }
-
   private constructor(props: CommunityRequestProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -45,8 +41,9 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     const userIdOrError = UniqueEntityID.create(props.userId);
     if (userIdOrError.isLeft()) return left(userIdOrError.value);
 
-    if (props.causes.length < 1)
+    if (props.causes.length < 1) {
       return left(new RequestError('A community request must have at least one cause request.'));
+    }
 
     const causesOrError = sequence(
       props.causes.map(cause =>
@@ -132,5 +129,9 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
     if (res.isLeft()) return left(new RequestInvalidStatusError(res.value.message, this.id.value));
 
     return right(undefined);
+  }
+
+  get causes(): ReadonlyArray<CauseRequest> {
+    return this.props.causes;
   }
 }

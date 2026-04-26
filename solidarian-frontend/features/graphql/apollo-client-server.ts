@@ -1,4 +1,5 @@
 import { APP_URLS } from '@/features/config/urls';
+import { isEntityNotFoundGraphQLError } from '@/features/graphql/graphql-error.utils';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
 import { CombinedGraphQLErrors, CombinedProtocolErrors } from '@apollo/client/errors';
 import { ErrorLink } from '@apollo/client/link/error';
@@ -9,6 +10,10 @@ const errorLink = new ErrorLink(({ error, operation }) => {
   const operationName = operation.operationName || 'anonymous';
 
   if (CombinedGraphQLErrors.is(error)) {
+    if (isEntityNotFoundGraphQLError(error)) {
+      return;
+    }
+
     error.errors.forEach(({ message }) => {
       console.error(`[GraphQL error][${operationName}] ${message}`);
     });

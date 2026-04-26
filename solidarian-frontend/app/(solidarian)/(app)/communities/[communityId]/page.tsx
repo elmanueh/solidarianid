@@ -8,10 +8,10 @@ import {
 } from '@/features/communities/api/graphql/communities.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
+import { isEntityNotFoundGraphQLError } from '@/features/graphql/graphql-error.utils';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
-import { ROUTES } from '@/features/routes';
 import { unstable_noStore as noStore } from 'next/cache';
-import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 type CommunityPageProps = {
   params: Promise<{ communityId: string }>;
@@ -29,19 +29,20 @@ export default async function CommunityPage({ params }: Readonly<CommunityPagePr
 
   const { communityId } = await params;
   const graphqlClient = new GraphqlClientService(await getInstanceServerApolloClient());
-  const community = (await graphqlClient.query(GET_COMMUNITY_BY_ID_QUERY, { id: communityId })).community;
+  let community: GetCommunityByIdResult['community'] | undefined;
+
+  try {
+    community = (await graphqlClient.query(GET_COMMUNITY_BY_ID_QUERY, { id: communityId })).community;
+  } catch (error) {
+    if (isEntityNotFoundGraphQLError(error)) {
+      notFound();
+    }
+
+    throw error;
+  }
 
   if (!community) {
-    return (
-      <div className="flex min-h-screen items-center justify-center px-4">
-        <div className="max-w-md space-y-4 rounded-2xl border border-dashed p-8 text-center">
-          <p className="font-semibold text-[#1A2D54]">Comunidad no encontrada</p>
-          <Link href={ROUTES.app.home} className="inline-block text-sm text-[#40A9FF] underline">
-            Volver al inicio
-          </Link>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
   const currentUser = await authServiceServer.getCurrentUser();

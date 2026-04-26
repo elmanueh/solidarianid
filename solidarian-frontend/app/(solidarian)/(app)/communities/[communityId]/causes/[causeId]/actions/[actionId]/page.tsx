@@ -2,10 +2,12 @@ import ActionEventsList from '@/components/action-details/action-events-list';
 import ActionHeader from '@/components/action-details/action-header';
 import ActionInfoCard from '@/components/action-details/action-info-card';
 import ActionObjectivesList from '@/components/action-details/action-objectives-list';
-import { GET_ACTION_QUERY } from '@/features/actions/api/graphql/actions.documents';
+import { GET_ACTION_QUERY, type GetActionResult } from '@/features/actions/api/graphql/actions.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
+import { isEntityNotFoundGraphQLError } from '@/features/graphql/graphql-error.utils';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
+import { notFound } from 'next/navigation';
 
 interface ActionPageProps {
   params: Promise<{ communityId: string; causeId: string; actionId: string }>;
@@ -14,7 +16,21 @@ interface ActionPageProps {
 export default async function ActionPage({ params }: Readonly<ActionPageProps>) {
   const { communityId, causeId, actionId } = await params;
   const graphql = new GraphqlClientService(await getInstanceServerApolloClient());
-  const action = (await graphql.query(GET_ACTION_QUERY, { id: actionId })).action;
+  let action: GetActionResult['action'] | undefined;
+
+  try {
+    action = (await graphql.query(GET_ACTION_QUERY, { id: actionId })).action;
+  } catch (error) {
+    if (isEntityNotFoundGraphQLError(error)) {
+      notFound();
+    }
+
+    throw error;
+  }
+
+  if (action?.causeId !== causeId) {
+    notFound();
+  }
 
   const pexelsService = new PexelsImageService();
   const bannerImage = await pexelsService.getDeterministicBanner({ uuid: actionId, theme: action.name });

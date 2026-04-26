@@ -18,8 +18,6 @@ const DEFAULT_PROFILE_IMPACT_STATS: ProfileImpactStats = {
   communities: 0,
 };
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_GATEWAY_URL ?? 'http://localhost:8090/api/';
-
 const countUniqueIds = (ids: string[]): number => new Set(ids).size;
 
 async function fetchProfileImpactStats(userId: string): Promise<ProfileImpactStats> {
@@ -32,7 +30,7 @@ async function fetchProfileImpactStats(userId: string): Promise<ProfileImpactSta
     requestStatus: 'approved',
   });
 
-  const response = await fetch(`${apiBaseUrl}subscriptions/${encodeURIComponent(userId)}?${queryParams.toString()}`, {
+  const response = await fetch(`/api/subscriptions/${encodeURIComponent(userId)}?${queryParams.toString()}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

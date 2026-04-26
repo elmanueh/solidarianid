@@ -1,24 +1,25 @@
 import { Action } from '../constants/action.enum';
-import { EntityType } from '../constants/entity-type.enum';
 import { Resource } from '../constants/resource.enum';
 
-export type CommunityMembershipPolicy = 'community.member' | 'community.creator' | 'community.member_or_creator';
+export enum CommunityMembershipPolicy {
+  MEMBER_ONLY = 'community.member_only',
+  CREATOR_ONLY = 'community.creator',
+  MEMBER_OR_CREATOR = 'community.member_or_creator',
+}
 
-export type AuthorizationPolicy = CommunityMembershipPolicy | (string & {});
+export enum UsersPolicy {
+  SELF_ONLY = 'user.self',
+}
 
-export type EntityIdSelector = {
-  source: 'params' | 'body' | 'args';
-  key: string;
-};
+export type AuthorizationPolicy = CommunityMembershipPolicy | UsersPolicy;
 
 export type AuthorizationMetadata = {
   action: Action;
-  resource: Resource;
   policy: AuthorizationPolicy;
-  entityType?: EntityType;
-  entityId?: EntityIdSelector;
+  resource?: Resource;
+  entityId?: string;
 };
 
 export function isCommunityMembershipPolicy(policy: AuthorizationPolicy): policy is CommunityMembershipPolicy {
-  return policy === 'community.member' || policy === 'community.creator' || policy === 'community.member_or_creator';
+  return Object.values(CommunityMembershipPolicy).includes(policy as CommunityMembershipPolicy);
 }

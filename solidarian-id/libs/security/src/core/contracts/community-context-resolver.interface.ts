@@ -1,7 +1,7 @@
-import { EntityType } from '../constants/entity-type.enum';
+import { Resource } from '../constants/resource.enum';
 
 export type ResolveCommunityContextInput = {
-  entityType: EntityType;
+  resource: Resource;
   entityId: string;
 };
 

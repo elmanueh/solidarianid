@@ -282,14 +282,14 @@ describe('RequestController (e2e)', () => {
       expect(response.headers.location).toMatch(/\/action-requests\/[0-9a-f-]{36}$/);
     });
 
-    it('should not create an action request and return 401 if the user dont have permission', async () => {
+    it('should not create an action request and return 403 if the user dont have permission', async () => {
       const token = createAccessToken(USER_IDS.PEDRO);
       const response = await server
         .getRequest()
         .post('/api/action-requests')
         .set('Cookie', [`AccessToken=${token}`])
         .send(validActionRequestDto)
-        .expect(HttpStatus.UNAUTHORIZED);
+        .expect(HttpStatus.FORBIDDEN);
 
       expect(response.body).toBeDefined();
     });

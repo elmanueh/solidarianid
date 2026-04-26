@@ -118,12 +118,11 @@ export type JoinCauseResult = {
 
 export type JoinCauseVariables = {
   causeId: string;
-  userId: string;
 };
 
 export const JOIN_CAUSE_MUTATION: TypedDocumentNode<JoinCauseResult, JoinCauseVariables> = gql`
-  mutation JoinCause($causeId: ID!, $userId: ID!) {
-    joinCause(causeId: $causeId, userId: $userId)
+  mutation JoinCause($causeId: ID!) {
+    joinCause(causeId: $causeId)
   }
 `;
 
@@ -134,12 +133,11 @@ export type LeaveCauseResult = {
 
 export type LeaveCauseVariables = {
   causeId: string;
-  userId: string;
 };
 
 export const LEAVE_CAUSE_MUTATION: TypedDocumentNode<LeaveCauseResult, LeaveCauseVariables> = gql`
-  mutation LeaveCause($causeId: ID!, $userId: ID!) {
-    leaveCause(causeId: $causeId, userId: $userId)
+  mutation LeaveCause($causeId: ID!) {
+    leaveCause(causeId: $causeId)
   }
 `;
 
@@ -155,7 +153,6 @@ export type CreateCauseRequestVariables = {
     ods: number[];
     initialDate: string;
     durationDays: number;
-    userId: string;
     communityId: string;
   };
 };

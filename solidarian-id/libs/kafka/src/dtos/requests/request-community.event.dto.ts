@@ -6,6 +6,7 @@ import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
  * DTO for a cause within a community request event
  */
 export class CommunityRequestCauseEventDto {
+  id?: string;
   name: string;
   description: string;
   status: RequestStatus;

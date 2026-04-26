@@ -38,8 +38,9 @@ export async function fetchUserSubscriptions(
     });
   }
 
-  const queryString = params.toString();
-  const url = `${communitiesApiBase}/api/subscriptions/${userId}${queryString ? `?${queryString}` : ''}`;
+  const subscriptionsUrl = new URL(`/api/subscriptions/${encodeURIComponent(userId)}`, communitiesApiBase);
+  subscriptionsUrl.search = params.toString();
+  const url = subscriptionsUrl.toString();
 
   try {
     const response = await fetch(url, {

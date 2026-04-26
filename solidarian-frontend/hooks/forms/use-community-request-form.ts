@@ -89,8 +89,7 @@ function normalizeInitialDate(value: string): string {
 }
 
 function buildCommunityRequestPayload(
-  values: CommunityRequestValues,
-  userId: string
+  values: CommunityRequestValues
 ): CreateCommunityRequestVariables['createCommunityRequestInput'] {
   if (values.causes.length === 0) {
     throw new Error('Debes añadir al menos una causa para crear la comunidad.');
@@ -115,7 +114,6 @@ function buildCommunityRequestPayload(
         durationDays: normalizeDurationDays(cause.durationDays),
       };
     }),
-    userId,
   };
 }
 
@@ -172,7 +170,7 @@ export default function useCommunityRequestForm() {
 
       try {
         setIsSubmitting(true);
-        const payload = buildCommunityRequestPayload(values, userId);
+        const payload = buildCommunityRequestPayload(values);
 
         await graphql.mutate(CREATE_COMMUNITY_REQUEST_MUTATION, {
           createCommunityRequestInput: payload,

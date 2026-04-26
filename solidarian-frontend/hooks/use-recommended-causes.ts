@@ -1,10 +1,10 @@
 'use client';
 
-import { GET_CAUSES_QUERY, type GetCausesResult } from '@/features/causes/api/graphql/causes.documents';
+import { GET_CAUSES_QUERY } from '@/features/causes/api/graphql/causes.documents';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { useApolloClient } from '@apollo/client/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export type RecommendedCause = {
   id: string;
@@ -32,7 +32,8 @@ const normalizeLimit = (limit: number): number => {
 };
 
 export function useRecommendedCauses(limit = 6): UseRecommendedCausesResult {
-  const graphql = new GraphqlClientService(useApolloClient());
+  const apolloClient = useApolloClient();
+  const graphql = useMemo(() => new GraphqlClientService(apolloClient), [apolloClient]);
   const [causes, setCauses] = useState<RecommendedCause[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -79,7 +80,7 @@ export function useRecommendedCauses(limit = 6): UseRecommendedCausesResult {
     return () => {
       cancelled = true;
     };
-  }, [normalizedLimit]);
+  }, [graphql, normalizedLimit]);
 
   return {
     causes,

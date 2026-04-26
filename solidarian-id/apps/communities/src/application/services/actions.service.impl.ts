@@ -106,8 +106,8 @@ export class ActionsServiceImpl implements ActionsService {
     return await this.actionRepository.findAllByCauseIds(causeIds);
   }
 
-  async joinEvent(eventId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>> {
-    const userOrError = await this.usersRepository.findById(userId);
+  async joinEvent(eventId: string, actorId: string): Promise<Either<ValidationError | RepositoryException, void>> {
+    const userOrError = await this.usersRepository.findById(actorId);
     if (userOrError.isLeft()) return left(userOrError.value);
     const user = userOrError.value;
 
@@ -124,8 +124,8 @@ export class ActionsServiceImpl implements ActionsService {
     return right(undefined);
   }
 
-  async leaveEvent(eventId: string, userId: string): Promise<Either<ValidationError | RepositoryException, void>> {
-    const userOrError = await this.usersRepository.findById(userId);
+  async leaveEvent(eventId: string, actorId: string): Promise<Either<ValidationError | RepositoryException, void>> {
+    const userOrError = await this.usersRepository.findById(actorId);
     if (userOrError.isLeft()) return left(userOrError.value);
     const user = userOrError.value;
 
@@ -136,7 +136,7 @@ export class ActionsServiceImpl implements ActionsService {
     const leaveResult = action.leaveEvent(eventId, user);
     if (leaveResult.isLeft()) return left(leaveResult.value);
 
-    const removeAssistantResult = await this.actionRepository.removeAssistant(eventId, userId);
+    const removeAssistantResult = await this.actionRepository.removeAssistant(eventId, actorId);
     if (removeAssistantResult.isLeft()) return left(removeAssistantResult.value);
 
     const saveResult = await this.actionRepository.save(action);
@@ -148,10 +148,10 @@ export class ActionsServiceImpl implements ActionsService {
   async contributeObjective(
     actionId: string,
     objectiveName: string,
-    userId: string,
+    actorId: string,
     amount: number,
   ): Promise<Either<ValidationError | RepositoryException, Objective>> {
-    const userOrError = await this.usersRepository.findById(userId);
+    const userOrError = await this.usersRepository.findById(actorId);
     if (userOrError.isLeft()) return left(userOrError.value);
     const user = userOrError.value;
 

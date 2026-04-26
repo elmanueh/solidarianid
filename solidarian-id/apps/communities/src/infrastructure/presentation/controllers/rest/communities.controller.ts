@@ -24,11 +24,11 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+import { ExploreCommunitiesQueryDto } from '../../dtos/input/explore-communities.query.dto';
 import { CommunityDetailResponseDto } from '../../dtos/output/community-detail.response.dto';
 import { CommunityLastUsersJoinedSummaryResponseDto } from '../../dtos/output/community-last-users-joined-summary.response.dto';
 import { CommunityRankingUserResponseDto } from '../../dtos/output/community-ranking-user.response.dto';
 import { CommunitySummaryResponseDto } from '../../dtos/output/community-summary.response.dto';
-import { ExploreCommunitiesQueryDto } from '../../dtos/input/explore-communities.query.dto';
 import { ExploreCommunitiesResponseDto } from '../../dtos/output/explore-communities.response.dto';
 import { CommunityDomainMapper } from '../../mappers/community.mapper';
 
@@ -81,6 +81,7 @@ export class CommunitiesController {
   }
 
   @Get('explore')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Retrieve communities for explore page' })
   @ApiOkResponse({
     description: 'Paginated list of communities for explore',
@@ -98,8 +99,9 @@ export class CommunitiesController {
     return CommunityDomainMapper.toExploreCommunitiesResponseDto(communities.value);
   }
 
+  /** @deprecated Usa GraphQL en su lugar. */
   @Get(':id')
-  @ApiOperation({ summary: 'Retrieve a charitable community by ID' })
+  @ApiOperation({ summary: 'Retrieve a charitable community by ID', deprecated: true })
   @ApiOkResponse({
     description: 'Community details',
     type: CommunityDetailResponseDto,
@@ -122,6 +124,7 @@ export class CommunitiesController {
     return CommunityDomainMapper.toCommunityDetailDto(community.value);
   }
 
+  /** @deprecated Usa gRPC en su lugar. */
   async getCommunitiesOrderByMostUsers(limit?: number): Promise<CommunityRankingUserResponseDto[]> {
     const communities = await this.communitiesService.getOrderByMostUsers(limit);
     if (communities.isLeft()) {
@@ -154,10 +157,11 @@ export class CommunitiesController {
     return CommunityDomainMapper.toCommunityLastUsersJoinedSummaryResponseDto(joinedUsersData.value);
   }
 
+  /** @deprecated Usa GraphQL en su lugar. */
   @Post(':id/members')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Join a user to a community' })
+  @ApiOperation({ summary: 'Join a user to a community', deprecated: true })
   @ApiCreatedResponse({
     description: 'User successfully joined the community',
   })

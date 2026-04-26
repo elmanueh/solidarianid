@@ -18,8 +18,8 @@ export const ROUTES = {
     privacy: '/profile/privacy',
     help: '/profile/help',
   },
-  favorites: {
-    requestsCreate: '/favorites/requests/create',
+  explore: {
+    requestsCreate: '/explore/requests/create',
   },
   communities: {
     detail: (communityId: string) => `/communities/${communityId}`,

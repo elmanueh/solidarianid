@@ -10,7 +10,7 @@ import { RootState } from '@/features/redux/store';
 import { ROUTES } from '@/features/routes';
 import { useApolloClient } from '@apollo/client/react';
 import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
@@ -49,8 +49,7 @@ function validateRequiredText(value: string, errorMessage: string): string {
 
 function buildActionRequestPayload(
   values: ActionRequestValues,
-  causeId: string,
-  userId: string
+  causeId: string
 ): CreateActionRequestVariables['createActionRequestInput'] {
   const name = validateRequiredText(values.name, 'El nombre de la acción es obligatorio.');
   const description = validateRequiredText(values.description, 'La descripción de la acción es obligatoria.');
@@ -73,13 +72,14 @@ function buildActionRequestPayload(
     events.push(event);
   }
 
-  return { name, description, causeId, objectives, events, userId };
+  return { name, description, causeId, objectives, events };
 }
 
 export default function useActionRequestForm() {
   const router = useRouter();
   const params = useParams<{ communityId: string; causeId: string }>();
-  const graphql = new GraphqlClientService(useApolloClient());
+  const apolloClient = useApolloClient();
+  const graphql = useMemo(() => new GraphqlClientService(apolloClient), [apolloClient]);
   const userId = useSelector((state: RootState) => state.auth.currentUser?.id);
 
   const communityId = getRouteParam(params.communityId);
@@ -100,7 +100,7 @@ export default function useActionRequestForm() {
 
       try {
         setIsSubmitting(true);
-        const payload = buildActionRequestPayload(values, causeId, userId);
+        const payload = buildActionRequestPayload(values, causeId);
         await graphql.mutate(CREATE_ACTION_REQUEST_MUTATION, { createActionRequestInput: payload });
 
         toast.success('Solicitud enviada correctamente', {
@@ -114,7 +114,7 @@ export default function useActionRequestForm() {
         setIsSubmitting(false);
       }
     },
-    [causeId, communityId, isSubmitting, router, values, userId]
+    [causeId, communityId, graphql, isSubmitting, router, values, userId]
   );
 
   return { values, setValues, handleSubmit, isSubmitting };

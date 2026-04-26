@@ -1,6 +1,7 @@
 'use client';
 
 import { ExploreControls } from '@/components/explore/explore-controls';
+import { ExploreFloatingActionButton } from '@/components/explore/explore-floating-action-button';
 import { ExploreHeader } from '@/components/explore/explore-header';
 import { ExplorePagination } from '@/components/explore/explore-pagination';
 import { ExploreResultsGrid } from '@/components/explore/explore-results-grid';
@@ -218,6 +219,8 @@ export default function ExplorePage() {
       {hasPagination ? (
         <ExplorePagination page={page} setPage={setPage} totalItems={currentTotal} pageSize={currentPageSize} />
       ) : null}
+
+      <ExploreFloatingActionButton />
     </div>
   );
 }

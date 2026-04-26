@@ -3,7 +3,7 @@ import ActionHeader from '@/components/action-details/action-header';
 import ActionInfoCard from '@/components/action-details/action-info-card';
 import ActionObjectivesList from '@/components/action-details/action-objectives-list';
 import { GET_ACTION_QUERY } from '@/features/actions/api/graphql/actions.documents';
-import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client';
+import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
 import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
 
@@ -13,7 +13,7 @@ interface ActionPageProps {
 
 export default async function ActionPage({ params }: Readonly<ActionPageProps>) {
   const { communityId, causeId, actionId } = await params;
-  const graphql = new GraphqlClientService(getInstanceServerApolloClient());
+  const graphql = new GraphqlClientService(await getInstanceServerApolloClient());
   const action = (await graphql.query(GET_ACTION_QUERY, { id: actionId })).action;
 
   const pexelsService = new PexelsImageService();

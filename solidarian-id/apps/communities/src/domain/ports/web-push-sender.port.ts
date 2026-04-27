@@ -2,7 +2,7 @@ import { RequestStatusChangedEventProps } from '@app/communities/domain/events/r
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 
 export interface CauseWebPushNotification {
-  eventType: 'CAUSE';
+  eventType: SubscriptionType.CAUSE;
   id: string;
   name: string;
   description: string;
@@ -14,7 +14,7 @@ export interface CauseWebPushNotification {
 }
 
 export interface ActionWebPushNotification {
-  eventType: 'ACTION';
+  eventType: SubscriptionType.ACTION;
   id: string;
   name: string;
   description: string;
@@ -24,7 +24,13 @@ export interface ActionWebPushNotification {
 export type WebPushNotification =
   | ActionWebPushNotification
   | CauseWebPushNotification
-  | (RequestStatusChangedEventProps & { eventType: 'REQUEST_STATUS_CHANGED' });
+  | (RequestStatusChangedEventProps & { eventType: SubscriptionType.REQUEST_STATUS_CHANGED });
+
+export enum SubscriptionType {
+  REQUEST_STATUS_CHANGED = 'REQUEST_STATUS_CHANGED',
+  CAUSE = 'CAUSE',
+  ACTION = 'ACTION',
+}
 
 export abstract class WebPushSenderPort {
   abstract send(notification: WebPushNotification): Promise<void>;

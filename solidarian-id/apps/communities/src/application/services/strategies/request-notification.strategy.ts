@@ -3,7 +3,7 @@ import { SubscriptionPayload } from '@app/communities/application/services/web-p
 import { Subscription } from '@app/communities/domain/model/entities/subscription';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
-import { WebPushNotification } from '@app/communities/domain/ports/web-push-sender.port';
+import { SubscriptionType, WebPushNotification } from '@app/communities/domain/ports/web-push-sender.port';
 import { Injectable } from '@nestjs/common';
 
 type RequestStatusChangedWebPushNotification = Extract<WebPushNotification, { eventType: 'REQUEST_STATUS_CHANGED' }>;
@@ -13,7 +13,7 @@ export class RequestNotificationStrategy implements NotificationStrategy {
   constructor(private readonly subscriptionRepository: PushSubscriptionRepositoryPort) {}
 
   canHandle(event: WebPushNotification): boolean {
-    return event.eventType === 'REQUEST_STATUS_CHANGED';
+    return event.eventType === SubscriptionType.REQUEST_STATUS_CHANGED;
   }
 
   async execute(event: WebPushNotification): Promise<[Subscription[], SubscriptionPayload | undefined]> {

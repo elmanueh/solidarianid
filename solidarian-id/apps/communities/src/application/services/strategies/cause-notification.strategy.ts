@@ -2,7 +2,11 @@ import { NotificationStrategy } from '@app/communities/application/services/stra
 import { SubscriptionPayload } from '@app/communities/application/services/web-push.service.impl';
 import { Subscription } from '@app/communities/domain/model/entities/subscription';
 import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
-import { CauseWebPushNotification, WebPushNotification } from '@app/communities/domain/ports/web-push-sender.port';
+import {
+  CauseWebPushNotification,
+  SubscriptionType,
+  WebPushNotification,
+} from '@app/communities/domain/ports/web-push-sender.port';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -10,7 +14,7 @@ export class CauseNotificationStrategy implements NotificationStrategy {
   constructor(private readonly subscriptionRepository: PushSubscriptionRepositoryPort) {}
 
   canHandle(event: WebPushNotification): boolean {
-    return event.eventType === 'CAUSE';
+    return event.eventType === SubscriptionType.CAUSE;
   }
 
   async execute(event: WebPushNotification): Promise<[Subscription[], SubscriptionPayload | undefined]> {

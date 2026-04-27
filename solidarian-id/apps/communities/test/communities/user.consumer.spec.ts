@@ -4,7 +4,7 @@ import { UserService } from '@app/communities/domain/services/user.service';
 import { left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { EventType, UserEventDto } from '@solidarianid/kafka';
+import { EventType, UserEvent, UserEventDto } from '@solidarianid/kafka';
 import { Logger } from '@nestjs/common';
 
 describe('UserConsumerAdapter', () => {
@@ -49,6 +49,8 @@ describe('UserConsumerAdapter', () => {
       countryCode: 'TC',
     };
 
+    const createUserEvent = (eventType: EventType): UserEvent => new UserEvent(eventType, validPayload);
+
     it('should handle USER_CREATED successfully', async () => {
       mockUserService.createUser.mockResolvedValueOnce(
         right({
@@ -58,13 +60,7 @@ describe('UserConsumerAdapter', () => {
         }),
       );
 
-      await expect(
-        adapter.handleUserEvent({
-          occurredOn: new Date(),
-          eventType: EventType.USER_CREATED,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleUserEvent(createUserEvent(EventType.USER_CREATED))).resolves.not.toThrow();
 
       expect(mockUserService.createUser).toHaveBeenCalledWith(validPayload);
     });
@@ -78,13 +74,7 @@ describe('UserConsumerAdapter', () => {
         }),
       );
 
-      await expect(
-        adapter.handleUserEvent({
-          occurredOn: new Date(),
-          eventType: EventType.USER_UPDATED,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleUserEvent(createUserEvent(EventType.USER_UPDATED))).resolves.not.toThrow();
 
       expect(mockUserService.updateUser).toHaveBeenCalledWith(validPayload);
     });
@@ -93,13 +83,7 @@ describe('UserConsumerAdapter', () => {
       const error = new ValidationError('Invalid user data');
       mockUserService.createUser.mockResolvedValueOnce(left(error));
 
-      await expect(
-        adapter.handleUserEvent({
-          occurredOn: new Date(),
-          eventType: EventType.USER_CREATED,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleUserEvent(createUserEvent(EventType.USER_CREATED))).resolves.not.toThrow();
 
       expect(mockUserService.createUser).toHaveBeenCalledWith(validPayload);
     });
@@ -108,37 +92,21 @@ describe('UserConsumerAdapter', () => {
       const error = new RepositoryException('Database error');
       mockUserService.updateUser.mockResolvedValueOnce(left(error));
 
-      await expect(
-        adapter.handleUserEvent({
-          occurredOn: new Date(),
-          eventType: EventType.USER_UPDATED,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleUserEvent(createUserEvent(EventType.USER_UPDATED))).resolves.not.toThrow();
 
       expect(mockUserService.updateUser).toHaveBeenCalledWith(validPayload);
     });
 
     it('should handle unhandled event type', async () => {
-      await expect(
-        adapter.handleUserEvent({
-          occurredOn: new Date(),
-          eventType: 'UNKNOWN_EVENT' as EventType,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleUserEvent(createUserEvent('UNKNOWN_EVENT' as EventType))).resolves.not.toThrow();
     });
 
     it('should catch and throw unexpected errors', async () => {
       mockUserService.createUser.mockRejectedValueOnce(new Error('Unexpected database error'));
 
-      await expect(
-        adapter.handleUserEvent({
-          occurredOn: new Date(),
-          eventType: EventType.USER_CREATED,
-          data: validPayload,
-        }),
-      ).rejects.toThrow('Unexpected database error');
+      await expect(adapter.handleUserEvent(createUserEvent(EventType.USER_CREATED))).rejects.toThrow(
+        'Unexpected database error',
+      );
     });
   });
 });

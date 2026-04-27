@@ -4,7 +4,7 @@ import { RequestsService } from '@app/communities/domain/services/request.servic
 import { left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { EventType, CommunityRequestEventDto } from '@solidarianid/kafka';
+import { EventType, CommunityRequestEventDto, RequestEvent } from '@solidarianid/kafka';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { Logger } from '@nestjs/common';
@@ -61,16 +61,12 @@ describe('RequestsConsumerAdapter', () => {
       ],
     };
 
+    const createRequestEvent = (eventType: EventType): RequestEvent => new RequestEvent(eventType, validPayload);
+
     it('should handle REQUEST_ACCEPTED successfully', async () => {
       mockRequestService.acceptRequest.mockResolvedValueOnce(right(undefined));
 
-      await expect(
-        adapter.handleRequestEvent({
-          occurredOn: new Date(),
-          eventType: EventType.REQUEST_ACCEPTED,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleRequestEvent(createRequestEvent(EventType.REQUEST_ACCEPTED))).resolves.not.toThrow();
 
       expect(mockRequestService.acceptRequest).toHaveBeenCalledWith(validPayload);
     });
@@ -78,13 +74,7 @@ describe('RequestsConsumerAdapter', () => {
     it('should handle REQUEST_DECLINED successfully', async () => {
       mockRequestService.rejectRequest.mockResolvedValueOnce(right(undefined));
 
-      await expect(
-        adapter.handleRequestEvent({
-          occurredOn: new Date(),
-          eventType: EventType.REQUEST_DECLINED,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleRequestEvent(createRequestEvent(EventType.REQUEST_DECLINED))).resolves.not.toThrow();
 
       expect(mockRequestService.rejectRequest).toHaveBeenCalledWith(validPayload);
     });
@@ -93,13 +83,7 @@ describe('RequestsConsumerAdapter', () => {
       const error = new ValidationError('Invalid request');
       mockRequestService.acceptRequest.mockResolvedValueOnce(left(error));
 
-      await expect(
-        adapter.handleRequestEvent({
-          occurredOn: new Date(),
-          eventType: EventType.REQUEST_ACCEPTED,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleRequestEvent(createRequestEvent(EventType.REQUEST_ACCEPTED))).resolves.not.toThrow();
 
       expect(mockRequestService.acceptRequest).toHaveBeenCalledWith(validPayload);
     });
@@ -108,37 +92,21 @@ describe('RequestsConsumerAdapter', () => {
       const error = new RepositoryException('Repository error');
       mockRequestService.rejectRequest.mockResolvedValueOnce(left(error));
 
-      await expect(
-        adapter.handleRequestEvent({
-          occurredOn: new Date(),
-          eventType: EventType.REQUEST_DECLINED,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleRequestEvent(createRequestEvent(EventType.REQUEST_DECLINED))).resolves.not.toThrow();
 
       expect(mockRequestService.rejectRequest).toHaveBeenCalledWith(validPayload);
     });
 
     it('should handle unhandled event type', async () => {
-      await expect(
-        adapter.handleRequestEvent({
-          occurredOn: new Date(),
-          eventType: 'UNKNOWN_EVENT' as EventType,
-          data: validPayload,
-        }),
-      ).resolves.not.toThrow();
+      await expect(adapter.handleRequestEvent(createRequestEvent('UNKNOWN_EVENT' as EventType))).resolves.not.toThrow();
     });
 
     it('should catch and throw unexpected errors', async () => {
       mockRequestService.acceptRequest.mockRejectedValueOnce(new Error('Unexpected error'));
 
-      await expect(
-        adapter.handleRequestEvent({
-          occurredOn: new Date(),
-          eventType: EventType.REQUEST_ACCEPTED,
-          data: validPayload,
-        }),
-      ).rejects.toThrow('Unexpected error');
+      await expect(adapter.handleRequestEvent(createRequestEvent(EventType.REQUEST_ACCEPTED))).rejects.toThrow(
+        'Unexpected error',
+      );
     });
   });
 });

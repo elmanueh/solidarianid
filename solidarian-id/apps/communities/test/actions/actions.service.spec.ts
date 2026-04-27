@@ -2,9 +2,8 @@ import { ActionsServiceImpl } from '@app/communities/application/services/action
 import { Action } from '@app/communities/domain/model/entities/action';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
 import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
-import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
@@ -19,12 +18,7 @@ describe('ActionsServiceImpl', () => {
     findById: jest.Mock;
     save: jest.Mock;
   };
-  let mockActionsPublisher: {
-    publish: jest.Mock;
-  };
-  let mockSubscriptionsPublisher: {
-    publishActionCreated: jest.Mock;
-  };
+  let mockEventBus: { publish: jest.Mock };
   let mockUsersRepository: {
     findById: jest.Mock;
   };
@@ -84,12 +78,7 @@ describe('ActionsServiceImpl', () => {
       findById: jest.fn(),
       save: jest.fn(),
     };
-    mockActionsPublisher = {
-      publish: jest.fn(),
-    };
-    mockSubscriptionsPublisher = {
-      publishActionCreated: jest.fn(),
-    };
+    mockEventBus = { publish: jest.fn().mockResolvedValue(undefined) };
     mockUsersRepository = {
       findById: jest.fn(),
     };
@@ -99,8 +88,7 @@ describe('ActionsServiceImpl', () => {
         ActionsServiceImpl,
         { provide: ActionsRepositoryPort, useValue: mockActionRepository },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
-        { provide: ActionsPublisherPort, useValue: mockActionsPublisher },
-        { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
+        { provide: DomainEventBusPort, useValue: mockEventBus },
       ],
     }).compile();
 

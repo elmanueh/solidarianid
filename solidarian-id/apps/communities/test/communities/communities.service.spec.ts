@@ -3,11 +3,10 @@ import { Community } from '@app/communities/domain/model/aggregates/community';
 import { User } from '@app/communities/domain/model/entities/user';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
-import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
@@ -30,12 +29,7 @@ describe('CommunitiesServiceImpl', () => {
   let mockUsersRepo: {
     findById: jest.Mock;
   };
-  let mockPublisher: {
-    publish: jest.Mock;
-  };
-  let mockSubscriptionsPublisher: {
-    publishCauseCreated: jest.Mock;
-  };
+  let mockEventBus: { publish: jest.Mock };
   let mockSubscriptionsRepository: {
     findByUserId: jest.Mock;
     save: jest.Mock;
@@ -88,13 +82,7 @@ describe('CommunitiesServiceImpl', () => {
       findById: jest.fn(),
     };
 
-    mockPublisher = {
-      publish: jest.fn(),
-    };
-
-    mockSubscriptionsPublisher = {
-      publishCauseCreated: jest.fn().mockResolvedValue(undefined),
-    };
+    mockEventBus = { publish: jest.fn().mockResolvedValue(undefined) };
 
     mockSubscriptionsRepository = {
       findByUserId: jest.fn().mockResolvedValue(right([])),
@@ -107,9 +95,8 @@ describe('CommunitiesServiceImpl', () => {
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepo },
         { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
-        { provide: CommunitiesPublisherPort, useValue: mockPublisher },
-        { provide: SubscriptionsRepositoryPort, useValue: mockSubscriptionsRepository },
-        { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
+        { provide: PushSubscriptionRepositoryPort, useValue: mockSubscriptionsRepository },
+        { provide: DomainEventBusPort, useValue: mockEventBus },
       ],
     }).compile();
 

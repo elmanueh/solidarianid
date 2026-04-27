@@ -31,7 +31,7 @@ export function FavoritesBrowseModal<T extends { id: string }>({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[85vh] max-w-6xl gap-0 overflow-hidden rounded-[32px] border border-border bg-background p-0 shadow-2xl sm:max-w-6xl">
+      <DialogContent className="max-h-[85vh] max-w-6xl gap-0 overflow-hidden rounded-4xl border border-border bg-background p-0 shadow-2xl sm:max-w-6xl">
         <div className="border-b border-border py-5 pr-16 pl-6 md:pr-16 md:pl-8">
           <div className="relative">
             <IconSearch size={20} className="absolute top-1/2 left-4 -translate-y-1/2 text-chart-2" />

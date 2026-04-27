@@ -1,5 +1,5 @@
-import { SectionHeader } from '@/components/favorites/section-header';
 import { ExploreModeSelector } from '@/components/explore/explore-mode-selector';
+import { SectionHeader } from '@/components/section-header';
 import { ExploreMode } from '@/features/explore/model/explore.types';
 
 type ExploreHeaderProps = {

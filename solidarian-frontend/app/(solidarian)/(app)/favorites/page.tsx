@@ -1,11 +1,11 @@
 'use client';
 
-import { CommunityCard } from '@/components/community-card';
 import { CauseCard } from '@/components/cause-card';
-import { SectionHeader } from '@/components/favorites/section-header';
+import { CommunityCard } from '@/components/community-card';
 import { FavoritesSection } from '@/components/favorites/favorites-section';
-import { useFavoritesData } from '@/hooks/use-favorites-data';
+import { SectionHeader } from '@/components/section-header';
 import { useAppSelector } from '@/features/redux/redux-hook';
+import { useFavoritesData } from '@/hooks/use-favorites-data';
 import { IconHeart, IconUsers } from '@tabler/icons-react';
 
 export default function FavoritesPage() {

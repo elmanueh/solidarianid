@@ -1,5 +1,5 @@
-import { Badge, Button } from '@/components/ui';
 import { FavoritesBrowseModal } from '@/components/favorites/favorites-browse-modal';
+import { Button } from '@/components/ui';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { IconChevronRight } from '@tabler/icons-react';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';

@@ -16,21 +16,6 @@ declare global {
 
 declare const self: ServiceWorkerGlobalScope;
 
-const LEGACY_RUNTIME_CACHES = ['network-first'];
-
-function isSensitiveSameOriginGetRequest(request: Request, pathname: string): boolean {
-  return (
-    pathname.startsWith('/api/') ||
-    pathname === '/graphql' ||
-    pathname.startsWith('/_next/data/') ||
-    pathname.includes('/requests/create') ||
-    pathname === '/login' ||
-    pathname === '/register' ||
-    pathname.startsWith('/register/') ||
-    request.headers.get('RSC') === '1'
-  );
-}
-
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
   skipWaiting: true,
@@ -43,21 +28,21 @@ const serwist = new Serwist({
       },
       handler: new NetworkOnly(),
     },
-    {
-      matcher({ request, sameOrigin, url }) {
-        return request.method === 'GET' && sameOrigin && isSensitiveSameOriginGetRequest(request, url.pathname);
-      },
-      handler: new NetworkOnly(),
-    },
     ...defaultCache,
   ],
+  fallbacks: {
+    entries: [
+      {
+        url: '/~offline',
+        matcher({ request }) {
+          return request.destination === 'document';
+        },
+      },
+    ],
+  },
 });
 
 serwist.addEventListeners();
-
-self.addEventListener('activate', event => {
-  event.waitUntil(Promise.all(LEGACY_RUNTIME_CACHES.map(cacheName => caches.delete(cacheName))));
-});
 
 self.addEventListener('push', (event: PushEvent) => {
   if (!event.data) {

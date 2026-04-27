@@ -21,6 +21,6 @@ export class UserPreferenceEntity {
   @Column('text', { array: true, name: 'duration_preferences', default: '{any}' })
   durationPreferences: DurationPreference[];
 
-  @Column({ name: 'notifications_enabled', default: true })
+  @Column({ name: 'notifications_enabled', default: false })
   notificationsEnabled: boolean;
 }

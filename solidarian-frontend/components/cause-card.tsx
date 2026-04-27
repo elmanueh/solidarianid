@@ -34,6 +34,7 @@ export function CauseCard({ cause, index }: Readonly<CauseCardProps>) {
         </div>
         <div className={styles.content.wrapper}>
           <h4 className={styles.content.title}>{cause.name}</h4>
+          <p className={styles.content.description}>{cause.description}</p>
           <div className={styles.content.footer}>
             <div className={styles.content.location.wrapper}>
               <span className={styles.content.location.text}>{cause.durationDays} días</span>

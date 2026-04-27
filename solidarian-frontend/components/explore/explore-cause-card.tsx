@@ -27,8 +27,8 @@ export function ExploreCauseCard({ cause }: Readonly<ExploreCauseCardProps>) {
           </span>
         </div>
         <div className="flex flex-1 flex-col gap-3 p-6">
-          <h3 className="line-clamp-1 text-xl font-black tracking-tight text-foreground">{cause.name}</h3>
-          <p className="line-clamp-3 text-[11px] leading-relaxed font-bold tracking-wide text-muted-foreground uppercase">
+          <h3 className="truncate text-xl font-black tracking-tight text-foreground">{cause.name}</h3>
+          <p className="truncate text-[11px] leading-relaxed font-bold tracking-wide text-muted-foreground uppercase">
             {cause.description}
           </p>
           <div className="mt-auto flex items-center justify-between border-t border-border pt-3">

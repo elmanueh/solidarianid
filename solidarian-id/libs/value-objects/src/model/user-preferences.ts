@@ -122,15 +122,15 @@ export class UserPreferences extends ValueObject<UserPreferencesProps> {
       preferredSDGs: [],
       preferredCategories: [],
       durationPreferences: [DurationPreference.ANY],
-      notificationsEnabled: true,
+      notificationsEnabled: false,
     });
   }
 
   public static create(props: UserPreferencesProps): Either<ValidationError, UserPreferences> {
     const preferredSDGs = props.preferredSDGs ?? [];
     const preferredCategories = props.preferredCategories ?? [];
-    const durationPreferences = props.durationPreferences ?? [DurationPreference.ANY];
-    const notificationsEnabled = props.notificationsEnabled ?? true;
+    const durationPreferences = props.durationPreferences ?? [DurationPreference.SHORT_TERM];
+    const notificationsEnabled = props.notificationsEnabled ?? false;
 
     const uniqueSDGs = Array.from(new Set(preferredSDGs));
     if (uniqueSDGs.length !== preferredSDGs.length) {

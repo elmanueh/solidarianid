@@ -92,6 +92,7 @@ paths:
       tags: *ref_0
   /communities/{id}:
     get:
+      deprecated: true
       operationId: CommunitiesController_getCommunityById
       parameters:
         - name: id
@@ -144,6 +145,7 @@ paths:
       tags: *ref_0
   /communities/{id}/members:
     post:
+      deprecated: true
       operationId: CommunitiesController_joinCommunity
       parameters:
         - name: id
@@ -164,6 +166,7 @@ paths:
       tags: *ref_0
   /causes:
     get:
+      deprecated: true
       operationId: CausesController_getCauses
       parameters: []
       responses:
@@ -265,6 +268,7 @@ paths:
       tags: *ref_1
   /causes/{id}:
     get:
+      deprecated: true
       operationId: CausesController_getCauseById
       parameters:
         - name: id
@@ -285,6 +289,7 @@ paths:
       tags: *ref_1
   /communities/{communityId}/causes:
     get:
+      deprecated: true
       operationId: CausesController_getCausesByCommunityId
       parameters:
         - name: communityId
@@ -307,6 +312,7 @@ paths:
       tags: *ref_1
   /communities/{communityId}/causes/{causeId}:
     get:
+      deprecated: true
       operationId: CausesController_getCauseByCommunityIdAndCauseId
       parameters:
         - name: communityId
@@ -332,6 +338,7 @@ paths:
       tags: *ref_1
   /causes/{id}/followers:
     post:
+      deprecated: true
       operationId: CausesController_joinCause
       parameters:
         - name: id
@@ -356,6 +363,7 @@ paths:
       tags: *ref_1
   /actions:
     get:
+      deprecated: true
       operationId: ActionsController_getActions
       parameters: []
       responses:
@@ -372,6 +380,7 @@ paths:
         - Actions
   /actions/{id}:
     get:
+      deprecated: true
       operationId: ActionsController_getActionById
       parameters:
         - name: id
@@ -390,6 +399,7 @@ paths:
       tags: *ref_2
   /community-requests:
     post:
+      deprecated: true
       operationId: RequestController_createCommunityRequest
       parameters: []
       requestBody:
@@ -418,6 +428,7 @@ paths:
         - Requests
   /cause-requests:
     post:
+      deprecated: true
       operationId: RequestController_createCauseRequest
       parameters: []
       requestBody:
@@ -445,6 +456,7 @@ paths:
       tags: *ref_3
   /action-requests:
     post:
+      deprecated: true
       operationId: RequestController_createActionRequest
       parameters: []
       requestBody:

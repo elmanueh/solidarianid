@@ -6,6 +6,7 @@ import { OdsId } from '@/features/causes/constants/ods.constants';
 import { setPreferences } from '@/features/preferences/api/preferences';
 import { useAppSelector } from '@/features/redux/redux-hook';
 import { ROUTES } from '@/features/routes';
+import { usePwa } from '@/hooks/pwa/use-pwa';
 import { defineStepper } from '@stepperize/react';
 import {
   IconBell,
@@ -59,6 +60,7 @@ export function PreferencesStepper() {
   const currentStepIndex = stepOrder.indexOf(currentId);
   const currentUser = useAppSelector(state => state.auth.currentUser);
   const router = useRouter();
+  const pwa = usePwa();
 
   const [formPreferences, setFormPreferences] = useState<{
     preferredCategories: CauseKey[];
@@ -66,6 +68,7 @@ export function PreferencesStepper() {
     durationPreferences: DurationKey[];
     notificationsEnabled: boolean;
   } | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const preferences = useMemo(
     () =>
@@ -73,12 +76,16 @@ export function PreferencesStepper() {
         preferredCategories: currentUser?.preferences.preferredCategories || [],
         preferredSDGs: currentUser?.preferences.preferredSDGs || [],
         durationPreferences: currentUser?.preferences.durationPreferences || [],
-        notificationsEnabled: currentUser?.preferences.notificationsEnabled ?? true,
+        notificationsEnabled: currentUser?.preferences.notificationsEnabled ?? false,
       },
     [currentUser, formPreferences]
   );
 
   const handleSavePreferences = async () => {
+    if (isSaving) {
+      return;
+    }
+
     if (!currentUser) {
       toast.error('No se pudo guardar tus preferencias', {
         description: 'Usuario no autenticado.',
@@ -86,7 +93,25 @@ export function PreferencesStepper() {
       return;
     }
 
+    const initialNotificationsEnabled = currentUser.preferences.notificationsEnabled ?? false;
+
     try {
+      setIsSaving(true);
+
+      if (preferences.notificationsEnabled !== initialNotificationsEnabled) {
+        if (preferences.notificationsEnabled) {
+          const permission = pwa.permission === 'granted' ? pwa.permission : await pwa.requestNotificationPermission();
+
+          if (permission !== 'granted') {
+            throw new Error('Debes permitir las notificaciones para activarlas.');
+          }
+
+          await pwa.subscribe();
+        } else {
+          await pwa.unsubscribe();
+        }
+      }
+
       await setPreferences(
         {
           preferredCategories: preferences.preferredCategories,
@@ -105,6 +130,8 @@ export function PreferencesStepper() {
       toast.error('No se pudieron guardar tus preferencias', {
         description: message,
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -172,6 +199,7 @@ export function PreferencesStepper() {
                     notificationsEnabled,
                   }))
                 }
+                disabled={isSaving}
               />
             ),
           })}
@@ -191,9 +219,10 @@ export function PreferencesStepper() {
 
           {stepper.state.isLast ? (
             <PreferencesButton
-              name="Guardar Cambios"
+              name={isSaving ? 'Guardando...' : 'Guardar Cambios'}
               className="bg-success px-8 py-4 tracking-[0.2em] text-white shadow-lg shadow-success/20 hover:bg-green-700 active:scale-95"
               handleAction={handleSavePreferences}
+              disabled={isSaving}
             />
           ) : (
             <PreferencesButton

@@ -1,3 +1,4 @@
+import { Subscription } from '@app/communities/domain/model/entities/subscription';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
@@ -5,6 +6,7 @@ import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communi
 import { EventsRepositoryPort } from '@app/communities/domain/ports/events.repository.port';
 import { ObjectivesRepositoryPort } from '@app/communities/domain/ports/objectives.repository.port';
 import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
+import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import {
   SubscriptionsSearchCriteria,
@@ -25,6 +27,7 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
     private readonly causesRepository: CausesRepositoryPort,
     private readonly eventsRepository: EventsRepositoryPort,
     private readonly objectivesRepository: ObjectivesRepositoryPort,
+    private readonly subscriptionsRepository: SubscriptionsRepositoryPort,
   ) {
     super();
   }
@@ -75,13 +78,15 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
       : right([]);
     const objectiveIds = objectiveIdsOrError.isLeft() ? [] : objectiveIdsOrError.value;
 
-    return right({
+    const response = {
       requestIds,
       followedCauseIds,
       followedCommunityIds,
       eventIds,
       objectiveIds,
-    });
+    };
+
+    return right(response);
   }
 
   private async getRequestsByCriteria(userId: string, requestType?: RequestType) {
@@ -90,5 +95,48 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
     }
 
     return await this.requestsRepository.findByUserIdAndType(userId, requestType);
+  }
+
+  async pushSubscription(
+    userId: string,
+    endpoint: string,
+    p256dh: string,
+    auth: string,
+  ): Promise<Either<ValidationError | RepositoryException, Subscription>> {
+    const followedIdsOrError = await this.getUserSubscriptions(userId, {
+      requestStatus: RequestStatus.PENDING,
+      includeRequestIds: true,
+      includeFollowedCauseIds: true,
+      includeFollowedCommunityIds: true,
+    });
+
+    if (followedIdsOrError.isLeft()) {
+      return left(followedIdsOrError.value);
+    }
+
+    const subscription = Subscription.create({
+      userId,
+      endpoint,
+      p256dh,
+      auth,
+      requestIds: followedIdsOrError.value.requestIds,
+      followedCommunityIds: followedIdsOrError.value.followedCommunityIds,
+      followedCauseIds: followedIdsOrError.value.followedCauseIds,
+    });
+
+    if (subscription.isLeft()) {
+      return left(subscription.value);
+    }
+
+    await this.subscriptionsRepository.save(subscription.value);
+    return right(subscription.value);
+  }
+
+  async deleteSubscription(endpoint: string, userId: string): Promise<Either<RepositoryException, void>> {
+    const deleteResult = await this.subscriptionsRepository.deleteByEndpointAndUserId(endpoint, userId);
+    if (deleteResult.isLeft()) {
+      return left(deleteResult.value);
+    }
+    return right(undefined);
   }
 }

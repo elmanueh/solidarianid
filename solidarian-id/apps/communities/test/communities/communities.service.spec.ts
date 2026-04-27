@@ -1,19 +1,21 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { CommunitiesServiceImpl } from '@app/communities/application/services/communities.service.impl';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { User } from '@app/communities/domain/model/entities/user';
 import { Community } from '@app/communities/domain/model/aggregates/community';
-import { CommunityRequestEventDto } from '@solidarianid/kafka';
+import { User } from '@app/communities/domain/model/entities/user';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
+import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
+import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { Test, TestingModule } from '@nestjs/testing';
+import { CommunityRequestEventDto } from '@solidarianid/kafka';
 
 describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;
@@ -30,6 +32,13 @@ describe('CommunitiesServiceImpl', () => {
   };
   let mockPublisher: {
     publish: jest.Mock;
+  };
+  let mockSubscriptionsPublisher: {
+    publishCauseCreated: jest.Mock;
+  };
+  let mockSubscriptionsRepository: {
+    findByUserId: jest.Mock;
+    save: jest.Mock;
   };
 
   const validUserId = '550e8400-e29b-41d4-a716-446655440000';
@@ -83,6 +92,15 @@ describe('CommunitiesServiceImpl', () => {
       publish: jest.fn(),
     };
 
+    mockSubscriptionsPublisher = {
+      publishCauseCreated: jest.fn().mockResolvedValue(undefined),
+    };
+
+    mockSubscriptionsRepository = {
+      findByUserId: jest.fn().mockResolvedValue(right([])),
+      save: jest.fn().mockResolvedValue(right(undefined)),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CommunitiesServiceImpl,
@@ -90,6 +108,8 @@ describe('CommunitiesServiceImpl', () => {
         { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
         { provide: CommunitiesPublisherPort, useValue: mockPublisher },
+        { provide: SubscriptionsRepositoryPort, useValue: mockSubscriptionsRepository },
+        { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
       ],
     }).compile();
 

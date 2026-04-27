@@ -8,6 +8,7 @@ import { EventEntity } from '@app/communities/infrastructure/persistence/entitie
 import { ObjectiveEntity } from '@app/communities/infrastructure/persistence/entities/objective.entity';
 import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user.entity';
 import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
+import { SubscriptionEntity } from '@app/communities/infrastructure/persistence/entities/subscription.entity';
 import { UserEntity } from '@app/communities/infrastructure/persistence/entities/user.entity';
 import { getTypeOrmConfig } from '@app/ddd/repository/modules/database-typeorm.module';
 import { DynamicModule, Module } from '@nestjs/common';
@@ -47,6 +48,7 @@ export class DatabaseModule {
                 EventUserEntity,
                 ObjetiveUserEntity,
                 RequestEntity,
+                SubscriptionEntity,
               ],
               migrationsPath: 'apps/communities/src/infrastructure/persistence/migrations/*.ts',
               migrationsDistPath: 'dist/apps/communities/src/infrastructure/persistence/migrations/*.js',

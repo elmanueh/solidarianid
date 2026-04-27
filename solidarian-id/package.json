@@ -11,6 +11,7 @@
     "proto:wingen:communities": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_out=./libs/grpc-common/src --ts_proto_opt=nestJs=true,outputServices=grpc-js,esModuleInterop=true,useOptionals=messages,oneof=unions --proto_path=./libs/grpc-common/spec --proto_path=./node_modules ./libs/grpc-common/spec/solidarianid/grpc/communities/communities.proto",
     "proto:gen:communities": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./libs/grpc-common/src --ts_proto_opt=nestJs=true,outputServices=grpc-js,esModuleInterop=true,useOptionals=messages,oneof=unions --proto_path=./libs/grpc-common/spec --proto_path=./node_modules ./libs/grpc-common/spec/solidarianid/grpc/communities/communities.proto",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "generate:vapid:keys": "npx web-push generate-vapid-keys",
     "start": "cross-env NODE_ENV=production nest start",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
@@ -109,7 +110,8 @@
     "rxjs": "^7.8.1",
     "tailwindcss": "^4.1.18",
     "typeorm": "^0.3.28",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
@@ -141,6 +143,7 @@
     "@types/pdfkit": "^0.17.4",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^10.0.0",
+    "@types/web-push": "^3.6.4",
     "cypress": "^15.8.1",
     "daisyui": "^5.5.14",
     "esbuild": "^0.27.2",

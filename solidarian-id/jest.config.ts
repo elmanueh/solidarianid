@@ -25,6 +25,7 @@ const baseJestConfig: Config = {
     '^@solidarianid/security$': '<rootDir>/libs/security/src',
     '^@solidarianid/security/core$': '<rootDir>/libs/security/src/core/index.ts',
     '^@solidarianid/security/nestjs$': '<rootDir>/libs/security/src/nestjs/index.ts',
+    '^passport-google-oauth20$': '<rootDir>/test/mocks/passport-google-oauth20.mock.ts',
   },
 
   transform: {

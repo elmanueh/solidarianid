@@ -1,8 +1,8 @@
 import { NotificationStrategy } from '@app/communities/application/services/strategies/notification.strategy';
 import { RequestNotificationStrategy } from '@app/communities/application/services/strategies/request-notification.strategy';
+import { WebPushNotification, WebPushSenderPort } from '@app/communities/domain/ports/web-push-sender.port';
 import { Injectable } from '@nestjs/common';
 import * as webpush from 'web-push';
-import { NotificationEvent, NotificationServicePort } from '../../domain/services/notification.service';
 import { ActionNotificationStrategy } from './strategies/action-notification.strategy';
 import { CauseNotificationStrategy } from './strategies/cause-notification.strategy';
 
@@ -20,9 +20,9 @@ export type SubscriptionPayload = {
 };
 
 @Injectable()
-export class WebPushService extends NotificationServicePort {
+export class WebPushService extends WebPushSenderPort {
   private readonly strategies: NotificationStrategy[];
-  private readonly ttlSeconds = 60 * 60;
+  private readonly ttlSeconds = 60 * 60 * 24;
   private readonly isConfigured: boolean;
 
   constructor(
@@ -51,7 +51,7 @@ export class WebPushService extends NotificationServicePort {
     webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
   }
 
-  async sendNotification(event: NotificationEvent) {
+  async send(event: WebPushNotification) {
     if (!this.isConfigured) {
       return;
     }

@@ -1,6 +1,7 @@
-import { Button } from '@/components/ui';
+import { Badge, Button } from '@/components/ui';
 import { FavoritesBrowseModal } from '@/components/favorites/favorites-browse-modal';
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { IconChevronRight } from '@tabler/icons-react';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const PREVIEW_SIZE = 4;
@@ -33,18 +34,6 @@ type FavoritesSectionProps<T extends { id: string; name: string }> = {
   renderCard: (item: T, index: number) => ReactNode;
 };
 
-type CarouselItemProps = {
-  children: ReactNode;
-};
-
-function CarouselItem({ children }: Readonly<CarouselItemProps>) {
-  return (
-    <div className="w-full max-w-[360px] min-w-[260px] shrink-0 basis-[85%] snap-center sm:basis-[clamp(280px,45vw,360px)] lg:basis-[clamp(280px,32vw,360px)]">
-      {children}
-    </div>
-  );
-}
-
 export function FavoritesSection<T extends { id: string; name: string }>({
   title,
   icon,
@@ -55,7 +44,6 @@ export function FavoritesSection<T extends { id: string; name: string }>({
   emptyMessage,
   renderCard,
 }: Readonly<FavoritesSectionProps<T>>) {
-  const carouselRef = useRef<HTMLDivElement | null>(null);
   const modalScrollRef = useRef<HTMLDivElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalState, setModalState] = useState<ModalState>(INITIAL_MODAL_STATE);
@@ -74,8 +62,6 @@ export function FavoritesSection<T extends { id: string; name: string }>({
     [filteredModalItems, modalState.visibleCount]
   );
   const viewMoreDisabled = items.length === 0 && !loading;
-  const carouselNavButtonClassName =
-    'absolute top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-border bg-background shadow-lg transition hover:bg-muted lg:inline-flex';
 
   useEffect(() => {
     if (!isModalOpen) {
@@ -172,17 +158,6 @@ export function FavoritesSection<T extends { id: string; name: string }>({
     }
   }, []);
 
-  const scrollCarousel = useCallback((direction: 'left' | 'right') => {
-    const container = carouselRef.current;
-
-    if (!container) {
-      return;
-    }
-
-    const offset = Math.max(container.clientWidth * 0.8, 280);
-    container.scrollBy({ left: direction === 'left' ? -offset : offset, behavior: 'smooth' });
-  }, []);
-
   return (
     <>
       <section className="flex flex-col gap-6 lg:gap-8">
@@ -205,44 +180,34 @@ export function FavoritesSection<T extends { id: string; name: string }>({
           </Button>
         </div>
 
-        {loading ? (
-          <div className="px-1 text-sm text-muted-foreground lg:px-2">Cargando...</div>
-        ) : error ? (
+        {error ? (
           <div className="px-1 text-sm font-semibold text-destructive lg:px-2">{error}</div>
         ) : items.length === 0 ? (
           <div className="px-1 text-sm text-muted-foreground lg:px-2">{emptyMessage}</div>
         ) : (
-          <div className="relative">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-lg"
-              onClick={() => scrollCarousel('left')}
-              className={`${carouselNavButtonClassName} left-0`}
-              aria-label={`Desplazar ${title.toLowerCase()} a la izquierda`}
-            >
-              <IconChevronLeft size={22} />
-            </Button>
-
-            <div
-              ref={carouselRef}
-              className="scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 py-4 lg:mx-0 lg:px-12 lg:py-12"
-            >
-              {previewItems.map((item, index) => (
-                <CarouselItem key={item.id}>{renderCard(item, index)}</CarouselItem>
-              ))}
-            </div>
-
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-lg"
-              onClick={() => scrollCarousel('right')}
-              className={`${carouselNavButtonClassName} right-0`}
-              aria-label={`Desplazar ${title.toLowerCase()} a la derecha`}
-            >
-              <IconChevronRight size={22} />
-            </Button>
+          <div className="relative lg:px-12">
+            <Carousel opts={{ align: 'start' }}>
+              <CarouselContent className="-ml-6 py-4">
+                {previewItems.map((item, index) => (
+                  <CarouselItem
+                    key={item.id}
+                    className="basis-[85%] pl-6 sm:basis-[clamp(280px,45vw,360px)] lg:basis-[clamp(280px,32vw,360px)]"
+                  >
+                    {renderCard(item, index)}
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious
+                size="icon-lg"
+                className="hidden lg:inline-flex"
+                aria-label={`Desplazar ${title.toLowerCase()} a la izquierda`}
+              />
+              <CarouselNext
+                size="icon-lg"
+                className="hidden lg:inline-flex"
+                aria-label={`Desplazar ${title.toLowerCase()} a la derecha`}
+              />
+            </Carousel>
           </div>
         )}
       </section>

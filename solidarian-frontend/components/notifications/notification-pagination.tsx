@@ -64,7 +64,7 @@ export function NotificationPagination({
   };
 
   return (
-    <Pagination>
+    <Pagination className="pb-6">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

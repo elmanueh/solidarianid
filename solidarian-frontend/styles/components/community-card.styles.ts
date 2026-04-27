@@ -5,7 +5,7 @@
 
 export const communityCardStyles = {
   wrapper:
-    'group flex min-w-70 flex-col overflow-visible rounded-[40px] border border-border bg-card shadow-lg dark:shadow-2xl transition-all hover:border-chart-2/30 hover:shadow-xl hover:shadow-chart-2/10 dark:hover:shadow-chart-2/20 active:scale-95 lg:min-w-0',
+    'group flex w-full min-w-[260px] max-w-[360px] flex-col overflow-visible rounded-[40px] border border-border bg-card shadow-lg dark:shadow-2xl transition-all hover:border-chart-2/30 hover:shadow-xl hover:shadow-chart-2/10 dark:hover:shadow-chart-2/20 active:scale-95',
 
   image: {
     wrapper: 'relative h-48 overflow-hidden rounded-t-[40px] md:h-56',
@@ -19,8 +19,7 @@ export const communityCardStyles = {
   content: {
     wrapper: 'flex flex-col gap-3 p-8',
     title:
-      'line-clamp-1 text-lg font-black tracking-tight text-foreground transition-colors group-hover:text-chart-2 lg:text-xl',
-    description:
-      'line-clamp-2 text-xs leading-relaxed font-bold tracking-wide text-muted-foreground uppercase opacity-80',
+      'truncate text-lg font-black tracking-tight text-foreground transition-colors group-hover:text-chart-2 lg:text-xl',
+    description: 'truncate text-xs leading-relaxed font-bold tracking-wide text-muted-foreground uppercase opacity-80',
   },
 } as const;

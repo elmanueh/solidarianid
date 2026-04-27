@@ -58,7 +58,7 @@ export function ExplorePagination({ page, setPage, totalItems, pageSize }: Reado
   };
 
   return (
-    <Pagination className="pt-2">
+    <Pagination className="pt-2 pb-6">
       <PaginationContent className="gap-3">
         <PaginationItem>
           <PaginationLink

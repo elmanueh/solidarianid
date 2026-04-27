@@ -1,6 +1,14 @@
 import { faker } from '@faker-js/faker';
 import { CauseCategory, DurationPreference } from '@app/value-objects/model/user-preferences';
-import { ACTION_TYPES, CAUSE_THEMES, COMMUNITY_TYPES, EVENT_TYPES, OBJECTIVE_UNITS, SDG_VALUES } from './config';
+import {
+  ACTION_TYPES,
+  CAUSE_THEMES,
+  COMMUNITY_TYPES,
+  EVENT_TYPES,
+  OBJECTIVE_UNITS,
+  SDG_VALUES,
+  SEED_USER_PASSWORD,
+} from './config';
 import type {
   ActionRequestDto,
   CauseCreationRequest,
@@ -16,7 +24,6 @@ import {
   generateFutureDate,
   generatePhoneNumber,
   generateRequestName,
-  generateSecurePassword,
   generateUsername,
   randomBetween,
   selectRandomCity,
@@ -45,7 +52,7 @@ export function generateUserDto(index: number): RegisterUserDto {
     fullName: `${faker.person.firstName()} ${faker.person.lastName()} ${faker.person.lastName()}`.trim(),
     username: generateUsername(index),
     mobilePhone: generatePhoneNumber(country.phonePrefix),
-    password: generateSecurePassword(),
+    password: SEED_USER_PASSWORD,
     city,
     countryCode: country.code,
   };
@@ -90,7 +97,7 @@ export function generateUserPreferencesPatchDto(): UpdateUserPreferencesDto {
 /**
  * Generates a community request DTO
  */
-export function generateCommunityRequestDto(userId: string): CommunityRequestDto {
+export function generateCommunityRequestDto(): CommunityRequestDto {
   const theme = faker.helpers.arrayElement(CAUSE_THEMES);
   const causesCount = faker.number.int({ min: 1, max: 3 });
   const causeCreationRequests: CauseCreationRequest[] = Array.from({ length: causesCount }, () =>
@@ -102,7 +109,6 @@ export function generateCommunityRequestDto(userId: string): CommunityRequestDto
   return {
     name: `${communityType} ${faker.company.name()} por ${theme}`.slice(0, 50),
     description: generateDescription(`Comunidad dedicada a proyectos de ${theme} y desarrollo sostenible`),
-    userId,
     causeCreationRequests,
   };
 }
@@ -128,12 +134,11 @@ export function generateCauseCreationRequest(): CauseCreationRequest {
 /**
  * Generates a standalone cause request DTO
  */
-export function generateCauseRequestDto(userId: string, communityId: string): CauseRequestDto {
+export function generateCauseRequestDto(communityId: string): CauseRequestDto {
   const theme = faker.helpers.arrayElement(CAUSE_THEMES);
   return {
     name: generateRequestName(theme, ACTION_TYPES),
     description: generateDescription(`Causa benéfica para apoyar iniciativas de ${theme}`),
-    userId,
     communityId,
     ods: selectRandomSDGs(),
     initialDate: generateFutureDate(),
@@ -192,7 +197,7 @@ export function generateEventDto(): EventDto {
 /**
  * Generates an action request DTO
  */
-export function generateActionRequestDto(userId: string, causeId: string): ActionRequestDto {
+export function generateActionRequestDto(causeId: string): ActionRequestDto {
   const theme = faker.helpers.arrayElement(CAUSE_THEMES);
   const objectivesCount = faker.number.int({ min: 1, max: 3 });
   const eventsCount = faker.number.int({ min: 1, max: 2 });
@@ -200,7 +205,6 @@ export function generateActionRequestDto(userId: string, causeId: string): Actio
   return {
     name: generateRequestName(theme, ACTION_TYPES),
     description: generateDescription(`Acción concreta para ${theme} con objetivos cuantificables`),
-    userId,
     causeId,
     objectives: Array.from({ length: objectivesCount }, () => generateObjectiveDto()),
     events: Array.from({ length: eventsCount }, () => generateEventDto()),

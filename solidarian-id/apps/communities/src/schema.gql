@@ -116,16 +116,16 @@ type Query {
 }
 
 type Mutation {
-  joinEvent(eventId: ID!, userId: ID!): Boolean!
-  leaveEvent(eventId: ID!, userId: ID!): Boolean!
-  contributeObjective(actionId: ID!, objectiveName: String!, userId: ID!, amount: Int!): Objective!
+  joinEvent(eventId: ID!): Boolean!
+  leaveEvent(eventId: ID!): Boolean!
+  contributeObjective(actionId: ID!, objectiveName: String!, amount: Int!): Objective!
   joinCause(causeId: ID!): Boolean!
   leaveCause(causeId: ID!): Boolean!
   createCommunityRequest(createCommunityRequestInput: CreateCommunityRequestInput!): String!
   createCauseRequest(createCauseRequestInput: CreateCauseRequestInput!): String!
   createActionRequest(createActionRequestInput: CreateActionRequestInput!): String!
   joinCommunity(communityId: ID!): Boolean!
-  leaveCommunity(communityId: ID!, userId: ID!): Boolean!
+  leaveCommunity(communityId: ID!): Boolean!
 }
 
 input CreateCommunityRequestInput {

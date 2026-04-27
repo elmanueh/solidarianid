@@ -1,9 +1,9 @@
 import { CommunitiesServiceImpl } from '@app/communities/application/services/communities.service.impl';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -40,7 +40,7 @@ describe('CommunitiesServiceImpl', () => {
         { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
         { provide: PushSubscriptionRepositoryPort, useValue: mockSubscriptionsRepository },
-        { provide: DomainEventBusPort, useValue: mockEventBus },
+        { provide: DomainEvents, useValue: mockEventBus },
       ],
     }).compile();
 

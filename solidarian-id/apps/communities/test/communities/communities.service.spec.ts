@@ -5,9 +5,9 @@ import { RequestStatus } from '@app/communities/domain/model/enums/request-statu
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
@@ -29,7 +29,7 @@ describe('CommunitiesServiceImpl', () => {
   let mockUsersRepo: {
     findById: jest.Mock;
   };
-  let mockEventBus: { publish: jest.Mock };
+  let mockEventBus: { publish: jest.Mock; dispatch: jest.Mock };
   let mockSubscriptionsRepository: {
     findByUserId: jest.Mock;
     save: jest.Mock;
@@ -82,7 +82,8 @@ describe('CommunitiesServiceImpl', () => {
       findById: jest.fn(),
     };
 
-    mockEventBus = { publish: jest.fn().mockResolvedValue(undefined) };
+    const eventBusMock = jest.fn();
+    mockEventBus = { publish: eventBusMock, dispatch: eventBusMock };
 
     mockSubscriptionsRepository = {
       findByUserId: jest.fn().mockResolvedValue(right([])),
@@ -96,7 +97,7 @@ describe('CommunitiesServiceImpl', () => {
         { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
         { provide: PushSubscriptionRepositoryPort, useValue: mockSubscriptionsRepository },
-        { provide: DomainEventBusPort, useValue: mockEventBus },
+        { provide: DomainEvents, useValue: mockEventBus },
       ],
     }).compile();
 

@@ -1,16 +1,16 @@
 import { CausesServiceImpl } from '@app/communities/application/services/causes.service.impl';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { Community } from '@app/communities/domain/model/aggregates/community';
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { User } from '@app/communities/domain/model/entities/user';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { left, right } from '@app/ddd/either';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
@@ -39,7 +39,7 @@ describe('CausesServiceImpl', () => {
   let mockCausesQueryRepository: {
     findExplore: jest.Mock;
   };
-  let mockEventBus: { publish: jest.Mock };
+  let mockEventBus: { publish: jest.Mock; dispatch: jest.Mock };
   let mockSubscriptionsRepository: {
     findByUserId: jest.Mock;
     save: jest.Mock;
@@ -120,7 +120,8 @@ describe('CausesServiceImpl', () => {
     mockCausesQueryRepository = {
       findExplore: jest.fn(),
     };
-    mockEventBus = { publish: jest.fn().mockResolvedValue(undefined) };
+    const eventBusMock = jest.fn();
+    mockEventBus = { publish: eventBusMock, dispatch: eventBusMock };
     mockSubscriptionsRepository = {
       findByUserId: jest.fn().mockResolvedValue(right([])),
       save: jest.fn().mockResolvedValue(right(undefined)),
@@ -133,7 +134,7 @@ describe('CausesServiceImpl', () => {
         { provide: CausesQueryRepositoryPort, useValue: mockCausesQueryRepository },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
         { provide: CommunitiesRepositoryPort, useValue: mockCommunitiesRepository },
-        { provide: DomainEventBusPort, useValue: mockEventBus },
+        { provide: DomainEvents, useValue: mockEventBus },
         { provide: PushSubscriptionRepositoryPort, useValue: mockSubscriptionsRepository },
       ],
     }).compile();

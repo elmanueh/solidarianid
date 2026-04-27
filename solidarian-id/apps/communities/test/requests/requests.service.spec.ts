@@ -1,32 +1,32 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RequestsServiceImpl } from '@app/communities/application/services/requests.service.impl';
-import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
-import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
-import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
-import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
-import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
-import { CreateActionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-action.request.dto';
-import { User } from '@app/communities/domain/model/entities/user';
+import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { Community } from '@app/communities/domain/model/aggregates/community';
-import { Cause } from '@app/communities/domain/model/entities/cause';
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
-import { CommunitiesService } from '@app/communities/domain/services/communities.service';
-import { CausesService } from '@app/communities/domain/services/causes.service';
-import { ActionsService } from '@app/communities/domain/services/actions.service';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
+import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
+import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
+import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
+import { User } from '@app/communities/domain/model/entities/user';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
-import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
-import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
-import { CommunityRequestEventDto, CauseRequestEventDto, ActionRequestEventDto } from '@solidarianid/kafka';
-import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
+import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
+import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
+import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { ActionsService } from '@app/communities/domain/services/actions.service';
+import { CausesService } from '@app/communities/domain/services/causes.service';
+import { CommunitiesService } from '@app/communities/domain/services/communities.service';
+import { CreateActionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-action.request.dto';
+import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
+import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
+import { DomainEvents } from '@app/ddd/domain-events';
+import { left, right } from '@app/ddd/either';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ActionRequestEventDto, CauseRequestEventDto, CommunityRequestEventDto } from '@solidarianid/kafka';
 
 describe('RequestsServiceImpl', () => {
   let service: RequestsServiceImpl;
@@ -48,7 +48,7 @@ describe('RequestsServiceImpl', () => {
     findAll: jest.Mock;
     remove: jest.Mock;
   };
-  let mockEventBus: { publish: jest.Mock };
+  let mockEventBus: { publish: jest.Mock; dispatch: jest.Mock };
   let mockUsersRepository: {
     findById: jest.Mock;
     save: jest.Mock;
@@ -94,7 +94,8 @@ describe('RequestsServiceImpl', () => {
       findAll: jest.fn(),
       remove: jest.fn(),
     };
-    mockEventBus = { publish: jest.fn().mockResolvedValue(undefined) };
+    const eventBusMock = jest.fn();
+    mockEventBus = { publish: eventBusMock, dispatch: eventBusMock };
     mockUsersRepository = {
       findById: jest.fn(),
       save: jest.fn(),
@@ -125,7 +126,7 @@ describe('RequestsServiceImpl', () => {
       providers: [
         RequestsServiceImpl,
         { provide: RequestsRepositoryPort, useValue: mockRequestsRepository },
-        { provide: DomainEventBusPort, useValue: mockEventBus },
+        { provide: DomainEvents, useValue: mockEventBus },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepository },
         { provide: CausesRepositoryPort, useValue: mockCauseRepository },
@@ -384,12 +385,12 @@ describe('RequestsServiceImpl', () => {
       await service.createActionRequest(validActionDto, validUserId);
 
       expect(mockEventBus.publish).toHaveBeenCalledTimes(1);
-      expect(mockEventBus.publish).toHaveBeenCalledWith(
+      expect(mockEventBus.publish).toHaveBeenCalledWith([
         expect.objectContaining({
-          eventName: 'REQUEST_CREATED',
+          type: 'RequestCreatedEvent',
           id: expect.any(String) as unknown as string,
         }) as unknown as object,
-      );
+      ]);
     });
 
     it('should return UserPermissionError when user is not admin or creator of the community', async () => {

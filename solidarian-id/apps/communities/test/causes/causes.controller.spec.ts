@@ -6,7 +6,7 @@ import { CausesService } from '@app/communities/domain/services/causes.service';
 import { CausesController } from '@app/communities/infrastructure/presentation/controllers/rest/causes.controller';
 import { EntityNotFoundError } from 'typeorm';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import {
   AUTHZ_COMMUNITY_CONTEXT_RESOLVER,
   AUTHZ_MEMBERSHIP_PERMISSION_SOURCE,

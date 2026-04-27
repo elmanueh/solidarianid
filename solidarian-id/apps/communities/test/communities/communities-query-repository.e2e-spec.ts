@@ -1,5 +1,5 @@
-import { CommunityLastUsersJoinedData } from '@app/communities/application/services/community-last-users-joined.data';
-import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
+import { CommunityLastUsersJoinedData } from '@app/communities/application/services/data/community-last-users-joined.data';
+import { RankingCommunitiesByUsersData } from '@app/communities/application/services/data/community-ranking.data';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
 import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';

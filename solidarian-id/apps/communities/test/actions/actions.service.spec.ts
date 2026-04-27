@@ -1,10 +1,10 @@
 import { ActionsServiceImpl } from '@app/communities/application/services/actions.service.impl';
-import { Action } from '@app/communities/domain/model/entities/action';
+import { Action } from '@app/communities/domain/model/aggregates/action';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
-import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
@@ -18,7 +18,7 @@ describe('ActionsServiceImpl', () => {
     findById: jest.Mock;
     save: jest.Mock;
   };
-  let mockEventBus: { publish: jest.Mock };
+  let mockEventBus: { publish: jest.Mock; dispatch: jest.Mock };
   let mockUsersRepository: {
     findById: jest.Mock;
   };
@@ -78,7 +78,8 @@ describe('ActionsServiceImpl', () => {
       findById: jest.fn(),
       save: jest.fn(),
     };
-    mockEventBus = { publish: jest.fn().mockResolvedValue(undefined) };
+    const eventBusMock = jest.fn();
+    mockEventBus = { publish: eventBusMock, dispatch: eventBusMock };
     mockUsersRepository = {
       findById: jest.fn(),
     };
@@ -88,7 +89,7 @@ describe('ActionsServiceImpl', () => {
         ActionsServiceImpl,
         { provide: ActionsRepositoryPort, useValue: mockActionRepository },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
-        { provide: DomainEventBusPort, useValue: mockEventBus },
+        { provide: DomainEvents, useValue: mockEventBus },
       ],
     }).compile();
 

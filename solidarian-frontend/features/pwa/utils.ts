@@ -45,7 +45,7 @@ export function getNotificationUrl(data?: StoredNotificationData): string {
 
   switch (data.type) {
     case 'ACTION':
-      if (data.communityId && data.actionId) {
+      if (data.communityId && data.causeId && data.actionId) {
         return `/communities/${data.communityId}/causes/${data.causeId}/actions/${data.actionId}`;
       }
       return '/notifications';

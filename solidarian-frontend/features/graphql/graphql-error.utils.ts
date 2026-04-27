@@ -1,9 +1,11 @@
 import { CombinedGraphQLErrors } from '@apollo/client/errors';
 
-const ENTITY_NOT_FOUND_MESSAGE = 'was not found';
+const ENTITY_NOT_FOUND_MESSAGES = ['was not found', 'not found'];
 
 export const isEntityNotFoundGraphQLError = (error: unknown): boolean => {
-  return getErrorMessages(error).some(message => message.toLowerCase().includes(ENTITY_NOT_FOUND_MESSAGE));
+  return getErrorMessages(error).some(message =>
+    ENTITY_NOT_FOUND_MESSAGES.some(pattern => message.toLowerCase().includes(pattern))
+  );
 };
 
 const getErrorMessages = (error: unknown): string[] => {

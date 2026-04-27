@@ -2,20 +2,15 @@ import CommunityHeader from '@/components/community-page/community-header';
 import CommunityTabs from '@/components/community-page/community-tabs';
 import CommunityFloatingActionButton from '@/components/community-page/floating-action-button';
 import { authServiceServer } from '@/features/auth/services/auth.service.server';
-import {
-  GET_COMMUNITY_BY_ID_QUERY,
-  type GetCommunityByIdResult,
-} from '@/features/communities/api/graphql/communities.documents';
-import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
-import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
-import { isEntityNotFoundGraphQLError } from '@/features/graphql/graphql-error.utils';
+import { GetCommunityByIdResult } from '@/features/communities/api/graphql/communities.documents';
+import { resolveCommunity } from '@/features/communities/loaders/community.loader';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
 import { unstable_noStore as noStore } from 'next/cache';
-import { notFound } from 'next/navigation';
 
 type CommunityPageProps = {
   params: Promise<{ communityId: string }>;
 };
+
 type CommunityMember = {
   id: string;
   fullName: string;
@@ -28,24 +23,10 @@ export default async function CommunityPage({ params }: Readonly<CommunityPagePr
   noStore();
 
   const { communityId } = await params;
-  const graphqlClient = new GraphqlClientService(await getInstanceServerApolloClient());
-  let community: GetCommunityByIdResult['community'] | undefined;
-
-  try {
-    community = (await graphqlClient.query(GET_COMMUNITY_BY_ID_QUERY, { id: communityId })).community;
-  } catch (error) {
-    if (isEntityNotFoundGraphQLError(error)) {
-      notFound();
-    }
-
-    throw error;
-  }
-
-  if (!community) {
-    notFound();
-  }
-
-  const currentUser = await authServiceServer.getCurrentUser();
+  const [community, currentUser] = await Promise.all([
+    resolveCommunity({ communityId }),
+    authServiceServer.getCurrentUser(),
+  ]);
   const membersMap = processUsers(community);
 
   const members = Array.from(membersMap.values());
@@ -62,6 +43,7 @@ export default async function CommunityPage({ params }: Readonly<CommunityPagePr
       imageUrl: (await imageService.getDeterministicBanner({ uuid: cause.id, theme: cause.name })).large,
     }))
   );
+
   return (
     <div className="flex min-h-screen flex-col pb-32">
       <CommunityHeader

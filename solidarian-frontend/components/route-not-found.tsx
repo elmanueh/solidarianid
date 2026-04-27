@@ -68,13 +68,18 @@ interface RouteNotFoundProps {
 
 export default function RouteNotFound({ entity, communityId, causeId }: Readonly<RouteNotFoundProps>) {
   const content = DEFAULT_CONTENT[entity];
+  const actionHref = content.actionHref({ communityId, causeId });
 
   return (
     <main
       data-not-found-screen="true"
-      className="relative flex h-full min-h-0 justify-center overflow-hidden bg-background p-2 sm:p-3 md:p-4"
+      className={'relative flex h-full justify-center overflow-hidden bg-background p-2 sm:p-3 md:p-4'}
     >
-      <section className="absolute inset-2 bottom-24 overflow-hidden rounded-4xl border border-border bg-background sm:inset-3 sm:bottom-3 md:inset-4">
+      <section
+        className={
+          'absolute inset-2 bottom-24 overflow-hidden rounded-4xl border border-border bg-background sm:inset-3 sm:bottom-3 md:inset-4'
+        }
+      >
         <Image
           src="/not-found.gif"
           alt="GIF de fondo"
@@ -85,7 +90,7 @@ export default function RouteNotFound({ entity, communityId, causeId }: Readonly
           className="pointer-events-none object-cover object-center opacity-70 xl:object-contain"
         />
 
-        <div className="relative z-10 flex h-full w-full items-center justify-center p-4 sm:p-6 md:p-8">
+        <div className={'relative z-10 flex h-full w-full items-center justify-center p-4 sm:p-6 md:p-8'}>
           <section className="w-full max-w-lg rounded-4xl border border-border bg-card/80 p-5 text-center text-card-foreground backdrop-blur-xl sm:p-8">
             <div
               className={`mx-auto mb-5 flex size-14 items-center justify-center rounded-full ring-1 ${content.iconContainerClassName}`}
@@ -100,7 +105,7 @@ export default function RouteNotFound({ entity, communityId, causeId }: Readonly
               <Button
                 variant="default"
                 nativeButton={false}
-                render={<Link href={content.actionHref({ communityId, causeId })} aria-label={content.actionLabel} />}
+                render={<Link href={actionHref} aria-label={content.actionLabel} className="contents" />}
                 className="h-11 gap-2 rounded-full bg-brand-500 px-5 text-white shadow-lg shadow-brand-500/20 transition-colors hover:bg-brand-500/90"
               >
                 <IconHome size={18} />

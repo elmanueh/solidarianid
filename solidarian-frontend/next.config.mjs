@@ -5,6 +5,9 @@ const projectRoot = dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    globalNotFound: true,
+  },
   turbopack: {
     root: projectRoot,
   },

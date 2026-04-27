@@ -7,7 +7,7 @@
 
 export const causeCardStyles = {
   wrapper:
-    'group flex flex-col gap-4 overflow-visible rounded-4xl border border-border bg-card p-5 shadow-sm dark:shadow-md transition-all hover:border-chart-4/40 hover:shadow-xl hover:shadow-muted/50 dark:hover:shadow-black/20 active:scale-98',
+    'group flex w-full flex-col gap-4 overflow-visible rounded-4xl border border-border bg-card p-5 shadow-sm dark:shadow-md transition-all hover:border-chart-4/40 hover:shadow-xl hover:shadow-muted/50 dark:hover:shadow-black/20 active:scale-98',
 
   link: 'flex w-full flex-col gap-4',
 
@@ -22,7 +22,8 @@ export const causeCardStyles = {
   content: {
     wrapper: 'flex flex-1 flex-col gap-2 px-1',
     title:
-      'line-clamp-1 text-base leading-tight font-black tracking-tight text-foreground transition-colors group-hover:text-chart-4',
+      'truncate text-base leading-tight font-black tracking-tight text-foreground transition-colors group-hover:text-chart-4',
+    description: 'truncate text-[11px] leading-relaxed font-bold tracking-wide text-muted-foreground uppercase',
     footer: 'flex items-center justify-between',
     location: {
       wrapper: 'flex items-center gap-1.5 font-black text-muted-foreground',

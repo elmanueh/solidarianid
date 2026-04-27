@@ -6,6 +6,7 @@ import { ExploreHeader } from '@/components/explore/explore-header';
 import { ExplorePagination } from '@/components/explore/explore-pagination';
 import { ExploreResultsGrid } from '@/components/explore/explore-results-grid';
 import { Skeleton } from '@/components/ui/skeleton';
+import { OdsId } from '@/features/causes/constants/ods.constants';
 import {
   EXPLORE_DEFAULTS,
   ExploreCauseItem,
@@ -17,7 +18,6 @@ import {
 import { ExploreService } from '@/features/explore/services/explore.service';
 import { IconAlertTriangle, IconLoader } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { OdsId } from '@/features/causes/constants/ods.constants';
 
 const exploreService = new ExploreService();
 
@@ -175,7 +175,7 @@ export default function ExplorePage() {
       <p>Cargando resultados...</p>
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: currentPageSize }).map((_, index) => (
-          <Skeleton key={`explore-skeleton-${index}`} className="h-80 rounded-[2rem]" />
+          <Skeleton key={`explore-skeleton-${index}`} className="h-80 rounded-4xl" />
         ))}
       </div>
     </div>
@@ -208,13 +208,15 @@ export default function ExplorePage() {
         Mostrando {displayedTotal} resultados totales
       </p>
 
-      {loading ? (
-        renderLoadingState()
-      ) : error ? (
-        renderErrorState()
-      ) : (
-        <ExploreResultsGrid mode={mode} communities={communities.items} causes={causes.items} />
-      )}
+      <div className={!hasPagination ? 'pb-6' : undefined}>
+        {loading ? (
+          renderLoadingState()
+        ) : error ? (
+          renderErrorState()
+        ) : (
+          <ExploreResultsGrid mode={mode} communities={communities.items} causes={causes.items} />
+        )}
+      </div>
 
       {hasPagination ? (
         <ExplorePagination page={page} setPage={setPage} totalItems={currentTotal} pageSize={currentPageSize} />

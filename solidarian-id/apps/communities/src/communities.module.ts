@@ -14,16 +14,28 @@ import {
   SelfOnlyPolicyEvaluator,
 } from '@solidarianid/security/nestjs';
 import { PubSub } from 'graphql-subscriptions';
+import { DOMAIN_EVENT_HANDLERS, DomainEventDispatcher } from './application/events/domain-event-dispatcher';
+import { PublishActionCreatedToGraphqlHandler } from './application/events/handlers/graphql/publish-action-created-to-graphql.handler';
+import { PublishCauseCreatedToGraphqlHandler } from './application/events/handlers/graphql/publish-cause-created-to-graphql.handler';
+import { PublishRequestStatusChangedToGraphqlHandler } from './application/events/handlers/graphql/publish-request-status-changed-to-graphql.handler';
+import { PublishActionCreatedToKafkaHandler } from './application/events/handlers/kafka/publish-action-created-to-kafka.handler';
+import { PublishCauseCreatedToKafkaHandler } from './application/events/handlers/kafka/publish-cause-created-to-kafka.handler';
+import { PublishCommunityCreatedToKafkaHandler } from './application/events/handlers/kafka/publish-community-created-to-kafka.handler';
+import { PublishCommunityMemberJoinedToKafkaHandler } from './application/events/handlers/kafka/publish-community-member-joined-to-kafka.handler';
+import { PublishRequestCreatedToKafkaHandler } from './application/events/handlers/kafka/publish-request-created-to-kafka.handler';
+import { SendActionCreatedWebPushHandler } from './application/events/handlers/webpush/send-action-created-webpush.handler';
+import { SendCauseCreatedWebPushHandler } from './application/events/handlers/webpush/send-cause-created-webpush.handler';
+import { SendRequestStatusChangedWebPushHandler } from './application/events/handlers/webpush/send-request-status-changed-webpush.handler';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
 import { CausesServiceImpl } from './application/services/causes.service.impl';
 import { CommunitiesServiceImpl } from './application/services/communities.service.impl';
+import { PushSubscriptionsServiceImpl } from './application/services/push-subscriptions.service.impl';
 import { RequestsServiceImpl } from './application/services/requests.service.impl';
 import { ActionNotificationStrategy } from './application/services/strategies/action-notification.strategy';
 import { CauseNotificationStrategy } from './application/services/strategies/cause-notification.strategy';
 import { RequestNotificationStrategy } from './application/services/strategies/request-notification.strategy';
-import { WebPushService } from './application/services/web-push.service.impl';
-import { SubscriptionsServiceImpl } from './application/services/subscriptions.service.impl';
 import { UserServiceImpl } from './application/services/user.service.impl';
+import { WebPushService } from './application/services/web-push.service.impl';
 import { ActionsPublisherPort } from './domain/ports/actions.publisher.port';
 import { ActionsRepositoryPort } from './domain/ports/actions.repository.port';
 import { CausesQueryRepositoryPort } from './domain/ports/causes-query.repository.port';
@@ -31,19 +43,20 @@ import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
 import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
 import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
+import { DomainEventBusPort, DomainEventHandler } from './domain/ports/domain-event-bus.port';
 import { EventsRepositoryPort } from './domain/ports/events.repository.port';
 import { ObjectivesRepositoryPort } from './domain/ports/objectives.repository.port';
+import { PushSubscriptionRepositoryPort } from './domain/ports/push-subscription.repository.port';
+import { RealtimeNotificationsPublisherPort } from './domain/ports/realtime-notifications.publisher.port';
 import { RequestPublisherPort } from './domain/ports/requests.publisher.port';
 import { RequestsRepositoryPort } from './domain/ports/requests.repository.port';
-import { SubscriptionsRepositoryPort } from './domain/ports/subscription.repository.port';
-import { SubscriptionsPublisherPort } from './domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from './domain/ports/users.repository.port';
+import { WebPushSenderPort } from './domain/ports/web-push-sender.port';
 import { ActionsService } from './domain/services/actions.service';
 import { CausesService } from './domain/services/causes.service';
 import { CommunitiesService } from './domain/services/communities.service';
+import { PushSubscriptionsService } from './domain/services/push-subscriptions.service';
 import { RequestsService } from './domain/services/request.service';
-import { SubscriptionsService } from './domain/services/subscriptions.service';
-import { NotificationServicePort } from './domain/services/notification.service';
 import { UserService } from './domain/services/user.service';
 import { CommunitiesCommunityContextResolverAdapter } from './infrastructure/authz/adapters/communities-community-context-resolver.adapter';
 import { CommunitiesMembershipPermissionSourceAdapter } from './infrastructure/authz/adapters/communities-membership-permission-source.adapter';
@@ -100,7 +113,7 @@ import { CommunitiesResolver } from './infrastructure/presentation/controllers/g
 import { RequestSubscriptionsResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request-subscriptions.resolver';
 import { RequestResolver } from './infrastructure/presentation/controllers/graphql/resolvers/request.resolver';
 import { GRAPHQL_PUB_SUB } from './infrastructure/presentation/controllers/graphql/subscriptions/community.subscription';
-import { GraphqlSubscriptionsPublisherAdapter } from './infrastructure/presentation/controllers/graphql/subscriptions/graphql-subscriptions.publisher';
+import { GraphqlRealtimeNotificationsPublisherAdapter } from './infrastructure/presentation/controllers/graphql/subscriptions/graphql-realtime-notifications.publisher';
 import { ActionsController } from './infrastructure/presentation/controllers/rest/actions.controller';
 import { CausesController } from './infrastructure/presentation/controllers/rest/causes.controller';
 import { CommunitiesController } from './infrastructure/presentation/controllers/rest/communities.controller';
@@ -168,8 +181,8 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
       useClass: RequestsServiceImpl,
     },
     {
-      provide: SubscriptionsService,
-      useClass: SubscriptionsServiceImpl,
+      provide: PushSubscriptionsService,
+      useClass: PushSubscriptionsServiceImpl,
     },
     // Repositories
     {
@@ -209,7 +222,7 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
       useClass: UsersTypeOrmRepositoryAdapter,
     },
     {
-      provide: SubscriptionsRepositoryPort,
+      provide: PushSubscriptionRepositoryPort,
       useClass: SubscriptionTypeOrmAdapter,
     },
     // Publishers
@@ -234,12 +247,68 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
       useClass: ActionsKafkaPublisherAdapter,
     },
     {
-      provide: SubscriptionsPublisherPort,
-      useClass: GraphqlSubscriptionsPublisherAdapter,
+      provide: DomainEventBusPort,
+      useClass: DomainEventDispatcher,
     },
     {
-      provide: NotificationServicePort,
+      provide: RealtimeNotificationsPublisherPort,
+      useClass: GraphqlRealtimeNotificationsPublisherAdapter,
+    },
+    {
+      provide: WebPushSenderPort,
       useClass: WebPushService,
+    },
+    PublishCauseCreatedToKafkaHandler,
+    PublishCauseCreatedToGraphqlHandler,
+    SendCauseCreatedWebPushHandler,
+    PublishActionCreatedToKafkaHandler,
+    PublishActionCreatedToGraphqlHandler,
+    SendActionCreatedWebPushHandler,
+    PublishRequestCreatedToKafkaHandler,
+    PublishCommunityCreatedToKafkaHandler,
+    PublishCommunityMemberJoinedToKafkaHandler,
+    PublishRequestStatusChangedToGraphqlHandler,
+    SendRequestStatusChangedWebPushHandler,
+    {
+      provide: DOMAIN_EVENT_HANDLERS,
+      useFactory: (
+        publishCauseCreatedToKafka: PublishCauseCreatedToKafkaHandler,
+        publishCauseCreatedToGraphql: PublishCauseCreatedToGraphqlHandler,
+        sendCauseCreatedWebPush: SendCauseCreatedWebPushHandler,
+        publishActionCreatedToKafka: PublishActionCreatedToKafkaHandler,
+        publishActionCreatedToGraphql: PublishActionCreatedToGraphqlHandler,
+        sendActionCreatedWebPush: SendActionCreatedWebPushHandler,
+        publishRequestCreatedToKafka: PublishRequestCreatedToKafkaHandler,
+        publishCommunityCreatedToKafka: PublishCommunityCreatedToKafkaHandler,
+        publishCommunityMemberJoinedToKafka: PublishCommunityMemberJoinedToKafkaHandler,
+        publishRequestStatusChangedToGraphql: PublishRequestStatusChangedToGraphqlHandler,
+        sendRequestStatusChangedWebPush: SendRequestStatusChangedWebPushHandler,
+      ): DomainEventHandler[] => [
+        publishCauseCreatedToKafka,
+        publishCauseCreatedToGraphql,
+        sendCauseCreatedWebPush,
+        publishActionCreatedToKafka,
+        publishActionCreatedToGraphql,
+        sendActionCreatedWebPush,
+        publishRequestCreatedToKafka,
+        publishCommunityCreatedToKafka,
+        publishCommunityMemberJoinedToKafka,
+        publishRequestStatusChangedToGraphql,
+        sendRequestStatusChangedWebPush,
+      ],
+      inject: [
+        PublishCauseCreatedToKafkaHandler,
+        PublishCauseCreatedToGraphqlHandler,
+        SendCauseCreatedWebPushHandler,
+        PublishActionCreatedToKafkaHandler,
+        PublishActionCreatedToGraphqlHandler,
+        SendActionCreatedWebPushHandler,
+        PublishRequestCreatedToKafkaHandler,
+        PublishCommunityCreatedToKafkaHandler,
+        PublishCommunityMemberJoinedToKafkaHandler,
+        PublishRequestStatusChangedToGraphqlHandler,
+        SendRequestStatusChangedWebPushHandler,
+      ],
     },
     {
       provide: GRAPHQL_PUB_SUB,

@@ -1,4 +1,4 @@
-import { SubscriptionsService } from '@app/communities/domain/services/subscriptions.service';
+import { PushSubscriptionsService } from '@app/communities/domain/services/push-subscriptions.service';
 import { PushSubscriptionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/push-subscription.request.dto';
 import { PushSubscriptionCreatedResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/push-subscription-created.response.dto';
 import {
@@ -41,7 +41,7 @@ const AuthorizeUserSelf = (action: Action) =>
 @Controller('subscriptions')
 @ApiTags('Subscriptions')
 export class SubscriptionsController {
-  constructor(private readonly subscriptionsService: SubscriptionsService) {}
+  constructor(private readonly pushSubscriptionsService: PushSubscriptionsService) {}
 
   @Get(':userId')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
@@ -64,7 +64,7 @@ export class SubscriptionsController {
     @Param('userId', ParseUUIDPipe) userId: string,
     @Query() criteria: SubscriptionsCriteriaRequestDto,
   ): Promise<UserSubscriptionsResponseDto> {
-    const subscriptionsOrError = await this.subscriptionsService.getUserSubscriptions(userId, criteria);
+    const subscriptionsOrError = await this.pushSubscriptionsService.getUserSubscriptions(userId, criteria);
 
     if (subscriptionsOrError.isLeft()) {
       throw subscriptionsOrError.value;
@@ -93,7 +93,7 @@ export class SubscriptionsController {
   ): Promise<PushSubscriptionCreatedResponseDto> {
     const { endpoint, p256dh, auth } = pushSubscriptionRequestDto;
 
-    const pushSubscription = await this.subscriptionsService.pushSubscription(userId, endpoint, p256dh, auth);
+    const pushSubscription = await this.pushSubscriptionsService.pushSubscription(userId, endpoint, p256dh, auth);
 
     if (pushSubscription.isLeft()) {
       throw pushSubscription.value;
@@ -115,7 +115,7 @@ export class SubscriptionsController {
     description: 'Error interno del servidor',
   })
   async deleteSubscription(@Param('endpoint') endpoint: string, @CurrentUser('sub') userId: string) {
-    const result = await this.subscriptionsService.deleteSubscription(endpoint, userId);
+    const result = await this.pushSubscriptionsService.deleteSubscription(endpoint, userId);
 
     if (result.isLeft()) {
       throw result.value;

@@ -2,27 +2,27 @@ import { NotificationStrategy } from '@app/communities/application/services/stra
 import { SubscriptionPayload } from '@app/communities/application/services/web-push.service.impl';
 import { Subscription } from '@app/communities/domain/model/entities/subscription';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
-import { ActionNotificationEvent, NotificationEvent } from '@app/communities/domain/services/notification.service';
+import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
+import { ActionWebPushNotification, WebPushNotification } from '@app/communities/domain/ports/web-push-sender.port';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ActionNotificationStrategy implements NotificationStrategy {
   constructor(
-    private readonly subscriptionRepository: SubscriptionsRepositoryPort,
+    private readonly subscriptionRepository: PushSubscriptionRepositoryPort,
     private readonly causesrepository: CausesRepositoryPort,
   ) {}
 
-  canHandle(event: NotificationEvent): boolean {
+  canHandle(event: WebPushNotification): boolean {
     return event.eventType === 'ACTION';
   }
 
-  async execute(event: NotificationEvent): Promise<[Subscription[], SubscriptionPayload | undefined]> {
+  async execute(event: WebPushNotification): Promise<[Subscription[], SubscriptionPayload | undefined]> {
     if (!this.canHandle(event)) {
       return [[], undefined];
     }
 
-    const actionEvent = event as ActionNotificationEvent;
+    const actionEvent = event as ActionWebPushNotification;
 
     const subscriptions = await this.subscriptionRepository.findByCauseId(actionEvent.causeId);
 

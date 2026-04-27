@@ -1,9 +1,9 @@
+import { CauseCreatedEvent } from '@app/communities/domain/events/cause-created.event';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
-import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
-import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { Either, left, right } from '@app/ddd/either';
@@ -12,7 +12,7 @@ import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-n
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
-import { CauseRequestEventDto, EventType } from '@solidarianid/kafka';
+import { CauseRequestEventDto } from '@solidarianid/kafka';
 import { ExploreCauseData } from '../../application/services/explore-cause.data';
 import { ExploreCausesCriteria } from '../../application/services/explore-causes.criteria';
 import { ExplorePaginatedResultData } from '../../application/services/explore-paginated-result.data';
@@ -26,9 +26,8 @@ export class CausesServiceImpl implements CausesService {
     private readonly causesQueryRepository: CausesQueryRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communitiesRepository: CommunitiesRepositoryPort,
-    private readonly causesPublisher: CausesPublisherPort,
-    private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
-    private readonly subscriptionsRepository: SubscriptionsRepositoryPort,
+    private readonly eventBus: DomainEventBusPort,
+    private readonly pushSubscriptionRepository: PushSubscriptionRepositoryPort,
   ) {}
 
   async create(causeEventDto: CauseRequestEventDto): Promise<Either<ValidationError | RepositoryException, Cause>> {
@@ -66,8 +65,7 @@ export class CausesServiceImpl implements CausesService {
       return left(subscriptionSyncResult.value);
     }
 
-    await this.causesPublisher.publish(EventType.CAUSE_CREATED, causeOrError.value);
-    await this.subscriptionsPublisher.publishCauseCreated(causeOrError.value);
+    await this.eventBus.publish(new CauseCreatedEvent(causeOrError.value));
 
     return right(causeOrError.value);
   }
@@ -210,7 +208,7 @@ export class CausesServiceImpl implements CausesService {
     causeId: string,
     action: 'add' | 'remove',
   ): Promise<Either<ValidationError | RepositoryException, void>> {
-    const subscriptionsOrError = await this.subscriptionsRepository.findByUserId(userId);
+    const subscriptionsOrError = await this.pushSubscriptionRepository.findByUserId(userId);
 
     if (subscriptionsOrError.isLeft()) {
       return left(subscriptionsOrError.value);
@@ -223,7 +221,7 @@ export class CausesServiceImpl implements CausesService {
         return left(mutationResult.value);
       }
 
-      const saveResult = await this.subscriptionsRepository.save(subscription);
+      const saveResult = await this.pushSubscriptionRepository.save(subscription);
 
       if (saveResult.isLeft()) {
         return left(saveResult.value);

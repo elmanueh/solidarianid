@@ -2,25 +2,26 @@ import { NotificationStrategy } from '@app/communities/application/services/stra
 import { SubscriptionPayload } from '@app/communities/application/services/web-push.service.impl';
 import { Subscription } from '@app/communities/domain/model/entities/subscription';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
-import { RequestStatusChanged } from '@app/communities/domain/ports/subscriptions-publisher.port';
-import { NotificationEvent } from '@app/communities/domain/services/notification.service';
+import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
+import { WebPushNotification } from '@app/communities/domain/ports/web-push-sender.port';
 import { Injectable } from '@nestjs/common';
+
+type RequestStatusChangedWebPushNotification = Extract<WebPushNotification, { eventType: 'REQUEST_STATUS_CHANGED' }>;
 
 @Injectable()
 export class RequestNotificationStrategy implements NotificationStrategy {
-  constructor(private readonly subscriptionRepository: SubscriptionsRepositoryPort) {}
+  constructor(private readonly subscriptionRepository: PushSubscriptionRepositoryPort) {}
 
-  canHandle(event: NotificationEvent): boolean {
+  canHandle(event: WebPushNotification): boolean {
     return event.eventType === 'REQUEST_STATUS_CHANGED';
   }
 
-  async execute(event: NotificationEvent): Promise<[Subscription[], SubscriptionPayload | undefined]> {
+  async execute(event: WebPushNotification): Promise<[Subscription[], SubscriptionPayload | undefined]> {
     if (!this.canHandle(event)) {
       return [[], undefined];
     }
 
-    const requestEvent = event as RequestStatusChanged;
+    const requestEvent = event as RequestStatusChangedWebPushNotification;
 
     const subscriptions = await this.subscriptionRepository.findByUserId(requestEvent.userId);
 

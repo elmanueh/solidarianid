@@ -1,10 +1,12 @@
+import { CauseCreatedEvent } from '@app/communities/domain/events/cause-created.event';
+import { CommunityCreatedEvent } from '@app/communities/domain/events/community-created.event';
+import { CommunityMemberJoinedEvent } from '@app/communities/domain/events/community-member-joined.event';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { Cause } from '@app/communities/domain/model/entities/cause';
-import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
-import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { Either, left, right } from '@app/ddd/either';
@@ -13,7 +15,7 @@ import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-n
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
-import { CommunityRequestEventDto, EventType } from '@solidarianid/kafka';
+import { CommunityRequestEventDto } from '@solidarianid/kafka';
 import { CommunityLastUsersJoinedData } from './community-last-users-joined.data';
 import { RankingCommunitiesByUsersData } from './community-ranking.data';
 import { ExploreCommunitiesCriteria } from './explore-communities.criteria';
@@ -26,9 +28,8 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     private readonly communityRepository: CommunitiesRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communityQueryRepository: CommunitiesQueryRepositoryPort,
-    private readonly communitiesPublisher: CommunitiesPublisherPort,
-    private readonly subscriptionsRepository: SubscriptionsRepositoryPort,
-    private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
+    private readonly pushSubscriptionRepository: PushSubscriptionRepositoryPort,
+    private readonly eventBus: DomainEventBusPort,
   ) {}
 
   async create(
@@ -108,10 +109,10 @@ export class CommunitiesServiceImpl implements CommunitiesService {
       }
     }
 
-    await this.communitiesPublisher.publish(EventType.COMMUNITY_CREATED, community);
+    await this.eventBus.publish(new CommunityCreatedEvent(community));
 
     for (const cause of community.causes) {
-      await this.subscriptionsPublisher.publishCauseCreated(cause);
+      await this.eventBus.publish(new CauseCreatedEvent(cause));
     }
 
     return right(community);
@@ -187,7 +188,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
       return left(subscriptionSyncResult.value);
     }
 
-    await this.communitiesPublisher.publish(EventType.COMMUNITY_MEMBER_JOINED, communityOrError.value);
+    await this.eventBus.publish(new CommunityMemberJoinedEvent(communityOrError.value));
     return right(saveResult.value);
   }
 
@@ -249,7 +250,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     communityId: string,
     action: 'add' | 'remove',
   ): Promise<Either<ValidationError | RepositoryException, void>> {
-    const subscriptionsOrError = await this.subscriptionsRepository.findByUserId(userId);
+    const subscriptionsOrError = await this.pushSubscriptionRepository.findByUserId(userId);
 
     if (subscriptionsOrError.isLeft()) {
       return left(subscriptionsOrError.value);
@@ -263,7 +264,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
         return left(mutationResult.value);
       }
 
-      const saveResult = await this.subscriptionsRepository.save(subscription);
+      const saveResult = await this.pushSubscriptionRepository.save(subscription);
 
       if (saveResult.isLeft()) {
         return left(saveResult.value);
@@ -277,7 +278,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     causeId: string,
     action: 'add' | 'remove',
   ): Promise<Either<ValidationError | RepositoryException, void>> {
-    const subscriptionsOrError = await this.subscriptionsRepository.findByUserId(userId);
+    const subscriptionsOrError = await this.pushSubscriptionRepository.findByUserId(userId);
 
     if (subscriptionsOrError.isLeft()) {
       return left(subscriptionsOrError.value);
@@ -294,7 +295,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
         return left(mutationResult.value);
       }
 
-      const saveResult = await this.subscriptionsRepository.save(subscription);
+      const saveResult = await this.pushSubscriptionRepository.save(subscription);
 
       if (saveResult.isLeft()) {
         return left(saveResult.value);

@@ -1,25 +1,24 @@
+import { ActionCreatedEvent } from '@app/communities/domain/events/action-created.event';
 import { Action } from '@app/communities/domain/model/entities/action';
 import { Event } from '@app/communities/domain/model/entities/event';
 import { EventPlace } from '@app/communities/domain/model/value-objects/event-place';
 import { Objective } from '@app/communities/domain/model/value-objects/objective';
-import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
 import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
-import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
+import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { ActionsService } from '@app/communities/domain/services/actions.service';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
-import { ActionRequestEventDto, EventType } from '@solidarianid/kafka';
+import { ActionRequestEventDto } from '@solidarianid/kafka';
 
 @Injectable()
 export class ActionsServiceImpl implements ActionsService {
   constructor(
     private readonly actionRepository: ActionsRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
-    private readonly actionPublisher: ActionsPublisherPort,
-    private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
+    private readonly eventBus: DomainEventBusPort,
   ) {}
 
   async create(actionDto: ActionRequestEventDto): Promise<Either<ValidationError | RepositoryException, Action>> {
@@ -88,8 +87,7 @@ export class ActionsServiceImpl implements ActionsService {
       return left(saveResult.value);
     }
 
-    await this.actionPublisher.publish(EventType.ACTION_CREATED, action);
-    await this.subscriptionsPublisher.publishActionCreated(action);
+    await this.eventBus.publish(new ActionCreatedEvent(action));
 
     return right(action);
   }

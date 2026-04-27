@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Action as ActionDomain } from '@app/communities/domain/model/entities/action';
 import { CausesService } from '@app/communities/domain/services/causes.service';
-import { NotificationServicePort } from '@app/communities/domain/services/notification.service';
 import { Inject, ParseUUIDPipe } from '@nestjs/common';
 import { Args, ID, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSubEngine } from 'graphql-subscriptions';
@@ -18,7 +17,6 @@ export class ActionsSubscriptionsResolver {
   constructor(
     @Inject(GRAPHQL_PUB_SUB) private readonly pubSub: PubSubEngine,
     private readonly causesService: CausesService,
-    private readonly webPushService: NotificationServicePort,
   ) {}
 
   @Subscription(() => Action, {

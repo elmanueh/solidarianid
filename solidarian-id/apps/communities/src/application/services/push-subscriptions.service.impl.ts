@@ -5,13 +5,13 @@ import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repos
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { EventsRepositoryPort } from '@app/communities/domain/ports/events.repository.port';
 import { ObjectivesRepositoryPort } from '@app/communities/domain/ports/objectives.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import {
-  SubscriptionsSearchCriteria,
-  SubscriptionsService,
-} from '@app/communities/domain/services/subscriptions.service';
+  PushSubscriptionsSearchCriteria,
+  PushSubscriptionsService,
+} from '@app/communities/domain/services/push-subscriptions.service';
 import { UserSubscriptionsResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/user-subscriptions.response.dto';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
@@ -19,7 +19,7 @@ import { ValidationError } from '@app/value-objects/errors/validation/validation
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class SubscriptionsServiceImpl extends SubscriptionsService {
+export class PushSubscriptionsServiceImpl extends PushSubscriptionsService {
   constructor(
     private readonly requestsRepository: RequestsRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
@@ -27,14 +27,14 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
     private readonly causesRepository: CausesRepositoryPort,
     private readonly eventsRepository: EventsRepositoryPort,
     private readonly objectivesRepository: ObjectivesRepositoryPort,
-    private readonly subscriptionsRepository: SubscriptionsRepositoryPort,
+    private readonly pushSubscriptionRepository: PushSubscriptionRepositoryPort,
   ) {
     super();
   }
 
   async getUserSubscriptions(
     userId: string,
-    criteria: SubscriptionsSearchCriteria = {},
+    criteria: PushSubscriptionsSearchCriteria = {},
   ): Promise<Either<ValidationError | RepositoryException, UserSubscriptionsResponseDto>> {
     const userOrError = await this.usersRepository.findById(userId);
 
@@ -78,15 +78,13 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
       : right([]);
     const objectiveIds = objectiveIdsOrError.isLeft() ? [] : objectiveIdsOrError.value;
 
-    const response = {
+    return right({
       requestIds,
       followedCauseIds,
       followedCommunityIds,
       eventIds,
       objectiveIds,
-    };
-
-    return right(response);
+    });
   }
 
   private async getRequestsByCriteria(userId: string, requestType?: RequestType) {
@@ -128,12 +126,15 @@ export class SubscriptionsServiceImpl extends SubscriptionsService {
       return left(subscription.value);
     }
 
-    await this.subscriptionsRepository.save(subscription.value);
+    await this.pushSubscriptionRepository.save(subscription.value);
     return right(subscription.value);
   }
 
-  async deleteSubscription(endpoint: string, userId: string): Promise<Either<RepositoryException, void>> {
-    const deleteResult = await this.subscriptionsRepository.deleteByEndpointAndUserId(endpoint, userId);
+  async deleteSubscription(
+    endpoint: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const deleteResult = await this.pushSubscriptionRepository.deleteByEndpointAndUserId(endpoint, userId);
     if (deleteResult.isLeft()) {
       return left(deleteResult.value);
     }

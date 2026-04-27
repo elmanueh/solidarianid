@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Subscription } from '@app/communities/domain/model/entities/subscription';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { SubscriptionEntity } from '@app/communities/infrastructure/persistence/entities/subscription.entity';
 import { SubscriptionMapper } from '@app/communities/infrastructure/persistence/mappers/subscription.mapper';
 import { Either, left, right } from '@app/ddd/either';
@@ -15,7 +15,7 @@ import { sequence } from '../../../../../../libs/ddd/src/either';
 @Injectable()
 export class SubscriptionTypeOrmAdapter
   extends RepositoryTypeORM<Subscription, SubscriptionEntity>
-  implements SubscriptionsRepositoryPort
+  implements PushSubscriptionRepositoryPort
 {
   constructor(
     @InjectRepository(SubscriptionEntity)

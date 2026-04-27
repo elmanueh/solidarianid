@@ -1,3 +1,5 @@
+import { RequestCreatedEvent } from '@app/communities/domain/events/request-created.event';
+import { RequestStatusChangedEvent } from '@app/communities/domain/events/request-status-changed.event';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
 import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
@@ -7,10 +9,9 @@ import { RequestStatus } from '@app/communities/domain/model/enums/request-statu
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
+import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
-import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { ActionsService } from '@app/communities/domain/services/actions.service';
 import { CausesService } from '@app/communities/domain/services/causes.service';
@@ -28,7 +29,6 @@ import {
   ActionRequestEventDto,
   CauseRequestEventDto,
   CommunityRequestEventDto,
-  EventType,
   RequestEventDto,
 } from '@solidarianid/kafka';
 
@@ -42,15 +42,14 @@ import {
 export class RequestsServiceImpl extends RequestsService {
   constructor(
     private readonly requestsRepository: RequestsRepositoryPort,
-    private readonly requestPublisher: RequestPublisherPort,
+    private readonly eventBus: DomainEventBusPort,
     private readonly userRepository: UsersRepositoryPort,
     private readonly communityRepository: CommunitiesRepositoryPort,
     private readonly causeRepository: CausesRepositoryPort,
     private readonly communitiesService: CommunitiesService,
     private readonly causesService: CausesService,
     private readonly actionsService: ActionsService,
-    private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
-    private readonly subscriptionsRepository: SubscriptionsRepositoryPort,
+    private readonly pushSubscriptionRepository: PushSubscriptionRepositoryPort,
   ) {
     super();
   }
@@ -108,7 +107,7 @@ export class RequestsServiceImpl extends RequestsService {
       return left(requestSubscriptionOrError.value);
     }
 
-    await this.requestPublisher.publish(EventType.REQUEST_CREATED, communityRequestOrError.value);
+    await this.eventBus.publish(new RequestCreatedEvent(communityRequestOrError.value));
 
     return right(communityRequestOrError.value.id);
   }
@@ -171,7 +170,7 @@ export class RequestsServiceImpl extends RequestsService {
       return left(requestSubscriptionOrError.value);
     }
 
-    await this.requestPublisher.publish(EventType.REQUEST_CREATED, causeRequestOrError.value);
+    await this.eventBus.publish(new RequestCreatedEvent(causeRequestOrError.value));
 
     return right(causeRequestOrError.value.id);
   }
@@ -260,7 +259,7 @@ export class RequestsServiceImpl extends RequestsService {
       return left(requestSubscriptionOrError.value);
     }
 
-    await this.requestPublisher.publish(EventType.REQUEST_CREATED, actionRequestOrError.value);
+    await this.eventBus.publish(new RequestCreatedEvent(actionRequestOrError.value));
     return right(actionRequestOrError.value.id);
   }
 
@@ -316,16 +315,18 @@ export class RequestsServiceImpl extends RequestsService {
         return left(new ValidationError('Invalid request type'));
     }
 
-    await this.subscriptionsPublisher.publishRequestStatusChanged({
-      id: request.id.value,
-      userId: request.user.id.value,
-      type: request.type,
-      name: request.name,
-      description: request.description,
-      status: request.status,
-      reason: request.reason,
-      createdEntityId,
-    });
+    await this.eventBus.publish(
+      new RequestStatusChangedEvent({
+        id: request.id.value,
+        userId: request.user.id.value,
+        type: request.type,
+        name: request.name,
+        description: request.description,
+        status: request.status,
+        reason: request.reason,
+        createdEntityId,
+      }),
+    );
 
     return right(undefined);
   }
@@ -351,15 +352,17 @@ export class RequestsServiceImpl extends RequestsService {
       return left(saveResult.value);
     }
 
-    await this.subscriptionsPublisher.publishRequestStatusChanged({
-      id: request.id.value,
-      userId: request.user.id.value,
-      type: request.type,
-      name: request.name,
-      description: request.description,
-      status: request.status,
-      reason: request.reason,
-    });
+    await this.eventBus.publish(
+      new RequestStatusChangedEvent({
+        id: request.id.value,
+        userId: request.user.id.value,
+        type: request.type,
+        name: request.name,
+        description: request.description,
+        status: request.status,
+        reason: request.reason,
+      }),
+    );
 
     return right(undefined);
   }
@@ -390,7 +393,7 @@ export class RequestsServiceImpl extends RequestsService {
     userId: string,
     requestId: string,
   ): Promise<Either<ValidationError | RepositoryException, void>> {
-    const subscriptionsOrError = await this.subscriptionsRepository.findByUserId(userId);
+    const subscriptionsOrError = await this.pushSubscriptionRepository.findByUserId(userId);
 
     if (subscriptionsOrError.isLeft()) {
       return right(undefined);
@@ -407,7 +410,7 @@ export class RequestsServiceImpl extends RequestsService {
         return left(resultOrError.value);
       }
 
-      const saveResult = await this.subscriptionsRepository.save(subscription);
+      const saveResult = await this.pushSubscriptionRepository.save(subscription);
 
       if (saveResult.isLeft()) {
         return left(saveResult.value);

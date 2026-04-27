@@ -18,6 +18,10 @@ import { ActionsServiceImpl } from './application/services/actions.service.impl'
 import { CausesServiceImpl } from './application/services/causes.service.impl';
 import { CommunitiesServiceImpl } from './application/services/communities.service.impl';
 import { RequestsServiceImpl } from './application/services/requests.service.impl';
+import { ActionNotificationStrategy } from './application/services/strategies/action-notification.strategy';
+import { CauseNotificationStrategy } from './application/services/strategies/cause-notification.strategy';
+import { RequestNotificationStrategy } from './application/services/strategies/request-notification.strategy';
+import { WebPushService } from './application/services/web-push.service.impl';
 import { SubscriptionsServiceImpl } from './application/services/subscriptions.service.impl';
 import { UserServiceImpl } from './application/services/user.service.impl';
 import { ActionsPublisherPort } from './domain/ports/actions.publisher.port';
@@ -31,6 +35,7 @@ import { EventsRepositoryPort } from './domain/ports/events.repository.port';
 import { ObjectivesRepositoryPort } from './domain/ports/objectives.repository.port';
 import { RequestPublisherPort } from './domain/ports/requests.publisher.port';
 import { RequestsRepositoryPort } from './domain/ports/requests.repository.port';
+import { SubscriptionsRepositoryPort } from './domain/ports/subscription.repository.port';
 import { SubscriptionsPublisherPort } from './domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from './domain/ports/users.repository.port';
 import { ActionsService } from './domain/services/actions.service';
@@ -38,6 +43,7 @@ import { CausesService } from './domain/services/causes.service';
 import { CommunitiesService } from './domain/services/communities.service';
 import { RequestsService } from './domain/services/request.service';
 import { SubscriptionsService } from './domain/services/subscriptions.service';
+import { NotificationServicePort } from './domain/services/notification.service';
 import { UserService } from './domain/services/user.service';
 import { CommunitiesCommunityContextResolverAdapter } from './infrastructure/authz/adapters/communities-community-context-resolver.adapter';
 import { CommunitiesMembershipPermissionSourceAdapter } from './infrastructure/authz/adapters/communities-membership-permission-source.adapter';
@@ -60,6 +66,7 @@ import { EventEntity } from './infrastructure/persistence/entities/event.entity'
 import { ObjectiveEntity } from './infrastructure/persistence/entities/objective.entity';
 import { ObjetiveUserEntity } from './infrastructure/persistence/entities/objetive-user.entity';
 import { RequestEntity } from './infrastructure/persistence/entities/request.entity';
+import { SubscriptionEntity } from './infrastructure/persistence/entities/subscription.entity';
 import { UserEntity } from './infrastructure/persistence/entities/user.entity';
 import { ActionEntityMapper } from './infrastructure/persistence/mappers/action-entity.mapper';
 import { CauseEntityMapper } from './infrastructure/persistence/mappers/cause-entity.mapper';
@@ -67,6 +74,7 @@ import { CommunityEntityMapper } from './infrastructure/persistence/mappers/comm
 import { EventEntityMapper } from './infrastructure/persistence/mappers/event-entity.mapper';
 import { ObjectiveEntityMapper } from './infrastructure/persistence/mappers/objetive-entity.mapper';
 import { RequestEntityMapper } from './infrastructure/persistence/mappers/request-entity.mapper';
+import { SubscriptionMapper } from './infrastructure/persistence/mappers/subscription.mapper';
 import { UserEntityMapper } from './infrastructure/persistence/mappers/user-entity.mapper';
 import { ActionsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/actions-typeorm.repository';
 import { CausesQueryTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/causes-query-typeorm.repository';
@@ -76,6 +84,7 @@ import { CommunitiesRepositoryTypeOrmAdapter } from './infrastructure/persistenc
 import { EventsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/events-typeorm.repository';
 import { ObjectivesRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/objectives-typeorm.repository';
 import { RequestsRepositoryTypeOrmAdapter } from './infrastructure/persistence/repositories/requests-typeorm.repository';
+import { SubscriptionTypeOrmAdapter } from './infrastructure/persistence/repositories/subscription-typeorm.repository';
 import { UsersTypeOrmRepositoryAdapter } from './infrastructure/persistence/repositories/users-typeorm.repository';
 import { GraphqlLoadersService } from './infrastructure/presentation/controllers/graphql/loaders/graphql-loaders.service';
 import { ActionsGraphqlMapper } from './infrastructure/presentation/controllers/graphql/mappers/actions-graphql.mapper';
@@ -114,6 +123,7 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
       RequestEntity,
       EventUserEntity,
       ObjetiveUserEntity,
+      SubscriptionEntity,
     ]),
     KafkaDynamicModule.register(process.env.KAFKA_COMMUNITIES_CLIENT_ID ?? 'communities'),
     SecurityAuthorizationModule.register({
@@ -198,6 +208,10 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
       provide: UsersRepositoryPort,
       useClass: UsersTypeOrmRepositoryAdapter,
     },
+    {
+      provide: SubscriptionsRepositoryPort,
+      useClass: SubscriptionTypeOrmAdapter,
+    },
     // Publishers
     {
       provide: RequestPublisherPort,
@@ -224,6 +238,10 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
       useClass: GraphqlSubscriptionsPublisherAdapter,
     },
     {
+      provide: NotificationServicePort,
+      useClass: WebPushService,
+    },
+    {
       provide: GRAPHQL_PUB_SUB,
       useFactory: () => new PubSub(),
     },
@@ -235,12 +253,16 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
     EventEntityMapper,
     ObjectiveEntityMapper,
     RequestEntityMapper,
+    SubscriptionMapper,
 
     // Events Mappers
     RequestEventMapper,
     CommunityEventMapper,
     CauseEventMapper,
     ActionEventMapper,
+    RequestNotificationStrategy,
+    CauseNotificationStrategy,
+    ActionNotificationStrategy,
 
     // GraphQL
     DateScalar,

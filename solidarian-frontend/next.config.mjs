@@ -1,3 +1,4 @@
+import { withSerwist } from '@serwist/turbopack';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -18,6 +19,10 @@ const nextConfig = {
         source: '/photos',
         destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL ?? ''}/photos`,
       },
+      {
+        source: '/graphql',
+        destination: `${process.env.NEXT_PUBLIC_GATEWAY_URL ?? ''}/graphql`,
+      },
     ];
   },
   images: {
@@ -30,4 +35,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withSerwist(nextConfig);

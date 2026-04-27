@@ -1,14 +1,17 @@
+'use client';
 import { cn } from '@/lib/utils';
 import { IconBell } from '@tabler/icons-react';
 
 interface PreferencesNotificationProps {
   notificationsEnabled: boolean;
   setNotificationsEnabled: (enabled: boolean) => void;
+  disabled?: boolean;
 }
 
 export function PreferencesNotification({
   notificationsEnabled,
   setNotificationsEnabled,
+  disabled = false,
 }: Readonly<PreferencesNotificationProps>) {
   return (
     <div className="flex flex-col gap-8 py-4">
@@ -34,11 +37,19 @@ export function PreferencesNotification({
 
           <button
             type="button"
-            onClick={() => setNotificationsEnabled(!notificationsEnabled)}
+            onClick={() => {
+              if (disabled) {
+                return;
+              }
+
+              setNotificationsEnabled(!notificationsEnabled);
+            }}
             aria-pressed={notificationsEnabled}
+            disabled={disabled}
             className={cn(
               'flex h-12 w-24 cursor-pointer items-center rounded-full p-2 shadow-inner transition-colors duration-500',
-              notificationsEnabled ? 'bg-success' : 'bg-preferences-track-off'
+              notificationsEnabled ? 'bg-success' : 'bg-preferences-track-off',
+              disabled && 'cursor-not-allowed opacity-60'
             )}
           >
             <span

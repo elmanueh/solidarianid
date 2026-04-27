@@ -114,7 +114,7 @@ export default function useActionRequestForm() {
         setIsSubmitting(false);
       }
     },
-    [causeId, communityId, graphql, isSubmitting, router, values, userId]
+    [causeId, communityId, isSubmitting, router, values, userId, graphql]
   );
 
   return { values, setValues, handleSubmit, isSubmitting };

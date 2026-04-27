@@ -1,28 +1,29 @@
-import {
-  PostgreSQLTestModule,
-  TestServerHelper,
-  PostgreSQLSeeder,
-  KafkaTestModule,
-  PG_COMMUNITY_IDS as COMMUNITY_IDS,
-  TestContainerLifecycle,
-  PG_USER_IDS,
-} from '@solidarianid/testing';
-import { HttpStatus, INestApplication } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
-import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
-import { CauseUserEntity } from '../../src/infrastructure/persistence/entities/cause-user.entity';
-import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
-import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
-import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
-import { EventEntity } from '../../src/infrastructure/persistence/entities/event.entity';
-import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
-import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user.entity';
-import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
 import { CommunitiesModule } from '@app/communities/communities.module';
 import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
+import { SubscriptionEntity } from '@app/communities/infrastructure/persistence/entities/subscription.entity';
 import { CommunityRankingUserResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/community-ranking-user.response.dto';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import {
+  PG_COMMUNITY_IDS as COMMUNITY_IDS,
+  KafkaTestModule,
+  PG_USER_IDS,
+  PostgreSQLSeeder,
+  PostgreSQLTestModule,
+  TestContainerLifecycle,
+  TestServerHelper,
+} from '@solidarianid/testing';
+import { DataSource } from 'typeorm';
+import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
+import { CauseUserEntity } from '../../src/infrastructure/persistence/entities/cause-user.entity';
+import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
+import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
+import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
+import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
+import { EventEntity } from '../../src/infrastructure/persistence/entities/event.entity';
+import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
+import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user.entity';
+import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
 
 describe('CommunitiesController (e2e)', () => {
   let server!: TestServerHelper;
@@ -49,6 +50,7 @@ describe('CommunitiesController (e2e)', () => {
       ObjetiveUserEntity,
       CommunityUserEntity,
       RequestEntity,
+      SubscriptionEntity,
     ]);
 
     server = new TestServerHelper();

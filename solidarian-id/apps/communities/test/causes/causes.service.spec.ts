@@ -5,10 +5,11 @@ import { Cause } from '@app/communities/domain/model/entities/cause';
 import { User } from '@app/communities/domain/model/entities/user';
 import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
 import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
+import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
 import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { left, right } from '@app/ddd/either';
@@ -44,6 +45,10 @@ describe('CausesServiceImpl', () => {
   };
   let mockSubscriptionsPublisher: {
     publishCauseCreated: jest.Mock;
+  };
+  let mockSubscriptionsRepository: {
+    findByUserId: jest.Mock;
+    save: jest.Mock;
   };
 
   const validCommunityId = 'b1b2c3d4-e5f6-4890-abcd-ef1234567002';
@@ -127,6 +132,10 @@ describe('CausesServiceImpl', () => {
     mockSubscriptionsPublisher = {
       publishCauseCreated: jest.fn(),
     };
+    mockSubscriptionsRepository = {
+      findByUserId: jest.fn().mockResolvedValue(right([])),
+      save: jest.fn().mockResolvedValue(right(undefined)),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -137,6 +146,7 @@ describe('CausesServiceImpl', () => {
         { provide: CommunitiesRepositoryPort, useValue: mockCommunitiesRepository },
         { provide: CausesPublisherPort, useValue: mockCausesPublisher },
         { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
+        { provide: SubscriptionsRepositoryPort, useValue: mockSubscriptionsRepository },
       ],
     }).compile();
 

@@ -122,7 +122,8 @@ export default function RegisterPage() {
     try {
       const cleanPhone = '+' + phone;
       await authService.register(data.username, data.password, data.fullName, cleanPhone, data.city, data.countryCode);
-      router.push(ROUTES.auth.login);
+      await authService.login(data.username, data.password);
+      router.push(ROUTES.auth.onboarding);
       toast.success('Registro exitoso! Ahora puedes iniciar sesión.');
     } catch (err) {
       toast.error(getErrorMessage(err));

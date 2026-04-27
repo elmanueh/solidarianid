@@ -180,4 +180,7 @@ out
 .gga
 .atl
 
+# PWA & Serwist
+public/sw*
+public/swe-worker*
 commits-counter.sh

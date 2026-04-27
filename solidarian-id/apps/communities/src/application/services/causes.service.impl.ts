@@ -1,7 +1,8 @@
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
-import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
 import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
+import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
+import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
 import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CausesService } from '@app/communities/domain/services/causes.service';
@@ -27,6 +28,7 @@ export class CausesServiceImpl implements CausesService {
     private readonly communitiesRepository: CommunitiesRepositoryPort,
     private readonly causesPublisher: CausesPublisherPort,
     private readonly subscriptionsPublisher: SubscriptionsPublisherPort,
+    private readonly subscriptionsRepository: SubscriptionsRepositoryPort,
   ) {}
 
   async create(causeEventDto: CauseRequestEventDto): Promise<Either<ValidationError | RepositoryException, Cause>> {
@@ -52,6 +54,16 @@ export class CausesServiceImpl implements CausesService {
 
     if (saveResult.isLeft()) {
       return left(saveResult.value);
+    }
+
+    const subscriptionSyncResult = await this.syncUserCauseSubscriptions(
+      causeEventDto.userId,
+      causeOrError.value.id.value,
+      'add',
+    );
+
+    if (subscriptionSyncResult.isLeft()) {
+      return left(subscriptionSyncResult.value);
     }
 
     await this.causesPublisher.publish(EventType.CAUSE_CREATED, causeOrError.value);
@@ -158,6 +170,12 @@ export class CausesServiceImpl implements CausesService {
       return left(saveResult.value);
     }
 
+    const subscriptionSyncResult = await this.syncUserCauseSubscriptions(userId, causeId, 'add');
+
+    if (subscriptionSyncResult.isLeft()) {
+      return left(subscriptionSyncResult.value);
+    }
+
     return right(undefined);
   }
 
@@ -178,6 +196,39 @@ export class CausesServiceImpl implements CausesService {
       return left(removeResult.value);
     }
 
+    const subscriptionSyncResult = await this.syncUserCauseSubscriptions(userId, causeId, 'remove');
+
+    if (subscriptionSyncResult.isLeft()) {
+      return left(subscriptionSyncResult.value);
+    }
+
+    return right(undefined);
+  }
+
+  private async syncUserCauseSubscriptions(
+    userId: string,
+    causeId: string,
+    action: 'add' | 'remove',
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const subscriptionsOrError = await this.subscriptionsRepository.findByUserId(userId);
+
+    if (subscriptionsOrError.isLeft()) {
+      return left(subscriptionsOrError.value);
+    }
+
+    for (const subscription of subscriptionsOrError.value) {
+      const mutationResult = action === 'add' ? subscription.followCause(causeId) : subscription.unfollowCause(causeId);
+
+      if (mutationResult.isLeft()) {
+        return left(mutationResult.value);
+      }
+
+      const saveResult = await this.subscriptionsRepository.save(subscription);
+
+      if (saveResult.isLeft()) {
+        return left(saveResult.value);
+      }
+    }
     return right(undefined);
   }
 }

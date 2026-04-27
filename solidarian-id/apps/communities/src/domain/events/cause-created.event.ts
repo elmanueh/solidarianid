@@ -1,10 +1,10 @@
-import { Cause } from '@app/communities/domain/model/entities/cause';
-import { CommunitiesDomainEvent } from './domain-event';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
+import { DomainEvent } from '@app/ddd/domain-event';
 
-export class CauseCreatedEvent implements CommunitiesDomainEvent {
-  readonly eventName = 'CAUSE_CREATED';
-  readonly occurredOn = new Date();
-  readonly id: string;
+export class CauseCreatedEvent implements DomainEvent {
+  public readonly occurredOn = new Date();
+  public readonly type = CauseCreatedEvent.name;
+  public readonly id: string;
 
   constructor(readonly cause: Cause) {
     this.id = cause.id.value;

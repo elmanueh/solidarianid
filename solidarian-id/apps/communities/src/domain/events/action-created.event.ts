@@ -1,9 +1,9 @@
-import { Action } from '@app/communities/domain/model/entities/action';
-import { CommunitiesDomainEvent } from './domain-event';
+import { Action } from '@app/communities/domain/model/aggregates/action';
+import { DomainEvent } from '@app/ddd/domain-event';
 
-export class ActionCreatedEvent implements CommunitiesDomainEvent {
-  readonly eventName = 'ACTION_CREATED';
-  readonly occurredOn = new Date();
+export class ActionCreatedEvent implements DomainEvent {
+  public readonly occurredOn = new Date();
+  public readonly type = ActionCreatedEvent.name;
   readonly id: string;
 
   constructor(readonly action: Action) {

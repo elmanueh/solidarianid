@@ -1,9 +1,9 @@
 import { Community } from '@app/communities/domain/model/aggregates/community';
-import { CommunitiesDomainEvent } from './domain-event';
+import { DomainEvent } from '@app/ddd/domain-event';
 
-export class CommunityMemberJoinedEvent implements CommunitiesDomainEvent {
-  readonly eventName = 'COMMUNITY_MEMBER_JOINED';
+export class CommunityMemberJoinedEvent implements DomainEvent {
   readonly occurredOn = new Date();
+  readonly type = CommunityMemberJoinedEvent.name;
   readonly id: string;
 
   constructor(readonly community: Community) {

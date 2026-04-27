@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { ActionsHandlerDispatcher } from '@app/communities/application/events/actions-handler-dispatcher';
 import { CausesHandlerDispatcher } from '@app/communities/application/events/causes-handler-dispatcher';
 import { CommunitiesHandlerDispatcher } from '@app/communities/application/events/communities-handler-dispatcher';
@@ -17,8 +18,8 @@ import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
 import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
 import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
-import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
 import { RealtimeNotificationsPublisherPort } from '@app/communities/domain/ports/realtime-notifications.publisher.port';
+import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
 import { SubscriptionType, WebPushSenderPort } from '@app/communities/domain/ports/web-push-sender.port';
 import { DomainEvents } from '@app/ddd/domain-events';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';

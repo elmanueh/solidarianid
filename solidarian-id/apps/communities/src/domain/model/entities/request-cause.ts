@@ -1,13 +1,14 @@
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
-import { Duration } from '@app/value-objects/model/duration';
-import { RequestProps, Request, RequestCreationProps } from './request';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Name } from '@app/value-objects/model/name';
-import { Description } from '@app/value-objects/model/description';
+import { RequestCreatedEvent } from '@app/communities/domain/events/request-created.event';
 import { Either, left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Description } from '@app/value-objects/model/description';
+import { Duration } from '@app/value-objects/model/duration';
+import { Name } from '@app/value-objects/model/name';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { Reason } from '@app/value-objects/model/reason';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { RequestType } from '../enums/request-type';
+import { Request, RequestCreationProps, RequestProps } from './request';
 
 export interface CauseRequestProps extends RequestProps {
   ods: SustainableDevelopmentGoal[];
@@ -78,7 +79,9 @@ export class CauseRequest extends Request<CauseRequestProps> {
       communityId: communityIdOrError.value,
     };
 
-    const causeRequest = new CauseRequest(causeRequestProps, uniqueId.value);
-    return right(causeRequest);
+    const request = new CauseRequest(causeRequestProps, uniqueId.value);
+    request.addDomainEvent(new RequestCreatedEvent(request));
+
+    return right(request);
   }
 }

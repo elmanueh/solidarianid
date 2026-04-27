@@ -1,11 +1,13 @@
+import { CommunityCreatedEvent } from '@app/communities/domain/events/community-created.event';
+import { CommunityMemberJoinedEvent } from '@app/communities/domain/events/community-member-joined.event';
 import { AggregateRoot } from '@app/ddd/aggregate-root';
 import { Either, left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
 import { Name } from '@app/value-objects/model/name';
 import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { Cause } from '../aggregates/cause';
 import { User } from '../entities/user';
-import { Cause } from '../entities/cause';
 
 interface CommunityProps {
   name: Name;
@@ -74,6 +76,7 @@ export class Community extends AggregateRoot<CommunityProps> {
 
   addMember(user: User): void {
     this.props.members.push(user);
+    this.addDomainEvent(new CommunityMemberJoinedEvent(this));
   }
 
   addAdmin(user: User): void {
@@ -123,6 +126,9 @@ export class Community extends AggregateRoot<CommunityProps> {
       causes: props.causes ?? [],
     };
 
-    return right(new Community(communityProps, uniqueId.value));
+    const community = new Community(communityProps, uniqueId.value);
+    community.addDomainEvent(new CommunityCreatedEvent(community));
+
+    return right(community);
   }
 }

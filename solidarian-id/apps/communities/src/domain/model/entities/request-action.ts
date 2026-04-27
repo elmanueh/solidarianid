@@ -1,14 +1,15 @@
+import { RequestCreatedEvent } from '@app/communities/domain/events/request-created.event';
+import { Either, left, right, sequence } from '@app/ddd/either';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
 import { Name } from '@app/value-objects/model/name';
 import { Quantity } from '@app/value-objects/model/quantity';
-import { Unit } from '@app/value-objects/model/unit';
-import { RequestProps, Request, RequestCreationProps } from './request';
-import { EventPlace } from '../value-objects/event-place';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Either, left, right, sequence } from '@app/ddd/either';
 import { Reason } from '@app/value-objects/model/reason';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { Unit } from '@app/value-objects/model/unit';
 import { RequestType } from '../enums/request-type';
+import { EventPlace } from '../value-objects/event-place';
+import { Request, RequestCreationProps, RequestProps } from './request';
 
 export interface ActionRequestObjectiveProps {
   name: Name;
@@ -110,7 +111,10 @@ export class ActionRequest extends Request<ActionRequestProps> {
       causeId: causeIdOrError.value,
     };
 
-    return right(new ActionRequest(requestProps, uniqueId.value));
+    const request: ActionRequest = new ActionRequest(requestProps, uniqueId.value);
+    request.addDomainEvent(new RequestCreatedEvent(request));
+
+    return right(request);
   }
 
   private static validateObjective(

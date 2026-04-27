@@ -1,14 +1,15 @@
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Request, RequestCreationProps, RequestProps } from './request';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { RequestCreatedEvent } from '@app/communities/domain/events/request-created.event';
 import { Either, left, right, sequence } from '@app/ddd/either';
-import { Name } from '@app/value-objects/model/name';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Description } from '@app/value-objects/model/description';
+import { Duration } from '@app/value-objects/model/duration';
+import { Name } from '@app/value-objects/model/name';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { Reason } from '@app/value-objects/model/reason';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
 import { RequestStatus } from '../enums/request-status';
 import { RequestType } from '../enums/request-type';
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
-import { Duration } from '@app/value-objects/model/duration';
-import { Reason } from '@app/value-objects/model/reason';
+import { Request, RequestCreationProps, RequestProps } from './request';
 
 export interface CommunityCauseRequestProps {
   name: Name;
@@ -71,7 +72,10 @@ export class CommunityRequest extends Request<CommunityRequestProps> {
       causeRequests: causeRequestsOrError.value,
     };
 
-    return right(new CommunityRequest(requestProps, uniqueId.value));
+    const request = new CommunityRequest(requestProps, uniqueId.value);
+    request.addDomainEvent(new RequestCreatedEvent(request));
+
+    return right(request);
   }
 
   private static validateCause(

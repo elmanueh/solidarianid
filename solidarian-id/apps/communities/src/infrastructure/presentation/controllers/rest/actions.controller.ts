@@ -1,4 +1,4 @@
-import { Action } from '@app/communities/domain/model/entities/action';
+import { Action } from '@app/communities/domain/model/aggregates/action';
 import { ActionsService } from '@app/communities/domain/services/actions.service';
 import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';

@@ -1,11 +1,11 @@
-import { Cause } from '@app/communities/domain/model/entities/cause';
-import { ExploreCauseData } from '@app/communities/application/services/explore-cause.data';
-import { ExplorePaginatedResultData } from '@app/communities/application/services/explore-paginated-result.data';
-import { CauseSummaryResponseDto } from '../dtos/output/cause-summary.response.dto';
-import { ActionDomainMapper } from './action.mapper';
+import { ExploreCauseData } from '@app/communities/application/services/data/explore-cause.data';
+import { ExplorePaginatedResultData } from '@app/communities/application/services/data/explore-paginated-result.data';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { CauseDetailResponseDto } from '../dtos/output/cause-detail.response.dto';
+import { CauseSummaryResponseDto } from '../dtos/output/cause-summary.response.dto';
 import { ExploreCauseItemResponseDto } from '../dtos/output/explore-cause-item.response.dto';
 import { ExploreCausesResponseDto } from '../dtos/output/explore-causes.response.dto';
+import { ActionDomainMapper } from './action.mapper';
 
 export class CauseDomainMapper {
   static toCauseSummaryDto(cause: Cause): CauseSummaryResponseDto {

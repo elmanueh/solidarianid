@@ -1,5 +1,5 @@
-import { Action } from '@app/communities/domain/model/entities/action';
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Action } from '@app/communities/domain/model/aggregates/action';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { User } from '@app/communities/domain/model/entities/user';
 import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
 import { CausesService } from '@app/communities/domain/services/causes.service';

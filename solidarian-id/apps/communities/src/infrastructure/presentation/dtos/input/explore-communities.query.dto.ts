@@ -1,4 +1,4 @@
-import { ExploreSortOrder } from '@app/communities/application/services/explore-sort-order';
+import { ExploreSortOrder } from '@app/communities/application/services/data/explore-sort-order';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';

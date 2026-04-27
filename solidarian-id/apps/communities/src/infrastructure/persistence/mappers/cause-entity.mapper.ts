@@ -1,6 +1,6 @@
 import { Mapper } from '@app/ddd/repository/mapper';
 import { CauseEntity } from '../entities/cause.entity';
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { Either, left, sequence } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';

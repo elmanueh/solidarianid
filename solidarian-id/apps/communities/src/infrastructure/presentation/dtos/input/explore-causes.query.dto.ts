@@ -1,4 +1,4 @@
-import { ExploreSortOrder } from '@app/communities/application/services/explore-sort-order';
+import { ExploreSortOrder } from '@app/communities/application/services/data/explore-sort-order';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';

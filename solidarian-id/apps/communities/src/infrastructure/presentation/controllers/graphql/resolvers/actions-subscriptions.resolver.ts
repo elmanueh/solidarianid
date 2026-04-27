@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Action as ActionDomain } from '@app/communities/domain/model/entities/action';
+import { Action as ActionDomain } from '@app/communities/domain/model/aggregates/action';
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { Inject, ParseUUIDPipe } from '@nestjs/common';
 import { Args, ID, Resolver, Subscription } from '@nestjs/graphql';

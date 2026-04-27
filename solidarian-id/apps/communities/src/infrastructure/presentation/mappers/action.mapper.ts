@@ -1,6 +1,6 @@
-import { Action } from '@app/communities/domain/model/entities/action';
-import { ActionSummaryResponseDto } from '../dtos/output/action-summary.response.dto';
+import { Action } from '@app/communities/domain/model/aggregates/action';
 import { ActionDetailResponseDto } from '../dtos/output/action-detail.response.dto';
+import { ActionSummaryResponseDto } from '../dtos/output/action-summary.response.dto';
 import { EventDomainMapper } from './event.mapper';
 import { ObjetiveDomainMapper } from './objetive.mapper';
 

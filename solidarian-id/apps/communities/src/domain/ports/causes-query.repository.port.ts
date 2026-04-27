@@ -1,5 +1,5 @@
-import { ExploreCauseData } from '@app/communities/application/services/explore-cause.data';
-import { ExploreCausesCriteria } from '@app/communities/application/services/explore-causes.criteria';
+import { ExploreCauseData } from '@app/communities/application/services/data/explore-cause.data';
+import { ExploreCausesCriteria } from '@app/communities/application/services/data/explore-causes.criteria';
 import { ExplorePaginatedResultData } from '@app/communities/application/services/explore-paginated-result.data';
 import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';

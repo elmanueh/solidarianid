@@ -1,4 +1,4 @@
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { CausesService } from '@app/communities/domain/services/causes.service';
 import { Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Query, UseGuards } from '@nestjs/common';
 import {

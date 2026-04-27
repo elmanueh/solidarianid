@@ -1,4 +1,4 @@
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CauseUserEntity } from '@app/communities/infrastructure/persistence/entities/cause-user.entity';
 import { Either, left, right, sequence } from '@app/ddd/either';

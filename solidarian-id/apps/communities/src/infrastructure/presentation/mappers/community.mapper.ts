@@ -1,7 +1,7 @@
-import { CommunityLastUsersJoinedData } from '@app/communities/application/services/community-last-users-joined.data';
-import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
-import { ExploreCommunityData } from '@app/communities/application/services/explore-community.data';
-import { ExplorePaginatedResultData } from '@app/communities/application/services/explore-paginated-result.data';
+import { CommunityLastUsersJoinedData } from '@app/communities/application/services/data/community-last-users-joined.data';
+import { RankingCommunitiesByUsersData } from '@app/communities/application/services/data/community-ranking.data';
+import { ExploreCommunityData } from '@app/communities/application/services/data/explore-community.data';
+import { ExplorePaginatedResultData } from '@app/communities/application/services/data/explore-paginated-result.data';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { CommunityDetailResponseDto } from '../dtos/output/community-detail.response.dto';
 import { CommunityLastUsersJoinedPeriodResponseDto } from '../dtos/output/community-last-users-joined-period.response.dto';

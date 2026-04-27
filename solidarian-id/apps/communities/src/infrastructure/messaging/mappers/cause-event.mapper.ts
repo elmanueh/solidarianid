@@ -1,4 +1,4 @@
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { Injectable } from '@nestjs/common';
 import { EventType, Mapper } from '@solidarianid/kafka';
 

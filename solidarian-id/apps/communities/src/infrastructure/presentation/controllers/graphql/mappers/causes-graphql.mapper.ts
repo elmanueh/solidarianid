@@ -1,4 +1,4 @@
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { Injectable } from '@nestjs/common';
 import { Cause as CauseGraphql } from '../entities/cause';
 import { ActionsGraphqlMapper } from './actions-graphql.mapper';

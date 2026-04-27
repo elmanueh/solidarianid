@@ -1,8 +1,8 @@
-import { CommunityLastUsersJoinedData } from '@app/communities/application/services/community-last-users-joined.data';
-import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
-import { ExploreCommunitiesCriteria } from '@app/communities/application/services/explore-communities.criteria';
-import { ExploreCommunityData } from '@app/communities/application/services/explore-community.data';
-import { ExplorePaginatedResultData } from '@app/communities/application/services/explore-paginated-result.data';
+import { CommunityLastUsersJoinedData } from '@app/communities/application/services/data/community-last-users-joined.data';
+import { RankingCommunitiesByUsersData } from '@app/communities/application/services/data/community-ranking.data';
+import { ExploreCommunitiesCriteria } from '@app/communities/application/services/data/explore-communities.criteria';
+import { ExploreCommunityData } from '@app/communities/application/services/data/explore-community.data';
+import { ExplorePaginatedResultData } from '@app/communities/application/services/data/explore-paginated-result.data';
 import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';

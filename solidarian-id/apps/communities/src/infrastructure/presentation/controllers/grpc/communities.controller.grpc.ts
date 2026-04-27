@@ -1,4 +1,4 @@
-import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
+import { RankingCommunitiesByUsersData } from '@app/communities/application/services/data/community-ranking.data';
 import { Community } from '@app/communities/domain/model/aggregates/community';
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
 import { CommunityDomainMapper } from '@app/communities/infrastructure/presentation/mappers/community.mapper';

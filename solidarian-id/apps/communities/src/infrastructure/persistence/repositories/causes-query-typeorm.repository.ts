@@ -1,12 +1,12 @@
-import { ExploreCauseData } from '@app/communities/application/services/explore-cause.data';
-import { ExploreCausesCriteria } from '@app/communities/application/services/explore-causes.criteria';
-import { ExplorePaginatedResultData } from '@app/communities/application/services/explore-paginated-result.data';
-import { ExploreSortOrder } from '@app/communities/application/services/explore-sort-order';
+import { ExploreCauseData } from '@app/communities/application/services/data/explore-cause.data';
+import { ExploreCausesCriteria } from '@app/communities/application/services/data/explore-causes.criteria';
+import { ExplorePaginatedResultData } from '@app/communities/application/services/data/explore-paginated-result.data';
+import { ExploreSortOrder } from '@app/communities/application/services/data/explore-sort-order';
 import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository as TypeOrmRepository } from 'typeorm';
 import { CauseEntity } from '../entities/cause.entity';
 

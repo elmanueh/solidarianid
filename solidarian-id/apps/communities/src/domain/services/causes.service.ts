@@ -1,7 +1,7 @@
-import { Cause } from '@app/communities/domain/model/entities/cause';
-import { ExploreCauseData } from '@app/communities/application/services/explore-cause.data';
-import { ExploreCausesCriteria } from '@app/communities/application/services/explore-causes.criteria';
-import { ExplorePaginatedResultData } from '@app/communities/application/services/explore-paginated-result.data';
+import { ExploreCauseData } from '@app/communities/application/services/data/explore-cause.data';
+import { ExploreCausesCriteria } from '@app/communities/application/services/data/explore-causes.criteria';
+import { ExplorePaginatedResultData } from '@app/communities/application/services/data/explore-paginated-result.data';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { Either } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';

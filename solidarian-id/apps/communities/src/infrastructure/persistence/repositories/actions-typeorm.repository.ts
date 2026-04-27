@@ -1,4 +1,4 @@
-import { Action } from '@app/communities/domain/model/entities/action';
+import { Action } from '@app/communities/domain/model/aggregates/action';
 import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
 import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
 import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user.entity';

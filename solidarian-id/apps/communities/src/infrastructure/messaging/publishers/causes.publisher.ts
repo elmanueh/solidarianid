@@ -1,4 +1,4 @@
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';

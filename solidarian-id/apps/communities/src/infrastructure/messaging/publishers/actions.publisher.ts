@@ -1,4 +1,4 @@
-import { Action } from '@app/communities/domain/model/entities/action';
+import { Action } from '@app/communities/domain/model/aggregates/action';
 import { ActionsPublisherPort } from '@app/communities/domain/ports/actions.publisher.port';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';

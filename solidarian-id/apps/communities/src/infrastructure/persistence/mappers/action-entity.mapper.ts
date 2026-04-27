@@ -1,10 +1,10 @@
-import { Action } from '@app/communities/domain/model/entities/action';
+import { Action } from '@app/communities/domain/model/aggregates/action';
+import { Either, left, sequence } from '@app/ddd/either';
 import { Mapper } from '@app/ddd/repository/mapper';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { ActionEntity } from '../entities/action.entity';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { EventEntityMapper } from './event-entity.mapper';
-import { Either, left, sequence } from '@app/ddd/either';
 import { ObjectiveEntityMapper } from './objetive-entity.mapper';
 
 @Injectable()

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Cause as CauseDomain } from '@app/communities/domain/model/entities/cause';
+import { Cause as CauseDomain } from '@app/communities/domain/model/aggregates/cause';
 import { Inject, ParseUUIDPipe } from '@nestjs/common';
 import { PubSubEngine } from 'graphql-subscriptions';
 import { Args, ID, Resolver, Subscription } from '@nestjs/graphql';

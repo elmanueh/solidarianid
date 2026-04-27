@@ -1,16 +1,16 @@
+import { CommunityLastUsersJoinedData } from '@app/communities/application/services/data/community-last-users-joined.data';
+import { RankingCommunitiesByUsersData } from '@app/communities/application/services/data/community-ranking.data';
+import { ExploreCommunitiesCriteria } from '@app/communities/application/services/data/explore-communities.criteria';
+import { ExploreCommunityData } from '@app/communities/application/services/data/explore-community.data';
+import { ExplorePaginatedResultData } from '@app/communities/application/services/data/explore-paginated-result.data';
+import { ExploreSortOrder } from '@app/communities/application/services/data/explore-sort-order';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { RankingCommunitiesByUsersData } from '@app/communities/application/services/community-ranking.data';
-import { ExploreCommunitiesCriteria } from '@app/communities/application/services/explore-communities.criteria';
-import { ExploreCommunityData } from '@app/communities/application/services/explore-community.data';
-import { ExplorePaginatedResultData } from '@app/communities/application/services/explore-paginated-result.data';
-import { ExploreSortOrder } from '@app/communities/application/services/explore-sort-order';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CommunityEntity } from '../entities/community.entity';
-import { Repository as TypeOrmRepository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { CommunityLastUsersJoinedData } from '@app/communities/application/services/community-last-users-joined.data';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository as TypeOrmRepository } from 'typeorm';
+import { CommunityEntity } from '../entities/community.entity';
 
 @Injectable()
 export class CommunitiesQueryTypeOrmRepositoryAdapter implements CommunitiesQueryRepositoryPort {

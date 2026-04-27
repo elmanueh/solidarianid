@@ -1,4 +1,4 @@
-import { Action } from '@app/communities/domain/model/entities/action';
+import { Action } from '@app/communities/domain/model/aggregates/action';
 import { Event } from '@app/communities/domain/model/entities/event';
 import { Objective } from '@app/communities/domain/model/value-objects/objective';
 import { Injectable } from '@nestjs/common';

@@ -1,12 +1,11 @@
-import { ActionCreatedEvent } from '@app/communities/domain/events/action-created.event';
-import { Action } from '@app/communities/domain/model/entities/action';
+import { Action } from '@app/communities/domain/model/aggregates/action';
 import { Event } from '@app/communities/domain/model/entities/event';
 import { EventPlace } from '@app/communities/domain/model/value-objects/event-place';
 import { Objective } from '@app/communities/domain/model/value-objects/objective';
 import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
-import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { ActionsService } from '@app/communities/domain/services/actions.service';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
@@ -18,7 +17,7 @@ export class ActionsServiceImpl implements ActionsService {
   constructor(
     private readonly actionRepository: ActionsRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
-    private readonly eventBus: DomainEventBusPort,
+    private readonly domainEvents: DomainEvents,
   ) {}
 
   async create(actionDto: ActionRequestEventDto): Promise<Either<ValidationError | RepositoryException, Action>> {
@@ -87,7 +86,7 @@ export class ActionsServiceImpl implements ActionsService {
       return left(saveResult.value);
     }
 
-    await this.eventBus.publish(new ActionCreatedEvent(action));
+    this.domainEvents.dispatch(action.pullDomainEvents());
 
     return right(action);
   }

@@ -1,6 +1,5 @@
-import { RequestCreatedEvent } from '@app/communities/domain/events/request-created.event';
-import { RequestStatusChangedEvent } from '@app/communities/domain/events/request-status-changed.event';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
+import { RequestStatusChangedEvent } from '@app/communities/domain/events/request-status-changed.event';
 import { Request, RequestProps } from '@app/communities/domain/model/entities/request';
 import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
 import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
@@ -9,7 +8,6 @@ import { RequestStatus } from '@app/communities/domain/model/enums/request-statu
 import { RequestType } from '@app/communities/domain/model/enums/request-type';
 import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
@@ -20,6 +18,7 @@ import { RequestsService } from '@app/communities/domain/services/request.servic
 import { CreateActionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-action.request.dto';
 import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
 import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
@@ -42,7 +41,6 @@ import {
 export class RequestsServiceImpl extends RequestsService {
   constructor(
     private readonly requestsRepository: RequestsRepositoryPort,
-    private readonly eventBus: DomainEventBusPort,
     private readonly userRepository: UsersRepositoryPort,
     private readonly communityRepository: CommunitiesRepositoryPort,
     private readonly causeRepository: CausesRepositoryPort,
@@ -50,6 +48,7 @@ export class RequestsServiceImpl extends RequestsService {
     private readonly causesService: CausesService,
     private readonly actionsService: ActionsService,
     private readonly pushSubscriptionRepository: PushSubscriptionRepositoryPort,
+    private readonly domainEvents: DomainEvents,
   ) {
     super();
   }
@@ -107,7 +106,9 @@ export class RequestsServiceImpl extends RequestsService {
       return left(requestSubscriptionOrError.value);
     }
 
-    await this.eventBus.publish(new RequestCreatedEvent(communityRequestOrError.value));
+    if (communityRequestOrError.isRight()) {
+      this.domainEvents.dispatch(communityRequestOrError.value.pullDomainEvents());
+    }
 
     return right(communityRequestOrError.value.id);
   }
@@ -170,7 +171,9 @@ export class RequestsServiceImpl extends RequestsService {
       return left(requestSubscriptionOrError.value);
     }
 
-    await this.eventBus.publish(new RequestCreatedEvent(causeRequestOrError.value));
+    if (causeRequestOrError.isRight()) {
+      this.domainEvents.dispatch(causeRequestOrError.value.pullDomainEvents());
+    }
 
     return right(causeRequestOrError.value.id);
   }
@@ -259,7 +262,9 @@ export class RequestsServiceImpl extends RequestsService {
       return left(requestSubscriptionOrError.value);
     }
 
-    await this.eventBus.publish(new RequestCreatedEvent(actionRequestOrError.value));
+    if (actionRequestOrError.isRight()) {
+      this.domainEvents.dispatch(actionRequestOrError.value.pullDomainEvents());
+    }
     return right(actionRequestOrError.value.id);
   }
 
@@ -315,7 +320,7 @@ export class RequestsServiceImpl extends RequestsService {
         return left(new ValidationError('Invalid request type'));
     }
 
-    await this.eventBus.publish(
+    this.domainEvents.dispatch([
       new RequestStatusChangedEvent({
         id: request.id.value,
         userId: request.user.id.value,
@@ -326,7 +331,7 @@ export class RequestsServiceImpl extends RequestsService {
         reason: request.reason,
         createdEntityId,
       }),
-    );
+    ]);
 
     return right(undefined);
   }
@@ -352,7 +357,7 @@ export class RequestsServiceImpl extends RequestsService {
       return left(saveResult.value);
     }
 
-    await this.eventBus.publish(
+    this.domainEvents.dispatch([
       new RequestStatusChangedEvent({
         id: request.id.value,
         userId: request.user.id.value,
@@ -362,7 +367,7 @@ export class RequestsServiceImpl extends RequestsService {
         status: request.status,
         reason: request.reason,
       }),
-    );
+    ]);
 
     return right(undefined);
   }

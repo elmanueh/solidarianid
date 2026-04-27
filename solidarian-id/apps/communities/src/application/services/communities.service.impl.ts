@@ -1,14 +1,11 @@
-import { CauseCreatedEvent } from '@app/communities/domain/events/cause-created.event';
-import { CommunityCreatedEvent } from '@app/communities/domain/events/community-created.event';
-import { CommunityMemberJoinedEvent } from '@app/communities/domain/events/community-member-joined.event';
 import { Community } from '@app/communities/domain/model/aggregates/community';
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { Cause } from '@app/communities/domain/model/aggregates/cause';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CommunitiesService } from '@app/communities/domain/services/communities.service';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { Either, left, right } from '@app/ddd/either';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
@@ -16,11 +13,11 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { CommunityRequestEventDto } from '@solidarianid/kafka';
-import { CommunityLastUsersJoinedData } from './community-last-users-joined.data';
-import { RankingCommunitiesByUsersData } from './community-ranking.data';
-import { ExploreCommunitiesCriteria } from './explore-communities.criteria';
-import { ExploreCommunityData } from './explore-community.data';
-import { ExplorePaginatedResultData } from './explore-paginated-result.data';
+import { CommunityLastUsersJoinedData } from './data/community-last-users-joined.data';
+import { RankingCommunitiesByUsersData } from './data/community-ranking.data';
+import { ExploreCommunitiesCriteria } from './data/explore-communities.criteria';
+import { ExploreCommunityData } from './data/explore-community.data';
+import { ExplorePaginatedResultData } from './data/explore-paginated-result.data';
 
 @Injectable()
 export class CommunitiesServiceImpl implements CommunitiesService {
@@ -29,7 +26,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communityQueryRepository: CommunitiesQueryRepositoryPort,
     private readonly pushSubscriptionRepository: PushSubscriptionRepositoryPort,
-    private readonly eventBus: DomainEventBusPort,
+    private readonly domainEvents: DomainEvents,
   ) {}
 
   async create(
@@ -109,10 +106,10 @@ export class CommunitiesServiceImpl implements CommunitiesService {
       }
     }
 
-    await this.eventBus.publish(new CommunityCreatedEvent(community));
+    this.domainEvents.dispatch(community.pullDomainEvents());
 
     for (const cause of community.causes) {
-      await this.eventBus.publish(new CauseCreatedEvent(cause));
+      this.domainEvents.dispatch(cause.pullDomainEvents());
     }
 
     return right(community);
@@ -188,7 +185,7 @@ export class CommunitiesServiceImpl implements CommunitiesService {
       return left(subscriptionSyncResult.value);
     }
 
-    await this.eventBus.publish(new CommunityMemberJoinedEvent(communityOrError.value));
+    this.domainEvents.dispatch(communityOrError.value.pullDomainEvents());
     return right(saveResult.value);
   }
 

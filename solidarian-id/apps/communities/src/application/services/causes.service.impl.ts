@@ -1,11 +1,10 @@
-import { CauseCreatedEvent } from '@app/communities/domain/events/cause-created.event';
 import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
 import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
 import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { DomainEventBusPort } from '@app/communities/domain/ports/domain-event-bus.port';
 import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
 import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
 import { CausesService } from '@app/communities/domain/services/causes.service';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { Either, left, right } from '@app/ddd/either';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
@@ -13,11 +12,11 @@ import { RepositoryException } from '@app/ddd/repository/exceptions/repository.e
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Injectable } from '@nestjs/common';
 import { CauseRequestEventDto } from '@solidarianid/kafka';
-import { ExploreCauseData } from '../../application/services/explore-cause.data';
-import { ExploreCausesCriteria } from '../../application/services/explore-causes.criteria';
-import { ExplorePaginatedResultData } from '../../application/services/explore-paginated-result.data';
-import { Cause } from '../../domain/model/entities/cause';
+import { Cause } from '../../domain/model/aggregates/cause';
 import { CausesRepositoryPort } from '../../domain/ports/causes.repository.port';
+import { ExploreCauseData } from './data/explore-cause.data';
+import { ExploreCausesCriteria } from './data/explore-causes.criteria';
+import { ExplorePaginatedResultData } from './data/explore-paginated-result.data';
 
 @Injectable()
 export class CausesServiceImpl implements CausesService {
@@ -26,8 +25,8 @@ export class CausesServiceImpl implements CausesService {
     private readonly causesQueryRepository: CausesQueryRepositoryPort,
     private readonly usersRepository: UsersRepositoryPort,
     private readonly communitiesRepository: CommunitiesRepositoryPort,
-    private readonly eventBus: DomainEventBusPort,
     private readonly pushSubscriptionRepository: PushSubscriptionRepositoryPort,
+    private readonly domainEvents: DomainEvents,
   ) {}
 
   async create(causeEventDto: CauseRequestEventDto): Promise<Either<ValidationError | RepositoryException, Cause>> {
@@ -49,7 +48,9 @@ export class CausesServiceImpl implements CausesService {
       return left(causeOrError.value);
     }
 
-    const saveResult = await this.causeRepository.save(causeOrError.value);
+    const cause = causeOrError.value;
+
+    const saveResult = await this.causeRepository.save(cause);
 
     if (saveResult.isLeft()) {
       return left(saveResult.value);
@@ -65,9 +66,9 @@ export class CausesServiceImpl implements CausesService {
       return left(subscriptionSyncResult.value);
     }
 
-    await this.eventBus.publish(new CauseCreatedEvent(causeOrError.value));
+    this.domainEvents.dispatch(cause.pullDomainEvents());
 
-    return right(causeOrError.value);
+    return right(cause);
   }
 
   async getAll(): Promise<Either<ValidationError | RepositoryException, Cause[]>> {

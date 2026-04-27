@@ -1,3 +1,7 @@
+import { ActionsHandlerDispatcher } from '@app/communities/application/events/actions-handler-dispatcher';
+import { CausesHandlerDispatcher } from '@app/communities/application/events/causes-handler-dispatcher';
+import { CommunitiesHandlerDispatcher } from '@app/communities/application/events/communities-handler-dispatcher';
+import { RequestsHandlerDispatcher } from '@app/communities/application/events/requests-handler-dispatcher';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
 import { AuthModule } from '@app/communities/infrastructure/auth/auth.module';
 import { DatabaseModule } from '@app/communities/infrastructure/persistence/database.module';
@@ -7,6 +11,7 @@ import { CommunitiesControllerGrpc } from '@app/communities/infrastructure/prese
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaDynamicModule, RequestEventMapper } from '@solidarianid/kafka';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { CommunityContextResolver, MembershipPermissionSource } from '@solidarianid/security/core';
 import {
   CommunityMembershipPolicyEvaluator,
@@ -14,18 +19,6 @@ import {
   SelfOnlyPolicyEvaluator,
 } from '@solidarianid/security/nestjs';
 import { PubSub } from 'graphql-subscriptions';
-import { DOMAIN_EVENT_HANDLERS, DomainEventDispatcher } from './application/events/domain-event-dispatcher';
-import { PublishActionCreatedToGraphqlHandler } from './application/events/handlers/graphql/publish-action-created-to-graphql.handler';
-import { PublishCauseCreatedToGraphqlHandler } from './application/events/handlers/graphql/publish-cause-created-to-graphql.handler';
-import { PublishRequestStatusChangedToGraphqlHandler } from './application/events/handlers/graphql/publish-request-status-changed-to-graphql.handler';
-import { PublishActionCreatedToKafkaHandler } from './application/events/handlers/kafka/publish-action-created-to-kafka.handler';
-import { PublishCauseCreatedToKafkaHandler } from './application/events/handlers/kafka/publish-cause-created-to-kafka.handler';
-import { PublishCommunityCreatedToKafkaHandler } from './application/events/handlers/kafka/publish-community-created-to-kafka.handler';
-import { PublishCommunityMemberJoinedToKafkaHandler } from './application/events/handlers/kafka/publish-community-member-joined-to-kafka.handler';
-import { PublishRequestCreatedToKafkaHandler } from './application/events/handlers/kafka/publish-request-created-to-kafka.handler';
-import { SendActionCreatedWebPushHandler } from './application/events/handlers/webpush/send-action-created-webpush.handler';
-import { SendCauseCreatedWebPushHandler } from './application/events/handlers/webpush/send-cause-created-webpush.handler';
-import { SendRequestStatusChangedWebPushHandler } from './application/events/handlers/webpush/send-request-status-changed-webpush.handler';
 import { ActionsServiceImpl } from './application/services/actions.service.impl';
 import { CausesServiceImpl } from './application/services/causes.service.impl';
 import { CommunitiesServiceImpl } from './application/services/communities.service.impl';
@@ -43,7 +36,6 @@ import { CausesPublisherPort } from './domain/ports/causes.publisher.port';
 import { CausesRepositoryPort } from './domain/ports/causes.repository.port';
 import { CommunitiesPublisherPort } from './domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from './domain/ports/communities.repository.port';
-import { DomainEventBusPort, DomainEventHandler } from './domain/ports/domain-event-bus.port';
 import { EventsRepositoryPort } from './domain/ports/events.repository.port';
 import { ObjectivesRepositoryPort } from './domain/ports/objectives.repository.port';
 import { PushSubscriptionRepositoryPort } from './domain/ports/push-subscription.repository.port';
@@ -247,10 +239,6 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
       useClass: ActionsKafkaPublisherAdapter,
     },
     {
-      provide: DomainEventBusPort,
-      useClass: DomainEventDispatcher,
-    },
-    {
       provide: RealtimeNotificationsPublisherPort,
       useClass: GraphqlRealtimeNotificationsPublisherAdapter,
     },
@@ -258,62 +246,12 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
       provide: WebPushSenderPort,
       useClass: WebPushService,
     },
-    PublishCauseCreatedToKafkaHandler,
-    PublishCauseCreatedToGraphqlHandler,
-    SendCauseCreatedWebPushHandler,
-    PublishActionCreatedToKafkaHandler,
-    PublishActionCreatedToGraphqlHandler,
-    SendActionCreatedWebPushHandler,
-    PublishRequestCreatedToKafkaHandler,
-    PublishCommunityCreatedToKafkaHandler,
-    PublishCommunityMemberJoinedToKafkaHandler,
-    PublishRequestStatusChangedToGraphqlHandler,
-    SendRequestStatusChangedWebPushHandler,
-    {
-      provide: DOMAIN_EVENT_HANDLERS,
-      useFactory: (
-        publishCauseCreatedToKafka: PublishCauseCreatedToKafkaHandler,
-        publishCauseCreatedToGraphql: PublishCauseCreatedToGraphqlHandler,
-        sendCauseCreatedWebPush: SendCauseCreatedWebPushHandler,
-        publishActionCreatedToKafka: PublishActionCreatedToKafkaHandler,
-        publishActionCreatedToGraphql: PublishActionCreatedToGraphqlHandler,
-        sendActionCreatedWebPush: SendActionCreatedWebPushHandler,
-        publishRequestCreatedToKafka: PublishRequestCreatedToKafkaHandler,
-        publishCommunityCreatedToKafka: PublishCommunityCreatedToKafkaHandler,
-        publishCommunityMemberJoinedToKafka: PublishCommunityMemberJoinedToKafkaHandler,
-        publishRequestStatusChangedToGraphql: PublishRequestStatusChangedToGraphqlHandler,
-        sendRequestStatusChangedWebPush: SendRequestStatusChangedWebPushHandler,
-      ): DomainEventHandler[] => [
-        publishCauseCreatedToKafka,
-        publishCauseCreatedToGraphql,
-        sendCauseCreatedWebPush,
-        publishActionCreatedToKafka,
-        publishActionCreatedToGraphql,
-        sendActionCreatedWebPush,
-        publishRequestCreatedToKafka,
-        publishCommunityCreatedToKafka,
-        publishCommunityMemberJoinedToKafka,
-        publishRequestStatusChangedToGraphql,
-        sendRequestStatusChangedWebPush,
-      ],
-      inject: [
-        PublishCauseCreatedToKafkaHandler,
-        PublishCauseCreatedToGraphqlHandler,
-        SendCauseCreatedWebPushHandler,
-        PublishActionCreatedToKafkaHandler,
-        PublishActionCreatedToGraphqlHandler,
-        SendActionCreatedWebPushHandler,
-        PublishRequestCreatedToKafkaHandler,
-        PublishCommunityCreatedToKafkaHandler,
-        PublishCommunityMemberJoinedToKafkaHandler,
-        PublishRequestStatusChangedToGraphqlHandler,
-        SendRequestStatusChangedWebPushHandler,
-      ],
-    },
+
     {
       provide: GRAPHQL_PUB_SUB,
       useFactory: () => new PubSub(),
     },
+    DomainEvents,
     // Persistence Mappers
     CommunityEntityMapper,
     CauseEntityMapper,
@@ -350,6 +288,10 @@ import { SubscriptionsController } from './infrastructure/presentation/controlle
     GraphqlLoadersService,
     CommunitiesCommunityContextResolverAdapter,
     CommunitiesMembershipPermissionSourceAdapter,
+    ActionsHandlerDispatcher,
+    CausesHandlerDispatcher,
+    CommunitiesHandlerDispatcher,
+    RequestsHandlerDispatcher,
   ],
 })
 export class CommunitiesModule {}

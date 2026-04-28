@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { logLevel } from 'kafkajs';
+import { Partitioners, logLevel } from 'kafkajs';
 import { KAFKA_BROKERS } from './tokens';
 
 @Module({})
@@ -19,6 +19,7 @@ export class KafkaDynamicModule {
             useFactory: (brokers: string[]) => ({
               transport: Transport.KAFKA,
               options: {
+                producerOnlyMode: true,
                 client: {
                   clientId: serviceName,
                   brokers,
@@ -38,6 +39,7 @@ export class KafkaDynamicModule {
                 },
                 producer: {
                   maxInFlightRequests: 1,
+                  createPartitioner: Partitioners.LegacyPartitioner,
                 },
               },
             }),

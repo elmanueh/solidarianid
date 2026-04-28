@@ -1,5 +1,8 @@
 import { ActionsController } from '@app/communities/actions/infrastructure/presentation/controllers/rest/actions.controller';
+import { ActionsResolver } from '@app/communities/actions/infrastructure/presentation/controllers/graphql/resolvers/actions.resolver';
+import { ActionsSubscriptionsResolver } from '@app/communities/actions/infrastructure/presentation/controllers/graphql/resolvers/actions-subscriptions.resolver';
 import { ActionsServiceImpl } from '@app/communities/actions/application/services/actions.service.impl';
+import { ActionsGraphqlMapper } from '@app/communities/actions/infrastructure/presentation/controllers/graphql/mappers/actions-graphql.mapper';
 import { ActionEventMapper } from '@app/communities/actions/infrastructure/messaging/mappers/action-event.mapper';
 import { ActionsKafkaPublisherAdapter } from '@app/communities/actions/infrastructure/messaging/publishers/actions.publisher';
 import { ActionEntity } from '@app/communities/actions/infrastructure/persistence/entities/action.entity';
@@ -25,8 +28,8 @@ import { UsersTypeOrmRepositoryAdapter } from '@app/communities/shared/infrastru
 import { DomainEvents } from '@app/ddd/domain-events';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { KafkaDynamicModule } from '@solidarianid/kafka';
 import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
+import { ActionsHandlerDispatcher } from '@app/communities/actions/application/events/actions-handler-dispatcher';
 
 @Module({
   imports: [
@@ -39,11 +42,13 @@ import { CommunitiesSharedModule } from '@app/communities/shared/communities-sha
       ObjetiveUserEntity,
       UserEntity,
     ]),
-    KafkaDynamicModule.register(process.env.KAFKA_COMMUNITIES_CLIENT_ID ?? 'communities'),
   ],
   controllers: [ActionsController],
   providers: [
     DomainEvents,
+    ActionsResolver,
+    ActionsSubscriptionsResolver,
+    ActionsHandlerDispatcher,
     {
       provide: ActionsService,
       useClass: ActionsServiceImpl,
@@ -68,6 +73,7 @@ import { CommunitiesSharedModule } from '@app/communities/shared/communities-sha
       provide: ActionsPublisherPort,
       useClass: ActionsKafkaPublisherAdapter,
     },
+    ActionsGraphqlMapper,
     ActionEventMapper,
     ActionEntityMapper,
     EventEntityMapper,

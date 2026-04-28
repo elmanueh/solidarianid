@@ -1,11 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UserConsumerAdapter } from '@app/communities/infrastructure/messaging/consumer/user.consumer';
-import { UserService } from '@app/communities/domain/services/user.service';
+import { UserService } from '@app/communities/shared/domain/services/user.service';
+import { UserConsumerAdapter } from '@app/communities/shared/infrastructure/messaging/consumers/user.consumer';
 import { left, right } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { EventType, UserEvent, UserEventDto } from '@solidarianid/kafka';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Logger } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { EventType, UserEvent, UserEventDto } from '@solidarianid/kafka';
 
 describe('UserConsumerAdapter', () => {
   let adapter: UserConsumerAdapter;

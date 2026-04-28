@@ -1,0 +1,143 @@
+import { Subscription } from '@app/communities/shared/domain/model/entities/subscription';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
+import { CausesRepositoryPort } from '@app/communities/shared/domain/ports/causes.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/shared/domain/ports/communities.repository.port';
+import { EventsRepositoryPort } from '@app/communities/shared/domain/ports/events.repository.port';
+import { ObjectivesRepositoryPort } from '@app/communities/shared/domain/ports/objectives.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/shared/domain/ports/push-subscription.repository.port';
+import { RequestsRepositoryPort } from '@app/communities/shared/domain/ports/requests.repository.port';
+import { UsersRepositoryPort } from '@app/communities/shared/domain/ports/users.repository.port';
+import {
+  PushSubscriptionsSearchCriteria,
+  PushSubscriptionsService,
+} from '@app/communities/shared/domain/services/push-subscriptions.service';
+import { UserSubscriptionsResponseDto } from '@app/communities/shared/infrastructure/presentation/controllers/rest/dtos/output/user-subscriptions.response.dto';
+import { Either, left, right } from '@app/ddd/either';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class PushSubscriptionsServiceImpl extends PushSubscriptionsService {
+  constructor(
+    private readonly requestsRepository: RequestsRepositoryPort,
+    private readonly usersRepository: UsersRepositoryPort,
+    private readonly communitiesRepository: CommunitiesRepositoryPort,
+    private readonly causesRepository: CausesRepositoryPort,
+    private readonly eventsRepository: EventsRepositoryPort,
+    private readonly objectivesRepository: ObjectivesRepositoryPort,
+    private readonly pushSubscriptionRepository: PushSubscriptionRepositoryPort,
+  ) {
+    super();
+  }
+
+  async getUserSubscriptions(
+    userId: string,
+    criteria: PushSubscriptionsSearchCriteria = {},
+  ): Promise<Either<ValidationError | RepositoryException, UserSubscriptionsResponseDto>> {
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    const includeRequestIds = criteria.includeRequestIds ?? true;
+    const includeFollowedCauseIds = criteria.includeFollowedCauseIds ?? true;
+    const includeFollowedCommunityIds = criteria.includeFollowedCommunityIds ?? true;
+    const includeEventIds = criteria.includeEventIds ?? true;
+    const includeObjectiveIds = criteria.includeObjectiveIds ?? true;
+    const statusFilter = criteria.requestStatus ?? RequestStatus.PENDING;
+    const typeFilter = criteria.requestType;
+
+    let requestIds: string[] = [];
+    if (includeRequestIds) {
+      const requestsOrError = await this.getRequestsByCriteria(userId, typeFilter);
+      requestIds = requestsOrError.isLeft()
+        ? []
+        : requestsOrError.value.filter(req => req.status === statusFilter).map(req => req.id.value);
+    }
+
+    let followedCauseIds: string[] = [];
+    if (includeFollowedCauseIds) {
+      const causesOrError = await this.causesRepository.findAllFollowedCauseIdsByUserId(userId);
+      followedCauseIds = causesOrError.isLeft() ? [] : causesOrError.value;
+    }
+
+    let followedCommunityIds: string[] = [];
+    if (includeFollowedCommunityIds) {
+      const communitiesOrError = await this.communitiesRepository.findAllFollowedCommunityIdsByUserId(userId);
+      followedCommunityIds = communitiesOrError.isLeft() ? [] : communitiesOrError.value;
+    }
+
+    const eventIdsOrError = includeEventIds ? await this.eventsRepository.findAllEventIdsByUserId(userId) : right([]);
+    const eventIds = eventIdsOrError.isLeft() ? [] : eventIdsOrError.value;
+
+    const objectiveIdsOrError = includeObjectiveIds
+      ? await this.objectivesRepository.findAllObjectiveIdsByUserId(userId)
+      : right([]);
+    const objectiveIds = objectiveIdsOrError.isLeft() ? [] : objectiveIdsOrError.value;
+
+    return right({
+      requestIds,
+      followedCauseIds,
+      followedCommunityIds,
+      eventIds,
+      objectiveIds,
+    });
+  }
+
+  private async getRequestsByCriteria(userId: string, requestType?: RequestType) {
+    if (!requestType) {
+      return await this.requestsRepository.findByUserId(userId);
+    }
+
+    return await this.requestsRepository.findByUserIdAndType(userId, requestType);
+  }
+
+  async pushSubscription(
+    userId: string,
+    endpoint: string,
+    p256dh: string,
+    auth: string,
+  ): Promise<Either<ValidationError | RepositoryException, Subscription>> {
+    const followedIdsOrError = await this.getUserSubscriptions(userId, {
+      requestStatus: RequestStatus.PENDING,
+      includeRequestIds: true,
+      includeFollowedCauseIds: true,
+      includeFollowedCommunityIds: true,
+    });
+
+    if (followedIdsOrError.isLeft()) {
+      return left(followedIdsOrError.value);
+    }
+
+    const subscription = Subscription.create({
+      userId,
+      endpoint,
+      p256dh,
+      auth,
+      requestIds: followedIdsOrError.value.requestIds,
+      followedCommunityIds: followedIdsOrError.value.followedCommunityIds,
+      followedCauseIds: followedIdsOrError.value.followedCauseIds,
+    });
+
+    if (subscription.isLeft()) {
+      return left(subscription.value);
+    }
+
+    await this.pushSubscriptionRepository.save(subscription.value);
+    return right(subscription.value);
+  }
+
+  async deleteSubscription(
+    endpoint: string,
+    userId: string,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const deleteResult = await this.pushSubscriptionRepository.deleteByEndpointAndUserId(endpoint, userId);
+    if (deleteResult.isLeft()) {
+      return left(deleteResult.value);
+    }
+    return right(undefined);
+  }
+}

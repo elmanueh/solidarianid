@@ -1,7 +1,17 @@
+import { ActionEntity } from '@app/communities/actions/infrastructure/persistence/entities/action.entity';
+import { EventUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/event-user.entity';
+import { EventEntity } from '@app/communities/actions/infrastructure/persistence/entities/event.entity';
+import { ObjectiveEntity } from '@app/communities/actions/infrastructure/persistence/entities/objective.entity';
+import { ObjetiveUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/objetive-user.entity';
+import { CauseUserEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause-user.entity';
+import { CauseEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause.entity';
+import { CauseSummaryResponseDto } from '@app/communities/causes/infrastructure/presentation/controllers/rest/dtos/output/cause-summary.response.dto';
 import { CommunitiesModule } from '@app/communities/communities.module';
-import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
-import { SubscriptionEntity } from '@app/communities/infrastructure/persistence/entities/subscription.entity';
-import { CauseSummaryResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/cause-summary.response.dto';
+import { CommunityUserEntity } from '@app/communities/communities/infrastructure/persistence/entities/community-user.entity';
+import { CommunityEntity } from '@app/communities/communities/infrastructure/persistence/entities/community.entity';
+import { RequestEntity } from '@app/communities/shared/infrastructure/persistence/entities/request.entity';
+import { SubscriptionEntity } from '@app/communities/shared/infrastructure/persistence/entities/subscription.entity';
+import { UserEntity } from '@app/communities/shared/infrastructure/persistence/entities/user.entity';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
@@ -15,16 +25,6 @@ import {
   PG_USER_IDS as USER_IDS,
 } from '@solidarianid/testing';
 import { DataSource, Repository } from 'typeorm';
-import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
-import { CauseUserEntity } from '../../src/infrastructure/persistence/entities/cause-user.entity';
-import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
-import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
-import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
-import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
-import { EventEntity } from '../../src/infrastructure/persistence/entities/event.entity';
-import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
-import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user.entity';
-import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
 
 describe('CausesController (e2e)', () => {
   let server!: TestServerHelper;

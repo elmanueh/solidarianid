@@ -1,13 +1,13 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RequestsConsumerAdapter } from '@app/communities/infrastructure/messaging/consumer/requests.consumer';
-import { RequestsService } from '@app/communities/domain/services/request.service';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
+import { RequestsService } from '@app/communities/shared/domain/services/request.service';
+import { RequestsConsumerAdapter } from '@app/communities/shared/infrastructure/messaging/consumers/requests.consumer';
 import { left, right } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { EventType, CommunityRequestEventDto, RequestEvent } from '@solidarianid/kafka';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { Logger } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { CommunityRequestEventDto, EventType, RequestEvent } from '@solidarianid/kafka';
 
 describe('RequestsConsumerAdapter', () => {
   let adapter: RequestsConsumerAdapter;

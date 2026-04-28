@@ -1,9 +1,9 @@
-import { ActionsServiceImpl } from '@app/communities/application/services/actions.service.impl';
-import { Action } from '@app/communities/domain/model/aggregates/action';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { ActionsServiceImpl } from '@app/communities/actions/application/services/actions.service.impl';
+import { Action } from '@app/communities/shared/domain/model/aggregates/action';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
+import { ActionsRepositoryPort } from '@app/communities/shared/domain/ports/actions.repository.port';
+import { UsersRepositoryPort } from '@app/communities/shared/domain/ports/users.repository.port';
 import { DomainEvents } from '@app/ddd/domain-events';
 import { left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';

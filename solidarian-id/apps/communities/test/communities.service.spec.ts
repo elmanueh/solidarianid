@@ -1,8 +1,8 @@
-import { CommunitiesServiceImpl } from '@app/communities/application/services/communities.service.impl';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { PushSubscriptionRepositoryPort } from '@app/communities/domain/ports/push-subscription.repository.port';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { CommunitiesServiceImpl } from '@app/communities/communities/application/services/communities.service.impl';
+import { CommunitiesRepositoryPort } from '@app/communities/shared/domain/ports/communities.repository.port';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/shared/domain/ports/community-query.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/shared/domain/ports/push-subscription.repository.port';
+import { UsersRepositoryPort } from '@app/communities/shared/domain/ports/users.repository.port';
 import { DomainEvents } from '@app/ddd/domain-events';
 import { left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';

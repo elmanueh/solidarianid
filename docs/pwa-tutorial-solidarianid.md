@@ -1,11 +1,11 @@
 ---
-title: "Tutorial PWA de SolidarianID"
-subtitle: "De cero a PWA instalable con cache, service worker y web push"
-author: "SolidarianID"
-date: "26 de abril de 2026"
+title: 'Tutorial PWA de SolidarianID'
+subtitle: 'De cero a PWA instalable con cache, service worker y web push'
+author: 'SolidarianID'
+date: '26 de abril de 2026'
 lang: es
 toc: true
-toc-title: "Indice"
+toc-title: 'Indice'
 numbersections: true
 geometry: margin=2.2cm
 fontsize: 11pt
@@ -269,7 +269,7 @@ export { SerwistProvider } from '@serwist/turbopack/react';
 Y en `app/layout.tsx` se registra asi:
 
 ```tsx
-<SerwistProvider swUrl="/serwist/sw.js">{children}</SerwistProvider>
+<SerwistProvider swUrl='/serwist/sw.js'>{children}</SerwistProvider>
 ```
 
 Esto indica al navegador donde esta el service worker generado.
@@ -283,16 +283,17 @@ Archivo:
 La ruta usa `createSerwistRoute`:
 
 ```ts
-export const { dynamic, dynamicParams, revalidate, generateStaticParams, GET } = createSerwistRoute({
-  additionalPrecacheEntries: [
-    { url: '/~offline', revision },
-    { url: '/solidarian-logo.png', revision },
-    { url: '/fondo-login.jpeg', revision },
-    { url: '/fondo-register.jpeg', revision },
-  ],
-  swSrc: 'app/sw.ts',
-  useNativeEsbuild: true,
-});
+export const { dynamic, dynamicParams, revalidate, generateStaticParams, GET } =
+  createSerwistRoute({
+    additionalPrecacheEntries: [
+      { url: '/~offline', revision },
+      { url: '/solidarian-logo.png', revision },
+      { url: '/fondo-login.jpeg', revision },
+      { url: '/fondo-register.jpeg', revision },
+    ],
+    swSrc: 'app/sw.ts',
+    useNativeEsbuild: true,
+  });
 ```
 
 Puntos importantes:
@@ -332,7 +333,10 @@ Es importante porque esas peticiones cambian estado. Cachearlas podria provocar 
 ## Regla 2: no cachear rutas sensibles
 
 ```ts
-function isSensitiveSameOriginGetRequest(request: Request, pathname: string): boolean {
+function isSensitiveSameOriginGetRequest(
+  request: Request,
+  pathname: string,
+): boolean {
   return (
     pathname.startsWith('/api/') ||
     pathname === '/graphql' ||
@@ -371,7 +375,11 @@ La cache por defecto de Serwist suele ser adecuada para recursos estaticos:
 const LEGACY_RUNTIME_CACHES = ['network-first'];
 
 self.addEventListener('activate', event => {
-  event.waitUntil(Promise.all(LEGACY_RUNTIME_CACHES.map(cacheName => caches.delete(cacheName))));
+  event.waitUntil(
+    Promise.all(
+      LEGACY_RUNTIME_CACHES.map(cacheName => caches.delete(cacheName)),
+    ),
+  );
 });
 ```
 
@@ -380,7 +388,7 @@ Esto evita que una estrategia vieja siga viva despues de cambiar el service work
 ## Regla 5: navigation preload
 
 ```ts
-navigationPreload: true
+navigationPreload: true;
 ```
 
 `navigationPreload` permite que el navegador empiece una peticion de navegacion en paralelo mientras arranca el service worker. En la practica reduce esperas en algunas navegaciones.
@@ -492,7 +500,7 @@ Archivo:
 La rama corrigio un detalle importante: las notificaciones arrancan en `false`.
 
 ```ts
-notificationsEnabled: currentUser?.preferences.notificationsEnabled ?? false
+notificationsEnabled: currentUser?.preferences.notificationsEnabled ?? false;
 ```
 
 Al guardar preferencias:
@@ -500,9 +508,10 @@ Al guardar preferencias:
 ```ts
 if (preferences.notificationsEnabled !== initialNotificationsEnabled) {
   if (preferences.notificationsEnabled) {
-    const permission = pwa.permission === 'granted'
-      ? pwa.permission
-      : await pwa.requestNotificationPermission();
+    const permission =
+      pwa.permission === 'granted'
+        ? pwa.permission
+        : await pwa.requestNotificationPermission();
 
     if (permission !== 'granted') {
       throw new Error('Debes permitir las notificaciones para activarlas.');
@@ -604,7 +613,7 @@ export class SubscriptionEntity {
 
 La migracion crea esta tabla:
 
-`solidarian-id/apps/communities/src/infrastructure/persistence/migrations/1777232397594-Auto.ts`
+`solidarian-id/apps/communities/src/shared/infrastructure/persistence/migrations/1777232397594-Auto.ts`
 
 # Backend: consultas importantes
 
@@ -617,7 +626,7 @@ Archivo:
 Se usa para notificar cambios de estado de solicitudes:
 
 ```ts
-findByUserId(userId)
+findByUserId(userId);
 ```
 
 ## Buscar por comunidad
@@ -736,7 +745,7 @@ Archivo:
 Cuando se crea una solicitud de comunidad, causa o accion, se mete el `requestId` en las subscriptions del usuario:
 
 ```ts
-syncUserRequestSubscriptions(userId, requestId)
+syncUserRequestSubscriptions(userId, requestId);
 ```
 
 Cuando la solicitud cambia de estado, se publica:
@@ -756,13 +765,13 @@ Archivo:
 Cuando un usuario entra en una comunidad:
 
 ```ts
-syncUserCommunitySubscriptions(userId, communityId, 'add')
+syncUserCommunitySubscriptions(userId, communityId, 'add');
 ```
 
 Cuando sale:
 
 ```ts
-syncUserCommunitySubscriptions(userId, communityId, 'remove')
+syncUserCommunitySubscriptions(userId, communityId, 'remove');
 ```
 
 Cuando se crea una comunidad con causas iniciales, tambien se sincronizan esas causas para el creador y se publica `CAUSE_CREATED` para cada causa inicial.
@@ -776,19 +785,19 @@ Archivo:
 Cuando un usuario sigue una causa:
 
 ```ts
-syncUserCauseSubscriptions(userId, causeId, 'add')
+syncUserCauseSubscriptions(userId, causeId, 'add');
 ```
 
 Cuando deja de seguirla:
 
 ```ts
-syncUserCauseSubscriptions(userId, causeId, 'remove')
+syncUserCauseSubscriptions(userId, causeId, 'remove');
 ```
 
 Cuando se crea una causa, se publica:
 
 ```ts
-publishCauseCreated(cause)
+publishCauseCreated(cause);
 ```
 
 ## Acciones
@@ -1228,7 +1237,7 @@ La rama lo arreglo sincronizando:
 - `solidarian-id/apps/communities/src/application/services/strategies/action-notification.strategy.ts`: acciones.
 - `solidarian-id/apps/communities/src/infrastructure/presentation/controllers/graphql/subscriptions/graphql-subscriptions.publisher.ts`: puente GraphQL + webpush.
 - `solidarian-id/apps/communities/src/domain/services/notification.service.ts`: tipos de eventos.
-- `solidarian-id/apps/communities/src/infrastructure/persistence/migrations/1777232397594-Auto.ts`: tabla `subscriptions`.
+- `solidarian-id/apps/communities/src/shared/infrastructure/persistence/migrations/1777232397594-Auto.ts`: tabla `subscriptions`.
 
 # Orden recomendado para explicarselo a otra persona
 
@@ -1318,4 +1327,3 @@ El punto mas importante para entenderla es este: **seguir una comunidad o causa 
 
 - relacion funcional en SolidarianID;
 - push subscription valida guardada en backend.
-

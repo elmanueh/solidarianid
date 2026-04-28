@@ -58,7 +58,7 @@ export function getNotificationUrl(data?: StoredNotificationData): string {
 
     case 'REQUEST_STATUS_CHANGED':
       if (data.requestId) {
-        return `/requests`;
+        return `/profile/requests`;
       }
       return '/notifications';
 

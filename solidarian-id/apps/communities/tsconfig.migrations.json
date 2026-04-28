@@ -2,9 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": false,
-    "rootDir": "src/infrastructure/persistence/migrations",
-    "outDir": "../../dist/apps/communities/src/infrastructure/persistence/migrations"
+    "rootDir": "src/shared/infrastructure/persistence/migrations",
+    "outDir": "../../dist/apps/communities/src/shared/infrastructure/persistence/migrations"
   },
-  "include": ["src/infrastructure/persistence/migrations/*.ts"],
+  "include": ["src/shared/infrastructure/persistence/migrations/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

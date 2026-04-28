@@ -38,13 +38,10 @@ export class KafkaTestContainer implements IDatabaseTestContainer {
    * Should be called after start() and before consumers subscribe.
    */
   public async createTopics(topics: string[]): Promise<void> {
-    if (!this.container) {
-      throw new Error('Kafka container not started');
-    }
-
+    const broker = process.env.TEST_KAFKA_BROKER ?? (this.container ? this.getConnectionString() : await this.start());
     const kafka = new Kafka({
       clientId: 'test-admin',
-      brokers: [this.getConnectionString()],
+      brokers: [broker],
     });
 
     this.admin = kafka.admin();

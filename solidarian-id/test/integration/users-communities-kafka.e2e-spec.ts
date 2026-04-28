@@ -1,7 +1,9 @@
 import { JwtService } from '@nestjs/jwt';
 import { Transport } from '@nestjs/microservices';
+import { Topics } from '@solidarianid/kafka';
 import {
   EventTracker,
+  KafkaTestContainer,
   KafkaTestModule,
   KurrentDBTestModule,
   PostgreSQLSeeder,
@@ -32,7 +34,7 @@ import { ObjectiveEntity } from '@app/communities/actions/infrastructure/persist
 import { ObjetiveUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/objetive-user.entity';
 import { CauseUserEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause-user.entity';
 import { CauseEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause.entity';
-import { CommunitiesModule } from '@app/communities/communities.module';
+import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
 import { CommunityUserEntity } from '@app/communities/communities/infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from '@app/communities/communities/infrastructure/persistence/entities/community.entity';
 import { UserService } from '@app/communities/shared/domain/services/user.service';
@@ -58,6 +60,7 @@ describe('Users-Communities Kafka Integration', () => {
     const kafkaModule = await KafkaTestModule.forRoot();
     const kafkaBroker = TestContainerLifecycle.getInstance().getKafkaBroker();
     const kurrentdbModule = await KurrentDBTestModule.forRoot();
+    await KafkaTestContainer.getInstance().createTopics(Object.values(Topics));
 
     // PostgreSQL module shared by both microservices
     const databaseModule = await PostgreSQLTestModule.forRoot([
@@ -101,7 +104,7 @@ describe('Users-Communities Kafka Integration', () => {
     // Communities: Kafka consumer only
     communitiesServer = new TestServerHelper();
     await communitiesServer.createWithMicroservice(
-      { imports: [kafkaModule, databaseModule, CommunitiesModule] },
+      { imports: [kafkaModule, databaseModule, CommunitiesSharedModule] },
       {
         transport: Transport.KAFKA,
         options: {
@@ -145,8 +148,12 @@ describe('Users-Communities Kafka Integration', () => {
   });
 
   afterAll(async () => {
-    await usersServer.close();
-    await communitiesServer.close();
+    if (usersServer) {
+      await usersServer.close();
+    }
+    if (communitiesServer) {
+      await communitiesServer.close();
+    }
     await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 

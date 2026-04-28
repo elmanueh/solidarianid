@@ -5,7 +5,7 @@ import { ObjectiveEntity } from '@app/communities/actions/infrastructure/persist
 import { ObjetiveUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/objetive-user.entity';
 import { CauseUserEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause-user.entity';
 import { CauseEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause.entity';
-import { CommunitiesModule } from '@app/communities/communities.module';
+import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
 import { CommunityUserEntity } from '@app/communities/communities/infrastructure/persistence/entities/community-user.entity';
 import { CommunityEntity } from '@app/communities/communities/infrastructure/persistence/entities/community.entity';
 import { RequestEntity } from '@app/communities/shared/infrastructure/persistence/entities/request.entity';
@@ -55,7 +55,7 @@ describe('RequestController (e2e)', () => {
     server = new TestServerHelper();
     app = await server.create(
       {
-        imports: [databaseModule, messageModule, CommunitiesModule],
+        imports: [databaseModule, messageModule, CommunitiesSharedModule],
       },
       'api',
     );

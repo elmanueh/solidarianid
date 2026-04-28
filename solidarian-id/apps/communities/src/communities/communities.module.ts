@@ -1,4 +1,5 @@
 import { CommunitiesController } from '@app/communities/communities/infrastructure/presentation/controllers/rest/communities.controller';
+import { CommunitiesResolver } from '@app/communities/communities/infrastructure/presentation/controllers/graphql/resolvers/communities.resolver';
 import { ActionEntity } from '@app/communities/actions/infrastructure/persistence/entities/action.entity';
 import { EventUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/event-user.entity';
 import { EventEntity } from '@app/communities/actions/infrastructure/persistence/entities/event.entity';
@@ -15,9 +16,14 @@ import { CommunityEntityMapper } from '@app/communities/communities/infrastructu
 import { CommunitiesQueryTypeOrmRepositoryAdapter } from '@app/communities/communities/infrastructure/persistence/repositories/communities-query-typeorm.repository';
 import { CommunitiesRepositoryTypeOrmAdapter } from '@app/communities/communities/infrastructure/persistence/repositories/communities-typeorm.repository';
 import { ActionEntityMapper } from '@app/communities/actions/infrastructure/persistence/mappers/action-entity.mapper';
+import { ActionsGraphqlMapper } from '@app/communities/actions/infrastructure/presentation/controllers/graphql/mappers/actions-graphql.mapper';
 import { EventEntityMapper } from '@app/communities/actions/infrastructure/persistence/mappers/event-entity.mapper';
 import { ObjectiveEntityMapper } from '@app/communities/actions/infrastructure/persistence/mappers/objetive-entity.mapper';
 import { CauseEntityMapper } from '@app/communities/causes/infrastructure/persistence/mappers/cause-entity.mapper';
+import { CommunitiesGraphqlMapper } from '@app/communities/communities/infrastructure/presentation/controllers/graphql/mappers/communities-graphql.mapper';
+import { CausesGraphqlMapper } from '@app/communities/causes/infrastructure/presentation/controllers/graphql/mappers/causes-graphql.mapper';
+import { UserGraphqlMapper } from '@app/communities/shared/infrastructure/presentation/controllers/graphql/mappers/user-graphql.mapper';
+import { GraphqlLoadersService } from '@app/communities/shared/infrastructure/presentation/controllers/graphql/loaders/graphql-loaders.service';
 import { CommunitiesPublisherPort } from '@app/communities/shared/domain/ports/communities.publisher.port';
 import { CommunitiesRepositoryPort } from '@app/communities/shared/domain/ports/communities.repository.port';
 import { CommunitiesQueryRepositoryPort } from '@app/communities/shared/domain/ports/community-query.repository.port';
@@ -33,8 +39,8 @@ import { UsersTypeOrmRepositoryAdapter } from '@app/communities/shared/infrastru
 import { DomainEvents } from '@app/ddd/domain-events';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { KafkaDynamicModule } from '@solidarianid/kafka';
 import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
+import { CommunitiesHandlerDispatcher } from '@app/communities/communities/application/events/communities-handler-dispatcher';
 
 @Module({
   imports: [
@@ -52,11 +58,12 @@ import { CommunitiesSharedModule } from '@app/communities/shared/communities-sha
       UserEntity,
     ]),
     forwardRef(() => CommunitiesSharedModule),
-    KafkaDynamicModule.register(process.env.KAFKA_COMMUNITIES_CLIENT_ID ?? 'communities'),
   ],
   controllers: [CommunitiesController],
   providers: [
     DomainEvents,
+    CommunitiesResolver,
+    CommunitiesHandlerDispatcher,
     {
       provide: CommunitiesService,
       useClass: CommunitiesServiceImpl,
@@ -81,6 +88,11 @@ import { CommunitiesSharedModule } from '@app/communities/shared/communities-sha
       provide: CommunitiesPublisherPort,
       useClass: CommunitiesKafkaPublisherAdapter,
     },
+    CommunitiesGraphqlMapper,
+    ActionsGraphqlMapper,
+    CausesGraphqlMapper,
+    UserGraphqlMapper,
+    GraphqlLoadersService,
     CommunityEventMapper,
     CommunityEntityMapper,
     CauseEntityMapper,

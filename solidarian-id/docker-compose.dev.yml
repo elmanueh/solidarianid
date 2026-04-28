@@ -28,6 +28,8 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
     networks:
       - solidarian_network
 
@@ -68,6 +70,8 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
       kurrentdb:
         condition: service_healthy
     networks:
@@ -99,8 +103,6 @@ services:
       - API_BASE_ADMIN_URL=${API_BASE_ADMIN_URL}
       - API_BASE_USERS_URL=${API_BASE_USERS_URL}
       - API_BASE_COMMUNITIES_URL=${API_BASE_COMMUNITIES_URL}
-      - JWT_PRIVATE_KEY_BASE64=${JWT_PRIVATE_KEY_BASE64}
-      - JWT_PUBLIC_KEY_BASE64=${JWT_PUBLIC_KEY_BASE64}
       - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
       - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
       - VAPID_SUBJECT=${VAPID_SUBJECT}
@@ -109,5 +111,7 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
     networks:
       - solidarian_network

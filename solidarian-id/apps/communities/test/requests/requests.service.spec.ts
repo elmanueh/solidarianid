@@ -1,5 +1,3 @@
-import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
-import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
 import { RequestsServiceImpl } from '@app/communities/shared/application/services/requests.service.impl';
 import { UserPermissionError } from '@app/communities/shared/domain/errors/user-permission.error';
 import { Cause } from '@app/communities/shared/domain/model/aggregates/cause';
@@ -19,6 +17,8 @@ import { ActionsService } from '@app/communities/shared/domain/services/actions.
 import { CausesService } from '@app/communities/shared/domain/services/causes.service';
 import { CommunitiesService } from '@app/communities/shared/domain/services/communities.service';
 import { CreateActionRequestDto } from '@app/communities/shared/infrastructure/presentation/controllers/rest/dtos/input/create-request-action.request.dto';
+import { CreateCauseRequestDto } from '@app/communities/shared/infrastructure/presentation/controllers/rest/dtos/input/create-request-cause.request.dto';
+import { CreateCommunityRequestDto } from '@app/communities/shared/infrastructure/presentation/controllers/rest/dtos/input/create-request-community.request.dto';
 import { DomainEvents } from '@app/ddd/domain-events';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';

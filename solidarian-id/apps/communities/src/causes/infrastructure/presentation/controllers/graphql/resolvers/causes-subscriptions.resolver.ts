@@ -20,6 +20,7 @@ export class CausesSubscriptionsResolver {
       CausesGraphqlMapper.toCauseBaseFromDomain(payload.causeCreated),
   })
   causeCreated(@Args('communityId', { type: () => ID }, new ParseUUIDPipe()) communityId: string) {
+    void communityId;
     return this.pubSub.asyncIterableIterator(CAUSE_CREATED_TOPIC);
   }
 }

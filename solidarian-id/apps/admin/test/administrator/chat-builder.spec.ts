@@ -4,10 +4,10 @@ import {
   createOdsByCauseBar,
   createMonthlyJoinsLine,
 } from '@app/admin/utils/chart-builder';
-import { CommunityRankingUserResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/community-ranking-user.response.dto';
 import { UserGroupByCountryResponseDto } from '@app/admin/administrator/controllers/dtos/user-group-by-country.response.dto';
 import { CauseGroupByOdsResponseDto } from '@app/admin/administrator/controllers/dtos/cause-group-by-ods.response.dto';
 import { CommunityLastUsersJoinedSummaryResponseDto } from '@app/admin/administrator/model/infrastructure/apis/dtos/community-last-users-joined-summary.response.dto';
+import { CommunityRankingUserResponseDto } from '@app/admin/administrator/model/infrastructure/apis/dtos/community-ranking-user.response.dto';
 
 describe('createTopCommunitiesPie', () => {
   const communityRanking: CommunityRankingUserResponseDto[] = [

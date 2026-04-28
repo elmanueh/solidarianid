@@ -45,19 +45,28 @@ export class KafkaTestContainer implements IDatabaseTestContainer {
     });
 
     this.admin = kafka.admin();
-    await this.admin.connect();
+    try {
+      await this.admin.connect();
 
-    await this.admin.createTopics({
-      waitForLeaders: true,
-      topics: topics.map(topic => ({
-        topic,
-        numPartitions: 1,
-        replicationFactor: 1,
-      })),
-    });
+      const existingTopics = await this.admin.listTopics();
+      const missingTopics = topics.filter(topic => !existingTopics.includes(topic));
 
-    await this.admin.disconnect();
-    this.admin = null;
+      if (missingTopics.length === 0) {
+        return;
+      }
+
+      await this.admin.createTopics({
+        waitForLeaders: true,
+        topics: missingTopics.map(topic => ({
+          topic,
+          numPartitions: 1,
+          replicationFactor: 1,
+        })),
+      });
+    } finally {
+      await this.admin.disconnect();
+      this.admin = null;
+    }
   }
 
   public async stop(): Promise<void> {

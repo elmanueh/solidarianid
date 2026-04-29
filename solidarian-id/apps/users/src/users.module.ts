@@ -25,11 +25,12 @@ import { UsersKafkaPublisherAdapter } from './infrastructure/messaging/producer/
 import { UserMapper } from './infrastructure/persistence/mappers/user.mapper';
 import { UsersController } from './infrastructure/presentation/controllers/users.controller';
 
+const producerOnly = true;
 @Module({
   imports: [
     DatabaseModule.forRoot(),
     TypeOrmModule.forFeature([UserProjectionEntity, CheckpointProjectionEntity]),
-    KafkaDynamicModule.register(process.env.KAFKA_USERS_CLIENT_ID ?? 'users'),
+    KafkaDynamicModule.register(process.env.KAFKA_USERS_CLIENT_ID ?? 'users', producerOnly),
     SecurityAuthorizationModule.register({ evaluators: [SelfOnlyPolicyEvaluator] }),
   ],
   controllers: [UsersController],

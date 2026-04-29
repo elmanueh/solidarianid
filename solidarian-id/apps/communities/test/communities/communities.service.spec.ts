@@ -1,14 +1,13 @@
-import { CommunitiesServiceImpl } from '@app/communities/application/services/communities.service.impl';
-import { Community } from '@app/communities/domain/model/aggregates/community';
-import { User } from '@app/communities/domain/model/entities/user';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
-import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { CommunitiesServiceImpl } from '@app/communities/communities/application/services/communities.service.impl';
+import { Community } from '@app/communities/shared/domain/model/aggregates/community';
+import { User } from '@app/communities/shared/domain/model/entities/user';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
+import { CommunitiesRepositoryPort } from '@app/communities/shared/domain/ports/communities.repository.port';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/shared/domain/ports/community-query.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/shared/domain/ports/push-subscription.repository.port';
+import { UsersRepositoryPort } from '@app/communities/shared/domain/ports/users.repository.port';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
@@ -30,12 +29,7 @@ describe('CommunitiesServiceImpl', () => {
   let mockUsersRepo: {
     findById: jest.Mock;
   };
-  let mockPublisher: {
-    publish: jest.Mock;
-  };
-  let mockSubscriptionsPublisher: {
-    publishCauseCreated: jest.Mock;
-  };
+  let mockEventBus: { publish: jest.Mock; dispatch: jest.Mock };
   let mockSubscriptionsRepository: {
     findByUserId: jest.Mock;
     save: jest.Mock;
@@ -88,13 +82,8 @@ describe('CommunitiesServiceImpl', () => {
       findById: jest.fn(),
     };
 
-    mockPublisher = {
-      publish: jest.fn(),
-    };
-
-    mockSubscriptionsPublisher = {
-      publishCauseCreated: jest.fn().mockResolvedValue(undefined),
-    };
+    const eventBusMock = jest.fn();
+    mockEventBus = { publish: eventBusMock, dispatch: eventBusMock };
 
     mockSubscriptionsRepository = {
       findByUserId: jest.fn().mockResolvedValue(right([])),
@@ -107,9 +96,8 @@ describe('CommunitiesServiceImpl', () => {
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepo },
         { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
-        { provide: CommunitiesPublisherPort, useValue: mockPublisher },
-        { provide: SubscriptionsRepositoryPort, useValue: mockSubscriptionsRepository },
-        { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
+        { provide: PushSubscriptionRepositoryPort, useValue: mockSubscriptionsRepository },
+        { provide: DomainEvents, useValue: mockEventBus },
       ],
     }).compile();
 

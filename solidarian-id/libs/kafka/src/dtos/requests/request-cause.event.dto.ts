@@ -1,5 +1,5 @@
 import { RequestType } from '@app/admin/administrator/model/domain/enums/request-type';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 
 /**

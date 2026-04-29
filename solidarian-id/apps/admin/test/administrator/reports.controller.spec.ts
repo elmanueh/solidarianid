@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { ReportsApiController } from '@app/admin/administrator/controllers/reports-api.controller';
+import { Role } from '@app/admin/administrator/model/domain/enums/role';
 import { User } from '@app/admin/administrator/model/domain/models/user';
 import { UserPdfGeneratorPort } from '@app/admin/administrator/model/domain/ports/output/user-pdf-generator.port';
 import { UsersService } from '@app/admin/administrator/model/domain/services/users.service';
@@ -48,7 +49,7 @@ const createMockUser = (id: string, username: string): User => {
       {
         communityId: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
         communityName: 'Test Community',
-        role: 'member',
+        role: Role.MEMBER,
       },
     ],
   });

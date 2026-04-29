@@ -44,11 +44,8 @@ const createMockCommunityRequestEventDto = (
   ...overrides,
 });
 
-const createMockRequestEvent = (eventType: EventType, data: CommunityRequestEventDto): RequestEvent => ({
-  eventType,
-  data,
-  occurredOn: new Date(),
-});
+const createMockRequestEvent = (eventType: EventType, data: CommunityRequestEventDto): RequestEvent =>
+  new RequestEvent(eventType, data);
 
 describe('RequestConsumerAdapter', () => {
   let sut: RequestConsumerAdapter;

@@ -33,7 +33,7 @@ export class RequestNotificationStrategy implements NotificationStrategy {
     return [
       subscriptions.value,
       {
-        title: `Solitud ${estado}`,
+        title: `Solicitud ${estado}`,
         message: `Revisa tus solicitudes`,
         createdAt: new Date(),
         type: 'REQUEST_STATUS_CHANGED',

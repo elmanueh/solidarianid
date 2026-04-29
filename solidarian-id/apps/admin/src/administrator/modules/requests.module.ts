@@ -22,9 +22,10 @@ import { KafkaDynamicModule } from '@solidarianid/kafka';
 import { RequestsQueryRepositoryPort } from '@app/admin/administrator/model/domain/ports/output/request-query.repository.port';
 import { RequestsQueryMongooseRepository } from '@app/admin/administrator/model/infrastructure/persistence/repositories/request-query.repository-mongoose';
 
+const producerOnly = false;
 @Module({
   imports: [
-    KafkaDynamicModule.register(process.env.KAFKA_ADMIN_CLIENT_ID ?? 'admin'),
+    KafkaDynamicModule.register(process.env.KAFKA_ADMIN_CLIENT_ID ?? 'admin', producerOnly),
     MongooseModule.forFeature([
       {
         name: RequestEntity.name,

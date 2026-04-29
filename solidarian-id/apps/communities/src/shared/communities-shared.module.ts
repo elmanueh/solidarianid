@@ -66,8 +66,11 @@ import { PubSub } from 'graphql-subscriptions';
 import { GraphqlRealtimeNotificationsPublisherAdapter } from '@app/communities/shared/infrastructure/presentation/controllers/graphql/subscriptions/graphql-realtime-notifications.publisher';
 import { RequestGraphqlMapper } from '@app/communities/shared/infrastructure/presentation/controllers/graphql/mappers/request-graphql.mapper';
 
+const producerOnly = false;
+
 const CommunitiesKafkaClientModule = KafkaDynamicModule.register(
   process.env.KAFKA_COMMUNITIES_CLIENT_ID ?? 'communities',
+  producerOnly,
 );
 
 @Module({

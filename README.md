@@ -28,6 +28,10 @@
 
 ---
 
+![happy finish](./happy-finish.png)
+
+---
+
 > [!NOTE]
 > En la carpeta `./memorias` se pueden encontrar todas las documentaciones de este proyecto.
 

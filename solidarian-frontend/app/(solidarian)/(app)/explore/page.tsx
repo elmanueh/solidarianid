@@ -189,7 +189,7 @@ export default function ExplorePage() {
   );
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 pb-10 lg:gap-10">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 overflow-x-hidden pb-10 lg:gap-10">
       <ExploreHeader mode={mode} onModeChange={handleModeChange} />
 
       <ExploreControls

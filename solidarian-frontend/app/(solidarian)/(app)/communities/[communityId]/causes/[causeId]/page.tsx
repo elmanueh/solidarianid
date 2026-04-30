@@ -3,12 +3,9 @@ import CauseHeader from '@/components/cause-page/cause-header';
 import CauseInfoCard from '@/components/cause-page/cause-info-card';
 import FloatingActionButton from '@/components/cause-page/floating-action-button';
 import { authServiceServer } from '@/features/auth/services/auth.service.server';
-import { GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY } from '@/features/causes/api/graphql/causes.documents';
-import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
-import { GraphqlClientService } from '@/features/graphql/graphql-client.service';
+import { resolveCauseByCommunity } from '@/features/causes/loaders/cause.loader';
+import { resolveCommunity } from '@/features/communities/loaders/community.loader';
 import { PexelsImageService } from '@/features/images/pexels-image.service';
-import { ROUTES } from '@/features/routes';
-import Link from 'next/link';
 
 interface CausePageProps {
   params: Promise<{ communityId: string; causeId: string }>;
@@ -16,28 +13,15 @@ interface CausePageProps {
 
 export default async function CausePage({ params }: Readonly<CausePageProps>) {
   const { communityId, causeId } = await params;
-  const graphqlCliente = new GraphqlClientService(await getInstanceServerApolloClient());
-  const cause = (
-    await graphqlCliente.query(GET_CAUSE_BY_COMMUNITY_ID_AND_CAUSE_ID_QUERY, {
-      communityId,
-      causeId,
-    })
-  ).causeByCommunity;
+  const community = await resolveCommunity({ communityId });
 
-  if (!cause) {
-    return (
-      <div className="flex min-h-screen items-center justify-center px-4">
-        <div className="max-w-md space-y-4 rounded-2xl border border-dashed p-8 text-center">
-          <p className="font-semibold text-[#1A2D54]">Causa no encontrada</p>
-          <Link href={ROUTES.communities.detail(communityId)} className="inline-block text-sm text-[#40A9FF] underline">
-            Volver a la comunidad
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  const [currentUser, cause] = await Promise.all([
+    authServiceServer.getCurrentUser(),
+    resolveCauseByCommunity({ communityId, causeId }),
+  ]);
 
-  const currentUser = await authServiceServer.getCurrentUser();
+  const canSeeFloatingActionButton = community.creator.id === currentUser?.id;
+  const canShowFollowButton = community.creator.id !== currentUser?.id;
   const pexelsService = new PexelsImageService();
   const bannerImage = await pexelsService.getDeterministicBanner({ uuid: causeId, theme: cause.name });
 
@@ -57,6 +41,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
           <CauseInfoCard
             causeId={causeId}
             initialIsFollowing={Boolean(currentUser && cause.userIds.includes(currentUser.id))}
+            showFollowButton={canShowFollowButton}
             description={cause.description}
             initialDate={cause.initialDate}
             durationDays={cause.durationDays}
@@ -70,7 +55,7 @@ export default async function CausePage({ params }: Readonly<CausePageProps>) {
         </div>
       </div>
 
-      <FloatingActionButton communityId={communityId} causeId={causeId} />
+      {canSeeFloatingActionButton && <FloatingActionButton communityId={communityId} causeId={causeId} />}
     </div>
   );
 }

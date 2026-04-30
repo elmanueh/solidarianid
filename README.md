@@ -29,7 +29,7 @@
 ---
 
 > [!NOTE]
-> En la carpeta `./memorias` se pueden encontrar todas las documentaciones de las 4 asignaturas que se han visto directamente involucradas en el desarrollo de este proyecto.
+> En la carpeta `./memorias` se pueden encontrar todas las documentaciones de este proyecto.
 
 ## Autores
 
@@ -76,20 +76,13 @@
 - [Tabla de Contenidos](#tabla-de-contenidos)
 - [Descripción](#descripción)
 - [Arquitectura](#arquitectura)
-- [Despliegue en cloud](#despliegue-en-cloud)
 - [Despliegue en local](#despliegue-en-local)
   - [Requisitos previos](#requisitos-previos)
   - [Clona el repositorio](#clona-el-repositorio)
-  - [Modo Desarrollo](#modo-desarrollo)
-    - [1. Configurar variables de entorno](#1-configurar-variables-de-entorno)
-    - [2. Iniciar infraestructura con Docker](#2-iniciar-infraestructura-con-docker)
-    - [3. Instalar dependencias](#3-instalar-dependencias)
-    - [4. Iniciar los microservicios](#4-iniciar-los-microservicios)
-    - [5. Acceder a la aplicación](#5-acceder-a-la-aplicación)
   - [Modo Producción](#modo-producción)
-    - [1. Configurar variables de entorno](#1-configurar-variables-de-entorno-1)
-    - [2. Desplegar con Docker](#2-desplegar-con-docker)
-    - [3. Verificar el despliegue](#3-verificar-el-despliegue)
+    - [1. Configurar variables de entorno](#1-configurar-variables-de-entorno)
+    - [2. Iniciar el entorno](#2-iniciar-el-entorno)
+    - [3. Generación de datos ficticios](#3-generación-de-datos-ficticios)
     - [4. Detener el entorno](#4-detener-el-entorno)
 - [Variables de Entorno](#variables-de-entorno)
 - [Uso](#uso)
@@ -121,39 +114,11 @@ El proyecto sigue los principios de **Clean Architecture**, **Hexagonal Architec
 
 ## Arquitectura
 
-El sistema está compuesto por tres microservicios:
+El sistema cumple la siguiente arquitectura:
 
-| Servicio        | Puerto | Base de Datos | Descripción                                  |
-| --------------- | ------ | ------------- | -------------------------------------------- |
-| **Admin**       | 3000   | MongoDB       | Panel de administración (MVC con Handlebars) |
-| **Users**       | 3001   | PostgreSQL    | Gestión de usuarios y voluntarios            |
-| **Communities** | 3002   | PostgreSQL    | Gestión de comunidades, causas y acciones    |
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        SOLIDARIANID                             │
-├─────────────────┬─────────────────┬─────────────────────────────┤
-│   Admin App     │   Users App     │     Communities App         │
-│   (Port 3000)   │   (Port 3001)   │     (Port 3002)             │
-│   MongoDB       │   PostgreSQL    │     PostgreSQL              │
-└────────┬────────┴────────┬────────┴────────────┬────────────────┘
-         │                 │                     │
-         └─────────────────┼─────────────────────┘
-                           │
-                    ┌──────▼──────┐
-                    │    KAFKA    │
-                    │  (Events)   │
-                    └─────────────┘
-```
+![Diagrama de Arquitectura](./out/docs/architecture/diagrams/C2-Container-SolidarianID.png)
 
 ---
-
-## Despliegue en cloud
-
-Para observar la aplicación ya desplegada en un entorno cloud, puedes acceder a través del siguiente enlace:
-
-- **URL de la aplicación de administración**: [https://admin.solidarianid.com](https://admin.solidarianid.com)
-- **URL de las APIs en Cloud**: [https://api.solidarianid.com](https://api.solidarianid.com)
 
 ## Despliegue en local
 
@@ -163,6 +128,7 @@ Para observar la aplicación ya desplegada en un entorno cloud, puedes acceder a
 - **npm** >= 10.x
 - **Docker** y **Docker Compose**
 - **Git**
+- **pnpm** >= 10.x
 
 > [!WARNING]
 >
@@ -182,295 +148,82 @@ cd SolidarianID
 
 ---
 
-### Modo Desarrollo
-
-El modo desarrollo permite ejecutar los servicios con hot-reload para facilitar el desarrollo.
-
-#### 1. Configurar variables de entorno
-
-Crea el archivo `.env.development` en la carpeta `solidarian-id/`:
-
-<details>
-<summary>📄 Contenido de <code>.env.development</code></summary>
-
-```env
-# ======================================================
-# ENVIRONMENT
-# ======================================================
-NODE_ENV=development
-SESSION_SECRET=your_session_secret_key
-
-
-# ======================================================
-# APPLICATION PORTS
-# ======================================================
-ADMIN_PORT=3000
-USERS_PORT=3001
-COMMUNITIES_PORT=3002
-
-
-# ======================================================
-# BASE URLS
-# ======================================================
-API_BASE_ADMIN_URL=http://localhost:3000
-API_BASE_USERS_URL=http://localhost:3001
-API_BASE_COMMUNITIES_URL=http://localhost:3002
-
-API_BASE_ADMIN_INTERNAL_URL=http://localhost:3000
-API_BASE_USERS_INTERNAL_URL=http://localhost:3001
-API_BASE_COMMUNITIES_INTERNAL_URL=http://localhost:3002
-
-
-# ======================================================
-# POSTGRESQL DATABASE
-# ======================================================
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-POSTGRES_USER=solidarian_user
-POSTGRES_PASSWORD=solidarian_dev_password
-
-POSTGRES_DB=solidarian_id_db
-USERS_DB=solidarianid
-COMMUNITIES_DB=solidarianid
-
-
-# ======================================================
-# MONGODB DATABASE
-# ======================================================
-MONGO_HOST=localhost
-MONGO_PORT=27017
-MONGO_USER=solidarian_user
-MONGO_PASSWORD=solidarian_password
-
-MONGO_INITDB_ROOT_USERNAME=solidarian_user
-MONGO_INITDB_ROOT_PASSWORD=solidarian_password
-MONGO_INITDB_DATABASE=solidarianid
-
-MONGO_DB=solidarianid
-MONGODB_URI=mongodb://solidarian_user:solidarian_password@localhost:27017/solidarianid?authSource=admin
-
-
-# ======================================================
-# KAFKA (CLIENT CONFIG)
-# ======================================================
-KAFKA_BROKERS=localhost:9092
-KAFKA_DOCKER_BROKERS=kafka:9093
-
-KAFKA_ADMIN_CLIENT_ID=admin
-KAFKA_ADMIN_CONSUMER_GROUP_ID=admin-consumer-group
-
-KAFKA_USERS_CLIENT_ID=users
-KAFKA_USERS_CONSUMER_GROUP_ID=users-consumer-group
-
-KAFKA_COMMUNITIES_CLIENT_ID=communities
-KAFKA_COMMUNITIES_CONSUMER_GROUP_ID=communities-consumer-group
-
-
-# ======================================================
-# KAFKA (BROKER / CONTROLLER CONFIG)
-# ======================================================
-KAFKA_NODE_ID=1
-KAFKA_PROCESS_ROLES=broker,controller
-
-KAFKA_LISTENERS=CONTROLLER://localhost:9091,HOST://0.0.0.0:9092,DOCKER://0.0.0.0:9093
-KAFKA_ADVERTISED_LISTENERS=HOST://localhost:9092,DOCKER://kafka:9093
-
-KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,HOST:PLAINTEXT,DOCKER:PLAINTEXT
-KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
-KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9091
-
-KAFKA_INTER_BROKER_LISTENER_NAME=DOCKER
-KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-
-
-# ======================================================
-# SEED / INITIAL DATA
-# ======================================================
-ADMIN_SERVICE_URL=http://localhost:3000
-USERS_SERVICE_URL=http://localhost:3001/api
-COMMUNITIES_SERVICE_URL=http://localhost:3002/api
-
-ADMIN_EMAIL=manuel.perez@solidarianid.org
-ADMIN_PASSWORD=Admin2024!Pass
-```
-
-</details>
-
-#### 2. Iniciar infraestructura con Docker
-
-```bash
-cd solidarian-id
-npm run docker:dev
-```
-
-Este comando levanta los contenedores de **MongoDB**, **PostgreSQL** y **Kafka**.
-
-#### 3. Instalar dependencias
-
-```bash
-npm install
-```
-
-#### 4. Iniciar los microservicios
-
-Abre **tres terminales** distintas y ejecuta cada servicio en modo desarrollo:
-
-**Terminal 1 - Admin Service:**
-
-```bash
-npm run start:dev admin
-```
-
-**Terminal 2 - Users Service:**
-
-```bash
-npm run start:dev users
-```
-
-**Terminal 3 - Communities Service:**
-
-```bash
-npm run start:dev communities
-```
-
-#### 5. Acceder a la aplicación
-
-| Servicio                | URL                                   |
-| ----------------------- | ------------------------------------- |
-| Panel de Administración | http://localhost:3000                 |
-| API de Usuarios         | http://localhost:3001/api/users       |
-| API de Comunidades      | http://localhost:3002/api/communities |
-
----
-
 ### Modo Producción
 
-El modo producción despliega todos los servicios como contenedores Docker.
+El modo producción despliega todos los servicios como contenedores Docker excepto el frontend en next.js que se ejecuta en local para facilitar el desarrollo y testing.
+
+> [!IMPORTANT]
+> Es crucial que se sigan los pasos en el orden indicado para evitar problemas de configuración y despliegue.
 
 #### 1. Configurar variables de entorno
 
-Crea el archivo `.env.production` en la carpeta `solidarian-id/`:
+En la entrega de la asignatura se han proporcionado los archivos `.env` para cada aplicación.
 
-<details>
-<summary>📄 Contenido de <code>.env.production</code></summary>
+En el caso del backend de la asignatura `.env.production` dicho fichero ha de ir en la carpeta `solidarian-id/.env.production`. 
 
-```env
-# ======================================================
-# ENVIRONMENT
-# ======================================================
-NODE_ENV=production
-SESSION_SECRET=secret_key
+En el caso del frontend de la asignatura `.env` dicho fichero ha de ir en la carpeta `solidarian-frontend/.env`.
 
 
-# ======================================================
-# APPLICATION PORTS
-# ======================================================
-ADMIN_PORT=3000
-USERS_PORT=3001
-COMMUNITIES_PORT=3002
+#### 2. Iniciar el entorno
 
-
-# ======================================================
-# BASE URLS
-# ======================================================
-API_BASE_ADMIN_URL=http://localhost:3000
-API_BASE_USERS_URL=http://localhost:3001
-API_BASE_COMMUNITIES_URL=http://localhost:3002
-
-API_BASE_ADMIN_INTERNAL_URL=http://admin-app:3000/
-API_BASE_USERS_INTERNAL_URL=http://users-app:3001/
-API_BASE_COMMUNITIES_INTERNAL_URL=http://communities-app:3002/
-
-
-# ======================================================
-# POSTGRESQL DATABASE
-# ======================================================
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
-POSTGRES_USER=postgres_user
-POSTGRES_PASSWORD=postgres_password
-POSTGRES_DB=solidarianid
-
-
-# ======================================================
-# MONGODB DATABASE
-# ======================================================
-MONGO_HOST=mongo
-MONGO_PORT=27017
-MONGO_USER=mongo_user
-MONGO_PASSWORD=mongo_password
-MONGO_DB=solidarianid
-
-MONGODB_URI=mongodb://mongo_user:mongo_password@mongo:27017/solidarianid?authSource=admin
-
-
-# ======================================================
-# KAFKA (CLIENT CONFIG)
-# ======================================================
-KAFKA_PORT=9092
-KAFKA_BROKERS=kafka:9093
-
-KAFKA_ADMIN_CLIENT_ID=admin
-KAFKA_ADMIN_CONSUMER_GROUP_ID=admin-consumer-group
-
-KAFKA_USERS_CLIENT_ID=users
-KAFKA_USERS_CONSUMER_GROUP_ID=users-consumer-group
-
-KAFKA_COMMUNITIES_CLIENT_ID=communities
-KAFKA_COMMUNITIES_CONSUMER_GROUP_ID=communities-consumer-group
-
-
-# ======================================================
-# KAFKA (BROKER / CONTROLLER CONFIG)
-# ======================================================
-KAFKA_NODE_ID=1
-KAFKA_PROCESS_ROLES=broker,controller
-
-KAFKA_LISTENERS=CONTROLLER://localhost:9091,HOST://0.0.0.0:9092,DOCKER://0.0.0.0:9093
-KAFKA_ADVERTISED_LISTENERS=HOST://localhost:9092,DOCKER://kafka:9093
-
-KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,HOST:PLAINTEXT,DOCKER:PLAINTEXT
-KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
-KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9091
-
-KAFKA_INTER_BROKER_LISTENER_NAME=DOCKER
-KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-```
-
-</details>
-
-#### 2. Desplegar con Docker
-
-> [!NOTE]
-> Asegúrate de tener **Docker Desktop** activo o el servicio de Docker ejecutándose.
+**Para iniciar todo lo relativo al backend:**
 
 ```bash
 cd solidarian-id
 npm run docker
+npm run docker:mac # Solo para usuarios de MacOS para evitar problemas con la imagen de KurrentDB que no es multiplataforma 
 ```
 
-Este comando construye y levanta todos los contenedores (aplicaciones + infraestructura).
-
-#### 3. Verificar el despliegue
+**Para iniciar lo relativo al frontend:**
 
 ```bash
-docker ps
+cd solidarian-frontend
+npm install
+npm run launch
 ```
 
-Deberías ver los siguientes contenedores en ejecución:
+**Si eres *pnpm lover* como nosotros, puedes usar:**
 
-- `solidarian_admin_app`
-- `solidarian_users_app`
-- `solidarian_communities_app`
-- `mongo`
-- `postgres`
-- `kafka`
+```bash
+cd solidarian-frontend
+pnpm install
+pnpm launch
+```
+
+#### 3. Generación de datos ficticios
+
+Para generar datos ficticios en el backend, puedes ejecutar el siguiente comando:
+
+```bash
+cd solidarian-id
+npm run db:seed
+```
+
+De esta forma se poblarán las bases de datos con datos de prueba para facilitar el testing y la exploración de la plataforma.
+
+Se podrá consultar cómo se ve la interfaz con datos en el puerto `http://localhost:3000` para ver el frontend de administración que desarrollamos en el primer cuatrimestre y en el puerto `http://localhost:4000` para ver el frontend de usuario que hemos desarrollado en el segundo cuatrimestre. Ten en cuenta que te harán falta las credenciales de administrador para acceder al panel de administración que aquí se adjuntan:
+
+| #   | Nombre                  | Email                               | Teléfono     | Contraseña       |
+| --- | ----------------------- | ----------------------------------- | ------------ | ---------------- |
+| 1   | Sergio García Martínez  | `sergio.garcia@solidarianid.org`    | +34612345001 | `Admin2024!Pass` |
+| 2   | Fabián Rodríguez López  | `fabian.rodriguez@solidarianid.org` | +34612345002 | `Admin2024!Pass` |
+| 3   | Pablo Fernández Sánchez | `pablo.fernandez@solidarianid.org`  | +34612345003 | `Admin2024!Pass` |
+| 4   | Antonio Martín González | `antonio.martin@solidarianid.org`   | +34612345004 | `Admin2024!Pass` |
+| 5   | Manuel Pérez Ruiz       | `manuel.perez@solidarianid.org`     | +34612345005 | `Admin2024!Pass` |
+
+Para probar el frontend de usuario y solicitar la creación de una comunidad, causa o acción. Deberás tras solicitar la creación iniciar sesión en la aplicación de administración y aceptar o denegar la solicitud para que se vea reflejada en el frontend de usuario. Ya que como se ve en el diagrama de arquitectura, ambas aplicaciones están sincronizadas a través de eventos en Kafka y no a través de consultas directas a la base de datos. Quitando este ínfimo apunte puedes probar la aplicación con total normalidad.
 
 #### 4. Detener el entorno
+
+Para detener todo lo relativo al backend:
 
 ```bash
 npm run docker:down
 ```
+
+Para detener todo lo relativo al frontend:
+
+Ctrl + C para detener el proceso de next.js
 
 ---
 
@@ -579,5 +332,5 @@ Este proyecto está bajo la licencia especificada en el archivo [LICENSE](./LICE
 ---
 
 <p align="center">
-  <strong>🌍 Voluntarios Sin Fronteras - SolidarianID Grupo 3© 2025</strong>
+  <strong>🌍 Voluntarios Sin Fronteras - SolidarianID Grupo 3© 2026</strong>
 </p>

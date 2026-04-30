@@ -43,7 +43,7 @@ export function ExploreControls({
   };
 
   return (
-    <section className="'flex flex-col gap-4 rounded-3xl border border-border bg-card p-4 shadow-sm lg:p-5">
+    <section className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-4 shadow-sm lg:p-5">
       <div className="flex flex-col gap-3 lg:grid lg:grid-cols-[minmax(0,60%)_minmax(0,40%)] lg:items-stretch">
         <div className="flex w-full items-stretch gap-0">
           <div className="min-w-0 flex-1">

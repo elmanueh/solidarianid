@@ -1,6 +1,8 @@
 import { CauseCard } from '@/components/cause-card';
 import { CommunityCard } from '@/components/community-card';
 import { HeaderHome } from '@/components/home/header-home';
+import { Button } from '@/components/ui/button';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { GET_CAUSES_QUERY } from '@/features/causes/api/graphql/causes.documents';
 import { GET_COMMUNITIES_QUERY } from '@/features/communities/api/graphql/communities.documents';
 import { getInstanceServerApolloClient } from '@/features/graphql/apollo-client-server';
@@ -44,8 +46,8 @@ const loadHomeData = async (): Promise<{
 }> => {
   const client = await getInstanceServerApolloClient();
   const graphql = new GraphqlClientService(client);
-  const featuredLimit = normalizeLimit(3);
-  const causesLimit = normalizeLimit(6);
+  const featuredLimit = normalizeLimit(10);
+  const causesLimit = normalizeLimit(10);
 
   const [communitiesResult, causesResult] = await Promise.allSettled([
     graphql.query(GET_COMMUNITIES_QUERY, {}, { retry: { attempts: 3, initialDelayMs: 1000 } }),
@@ -137,9 +139,14 @@ export default async function HomePage() {
             </div>
             <h3 className={styles.section.title}>Destacadas</h3>
           </div>
-          <Link href={ROUTES.app.explore} className={styles.section.viewAllButton}>
-            Ver todas <IconChevronRight size={14} />
-          </Link>
+          <Button
+            variant="ghost"
+            size="sm"
+            render={<Link href={ROUTES.app.explore} />}
+            className={styles.section.viewAllButton}
+          >
+            Ver todas
+          </Button>
         </div>
 
         {/* Grid de Comunidades */}
@@ -156,12 +163,26 @@ export default async function HomePage() {
         ) : communities.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground">No hay comunidades destacadas por mostrar.</div>
         ) : (
-          <div className={styles.communities.grid}>
-            {communities.map((community, index) => (
-              <div key={community.id} className={styles.communities.item}>
-                <CommunityCard community={community} index={index} />
-              </div>
-            ))}
+          <div className={styles.communities.carousel}>
+            <Carousel opts={{ align: 'start', loop: true }}>
+              <CarouselContent className={styles.communities.track}>
+                {communities.map((community, index) => (
+                  <CarouselItem key={community.id} className={styles.communities.item}>
+                    <CommunityCard community={community} index={index} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious
+                size="icon-lg"
+                className="hidden lg:inline-flex"
+                aria-label="Desplazar comunidades destacadas a la izquierda"
+              />
+              <CarouselNext
+                size="icon-lg"
+                className="hidden lg:inline-flex"
+                aria-label="Desplazar comunidades destacadas a la derecha"
+              />
+            </Carousel>
           </div>
         )}
       </section>
@@ -177,7 +198,7 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Grid de Causas */}
+        {/* Carousel de Causas */}
         {errorCauses ? (
           <div className={styles.error.wrapper}>
             <p className={styles.error.title}>No hemos podido cargar las causas recomendadas</p>
@@ -191,10 +212,26 @@ export default async function HomePage() {
         ) : causes.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground">No hay causas recomendadas por mostrar.</div>
         ) : (
-          <div className={styles.causes.grid}>
-            {causes.map((cause, index) => (
-              <CauseCard key={cause.id} cause={cause} index={index} />
-            ))}
+          <div className={styles.causes.carousel}>
+            <Carousel opts={{ align: 'start', loop: true }}>
+              <CarouselContent className={styles.causes.track}>
+                {causes.map((cause, index) => (
+                  <CarouselItem key={cause.id} className={styles.causes.item}>
+                    <CauseCard cause={cause} index={index} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious
+                size="icon-lg"
+                className="hidden lg:inline-flex"
+                aria-label="Desplazar causas recomendadas a la izquierda"
+              />
+              <CarouselNext
+                size="icon-lg"
+                className="hidden lg:inline-flex"
+                aria-label="Desplazar causas recomendadas a la derecha"
+              />
+            </Carousel>
           </div>
         )}
       </section>

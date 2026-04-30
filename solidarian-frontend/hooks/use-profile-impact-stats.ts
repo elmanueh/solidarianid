@@ -1,0 +1,64 @@
+'use client';
+
+import { APP_URLS } from '@/features/config/urls';
+import type { UserSubscriptionsResponse } from '@/features/notifications/api/graphql/notifications.documents';
+import { useRetrieveData } from '@/hooks/generics/retrieve-data-custom-hook';
+
+export type ProfileImpactStats = {
+  requests: number;
+  objectives: number;
+  events: number;
+  communities: number;
+};
+
+const DEFAULT_PROFILE_IMPACT_STATS: ProfileImpactStats = {
+  requests: 0,
+  objectives: 0,
+  events: 0,
+  communities: 0,
+};
+
+const countUniqueIds = (ids: string[]): number => new Set(ids).size;
+
+async function fetchProfileImpactStats(userId: string): Promise<ProfileImpactStats> {
+  const queryParams = new URLSearchParams({
+    includeRequestIds: 'true',
+    includeFollowedCauseIds: 'false',
+    includeFollowedCommunityIds: 'true',
+    includeEventIds: 'true',
+    includeObjectiveIds: 'true',
+    requestStatus: 'approved',
+  });
+
+  const response = await fetch(`${APP_URLS.api.subscriptions.byUser(userId)}?${queryParams.toString()}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    console.error(`Error fetching profile impact stats: ${response.status} ${response.statusText}`);
+    throw new Error(`No se pudieron cargar los stats del perfil (${response.status}).`);
+  }
+
+  const subscriptions = (await response.json()) as UserSubscriptionsResponse;
+
+  return {
+    requests: countUniqueIds(subscriptions.requestIds),
+    objectives: countUniqueIds(subscriptions.objectiveIds),
+    events: countUniqueIds(subscriptions.eventIds),
+    communities: countUniqueIds(subscriptions.followedCommunityIds),
+  };
+}
+
+export function useProfileImpactStats(userId?: string) {
+  return useRetrieveData<ProfileImpactStats>(async () => {
+    if (!userId) {
+      return DEFAULT_PROFILE_IMPACT_STATS;
+    }
+
+    return fetchProfileImpactStats(userId);
+  }, [userId]);
+}

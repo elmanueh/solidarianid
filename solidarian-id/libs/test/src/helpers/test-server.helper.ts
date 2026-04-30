@@ -1,11 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe, ModuleMetadata } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { GlobalExceptionFilter } from '@app/utils/http/filters/global-exception-filter';
+import { INestApplication, ModuleMetadata, ValidationPipe } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MicroserviceOptions } from '@nestjs/microservices';
-import request from 'supertest';
-import type supertest from 'supertest';
+import { Test, TestingModule } from '@nestjs/testing';
+import cookieParser from 'cookie-parser';
 import session from 'express-session';
+import type supertest from 'supertest';
+import request from 'supertest';
 
 export class TestServerHelper {
   private app: INestApplication;
@@ -13,9 +14,10 @@ export class TestServerHelper {
   private agent: supertest.Agent | null = null;
 
   async create(moduleMetadata: ModuleMetadata, globalPrefix?: string): Promise<INestApplication> {
+    const nodeEnv = process.env.NODE_ENV || 'test';
     const configModule = ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
+      envFilePath: [`.env.${nodeEnv}`, '.env.development'],
     });
 
     const enhancedMetadata: ModuleMetadata = {
@@ -43,6 +45,7 @@ export class TestServerHelper {
         },
       }),
     );
+    this.app.use(cookieParser());
 
     this.app.useGlobalPipes(
       new ValidationPipe({
@@ -67,9 +70,10 @@ export class TestServerHelper {
     microserviceOptions: MicroserviceOptions,
     globalPrefix?: string,
   ): Promise<INestApplication> {
+    const nodeEnv = process.env.NODE_ENV || 'test';
     const configModule = ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV || 'test'}`,
+      envFilePath: [`.env.${nodeEnv}`, '.env.development'],
     });
 
     const enhancedMetadata: ModuleMetadata = {
@@ -81,6 +85,7 @@ export class TestServerHelper {
     this.app = this.moduleRef.createNestApplication({
       logger: false,
     });
+    this.app.use(cookieParser());
 
     this.app.useGlobalPipes(
       new ValidationPipe({

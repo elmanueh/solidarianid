@@ -1,32 +1,38 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { CommunitiesServiceImpl } from '@app/communities/application/services/communities.service.impl';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { User } from '@app/communities/domain/model/entities/user';
-import { Community } from '@app/communities/domain/model/aggregates/community';
-import { CommunityRequestEventDto } from '@solidarianid/kafka';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { CommunitiesServiceImpl } from '@app/communities/communities/application/services/communities.service.impl';
+import { Community } from '@app/communities/shared/domain/model/aggregates/community';
+import { User } from '@app/communities/shared/domain/model/entities/user';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
+import { CommunitiesRepositoryPort } from '@app/communities/shared/domain/ports/communities.repository.port';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/shared/domain/ports/community-query.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/shared/domain/ports/push-subscription.repository.port';
+import { UsersRepositoryPort } from '@app/communities/shared/domain/ports/users.repository.port';
+import { DomainEvents } from '@app/ddd/domain-events';
+import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { Test, TestingModule } from '@nestjs/testing';
+import { CommunityRequestEventDto } from '@solidarianid/kafka';
 
 describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;
   let mockCommunityRepo: {
     findAll: jest.Mock;
+    findAllByIds: jest.Mock;
+    findAllByMemberId: jest.Mock;
+    findAllFollowedCommunityIdsByUserId: jest.Mock;
     findById: jest.Mock;
     save: jest.Mock;
   };
   let mockUsersRepo: {
     findById: jest.Mock;
   };
-  let mockPublisher: {
-    publish: jest.Mock;
+  let mockEventBus: { publish: jest.Mock; dispatch: jest.Mock };
+  let mockSubscriptionsRepository: {
+    findByUserId: jest.Mock;
+    save: jest.Mock;
   };
 
   const validUserId = '550e8400-e29b-41d4-a716-446655440000';
@@ -65,6 +71,9 @@ describe('CommunitiesServiceImpl', () => {
   beforeEach(async () => {
     mockCommunityRepo = {
       findAll: jest.fn(),
+      findAllByIds: jest.fn(),
+      findAllByMemberId: jest.fn(),
+      findAllFollowedCommunityIdsByUserId: jest.fn(),
       findById: jest.fn(),
       save: jest.fn(),
     };
@@ -73,8 +82,12 @@ describe('CommunitiesServiceImpl', () => {
       findById: jest.fn(),
     };
 
-    mockPublisher = {
-      publish: jest.fn(),
+    const eventBusMock = jest.fn();
+    mockEventBus = { publish: eventBusMock, dispatch: eventBusMock };
+
+    mockSubscriptionsRepository = {
+      findByUserId: jest.fn().mockResolvedValue(right([])),
+      save: jest.fn().mockResolvedValue(right(undefined)),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -83,7 +96,8 @@ describe('CommunitiesServiceImpl', () => {
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepo },
         { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
-        { provide: CommunitiesPublisherPort, useValue: mockPublisher },
+        { provide: PushSubscriptionRepositoryPort, useValue: mockSubscriptionsRepository },
+        { provide: DomainEvents, useValue: mockEventBus },
       ],
     }).compile();
 
@@ -124,14 +138,56 @@ describe('CommunitiesServiceImpl', () => {
       };
       mockCommunityRepo.findById.mockResolvedValueOnce(right(data));
       await expect(service.getCommunityById('1')).resolves.toEqual(right(data));
-      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['causes', 'members', 'members.user']);
+      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['members', 'members.user']);
     });
 
     it('propagates ValidationError from repository', async () => {
       const err = new ValidationError('invalid repo data');
       mockCommunityRepo.findById.mockResolvedValueOnce(left(err));
       await expect(service.getCommunityById('1')).resolves.toEqual(left(err));
-      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['causes', 'members', 'members.user']);
+      expect(mockCommunityRepo.findById).toHaveBeenCalledWith('1', ['members', 'members.user']);
+    });
+  });
+
+  describe('getUserMemberCommunities', () => {
+    it('normalizes generic repository not found errors to User not found', async () => {
+      mockUsersRepo.findById.mockResolvedValueOnce(left(new EntityNotFoundException('Entity', validUserId)));
+
+      const result = await service.getUserMemberCommunities(validUserId);
+
+      expect(result.isLeft()).toBe(true);
+      if (result.isLeft()) {
+        expect(result.value.message).toContain(`User with ID ${validUserId}`);
+      }
+    });
+
+    it('returns empty array when the user has no communities', async () => {
+      const mockUser = createMockUser();
+      mockUsersRepo.findById.mockResolvedValueOnce(right(mockUser));
+      mockCommunityRepo.findAllByMemberId.mockResolvedValueOnce(right([]));
+
+      await expect(service.getUserMemberCommunities(validUserId)).resolves.toEqual(right([]));
+      expect(mockCommunityRepo.findAllByIds).not.toHaveBeenCalled();
+      expect(mockCommunityRepo.findAllByMemberId).toHaveBeenCalledWith(validUserId, ['members', 'members.user']);
+    });
+
+    it('returns communities directly from repository query', async () => {
+      const mockUser = createMockUser();
+      const communities = [
+        { id: { value: '550e8400-e29b-41d4-a716-446655440099' }, name: 'Second', description: 'desc' },
+        { id: { value: validCommunityId }, name: 'First', description: 'desc' },
+      ];
+
+      mockUsersRepo.findById.mockResolvedValueOnce(right(mockUser));
+      mockCommunityRepo.findAllByMemberId.mockResolvedValueOnce(right(communities));
+
+      const result = await service.getUserMemberCommunities(validUserId);
+
+      expect(result.isRight()).toBe(true);
+      if (result.isRight()) {
+        expect(result.value).toEqual(communities);
+      }
+      expect(mockCommunityRepo.findAllByMemberId).toHaveBeenCalledWith(validUserId, ['members', 'members.user']);
     });
   });
 
@@ -173,6 +229,7 @@ describe('CommunitiesServiceImpl', () => {
         expect(result.value.causes).toHaveLength(1);
         expect(result.value.causes[0].name).toBe('Test Cause');
         expect(result.value.causes[0].ods).toContain(SustainableDevelopmentGoal.AffordableAndCleanEnergy);
+        expect(result.value.causes[0].userIds).toEqual([dto.userId]);
       }
     });
 

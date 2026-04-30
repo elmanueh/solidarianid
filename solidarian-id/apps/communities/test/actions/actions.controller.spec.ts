@@ -1,11 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-
-import { ActionsService } from '@app/communities/domain/services/actions.service';
-import { ActionsController } from '@app/communities/infrastructure/presentation/controllers/actions.controller';
-import { EntityNotFoundError } from 'typeorm';
+import { ActionsController } from '@app/communities/actions/infrastructure/presentation/controllers/rest/actions.controller';
+import { ActionsService } from '@app/communities/shared/domain/services/actions.service';
+import { left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Test, TestingModule } from '@nestjs/testing';
+import { EntityNotFoundError } from 'typeorm';
 
 describe('ActionsController', () => {
   let controller: ActionsController;

@@ -1,15 +1,15 @@
 import {
   CITY_MAX_LENGTH,
   CITY_MIN_LENGTH,
+  FULLNAME_MAX_LENGTH,
+  FULLNAME_MIN_LENGTH,
   MOBILE_PHONE_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
-  FULLNAME_MIN_LENGTH,
-  FULLNAME_MAX_LENGTH,
 } from '@app/value-objects/constants/validation.constants';
-import { IsString, IsNotEmpty, MinLength, Length, IsISO31661Alpha2, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsISO31661Alpha2, IsNotEmpty, IsString, Length, MaxLength, MinLength } from 'class-validator';
 
 export class RegisterUserDtoRequest {
   @ApiProperty({

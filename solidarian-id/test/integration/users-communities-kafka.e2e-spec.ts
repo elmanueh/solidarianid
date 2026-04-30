@@ -1,31 +1,45 @@
+import { JwtService } from '@nestjs/jwt';
 import { Transport } from '@nestjs/microservices';
-import { DataSource, Repository } from 'typeorm';
+import { Topics } from '@solidarianid/kafka';
 import {
-  KafkaTestModule,
-  PostgreSQLTestModule,
-  TestServerHelper,
   EventTracker,
+  KafkaTestContainer,
+  KafkaTestModule,
+  KurrentDBTestModule,
+  PostgreSQLSeeder,
+  PostgreSQLTestModule,
   TestContainerLifecycle,
+  TestServerHelper,
 } from '@solidarianid/testing';
+import { DataSource, Repository } from 'typeorm';
+
+function createAccessToken(userId: string): string {
+  const privateKey = Buffer.from(process.env.JWT_PRIVATE_KEY_BASE64 ?? '', 'base64').toString('utf8');
+  const jwtService = new JwtService({ privateKey });
+  return jwtService.sign({ sub: userId }, { algorithm: 'RS256', expiresIn: '15m' });
+}
 
 // Users microservice
+import { AuthModule } from '@app/users/infrastructure/auth/auth.module';
+import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entities/refresh-token.entity';
+import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
+import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
 import { UsersModule } from '@app/users/users.module';
-import { UserEntity as UsersUserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 
 // Communities microservice
-import { CommunitiesModule } from '@app/communities/communities.module';
-import { UserEntity as CommunitiesUserEntity } from '@app/communities/infrastructure/persistence/entities/user.entity';
-import { CommunityEntity } from '@app/communities/infrastructure/persistence/entities/community.entity';
-import { CauseEntity } from '@app/communities/infrastructure/persistence/entities/cause.entity';
-import { ActionEntity } from '@app/communities/infrastructure/persistence/entities/action.entity';
-import { ObjectiveEntity } from '@app/communities/infrastructure/persistence/entities/objective.entity';
-import { EventEntity } from '@app/communities/infrastructure/persistence/entities/event.entity';
-import { CommunityUserEntity } from '@app/communities/infrastructure/persistence/entities/community-user.entity';
-import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
-import { EventUserEntity } from '@app/communities/infrastructure/persistence/entities/event-user.entity';
-import { ObjetiveUserEntity } from '@app/communities/infrastructure/persistence/entities/objetive-user.entity';
-
-import { UserService } from '@app/communities/domain/services/user.service';
+import { ActionEntity } from '@app/communities/actions/infrastructure/persistence/entities/action.entity';
+import { EventUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/event-user.entity';
+import { EventEntity } from '@app/communities/actions/infrastructure/persistence/entities/event.entity';
+import { ObjectiveEntity } from '@app/communities/actions/infrastructure/persistence/entities/objective.entity';
+import { ObjetiveUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/objetive-user.entity';
+import { CauseUserEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause-user.entity';
+import { CauseEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause.entity';
+import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
+import { CommunityUserEntity } from '@app/communities/communities/infrastructure/persistence/entities/community-user.entity';
+import { CommunityEntity } from '@app/communities/communities/infrastructure/persistence/entities/community.entity';
+import { UserService } from '@app/communities/shared/domain/services/user.service';
+import { RequestEntity } from '@app/communities/shared/infrastructure/persistence/entities/request.entity';
+import { UserEntity as CommunitiesUserEntity } from '@app/communities/shared/infrastructure/persistence/entities/user.entity';
 
 /**
  * Note: Both microservices share the same PostgreSQL container but use different tables:
@@ -37,6 +51,7 @@ describe('Users-Communities Kafka Integration', () => {
   let communitiesServer: TestServerHelper;
 
   let usersDataSource: DataSource;
+  let postgresSeeder: PostgreSQLSeeder;
   let communitiesUserRepository: Repository<CommunitiesUserEntity>;
 
   let eventTracker: EventTracker;
@@ -44,13 +59,18 @@ describe('Users-Communities Kafka Integration', () => {
   beforeAll(async () => {
     const kafkaModule = await KafkaTestModule.forRoot();
     const kafkaBroker = TestContainerLifecycle.getInstance().getKafkaBroker();
+    const kurrentdbModule = await KurrentDBTestModule.forRoot();
+    await KafkaTestContainer.getInstance().createTopics(Object.values(Topics));
 
     // PostgreSQL module shared by both microservices
     const databaseModule = await PostgreSQLTestModule.forRoot([
-      UsersUserEntity,
+      UserProjectionEntity,
+      CheckpointProjectionEntity,
+      RefreshTokenEntity,
       CommunitiesUserEntity,
       CommunityEntity,
       CauseEntity,
+      CauseUserEntity,
       ActionEntity,
       ObjectiveEntity,
       EventEntity,
@@ -63,7 +83,7 @@ describe('Users-Communities Kafka Integration', () => {
     // Users: HTTP + Kafka producer
     usersServer = new TestServerHelper();
     await usersServer.createWithMicroservice(
-      { imports: [kafkaModule, databaseModule, UsersModule] },
+      { imports: [kafkaModule, databaseModule, kurrentdbModule, UsersModule, AuthModule] },
       {
         transport: Transport.KAFKA,
         options: {
@@ -79,11 +99,12 @@ describe('Users-Communities Kafka Integration', () => {
     );
 
     usersDataSource = usersServer.getModule().get<DataSource>(DataSource);
+    postgresSeeder = new PostgreSQLSeeder(usersDataSource);
 
     // Communities: Kafka consumer only
     communitiesServer = new TestServerHelper();
     await communitiesServer.createWithMicroservice(
-      { imports: [kafkaModule, databaseModule, CommunitiesModule] },
+      { imports: [kafkaModule, databaseModule, CommunitiesSharedModule] },
       {
         transport: Transport.KAFKA,
         options: {
@@ -123,13 +144,16 @@ describe('Users-Communities Kafka Integration', () => {
 
   beforeEach(async () => {
     eventTracker.clear();
-    await usersDataSource.getRepository(UsersUserEntity).createQueryBuilder().delete().execute();
-    await communitiesUserRepository.createQueryBuilder().delete().execute();
+    await postgresSeeder.clean();
   });
 
   afterAll(async () => {
-    await usersServer.close();
-    await communitiesServer.close();
+    if (usersServer) {
+      await usersServer.close();
+    }
+    if (communitiesServer) {
+      await communitiesServer.close();
+    }
     await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
@@ -224,12 +248,21 @@ describe('Users-Communities Kafka Integration', () => {
       });
       expect(initialCommunitiesUser?.fullName).toBe('Original Name');
 
+      eventTracker.clear();
+
       const updatePayload = {
         fullName: 'Updated Name',
         mobilePhone: '+34699333444',
       };
 
-      await usersServer.getRequest().patch(`/api/users/${userId}`).send(updatePayload).expect(204);
+      const accessToken = createAccessToken(userId);
+
+      await usersServer
+        .getRequest()
+        .patch(`/api/users/${userId}`)
+        .set('Cookie', `AccessToken=${accessToken}`)
+        .send(updatePayload)
+        .expect(204);
 
       await eventTracker.waitFor(`user:${userId}`);
 

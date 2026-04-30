@@ -1,0 +1,47 @@
+import { ROUTES } from '@/features/routes';
+import { causeCardStyles } from '@/styles/components/cause-card.styles';
+import Image from 'next/image';
+import Link from 'next/link';
+
+interface CauseCardProps {
+  cause: {
+    id: string;
+    name: string;
+    description: string;
+    durationDays: number;
+    communityId: string;
+    imageUrl: string;
+  };
+  index: number;
+}
+
+export function CauseCard({ cause, index }: Readonly<CauseCardProps>) {
+  const styles = causeCardStyles;
+
+  return (
+    <div className={styles.wrapper} style={{ animationDelay: `${index * 50}ms` }}>
+      <Link href={ROUTES.communities.causeDetail(cause.communityId, cause.id)} className={styles.link}>
+        <div className={styles.image.wrapper}>
+          <Image
+            src={cause.imageUrl}
+            alt={cause.name}
+            fill
+            className={styles.image.img}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            priority={index === 0}
+          />
+        </div>
+        <div className={styles.content.wrapper}>
+          <h4 className={styles.content.title}>{cause.name}</h4>
+          <p className={styles.content.description}>{cause.description}</p>
+          <div className={styles.content.footer}>
+            <div className={styles.content.location.wrapper}>
+              <span className={styles.content.location.text}>{cause.durationDays} días</span>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+}

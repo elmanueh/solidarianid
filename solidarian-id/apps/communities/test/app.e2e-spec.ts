@@ -1,5 +1,5 @@
-import { CommunitiesModule } from '@app/communities/communities.module';
-import { PostgreSQLTestModule, TestServerHelper, KafkaTestModule, TestContainerLifecycle } from '@solidarianid/testing';
+import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
+import { KafkaTestModule, PostgreSQLTestModule, TestContainerLifecycle, TestServerHelper } from '@solidarianid/testing';
 
 describe('CommunitiesController (e2e)', () => {
   let server!: TestServerHelper;
@@ -9,7 +9,7 @@ describe('CommunitiesController (e2e)', () => {
     const databaseModule = await PostgreSQLTestModule.forRoot();
     server = new TestServerHelper();
     await server.create({
-      imports: [databaseModule, messageModule, CommunitiesModule],
+      imports: [databaseModule, messageModule, CommunitiesSharedModule],
     });
   });
 

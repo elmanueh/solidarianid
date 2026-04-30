@@ -5,8 +5,8 @@
 
 // ==================== USERNAME VALIDATION ====================
 export const USERNAME_MIN_LENGTH = 2;
-export const USERNAME_MAX_LENGTH = 16;
-export const USERNAME_REGEX = /^(?!\.)(?!.*\.\.)(?!.*\.$)[A-Za-z0-9._]{2,16}$/;
+export const USERNAME_MAX_LENGTH = 30;
+export const USERNAME_REGEX = /^(?!\.)(?!.*\.\.)(?!.*\.$)[A-Za-z0-9._]{2,30}$/;
 
 // ==================== FULLNAME VALIDATION ====================
 

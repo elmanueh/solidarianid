@@ -1,12 +1,22 @@
-import { Entity } from '@app/ddd/entity';
-import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
-import { Username } from '@app/value-objects/model/username';
-import { MobilePhone } from '@app/value-objects/model/mobile-phone';
-import { UserLocation } from '@app/value-objects/model/user-location';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { AggregateRoot } from '@app/ddd/aggregate-root';
+import { DomainEvent } from '@app/ddd/domain-event';
 import { Either, left, right } from '@app/ddd/either';
-import { HashedPassword } from '@app/value-objects/model/hashed-password';
+import { ValueObject } from '@app/ddd/value-object';
+import { UserCreatedEvent } from '@app/users/domain/events/user-created.event';
+import { UserFullNameUpdatedEvent } from '@app/users/domain/events/user-fullname-updated.event';
+import { UserLocationUpdatedEvent } from '@app/users/domain/events/user-location-updated.event';
+import { UserMobilePhoneUpdatedEvent } from '@app/users/domain/events/user-mobile-phone-updated.event';
+import { UserPreferencesUpdatedEvent } from '@app/users/domain/events/user-preferences-updated.event';
+import { UserUsernameUpdatedEvent } from '@app/users/domain/events/user-username-updated.event';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { FullName } from '@app/value-objects/model/fullname';
+import { HashedPassword } from '@app/value-objects/model/hashed-password';
+import { MobilePhone } from '@app/value-objects/model/mobile-phone';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { UniqueEntityID } from '@app/value-objects/model/unique-entity-id';
+import { UserLocation } from '@app/value-objects/model/user-location';
+import { CauseCategory, DurationPreference, UserPreferences } from '@app/value-objects/model/user-preferences';
+import { Username } from '@app/value-objects/model/username';
 
 export interface UserProps {
   fullName: FullName;
@@ -14,6 +24,7 @@ export interface UserProps {
   mobilePhone: MobilePhone;
   passwordHash: HashedPassword;
   location: UserLocation;
+  userPreferences: UserPreferences;
 }
 
 export interface UserCreationProps {
@@ -25,7 +36,7 @@ export interface UserCreationProps {
   countryCode: string;
 }
 
-export class User extends Entity<UserProps> {
+export class User extends AggregateRoot<UserProps> {
   private constructor(props: UserProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -54,6 +65,10 @@ export class User extends Entity<UserProps> {
     return this.props.fullName.value;
   }
 
+  get userPreferences(): UserPreferences {
+    return this.props.userPreferences;
+  }
+
   private set username(username: Username) {
     this.props.username = username;
   }
@@ -68,6 +83,46 @@ export class User extends Entity<UserProps> {
 
   private set location(location: UserLocation) {
     this.props.location = location;
+  }
+
+  private set userPreferences(preferences: UserPreferences) {
+    this.props.userPreferences = preferences;
+  }
+
+  public updateUserPreferences(
+    preferences: Partial<{
+      preferredSDGs: SustainableDevelopmentGoal[];
+      preferredCategories: CauseCategory[];
+      durationPreferences: DurationPreference[];
+      notificationsEnabled: boolean;
+    }>,
+  ): Either<ValidationError, void> {
+    const currentPrefs = this.props.userPreferences;
+    const preferencesOrError = UserPreferences.create({
+      preferredSDGs: preferences.preferredSDGs ?? currentPrefs.preferredSDGs.slice(),
+      preferredCategories: preferences.preferredCategories ?? currentPrefs.preferredCategories.slice(),
+      durationPreferences: preferences.durationPreferences ?? currentPrefs.durationPreferences.slice(),
+      notificationsEnabled: preferences.notificationsEnabled ?? currentPrefs.notificationsEnabled,
+    });
+
+    if (preferencesOrError.isLeft()) {
+      return left(preferencesOrError.value);
+    }
+
+    if (!preferencesOrError.value.equals(this.props.userPreferences)) {
+      this.userPreferences = preferencesOrError.value;
+      this.addDomainEvent(
+        new UserPreferencesUpdatedEvent(
+          this.id.value,
+          this.userPreferences.preferredSDGs.slice(),
+          this.userPreferences.preferredCategories.slice(),
+          this.userPreferences.durationPreferences.slice(),
+          this.userPreferences.notificationsEnabled,
+        ),
+      );
+    }
+
+    return right(undefined);
   }
 
   public updateUserProfile(
@@ -86,24 +141,42 @@ export class User extends Entity<UserProps> {
       fullName,
       val => FullName.create(val),
       v => (this.fullName = v),
+      this.props.fullName,
     );
     if (fullNameResult.isLeft()) return left(fullNameResult.value);
+    if (fullNameResult.value) {
+      this.addDomainEvent(new UserFullNameUpdatedEvent(this.id.value, this.fullName));
+    }
 
     const usernameResult = this.updateField(
       username,
       val => Username.create(val),
       v => (this.username = v),
+      this.props.username,
     );
     if (usernameResult.isLeft()) return left(usernameResult.value);
+    if (usernameResult.value) {
+      this.addDomainEvent(new UserUsernameUpdatedEvent(this.id.value, this.username));
+    }
 
     const phoneResult = this.updateField(
       mobilePhone,
       val => MobilePhone.create(val),
       v => (this.mobilePhone = v),
+      this.props.mobilePhone,
     );
     if (phoneResult.isLeft()) return left(phoneResult.value);
+    if (phoneResult.value) {
+      this.addDomainEvent(new UserMobilePhoneUpdatedEvent(this.id.value, this.mobilePhone));
+    }
 
-    return this.updateLocation(city, countryCode);
+    const locationResult = this.updateLocation(city, countryCode);
+    if (locationResult.isLeft()) return left(locationResult.value);
+    if (locationResult.value) {
+      this.addDomainEvent(new UserLocationUpdatedEvent(this.id.value, this.city, this.countryCode));
+    }
+
+    return right(undefined);
   }
 
   // Métodos Privados para reducir complejidad
@@ -134,34 +207,46 @@ export class User extends Entity<UserProps> {
   }
 
   // Método genérico para el patrón: Si existe valor -> Crear VO -> Validar -> Asignar
-  private updateField<T>(
+  private updateField<T extends ValueObject<any>>(
     rawValue: string | undefined,
     factory: (val: string) => Either<ValidationError, T>,
     setter: (val: T) => void,
-  ): Either<ValidationError, void> {
-    if (!rawValue) {
-      return right(undefined);
+    currentValue?: T,
+  ): Either<ValidationError, boolean> {
+    if (rawValue === undefined) {
+      return right(false);
     }
 
     const result = factory(rawValue);
     if (result.isLeft()) {
-      return left(result.value); // Retorna el error encapsulado
+      return left(result.value);
+    }
+
+    if (result.value.equals(currentValue)) {
+      return right(false);
     }
 
     setter(result.value);
-    return right(undefined);
+    return right(true);
   }
 
   // Lógica específica para Location (que requiere 2 campos)
-  private updateLocation(city?: string, countryCode?: string): Either<ValidationError, void> {
-    if (city && countryCode) {
-      const locationOrError = UserLocation.create({ city, countryCode });
-      if (locationOrError.isLeft()) {
-        return left(locationOrError.value);
-      }
-      this.location = locationOrError.value;
+  private updateLocation(city?: string, countryCode?: string): Either<ValidationError, boolean> {
+    if (city === undefined || countryCode === undefined) {
+      return right(false);
     }
-    return right(undefined);
+
+    const locationOrError = UserLocation.create({ city, countryCode });
+    if (locationOrError.isLeft()) {
+      return left(locationOrError.value);
+    }
+
+    if (locationOrError.value.equals(this.props.location)) {
+      return right(false);
+    }
+
+    this.location = locationOrError.value;
+    return right(true);
   }
 
   public static create(props: UserCreationProps, id?: string): Either<ValidationError, User> {
@@ -204,7 +289,6 @@ export class User extends Entity<UserProps> {
       return left(fullNameOrError.value);
     }
 
-    // Create and return the User entity
     const user = new User(
       {
         fullName: fullNameOrError.value,
@@ -212,10 +296,71 @@ export class User extends Entity<UserProps> {
         mobilePhone: mobilePhoneOrError.value,
         passwordHash: passwordHashOrError.value,
         location: locationOrError.value,
+        userPreferences: UserPreferences.createDefault(),
       },
       entityId,
     );
 
+    user.addDomainEvent(
+      new UserCreatedEvent(
+        user.id.value,
+        user.fullName,
+        user.username,
+        user.mobilePhone,
+        user.passwordHash,
+        user.city,
+        user.countryCode,
+        user.userPreferences.preferredSDGs.slice(),
+        user.userPreferences.preferredCategories.slice(),
+        user.userPreferences.durationPreferences.slice(),
+        user.userPreferences.notificationsEnabled,
+      ),
+    );
+
     return right(user);
+  }
+
+  public applyEvent(event: DomainEvent): Either<ValidationError, void> {
+    switch (event.type) {
+      case UserCreatedEvent.name:
+        this.props.fullName = FullName.create((event as UserCreatedEvent).fullName).value as FullName;
+        this.props.username = Username.create((event as UserCreatedEvent).username).value as Username;
+        this.props.mobilePhone = MobilePhone.create((event as UserCreatedEvent).mobilePhone).value as MobilePhone;
+        this.props.passwordHash = HashedPassword.create((event as UserCreatedEvent).passwordHash)
+          .value as HashedPassword;
+        this.props.location = UserLocation.create({
+          city: (event as UserCreatedEvent).city,
+          countryCode: (event as UserCreatedEvent).countryCode,
+        }).value as UserLocation;
+        break;
+      case UserFullNameUpdatedEvent.name:
+        this.props.fullName = FullName.create((event as UserFullNameUpdatedEvent).fullName).value as FullName;
+        break;
+      case UserUsernameUpdatedEvent.name:
+        this.props.username = Username.create((event as UserUsernameUpdatedEvent).username).value as Username;
+        break;
+      case UserMobilePhoneUpdatedEvent.name:
+        this.props.mobilePhone = MobilePhone.create((event as UserMobilePhoneUpdatedEvent).mobilePhone)
+          .value as MobilePhone;
+        break;
+      case UserLocationUpdatedEvent.name:
+        this.props.location = UserLocation.create({
+          city: (event as UserLocationUpdatedEvent).city,
+          countryCode: (event as UserLocationUpdatedEvent).countryCode,
+        }).value as UserLocation;
+        break;
+      case UserPreferencesUpdatedEvent.name:
+        this.props.userPreferences = UserPreferences.create({
+          preferredSDGs: (event as UserPreferencesUpdatedEvent).preferredSDGs as SustainableDevelopmentGoal[],
+          preferredCategories: (event as UserPreferencesUpdatedEvent).preferredCategories as CauseCategory[],
+          durationPreferences: (event as UserPreferencesUpdatedEvent).durationPreferences as DurationPreference[],
+          notificationsEnabled: (event as UserPreferencesUpdatedEvent).notificationsEnabled,
+        }).value as UserPreferences;
+        break;
+      default:
+        return left(new ValidationError(`Unsupported event type: ${event.type}`));
+    }
+
+    return right(undefined);
   }
 }

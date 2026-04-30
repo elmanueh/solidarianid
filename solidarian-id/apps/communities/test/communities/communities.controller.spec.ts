@@ -1,12 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
+import { left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Test, TestingModule } from '@nestjs/testing';
 
-import { CommunitiesService } from '@app/communities/domain/services/communities.service';
-import { CommunitiesController } from '@app/communities/infrastructure/presentation/controllers/communities.controller';
-import { EntityNotFoundError } from 'typeorm';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { CommunitiesController } from '@app/communities/communities/infrastructure/presentation/controllers/rest/communities.controller';
 import { CommunityRankingUserResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/community-ranking-user.response.dto';
+import { CommunitiesService } from '@app/communities/shared/domain/services/communities.service';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { EntityNotFoundError } from 'typeorm';
 
 describe('CommunitiesController', () => {
   let controller: CommunitiesController;
@@ -128,21 +128,36 @@ describe('CommunitiesController', () => {
       };
       mockService.getCommunityById.mockResolvedValueOnce(right(domainData));
       await expect(controller.getCommunityById('1')).resolves.toEqual(expectedDto);
-      expect(mockService.getCommunityById).toHaveBeenCalledWith('1');
+      expect(mockService.getCommunityById).toHaveBeenCalledWith('1', [
+        'members',
+        'members.user',
+        'causes',
+        'causes.users',
+      ]);
     });
 
     it('throws RepositoryException when service returns left(ValidationError)', async () => {
       const err = new RepositoryException('invalid data');
       mockService.getCommunityById.mockResolvedValueOnce(left(err));
       await expect(controller.getCommunityById('1')).rejects.toThrow(err);
-      expect(mockService.getCommunityById).toHaveBeenCalledWith('1');
+      expect(mockService.getCommunityById).toHaveBeenCalledWith('1', [
+        'members',
+        'members.user',
+        'causes',
+        'causes.users',
+      ]);
     });
 
     it('throws NotFoundError when service returns ValidationError', async () => {
       const err = new EntityNotFoundError('Community', 'Not found');
       mockService.getCommunityById.mockResolvedValueOnce(left(err));
       await expect(controller.getCommunityById('999')).rejects.toThrow(err);
-      expect(mockService.getCommunityById).toHaveBeenCalledWith('999');
+      expect(mockService.getCommunityById).toHaveBeenCalledWith('999', [
+        'members',
+        'members.user',
+        'causes',
+        'causes.users',
+      ]);
     });
   });
 
@@ -191,13 +206,13 @@ describe('CommunitiesController', () => {
   describe('joinCommunity', () => {
     it('returns undefined when join is successful', async () => {
       mockService.joinCommunity.mockResolvedValueOnce(right(undefined));
-      await expect(controller.joinCommunity('uuid', { userId: 'user-1' })).resolves.toBeUndefined();
+      await expect(controller.joinCommunity('uuid', 'user-1')).resolves.toBeUndefined();
       expect(mockService.joinCommunity).toHaveBeenCalledWith('uuid', 'user-1');
     });
     it('throws error when service returns left', async () => {
       const err = new ValidationError('already member');
       mockService.joinCommunity.mockResolvedValueOnce(left(err));
-      await expect(controller.joinCommunity('uuid', { userId: 'user-1' })).rejects.toThrow(err);
+      await expect(controller.joinCommunity('uuid', 'user-1')).rejects.toThrow(err);
     });
   });
 });

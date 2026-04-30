@@ -1,0 +1,186 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Action {
+  id: ID!
+  name: String!
+  description: String!
+  objectives: [Objective!]!
+  events: [Event!]!
+  causeId: ID!
+  communityId: ID!
+}
+
+type EventPlace {
+  direction: String!
+  city: String!
+  countryCode: String!
+}
+
+type Event {
+  id: ID!
+  name: String!
+  description: String!
+  initialDate: Date!
+  place: EventPlace!
+  assistantIds: [ID!]!
+}
+
+type Objective {
+  name: String!
+  description: String!
+  unit: String!
+  quantity: Int!
+  currentAmount: Int!
+}
+
+type Cause {
+  id: ID!
+  name: String!
+  description: String!
+  durationDays: Int!
+  ods: [Int!]!
+  initialDate: Date!
+  actions: [Action!]!
+  communityId: ID!
+  userIds: [ID!]!
+}
+
+type User {
+  id: ID!
+  fullName: String!
+  email: String
+  mobilePhone: String
+}
+
+type Community {
+  id: ID!
+  name: String!
+  description: String!
+  creator: User!
+  admins: [User!]!
+  members: [User!]!
+  causes: [Cause!]!
+}
+
+type Request {
+  id: ID!
+  type: RequestType!
+  name: String!
+  description: String!
+  status: RequestStatus!
+  reason: String
+  userId: ID!
+}
+
+enum RequestType {
+  CAUSE
+  COMMUNITY
+  ACTION
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+type RequestStatusChangedEvent {
+  id: ID!
+  type: RequestType!
+  name: String!
+  description: String!
+  status: RequestStatus!
+  reason: String
+  userId: ID!
+  createdEntityId: ID
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type Query {
+  actions: [Action!]!
+  action(id: ID!): Action!
+  causes: [Cause!]!
+  cause(id: ID!): Cause!
+  userFollowedCauses(userId: ID!): [Cause!]!
+  causesByCommunity(communityId: ID!): [Cause!]!
+  causeByCommunity(communityId: ID!, causeId: ID!): Cause!
+  request(id: ID!): Request!
+  getRequestsByUserId(userId: ID!): [Request!]!
+  communities: [Community!]!
+  community(id: ID!): Community!
+  userMemberCommunities(userId: ID!): [Community!]!
+}
+
+type Mutation {
+  joinEvent(eventId: ID!): Boolean!
+  leaveEvent(eventId: ID!): Boolean!
+  contributeObjective(actionId: ID!, objectiveName: String!, amount: Int!): Objective!
+  joinCause(causeId: ID!): Boolean!
+  leaveCause(causeId: ID!): Boolean!
+  createCommunityRequest(createCommunityRequestInput: CreateCommunityRequestInput!): String!
+  createCauseRequest(createCauseRequestInput: CreateCauseRequestInput!): String!
+  createActionRequest(createActionRequestInput: CreateActionRequestInput!): String!
+  joinCommunity(communityId: ID!): Boolean!
+  leaveCommunity(communityId: ID!): Boolean!
+}
+
+input CreateCommunityRequestInput {
+  name: String!
+  description: String!
+  causeCreationRequests: [CommunityCauseRequestInput!]!
+}
+
+input CommunityCauseRequestInput {
+  name: String!
+  description: String!
+  ods: [Int!]!
+  initialDate: Date!
+  durationDays: Int!
+}
+
+input CreateCauseRequestInput {
+  name: String!
+  description: String!
+  ods: [Int!]!
+  initialDate: Date!
+  durationDays: Int!
+  communityId: String!
+}
+
+input CreateActionRequestInput {
+  name: String!
+  description: String!
+  objectives: [ActionObjectiveInput!]!
+  events: [ActionEventInput!]!
+  causeId: String!
+}
+
+input ActionObjectiveInput {
+  name: String!
+  description: String!
+  quantity: Int!
+  unit: String!
+}
+
+input ActionEventInput {
+  name: String!
+  description: String!
+  initialDate: Date!
+  place: EventPlaceInput!
+}
+
+input EventPlaceInput {
+  direction: String!
+  city: String!
+  countryCode: String!
+}
+
+type Subscription {
+  actionCreated(causeId: ID!): Action!
+  causeCreated(communityId: ID!): Cause!
+  requestStatusChanged(userId: ID!): RequestStatusChangedEvent!
+}

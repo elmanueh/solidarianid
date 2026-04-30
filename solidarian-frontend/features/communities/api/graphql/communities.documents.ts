@@ -1,0 +1,167 @@
+import { OdsId } from '@/features/causes/constants/ods.constants';
+import { gql, TypedDocumentNode } from '@apollo/client';
+
+// Query: GetCommunities
+export type GetCommunitiesResult = {
+  communities: {
+    id: string;
+    name: string;
+    description: string;
+  }[];
+};
+
+export type GetCommunitiesVariables = Record<string, never>;
+
+export const GET_COMMUNITIES_QUERY: TypedDocumentNode<GetCommunitiesResult, GetCommunitiesVariables> = gql`
+  query GetCommunities {
+    communities {
+      id
+      name
+      description
+    }
+  }
+`;
+
+export type GetFavoriteCommunitiesByUserResult = {
+  userMemberCommunities: {
+    id: string;
+    name: string;
+    description: string;
+  }[];
+};
+
+export type GetFavoriteCommunitiesByUserVariables = {
+  userId: string;
+};
+
+export const GET_FAVORITE_COMMUNITIES_BY_USER_QUERY: TypedDocumentNode<
+  GetFavoriteCommunitiesByUserResult,
+  GetFavoriteCommunitiesByUserVariables
+> = gql`
+  query GetFavoriteCommunitiesByUser($userId: ID!) {
+    userMemberCommunities(userId: $userId) {
+      id
+      name
+      description
+    }
+  }
+`;
+
+// Query: GetCommunityById
+export type GetCommunityByIdResult = {
+  community: {
+    id: string;
+    name: string;
+    description: string;
+    creator: {
+      id: string;
+      fullName: string;
+    };
+    admins: {
+      id: string;
+      fullName: string;
+    }[];
+    members: {
+      id: string;
+      fullName: string;
+    }[];
+    causes: {
+      id: string;
+      name: string;
+      description: string;
+      durationDays: number;
+      ods: OdsId[];
+    }[];
+  };
+};
+
+export type GetCommunityByIdVariables = {
+  id: string;
+};
+
+export const GET_COMMUNITY_BY_ID_QUERY: TypedDocumentNode<GetCommunityByIdResult, GetCommunityByIdVariables> = gql`
+  query Community($id: ID!) {
+    community(id: $id) {
+      id
+      name
+      description
+      creator {
+        id
+        fullName
+      }
+      admins {
+        id
+        fullName
+      }
+      members {
+        id
+        fullName
+      }
+      causes {
+        id
+        name
+        description
+        durationDays
+        ods
+      }
+    }
+  }
+`;
+
+// Mutation: JoinCommunity
+export type JoinCommunityResult = {
+  joinCommunity: boolean;
+};
+
+export type JoinCommunityVariables = {
+  communityId: string;
+};
+
+export const JOIN_COMMUNITY_MUTATION: TypedDocumentNode<JoinCommunityResult, JoinCommunityVariables> = gql`
+  mutation JoinCommunity($communityId: ID!) {
+    joinCommunity(communityId: $communityId)
+  }
+`;
+
+// Mutation: LeaveCommunity
+export type LeaveCommunityResult = {
+  leaveCommunity: boolean;
+};
+
+export type LeaveCommunityVariables = {
+  communityId: string;
+};
+
+export const LEAVE_COMMUNITY_MUTATION: TypedDocumentNode<LeaveCommunityResult, LeaveCommunityVariables> = gql`
+  mutation LeaveCommunity($communityId: ID!) {
+    leaveCommunity(communityId: $communityId)
+  }
+`;
+
+// Mutation: CreateCommunityRequest
+export type CreateCommunityRequestResult = {
+  createCommunityRequest: string;
+};
+
+export type CreateCommunityRequestVariables = {
+  createCommunityRequestInput: {
+    name: string;
+    description: string;
+    causeCreationRequests: {
+      name: string;
+      description: string;
+      ods: number[];
+      initialDate: string;
+      durationDays: number;
+    }[];
+  };
+};
+
+export const CREATE_COMMUNITY_REQUEST_MUTATION: TypedDocumentNode<
+  CreateCommunityRequestResult,
+  CreateCommunityRequestVariables
+> = gql`
+  mutation CreateCommunityRequest($createCommunityRequestInput: CreateCommunityRequestInput!) {
+    createCommunityRequest(createCommunityRequestInput: $createCommunityRequestInput)
+  }
+`;

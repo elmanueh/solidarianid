@@ -1,7 +1,9 @@
-import { MemberType } from '@app/communities/domain/model/enums/member-type';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { MemberType } from '@app/communities/shared/domain/model/enums/member-type';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
+import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
+import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
 import { IDatabaseSeeder } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
 
@@ -230,6 +232,44 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
     const usersRepository = this.dataSource.getRepository(userEntityTarget);
     const allUsers = [...DEFAULT_USERS_DATA, ...users];
     await usersRepository.insert(allUsers);
+
+    // Crear preferencias por defecto para cada usuario
+    const preferencesEntityTarget = this.dataSource.entityMetadatas.find(
+      meta => meta.tableName === 'user_preferences',
+    )?.target;
+
+    if (preferencesEntityTarget) {
+      const preferencesRepository = this.dataSource.getRepository(preferencesEntityTarget);
+      const defaultPreferences = allUsers.map(user => ({
+        userId: user.id,
+        preferredSDGs: [],
+        preferredCategories: [],
+        durationPreferences: ['any'],
+        notificationsEnabled: true,
+      }));
+      await preferencesRepository.insert(defaultPreferences);
+    }
+  }
+
+  async seedUsersProjection(commit: bigint, prepare: bigint): Promise<void> {
+    const repoUser = this.dataSource.getRepository(UserProjectionEntity);
+    const defaultUsersProjection: UserProjectionEntity[] = DEFAULT_USERS_DATA.map(user => ({
+      id: user.id,
+      username: user.username,
+      mobilePhone: user.mobilePhone,
+    }));
+
+    await repoUser.insert(defaultUsersProjection);
+
+    const repoCheckpoint = this.dataSource.getRepository(CheckpointProjectionEntity);
+    const checkpointProjection: CheckpointProjectionEntity = {
+      projectionName: 'users-index',
+      commitPosition: commit.toString(),
+      preparePosition: prepare.toString(),
+      updatedAt: new Date(),
+    };
+
+    await repoCheckpoint.save(checkpointProjection);
   }
 
   // COMMUNITIES APP SEEDS
@@ -877,16 +917,19 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
       throw new Error('DataSource is not initialized');
     }
 
-    const entities = this.dataSource.entityMetadatas;
+    const tables: Array<{ tablename: string }> = await this.dataSource.query(`
+      SELECT tablename
+      FROM pg_tables
+      WHERE schemaname = 'public'
+        AND tablename NOT IN ('migrations')
+    `);
 
-    await this.dataSource.query('SET session_replication_role = replica;');
-
-    for (const entity of entities) {
-      const repository = this.dataSource.getRepository(entity.name);
-      await repository.query(`TRUNCATE TABLE "${entity.tableName}" CASCADE;`);
+    if (tables.length === 0) {
+      return;
     }
 
-    await this.dataSource.query('SET session_replication_role = DEFAULT;');
+    const truncateTargets = tables.map(({ tablename }) => `"public"."${tablename}"`).join(', ');
+    await this.dataSource.query(`TRUNCATE TABLE ${truncateTargets} RESTART IDENTITY CASCADE;`);
   }
 
   /**
@@ -935,11 +978,11 @@ export class PostgreSQLSeeder implements IDatabaseSeeder {
 }
 
 export {
-  USER_IDS as PG_USER_IDS,
-  COMMUNITY_IDS as PG_COMMUNITY_IDS,
-  CAUSE_IDS as PG_CAUSE_IDS,
   ACTION_IDS as PG_ACTION_IDS,
-  OBJECTIVE_IDS as PG_OBJECTIVE_IDS,
+  CAUSE_IDS as PG_CAUSE_IDS,
+  COMMUNITY_IDS as PG_COMMUNITY_IDS,
   EVENT_IDS as PG_EVENT_IDS,
+  OBJECTIVE_IDS as PG_OBJECTIVE_IDS,
   REQUEST_IDS as PG_REQUEST_IDS,
+  USER_IDS as PG_USER_IDS,
 };

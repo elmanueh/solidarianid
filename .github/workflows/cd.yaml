@@ -1,9 +1,5 @@
 name: CD - SolidarianID
 on:
-  push:
-    paths:
-      - "solidarian-id/**"
-    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -62,6 +58,21 @@ jobs:
           docker tag deployment-communities-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-communities:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-communities:$IMAGE_TAG
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-communities:latest
+
+      - name: Build and push frontend image
+        id: build-frontend-image
+        env:
+          IMAGE_TAG: ${{ steps.image-tag.outputs.tag }}
+        run: |
+          set -euo pipefail
+
+          docker build -f solidarian-frontend/dockerfile \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-frontend:$IMAGE_TAG \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-frontend:latest \
+            solidarian-frontend
+
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-frontend:$IMAGE_TAG
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/solidarianid-frontend:latest
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

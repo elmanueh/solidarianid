@@ -4,6 +4,16 @@
 solidarian-id/data
 main.css
 images/
+*.venv
+!solidarian-frontend/features/images/
+!solidarian-frontend/features/images/**
+
+*.pem
+solidarian-id/scripts/init/postgres/*
+!solidarian-id/scripts/init/postgres/00-create-databases.sql
+
+solidarian-id/scripts/init/mongo/*
+!solidarian-id/scripts/init/mongo/00-seed-admins.js
 
 ### Node ###
 # Logs
@@ -113,7 +123,6 @@ web_modules/
 
 # Next.js build output
 .next
-out
 
 # Nuxt.js build / generate output
 .nuxt
@@ -166,3 +175,11 @@ out
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+.atl*
+.gga
+.atl
+
+# PWA & Serwist
+public/sw*
+public/swe-worker*
+commits-counter.sh

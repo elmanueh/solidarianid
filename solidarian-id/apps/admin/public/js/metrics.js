@@ -2,17 +2,25 @@ document.addEventListener('DOMContentLoaded', function () {
   const chartsDataElement = document.getElementById('charts-data');
   const chartsData = JSON.parse(chartsDataElement.textContent);
 
-  const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const charts = new Map();
 
-  Chart.defaults.color = isDarkMode ? '#D3D3D3' : '#000000';
+  const ctx = chartId => document.getElementById(chartId).getContext('2d');
+
+  function applyTheme(isDark) {
+    Chart.defaults.color = isDark ? '#D3D3D3' : '#000000';
+    charts.forEach(chart => chart.update());
+  }
+
+  const mql = window.matchMedia('(prefers-color-scheme: dark)');
+  applyTheme(mql.matches);
+
+  mql.addEventListener('change', e => applyTheme(e.matches));
+
   Chart.defaults.font.size = 16;
-
-  const ctx = chart => document.getElementById(chart).getContext('2d');
 
   const hasData = chartData => {
     if (!chartData || !chartData.data) return false;
 
-    // has data? :0
     const hasLabels = chartData.data.labels && chartData.data.labels.length > 0;
     const hasDatasets =
       chartData.data.datasets &&
@@ -25,8 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const createChartIfDataExists = (elementId, chartData) => {
     const canvas = document.getElementById(elementId);
 
+    let chartInstance;
+
     if (!chartData) {
-      // Empty chart configuration
       const emptyConfig = {
         type: 'line',
         data: { labels: [], datasets: [] },
@@ -39,7 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
           },
         },
       };
-      new Chart(ctx(elementId), emptyConfig);
+
+      chartInstance = new Chart(ctx(elementId), emptyConfig);
 
       const errorDiv = document.createElement('div');
       errorDiv.className = 'alert alert-error d-flex align-items-center justify-content-center';
@@ -56,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
       canvas.parentElement.style.position = 'relative';
       canvas.parentElement.appendChild(errorDiv);
     } else if (!hasData(chartData)) {
-      new Chart(ctx(elementId), ChartsLib.hydrateCallbacks(chartData));
+      chartInstance = new Chart(ctx(elementId), ChartsLib.hydrateCallbacks(chartData));
 
       const infoDiv = document.createElement('div');
       infoDiv.className = 'alert alert-info d-flex align-items-center justify-content-center';
@@ -73,8 +83,10 @@ document.addEventListener('DOMContentLoaded', function () {
       canvas.parentElement.style.position = 'relative';
       canvas.parentElement.appendChild(infoDiv);
     } else {
-      new Chart(ctx(elementId), ChartsLib.hydrateCallbacks(chartData));
+      chartInstance = new Chart(ctx(elementId), ChartsLib.hydrateCallbacks(chartData));
     }
+
+    charts.set(elementId, chartInstance);
   };
 
   createChartIfDataExists('chart-communities', chartsData.topCommunities);

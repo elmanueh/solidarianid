@@ -11,6 +11,8 @@ const baseJestConfig: Config = {
   moduleNameMapper: {
     '^@solidarianid/testing(.*)$': '<rootDir>/libs/test/src$1',
     '^@solidarianid/kafka(.*)$': '<rootDir>/libs/kafka/src/$1',
+    '^@solidarianid/grpc$': '<rootDir>/libs/grpc-common/src',
+    '^@solidarianid/grpc/(.*)$': '<rootDir>/libs/grpc-common/src/$1',
     '^@app/admin/(.*)$': '<rootDir>/apps/admin/src/$1',
     '^@app/users/(.*)$': '<rootDir>/apps/users/src/$1',
     '^@app/communities/(.*)$': '<rootDir>/apps/communities/src/$1',
@@ -20,6 +22,10 @@ const baseJestConfig: Config = {
     '^@charts/(.*)$': '<rootDir>/libs/charts/src/$1',
     '^@charts$': '<rootDir>/libs/charts/src',
     '^@frontend/design-tokens/(.*)$': '<rootDir>/libs/design-tokens/src/$1',
+    '^@solidarianid/security$': '<rootDir>/libs/security/src',
+    '^@solidarianid/security/core$': '<rootDir>/libs/security/src/core/index.ts',
+    '^@solidarianid/security/nestjs$': '<rootDir>/libs/security/src/nestjs/index.ts',
+    '^passport-google-oauth20$': '<rootDir>/test/mocks/passport-google-oauth20.mock.ts',
   },
 
   transform: {

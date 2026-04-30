@@ -1,11 +1,12 @@
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
 
 /**
  * DTO for a cause within a community request event
  */
 export class CommunityRequestCauseEventDto {
+  id?: string;
   name: string;
   description: string;
   status: RequestStatus;

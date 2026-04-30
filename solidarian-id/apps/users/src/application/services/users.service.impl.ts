@@ -1,25 +1,64 @@
+import { DomainEvents } from '@app/ddd/domain-events';
 import { Either, left, right } from '@app/ddd/either';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.exception';
 import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
 import { User } from '@app/users/domain/model/user';
-import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
 import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
 import { RegisterUserCommand, UpdateUserProfileCommand, UsersService } from '@app/users/domain/services/users.service';
 import { PasswordManager } from '@app/utils/security/password-manager';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { MobilePhone } from '@app/value-objects/model/mobile-phone';
+import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { CauseCategory, DurationPreference } from '@app/value-objects/model/user-preferences';
 import { Username } from '@app/value-objects/model/username';
 import { Injectable } from '@nestjs/common';
-import { EventType } from '@solidarianid/kafka';
 
 @Injectable()
 export class UsersServiceImpl extends UsersService {
   constructor(
     private readonly usersRepository: UsersRepositoryPort,
     private readonly passwordManager: PasswordManager,
-    private readonly usersPublisher: UsersPublisherPort,
+    private readonly domainEvents: DomainEvents,
   ) {
     super();
+  }
+
+  async getOrRegisterUserIfNotExists(
+    getOrRegisterUserCommand: RegisterUserCommand,
+  ): Promise<Either<ValidationError | RepositoryException, { user: User; newUser: boolean }>> {
+    const { username } = getOrRegisterUserCommand;
+
+    const userOrError = await this.usersRepository.findByUsername(username);
+    // Si el usuario existe, retornarlo
+    if (userOrError.isRight()) {
+      return right({ user: userOrError.value, newUser: false });
+    }
+
+    // Si el error es distinto a "no encontrado", retornar el error
+    if (!(userOrError.value instanceof EntityNotFoundException)) {
+      return left(userOrError.value);
+    }
+
+    // Si el usuario no existe, registrarlo y retornarlo
+    return this.registerAndGetCreatedUser(getOrRegisterUserCommand);
+  }
+
+  private async registerAndGetCreatedUser(
+    command: RegisterUserCommand,
+  ): Promise<Either<ValidationError | RepositoryException, { user: User; newUser: boolean }>> {
+    const registerResult = await this.registerUser(command);
+    if (registerResult.isLeft()) {
+      return left(registerResult.value as ValidationError | RepositoryException);
+    }
+
+    const createdUserOrError = await this.usersRepository.findById(registerResult.value);
+    if (createdUserOrError.isLeft()) {
+      return left(createdUserOrError.value);
+    }
+
+    return right({ user: createdUserOrError.value, newUser: true });
   }
 
   async registerUser(command: RegisterUserCommand): Promise<Either<Error, string>> {
@@ -65,23 +104,34 @@ export class UsersServiceImpl extends UsersService {
 
     if (res.isLeft()) return left(res.value);
 
-    await this.usersPublisher.publish(EventType.USER_CREATED, user.value);
+    this.domainEvents.dispatch(user.value.pullDomainEvents());
 
     // 6. Retornar ID del usuario creado
     return right(user.value.id.value);
   }
 
-  async loginUser(username: string, password: string): Promise<Either<Error, boolean>> {
+  async authenticate(
+    username: string,
+    password: string,
+  ): Promise<Either<LoginInvalidException | ValidationError | RepositoryException, User>> {
     const usernameOrError = Username.create(username);
-    if (usernameOrError.isLeft()) return left(usernameOrError.value);
+    if (usernameOrError.isLeft()) return left(new LoginInvalidException());
 
     const userOrError = await this.usersRepository.findByUsername(usernameOrError.value.value);
+    if (userOrError.isLeft()) {
+      if (userOrError.value instanceof EntityNotFoundException) {
+        return left(new LoginInvalidException());
+      }
 
-    if (userOrError.isLeft()) return left(userOrError.value);
+      return userOrError;
+    }
 
     const passwordMatch = await this.passwordManager.comparePassword(password, userOrError.value.passwordHash);
+    if (!passwordMatch) {
+      return left(new LoginInvalidException());
+    }
 
-    return right(passwordMatch);
+    return right(userOrError.value);
   }
 
   async updateUserProfile(
@@ -120,7 +170,69 @@ export class UsersServiceImpl extends UsersService {
       return left(saveResult.value);
     }
 
-    await this.usersPublisher.publish(EventType.USER_UPDATED, user);
+    this.domainEvents.dispatch(user.pullDomainEvents());
+
+    return right(undefined);
+  }
+
+  async getUserPreferences(userId: string): Promise<
+    Either<
+      ValidationError | RepositoryException,
+      {
+        preferredSDGs: SustainableDevelopmentGoal[];
+        preferredCategories: CauseCategory[];
+        durationPreferences: DurationPreference[];
+        notificationsEnabled: boolean;
+      }
+    >
+  > {
+    const userOrError = await this.usersRepository.findById(userId, ['preferences']);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    const user = userOrError.value;
+    const preferences = user.userPreferences;
+
+    return right({
+      preferredSDGs: [...preferences.preferredSDGs],
+      preferredCategories: [...preferences.preferredCategories],
+      durationPreferences: [...preferences.durationPreferences],
+      notificationsEnabled: preferences.notificationsEnabled,
+    });
+  }
+
+  async updateUserPreferences(
+    userId: string,
+    preferences: Partial<{
+      preferredSDGs: SustainableDevelopmentGoal[];
+      preferredCategories: CauseCategory[];
+      durationPreferences: DurationPreference[];
+      notificationsEnabled: boolean;
+    }>,
+  ): Promise<Either<ValidationError | RepositoryException, void>> {
+    const userOrError = await this.usersRepository.findById(userId, ['preferences']);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    const user = userOrError.value;
+
+    const prefsUpdateOrError = user.updateUserPreferences(preferences);
+
+    if (prefsUpdateOrError.isLeft()) {
+      return left(prefsUpdateOrError.value);
+    }
+
+    const saveResult = await this.usersRepository.save(user);
+
+    if (saveResult.isLeft()) {
+      return left(saveResult.value);
+    }
+
+    this.domainEvents.dispatch(user.pullDomainEvents());
 
     return right(undefined);
   }
@@ -147,5 +259,15 @@ export class UsersServiceImpl extends UsersService {
     }
 
     return right(false);
+  }
+
+  async getUserById(userId: string): Promise<Either<RepositoryException, User>> {
+    const userOrError = await this.usersRepository.findById(userId);
+
+    if (userOrError.isLeft()) {
+      return left(userOrError.value);
+    }
+
+    return right(userOrError.value);
   }
 }

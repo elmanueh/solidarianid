@@ -1,6 +1,6 @@
-import generateSchema from './generate-schema';
 import generateData from './generate-data';
 import generateMongo from './generate-mongo';
+import generateSchema from './generate-schema';
 import { logger } from './utils';
 
 function main() {
@@ -23,15 +23,13 @@ function main() {
     logger.section(`All files generated successfully in ${duration}s`);
 
     console.log('\nGenerated files:');
+    console.log('  • scripts/init/postgres/01-schema-users.sql');
+    console.log('  • scripts/init/postgres/01-schema-communities.sql');
     console.log('  • scripts/init/postgres/01-schema.sql');
-    console.log('  • scripts/init/postgres/02-seed-data.sql');
-    console.log('  • scripts/init/mongo/01-seed-data.js');
-
-    console.log('\nNext steps:');
-    console.log('  1. Review the generated files');
-    console.log('  2. Commit to git: git add database/init/');
-    console.log('  3. Team members run: docker-compose up -d');
-    console.log('  4. Data will auto-load on first container creation');
+    console.log('  • scripts/init/postgres/02-seed-users.sql');
+    console.log('  • scripts/init/postgres/02-seed-communities.sql');
+    console.log('  • scripts/init/postgres/02-seed.sql');
+    console.log('  • scripts/init/mongo/01-seed.js');
   } catch (error) {
     logger.error(`Generation failed: ${(error as Error).message}`);
     process.exit(1);

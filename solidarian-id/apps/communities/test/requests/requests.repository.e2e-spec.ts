@@ -1,11 +1,21 @@
-import { Request } from '@app/communities/domain/model/entities/request';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
-import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
-import { RequestEntityMapper } from '@app/communities/infrastructure/persistence/mappers/request-entity.mapper';
-import { UserEntityMapper } from '@app/communities/infrastructure/persistence/mappers/user-entity.mapper';
-import { RequestsRepositoryTypeOrmAdapter } from '@app/communities/infrastructure/persistence/repositories/requests-typeorm.repository';
+import { ActionEntity } from '@app/communities/actions/infrastructure/persistence/entities/action.entity';
+import { EventUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/event-user.entity';
+import { EventEntity } from '@app/communities/actions/infrastructure/persistence/entities/event.entity';
+import { ObjectiveEntity } from '@app/communities/actions/infrastructure/persistence/entities/objective.entity';
+import { ObjetiveUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/objetive-user.entity';
+import { CauseUserEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause-user.entity';
+import { CauseEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause.entity';
+import { CommunityUserEntity } from '@app/communities/communities/infrastructure/persistence/entities/community-user.entity';
+import { CommunityEntity } from '@app/communities/communities/infrastructure/persistence/entities/community.entity';
+import { Request } from '@app/communities/shared/domain/model/entities/request';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
+import { RequestsRepositoryPort } from '@app/communities/shared/domain/ports/requests.repository.port';
+import { RequestEntity } from '@app/communities/shared/infrastructure/persistence/entities/request.entity';
+import { UserEntity } from '@app/communities/shared/infrastructure/persistence/entities/user.entity';
+import { RequestEntityMapper } from '@app/communities/shared/infrastructure/persistence/mappers/request-entity.mapper';
+import { UserEntityMapper } from '@app/communities/shared/infrastructure/persistence/mappers/user-entity.mapper';
+import { RequestsRepositoryTypeOrmAdapter } from '@app/communities/shared/infrastructure/persistence/repositories/requests-typeorm.repository';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -17,15 +27,6 @@ import {
   PG_USER_IDS as USER_IDS,
 } from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
-import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
-import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
-import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
-import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
-import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
-import { EventEntity } from '../../src/infrastructure/persistence/entities/event.entity';
-import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
-import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user.entity';
-import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
 
 // ============================================
 // TEST DATA - Request IDs (Valid UUID format)
@@ -40,6 +41,7 @@ describe('RequestsRepositoryTypeOrmAdapter (e2e)', () => {
     const databaseModule = await PostgreSQLTestModule.forRoot([
       CommunityEntity,
       CauseEntity,
+      CauseUserEntity,
       ActionEntity,
       UserEntity,
       ObjectiveEntity,

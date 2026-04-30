@@ -6,7 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { RequestDocument, RequestEntity } from '../entities/request.entity';
 import { Model } from 'mongoose';
 import { RequestStatus } from '../../../domain/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
 import { CauseGroupByOdsData } from '../../../application/services/data/cause-group-by-ods.data';
 
 @Injectable()
@@ -24,7 +24,20 @@ export class RequestsQueryMongooseRepository extends RequestsQueryRepositoryPort
         { $match: { $and: [{ type: RequestType.CAUSE }, { status: RequestStatus.APPROVED }] } },
         { $unwind: '$ods' },
         { $group: { _id: '$ods', causeCount: { $sum: 1 } } },
-        { $project: { _id: 0, ods: '$_id', causeCount: 1 } },
+        {
+          $project: {
+            _id: 0,
+            ods: {
+              $convert: {
+                input: '$_id',
+                to: 'int',
+                onError: 0,
+                onNull: null,
+              },
+            },
+            causeCount: 1,
+          },
+        },
         { $sort: { ods: 1 } },
       ]);
     } catch (error) {

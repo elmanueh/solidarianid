@@ -1,31 +1,32 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { RequestsServiceImpl } from '@app/communities/shared/application/services/requests.service.impl';
+import { UserPermissionError } from '@app/communities/shared/domain/errors/user-permission.error';
+import { Cause } from '@app/communities/shared/domain/model/aggregates/cause';
+import { Community } from '@app/communities/shared/domain/model/aggregates/community';
+import { ActionRequest } from '@app/communities/shared/domain/model/entities/request-action';
+import { CauseRequest } from '@app/communities/shared/domain/model/entities/request-cause';
+import { CommunityRequest } from '@app/communities/shared/domain/model/entities/request-community';
+import { User } from '@app/communities/shared/domain/model/entities/user';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
+import { CausesRepositoryPort } from '@app/communities/shared/domain/ports/causes.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/shared/domain/ports/communities.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/shared/domain/ports/push-subscription.repository.port';
+import { RequestsRepositoryPort } from '@app/communities/shared/domain/ports/requests.repository.port';
+import { UsersRepositoryPort } from '@app/communities/shared/domain/ports/users.repository.port';
+import { ActionsService } from '@app/communities/shared/domain/services/actions.service';
+import { CausesService } from '@app/communities/shared/domain/services/causes.service';
+import { CommunitiesService } from '@app/communities/shared/domain/services/communities.service';
+import { CreateActionRequestDto } from '@app/communities/shared/infrastructure/presentation/controllers/rest/dtos/input/create-request-action.request.dto';
+import { CreateCauseRequestDto } from '@app/communities/shared/infrastructure/presentation/controllers/rest/dtos/input/create-request-cause.request.dto';
+import { CreateCommunityRequestDto } from '@app/communities/shared/infrastructure/presentation/controllers/rest/dtos/input/create-request-community.request.dto';
+import { DomainEvents } from '@app/ddd/domain-events';
+import { left, right } from '@app/ddd/either';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
-import { RequestsServiceImpl } from '@app/communities/application/services/requests.service.impl';
-import { RequestsRepositoryPort } from '@app/communities/domain/ports/requests.repository.port';
-import { RequestPublisherPort } from '@app/communities/domain/ports/requests.publisher.port';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
-import { CreateCommunityRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-community.request.dto';
-import { CreateCauseRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-cause.request.dto';
-import { CreateActionRequestDto } from '@app/communities/infrastructure/presentation/dtos/input/create-request-action.request.dto';
-import { User } from '@app/communities/domain/model/entities/user';
-import { Community } from '@app/communities/domain/model/aggregates/community';
-import { Cause } from '@app/communities/domain/model/entities/cause';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
-import { CommunitiesService } from '@app/communities/domain/services/communities.service';
-import { CausesService } from '@app/communities/domain/services/causes.service';
-import { ActionsService } from '@app/communities/domain/services/actions.service';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { CommunityRequest } from '@app/communities/domain/model/entities/request-community';
-import { CauseRequest } from '@app/communities/domain/model/entities/request-cause';
-import { ActionRequest } from '@app/communities/domain/model/entities/request-action';
-import { CommunityRequestEventDto, CauseRequestEventDto, ActionRequestEventDto } from '@solidarianid/kafka';
-import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ActionRequestEventDto, CauseRequestEventDto, CommunityRequestEventDto } from '@solidarianid/kafka';
 
 describe('RequestsServiceImpl', () => {
   let service: RequestsServiceImpl;
@@ -47,7 +48,7 @@ describe('RequestsServiceImpl', () => {
     findAll: jest.Mock;
     remove: jest.Mock;
   };
-  let mockRequestPublisher: { publish: jest.Mock };
+  let mockEventBus: { publish: jest.Mock; dispatch: jest.Mock };
   let mockUsersRepository: {
     findById: jest.Mock;
     save: jest.Mock;
@@ -57,6 +58,7 @@ describe('RequestsServiceImpl', () => {
   let mockCommunitiesService: { create: jest.Mock };
   let mockCausesService: { create: jest.Mock };
   let mockActionsService: { create: jest.Mock };
+  let mockSubscriptionsRepository: { findByUserId: jest.Mock; save: jest.Mock };
 
   const validUserId = 'a1b2c3d4-e5f6-4890-abcd-ef1234567001';
   const unauthorizedUserId = 'a1b2c3d4-e5f6-4890-abcd-ef1234567999';
@@ -92,7 +94,8 @@ describe('RequestsServiceImpl', () => {
       findAll: jest.fn(),
       remove: jest.fn(),
     };
-    mockRequestPublisher = { publish: jest.fn() };
+    const eventBusMock = jest.fn();
+    mockEventBus = { publish: eventBusMock, dispatch: eventBusMock };
     mockUsersRepository = {
       findById: jest.fn(),
       save: jest.fn(),
@@ -114,18 +117,23 @@ describe('RequestsServiceImpl', () => {
     mockCommunitiesService = { create: jest.fn() };
     mockCausesService = { create: jest.fn() };
     mockActionsService = { create: jest.fn() };
+    mockSubscriptionsRepository = {
+      findByUserId: jest.fn().mockResolvedValue(right([])),
+      save: jest.fn().mockResolvedValue(right(undefined)),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         RequestsServiceImpl,
         { provide: RequestsRepositoryPort, useValue: mockRequestsRepository },
-        { provide: RequestPublisherPort, useValue: mockRequestPublisher },
+        { provide: DomainEvents, useValue: mockEventBus },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepository },
         { provide: CausesRepositoryPort, useValue: mockCauseRepository },
         { provide: CommunitiesService, useValue: mockCommunitiesService },
         { provide: CausesService, useValue: mockCausesService },
         { provide: ActionsService, useValue: mockActionsService },
+        { provide: PushSubscriptionRepositoryPort, useValue: mockSubscriptionsRepository },
       ],
     }).compile();
 
@@ -136,7 +144,6 @@ describe('RequestsServiceImpl', () => {
     const validCommunityDto: CreateCommunityRequestDto = {
       name: 'Comunidad de Prueba',
       description: 'Esta es una descripción válida para la comunidad de prueba con más de 20 caracteres',
-      userId: validUserId,
       causeCreationRequests: [
         {
           name: 'Causa de Prueba',
@@ -151,26 +158,26 @@ describe('RequestsServiceImpl', () => {
     it('should create a community request successfully', async () => {
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
-      mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
+      mockEventBus.publish.mockResolvedValueOnce(undefined);
 
-      const result = await service.createCommunityRequest(validCommunityDto);
+      const result = await service.createCommunityRequest(validCommunityDto, validUserId);
 
       expect(result.isRight()).toBe(true);
       expect(mockUsersRepository.findById).toHaveBeenCalledWith(validUserId);
       expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
-      expect(mockRequestPublisher.publish).toHaveBeenCalledTimes(1);
+      expect(mockEventBus.publish).toHaveBeenCalledTimes(1);
     });
 
     it('should return EntityNotFoundException when user does not exist', async () => {
       const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
-      const result = await service.createCommunityRequest(validCommunityDto);
+      const result = await service.createCommunityRequest(validCommunityDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(EntityNotFoundException);
       expect(mockRequestsRepository.save).not.toHaveBeenCalled();
-      expect(mockRequestPublisher.publish).not.toHaveBeenCalled();
+      expect(mockEventBus.publish).not.toHaveBeenCalled();
     });
 
     it('should return ValidationError when name is invalid', async () => {
@@ -181,7 +188,7 @@ describe('RequestsServiceImpl', () => {
         name: 'ab', // Demasiado corto
       };
 
-      const result = await service.createCommunityRequest(invalidDto);
+      const result = await service.createCommunityRequest(invalidDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(ValidationError);
@@ -193,11 +200,11 @@ describe('RequestsServiceImpl', () => {
       const repoError = new RepositoryException('Database error');
       mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
 
-      const result = await service.createCommunityRequest(validCommunityDto);
+      const result = await service.createCommunityRequest(validCommunityDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(RepositoryException);
-      expect(mockRequestPublisher.publish).not.toHaveBeenCalled();
+      expect(mockEventBus.publish).not.toHaveBeenCalled();
     });
   });
 
@@ -205,7 +212,6 @@ describe('RequestsServiceImpl', () => {
     const validCauseDto: CreateCauseRequestDto = {
       name: 'Causa Benéfica de Prueba',
       description: 'Esta es una descripción válida para la causa benéfica con más de 20 caracteres',
-      userId: validUserId,
       communityId: validCommunityId,
       ods: [SustainableDevelopmentGoal.ZeroHunger],
       initialDate: '2026-02-01T00:00:00.000Z',
@@ -216,14 +222,14 @@ describe('RequestsServiceImpl', () => {
       mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
-      mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
+      mockEventBus.publish.mockResolvedValueOnce(undefined);
 
-      const result = await service.createCauseRequest(validCauseDto);
+      const result = await service.createCauseRequest(validCauseDto, validUserId);
 
       expect(result.isRight()).toBe(true);
       expect(mockUsersRepository.findById).toHaveBeenCalledWith(validUserId);
       expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
-      expect(mockRequestPublisher.publish).toHaveBeenCalledTimes(1);
+      expect(mockEventBus.publish).toHaveBeenCalledTimes(1);
     });
 
     it('should return EntityNotFoundException when user does not exist', async () => {
@@ -231,7 +237,7 @@ describe('RequestsServiceImpl', () => {
       const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
-      const result = await service.createCauseRequest(validCauseDto);
+      const result = await service.createCauseRequest(validCauseDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(EntityNotFoundException);
@@ -247,7 +253,7 @@ describe('RequestsServiceImpl', () => {
         description: 'corta', // Demasiado corta
       };
 
-      const result = await service.createCauseRequest(invalidDto);
+      const result = await service.createCauseRequest(invalidDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(ValidationError);
@@ -260,11 +266,11 @@ describe('RequestsServiceImpl', () => {
       const repoError = new RepositoryException('Database error');
       mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
 
-      const result = await service.createCauseRequest(validCauseDto);
+      const result = await service.createCauseRequest(validCauseDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(RepositoryException);
-      expect(mockRequestPublisher.publish).not.toHaveBeenCalled();
+      expect(mockEventBus.publish).not.toHaveBeenCalled();
     });
 
     it('should return UserPermissionError when user is not admin or creator', async () => {
@@ -273,10 +279,9 @@ describe('RequestsServiceImpl', () => {
 
       const dtoWithUnauthorizedUser: CreateCauseRequestDto = {
         ...validCauseDto,
-        userId: unauthorizedUserId,
       };
 
-      const result = await service.createCauseRequest(dtoWithUnauthorizedUser);
+      const result = await service.createCauseRequest(dtoWithUnauthorizedUser, unauthorizedUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(UserPermissionError);
@@ -288,7 +293,6 @@ describe('RequestsServiceImpl', () => {
     const validActionDto: CreateActionRequestDto = {
       name: 'Acción Solidaria de Prueba',
       description: 'Esta es una descripción válida para la acción solidaria con más de 20 caracteres',
-      userId: validUserId,
       causeId: validCauseId,
       objectives: [
         {
@@ -317,15 +321,15 @@ describe('RequestsServiceImpl', () => {
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
       mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
-      mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
+      mockEventBus.publish.mockResolvedValueOnce(undefined);
 
-      const result = await service.createActionRequest(validActionDto);
+      const result = await service.createActionRequest(validActionDto, validUserId);
 
       expect(result).toBeDefined();
       expect(result.isRight()).toBe(true);
       expect(mockUsersRepository.findById).toHaveBeenCalledWith(validUserId);
       expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
-      expect(mockRequestPublisher.publish).toHaveBeenCalledTimes(1);
+      expect(mockEventBus.publish).toHaveBeenCalledTimes(1);
     });
 
     it('should return EntityNotFoundException when user does not exist', async () => {
@@ -333,7 +337,7 @@ describe('RequestsServiceImpl', () => {
       const notFoundError = new EntityNotFoundException('User', 'User not found');
       mockUsersRepository.findById.mockResolvedValueOnce(left(notFoundError));
 
-      const result = await service.createActionRequest(validActionDto);
+      const result = await service.createActionRequest(validActionDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(EntityNotFoundException);
@@ -350,7 +354,7 @@ describe('RequestsServiceImpl', () => {
         name: 'ab', // Demasiado corto
       };
 
-      const result = await service.createActionRequest(invalidDto);
+      const result = await service.createActionRequest(invalidDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(ValidationError);
@@ -364,11 +368,11 @@ describe('RequestsServiceImpl', () => {
       const repoError = new RepositoryException('Database error');
       mockRequestsRepository.save.mockResolvedValueOnce(left(repoError));
 
-      const result = await service.createActionRequest(validActionDto);
+      const result = await service.createActionRequest(validActionDto, validUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(RepositoryException);
-      expect(mockRequestPublisher.publish).not.toHaveBeenCalled();
+      expect(mockEventBus.publish).not.toHaveBeenCalled();
     });
 
     it('should publish event after successful save', async () => {
@@ -376,17 +380,17 @@ describe('RequestsServiceImpl', () => {
       mockUsersRepository.findById.mockResolvedValueOnce(validUser);
       mockCommunityRepository.findById.mockResolvedValueOnce(right(validCommunity.value));
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
-      mockRequestPublisher.publish.mockResolvedValueOnce(undefined);
+      mockEventBus.publish.mockResolvedValueOnce(undefined);
 
-      await service.createActionRequest(validActionDto);
+      await service.createActionRequest(validActionDto, validUserId);
 
-      expect(mockRequestPublisher.publish).toHaveBeenCalledTimes(1);
-      expect(mockRequestPublisher.publish).toHaveBeenCalledWith(
-        expect.any(String) as unknown as string,
+      expect(mockEventBus.publish).toHaveBeenCalledTimes(1);
+      expect(mockEventBus.publish).toHaveBeenCalledWith([
         expect.objectContaining({
-          id: expect.objectContaining({}) as unknown as object,
+          type: 'RequestCreatedEvent',
+          id: expect.any(String) as unknown as string,
         }) as unknown as object,
-      );
+      ]);
     });
 
     it('should return UserPermissionError when user is not admin or creator of the community', async () => {
@@ -396,10 +400,9 @@ describe('RequestsServiceImpl', () => {
 
       const dtoWithUnauthorizedUser: CreateActionRequestDto = {
         ...validActionDto,
-        userId: unauthorizedUserId,
       };
 
-      const result = await service.createActionRequest(dtoWithUnauthorizedUser);
+      const result = await service.createActionRequest(dtoWithUnauthorizedUser, unauthorizedUserId);
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBeInstanceOf(UserPermissionError);
@@ -468,7 +471,7 @@ describe('RequestsServiceImpl', () => {
       const result = await service.acceptRequest(communityEventDto);
 
       expect(result.isRight()).toBe(true);
-      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(communityEventDto.id);
+      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(communityEventDto.id, ['user']);
       expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
       expect(mockCommunitiesService.create).toHaveBeenCalledWith(communityEventDto);
     });
@@ -514,7 +517,11 @@ describe('RequestsServiceImpl', () => {
 
       mockRequestsRepository.findById.mockResolvedValueOnce(right(mockRequest));
       mockRequestsRepository.save.mockResolvedValueOnce(right(undefined));
-      mockActionsService.create.mockResolvedValueOnce(right({}));
+      mockActionsService.create.mockResolvedValueOnce(
+        right({
+          id: { value: 'f1b2c3d4-e5f6-4890-abcd-ef1234567888' },
+        }),
+      );
 
       const result = await service.acceptRequest(actionEventDto);
 
@@ -597,7 +604,7 @@ describe('RequestsServiceImpl', () => {
       const result = await service.rejectRequest(rejectDto);
 
       expect(result.isRight()).toBe(true);
-      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(rejectDto.id);
+      expect(mockRequestsRepository.findById).toHaveBeenCalledWith(rejectDto.id, ['user']);
       expect(mockRequestsRepository.save).toHaveBeenCalledTimes(1);
     });
 

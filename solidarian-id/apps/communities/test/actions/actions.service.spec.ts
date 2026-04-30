@@ -1,13 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { ActionsServiceImpl } from '@app/communities/actions/application/services/actions.service.impl';
+import { Action } from '@app/communities/shared/domain/model/aggregates/action';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
+import { ActionsRepositoryPort } from '@app/communities/shared/domain/ports/actions.repository.port';
+import { UsersRepositoryPort } from '@app/communities/shared/domain/ports/users.repository.port';
+import { DomainEvents } from '@app/ddd/domain-events';
+import { left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { ActionsServiceImpl } from '@app/communities/application/services/actions.service.impl';
-import { ActionsRepositoryPort } from '@app/communities/domain/ports/actions.repository.port';
-import { Action } from '@app/communities/domain/model/entities/action';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Test, TestingModule } from '@nestjs/testing';
 import { ActionRequestEventDto } from '@solidarianid/kafka';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
 
 describe('ActionsServiceImpl', () => {
   let service: ActionsServiceImpl;
@@ -15,6 +17,10 @@ describe('ActionsServiceImpl', () => {
     findAll: jest.Mock;
     findById: jest.Mock;
     save: jest.Mock;
+  };
+  let mockEventBus: { publish: jest.Mock; dispatch: jest.Mock };
+  let mockUsersRepository: {
+    findById: jest.Mock;
   };
 
   const validCauseId = 'c1b2c3d4-e5f6-4890-abcd-ef1234567003';
@@ -72,9 +78,19 @@ describe('ActionsServiceImpl', () => {
       findById: jest.fn(),
       save: jest.fn(),
     };
+    const eventBusMock = jest.fn();
+    mockEventBus = { publish: eventBusMock, dispatch: eventBusMock };
+    mockUsersRepository = {
+      findById: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ActionsServiceImpl, { provide: ActionsRepositoryPort, useValue: mockActionRepository }],
+      providers: [
+        ActionsServiceImpl,
+        { provide: ActionsRepositoryPort, useValue: mockActionRepository },
+        { provide: UsersRepositoryPort, useValue: mockUsersRepository },
+        { provide: DomainEvents, useValue: mockEventBus },
+      ],
     }).compile();
 
     service = module.get<ActionsServiceImpl>(ActionsServiceImpl);
@@ -278,7 +294,11 @@ describe('ActionsServiceImpl', () => {
         expect(result.value).toBeInstanceOf(Action);
         expect(result.value.id.value).toBe(validActionId);
       }
-      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, ['events', 'objectives']);
+      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, [
+        'events',
+        'events.assistants',
+        'objectives',
+      ]);
     });
 
     it('should propagate ValidationError from repository', async () => {
@@ -289,7 +309,11 @@ describe('ActionsServiceImpl', () => {
 
       expect(result.isLeft()).toBe(true);
       expect(result.value).toBe(err);
-      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, ['events', 'objectives']);
+      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, [
+        'events',
+        'events.assistants',
+        'objectives',
+      ]);
     });
 
     it('should request events and objectives relations when fetching by id', async () => {
@@ -298,7 +322,11 @@ describe('ActionsServiceImpl', () => {
 
       await service.getActionById(validActionId);
 
-      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, ['events', 'objectives']);
+      expect(mockActionRepository.findById).toHaveBeenCalledWith(validActionId, [
+        'events',
+        'events.assistants',
+        'objectives',
+      ]);
     });
   });
 });

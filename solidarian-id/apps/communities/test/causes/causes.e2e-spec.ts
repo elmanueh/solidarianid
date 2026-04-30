@@ -1,37 +1,49 @@
-import {
-  PostgreSQLTestModule,
-  TestServerHelper,
-  PostgreSQLSeeder,
-  PG_CAUSE_IDS as CAUSE_IDS,
-  KafkaTestModule,
-  TestContainerLifecycle,
-  PG_COMMUNITY_IDS as COMMUNITY_IDS,
-} from '@solidarianid/testing';
+import { ActionEntity } from '@app/communities/actions/infrastructure/persistence/entities/action.entity';
+import { EventUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/event-user.entity';
+import { EventEntity } from '@app/communities/actions/infrastructure/persistence/entities/event.entity';
+import { ObjectiveEntity } from '@app/communities/actions/infrastructure/persistence/entities/objective.entity';
+import { ObjetiveUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/objetive-user.entity';
+import { CauseUserEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause-user.entity';
+import { CauseEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause.entity';
+import { CauseSummaryResponseDto } from '@app/communities/causes/infrastructure/presentation/controllers/rest/dtos/output/cause-summary.response.dto';
+import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
+import { CommunityUserEntity } from '@app/communities/communities/infrastructure/persistence/entities/community-user.entity';
+import { CommunityEntity } from '@app/communities/communities/infrastructure/persistence/entities/community.entity';
+import { RequestEntity } from '@app/communities/shared/infrastructure/persistence/entities/request.entity';
+import { SubscriptionEntity } from '@app/communities/shared/infrastructure/persistence/entities/subscription.entity';
+import { UserEntity } from '@app/communities/shared/infrastructure/persistence/entities/user.entity';
 import { HttpStatus, INestApplication } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
-import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
-import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
-import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
-import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
-import { EventEntity } from '../../src/infrastructure/persistence/entities/event.entity';
-import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
-import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user.entity';
-import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
-import { CommunitiesModule } from '@app/communities/communities.module';
-import { CauseSummaryResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/cause-summary.response.dto';
-import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
+import { JwtService } from '@nestjs/jwt';
+import {
+  PG_CAUSE_IDS as CAUSE_IDS,
+  PG_COMMUNITY_IDS as COMMUNITY_IDS,
+  KafkaTestModule,
+  PostgreSQLSeeder,
+  PostgreSQLTestModule,
+  TestContainerLifecycle,
+  TestServerHelper,
+  PG_USER_IDS as USER_IDS,
+} from '@solidarianid/testing';
+import { DataSource, Repository } from 'typeorm';
 
 describe('CausesController (e2e)', () => {
   let server!: TestServerHelper;
   let seeder!: PostgreSQLSeeder;
   let app: INestApplication;
+  let causeUserRepository: Repository<CauseUserEntity>;
+
+  const createAccessToken = (userId: string): string => {
+    const privateKey = Buffer.from(process.env.JWT_PRIVATE_KEY_BASE64 ?? '', 'base64').toString('utf8');
+    const jwtService = new JwtService({ privateKey });
+    return jwtService.sign({ sub: userId }, { algorithm: 'RS256', expiresIn: '15m' });
+  };
 
   beforeAll(async () => {
     const messageModule = await KafkaTestModule.forRoot();
     const databaseModule = await PostgreSQLTestModule.forRoot([
       CommunityEntity,
       CauseEntity,
+      CauseUserEntity,
       ActionEntity,
       UserEntity,
       ObjectiveEntity,
@@ -40,18 +52,20 @@ describe('CausesController (e2e)', () => {
       ObjetiveUserEntity,
       CommunityUserEntity,
       RequestEntity,
+      SubscriptionEntity,
     ]);
 
     server = new TestServerHelper();
     app = await server.create(
       {
-        imports: [databaseModule, messageModule, CommunitiesModule],
+        imports: [databaseModule, messageModule, CommunitiesSharedModule],
       },
       'api',
     );
 
     const dataSource = app.get<DataSource>('DataSource');
     seeder = new PostgreSQLSeeder(dataSource);
+    causeUserRepository = dataSource.getRepository(CauseUserEntity);
   });
 
   afterAll(async () => {
@@ -90,6 +104,12 @@ describe('CausesController (e2e)', () => {
 
       expect(response.body[0].ods).toBeInstanceOf(Array);
       expect(response.body[0].ods.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('/api/causes/explore (GET)', () => {
+    it('should return 401 when JWT is missing', async () => {
+      await server.getRequest().get('/api/causes/explore').expect(HttpStatus.UNAUTHORIZED);
     });
   });
 
@@ -199,6 +219,67 @@ describe('CausesController (e2e)', () => {
         .getRequest()
         .get(`/api/communities/${COMMUNITY_IDS.AFRICA}/causes/00000000-0000-0000-0000-000000000999`)
         .expect(HttpStatus.NOT_FOUND);
+    });
+  });
+
+  describe('/causes/:id/followers (POST)', () => {
+    it('should allow a community member to follow a cause', async () => {
+      const token = createAccessToken(USER_IDS.ANA);
+
+      await server
+        .getRequest()
+        .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
+        .set('Cookie', [`AccessToken=${token}`])
+        .send({})
+        .expect(HttpStatus.CREATED);
+
+      const causeFollower = await causeUserRepository.findOne({
+        where: {
+          causeId: CAUSE_IDS.AGUA_KENIA,
+          userId: USER_IDS.ANA,
+        },
+      });
+
+      expect(causeFollower).toBeDefined();
+      expect(causeFollower?.causeId).toBe(CAUSE_IDS.AGUA_KENIA);
+      expect(causeFollower?.userId).toBe(USER_IDS.ANA);
+    });
+
+    it('should return 403 when the user is not a member of the cause community', async () => {
+      const token = createAccessToken(USER_IDS.PEDRO);
+      await server
+        .getRequest()
+        .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
+        .set('Cookie', [`AccessToken=${token}`])
+        .send({})
+        .expect(HttpStatus.FORBIDDEN);
+
+      const causeFollower = await causeUserRepository.findOne({
+        where: {
+          causeId: CAUSE_IDS.AGUA_KENIA,
+          userId: USER_IDS.PEDRO,
+        },
+      });
+
+      expect(causeFollower).toBeNull();
+    });
+
+    it('should return 409 when the user already follows the cause', async () => {
+      const token = createAccessToken(USER_IDS.ANA);
+
+      await server
+        .getRequest()
+        .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
+        .set('Cookie', [`AccessToken=${token}`])
+        .send({})
+        .expect(HttpStatus.CREATED);
+
+      await server
+        .getRequest()
+        .post(`/api/causes/${CAUSE_IDS.AGUA_KENIA}/followers`)
+        .set('Cookie', [`AccessToken=${token}`])
+        .send({})
+        .expect(HttpStatus.CONFLICT);
     });
   });
 });

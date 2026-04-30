@@ -1,15 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { DomainEvents } from '@app/ddd/domain-events';
+import { Either, left, right } from '@app/ddd/either';
+import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
+import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
 import { UsersServiceImpl } from '@app/users/application/services/users.service.impl';
+import { LoginInvalidException } from '@app/users/domain/errors/login-invalid.exception';
+import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
+import { User } from '@app/users/domain/model/user';
 import { UsersRepositoryPort } from '@app/users/domain/ports/users.repository.port';
 import { RegisterUserCommand } from '@app/users/domain/services/users.service';
-import { right, left, Either } from '@app/ddd/either';
-import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { UserConflictError } from '@app/users/domain/errors/userconflict-error';
-import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
 import { PasswordManager } from '@app/utils/security/password-manager';
-import { User } from '@app/users/domain/model/user';
-import { UsersPublisherPort } from '@app/users/domain/ports/users.publisher.port';
+import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('UsersService Unit testing', () => {
   let service: UsersServiceImpl;
@@ -24,10 +25,6 @@ describe('UsersService Unit testing', () => {
   let mockPasswordManager: {
     validateAndHashPassword: jest.Mock;
     comparePassword: jest.Mock;
-  };
-
-  let mockKafkaPublisher: {
-    publish: jest.Mock;
   };
 
   const validCommand: RegisterUserCommand = {
@@ -59,16 +56,12 @@ describe('UsersService Unit testing', () => {
       comparePassword: jest.fn(),
     };
 
-    mockKafkaPublisher = {
-      publish: jest.fn(),
-    };
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        DomainEvents,
         UsersServiceImpl,
         { provide: UsersRepositoryPort, useValue: mockRepo },
         { provide: PasswordManager, useValue: mockPasswordManager },
-        { provide: UsersPublisherPort, useValue: mockKafkaPublisher },
       ],
     }).compile();
 
@@ -857,267 +850,61 @@ describe('UsersService Unit testing', () => {
     });
   });
 
-  describe('UsersService.loginUser (White Box Testing)', () => {
-    describe('Basic Path Testing (Cyclomatic Complexity = 5)', () => {
-      describe('Path 1: Username validation fails', () => {
-        it('should return ValidationError when username is too short', async () => {
-          // Arrange
-          const invalidUsername = 'a';
-
-          // Act
-          const result = await service.loginUser(invalidUsername, VALID_PASSWORD);
-
-          // Assert
-          expect(result.isLeft() && result.value instanceof ValidationError).toBe(true);
-          expect(mockRepo.findByUsername).not.toHaveBeenCalled();
-          expect(mockPasswordManager.comparePassword).not.toHaveBeenCalled();
-        });
-
-        it('should return ValidationError when username is empty', async () => {
-          // Arrange
-          const emptyUsername = '';
-
-          // Act
-          const result = await service.loginUser(emptyUsername, VALID_PASSWORD);
-
-          // Assert
-          expect(result.isLeft() && result.value instanceof ValidationError).toBe(true);
-          expect(mockRepo.findByUsername).not.toHaveBeenCalled();
-          expect(mockPasswordManager.comparePassword).not.toHaveBeenCalled();
-        });
+  describe('UsersService.authenticate', () => {
+    it('returns full User domain model when credentials are valid', async () => {
+      const existingUserOrError = User.create({
+        fullName: 'John Doe',
+        username: VALID_USERNAME,
+        mobilePhone: '+34612345678',
+        passwordHash: VALID_HASH,
+        city: 'Madrid',
+        countryCode: 'ES',
       });
+      if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
 
-      describe('Path 2: Repository error on findByUsername', () => {
-        it('should return RepositoryException when findByUsername fails', async () => {
-          // Arrange
-          const repoError = new RepositoryException('Database connection error');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(repoError));
+      mockRepo.findByUsername.mockResolvedValueOnce(right(existingUserOrError.value));
+      mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
 
-          // Act
-          const result = await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+      const result = await service.authenticate(VALID_USERNAME, VALID_PASSWORD);
 
-          // Assert
-          expect(result.isLeft() && result.value instanceof RepositoryException).toBe(true);
-        });
-
-        it('should not call comparePassword when repository fails', async () => {
-          // Arrange
-          const repoError = new RepositoryException('Database timeout');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(repoError));
-
-          // Act
-          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-          // Assert
-          expect(mockPasswordManager.comparePassword).not.toHaveBeenCalled();
-        });
-      });
-
-      describe('Path 3: User not found (userOrError.value is null)', () => {
-        it('should return EntityNotFoundException when user does not exist', async () => {
-          // Arrange
-          const notFoundError = new EntityNotFoundException('User', 'username');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-          // Act
-          const result = await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-          // Assert
-          expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-        });
-
-        it('should not call comparePassword when user is not found', async () => {
-          // Arrange
-          const notFoundError = new EntityNotFoundException('User', 'username');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-          // Act
-          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-          // Assert
-          expect(mockPasswordManager.comparePassword).not.toHaveBeenCalled();
-        });
-      });
-
-      describe('Path 4: User found and password compared (Happy Path)', () => {
-        it('should return true when credentials are correct', async () => {
-          // Arrange
-          const existingUserOrError = User.create({
-            fullName: 'John Doe',
-            username: VALID_USERNAME,
-            mobilePhone: '+34612345678',
-            passwordHash: VALID_HASH,
-            city: 'Madrid',
-            countryCode: 'ES',
-          });
-          if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
-          const existingUser = existingUserOrError.value;
-
-          mockRepo.findByUsername.mockResolvedValueOnce(right(existingUser));
-          mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
-
-          // Act
-          const result = await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-          // Assert
-          expect(result.isRight() && result.value === true).toBe(true);
-        });
-
-        it('should return false when password does not match', async () => {
-          // Arrange
-          const existingUserOrError = User.create({
-            fullName: 'John Doe',
-            username: VALID_USERNAME,
-            mobilePhone: '+34612345678',
-            passwordHash: VALID_HASH,
-            city: 'Madrid',
-            countryCode: 'ES',
-          });
-          if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
-          const existingUser = existingUserOrError.value;
-
-          mockRepo.findByUsername.mockResolvedValueOnce(right(existingUser));
-          mockPasswordManager.comparePassword.mockResolvedValueOnce(false);
-
-          // Act
-          const result = await service.loginUser(VALID_USERNAME, 'WrongPassword123!');
-
-          // Assert
-          expect(result.isRight() && result.value === false).toBe(true);
-        });
-
-        it('should call comparePassword with correct arguments when user exists', async () => {
-          // Arrange
-          const existingUserOrError = User.create({
-            fullName: 'John Doe',
-            username: VALID_USERNAME,
-            mobilePhone: '+34612345678',
-            passwordHash: VALID_HASH,
-            city: 'Madrid',
-            countryCode: 'ES',
-          });
-          if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
-          const existingUser = existingUserOrError.value;
-
-          mockRepo.findByUsername.mockResolvedValueOnce(right(existingUser));
-          mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
-
-          // Act
-          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-          // Assert
-          expect(mockPasswordManager.comparePassword).toHaveBeenCalledWith(VALID_PASSWORD, VALID_HASH);
-        });
-      });
+      expect(result.isRight()).toBe(true);
+      if (result.isRight()) {
+        expect(result.value).toBe(existingUserOrError.value);
+        expect(result.value.id.value).toBe(existingUserOrError.value.id.value);
+      }
     });
 
-    describe('Condition Testing', () => {
-      describe('Condition: usernameOrError.isLeft() = true', () => {
-        it('should return error when username contains invalid characters', async () => {
-          // Arrange
-          const invalidUsername = 'user@invalid!';
+    it('returns LoginInvalidException when username does not exist', async () => {
+      mockRepo.findByUsername.mockResolvedValueOnce(left(new EntityNotFoundException('User', VALID_USERNAME)));
 
-          // Act
-          const result = await service.loginUser(invalidUsername, VALID_PASSWORD);
+      const result = await service.authenticate(VALID_USERNAME, VALID_PASSWORD);
 
-          // Assert
-          expect(result.isLeft()).toBe(true);
-        });
+      expect(result.isLeft()).toBe(true);
+      if (result.isLeft()) {
+        expect(result.value).toBeInstanceOf(LoginInvalidException);
+      }
+    });
 
-        it('should return error when username exceeds maximum length', async () => {
-          // Arrange
-          const longUsername = 'a'.repeat(51);
-
-          // Act
-          const result = await service.loginUser(longUsername, VALID_PASSWORD);
-
-          // Assert
-          expect(result.isLeft()).toBe(true);
-        });
+    it('returns LoginInvalidException when password is wrong', async () => {
+      const existingUserOrError = User.create({
+        fullName: 'John Doe',
+        username: VALID_USERNAME,
+        mobilePhone: '+34612345678',
+        passwordHash: VALID_HASH,
+        city: 'Madrid',
+        countryCode: 'ES',
       });
+      if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
 
-      describe('Condition: userOrError.isLeft() = true', () => {
-        it('should return error when repository throws exception', async () => {
-          // Arrange
-          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-          const repoError = new RepositoryException('Network error');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(repoError));
+      mockRepo.findByUsername.mockResolvedValueOnce(right(existingUserOrError.value));
+      mockPasswordManager.comparePassword.mockResolvedValueOnce(false);
 
-          // Act
-          const result = await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
+      const result = await service.authenticate(VALID_USERNAME, 'WrongPassword123!');
 
-          // Assert
-          expect(result.isLeft() && result.value instanceof RepositoryException).toBe(true);
-        });
-      });
-
-      describe('Condition: userOrError.isLeft() = false', () => {
-        it('should proceed to password comparison when repository succeeds', async () => {
-          // Arrange
-          const existingUserOrError = User.create({
-            fullName: 'John Doe',
-            username: VALID_USERNAME,
-            mobilePhone: '+34612345678',
-            passwordHash: VALID_HASH,
-            city: 'Madrid',
-            countryCode: 'ES',
-          });
-          if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
-
-          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-          mockRepo.findByUsername.mockResolvedValueOnce(right(existingUserOrError.value));
-          mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
-
-          // Act
-          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-          // Assert
-          expect(mockPasswordManager.comparePassword).toHaveBeenCalledTimes(1);
-        });
-      });
-
-      describe('Condition: userOrError.value = null (user not found)', () => {
-        it('should return EntityNotFoundException when user does not exist in database', async () => {
-          // Arrange
-          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-          const notFoundError = new EntityNotFoundException('User', 'username');
-          mockRepo.findByUsername.mockResolvedValueOnce(left(notFoundError));
-
-          // Act
-          const result = await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-          // Assert
-          expect(result.isLeft() && result.value instanceof EntityNotFoundException).toBe(true);
-        });
-      });
-
-      describe('Condition: userOrError.value = User instance', () => {
-        it('should call comparePassword when user exists', async () => {
-          // Arrange
-          const existingUserOrError = User.create({
-            fullName: 'John Doe',
-            username: VALID_USERNAME,
-            mobilePhone: '+34612345678',
-            passwordHash: VALID_HASH,
-            city: 'Madrid',
-            countryCode: 'ES',
-          });
-          if (existingUserOrError.isLeft()) throw new Error('Test setup failed');
-
-          mockPasswordManager.validateAndHashPassword.mockResolvedValueOnce(right(VALID_HASH));
-          mockRepo.findByUsername.mockResolvedValueOnce(right(existingUserOrError.value));
-          mockPasswordManager.comparePassword.mockResolvedValueOnce(true);
-
-          // Act
-          await service.loginUser(VALID_USERNAME, VALID_PASSWORD);
-
-          // Assert
-          expect(mockPasswordManager.comparePassword).toHaveBeenCalledWith(
-            VALID_PASSWORD,
-            existingUserOrError.value.passwordHash,
-          );
-        });
-      });
+      expect(result.isLeft()).toBe(true);
+      if (result.isLeft()) {
+        expect(result.value).toBeInstanceOf(LoginInvalidException);
+      }
     });
   });
 });

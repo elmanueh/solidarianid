@@ -1,17 +1,19 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { right, left } from '@app/ddd/either';
+import { CommunitiesServiceImpl } from '@app/communities/communities/application/services/communities.service.impl';
+import { CommunitiesRepositoryPort } from '@app/communities/shared/domain/ports/communities.repository.port';
+import { CommunitiesQueryRepositoryPort } from '@app/communities/shared/domain/ports/community-query.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/shared/domain/ports/push-subscription.repository.port';
+import { UsersRepositoryPort } from '@app/communities/shared/domain/ports/users.repository.port';
+import { DomainEvents } from '@app/ddd/domain-events';
+import { left, right } from '@app/ddd/either';
 import { ValidationError } from '@app/value-objects/errors/validation/validation-error';
-import { CommunitiesServiceImpl } from '@app/communities/application/services/communities.service.impl';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
-import { CommunitiesQueryRepositoryPort } from '@app/communities/domain/ports/community-query.repository.port';
-import { CommunitiesPublisherPort } from '@app/communities/domain/ports/communities.publisher.port';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('CommunitiesServiceImpl', () => {
   let service: CommunitiesServiceImpl;
   let mockCommunityRepo: { findAll: jest.Mock; findById: jest.Mock; save: jest.Mock };
   let mockUsersRepo: { findById: jest.Mock };
-  let mockPublisher: { publish: jest.Mock };
+  let mockEventBus: { publish: jest.Mock };
+  let mockSubscriptionsRepository: { findByUserId: jest.Mock; save: jest.Mock };
 
   beforeEach(async () => {
     mockCommunityRepo = {
@@ -24,8 +26,11 @@ describe('CommunitiesServiceImpl', () => {
       findById: jest.fn(),
     };
 
-    mockPublisher = {
-      publish: jest.fn(),
+    mockEventBus = { publish: jest.fn().mockResolvedValue(undefined) };
+
+    mockSubscriptionsRepository = {
+      findByUserId: jest.fn().mockResolvedValue(right([])),
+      save: jest.fn().mockResolvedValue(right(undefined)),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -34,7 +39,8 @@ describe('CommunitiesServiceImpl', () => {
         { provide: CommunitiesRepositoryPort, useValue: mockCommunityRepo },
         { provide: CommunitiesQueryRepositoryPort, useValue: {} },
         { provide: UsersRepositoryPort, useValue: mockUsersRepo },
-        { provide: CommunitiesPublisherPort, useValue: mockPublisher },
+        { provide: PushSubscriptionRepositoryPort, useValue: mockSubscriptionsRepository },
+        { provide: DomainEvents, useValue: mockEventBus },
       ],
     }).compile();
 

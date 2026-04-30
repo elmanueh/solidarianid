@@ -1,45 +1,93 @@
+import { AuthModule } from '@app/users/infrastructure/auth/auth.module';
+import { RefreshTokenEntity } from '@app/users/infrastructure/persistence/entities/refresh-token.entity';
+import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
+import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';
+import { UsersProjectionService } from '@app/users/infrastructure/persistence/projections/users-projection.service';
+import { UsersModule } from '@app/users/users.module';
+import { KurrentDBClient } from '@kurrent/kurrentdb-client';
 import { INestApplication } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
-import { DataSource } from 'typeorm';
-import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
-import { UsersModule } from '@app/users/users.module';
 import {
-  TestServerHelper,
+  KafkaTestModule,
+  KurrentDBSeeder,
+  KurrentDBTestModule,
   PostgreSQLSeeder,
   PostgreSQLTestModule,
-  KafkaTestModule,
   TestContainerLifecycle,
+  TestServerHelper,
 } from '@solidarianid/testing';
+import { DataSource } from 'typeorm';
+
+async function resetState(
+  kurrentdbSeeder: KurrentDBSeeder,
+  postgresSeeder: PostgreSQLSeeder,
+  usersProjectionService: UsersProjectionService,
+): Promise<void> {
+  await usersProjectionService.onModuleDestroy();
+
+  try {
+    await kurrentdbSeeder.clean();
+    await kurrentdbSeeder.seedUsers();
+
+    await postgresSeeder.clean();
+    const position = await kurrentdbSeeder.getLatestUserCheckpointPosition();
+    await postgresSeeder.seedUsersProjection(position.commit, position.prepare);
+  } finally {
+    await usersProjectionService.onModuleInit();
+  }
+}
 
 describe('UsersController (e2e)', () => {
   let server!: TestServerHelper;
   let app: INestApplication;
-  let seeder!: PostgreSQLSeeder;
+  let kurrentdbSeeder!: KurrentDBSeeder;
+  let postgreSeeder!: PostgreSQLSeeder;
+  let usersProjectionService!: UsersProjectionService;
+  let eventStore!: KurrentDBClient;
+
+  async function loginAsSeededUser(): Promise<void> {
+    await server
+      .getRequest()
+      .post('/api/auth/login')
+      .send({ username: 'testUsername', password: 'Admin2024!Pass' })
+      .expect(HttpStatus.OK);
+  }
 
   beforeAll(async () => {
     const messageModule = await KafkaTestModule.forRoot();
-    const databaseModule = await PostgreSQLTestModule.forRoot([UserEntity]);
+    const databaseModule = await PostgreSQLTestModule.forRoot([
+      UserProjectionEntity,
+      CheckpointProjectionEntity,
+      RefreshTokenEntity,
+    ]);
+    const kurrentdbModule = await KurrentDBTestModule.forRoot();
+
+    const connectionString = process.env.EVENT_STORE_URL!;
+    eventStore = KurrentDBClient.connectionString(connectionString);
+    kurrentdbSeeder = new KurrentDBSeeder(eventStore);
 
     server = new TestServerHelper();
     app = await server.create({
-      imports: [messageModule, databaseModule, UsersModule],
+      imports: [messageModule, databaseModule, kurrentdbModule, UsersModule, AuthModule],
     });
 
-    const dataSource = app.get<DataSource>('DataSource');
-    seeder = new PostgreSQLSeeder(dataSource);
-  });
+    postgreSeeder = new PostgreSQLSeeder(app.get<DataSource>('DataSource'));
+    usersProjectionService = app.get(UsersProjectionService);
 
-  beforeEach(async () => {
-    await seeder.clean();
-    await seeder.seedUsers();
+    await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
   });
 
   afterAll(async () => {
     await app.close();
+    await eventStore.dispose();
     await TestContainerLifecycle.getInstance().stopItSelfManaged();
   });
 
   describe('/api/users (POST)', () => {
+    beforeEach(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
+    });
+
     it('Test 1 - should register new user', async () => {
       await server
         .getRequest()
@@ -189,6 +237,12 @@ describe('UsersController (e2e)', () => {
 
   describe('/api/users/:id (PATCH)', () => {
     const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
+
+    beforeEach(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
+      server.resetAgent();
+      await loginAsSeededUser();
+    });
 
     // ÉXITO: Solo status 204 NO_CONTENT
     it('Test 1 - should update all fields successfully', async () => {
@@ -390,41 +444,40 @@ describe('UsersController (e2e)', () => {
       await server.getRequest().patch(`/api/users/${existingUserId}`).send({}).expect(HttpStatus.BAD_REQUEST);
     });
 
-    it('Test 16 - user not found (invalid UUID) → 404', async () => {
+    it('Test 16 - should return 403 when trying to update another user', async () => {
       await server
         .getRequest()
         .patch('/api/users/00000000-0000-0000-0000-000000000000')
         .send({
           username: 'updatedUsername',
         })
-        .expect(HttpStatus.NOT_FOUND);
+        .expect(HttpStatus.FORBIDDEN);
     });
   });
 
-  describe('/api/users/login (POST)', () => {
+  describe('/api/auth/login (POST)', () => {
     const username: string = 'testUsername';
     const password: string = 'Admin2024!Pass';
 
-    afterAll(async () => {
-      await seeder.clean();
-      await seeder.seedUsers();
+    beforeAll(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
     });
 
-    it('Test 1 - Should return inauthorized if the user not exists', async () => {
+    it('Test 1 - Should return Unauthorized if the user does not exist', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           username: 'NonExistentUser',
           password,
         })
-        .expect(HttpStatus.NOT_FOUND);
+        .expect(HttpStatus.UNAUTHORIZED);
     });
 
     it('Test 2 - Should login successfully', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           username,
           password,
@@ -435,7 +488,7 @@ describe('UsersController (e2e)', () => {
     it('Test 3 - Should return Bad Request for missing password', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           username,
         })
@@ -445,7 +498,7 @@ describe('UsersController (e2e)', () => {
     it('Test 4 - Should return Bad Request for missing username', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           password,
         })
@@ -453,18 +506,293 @@ describe('UsersController (e2e)', () => {
     });
 
     it('Test 5 - Should return Bad Request for empty body', async () => {
-      await server.getRequest().post('/api/users/login').send({}).expect(HttpStatus.BAD_REQUEST);
+      await server.getRequest().post('/api/auth/login').send({}).expect(HttpStatus.BAD_REQUEST);
     });
 
     it('Test 6 - Should return Unauthorized for wrong password', async () => {
       await server
         .getRequest()
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send({
           username,
           password: 'Wrong@Password123',
         })
         .expect(HttpStatus.UNAUTHORIZED);
+    });
+  });
+
+  describe('/api/users/:id/preferences (GET)', () => {
+    const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
+
+    beforeEach(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
+      await server
+        .getRequest()
+        .post('/api/auth/login')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' })
+        .expect(HttpStatus.OK);
+    });
+
+    it('Test 1 - should get user preferences successfully', async () => {
+      const response = await server.getRequest().get(`/api/users/${existingUserId}/preferences`).expect(HttpStatus.OK);
+
+      expect(response.body).toHaveProperty('preferredSDGs');
+      expect(response.body).toHaveProperty('preferredCategories');
+      expect(response.body).toHaveProperty('durationPreferences');
+      expect(response.body).toHaveProperty('notificationsEnabled');
+      expect(Array.isArray(response.body.preferredSDGs)).toBe(true);
+      expect(Array.isArray(response.body.preferredCategories)).toBe(true);
+      expect(Array.isArray(response.body.durationPreferences)).toBe(true);
+      expect(typeof response.body.notificationsEnabled).toBe('boolean');
+    });
+
+    it('Test 2 - should return 403 for non-owned user preferences', async () => {
+      await server
+        .getRequest()
+        .get('/api/users/00000000-0000-0000-0000-000000000000/preferences')
+        .expect(HttpStatus.FORBIDDEN);
+    });
+
+    it('Test 3 - should return 403 for invalid/non-owned user id before reaching service', async () => {
+      await server.getRequest().get('/api/users/invalid-uuid/preferences').expect(HttpStatus.FORBIDDEN);
+    });
+  });
+
+  describe('/api/users/:id/preferences (PUT)', () => {
+    const existingUserId = '4807f235-f4b4-41c0-939c-c97371219551';
+
+    beforeEach(async () => {
+      await resetState(kurrentdbSeeder, postgreSeeder, usersProjectionService);
+      await server
+        .getRequest()
+        .post('/api/auth/login')
+        .send({ username: 'testUsername', password: 'Admin2024!Pass' })
+        .expect(HttpStatus.OK);
+    });
+
+    it('Test 1 - should update all preferences successfully', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2, 4, 10],
+          preferredCategories: ['pobreza', 'educación', 'salud'],
+          durationPreferences: ['short_term', 'medium_term'],
+          notificationsEnabled: true,
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 2 - should update only SDGs', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [3, 7, 13],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 3 - should update only categories', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredCategories: ['medio ambiente', 'derechos humanos'],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 4 - should update only duration preferences', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          durationPreferences: ['long_term'],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 5 - should update only notifications flag', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          notificationsEnabled: false,
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 6 - should update with all 17 SDGs (maximum allowed)', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 7 - should update with 10 categories (maximum allowed)', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredCategories: [
+            'pobreza',
+            'educación',
+            'salud',
+            'medio ambiente',
+            'derechos humanos',
+            'infancia',
+            'igualdad de género',
+            'discapacidad',
+            'refugiados',
+            'ayuda humanitaria',
+          ],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 8 - should update with all duration preferences', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          durationPreferences: ['short_term', 'medium_term', 'long_term', 'any'],
+        })
+        .expect(HttpStatus.NO_CONTENT);
+    });
+
+    it('Test 9 - should fail with more than 17 SDGs → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 10 - should fail with invalid SDG number → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [0, 2, 4],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 11 - should fail with SDG out of range → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2, 20],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 12 - should fail with more than 10 categories → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredCategories: [
+            'pobreza',
+            'educación',
+            'salud',
+            'medio ambiente',
+            'derechos humanos',
+            'infancia',
+            'igualdad de género',
+            'discapacidad',
+            'refugiados',
+            'ayuda humanitaria',
+            'cultura',
+          ],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 13 - should fail with invalid category value → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredCategories: ['invalid_category', 'educación'],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 14 - should fail with invalid duration preference → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          durationPreferences: ['invalid_duration'],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 15 - should fail with empty arrays when required → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [],
+          preferredCategories: [],
+          durationPreferences: [],
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 16 - should fail with non-array values → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: 'not-an-array',
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 17 - should fail with invalid boolean for notifications → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          notificationsEnabled: 'yes',
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Test 18 - should fail with 403 for non-owned user → 403', async () => {
+      await server
+        .getRequest()
+        .patch('/api/users/00000000-0000-0000-0000-000000000000/preferences')
+        .send({
+          preferredSDGs: [1, 2],
+          preferredCategories: ['educación'],
+          durationPreferences: ['short_term'],
+          notificationsEnabled: true,
+        })
+        .expect(HttpStatus.FORBIDDEN);
+    });
+
+    it('Test 19 - should fail with extra fields (forbidNonWhitelisted) → 400', async () => {
+      await server
+        .getRequest()
+        .patch(`/api/users/${existingUserId}/preferences`)
+        .send({
+          preferredSDGs: [1, 2],
+          preferredCategories: ['educación'],
+          durationPreferences: ['short_term'],
+          notificationsEnabled: true,
+          extraField: 'should be rejected',
+        })
+        .expect(HttpStatus.BAD_REQUEST);
     });
   });
 });

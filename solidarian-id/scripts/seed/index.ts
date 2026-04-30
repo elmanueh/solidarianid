@@ -5,13 +5,14 @@ import {
   loginAdmin,
   processRequests,
   seedActionRequests,
+  seedCauseFollowers,
   seedCauseRequests,
   seedCommunityMembers,
   seedCommunityRequests,
   seedUsers,
 } from './api-client';
 import { FAKER_SEED, KAFKA_PROPAGATION_DELAY_MS } from './config';
-import type { SeedStats } from './types';
+import type { CreatedCause, SeedStats } from './types';
 import { delay, validateEnvironment } from './utils';
 
 /**
@@ -20,18 +21,17 @@ import { delay, validateEnvironment } from './utils';
  * Following Clean Architecture: this is the application layer orchestrating use cases
  */
 
-// Disable TLS certificate validation for development
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 async function main(): Promise<void> {
-  console.log('🌱 SolidarianID Development Seed Script');
+  console.log('🌱 SolidarianID Seed Script');
   console.log('========================================');
   console.log(`   Faker seed: ${FAKER_SEED} (deterministic)`);
   console.log(`   Timestamp: ${new Date().toISOString()}`);
   console.log(`   Target: ~300 users, ~50 community requests, ~200 cause requests, ~500 action requests`);
   console.log(`   Approval rates: 60% approved, 30% rejected, 10% pending`);
 
-  // 1. Validate environment (fail if production)
+  // 1. Validate environment configuration
   validateEnvironment();
 
   // 2. Initialize faker with deterministic seed
@@ -81,7 +81,6 @@ async function main(): Promise<void> {
   // 5. Seed community requests and capture IDs + creators
   const communityResult = await seedCommunityRequests(userIds);
   const communityRequestIds = communityResult.requestIds;
-  const communityCreators = communityResult.creatorByRequest;
   stats.communityRequests = communityRequestIds.length;
 
   // Wait for Kafka events to propagate requests to admin
@@ -102,6 +101,7 @@ async function main(): Promise<void> {
 
   // 7. Fetch created communities
   const communities = await fetchCommunities();
+  let causes: CreatedCause[] = [];
   console.log(`\n📋 Found ${communities.length} existing communities`);
 
   if (communities.length === 0) {
@@ -133,7 +133,7 @@ async function main(): Promise<void> {
     }
 
     // 10. Fetch created causes
-    const causes = await fetchCauses();
+    causes = await fetchCauses();
     console.log(`\n📋 Found ${causes.length} existing causes`);
 
     if (causes.length === 0) {
@@ -170,9 +170,15 @@ async function main(): Promise<void> {
   await delay(KAFKA_PROPAGATION_DELAY_MS);
 
   // 13. Add users to communities (variability: some communities many members, others few)
-  await seedCommunityMembers(createdUsers, communities);
+  const communityMembers = await seedCommunityMembers(createdUsers, communities);
 
-  // 14. Final Summary
+  console.log('\n⏳ Waiting before assigning cause followers...');
+  await delay(KAFKA_PROPAGATION_DELAY_MS);
+
+  // 14. Add users to causes, restricted to communities where they are already members
+  await seedCauseFollowers(causes, communities, communityMembers);
+
+  // 15. Final Summary
   printSummary(stats, !!adminToken);
 }
 

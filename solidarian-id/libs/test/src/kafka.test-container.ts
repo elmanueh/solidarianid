@@ -38,29 +38,35 @@ export class KafkaTestContainer implements IDatabaseTestContainer {
    * Should be called after start() and before consumers subscribe.
    */
   public async createTopics(topics: string[]): Promise<void> {
-    if (!this.container) {
-      throw new Error('Kafka container not started');
-    }
-
+    const broker = process.env.TEST_KAFKA_BROKER ?? (this.container ? this.getConnectionString() : await this.start());
     const kafka = new Kafka({
       clientId: 'test-admin',
-      brokers: [this.getConnectionString()],
+      brokers: [broker],
     });
 
     this.admin = kafka.admin();
-    await this.admin.connect();
+    try {
+      await this.admin.connect();
 
-    await this.admin.createTopics({
-      waitForLeaders: true,
-      topics: topics.map(topic => ({
-        topic,
-        numPartitions: 1,
-        replicationFactor: 1,
-      })),
-    });
+      const existingTopics = await this.admin.listTopics();
+      const missingTopics = topics.filter(topic => !existingTopics.includes(topic));
 
-    await this.admin.disconnect();
-    this.admin = null;
+      if (missingTopics.length === 0) {
+        return;
+      }
+
+      await this.admin.createTopics({
+        waitForLeaders: true,
+        topics: missingTopics.map(topic => ({
+          topic,
+          numPartitions: 1,
+          replicationFactor: 1,
+        })),
+      });
+    } finally {
+      await this.admin.disconnect();
+      this.admin = null;
+    }
   }
 
   public async stop(): Promise<void> {

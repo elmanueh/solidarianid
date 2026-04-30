@@ -1,17 +1,16 @@
-import { CausesServiceImpl } from '@app/communities/application/services/causes.service.impl';
-import { UserPermissionError } from '@app/communities/domain/errors/user-permission.error';
-import { Community } from '@app/communities/domain/model/aggregates/community';
-import { Cause } from '@app/communities/domain/model/entities/cause';
-import { User } from '@app/communities/domain/model/entities/user';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
-import { CausesQueryRepositoryPort } from '@app/communities/domain/ports/causes-query.repository.port';
-import { CausesPublisherPort } from '@app/communities/domain/ports/causes.publisher.port';
-import { CausesRepositoryPort } from '@app/communities/domain/ports/causes.repository.port';
-import { CommunitiesRepositoryPort } from '@app/communities/domain/ports/communities.repository.port';
-import { SubscriptionsRepositoryPort } from '@app/communities/domain/ports/subscription.repository.port';
-import { SubscriptionsPublisherPort } from '@app/communities/domain/ports/subscriptions-publisher.port';
-import { UsersRepositoryPort } from '@app/communities/domain/ports/users.repository.port';
+import { CausesServiceImpl } from '@app/communities/causes/application/services/causes.service.impl';
+import { UserPermissionError } from '@app/communities/shared/domain/errors/user-permission.error';
+import { Cause } from '@app/communities/shared/domain/model/aggregates/cause';
+import { Community } from '@app/communities/shared/domain/model/aggregates/community';
+import { User } from '@app/communities/shared/domain/model/entities/user';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
+import { CausesQueryRepositoryPort } from '@app/communities/shared/domain/ports/causes-query.repository.port';
+import { CausesRepositoryPort } from '@app/communities/shared/domain/ports/causes.repository.port';
+import { CommunitiesRepositoryPort } from '@app/communities/shared/domain/ports/communities.repository.port';
+import { PushSubscriptionRepositoryPort } from '@app/communities/shared/domain/ports/push-subscription.repository.port';
+import { UsersRepositoryPort } from '@app/communities/shared/domain/ports/users.repository.port';
+import { DomainEvents } from '@app/ddd/domain-events';
 import { left, right } from '@app/ddd/either';
 import { ConflictError } from '@app/ddd/errors/conflict-error';
 import { EntityNotFoundException } from '@app/ddd/repository/exceptions/entity-not-found.exception';
@@ -37,15 +36,10 @@ describe('CausesServiceImpl', () => {
   let mockCommunitiesRepository: {
     findById: jest.Mock;
   };
-  let mockCausesPublisher: {
-    publish: jest.Mock;
-  };
   let mockCausesQueryRepository: {
     findExplore: jest.Mock;
   };
-  let mockSubscriptionsPublisher: {
-    publishCauseCreated: jest.Mock;
-  };
+  let mockEventBus: { publish: jest.Mock; dispatch: jest.Mock };
   let mockSubscriptionsRepository: {
     findByUserId: jest.Mock;
     save: jest.Mock;
@@ -123,15 +117,11 @@ describe('CausesServiceImpl', () => {
     mockCommunitiesRepository = {
       findById: jest.fn(),
     };
-    mockCausesPublisher = {
-      publish: jest.fn(),
-    };
     mockCausesQueryRepository = {
       findExplore: jest.fn(),
     };
-    mockSubscriptionsPublisher = {
-      publishCauseCreated: jest.fn(),
-    };
+    const eventBusMock = jest.fn();
+    mockEventBus = { publish: eventBusMock, dispatch: eventBusMock };
     mockSubscriptionsRepository = {
       findByUserId: jest.fn().mockResolvedValue(right([])),
       save: jest.fn().mockResolvedValue(right(undefined)),
@@ -144,9 +134,8 @@ describe('CausesServiceImpl', () => {
         { provide: CausesQueryRepositoryPort, useValue: mockCausesQueryRepository },
         { provide: UsersRepositoryPort, useValue: mockUsersRepository },
         { provide: CommunitiesRepositoryPort, useValue: mockCommunitiesRepository },
-        { provide: CausesPublisherPort, useValue: mockCausesPublisher },
-        { provide: SubscriptionsPublisherPort, useValue: mockSubscriptionsPublisher },
-        { provide: SubscriptionsRepositoryPort, useValue: mockSubscriptionsRepository },
+        { provide: DomainEvents, useValue: mockEventBus },
+        { provide: PushSubscriptionRepositoryPort, useValue: mockSubscriptionsRepository },
       ],
     }).compile();
 

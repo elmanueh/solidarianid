@@ -1,25 +1,25 @@
-import {
-  PostgreSQLTestModule,
-  TestServerHelper,
-  PostgreSQLSeeder,
-  KafkaTestModule,
-  TestContainerLifecycle,
-} from '@solidarianid/testing';
+import { ActionEntity } from '@app/communities/actions/infrastructure/persistence/entities/action.entity';
+import { EventUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/event-user.entity';
+import { EventEntity } from '@app/communities/actions/infrastructure/persistence/entities/event.entity';
+import { ObjectiveEntity } from '@app/communities/actions/infrastructure/persistence/entities/objective.entity';
+import { ObjetiveUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/objetive-user.entity';
+import { ActionSummaryResponseDto } from '@app/communities/actions/infrastructure/presentation/controllers/rest/dtos/output/action-summary.response.dto';
+import { CauseUserEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause-user.entity';
+import { CauseEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause.entity';
+import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
+import { CommunityUserEntity } from '@app/communities/communities/infrastructure/persistence/entities/community-user.entity';
+import { CommunityEntity } from '@app/communities/communities/infrastructure/persistence/entities/community.entity';
+import { RequestEntity } from '@app/communities/shared/infrastructure/persistence/entities/request.entity';
+import { UserEntity } from '@app/communities/shared/infrastructure/persistence/entities/user.entity';
 import { HttpStatus, INestApplication } from '@nestjs/common';
+import {
+  KafkaTestModule,
+  PostgreSQLSeeder,
+  PostgreSQLTestModule,
+  TestContainerLifecycle,
+  TestServerHelper,
+} from '@solidarianid/testing';
 import { DataSource } from 'typeorm';
-import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
-import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
-import { CauseUserEntity } from '../../src/infrastructure/persistence/entities/cause-user.entity';
-import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
-import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
-import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
-import { EventEntity } from '../../src/infrastructure/persistence/entities/event.entity';
-import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
-import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user.entity';
-import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
-import { CommunitiesModule } from '@app/communities/communities.module';
-import { ActionSummaryResponseDto } from '@app/communities/infrastructure/presentation/dtos/output/action-summary.response.dto';
-import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
 
 describe('ActionsController (e2e)', () => {
   let server!: TestServerHelper;
@@ -45,7 +45,7 @@ describe('ActionsController (e2e)', () => {
     server = new TestServerHelper();
     app = await server.create(
       {
-        imports: [databaseModule, messageModule, CommunitiesModule],
+        imports: [databaseModule, messageModule, CommunitiesSharedModule],
       },
       'api',
     );

@@ -1,6 +1,6 @@
 import { Either, left, right } from '@app/ddd/either';
 import { RepositoryException } from '@app/ddd/repository/exceptions/repository.exception';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import type { ClientGrpc } from '@nestjs/microservices';
 import {
   COMMUNITIES_SERVICE_NAME,
@@ -16,6 +16,7 @@ import { CommunityRankingUserResponseDto } from './dtos/community-ranking-user.r
 @Injectable()
 export class CommunitiesApiGrpcServiceImpl extends CommunitiesApiPort {
   private readonly communitiesServiceClient: CommunitiesServiceClient;
+  private readonly logger = new Logger(CommunitiesApiGrpcServiceImpl.name);
 
   constructor(@Inject(SOLIDARIANID_GRPC_COMMUNITIES_V1_PACKAGE_NAME) private readonly communitiesClient: ClientGrpc) {
     super();
@@ -43,6 +44,7 @@ export class CommunitiesApiGrpcServiceImpl extends CommunitiesApiPort {
             (response as unknown as { ranking?: { items?: CommunityRankingUserResponseDto[] } }).ranking?.items;
 
       if (!rankingItems) {
+        this.logger.error('Unexpected response from Communities gRPC service: ranking payload was not returned');
         return left(
           new RepositoryException(
             'Unexpected response from Communities gRPC service: ranking payload was not returned',
@@ -56,8 +58,10 @@ export class CommunitiesApiGrpcServiceImpl extends CommunitiesApiPort {
         userCount: item.userCount,
       }));
 
+      this.logger.debug(`Returning ranking with ${ranking.length} items`);
       return right(ranking);
     } catch (error) {
+      this.logger.error('Failed to communicate with Communities gRPC service', (error as Error).stack);
       return left(new RepositoryException('Failed to communicate with Communities gRPC service', error as Error));
     }
   }
@@ -84,8 +88,10 @@ export class CommunitiesApiGrpcServiceImpl extends CommunitiesApiPort {
         })),
       };
 
+      this.logger.debug(`Returning joined users summary for community ${communityId}`);
       return right(summary);
     } catch (error) {
+      this.logger.error('Failed to communicate with Communities gRPC service', (error as Error).stack);
       return left(new RepositoryException('Failed to communicate with Communities gRPC service', error as Error));
     }
   }

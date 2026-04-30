@@ -1,29 +1,29 @@
-import {
-  PostgreSQLTestModule,
-  TestServerHelper,
-  PostgreSQLSeeder,
-  KafkaTestModule,
-  PG_USER_IDS as USER_IDS,
-  PG_COMMUNITY_IDS as COMMUNITY_IDS,
-  PG_CAUSE_IDS as CAUSE_IDS,
-  TestContainerLifecycle,
-} from '@solidarianid/testing';
-import { HttpStatus, INestApplication } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import { CommunityEntity } from '../../src/infrastructure/persistence/entities/community.entity';
-import { CauseEntity } from '../../src/infrastructure/persistence/entities/cause.entity';
-import { CauseUserEntity } from '../../src/infrastructure/persistence/entities/cause-user.entity';
-import { ActionEntity } from '../../src/infrastructure/persistence/entities/action.entity';
-import { UserEntity } from '../../src/infrastructure/persistence/entities/user.entity';
-import { ObjectiveEntity } from '../../src/infrastructure/persistence/entities/objective.entity';
-import { EventEntity } from '../../src/infrastructure/persistence/entities/event.entity';
-import { EventUserEntity } from '../../src/infrastructure/persistence/entities/event-user.entity';
-import { ObjetiveUserEntity } from '../../src/infrastructure/persistence/entities/objetive-user.entity';
-import { CommunityUserEntity } from '../../src/infrastructure/persistence/entities/community-user.entity';
-import { CommunitiesModule } from '@app/communities/communities.module';
-import { RequestEntity } from '@app/communities/infrastructure/persistence/entities/request.entity';
+import { ActionEntity } from '@app/communities/actions/infrastructure/persistence/entities/action.entity';
+import { EventUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/event-user.entity';
+import { EventEntity } from '@app/communities/actions/infrastructure/persistence/entities/event.entity';
+import { ObjectiveEntity } from '@app/communities/actions/infrastructure/persistence/entities/objective.entity';
+import { ObjetiveUserEntity } from '@app/communities/actions/infrastructure/persistence/entities/objetive-user.entity';
+import { CauseUserEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause-user.entity';
+import { CauseEntity } from '@app/communities/causes/infrastructure/persistence/entities/cause.entity';
+import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
+import { CommunityUserEntity } from '@app/communities/communities/infrastructure/persistence/entities/community-user.entity';
+import { CommunityEntity } from '@app/communities/communities/infrastructure/persistence/entities/community.entity';
+import { RequestEntity } from '@app/communities/shared/infrastructure/persistence/entities/request.entity';
+import { UserEntity } from '@app/communities/shared/infrastructure/persistence/entities/user.entity';
 import { SustainableDevelopmentGoal } from '@app/value-objects/model/ods';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import {
+  PG_CAUSE_IDS as CAUSE_IDS,
+  PG_COMMUNITY_IDS as COMMUNITY_IDS,
+  KafkaTestModule,
+  PostgreSQLSeeder,
+  PostgreSQLTestModule,
+  TestContainerLifecycle,
+  TestServerHelper,
+  PG_USER_IDS as USER_IDS,
+} from '@solidarianid/testing';
+import { DataSource } from 'typeorm';
 
 describe('RequestController (e2e)', () => {
   let server!: TestServerHelper;
@@ -55,7 +55,7 @@ describe('RequestController (e2e)', () => {
     server = new TestServerHelper();
     app = await server.create(
       {
-        imports: [databaseModule, messageModule, CommunitiesModule],
+        imports: [databaseModule, messageModule, CommunitiesSharedModule],
       },
       'api',
     );

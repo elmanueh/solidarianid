@@ -1,6 +1,6 @@
-import { MemberType } from '@app/communities/domain/model/enums/member-type';
-import { RequestStatus } from '@app/communities/domain/model/enums/request-status';
-import { RequestType } from '@app/communities/domain/model/enums/request-type';
+import { MemberType } from '@app/communities/shared/domain/model/enums/member-type';
+import { RequestStatus } from '@app/communities/shared/domain/model/enums/request-status';
+import { RequestType } from '@app/communities/shared/domain/model/enums/request-type';
 import { UserEntity } from '@app/users/infrastructure/persistence/entities/user.entity';
 import { CheckpointProjectionEntity } from '@app/users/infrastructure/persistence/projections/checkpoint.projection.entity';
 import { UserProjectionEntity } from '@app/users/infrastructure/persistence/projections/user.projection.entity';

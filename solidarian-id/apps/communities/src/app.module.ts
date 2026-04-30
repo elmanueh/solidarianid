@@ -1,11 +1,11 @@
-import { CommunitiesModule } from '@app/communities/communities.module';
+import { CommunitiesSharedModule } from '@app/communities/shared/communities-shared.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { KafkaBrokersModule } from '@solidarianid/kafka';
-import { join } from 'node:path';
 import type { Request, Response } from 'express';
+import { join } from 'node:path';
 
 type GraphqlContextFactoryArgs = {
   req?: Request;
@@ -20,7 +20,7 @@ type GraphqlContextFactoryArgs = {
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: `.env.${process.env.NODE_ENV}` }),
     KafkaBrokersModule,
-    CommunitiesModule,
+    CommunitiesSharedModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       graphiql: process.env.NODE_ENV !== 'production',

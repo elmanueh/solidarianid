@@ -1,0 +1,112 @@
+import { RequestsService } from '@app/communities/shared/domain/services/request.service';
+import { Request } from '@app/communities/shared/infrastructure/presentation/controllers/graphql/entities/request';
+import { CreateActionRequestInput } from '@app/communities/shared/infrastructure/presentation/controllers/graphql/inputs/requests/create-action-request.input';
+import { CreateCauseRequestInput } from '@app/communities/shared/infrastructure/presentation/controllers/graphql/inputs/requests/create-cause-request.input';
+import { CreateCommunityRequestInput } from '@app/communities/shared/infrastructure/presentation/controllers/graphql/inputs/requests/create-community-request.input';
+import { RequestGraphqlMapper } from '@app/communities/shared/infrastructure/presentation/controllers/graphql/mappers/request-graphql.mapper';
+import { UseGuards } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  CommunityMembershipPolicy,
+  Resource,
+  Action as SecurityAction,
+  UsersPolicy,
+} from '@solidarianid/security/core';
+import { AuthorizationGuard, Authorize, CurrentUser, JwtAuthGuard } from '@solidarianid/security/nestjs';
+
+@Resolver(() => Request)
+export class RequestResolver {
+  constructor(
+    private readonly requestsService: RequestsService,
+    private readonly requestGraphqlMapper: RequestGraphqlMapper,
+  ) {}
+
+  @Mutation(() => String)
+  @UseGuards(JwtAuthGuard)
+  async createCommunityRequest(
+    @Args('createCommunityRequestInput') createCommunityRequestInput: CreateCommunityRequestInput,
+    @CurrentUser('sub') actorId: string,
+  ): Promise<string> {
+    const dto = this.requestGraphqlMapper.toCreateCommunityRequestDto(createCommunityRequestInput);
+    const uniqueId = await this.requestsService.createCommunityRequest(dto, actorId);
+
+    if (uniqueId.isLeft()) {
+      throw uniqueId.value;
+    }
+
+    return uniqueId.value.value;
+  }
+
+  @Mutation(() => String)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Authorize({
+    action: SecurityAction.CREATE,
+    resource: Resource.COMMUNITY,
+    policy: CommunityMembershipPolicy.CREATOR_ONLY,
+    entityId: 'createCauseRequestInput.communityId',
+  })
+  async createCauseRequest(
+    @Args('createCauseRequestInput') createCauseRequestInput: CreateCauseRequestInput,
+    @CurrentUser('sub') actorId: string,
+  ): Promise<string> {
+    const dto = this.requestGraphqlMapper.toCreateCauseRequestDto(createCauseRequestInput);
+    const uniqueId = await this.requestsService.createCauseRequest(dto, actorId);
+
+    if (uniqueId.isLeft()) {
+      throw uniqueId.value;
+    }
+
+    return uniqueId.value.value;
+  }
+
+  @Mutation(() => String)
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Authorize({
+    action: SecurityAction.CREATE,
+    policy: CommunityMembershipPolicy.CREATOR_ONLY,
+    resource: Resource.CAUSE,
+    entityId: 'createActionRequestInput.causeId',
+  })
+  async createActionRequest(
+    @Args('createActionRequestInput') createActionRequestInput: CreateActionRequestInput,
+    @CurrentUser('sub') actorId: string,
+  ): Promise<string> {
+    const dto = this.requestGraphqlMapper.toCreateActionRequestDto(createActionRequestInput);
+    const uniqueId = await this.requestsService.createActionRequest(dto, actorId);
+
+    if (uniqueId.isLeft()) {
+      throw uniqueId.value;
+    }
+
+    return uniqueId.value.value;
+  }
+
+  @Query(() => Request)
+  async request(@Args('id', { type: () => ID }) id: string): Promise<Request> {
+    const requestOrError = await this.requestsService.getRequestById(id);
+
+    if (requestOrError.isLeft()) {
+      throw requestOrError.value;
+    }
+
+    return this.requestGraphqlMapper.toGraphqlRequest(requestOrError.value);
+  }
+
+  @Query(() => [Request])
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Authorize({
+    action: SecurityAction.READ,
+    resource: Resource.USER,
+    policy: UsersPolicy.SELF_ONLY,
+    entityId: 'userId',
+  })
+  async getRequestsByUserId(@Args('userId', { type: () => ID }) userId: string): Promise<Request[]> {
+    const requestsOrError = await this.requestsService.getRequestsByUserId(userId);
+
+    if (requestsOrError.isLeft()) {
+      throw requestsOrError.value;
+    }
+
+    return requestsOrError.value.map(request => this.requestGraphqlMapper.toGraphqlRequest(request));
+  }
+}
